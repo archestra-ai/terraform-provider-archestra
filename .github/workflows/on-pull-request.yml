@@ -63,7 +63,9 @@ jobs:
         uses: ./.github/actions/setup-go
 
       - name: Ensure go mod is "tidy"
-        run: go mod tidy -diff
+        run: |
+          go mod tidy -diff
+          cd tools && go mod tidy -diff
 
       - name: Linting and formatting
         run: |
