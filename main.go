@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"github.com/hashicorp/terraform-provider-scaffolding-framework/internal/provider"
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/provider"
 )
 
 var (

@@ -1,3 +1,0 @@
-# Copyright (c) HashiCorp, Inc.
-
-terraform import scaffolding_example.test "id-123"
