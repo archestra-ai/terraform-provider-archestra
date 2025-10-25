@@ -1,30 +1,30 @@
-# See GitHub's documentation for more information on this file:
-# https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates
 version: 2
 updates:
-  # Maintain dependencies for Go modules
-  - package-ecosystem: "gomod"
-    directory: "/"
+  - package-ecosystem: gomod
+    directory: .
     schedule:
-      # Check for updates to Go modules every weekday
-      interval: "daily"
+      interval: weekly
     groups:
-      # Group all terraform-plugin-(go|sdk|framework|testing) dependencies together
-      "terraform-plugin":
+      terraform-go-dependencies:
         patterns:
-          - "github.com/hashicorp/terraform-plugin-*"
-  - package-ecosystem: "gomod"
-    directory: "/tools"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "github-actions"
-    directory: "/"
+          - "*"
+        update-types:
+          - minor
+          - patch
+    labels:
+      - dependencies
+    commit-message:
+      prefix: deps(terraform)
+
+  - package-ecosystem: github-actions
+    directory: .github
     groups:
-      "github-actions":
+      github-actions-dependencies:
         patterns:
-          - "*" # Group all GitHub Actions dependencies together
+          - "*.yml"
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "Etc/UTC"
+      interval: weekly
+    labels:
+      - dependencies
+    commit-message:
+      prefix: deps

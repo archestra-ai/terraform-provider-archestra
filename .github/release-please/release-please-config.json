@@ -1,0 +1,75 @@
+{
+  "changelog-path": "CHANGELOG.md",
+  "changelog-type": "default",
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "pull-request-footer": "",
+  "include-v-in-tag": true,
+  "include-component-in-tag": false,
+  "draft": false,
+  "changelog-sections": [
+    {
+      "section": "Features",
+      "type": "feat",
+      "hidden": false
+    },
+    {
+      "section": "Bug Fixes",
+      "type": "fix",
+      "hidden": false
+    },
+    {
+      "section": "Performance Improvements",
+      "type": "perf",
+      "hidden": false
+    },
+    {
+      "section": "Documentation",
+      "type": "docs",
+      "hidden": false
+    },
+    {
+      "section": "Dependencies",
+      "type": "deps",
+      "hidden": false
+    },
+    {
+      "section": "CI/CD",
+      "type": "ci",
+      "hidden": true
+    },
+    {
+      "section": "Code Refactoring",
+      "type": "refactor",
+      "hidden": false
+    },
+    {
+      "section": "Reverts",
+      "type": "revert",
+      "hidden": false
+    },
+    {
+      "section": "Tests",
+      "type": "test",
+      "hidden": true
+    },
+    {
+      "section": "Miscellaneous Chores",
+      "type": "chore",
+      "hidden": true
+    },
+    {
+      "section": "Other",
+      "type": "*",
+      "hidden": true
+    }
+  ],
+  "packages": {
+    ".": {
+      "release-type": "go",
+      "initial-version": "0.0.1"
+    }
+  },
+  "plugins": [],
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
+}
