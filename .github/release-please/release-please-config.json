@@ -66,7 +66,8 @@
   ],
   "packages": {
     ".": {
-      "release-type": "go"
+      "release-type": "go",
+      "initial-version": "0.0.1"
     }
   },
   "plugins": [],

@@ -16,6 +16,9 @@ jobs:
       - name: Setup go
         uses: ./.github/actions/setup-go
 
+      - name: Ensure go mod is "tidy"
+        run: go mod tidy -diff
+
       - name: Linting and formatting
         run: |
           make lint
