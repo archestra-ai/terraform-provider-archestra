@@ -13,6 +13,8 @@ Example resource
 ## Example Usage
 
 ```terraform
+# Copyright (c) HashiCorp, Inc.
+
 resource "scaffolding_example" "example" {
   configurable_attribute = "some-value"
 }
@@ -37,5 +39,7 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
+# Copyright (c) HashiCorp, Inc.
+
 terraform import scaffolding_example.test "id-123"
 ```

@@ -13,6 +13,8 @@ Example ephemeral resource
 ## Example Usage
 
 ```terraform
+# Copyright (c) HashiCorp, Inc.
+
 ephemeral "scaffolding_example" "example" {
   configurable_attribute = "some-value"
 }

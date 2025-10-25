@@ -1,0 +1,33 @@
+name: Linting and Tests
+
+on:
+  workflow_call:
+
+jobs:
+  linting-and-tests:
+    name: Linting and Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Terraform environment
+        uses: ./.github/actions/setup-terraform-env
+
+      - name: Linting and formatting
+        run: |
+          make lint
+          make fmt
+
+      - name: Tests
+        run: |
+          make test
+          make testacc
+
+      - name: Build
+        run: |
+          # Can't run generate in CI because we don't have the OpenAPI spec available over HTTP
+          # make generate
+          make build
