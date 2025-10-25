@@ -11,6 +11,8 @@ import (
 // testAccProtoV6ProviderFactories is used to instantiate a provider during acceptance testing.
 // The factory function is called for each Terraform CLI command to create a provider
 // server that the CLI can connect to and interact with.
+//
+//nolint:unused // Will be used by resource/datasource tests
 var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
 	"archestra": providerserver.NewProtocol6WithError(New("test")()),
 }
@@ -19,11 +21,14 @@ var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServe
 // It allows for testing assertions on data returned by an ephemeral resource during Open.
 // The echoprovider is used to arrange tests by echoing ephemeral data into the Terraform state.
 // This lets the data be referenced in test assertions with state checks.
+//
+//nolint:unused // Will be used by resource/datasource tests if needed
 var testAccProtoV6ProviderFactoriesWithEcho = map[string]func() (tfprotov6.ProviderServer, error){
 	"archestra": providerserver.NewProtocol6WithError(New("test")()),
 	"echo":      echoprovider.NewProviderServer(),
 }
 
+//nolint:unused // Will be used by resource/datasource tests
 func testAccPreCheck(t *testing.T) {
 	// You can add code here to run prior to any test case execution, for example assertions
 	// about the appropriate environment variables being set are common to see in a pre-check

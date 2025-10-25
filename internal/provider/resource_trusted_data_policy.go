@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 var _ resource.Resource = &TrustedDataPolicyResource{}
@@ -113,7 +112,7 @@ func (r *TrustedDataPolicyResource) Create(ctx context.Context, req resource.Cre
 		resp.Diagnostics.AddError("Invalid Agent Tool ID", fmt.Sprintf("Unable to parse agent tool ID: %s", err))
 		return
 	}
-	agentToolID := openapi_types.UUID(parsedAgentToolID)
+	agentToolID := parsedAgentToolID
 
 	// Create request body using generated type
 	requestBody := client.CreateTrustedDataPolicyJSONRequestBody{
@@ -166,7 +165,7 @@ func (r *TrustedDataPolicyResource) Read(ctx context.Context, req resource.ReadR
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse policy ID: %s", err))
 		return
 	}
-	policyID := openapi_types.UUID(parsedID)
+	policyID := parsedID
 
 	// Call API
 	apiResp, err := r.client.GetTrustedDataPolicyWithResponse(ctx, policyID)
@@ -214,14 +213,14 @@ func (r *TrustedDataPolicyResource) Update(ctx context.Context, req resource.Upd
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse policy ID: %s", err))
 		return
 	}
-	policyID := openapi_types.UUID(parsedID)
+	policyID := parsedID
 
 	parsedAgentToolID, err := uuid.Parse(data.AgentToolID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid Agent Tool ID", fmt.Sprintf("Unable to parse agent tool ID: %s", err))
 		return
 	}
-	agentToolID := openapi_types.UUID(parsedAgentToolID)
+	agentToolID := parsedAgentToolID
 
 	// Create request body using generated type
 	description := data.Description.ValueString()
@@ -279,7 +278,7 @@ func (r *TrustedDataPolicyResource) Delete(ctx context.Context, req resource.Del
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse policy ID: %s", err))
 		return
 	}
-	policyID := openapi_types.UUID(parsedID)
+	policyID := parsedID
 
 	// Call API
 	apiResp, err := r.client.DeleteTrustedDataPolicyWithResponse(ctx, policyID)

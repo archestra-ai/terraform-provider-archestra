@@ -12,8 +12,17 @@ The Archestra provider is used to interact with Archestra resources. The provide
 ## Example Usage
 
 ```terraform
+terraform {
+  required_providers {
+    archestra = {
+      source = "archestra-ai/archestra"
+    }
+  }
+}
+
 provider "archestra" {
-  # example configuration here
+  base_url = "http://localhost:9000" # Optional, defaults to http://localhost:9000
+  api_key  = "your-api-key-here"     # Required - can also use ARCHESTRA_API_KEY env var
 }
 ```
 

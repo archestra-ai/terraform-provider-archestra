@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 var _ resource.Resource = &MCPServerResource{}
@@ -101,8 +100,7 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 			resp.Diagnostics.AddError("Invalid Catalog ID", fmt.Sprintf("Unable to parse catalog ID: %s", err))
 			return
 		}
-		catalogUUID := openapi_types.UUID(catalogID)
-		requestBody.CatalogId = &catalogUUID
+		requestBody.CatalogId = &catalogID
 	}
 
 	// Call API
@@ -139,12 +137,11 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	}
 
 	// Parse UUID from state
-	parsedID, err := uuid.Parse(data.ID.ValueString())
+	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
 		return
 	}
-	serverID := openapi_types.UUID(parsedID)
 
 	// Call API
 	apiResp, err := r.client.GetMcpServerWithResponse(ctx, serverID)
@@ -197,12 +194,11 @@ func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteReque
 	}
 
 	// Parse UUID from state
-	parsedID, err := uuid.Parse(data.ID.ValueString())
+	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
 		return
 	}
-	serverID := openapi_types.UUID(parsedID)
 
 	// Call API
 	apiResp, err := r.client.DeleteMcpServerWithResponse(ctx, serverID)

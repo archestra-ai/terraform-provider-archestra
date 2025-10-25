@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 var _ resource.Resource = &ToolInvocationPolicyResource{}
@@ -110,7 +109,7 @@ func (r *ToolInvocationPolicyResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("Invalid Agent Tool ID", fmt.Sprintf("Unable to parse agent tool ID: %s", err))
 		return
 	}
-	agentToolID := openapi_types.UUID(parsedAgentToolID)
+	agentToolID := parsedAgentToolID
 
 	// Create request body using generated type
 	requestBody := client.CreateToolInvocationPolicyJSONRequestBody{
@@ -169,7 +168,7 @@ func (r *ToolInvocationPolicyResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse policy ID: %s", err))
 		return
 	}
-	policyID := openapi_types.UUID(parsedID)
+	policyID := parsedID
 
 	// Call API
 	apiResp, err := r.client.GetToolInvocationPolicyWithResponse(ctx, policyID)
@@ -221,14 +220,14 @@ func (r *ToolInvocationPolicyResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse policy ID: %s", err))
 		return
 	}
-	policyID := openapi_types.UUID(parsedID)
+	policyID := parsedID
 
 	parsedAgentToolID, err := uuid.Parse(data.AgentToolID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid Agent Tool ID", fmt.Sprintf("Unable to parse agent tool ID: %s", err))
 		return
 	}
-	agentToolID := openapi_types.UUID(parsedAgentToolID)
+	agentToolID := parsedAgentToolID
 
 	// Create request body using generated type
 	argumentName := data.ArgumentName.ValueString()
@@ -291,7 +290,7 @@ func (r *ToolInvocationPolicyResource) Delete(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse policy ID: %s", err))
 		return
 	}
-	policyID := openapi_types.UUID(parsedID)
+	policyID := parsedID
 
 	// Call API
 	apiResp, err := r.client.DeleteToolInvocationPolicyWithResponse(ctx, policyID)
