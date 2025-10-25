@@ -7,7 +7,8 @@ Thank you for your interest in contributing to the Archestra Terraform Provider!
 ### Prerequisites
 
 - [Go](https://golang.org/doc/install) >= 1.24
-- [Terraform](https://www.terraform.io/downloads.html) >= 1.0
+- [Terraform](https://www.terraform.io/downloads.html)
+  - We recommend using [`tfenv`](https://github.com/tfutils/tfenv) to manage your `terraform` installations
 - Make (optional, for convenience)
 
 ### Local Development
