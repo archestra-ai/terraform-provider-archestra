@@ -40,12 +40,20 @@ Run the provider tests:
 make test
 ```
 
-### Generating API Client + docs
+### Codegen
 
-The API client, and docs, can be codegen'd:
+#### Terraform docs
 
 ```bash
 make generate
+```
+
+#### Archestra API Client
+
+Ensure that you have the Archestra platform running locally (and the backend's openapi spec is consumable at <http://localhost:9000/openapi.json>)
+
+```bash
+make codegen-api-client
 ```
 
 ### Code Style
@@ -53,6 +61,7 @@ make generate
 Run the formatter before committing:
 
 ```bash
+make lint
 make fmt
 ```
 

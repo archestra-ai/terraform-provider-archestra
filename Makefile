@@ -12,6 +12,9 @@ lint:
 generate:
 	cd tools; go generate ./...
 
+codegen-api-client:
+	go tool oapi-codegen -config oapi-config.yaml http://localhost:9000/openapi.json
+
 fmt:
 	gofmt -s -w -e .
 

@@ -4,7 +4,6 @@ package tools
 
 import (
 	_ "github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs"
-	_ "github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen"
 )
 
 // Format Terraform code for use in documentation.
@@ -14,6 +13,3 @@ import (
 
 // Generate documentation.
 //go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir .. --provider-name archestra
-
-// Generate the API client from OpenAPI spec using oapi-codegen:
-//go:generate go tool oapi-codegen -config oapi-config.yaml http://localhost:9000/openapi.json

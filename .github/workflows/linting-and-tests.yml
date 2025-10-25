@@ -23,6 +23,12 @@ jobs:
         run: |
           make lint
           make fmt
+          make generate
+
+          if ! git diff --exit-code; then
+            echo "🔴🔴🔴: There are uncommitted changes. Please run 'make lint', 'make fmt', and 'make generate' and commit the changes. 🔴🔴🔴"
+            exit 1
+          fi
 
       - name: Tests
         run: |
@@ -33,7 +39,4 @@ jobs:
           # make testacc
 
       - name: Build
-        run: |
-          # Can't run generate in CI because we don't have the OpenAPI spec available over HTTP
-          # make generate
-          make build
+        run: make build
