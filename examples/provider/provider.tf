@@ -1,3 +1,3 @@
-provider "scaffolding" {
+provider "archestra" {
   # example configuration here
 }

@@ -42,22 +42,22 @@ data "archestra_agent_tool" "fetch_url" {
 
 # Create a trusted data policy to mark certain domains as trusted
 resource "archestra_trusted_data_policy" "trust_company_api" {
-  agent_tool_id   = data.archestra_agent_tool.fetch_url.id
-  description     = "Trust data from company API"
-  attribute_path  = "url"
-  operator        = "contains"
-  value           = "api.company.com"
-  action          = "mark_as_trusted"
+  agent_tool_id  = data.archestra_agent_tool.fetch_url.id
+  description    = "Trust data from company API"
+  attribute_path = "url"
+  operator       = "contains"
+  value          = "api.company.com"
+  action         = "mark_as_trusted"
 }
 
 # Create a trusted data policy for verified sources
 resource "archestra_trusted_data_policy" "trust_verified_source" {
-  agent_tool_id   = data.archestra_agent_tool.fetch_url.id
-  description     = "Trust data from verified source"
-  attribute_path  = "url"
-  operator        = "regex"
-  value           = "^https://verified\\.company\\.com/.*$"
-  action          = "mark_as_trusted"
+  agent_tool_id  = data.archestra_agent_tool.fetch_url.id
+  description    = "Trust data from verified source"
+  attribute_path = "url"
+  operator       = "regex"
+  value          = "^https://verified\\.company\\.com/.*$"
+  action         = "mark_as_trusted"
 }
 
 # Example with MCP server tool
