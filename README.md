@@ -61,7 +61,7 @@ make codegen-api-client
 Run the formatter before committing:
 
 ```bash
-make lint
+make lint  # requires golangci-lint installed (see https://golangci-lint.run/docs/welcome/install/)
 make fmt
 ```
 
