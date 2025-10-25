@@ -13,8 +13,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup Terraform environment
-        uses: ./.github/actions/setup-terraform-env
+      - name: Setup go
+        uses: ./.github/actions/setup-go
 
       - name: Linting and formatting
         run: |
@@ -24,7 +24,10 @@ jobs:
       - name: Tests
         run: |
           make test
-          make testacc
+
+          # NOTE: for now don't run "acceptance tests" because the Terraform proposed pattern for these is that
+          # they create real resources and we don't have a way for now to create the local environment to do so
+          # make testacc
 
       - name: Build
         run: |

@@ -1,4 +1,4 @@
-name: Setup Terraform Provider Environment
+name: Setup Go Environment
 description: Set up Go environment for Terraform provider development and builds
 
 runs:
