@@ -65,11 +65,11 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			},
 			"organization_id": schema.StringAttribute{
 				MarkdownDescription: "The organization ID this team belongs to",
-				Required:            true,
+				Computed:            true,
 			},
 			"created_by": schema.StringAttribute{
 				MarkdownDescription: "User ID of the team creator",
-				Required:            true,
+				Computed:            true,
 			},
 			"members": schema.ListNestedAttribute{
 				MarkdownDescription: "List of team members",

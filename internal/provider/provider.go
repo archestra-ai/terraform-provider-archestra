@@ -116,8 +116,8 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 	apiClient, err := client.NewClientWithResponses(
 		baseURL,
 		client.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-			// Add API key as Bearer token to all requests
-			req.Header.Set("Authorization", "Bearer "+apiKey)
+			// Add API key to X-Archestra-API-Key header
+			req.Header.Set("X-Archestra-API-Key", apiKey)
 			return nil
 		}),
 	)
