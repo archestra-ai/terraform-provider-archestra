@@ -66,10 +66,16 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			"organization_id": schema.StringAttribute{
 				MarkdownDescription: "The organization ID this team belongs to",
 				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"created_by": schema.StringAttribute{
 				MarkdownDescription: "User ID of the team creator",
 				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"members": schema.ListNestedAttribute{
 				MarkdownDescription: "List of team members",
@@ -224,26 +230,30 @@ func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		data.Description = types.StringNull()
 	}
 
-	// Fetch team members
-	membersResp, err := r.client.GetTeamMembersWithResponse(ctx, data.ID.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read team members, got error: %s", err))
-		return
-	}
+	// Only manage members if they were explicitly configured in the plan
+	// If members was null/unset in config, keep it that way to avoid drift
+	if data.Members != nil {
+		// Fetch team members
+		membersResp, err := r.client.GetTeamMembersWithResponse(ctx, data.ID.ValueString())
+		if err != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read team members, got error: %s", err))
+			return
+		}
 
-	if membersResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK for team members, got status %d", membersResp.StatusCode()),
-		)
-		return
-	}
+		if membersResp.JSON200 == nil {
+			resp.Diagnostics.AddError(
+				"Unexpected API Response",
+				fmt.Sprintf("Expected 200 OK for team members, got status %d", membersResp.StatusCode()),
+			)
+			return
+		}
 
-	data.Members = make([]TeamMemberModel, len(*membersResp.JSON200))
-	for i, member := range *membersResp.JSON200 {
-		data.Members[i] = TeamMemberModel{
-			UserID: types.StringValue(member.UserId),
-			Role:   types.StringValue(member.Role),
+		data.Members = make([]TeamMemberModel, len(*membersResp.JSON200))
+		for i, member := range *membersResp.JSON200 {
+			data.Members[i] = TeamMemberModel{
+				UserID: types.StringValue(member.UserId),
+				Role:   types.StringValue(member.Role),
+			}
 		}
 	}
 
