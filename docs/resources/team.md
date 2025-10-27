@@ -14,21 +14,8 @@ Manages an Archestra team with members.
 
 ```terraform
 resource "archestra_team" "example" {
-  name            = "Engineering Team"
-  description     = "Engineering team for production systems"
-  organization_id = "org-123"
-  created_by      = "user-456"
-
-  members = [
-    {
-      user_id = "user-789"
-      role    = "admin"
-    },
-    {
-      user_id = "user-101"
-      role    = "member"
-    }
-  ]
+  name        = "Engineering Team"
+  description = "Engineering team for production systems"
 }
 ```
 
@@ -37,9 +24,7 @@ resource "archestra_team" "example" {
 
 ### Required
 
-- `created_by` (String) User ID of the team creator
 - `name` (String) The name of the team
-- `organization_id` (String) The organization ID this team belongs to
 
 ### Optional
 
@@ -48,7 +33,9 @@ resource "archestra_team" "example" {
 
 ### Read-Only
 
+- `created_by` (String) User ID of the team creator
 - `id` (String) Team identifier
+- `organization_id` (String) The organization ID this team belongs to
 
 <a id="nestedatt--members"></a>
 ### Nested Schema for `members`

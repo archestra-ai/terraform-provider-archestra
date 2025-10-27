@@ -8,7 +8,7 @@ Thank you for your interest in contributing to the Archestra Terraform Provider!
 
 - [Go](https://golang.org/doc/install) >= 1.24
 - [Terraform](https://www.terraform.io/downloads.html)
-  - We recommend using [`tfenv`](https://github.com/tfutils/tfenv) to manage your `terraform` installations
+  - We recommend using [`tenv`](https://github.com/tofuutils/tenv) to manage your `terraform` installations
 - Make (optional, for convenience)
 
 ### Local Development
@@ -18,7 +18,7 @@ To use a locally-built provider, you'll need to configure Terraform's developmen
 ```hcl
 provider_installation {
   dev_overrides {
-    "archestra-ai/archestra" = "/path/to/your/terraform-provider-archestra"
+    "archestra-ai/archestra" = "<your-path-to-this-repo-on-your-machine>"
   }
 
   direct {}
