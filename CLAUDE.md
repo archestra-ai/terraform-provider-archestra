@@ -136,4 +136,4 @@ Tests follow the pattern `*_test.go` alongside each resource/data source. Accept
 - The API client is generated code - always regenerate rather than editing manually
 - Default base URL is `http://localhost:9000` for local development
 - Provider uses Bearer token authentication via `Authorization` header
-- Documentation is auto-generated from examples using tfplugindocs tool
+- Documentation is auto-generated from examples using tfplugindocs tool, so WHENEVER you make any changes, please be sure to run `make generate` so as to ensure that any pending documentation changes are updated

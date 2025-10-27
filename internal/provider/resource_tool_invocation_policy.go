@@ -43,6 +43,7 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Manages an Archestra tool invocation policy.",
 
+		// NOTE: it would be nice to "automatically have"
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
@@ -60,7 +61,7 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 				Required:            true,
 			},
 			"operator": schema.StringAttribute{
-				MarkdownDescription: "The comparison operator (e.g., equals, contains, regex)",
+				MarkdownDescription: "The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`",
 				Required:            true,
 			},
 			"value": schema.StringAttribute{
@@ -68,7 +69,7 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 				Required:            true,
 			},
 			"action": schema.StringAttribute{
-				MarkdownDescription: "The action to take (e.g., allow, deny, require_approval)",
+				MarkdownDescription: "The action to take when the policy matches. Valid values: `allow_when_context_is_untrusted`, `block_always`",
 				Required:            true,
 			},
 			"reason": schema.StringAttribute{

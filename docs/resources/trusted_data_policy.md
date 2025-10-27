@@ -36,12 +36,12 @@ resource "archestra_trusted_data_policy" "trust_company_api" {
 - `agent_tool_id` (String) The agent tool ID this policy applies to
 - `attribute_path` (String) The attribute path to match
 - `description` (String) Description of the policy
-- `operator` (String) The comparison operator (e.g., equals, contains, regex)
+- `operator` (String) The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`
 - `value` (String) The value to compare against
 
 ### Optional
 
-- `action` (String) The action to take (default: mark_as_trusted)
+- `action` (String) The action to take when the policy matches. Valid values: `mark_as_trusted`, `block_always`, `sanitize_with_dual_llm` (default: `mark_as_trusted`)
 
 ### Read-Only
 
