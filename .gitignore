@@ -2,8 +2,6 @@
 *.exe
 .DS_Store
 example.tf
-terraform.tfplan
-terraform.tfstate
 bin/
 dist/
 modules-dev/
@@ -14,8 +12,6 @@ website/build
 website/node_modules
 .vagrant/
 *.backup
-./*.tfstate
-.terraform/
 *.log
 *.bak
 *~
@@ -36,4 +32,11 @@ website/vendor
 
 .claude/settings.local.json
 
+# Local provider development files
+terraform.tfplan
+terraform.tfstate
+./*.tfstate
+.terraform/
 terraform-provider-archestra
+.terraform.lock.hcl
+*.tfvars
