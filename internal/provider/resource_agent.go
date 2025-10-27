@@ -9,7 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -30,10 +29,8 @@ type AgentResource struct {
 
 // AgentResourceModel describes the resource data model.
 type AgentResourceModel struct {
-	ID        types.String `tfsdk:"id"`
-	Name      types.String `tfsdk:"name"`
-	IsDemo    types.Bool   `tfsdk:"is_demo"`
-	IsDefault types.Bool   `tfsdk:"is_default"`
+	ID   types.String `tfsdk:"id"`
+	Name types.String `tfsdk:"name"`
 }
 
 func (r *AgentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -55,18 +52,6 @@ func (r *AgentResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 			"name": schema.StringAttribute{
 				MarkdownDescription: "The name of the agent",
 				Required:            true,
-			},
-			"is_demo": schema.BoolAttribute{
-				MarkdownDescription: "Whether this is a demo agent",
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(false),
-			},
-			"is_default": schema.BoolAttribute{
-				MarkdownDescription: "Whether this is the default agent",
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(false),
 			},
 		},
 	}
@@ -106,16 +91,6 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 		Teams: []string{}, // Empty teams array (required by API)
 	}
 
-	// Set optional fields if provided
-	if !data.IsDemo.IsNull() {
-		isDemo := data.IsDemo.ValueBool()
-		requestBody.IsDemo = &isDemo
-	}
-	if !data.IsDefault.IsNull() {
-		isDefault := data.IsDefault.ValueBool()
-		requestBody.IsDefault = &isDefault
-	}
-
 	// Call API
 	apiResp, err := r.client.CreateAgentWithResponse(ctx, requestBody)
 	if err != nil {
@@ -135,8 +110,6 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 	// Map response to Terraform state
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.Name = types.StringValue(apiResp.JSON200.Name)
-	data.IsDemo = types.BoolValue(apiResp.JSON200.IsDemo)
-	data.IsDefault = types.BoolValue(apiResp.JSON200.IsDefault)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -181,8 +154,6 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
-	data.IsDemo = types.BoolValue(apiResp.JSON200.IsDemo)
-	data.IsDefault = types.BoolValue(apiResp.JSON200.IsDefault)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -209,16 +180,6 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		Name: &name,
 	}
 
-	// Set optional fields if provided
-	if !data.IsDemo.IsNull() {
-		isDemo := data.IsDemo.ValueBool()
-		requestBody.IsDemo = &isDemo
-	}
-	if !data.IsDefault.IsNull() {
-		isDefault := data.IsDefault.ValueBool()
-		requestBody.IsDefault = &isDefault
-	}
-
 	// Call API
 	apiResp, err := r.client.UpdateAgentWithResponse(ctx, agentID, requestBody)
 	if err != nil {
@@ -237,8 +198,6 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
-	data.IsDemo = types.BoolValue(apiResp.JSON200.IsDemo)
-	data.IsDefault = types.BoolValue(apiResp.JSON200.IsDefault)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

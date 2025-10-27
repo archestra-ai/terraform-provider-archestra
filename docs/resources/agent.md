@@ -27,11 +27,6 @@ resource "archestra_agent" "example" {
 
 - `name` (String) The name of the agent
 
-### Optional
-
-- `is_default` (Boolean) Whether this is the default agent
-- `is_demo` (Boolean) Whether this is a demo agent
-
 ### Read-Only
 
 - `id` (String) Agent identifier

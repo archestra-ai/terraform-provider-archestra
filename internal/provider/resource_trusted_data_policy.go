@@ -65,7 +65,7 @@ func (r *TrustedDataPolicyResource) Schema(ctx context.Context, req resource.Sch
 				Required:            true,
 			},
 			"operator": schema.StringAttribute{
-				MarkdownDescription: "The comparison operator (e.g., equals, contains, regex)",
+				MarkdownDescription: "The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`",
 				Required:            true,
 			},
 			"value": schema.StringAttribute{
@@ -73,7 +73,7 @@ func (r *TrustedDataPolicyResource) Schema(ctx context.Context, req resource.Sch
 				Required:            true,
 			},
 			"action": schema.StringAttribute{
-				MarkdownDescription: "The action to take (default: mark_as_trusted)",
+				MarkdownDescription: "The action to take when the policy matches. Valid values: `mark_as_trusted`, `block_always`, `sanitize_with_dual_llm` (default: `mark_as_trusted`)",
 				Optional:            true,
 				Computed:            true,
 				Default:             stringdefault.StaticString("mark_as_trusted"),
