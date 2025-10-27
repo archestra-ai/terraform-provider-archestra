@@ -18,7 +18,7 @@ To use a locally-built provider, you'll need to configure Terraform's developmen
 ```hcl
 provider_installation {
   dev_overrides {
-    "archestra-ai/archestra" = "/path/to/your/terraform-provider-archestra"
+    "archestra-ai/archestra" = "<your-path-to-this-repo-on-your-machine>"
   }
 
   direct {}
