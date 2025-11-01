@@ -315,7 +315,7 @@ func (r *AgentResource) ImportState(ctx context.Context, req resource.ImportStat
 }
 
 // mapLabelsToConfigurationOrder maps API response labels back to the configuration order
-// to ensure Terraform doesn't detect false changes due to API reordering
+// to ensure Terraform doesn't detect false changes due to API reordering.
 func (r *AgentResource) mapLabelsToConfigurationOrder(configLabels []AgentLabelModel, apiLabels []struct {
 	Key     string              `json:"key"`
 	KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
