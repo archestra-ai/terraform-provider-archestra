@@ -141,6 +141,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 	return []func() resource.Resource{
 		NewAgentResource,
 		NewMCPServerResource,
+		NewMCPServerRegistryResource,
 		NewTrustedDataPolicyResource,
 		NewToolInvocationPolicyResource,
 		NewTeamResource,

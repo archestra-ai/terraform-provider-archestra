@@ -26,9 +26,9 @@ type MCPServerResource struct {
 }
 
 type MCPServerResourceModel struct {
-	ID        types.String `tfsdk:"id"`
-	Name      types.String `tfsdk:"name"`
-	CatalogID types.String `tfsdk:"catalog_id"`
+	ID          types.String `tfsdk:"id"`
+	Name        types.String `tfsdk:"name"`
+	MCPServerID types.String `tfsdk:"mcp_server_id"`
 }
 
 func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -54,8 +54,8 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"catalog_id": schema.StringAttribute{
-				MarkdownDescription: "The catalog ID for the MCP server",
+			"mcp_server_id": schema.StringAttribute{
+				MarkdownDescription: "The MCP server ID from the private MCP registry (archestra_mcp_server resource)",
 				Optional:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -94,13 +94,13 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		Name: data.Name.ValueString(),
 	}
 
-	if !data.CatalogID.IsNull() {
-		catalogID, err := uuid.Parse(data.CatalogID.ValueString())
+	if !data.MCPServerID.IsNull() {
+		mcpServerID, err := uuid.Parse(data.MCPServerID.ValueString())
 		if err != nil {
-			resp.Diagnostics.AddError("Invalid Catalog ID", fmt.Sprintf("Unable to parse catalog ID: %s", err))
+			resp.Diagnostics.AddError("Invalid MCP Server ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
 			return
 		}
-		requestBody.CatalogId = catalogID
+		requestBody.CatalogId = mcpServerID
 	}
 
 	// Call API
@@ -122,7 +122,7 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 	// Map response to Terraform state
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.Name = types.StringValue(apiResp.JSON200.Name)
-	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
+	data.MCPServerID = types.StringValue(apiResp.JSON200.CatalogId.String())
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -165,7 +165,7 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
-	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
+	data.MCPServerID = types.StringValue(apiResp.JSON200.CatalogId.String())
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
