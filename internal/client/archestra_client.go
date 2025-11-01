@@ -59,19 +59,123 @@ const (
 	UpdateToolInvocationPolicyJSONBodyOperatorStartsWith  UpdateToolInvocationPolicyJSONBodyOperator = "startsWith"
 )
 
-// Defines values for CreateInternalMcpCatalogItemJSONBodyAuthFields03.
+// Defines values for CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType.
 const (
-	CreateInternalMcpCatalogItemJSONBodyAuthFields03LessThannil CreateInternalMcpCatalogItemJSONBodyAuthFields03 = "<nil>"
+	CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportTypeStdio          CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType = "stdio"
+	CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportTypeStreamableHttp CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType = "streamable-http"
 )
 
-// Defines values for UpdateInternalMcpCatalogItemJSONBodyAuthFields03.
+// Defines values for CreateInternalMcpCatalogItemJSONBodyServerType.
 const (
-	UpdateInternalMcpCatalogItemJSONBodyAuthFields03LessThannil UpdateInternalMcpCatalogItemJSONBodyAuthFields03 = "<nil>"
+	CreateInternalMcpCatalogItemJSONBodyServerTypeLocal  CreateInternalMcpCatalogItemJSONBodyServerType = "local"
+	CreateInternalMcpCatalogItemJSONBodyServerTypeRemote CreateInternalMcpCatalogItemJSONBodyServerType = "remote"
 )
 
-// Defines values for InstallMcpServerJSONBodyMetadata03.
+// Defines values for CreateInternalMcpCatalogItemJSONBodyUserConfigType.
 const (
-	LessThannil InstallMcpServerJSONBodyMetadata03 = "<nil>"
+	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeBoolean   CreateInternalMcpCatalogItemJSONBodyUserConfigType = "boolean"
+	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeDirectory CreateInternalMcpCatalogItemJSONBodyUserConfigType = "directory"
+	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeFile      CreateInternalMcpCatalogItemJSONBodyUserConfigType = "file"
+	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeNumber    CreateInternalMcpCatalogItemJSONBodyUserConfigType = "number"
+	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeString    CreateInternalMcpCatalogItemJSONBodyUserConfigType = "string"
+)
+
+// Defines values for UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType.
+const (
+	UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportTypeStdio          UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType = "stdio"
+	UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportTypeStreamableHttp UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType = "streamable-http"
+)
+
+// Defines values for UpdateInternalMcpCatalogItemJSONBodyServerType.
+const (
+	UpdateInternalMcpCatalogItemJSONBodyServerTypeLocal  UpdateInternalMcpCatalogItemJSONBodyServerType = "local"
+	UpdateInternalMcpCatalogItemJSONBodyServerTypeRemote UpdateInternalMcpCatalogItemJSONBodyServerType = "remote"
+)
+
+// Defines values for UpdateInternalMcpCatalogItemJSONBodyUserConfigType.
+const (
+	UpdateInternalMcpCatalogItemJSONBodyUserConfigTypeBoolean   UpdateInternalMcpCatalogItemJSONBodyUserConfigType = "boolean"
+	UpdateInternalMcpCatalogItemJSONBodyUserConfigTypeDirectory UpdateInternalMcpCatalogItemJSONBodyUserConfigType = "directory"
+	UpdateInternalMcpCatalogItemJSONBodyUserConfigTypeFile      UpdateInternalMcpCatalogItemJSONBodyUserConfigType = "file"
+	UpdateInternalMcpCatalogItemJSONBodyUserConfigTypeNumber    UpdateInternalMcpCatalogItemJSONBodyUserConfigType = "number"
+	UpdateInternalMcpCatalogItemJSONBodyUserConfigTypeString    UpdateInternalMcpCatalogItemJSONBodyUserConfigType = "string"
+)
+
+// Defines values for GetMcpToolCallsParamsSortBy.
+const (
+	AgentId       GetMcpToolCallsParamsSortBy = "agentId"
+	CreatedAt     GetMcpToolCallsParamsSortBy = "createdAt"
+	McpServerName GetMcpToolCallsParamsSortBy = "mcpServerName"
+)
+
+// Defines values for GetMcpToolCallsParamsSortDirection.
+const (
+	Asc  GetMcpToolCallsParamsSortDirection = "asc"
+	Desc GetMcpToolCallsParamsSortDirection = "desc"
+)
+
+// Defines values for InstallMcpServerJSONBodyLocalInstallationStatus.
+const (
+	InstallMcpServerJSONBodyLocalInstallationStatusError   InstallMcpServerJSONBodyLocalInstallationStatus = "error"
+	InstallMcpServerJSONBodyLocalInstallationStatusIdle    InstallMcpServerJSONBodyLocalInstallationStatus = "idle"
+	InstallMcpServerJSONBodyLocalInstallationStatusPending InstallMcpServerJSONBodyLocalInstallationStatus = "pending"
+	InstallMcpServerJSONBodyLocalInstallationStatusSuccess InstallMcpServerJSONBodyLocalInstallationStatus = "success"
+)
+
+// Defines values for GetMcpServerInstallationRequestsParamsStatus.
+const (
+	GetMcpServerInstallationRequestsParamsStatusApproved GetMcpServerInstallationRequestsParamsStatus = "approved"
+	GetMcpServerInstallationRequestsParamsStatusDeclined GetMcpServerInstallationRequestsParamsStatus = "declined"
+	GetMcpServerInstallationRequestsParamsStatusPending  GetMcpServerInstallationRequestsParamsStatus = "pending"
+)
+
+// Defines values for CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type.
+const (
+	CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0TypeRemote CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type = "remote"
+)
+
+// Defines values for CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType.
+const (
+	CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportTypeStdio          CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType = "stdio"
+	CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportTypeStreamableHttp CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType = "streamable-http"
+)
+
+// Defines values for CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType.
+const (
+	CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerTypeLocal CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType = "local"
+)
+
+// Defines values for CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type.
+const (
+	CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1TypeLocal CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type = "local"
+)
+
+// Defines values for UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type.
+const (
+	UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0TypeRemote UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type = "remote"
+)
+
+// Defines values for UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType.
+const (
+	UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportTypeStdio          UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType = "stdio"
+	UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportTypeStreamableHttp UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType = "streamable-http"
+)
+
+// Defines values for UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType.
+const (
+	UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerTypeLocal UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType = "local"
+)
+
+// Defines values for UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type.
+const (
+	UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1TypeLocal UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type = "local"
+)
+
+// Defines values for UpdateMcpServerInstallationRequestJSONBodyStatus.
+const (
+	Approved UpdateMcpServerInstallationRequestJSONBodyStatus = "approved"
+	Declined UpdateMcpServerInstallationRequestJSONBodyStatus = "declined"
+	Pending  UpdateMcpServerInstallationRequestJSONBodyStatus = "pending"
 )
 
 // Defines values for CreateTrustedDataPolicyJSONBodyAction.
@@ -122,18 +226,30 @@ type UpdateAgentToolJSONBodyToolResultTreatment string
 
 // CreateAgentJSONBody defines parameters for CreateAgent.
 type CreateAgentJSONBody struct {
-	IsDefault *bool    `json:"isDefault,omitempty"`
-	IsDemo    *bool    `json:"isDemo,omitempty"`
-	Name      string   `json:"name"`
-	Teams     []string `json:"teams"`
+	IsDefault *bool `json:"isDefault,omitempty"`
+	IsDemo    *bool `json:"isDemo,omitempty"`
+	Labels    *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+	Name  string   `json:"name"`
+	Teams []string `json:"teams"`
 }
 
 // UpdateAgentJSONBody defines parameters for UpdateAgent.
 type UpdateAgentJSONBody struct {
-	IsDefault *bool     `json:"isDefault,omitempty"`
-	IsDemo    *bool     `json:"isDemo,omitempty"`
-	Name      *string   `json:"name,omitempty"`
-	Teams     *[]string `json:"teams,omitempty"`
+	IsDefault *bool `json:"isDefault,omitempty"`
+	IsDemo    *bool `json:"isDemo,omitempty"`
+	Labels    *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+	Name  *string   `json:"name,omitempty"`
+	Teams *[]string `json:"teams,omitempty"`
 }
 
 // CreateToolInvocationPolicyJSONBody defines parameters for CreateToolInvocationPolicy.
@@ -188,119 +304,415 @@ type UpdateDualLlmConfigJSONBody struct {
 
 // CreateInternalMcpCatalogItemJSONBody defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBody struct {
-	AuthDescription     *string                                          `json:"authDescription"`
-	AuthFields          *CreateInternalMcpCatalogItemJSONBody_AuthFields `json:"authFields"`
-	Description         *string                                          `json:"description"`
-	InstallationCommand *string                                          `json:"installationCommand"`
-	Name                string                                           `json:"name"`
-	Repository          *string                                          `json:"repository"`
-	RequiresAuth        *bool                                            `json:"requiresAuth,omitempty"`
-	Version             *string                                          `json:"version"`
+	AuthDescription *string `json:"authDescription"`
+	AuthFields      *[]struct {
+		Description *string `json:"description,omitempty"`
+		Label       string  `json:"label"`
+		Name        string  `json:"name"`
+		Required    bool    `json:"required"`
+		Type        string  `json:"type"`
+	} `json:"authFields"`
+	Description         *string `json:"description"`
+	DocsUrl             *string `json:"docsUrl"`
+	InstallationCommand *string `json:"installationCommand"`
+	Label               *string `json:"label"`
+	LocalConfig         *struct {
+		Arguments     []string                                                      `json:"arguments"`
+		Command       string                                                        `json:"command"`
+		DockerImage   *string                                                       `json:"dockerImage,omitempty"`
+		Environment   *map[string]string                                            `json:"environment,omitempty"`
+		HttpPath      *string                                                       `json:"httpPath,omitempty"`
+		HttpPort      *float32                                                      `json:"httpPort,omitempty"`
+		TransportType *CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
+	} `json:"localConfig"`
+	Name        string `json:"name"`
+	OauthConfig *struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	} `json:"oauthConfig"`
+	Repository   *string                                        `json:"repository"`
+	RequiresAuth *bool                                          `json:"requiresAuth,omitempty"`
+	ServerType   CreateInternalMcpCatalogItemJSONBodyServerType `json:"serverType"`
+	ServerUrl    *string                                        `json:"serverUrl"`
+	UserConfig   *map[string]struct {
+		Default     *CreateInternalMcpCatalogItemJSONBody_UserConfig_Default `json:"default,omitempty"`
+		Description string                                                   `json:"description"`
+		Max         *float32                                                 `json:"max,omitempty"`
+		Min         *float32                                                 `json:"min,omitempty"`
+		Multiple    *bool                                                    `json:"multiple,omitempty"`
+		Required    *bool                                                    `json:"required,omitempty"`
+		Sensitive   *bool                                                    `json:"sensitive,omitempty"`
+		Title       string                                                   `json:"title"`
+		Type        CreateInternalMcpCatalogItemJSONBodyUserConfigType       `json:"type"`
+	} `json:"userConfig"`
+	Version *string `json:"version"`
 }
 
-// CreateInternalMcpCatalogItemJSONBodyAuthFields0 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyAuthFields0 struct {
+// CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType string
+
+// CreateInternalMcpCatalogItemJSONBodyServerType defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyServerType string
+
+// CreateInternalMcpCatalogItemJSONBodyUserConfigDefault0 defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyUserConfigDefault0 = string
+
+// CreateInternalMcpCatalogItemJSONBodyUserConfigDefault1 defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyUserConfigDefault1 = float32
+
+// CreateInternalMcpCatalogItemJSONBodyUserConfigDefault2 defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyUserConfigDefault2 = bool
+
+// CreateInternalMcpCatalogItemJSONBodyUserConfigDefault3 defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyUserConfigDefault3 = []string
+
+// CreateInternalMcpCatalogItemJSONBody_UserConfig_Default defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBody_UserConfig_Default struct {
 	union json.RawMessage
 }
 
-// CreateInternalMcpCatalogItemJSONBodyAuthFields00 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyAuthFields00 = string
-
-// CreateInternalMcpCatalogItemJSONBodyAuthFields01 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyAuthFields01 = float32
-
-// CreateInternalMcpCatalogItemJSONBodyAuthFields02 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyAuthFields02 = bool
-
-// CreateInternalMcpCatalogItemJSONBodyAuthFields03 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyAuthFields03 string
-
-// CreateInternalMcpCatalogItemJSONBodyAuthFields1 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyAuthFields1 map[string]interface{}
-
-// CreateInternalMcpCatalogItemJSONBodyAuthFields2 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyAuthFields2 = []interface{}
-
-// CreateInternalMcpCatalogItemJSONBody_AuthFields defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBody_AuthFields struct {
-	union json.RawMessage
-}
+// CreateInternalMcpCatalogItemJSONBodyUserConfigType defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyUserConfigType string
 
 // UpdateInternalMcpCatalogItemJSONBody defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBody struct {
-	AuthDescription     *string                                          `json:"authDescription"`
-	AuthFields          *UpdateInternalMcpCatalogItemJSONBody_AuthFields `json:"authFields"`
-	Description         *string                                          `json:"description"`
-	InstallationCommand *string                                          `json:"installationCommand"`
-	Name                *string                                          `json:"name,omitempty"`
-	Repository          *string                                          `json:"repository"`
-	RequiresAuth        *bool                                            `json:"requiresAuth,omitempty"`
-	Version             *string                                          `json:"version"`
+	AuthDescription *string `json:"authDescription"`
+	AuthFields      *[]struct {
+		Description *string `json:"description,omitempty"`
+		Label       string  `json:"label"`
+		Name        string  `json:"name"`
+		Required    bool    `json:"required"`
+		Type        string  `json:"type"`
+	} `json:"authFields"`
+	Description         *string `json:"description"`
+	DocsUrl             *string `json:"docsUrl"`
+	InstallationCommand *string `json:"installationCommand"`
+	Label               *string `json:"label"`
+	LocalConfig         *struct {
+		Arguments     []string                                                      `json:"arguments"`
+		Command       string                                                        `json:"command"`
+		DockerImage   *string                                                       `json:"dockerImage,omitempty"`
+		Environment   *map[string]string                                            `json:"environment,omitempty"`
+		HttpPath      *string                                                       `json:"httpPath,omitempty"`
+		HttpPort      *float32                                                      `json:"httpPort,omitempty"`
+		TransportType *UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
+	} `json:"localConfig"`
+	Name        *string `json:"name,omitempty"`
+	OauthConfig *struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	} `json:"oauthConfig"`
+	Repository   *string                                         `json:"repository"`
+	RequiresAuth *bool                                           `json:"requiresAuth,omitempty"`
+	ServerType   *UpdateInternalMcpCatalogItemJSONBodyServerType `json:"serverType,omitempty"`
+	ServerUrl    *string                                         `json:"serverUrl"`
+	UserConfig   *map[string]struct {
+		Default     *UpdateInternalMcpCatalogItemJSONBody_UserConfig_Default `json:"default,omitempty"`
+		Description string                                                   `json:"description"`
+		Max         *float32                                                 `json:"max,omitempty"`
+		Min         *float32                                                 `json:"min,omitempty"`
+		Multiple    *bool                                                    `json:"multiple,omitempty"`
+		Required    *bool                                                    `json:"required,omitempty"`
+		Sensitive   *bool                                                    `json:"sensitive,omitempty"`
+		Title       string                                                   `json:"title"`
+		Type        UpdateInternalMcpCatalogItemJSONBodyUserConfigType       `json:"type"`
+	} `json:"userConfig"`
+	Version *string `json:"version"`
 }
 
-// UpdateInternalMcpCatalogItemJSONBodyAuthFields0 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyAuthFields0 struct {
+// UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType string
+
+// UpdateInternalMcpCatalogItemJSONBodyServerType defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyServerType string
+
+// UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault0 defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault0 = string
+
+// UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault1 defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault1 = float32
+
+// UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault2 defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault2 = bool
+
+// UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault3 defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault3 = []string
+
+// UpdateInternalMcpCatalogItemJSONBody_UserConfig_Default defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBody_UserConfig_Default struct {
 	union json.RawMessage
 }
 
-// UpdateInternalMcpCatalogItemJSONBodyAuthFields00 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyAuthFields00 = string
+// UpdateInternalMcpCatalogItemJSONBodyUserConfigType defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyUserConfigType string
 
-// UpdateInternalMcpCatalogItemJSONBodyAuthFields01 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyAuthFields01 = float32
-
-// UpdateInternalMcpCatalogItemJSONBodyAuthFields02 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyAuthFields02 = bool
-
-// UpdateInternalMcpCatalogItemJSONBodyAuthFields03 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyAuthFields03 string
-
-// UpdateInternalMcpCatalogItemJSONBodyAuthFields1 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyAuthFields1 map[string]interface{}
-
-// UpdateInternalMcpCatalogItemJSONBodyAuthFields2 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyAuthFields2 = []interface{}
-
-// UpdateInternalMcpCatalogItemJSONBody_AuthFields defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBody_AuthFields struct {
-	union json.RawMessage
+// GetMcpToolCallsParams defines parameters for GetMcpToolCalls.
+type GetMcpToolCallsParams struct {
+	// AgentId Filter by agent ID
+	AgentId       *openapi_types.UUID                 `form:"agentId,omitempty" json:"agentId,omitempty"`
+	Limit         *int                                `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset        *int                                `form:"offset,omitempty" json:"offset,omitempty"`
+	SortBy        *GetMcpToolCallsParamsSortBy        `form:"sortBy,omitempty" json:"sortBy,omitempty"`
+	SortDirection *GetMcpToolCallsParamsSortDirection `form:"sortDirection,omitempty" json:"sortDirection,omitempty"`
 }
+
+// GetMcpToolCallsParamsSortBy defines parameters for GetMcpToolCalls.
+type GetMcpToolCallsParamsSortBy string
+
+// GetMcpToolCallsParamsSortDirection defines parameters for GetMcpToolCalls.
+type GetMcpToolCallsParamsSortDirection string
 
 // InstallMcpServerJSONBody defines parameters for InstallMcpServer.
 type InstallMcpServerJSONBody struct {
-	AgentIds  *[]openapi_types.UUID              `json:"agentIds,omitempty"`
-	CatalogId *openapi_types.UUID                `json:"catalogId"`
-	Metadata  *InstallMcpServerJSONBody_Metadata `json:"metadata,omitempty"`
-	Name      string                             `json:"name"`
-	Teams     *[]string                          `json:"teams,omitempty"`
+	AccessToken             *string                                          `json:"accessToken,omitempty"`
+	AgentIds                *[]openapi_types.UUID                            `json:"agentIds,omitempty"`
+	CatalogId               openapi_types.UUID                               `json:"catalogId"`
+	LocalInstallationError  *string                                          `json:"localInstallationError"`
+	LocalInstallationStatus *InstallMcpServerJSONBodyLocalInstallationStatus `json:"localInstallationStatus,omitempty"`
+	Name                    string                                           `json:"name"`
+	ReinstallRequired       *bool                                            `json:"reinstallRequired,omitempty"`
+	SecretId                *openapi_types.UUID                              `json:"secretId,omitempty"`
+	Teams                   *[]string                                        `json:"teams,omitempty"`
 }
 
-// InstallMcpServerJSONBodyMetadata0 defines parameters for InstallMcpServer.
-type InstallMcpServerJSONBodyMetadata0 struct {
+// InstallMcpServerJSONBodyLocalInstallationStatus defines parameters for InstallMcpServer.
+type InstallMcpServerJSONBodyLocalInstallationStatus string
+
+// GetMcpServerInstallationRequestsParams defines parameters for GetMcpServerInstallationRequests.
+type GetMcpServerInstallationRequestsParams struct {
+	// Status Filter by status
+	Status *GetMcpServerInstallationRequestsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+}
+
+// GetMcpServerInstallationRequestsParamsStatus defines parameters for GetMcpServerInstallationRequests.
+type GetMcpServerInstallationRequestsParamsStatus string
+
+// CreateMcpServerInstallationRequestJSONBody defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBody struct {
+	CustomServerConfig *CreateMcpServerInstallationRequestJSONBody_CustomServerConfig `json:"customServerConfig"`
+	ExternalCatalogId  *string                                                        `json:"externalCatalogId"`
+	RequestReason      *string                                                        `json:"requestReason"`
+}
+
+// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0 defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0 struct {
+	DocsUrl     *string `json:"docsUrl,omitempty"`
+	Label       string  `json:"label"`
+	Name        string  `json:"name"`
+	OauthConfig *struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	} `json:"oauthConfig,omitempty"`
+	ServerType string                                                            `json:"serverType"`
+	ServerUrl  *string                                                           `json:"serverUrl,omitempty"`
+	Type       CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type `json:"type"`
+	UserConfig *map[string]interface{}                                           `json:"userConfig,omitempty"`
+	Version    *string                                                           `json:"version,omitempty"`
+}
+
+// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type string
+
+// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1 defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
+	Label       string `json:"label"`
+	LocalConfig struct {
+		Arguments     []string                                                                               `json:"arguments"`
+		Command       string                                                                                 `json:"command"`
+		DockerImage   *string                                                                                `json:"dockerImage,omitempty"`
+		Environment   *map[string]string                                                                     `json:"environment,omitempty"`
+		HttpPath      *string                                                                                `json:"httpPath,omitempty"`
+		HttpPort      *float32                                                                               `json:"httpPort,omitempty"`
+		TransportType *CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType `json:"transportType,omitempty"`
+	} `json:"localConfig"`
+	Name       string                                                                  `json:"name"`
+	ServerType CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType `json:"serverType"`
+	Type       CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type       `json:"type"`
+	Version    *string                                                                 `json:"version,omitempty"`
+}
+
+// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType string
+
+// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType string
+
+// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type string
+
+// CreateMcpServerInstallationRequestJSONBody_CustomServerConfig defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBody_CustomServerConfig struct {
 	union json.RawMessage
 }
 
-// InstallMcpServerJSONBodyMetadata00 defines parameters for InstallMcpServer.
-type InstallMcpServerJSONBodyMetadata00 = string
+// UpdateMcpServerInstallationRequestJSONBody defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBody struct {
+	AdminResponse      *string                                                        `json:"adminResponse"`
+	CustomServerConfig *UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig `json:"customServerConfig"`
+	Notes              *[]struct {
+		Content   string `json:"content"`
+		CreatedAt string `json:"createdAt"`
+		Id        string `json:"id"`
+		UserId    string `json:"userId"`
+		UserName  string `json:"userName"`
+	} `json:"notes"`
+	RequestReason *string                                           `json:"requestReason"`
+	ReviewedAt    interface{}                                       `json:"reviewedAt"`
+	ReviewedBy    *string                                           `json:"reviewedBy"`
+	Status        *UpdateMcpServerInstallationRequestJSONBodyStatus `json:"status,omitempty"`
+}
 
-// InstallMcpServerJSONBodyMetadata01 defines parameters for InstallMcpServer.
-type InstallMcpServerJSONBodyMetadata01 = float32
+// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0 defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0 struct {
+	DocsUrl     *string `json:"docsUrl,omitempty"`
+	Label       string  `json:"label"`
+	Name        string  `json:"name"`
+	OauthConfig *struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	} `json:"oauthConfig,omitempty"`
+	ServerType string                                                            `json:"serverType"`
+	ServerUrl  *string                                                           `json:"serverUrl,omitempty"`
+	Type       UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type `json:"type"`
+	UserConfig *map[string]interface{}                                           `json:"userConfig,omitempty"`
+	Version    *string                                                           `json:"version,omitempty"`
+}
 
-// InstallMcpServerJSONBodyMetadata02 defines parameters for InstallMcpServer.
-type InstallMcpServerJSONBodyMetadata02 = bool
+// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type string
 
-// InstallMcpServerJSONBodyMetadata03 defines parameters for InstallMcpServer.
-type InstallMcpServerJSONBodyMetadata03 string
+// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1 defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
+	Label       string `json:"label"`
+	LocalConfig struct {
+		Arguments     []string                                                                               `json:"arguments"`
+		Command       string                                                                                 `json:"command"`
+		DockerImage   *string                                                                                `json:"dockerImage,omitempty"`
+		Environment   *map[string]string                                                                     `json:"environment,omitempty"`
+		HttpPath      *string                                                                                `json:"httpPath,omitempty"`
+		HttpPort      *float32                                                                               `json:"httpPort,omitempty"`
+		TransportType *UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType `json:"transportType,omitempty"`
+	} `json:"localConfig"`
+	Name       string                                                                  `json:"name"`
+	ServerType UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType `json:"serverType"`
+	Type       UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type       `json:"type"`
+	Version    *string                                                                 `json:"version,omitempty"`
+}
 
-// InstallMcpServerJSONBodyMetadata1 defines parameters for InstallMcpServer.
-type InstallMcpServerJSONBodyMetadata1 map[string]interface{}
+// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigTransportType string
 
-// InstallMcpServerJSONBodyMetadata2 defines parameters for InstallMcpServer.
-type InstallMcpServerJSONBodyMetadata2 = []interface{}
+// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType string
 
-// InstallMcpServerJSONBody_Metadata defines parameters for InstallMcpServer.
-type InstallMcpServerJSONBody_Metadata struct {
+// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type string
+
+// UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig struct {
 	union json.RawMessage
+}
+
+// UpdateMcpServerInstallationRequestJSONBodyStatus defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBodyStatus string
+
+// ApproveMcpServerInstallationRequestJSONBody defines parameters for ApproveMcpServerInstallationRequest.
+type ApproveMcpServerInstallationRequestJSONBody struct {
+	AdminResponse *string `json:"adminResponse,omitempty"`
+}
+
+// DeclineMcpServerInstallationRequestJSONBody defines parameters for DeclineMcpServerInstallationRequest.
+type DeclineMcpServerInstallationRequestJSONBody struct {
+	AdminResponse *string `json:"adminResponse,omitempty"`
+}
+
+// AddMcpServerInstallationRequestNoteJSONBody defines parameters for AddMcpServerInstallationRequestNote.
+type AddMcpServerInstallationRequestNoteJSONBody struct {
+	Content string `json:"content"`
+}
+
+// HandleOAuthCallbackJSONBody defines parameters for HandleOAuthCallback.
+type HandleOAuthCallbackJSONBody struct {
+	Code  string `json:"code"`
+	State string `json:"state"`
+}
+
+// InitiateOAuthJSONBody defines parameters for InitiateOAuth.
+type InitiateOAuthJSONBody struct {
+	CatalogId openapi_types.UUID  `json:"catalogId"`
+	ServerId  *openapi_types.UUID `json:"serverId,omitempty"`
 }
 
 // CreateTeamJSONBody defines parameters for CreateTeam.
@@ -353,6 +765,11 @@ type UpdateTrustedDataPolicyJSONBodyAction string
 // UpdateTrustedDataPolicyJSONBodyOperator defines parameters for UpdateTrustedDataPolicy.
 type UpdateTrustedDataPolicyJSONBodyOperator string
 
+// GetMcpServerLogsParams defines parameters for GetMcpServerLogs.
+type GetMcpServerLogsParams struct {
+	Lines *float32 `form:"lines,omitempty" json:"lines,omitempty"`
+}
+
 // UpdateAgentToolJSONRequestBody defines body for UpdateAgentTool for application/json ContentType.
 type UpdateAgentToolJSONRequestBody UpdateAgentToolJSONBody
 
@@ -382,6 +799,27 @@ type UpdateInternalMcpCatalogItemJSONRequestBody UpdateInternalMcpCatalogItemJSO
 
 // InstallMcpServerJSONRequestBody defines body for InstallMcpServer for application/json ContentType.
 type InstallMcpServerJSONRequestBody InstallMcpServerJSONBody
+
+// CreateMcpServerInstallationRequestJSONRequestBody defines body for CreateMcpServerInstallationRequest for application/json ContentType.
+type CreateMcpServerInstallationRequestJSONRequestBody CreateMcpServerInstallationRequestJSONBody
+
+// UpdateMcpServerInstallationRequestJSONRequestBody defines body for UpdateMcpServerInstallationRequest for application/json ContentType.
+type UpdateMcpServerInstallationRequestJSONRequestBody UpdateMcpServerInstallationRequestJSONBody
+
+// ApproveMcpServerInstallationRequestJSONRequestBody defines body for ApproveMcpServerInstallationRequest for application/json ContentType.
+type ApproveMcpServerInstallationRequestJSONRequestBody ApproveMcpServerInstallationRequestJSONBody
+
+// DeclineMcpServerInstallationRequestJSONRequestBody defines body for DeclineMcpServerInstallationRequest for application/json ContentType.
+type DeclineMcpServerInstallationRequestJSONRequestBody DeclineMcpServerInstallationRequestJSONBody
+
+// AddMcpServerInstallationRequestNoteJSONRequestBody defines body for AddMcpServerInstallationRequestNote for application/json ContentType.
+type AddMcpServerInstallationRequestNoteJSONRequestBody AddMcpServerInstallationRequestNoteJSONBody
+
+// HandleOAuthCallbackJSONRequestBody defines body for HandleOAuthCallback for application/json ContentType.
+type HandleOAuthCallbackJSONRequestBody HandleOAuthCallbackJSONBody
+
+// InitiateOAuthJSONRequestBody defines body for InitiateOAuth for application/json ContentType.
+type InitiateOAuthJSONRequestBody InitiateOAuthJSONBody
 
 // CreateTeamJSONRequestBody defines body for CreateTeam for application/json ContentType.
 type CreateTeamJSONRequestBody CreateTeamJSONBody
@@ -490,6 +928,12 @@ type ClientInterface interface {
 	// GetDefaultAgent request
 	GetDefaultAgent(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetLabelKeys request
+	GetLabelKeys(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetLabelValues request
+	GetLabelValues(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetAgentTools request
 	GetAgentTools(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -582,6 +1026,12 @@ type ClientInterface interface {
 
 	UpdateInternalMcpCatalogItem(ctx context.Context, id openapi_types.UUID, body UpdateInternalMcpCatalogItemJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetMcpToolCalls request
+	GetMcpToolCalls(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMcpToolCall request
+	GetMcpToolCall(ctx context.Context, mcpToolCallId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetMcpServers request
 	GetMcpServers(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -595,6 +1045,59 @@ type ClientInterface interface {
 
 	// GetMcpServer request
 	GetMcpServer(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMcpServerInstallationStatus request
+	GetMcpServerInstallationStatus(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RestartMcpServer request
+	RestartMcpServer(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMcpServerTools request
+	GetMcpServerTools(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMcpServerInstallationRequests request
+	GetMcpServerInstallationRequests(ctx context.Context, params *GetMcpServerInstallationRequestsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateMcpServerInstallationRequestWithBody request with any body
+	CreateMcpServerInstallationRequestWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateMcpServerInstallationRequest(ctx context.Context, body CreateMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteMcpServerInstallationRequest request
+	DeleteMcpServerInstallationRequest(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMcpServerInstallationRequest request
+	GetMcpServerInstallationRequest(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateMcpServerInstallationRequestWithBody request with any body
+	UpdateMcpServerInstallationRequestWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateMcpServerInstallationRequest(ctx context.Context, id openapi_types.UUID, body UpdateMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ApproveMcpServerInstallationRequestWithBody request with any body
+	ApproveMcpServerInstallationRequestWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ApproveMcpServerInstallationRequest(ctx context.Context, id openapi_types.UUID, body ApproveMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeclineMcpServerInstallationRequestWithBody request with any body
+	DeclineMcpServerInstallationRequestWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DeclineMcpServerInstallationRequest(ctx context.Context, id openapi_types.UUID, body DeclineMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AddMcpServerInstallationRequestNoteWithBody request with any body
+	AddMcpServerInstallationRequestNoteWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AddMcpServerInstallationRequestNote(ctx context.Context, id openapi_types.UUID, body AddMcpServerInstallationRequestNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// HandleOAuthCallbackWithBody request with any body
+	HandleOAuthCallbackWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	HandleOAuthCallback(ctx context.Context, body HandleOAuthCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// InitiateOAuthWithBody request with any body
+	InitiateOAuthWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	InitiateOAuth(ctx context.Context, body InitiateOAuthJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetTeams request
 	GetTeams(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -653,6 +1156,9 @@ type ClientInterface interface {
 
 	// GetHealth request
 	GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMcpServerLogs request
+	GetMcpServerLogs(ctx context.Context, id openapi_types.UUID, params *GetMcpServerLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetAllAgentTools(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -729,6 +1235,30 @@ func (c *Client) CreateAgent(ctx context.Context, body CreateAgentJSONRequestBod
 
 func (c *Client) GetDefaultAgent(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetDefaultAgentRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetLabelKeys(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetLabelKeysRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetLabelValues(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetLabelValuesRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -1135,6 +1665,30 @@ func (c *Client) UpdateInternalMcpCatalogItem(ctx context.Context, id openapi_ty
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetMcpToolCalls(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMcpToolCallsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMcpToolCall(ctx context.Context, mcpToolCallId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMcpToolCallRequest(c.Server, mcpToolCallId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetMcpServers(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetMcpServersRequest(c.Server)
 	if err != nil {
@@ -1185,6 +1739,246 @@ func (c *Client) DeleteMcpServer(ctx context.Context, id openapi_types.UUID, req
 
 func (c *Client) GetMcpServer(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetMcpServerRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMcpServerInstallationStatus(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMcpServerInstallationStatusRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RestartMcpServer(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRestartMcpServerRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMcpServerTools(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMcpServerToolsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMcpServerInstallationRequests(ctx context.Context, params *GetMcpServerInstallationRequestsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMcpServerInstallationRequestsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateMcpServerInstallationRequestWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateMcpServerInstallationRequestRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateMcpServerInstallationRequest(ctx context.Context, body CreateMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateMcpServerInstallationRequestRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteMcpServerInstallationRequest(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteMcpServerInstallationRequestRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMcpServerInstallationRequest(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMcpServerInstallationRequestRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateMcpServerInstallationRequestWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMcpServerInstallationRequestRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateMcpServerInstallationRequest(ctx context.Context, id openapi_types.UUID, body UpdateMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMcpServerInstallationRequestRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ApproveMcpServerInstallationRequestWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewApproveMcpServerInstallationRequestRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ApproveMcpServerInstallationRequest(ctx context.Context, id openapi_types.UUID, body ApproveMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewApproveMcpServerInstallationRequestRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeclineMcpServerInstallationRequestWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeclineMcpServerInstallationRequestRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeclineMcpServerInstallationRequest(ctx context.Context, id openapi_types.UUID, body DeclineMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeclineMcpServerInstallationRequestRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddMcpServerInstallationRequestNoteWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddMcpServerInstallationRequestNoteRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AddMcpServerInstallationRequestNote(ctx context.Context, id openapi_types.UUID, body AddMcpServerInstallationRequestNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAddMcpServerInstallationRequestNoteRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) HandleOAuthCallbackWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewHandleOAuthCallbackRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) HandleOAuthCallback(ctx context.Context, body HandleOAuthCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewHandleOAuthCallbackRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) InitiateOAuthWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewInitiateOAuthRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) InitiateOAuth(ctx context.Context, body InitiateOAuthJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewInitiateOAuthRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1447,6 +2241,18 @@ func (c *Client) GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetMcpServerLogs(ctx context.Context, id openapi_types.UUID, params *GetMcpServerLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMcpServerLogsRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // NewGetAllAgentToolsRequest generates requests for GetAllAgentTools
 func NewGetAllAgentToolsRequest(server string) (*http.Request, error) {
 	var err error
@@ -1598,6 +2404,60 @@ func NewGetDefaultAgentRequest(server string) (*http.Request, error) {
 	}
 
 	operationPath := fmt.Sprintf("/api/agents/default")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetLabelKeysRequest generates requests for GetLabelKeys
+func NewGetLabelKeysRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/labels/keys")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetLabelValuesRequest generates requests for GetLabelValues
+func NewGetLabelValuesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/labels/values")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -2541,6 +3401,153 @@ func NewUpdateInternalMcpCatalogItemRequestWithBody(server string, id openapi_ty
 	return req, nil
 }
 
+// NewGetMcpToolCallsRequest generates requests for GetMcpToolCalls
+func NewGetMcpToolCallsRequest(server string, params *GetMcpToolCallsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp-tool-calls")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.AgentId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "agentId", runtime.ParamLocationQuery, *params.AgentId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SortBy != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sortBy", runtime.ParamLocationQuery, *params.SortBy); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SortDirection != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sortDirection", runtime.ParamLocationQuery, *params.SortDirection); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetMcpToolCallRequest generates requests for GetMcpToolCall
+func NewGetMcpToolCallRequest(server string, mcpToolCallId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "mcpToolCallId", runtime.ParamLocationPath, mcpToolCallId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp-tool-calls/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetMcpServersRequest generates requests for GetMcpServers
 func NewGetMcpServersRequest(server string) (*http.Request, error) {
 	var err error
@@ -2672,6 +3679,533 @@ func NewGetMcpServerRequest(server string, id openapi_types.UUID) (*http.Request
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewGetMcpServerInstallationStatusRequest generates requests for GetMcpServerInstallationStatus
+func NewGetMcpServerInstallationStatusRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server/%s/installation-status", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewRestartMcpServerRequest generates requests for RestartMcpServer
+func NewRestartMcpServerRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server/%s/restart", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetMcpServerToolsRequest generates requests for GetMcpServerTools
+func NewGetMcpServerToolsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server/%s/tools", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetMcpServerInstallationRequestsRequest generates requests for GetMcpServerInstallationRequests
+func NewGetMcpServerInstallationRequestsRequest(server string, params *GetMcpServerInstallationRequestsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server_installation_requests")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "status", runtime.ParamLocationQuery, *params.Status); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateMcpServerInstallationRequestRequest calls the generic CreateMcpServerInstallationRequest builder with application/json body
+func NewCreateMcpServerInstallationRequestRequest(server string, body CreateMcpServerInstallationRequestJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateMcpServerInstallationRequestRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateMcpServerInstallationRequestRequestWithBody generates requests for CreateMcpServerInstallationRequest with any type of body
+func NewCreateMcpServerInstallationRequestRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server_installation_requests")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteMcpServerInstallationRequestRequest generates requests for DeleteMcpServerInstallationRequest
+func NewDeleteMcpServerInstallationRequestRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server_installation_requests/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetMcpServerInstallationRequestRequest generates requests for GetMcpServerInstallationRequest
+func NewGetMcpServerInstallationRequestRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server_installation_requests/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateMcpServerInstallationRequestRequest calls the generic UpdateMcpServerInstallationRequest builder with application/json body
+func NewUpdateMcpServerInstallationRequestRequest(server string, id openapi_types.UUID, body UpdateMcpServerInstallationRequestJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateMcpServerInstallationRequestRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateMcpServerInstallationRequestRequestWithBody generates requests for UpdateMcpServerInstallationRequest with any type of body
+func NewUpdateMcpServerInstallationRequestRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server_installation_requests/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewApproveMcpServerInstallationRequestRequest calls the generic ApproveMcpServerInstallationRequest builder with application/json body
+func NewApproveMcpServerInstallationRequestRequest(server string, id openapi_types.UUID, body ApproveMcpServerInstallationRequestJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewApproveMcpServerInstallationRequestRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewApproveMcpServerInstallationRequestRequestWithBody generates requests for ApproveMcpServerInstallationRequest with any type of body
+func NewApproveMcpServerInstallationRequestRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server_installation_requests/%s/approve", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeclineMcpServerInstallationRequestRequest calls the generic DeclineMcpServerInstallationRequest builder with application/json body
+func NewDeclineMcpServerInstallationRequestRequest(server string, id openapi_types.UUID, body DeclineMcpServerInstallationRequestJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDeclineMcpServerInstallationRequestRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewDeclineMcpServerInstallationRequestRequestWithBody generates requests for DeclineMcpServerInstallationRequest with any type of body
+func NewDeclineMcpServerInstallationRequestRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server_installation_requests/%s/decline", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAddMcpServerInstallationRequestNoteRequest calls the generic AddMcpServerInstallationRequestNote builder with application/json body
+func NewAddMcpServerInstallationRequestNoteRequest(server string, id openapi_types.UUID, body AddMcpServerInstallationRequestNoteJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAddMcpServerInstallationRequestNoteRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewAddMcpServerInstallationRequestNoteRequestWithBody generates requests for AddMcpServerInstallationRequestNote with any type of body
+func NewAddMcpServerInstallationRequestNoteRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server_installation_requests/%s/notes", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewHandleOAuthCallbackRequest calls the generic HandleOAuthCallback builder with application/json body
+func NewHandleOAuthCallbackRequest(server string, body HandleOAuthCallbackJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewHandleOAuthCallbackRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewHandleOAuthCallbackRequestWithBody generates requests for HandleOAuthCallback with any type of body
+func NewHandleOAuthCallbackRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/oauth/callback")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewInitiateOAuthRequest calls the generic InitiateOAuth builder with application/json body
+func NewInitiateOAuthRequest(server string, body InitiateOAuthJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewInitiateOAuthRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewInitiateOAuthRequestWithBody generates requests for InitiateOAuth with any type of body
+func NewInitiateOAuthRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/oauth/initiate")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -3243,6 +4777,62 @@ func NewGetHealthRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewGetMcpServerLogsRequest generates requests for GetMcpServerLogs
+func NewGetMcpServerLogsRequest(server string, id openapi_types.UUID, params *GetMcpServerLogsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/mcp_proxy/%s/logs", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Lines != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "lines", runtime.ParamLocationQuery, *params.Lines); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -3304,6 +4894,12 @@ type ClientWithResponsesInterface interface {
 
 	// GetDefaultAgentWithResponse request
 	GetDefaultAgentWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDefaultAgentResponse, error)
+
+	// GetLabelKeysWithResponse request
+	GetLabelKeysWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLabelKeysResponse, error)
+
+	// GetLabelValuesWithResponse request
+	GetLabelValuesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLabelValuesResponse, error)
 
 	// GetAgentToolsWithResponse request
 	GetAgentToolsWithResponse(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentToolsResponse, error)
@@ -3397,6 +4993,12 @@ type ClientWithResponsesInterface interface {
 
 	UpdateInternalMcpCatalogItemWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateInternalMcpCatalogItemJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateInternalMcpCatalogItemResponse, error)
 
+	// GetMcpToolCallsWithResponse request
+	GetMcpToolCallsWithResponse(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*GetMcpToolCallsResponse, error)
+
+	// GetMcpToolCallWithResponse request
+	GetMcpToolCallWithResponse(ctx context.Context, mcpToolCallId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpToolCallResponse, error)
+
 	// GetMcpServersWithResponse request
 	GetMcpServersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMcpServersResponse, error)
 
@@ -3410,6 +5012,59 @@ type ClientWithResponsesInterface interface {
 
 	// GetMcpServerWithResponse request
 	GetMcpServerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpServerResponse, error)
+
+	// GetMcpServerInstallationStatusWithResponse request
+	GetMcpServerInstallationStatusWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpServerInstallationStatusResponse, error)
+
+	// RestartMcpServerWithResponse request
+	RestartMcpServerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*RestartMcpServerResponse, error)
+
+	// GetMcpServerToolsWithResponse request
+	GetMcpServerToolsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpServerToolsResponse, error)
+
+	// GetMcpServerInstallationRequestsWithResponse request
+	GetMcpServerInstallationRequestsWithResponse(ctx context.Context, params *GetMcpServerInstallationRequestsParams, reqEditors ...RequestEditorFn) (*GetMcpServerInstallationRequestsResponse, error)
+
+	// CreateMcpServerInstallationRequestWithBodyWithResponse request with any body
+	CreateMcpServerInstallationRequestWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateMcpServerInstallationRequestResponse, error)
+
+	CreateMcpServerInstallationRequestWithResponse(ctx context.Context, body CreateMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMcpServerInstallationRequestResponse, error)
+
+	// DeleteMcpServerInstallationRequestWithResponse request
+	DeleteMcpServerInstallationRequestWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteMcpServerInstallationRequestResponse, error)
+
+	// GetMcpServerInstallationRequestWithResponse request
+	GetMcpServerInstallationRequestWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpServerInstallationRequestResponse, error)
+
+	// UpdateMcpServerInstallationRequestWithBodyWithResponse request with any body
+	UpdateMcpServerInstallationRequestWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMcpServerInstallationRequestResponse, error)
+
+	UpdateMcpServerInstallationRequestWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMcpServerInstallationRequestResponse, error)
+
+	// ApproveMcpServerInstallationRequestWithBodyWithResponse request with any body
+	ApproveMcpServerInstallationRequestWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ApproveMcpServerInstallationRequestResponse, error)
+
+	ApproveMcpServerInstallationRequestWithResponse(ctx context.Context, id openapi_types.UUID, body ApproveMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*ApproveMcpServerInstallationRequestResponse, error)
+
+	// DeclineMcpServerInstallationRequestWithBodyWithResponse request with any body
+	DeclineMcpServerInstallationRequestWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeclineMcpServerInstallationRequestResponse, error)
+
+	DeclineMcpServerInstallationRequestWithResponse(ctx context.Context, id openapi_types.UUID, body DeclineMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*DeclineMcpServerInstallationRequestResponse, error)
+
+	// AddMcpServerInstallationRequestNoteWithBodyWithResponse request with any body
+	AddMcpServerInstallationRequestNoteWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddMcpServerInstallationRequestNoteResponse, error)
+
+	AddMcpServerInstallationRequestNoteWithResponse(ctx context.Context, id openapi_types.UUID, body AddMcpServerInstallationRequestNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*AddMcpServerInstallationRequestNoteResponse, error)
+
+	// HandleOAuthCallbackWithBodyWithResponse request with any body
+	HandleOAuthCallbackWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*HandleOAuthCallbackResponse, error)
+
+	HandleOAuthCallbackWithResponse(ctx context.Context, body HandleOAuthCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*HandleOAuthCallbackResponse, error)
+
+	// InitiateOAuthWithBodyWithResponse request with any body
+	InitiateOAuthWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*InitiateOAuthResponse, error)
+
+	InitiateOAuthWithResponse(ctx context.Context, body InitiateOAuthJSONRequestBody, reqEditors ...RequestEditorFn) (*InitiateOAuthResponse, error)
 
 	// GetTeamsWithResponse request
 	GetTeamsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTeamsResponse, error)
@@ -3468,6 +5123,9 @@ type ClientWithResponsesInterface interface {
 
 	// GetHealthWithResponse request
 	GetHealthWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetHealthResponse, error)
+
+	// GetMcpServerLogsWithResponse request
+	GetMcpServerLogsWithResponse(ctx context.Context, id openapi_types.UUID, params *GetMcpServerLogsParams, reqEditors ...RequestEditorFn) (*GetMcpServerLogsResponse, error)
 }
 
 type GetAllAgentToolsResponse struct {
@@ -3602,9 +5260,15 @@ type GetAgentsResponse struct {
 		Id        openapi_types.UUID `json:"id"`
 		IsDefault bool               `json:"isDefault"`
 		IsDemo    bool               `json:"isDemo"`
-		Name      string             `json:"name"`
-		Teams     []string           `json:"teams"`
-		Tools     []struct {
+		Labels    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		Name  string   `json:"name"`
+		Teams []string `json:"teams"`
+		Tools []struct {
 			AgentId     *openapi_types.UUID             `json:"agentId"`
 			CreatedAt   time.Time                       `json:"createdAt"`
 			Description *string                         `json:"description"`
@@ -3668,9 +5332,15 @@ type CreateAgentResponse struct {
 		Id        openapi_types.UUID `json:"id"`
 		IsDefault bool               `json:"isDefault"`
 		IsDemo    bool               `json:"isDemo"`
-		Name      string             `json:"name"`
-		Teams     []string           `json:"teams"`
-		Tools     []struct {
+		Labels    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		Name  string   `json:"name"`
+		Teams []string `json:"teams"`
+		Tools []struct {
 			AgentId     *openapi_types.UUID               `json:"agentId"`
 			CreatedAt   time.Time                         `json:"createdAt"`
 			Description *string                           `json:"description"`
@@ -3734,9 +5404,15 @@ type GetDefaultAgentResponse struct {
 		Id        openapi_types.UUID `json:"id"`
 		IsDefault bool               `json:"isDefault"`
 		IsDemo    bool               `json:"isDemo"`
-		Name      string             `json:"name"`
-		Teams     []string           `json:"teams"`
-		Tools     []struct {
+		Labels    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		Name  string   `json:"name"`
+		Teams []string `json:"teams"`
+		Tools []struct {
 			AgentId     *openapi_types.UUID                   `json:"agentId"`
 			CreatedAt   time.Time                             `json:"createdAt"`
 			Description *string                               `json:"description"`
@@ -3786,6 +5462,94 @@ func (r GetDefaultAgentResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetDefaultAgentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetLabelKeysResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]string
+	JSON401      *struct {
+		Error GetLabelKeys_401_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error GetLabelKeys_500_Error `json:"error"`
+	}
+}
+type GetLabelKeys401Error0 = string
+type GetLabelKeys401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetLabelKeys_401_Error struct {
+	union json.RawMessage
+}
+type GetLabelKeys500Error0 = string
+type GetLabelKeys500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetLabelKeys_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r GetLabelKeysResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetLabelKeysResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetLabelValuesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]string
+	JSON401      *struct {
+		Error GetLabelValues_401_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error GetLabelValues_500_Error `json:"error"`
+	}
+}
+type GetLabelValues401Error0 = string
+type GetLabelValues401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetLabelValues_401_Error struct {
+	union json.RawMessage
+}
+type GetLabelValues500Error0 = string
+type GetLabelValues500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetLabelValues_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r GetLabelValuesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetLabelValuesResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -3984,9 +5748,15 @@ type GetAgentResponse struct {
 		Id        openapi_types.UUID `json:"id"`
 		IsDefault bool               `json:"isDefault"`
 		IsDemo    bool               `json:"isDemo"`
-		Name      string             `json:"name"`
-		Teams     []string           `json:"teams"`
-		Tools     []struct {
+		Labels    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		Name  string   `json:"name"`
+		Teams []string `json:"teams"`
+		Tools []struct {
 			AgentId     *openapi_types.UUID            `json:"agentId"`
 			CreatedAt   time.Time                      `json:"createdAt"`
 			Description *string                        `json:"description"`
@@ -4061,9 +5831,15 @@ type UpdateAgentResponse struct {
 		Id        openapi_types.UUID `json:"id"`
 		IsDefault bool               `json:"isDefault"`
 		IsDemo    bool               `json:"isDemo"`
-		Name      string             `json:"name"`
-		Teams     []string           `json:"teams"`
-		Tools     []struct {
+		Labels    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		Name  string   `json:"name"`
+		Teams []string `json:"teams"`
+		Tools []struct {
 			AgentId     *openapi_types.UUID               `json:"agentId"`
 			CreatedAt   time.Time                         `json:"createdAt"`
 			Description *string                           `json:"description"`
@@ -4800,9 +6576,7 @@ func (r GetDualLlmResultByToolCallIdResponse) StatusCode() int {
 type GetFeaturesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		McpRegistry bool `json:"mcp_registry"`
-	}
+	JSON200      *map[string]interface{}
 }
 
 // Status returns HTTPResponse.Status
@@ -4825,34 +6599,84 @@ type GetInternalMcpCatalogResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		AuthDescription     *string                               `json:"authDescription"`
-		AuthFields          *GetInternalMcpCatalog_200_AuthFields `json:"authFields"`
-		CreatedAt           time.Time                             `json:"createdAt"`
-		Description         *string                               `json:"description"`
-		Id                  openapi_types.UUID                    `json:"id"`
-		InstallationCommand *string                               `json:"installationCommand"`
-		Name                string                                `json:"name"`
-		Repository          *string                               `json:"repository"`
-		RequiresAuth        bool                                  `json:"requiresAuth"`
-		UpdatedAt           time.Time                             `json:"updatedAt"`
-		Version             *string                               `json:"version"`
+		AuthDescription *string `json:"authDescription"`
+		AuthFields      *[]struct {
+			Description *string `json:"description,omitempty"`
+			Label       string  `json:"label"`
+			Name        string  `json:"name"`
+			Required    bool    `json:"required"`
+			Type        string  `json:"type"`
+		} `json:"authFields"`
+		CreatedAt           time.Time          `json:"createdAt"`
+		Description         *string            `json:"description"`
+		DocsUrl             *string            `json:"docsUrl"`
+		Id                  openapi_types.UUID `json:"id"`
+		InstallationCommand *string            `json:"installationCommand"`
+		Label               *string            `json:"label"`
+		LocalConfig         *struct {
+			Arguments     []string                                          `json:"arguments"`
+			Command       string                                            `json:"command"`
+			DockerImage   *string                                           `json:"dockerImage,omitempty"`
+			Environment   *map[string]string                                `json:"environment,omitempty"`
+			HttpPath      *string                                           `json:"httpPath,omitempty"`
+			HttpPort      *float32                                          `json:"httpPort,omitempty"`
+			TransportType *GetInternalMcpCatalog200LocalConfigTransportType `json:"transportType,omitempty"`
+		} `json:"localConfig"`
+		Name        string `json:"name"`
+		OauthConfig *struct {
+			AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+			AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+			BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+			ClientId                 string   `json:"client_id"`
+			ClientSecret             *string  `json:"client_secret,omitempty"`
+			DefaultScopes            []string `json:"default_scopes"`
+			Description              *string  `json:"description,omitempty"`
+			GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+			Name                     string   `json:"name"`
+			ProviderName             *string  `json:"provider_name,omitempty"`
+			RedirectUris             []string `json:"redirect_uris"`
+			RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+			ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+			Scopes                   []string `json:"scopes"`
+			ServerUrl                string   `json:"server_url"`
+			StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+			TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+			WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		} `json:"oauthConfig"`
+		Repository   *string                            `json:"repository"`
+		RequiresAuth bool                               `json:"requiresAuth"`
+		ServerType   GetInternalMcpCatalog200ServerType `json:"serverType"`
+		ServerUrl    *string                            `json:"serverUrl"`
+		UpdatedAt    time.Time                          `json:"updatedAt"`
+		UserConfig   *map[string]struct {
+			Default     *GetInternalMcpCatalog_200_UserConfig_Default `json:"default,omitempty"`
+			Description string                                        `json:"description"`
+			Max         *float32                                      `json:"max,omitempty"`
+			Min         *float32                                      `json:"min,omitempty"`
+			Multiple    *bool                                         `json:"multiple,omitempty"`
+			Required    *bool                                         `json:"required,omitempty"`
+			Sensitive   *bool                                         `json:"sensitive,omitempty"`
+			Title       string                                        `json:"title"`
+			Type        GetInternalMcpCatalog200UserConfigType        `json:"type"`
+		} `json:"userConfig"`
+		Version *string `json:"version"`
 	}
 	JSON500 *struct {
 		Error GetInternalMcpCatalog_500_Error `json:"error"`
 	}
 }
-type GetInternalMcpCatalog200AuthFields0 struct {
+type GetInternalMcpCatalog200LocalConfigTransportType string
+type GetInternalMcpCatalog200ServerType string
+type GetInternalMcpCatalog200UserConfigDefault0 = string
+type GetInternalMcpCatalog200UserConfigDefault1 = float32
+type GetInternalMcpCatalog200UserConfigDefault2 = bool
+type GetInternalMcpCatalog200UserConfigDefault3 = []string
+type GetInternalMcpCatalog_200_UserConfig_Default struct {
 	union json.RawMessage
 }
-type GetInternalMcpCatalog200AuthFields00 = string
-type GetInternalMcpCatalog200AuthFields01 = float32
-type GetInternalMcpCatalog200AuthFields02 = bool
-type GetInternalMcpCatalog200AuthFields03 string
-type GetInternalMcpCatalog200AuthFields1 map[string]interface{}
-type GetInternalMcpCatalog200AuthFields2 = []interface{}
-type GetInternalMcpCatalog_200_AuthFields struct {
-	union json.RawMessage
-}
+type GetInternalMcpCatalog200UserConfigType string
 type GetInternalMcpCatalog500Error0 = string
 type GetInternalMcpCatalog500Error1 struct {
 	Message string `json:"message"`
@@ -4882,34 +6706,84 @@ type CreateInternalMcpCatalogItemResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AuthDescription     *string                                      `json:"authDescription"`
-		AuthFields          *CreateInternalMcpCatalogItem_200_AuthFields `json:"authFields"`
-		CreatedAt           time.Time                                    `json:"createdAt"`
-		Description         *string                                      `json:"description"`
-		Id                  openapi_types.UUID                           `json:"id"`
-		InstallationCommand *string                                      `json:"installationCommand"`
-		Name                string                                       `json:"name"`
-		Repository          *string                                      `json:"repository"`
-		RequiresAuth        bool                                         `json:"requiresAuth"`
-		UpdatedAt           time.Time                                    `json:"updatedAt"`
-		Version             *string                                      `json:"version"`
+		AuthDescription *string `json:"authDescription"`
+		AuthFields      *[]struct {
+			Description *string `json:"description,omitempty"`
+			Label       string  `json:"label"`
+			Name        string  `json:"name"`
+			Required    bool    `json:"required"`
+			Type        string  `json:"type"`
+		} `json:"authFields"`
+		CreatedAt           time.Time          `json:"createdAt"`
+		Description         *string            `json:"description"`
+		DocsUrl             *string            `json:"docsUrl"`
+		Id                  openapi_types.UUID `json:"id"`
+		InstallationCommand *string            `json:"installationCommand"`
+		Label               *string            `json:"label"`
+		LocalConfig         *struct {
+			Arguments     []string                                                 `json:"arguments"`
+			Command       string                                                   `json:"command"`
+			DockerImage   *string                                                  `json:"dockerImage,omitempty"`
+			Environment   *map[string]string                                       `json:"environment,omitempty"`
+			HttpPath      *string                                                  `json:"httpPath,omitempty"`
+			HttpPort      *float32                                                 `json:"httpPort,omitempty"`
+			TransportType *CreateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+		} `json:"localConfig"`
+		Name        string `json:"name"`
+		OauthConfig *struct {
+			AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+			AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+			BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+			ClientId                 string   `json:"client_id"`
+			ClientSecret             *string  `json:"client_secret,omitempty"`
+			DefaultScopes            []string `json:"default_scopes"`
+			Description              *string  `json:"description,omitempty"`
+			GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+			Name                     string   `json:"name"`
+			ProviderName             *string  `json:"provider_name,omitempty"`
+			RedirectUris             []string `json:"redirect_uris"`
+			RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+			ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+			Scopes                   []string `json:"scopes"`
+			ServerUrl                string   `json:"server_url"`
+			StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+			TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+			WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		} `json:"oauthConfig"`
+		Repository   *string                                   `json:"repository"`
+		RequiresAuth bool                                      `json:"requiresAuth"`
+		ServerType   CreateInternalMcpCatalogItem200ServerType `json:"serverType"`
+		ServerUrl    *string                                   `json:"serverUrl"`
+		UpdatedAt    time.Time                                 `json:"updatedAt"`
+		UserConfig   *map[string]struct {
+			Default     *CreateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+			Description string                                               `json:"description"`
+			Max         *float32                                             `json:"max,omitempty"`
+			Min         *float32                                             `json:"min,omitempty"`
+			Multiple    *bool                                                `json:"multiple,omitempty"`
+			Required    *bool                                                `json:"required,omitempty"`
+			Sensitive   *bool                                                `json:"sensitive,omitempty"`
+			Title       string                                               `json:"title"`
+			Type        CreateInternalMcpCatalogItem200UserConfigType        `json:"type"`
+		} `json:"userConfig"`
+		Version *string `json:"version"`
 	}
 	JSON500 *struct {
 		Error CreateInternalMcpCatalogItem_500_Error `json:"error"`
 	}
 }
-type CreateInternalMcpCatalogItem200AuthFields0 struct {
+type CreateInternalMcpCatalogItem200LocalConfigTransportType string
+type CreateInternalMcpCatalogItem200ServerType string
+type CreateInternalMcpCatalogItem200UserConfigDefault0 = string
+type CreateInternalMcpCatalogItem200UserConfigDefault1 = float32
+type CreateInternalMcpCatalogItem200UserConfigDefault2 = bool
+type CreateInternalMcpCatalogItem200UserConfigDefault3 = []string
+type CreateInternalMcpCatalogItem_200_UserConfig_Default struct {
 	union json.RawMessage
 }
-type CreateInternalMcpCatalogItem200AuthFields00 = string
-type CreateInternalMcpCatalogItem200AuthFields01 = float32
-type CreateInternalMcpCatalogItem200AuthFields02 = bool
-type CreateInternalMcpCatalogItem200AuthFields03 string
-type CreateInternalMcpCatalogItem200AuthFields1 map[string]interface{}
-type CreateInternalMcpCatalogItem200AuthFields2 = []interface{}
-type CreateInternalMcpCatalogItem_200_AuthFields struct {
-	union json.RawMessage
-}
+type CreateInternalMcpCatalogItem200UserConfigType string
 type CreateInternalMcpCatalogItem500Error0 = string
 type CreateInternalMcpCatalogItem500Error1 struct {
 	Message string `json:"message"`
@@ -4985,17 +6859,69 @@ type GetInternalMcpCatalogItemResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AuthDescription     *string                                   `json:"authDescription"`
-		AuthFields          *GetInternalMcpCatalogItem_200_AuthFields `json:"authFields"`
-		CreatedAt           time.Time                                 `json:"createdAt"`
-		Description         *string                                   `json:"description"`
-		Id                  openapi_types.UUID                        `json:"id"`
-		InstallationCommand *string                                   `json:"installationCommand"`
-		Name                string                                    `json:"name"`
-		Repository          *string                                   `json:"repository"`
-		RequiresAuth        bool                                      `json:"requiresAuth"`
-		UpdatedAt           time.Time                                 `json:"updatedAt"`
-		Version             *string                                   `json:"version"`
+		AuthDescription *string `json:"authDescription"`
+		AuthFields      *[]struct {
+			Description *string `json:"description,omitempty"`
+			Label       string  `json:"label"`
+			Name        string  `json:"name"`
+			Required    bool    `json:"required"`
+			Type        string  `json:"type"`
+		} `json:"authFields"`
+		CreatedAt           time.Time          `json:"createdAt"`
+		Description         *string            `json:"description"`
+		DocsUrl             *string            `json:"docsUrl"`
+		Id                  openapi_types.UUID `json:"id"`
+		InstallationCommand *string            `json:"installationCommand"`
+		Label               *string            `json:"label"`
+		LocalConfig         *struct {
+			Arguments     []string                                              `json:"arguments"`
+			Command       string                                                `json:"command"`
+			DockerImage   *string                                               `json:"dockerImage,omitempty"`
+			Environment   *map[string]string                                    `json:"environment,omitempty"`
+			HttpPath      *string                                               `json:"httpPath,omitempty"`
+			HttpPort      *float32                                              `json:"httpPort,omitempty"`
+			TransportType *GetInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+		} `json:"localConfig"`
+		Name        string `json:"name"`
+		OauthConfig *struct {
+			AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+			AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+			BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+			ClientId                 string   `json:"client_id"`
+			ClientSecret             *string  `json:"client_secret,omitempty"`
+			DefaultScopes            []string `json:"default_scopes"`
+			Description              *string  `json:"description,omitempty"`
+			GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+			Name                     string   `json:"name"`
+			ProviderName             *string  `json:"provider_name,omitempty"`
+			RedirectUris             []string `json:"redirect_uris"`
+			RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+			ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+			Scopes                   []string `json:"scopes"`
+			ServerUrl                string   `json:"server_url"`
+			StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+			TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+			WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		} `json:"oauthConfig"`
+		Repository   *string                                `json:"repository"`
+		RequiresAuth bool                                   `json:"requiresAuth"`
+		ServerType   GetInternalMcpCatalogItem200ServerType `json:"serverType"`
+		ServerUrl    *string                                `json:"serverUrl"`
+		UpdatedAt    time.Time                              `json:"updatedAt"`
+		UserConfig   *map[string]struct {
+			Default     *GetInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+			Description string                                            `json:"description"`
+			Max         *float32                                          `json:"max,omitempty"`
+			Min         *float32                                          `json:"min,omitempty"`
+			Multiple    *bool                                             `json:"multiple,omitempty"`
+			Required    *bool                                             `json:"required,omitempty"`
+			Sensitive   *bool                                             `json:"sensitive,omitempty"`
+			Title       string                                            `json:"title"`
+			Type        GetInternalMcpCatalogItem200UserConfigType        `json:"type"`
+		} `json:"userConfig"`
+		Version *string `json:"version"`
 	}
 	JSON404 *struct {
 		Error GetInternalMcpCatalogItem_404_Error `json:"error"`
@@ -5004,18 +6930,16 @@ type GetInternalMcpCatalogItemResponse struct {
 		Error GetInternalMcpCatalogItem_500_Error `json:"error"`
 	}
 }
-type GetInternalMcpCatalogItem200AuthFields0 struct {
+type GetInternalMcpCatalogItem200LocalConfigTransportType string
+type GetInternalMcpCatalogItem200ServerType string
+type GetInternalMcpCatalogItem200UserConfigDefault0 = string
+type GetInternalMcpCatalogItem200UserConfigDefault1 = float32
+type GetInternalMcpCatalogItem200UserConfigDefault2 = bool
+type GetInternalMcpCatalogItem200UserConfigDefault3 = []string
+type GetInternalMcpCatalogItem_200_UserConfig_Default struct {
 	union json.RawMessage
 }
-type GetInternalMcpCatalogItem200AuthFields00 = string
-type GetInternalMcpCatalogItem200AuthFields01 = float32
-type GetInternalMcpCatalogItem200AuthFields02 = bool
-type GetInternalMcpCatalogItem200AuthFields03 string
-type GetInternalMcpCatalogItem200AuthFields1 map[string]interface{}
-type GetInternalMcpCatalogItem200AuthFields2 = []interface{}
-type GetInternalMcpCatalogItem_200_AuthFields struct {
-	union json.RawMessage
-}
+type GetInternalMcpCatalogItem200UserConfigType string
 type GetInternalMcpCatalogItem404Error0 = string
 type GetInternalMcpCatalogItem404Error1 struct {
 	Message string `json:"message"`
@@ -5053,17 +6977,69 @@ type UpdateInternalMcpCatalogItemResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AuthDescription     *string                                      `json:"authDescription"`
-		AuthFields          *UpdateInternalMcpCatalogItem_200_AuthFields `json:"authFields"`
-		CreatedAt           time.Time                                    `json:"createdAt"`
-		Description         *string                                      `json:"description"`
-		Id                  openapi_types.UUID                           `json:"id"`
-		InstallationCommand *string                                      `json:"installationCommand"`
-		Name                string                                       `json:"name"`
-		Repository          *string                                      `json:"repository"`
-		RequiresAuth        bool                                         `json:"requiresAuth"`
-		UpdatedAt           time.Time                                    `json:"updatedAt"`
-		Version             *string                                      `json:"version"`
+		AuthDescription *string `json:"authDescription"`
+		AuthFields      *[]struct {
+			Description *string `json:"description,omitempty"`
+			Label       string  `json:"label"`
+			Name        string  `json:"name"`
+			Required    bool    `json:"required"`
+			Type        string  `json:"type"`
+		} `json:"authFields"`
+		CreatedAt           time.Time          `json:"createdAt"`
+		Description         *string            `json:"description"`
+		DocsUrl             *string            `json:"docsUrl"`
+		Id                  openapi_types.UUID `json:"id"`
+		InstallationCommand *string            `json:"installationCommand"`
+		Label               *string            `json:"label"`
+		LocalConfig         *struct {
+			Arguments     []string                                                 `json:"arguments"`
+			Command       string                                                   `json:"command"`
+			DockerImage   *string                                                  `json:"dockerImage,omitempty"`
+			Environment   *map[string]string                                       `json:"environment,omitempty"`
+			HttpPath      *string                                                  `json:"httpPath,omitempty"`
+			HttpPort      *float32                                                 `json:"httpPort,omitempty"`
+			TransportType *UpdateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+		} `json:"localConfig"`
+		Name        string `json:"name"`
+		OauthConfig *struct {
+			AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+			AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+			BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+			ClientId                 string   `json:"client_id"`
+			ClientSecret             *string  `json:"client_secret,omitempty"`
+			DefaultScopes            []string `json:"default_scopes"`
+			Description              *string  `json:"description,omitempty"`
+			GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+			Name                     string   `json:"name"`
+			ProviderName             *string  `json:"provider_name,omitempty"`
+			RedirectUris             []string `json:"redirect_uris"`
+			RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+			ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+			Scopes                   []string `json:"scopes"`
+			ServerUrl                string   `json:"server_url"`
+			StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+			TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+			WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		} `json:"oauthConfig"`
+		Repository   *string                                   `json:"repository"`
+		RequiresAuth bool                                      `json:"requiresAuth"`
+		ServerType   UpdateInternalMcpCatalogItem200ServerType `json:"serverType"`
+		ServerUrl    *string                                   `json:"serverUrl"`
+		UpdatedAt    time.Time                                 `json:"updatedAt"`
+		UserConfig   *map[string]struct {
+			Default     *UpdateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+			Description string                                               `json:"description"`
+			Max         *float32                                             `json:"max,omitempty"`
+			Min         *float32                                             `json:"min,omitempty"`
+			Multiple    *bool                                                `json:"multiple,omitempty"`
+			Required    *bool                                                `json:"required,omitempty"`
+			Sensitive   *bool                                                `json:"sensitive,omitempty"`
+			Title       string                                               `json:"title"`
+			Type        UpdateInternalMcpCatalogItem200UserConfigType        `json:"type"`
+		} `json:"userConfig"`
+		Version *string `json:"version"`
 	}
 	JSON404 *struct {
 		Error UpdateInternalMcpCatalogItem_404_Error `json:"error"`
@@ -5072,18 +7048,16 @@ type UpdateInternalMcpCatalogItemResponse struct {
 		Error UpdateInternalMcpCatalogItem_500_Error `json:"error"`
 	}
 }
-type UpdateInternalMcpCatalogItem200AuthFields0 struct {
+type UpdateInternalMcpCatalogItem200LocalConfigTransportType string
+type UpdateInternalMcpCatalogItem200ServerType string
+type UpdateInternalMcpCatalogItem200UserConfigDefault0 = string
+type UpdateInternalMcpCatalogItem200UserConfigDefault1 = float32
+type UpdateInternalMcpCatalogItem200UserConfigDefault2 = bool
+type UpdateInternalMcpCatalogItem200UserConfigDefault3 = []string
+type UpdateInternalMcpCatalogItem_200_UserConfig_Default struct {
 	union json.RawMessage
 }
-type UpdateInternalMcpCatalogItem200AuthFields00 = string
-type UpdateInternalMcpCatalogItem200AuthFields01 = float32
-type UpdateInternalMcpCatalogItem200AuthFields02 = bool
-type UpdateInternalMcpCatalogItem200AuthFields03 string
-type UpdateInternalMcpCatalogItem200AuthFields1 map[string]interface{}
-type UpdateInternalMcpCatalogItem200AuthFields2 = []interface{}
-type UpdateInternalMcpCatalogItem_200_AuthFields struct {
-	union json.RawMessage
-}
+type UpdateInternalMcpCatalogItem200UserConfigType string
 type UpdateInternalMcpCatalogItem404Error0 = string
 type UpdateInternalMcpCatalogItem404Error1 struct {
 	Message string `json:"message"`
@@ -5117,17 +7091,139 @@ func (r UpdateInternalMcpCatalogItemResponse) StatusCode() int {
 	return 0
 }
 
+type GetMcpToolCallsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			AgentId       openapi_types.UUID `json:"agentId"`
+			CreatedAt     time.Time          `json:"createdAt"`
+			Id            openapi_types.UUID `json:"id"`
+			McpServerName string             `json:"mcpServerName"`
+			ToolCall      struct {
+				Arguments map[string]interface{} `json:"arguments"`
+				Id        string                 `json:"id"`
+				Name      string                 `json:"name"`
+			} `json:"toolCall"`
+			ToolResult struct {
+				Content interface{} `json:"content"`
+				Error   *string     `json:"error,omitempty"`
+				Id      string      `json:"id"`
+				IsError bool        `json:"isError"`
+			} `json:"toolResult"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON401 *struct {
+		Error GetMcpToolCalls_401_Error `json:"error"`
+	}
+}
+type GetMcpToolCalls401Error0 = string
+type GetMcpToolCalls401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpToolCalls_401_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMcpToolCallsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMcpToolCallsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetMcpToolCallResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AgentId       openapi_types.UUID `json:"agentId"`
+		CreatedAt     time.Time          `json:"createdAt"`
+		Id            openapi_types.UUID `json:"id"`
+		McpServerName string             `json:"mcpServerName"`
+		ToolCall      struct {
+			Arguments map[string]interface{} `json:"arguments"`
+			Id        string                 `json:"id"`
+			Name      string                 `json:"name"`
+		} `json:"toolCall"`
+		ToolResult struct {
+			Content interface{} `json:"content"`
+			Error   *string     `json:"error,omitempty"`
+			Id      string      `json:"id"`
+			IsError bool        `json:"isError"`
+		} `json:"toolResult"`
+	}
+	JSON401 *struct {
+		Error GetMcpToolCall_401_Error `json:"error"`
+	}
+	JSON404 *struct {
+		Error GetMcpToolCall_404_Error `json:"error"`
+	}
+}
+type GetMcpToolCall401Error0 = string
+type GetMcpToolCall401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpToolCall_401_Error struct {
+	union json.RawMessage
+}
+type GetMcpToolCall404Error0 = string
+type GetMcpToolCall404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpToolCall_404_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMcpToolCallResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMcpToolCallResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetMcpServersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		CatalogId *openapi_types.UUID    `json:"catalogId"`
-		CreatedAt time.Time              `json:"createdAt"`
-		Id        openapi_types.UUID     `json:"id"`
-		Metadata  map[string]interface{} `json:"metadata"`
-		Name      string                 `json:"name"`
-		Teams     *[]string              `json:"teams,omitempty"`
-		UpdatedAt time.Time              `json:"updatedAt"`
+		CatalogId               openapi_types.UUID                      `json:"catalogId"`
+		CreatedAt               time.Time                               `json:"createdAt"`
+		Id                      openapi_types.UUID                      `json:"id"`
+		LocalInstallationError  *string                                 `json:"localInstallationError"`
+		LocalInstallationStatus GetMcpServers200LocalInstallationStatus `json:"localInstallationStatus"`
+		Name                    string                                  `json:"name"`
+		ReinstallRequired       bool                                    `json:"reinstallRequired"`
+		SecretId                *openapi_types.UUID                     `json:"secretId"`
+		Teams                   *[]string                               `json:"teams,omitempty"`
+		UpdatedAt               time.Time                               `json:"updatedAt"`
 	}
 	JSON401 *struct {
 		Error GetMcpServers_401_Error `json:"error"`
@@ -5136,6 +7232,7 @@ type GetMcpServersResponse struct {
 		Error GetMcpServers_500_Error `json:"error"`
 	}
 }
+type GetMcpServers200LocalInstallationStatus string
 type GetMcpServers401Error0 = string
 type GetMcpServers401Error1 struct {
 	Message string `json:"message"`
@@ -5173,13 +7270,16 @@ type InstallMcpServerResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CatalogId *openapi_types.UUID    `json:"catalogId"`
-		CreatedAt time.Time              `json:"createdAt"`
-		Id        openapi_types.UUID     `json:"id"`
-		Metadata  map[string]interface{} `json:"metadata"`
-		Name      string                 `json:"name"`
-		Teams     *[]string              `json:"teams,omitempty"`
-		UpdatedAt time.Time              `json:"updatedAt"`
+		CatalogId               openapi_types.UUID                         `json:"catalogId"`
+		CreatedAt               time.Time                                  `json:"createdAt"`
+		Id                      openapi_types.UUID                         `json:"id"`
+		LocalInstallationError  *string                                    `json:"localInstallationError"`
+		LocalInstallationStatus InstallMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
+		Name                    string                                     `json:"name"`
+		ReinstallRequired       bool                                       `json:"reinstallRequired"`
+		SecretId                *openapi_types.UUID                        `json:"secretId"`
+		Teams                   *[]string                                  `json:"teams,omitempty"`
+		UpdatedAt               time.Time                                  `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error InstallMcpServer_400_Error `json:"error"`
@@ -5188,6 +7288,7 @@ type InstallMcpServerResponse struct {
 		Error InstallMcpServer_500_Error `json:"error"`
 	}
 }
+type InstallMcpServer200LocalInstallationStatus string
 type InstallMcpServer400Error0 = string
 type InstallMcpServer400Error1 struct {
 	Message string `json:"message"`
@@ -5271,13 +7372,16 @@ type GetMcpServerResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CatalogId *openapi_types.UUID    `json:"catalogId"`
-		CreatedAt time.Time              `json:"createdAt"`
-		Id        openapi_types.UUID     `json:"id"`
-		Metadata  map[string]interface{} `json:"metadata"`
-		Name      string                 `json:"name"`
-		Teams     *[]string              `json:"teams,omitempty"`
-		UpdatedAt time.Time              `json:"updatedAt"`
+		CatalogId               openapi_types.UUID                     `json:"catalogId"`
+		CreatedAt               time.Time                              `json:"createdAt"`
+		Id                      openapi_types.UUID                     `json:"id"`
+		LocalInstallationError  *string                                `json:"localInstallationError"`
+		LocalInstallationStatus GetMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
+		Name                    string                                 `json:"name"`
+		ReinstallRequired       bool                                   `json:"reinstallRequired"`
+		SecretId                *openapi_types.UUID                    `json:"secretId"`
+		Teams                   *[]string                              `json:"teams,omitempty"`
+		UpdatedAt               time.Time                              `json:"updatedAt"`
 	}
 	JSON401 *struct {
 		Error GetMcpServer_401_Error `json:"error"`
@@ -5289,6 +7393,7 @@ type GetMcpServerResponse struct {
 		Error GetMcpServer_500_Error `json:"error"`
 	}
 }
+type GetMcpServer200LocalInstallationStatus string
 type GetMcpServer401Error0 = string
 type GetMcpServer401Error1 struct {
 	Message string `json:"message"`
@@ -5324,6 +7429,1281 @@ func (r GetMcpServerResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetMcpServerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetMcpServerInstallationStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		LocalInstallationError  *string                                                  `json:"localInstallationError"`
+		LocalInstallationStatus GetMcpServerInstallationStatus200LocalInstallationStatus `json:"localInstallationStatus"`
+	}
+	JSON404 *struct {
+		Error GetMcpServerInstallationStatus_404_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error GetMcpServerInstallationStatus_500_Error `json:"error"`
+	}
+}
+type GetMcpServerInstallationStatus200LocalInstallationStatus string
+type GetMcpServerInstallationStatus404Error0 = string
+type GetMcpServerInstallationStatus404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerInstallationStatus_404_Error struct {
+	union json.RawMessage
+}
+type GetMcpServerInstallationStatus500Error0 = string
+type GetMcpServerInstallationStatus500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerInstallationStatus_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMcpServerInstallationStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMcpServerInstallationStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RestartMcpServerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Message string `json:"message"`
+		Success bool   `json:"success"`
+	}
+	JSON404 *struct {
+		Error RestartMcpServer_404_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error RestartMcpServer_500_Error `json:"error"`
+	}
+}
+type RestartMcpServer404Error0 = string
+type RestartMcpServer404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type RestartMcpServer_404_Error struct {
+	union json.RawMessage
+}
+type RestartMcpServer500Error0 = string
+type RestartMcpServer500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type RestartMcpServer_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r RestartMcpServerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RestartMcpServerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetMcpServerToolsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		AssignedAgentCount float32 `json:"assignedAgentCount"`
+		AssignedAgents     []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"assignedAgents"`
+		CreatedAt   time.Time              `json:"createdAt"`
+		Description *string                `json:"description"`
+		Id          string                 `json:"id"`
+		Name        string                 `json:"name"`
+		Parameters  map[string]interface{} `json:"parameters"`
+	}
+	JSON404 *struct {
+		Error GetMcpServerTools_404_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error GetMcpServerTools_500_Error `json:"error"`
+	}
+}
+type GetMcpServerTools404Error0 = string
+type GetMcpServerTools404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerTools_404_Error struct {
+	union json.RawMessage
+}
+type GetMcpServerTools500Error0 = string
+type GetMcpServerTools500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerTools_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMcpServerToolsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMcpServerToolsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetMcpServerInstallationRequestsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		AdminResponse      *string                                                  `json:"adminResponse"`
+		CreatedAt          time.Time                                                `json:"createdAt"`
+		CustomServerConfig *GetMcpServerInstallationRequests_200_CustomServerConfig `json:"customServerConfig"`
+		ExternalCatalogId  *string                                                  `json:"externalCatalogId"`
+		Id                 openapi_types.UUID                                       `json:"id"`
+		Notes              *[]struct {
+			Content   string `json:"content"`
+			CreatedAt string `json:"createdAt"`
+			Id        string `json:"id"`
+			UserId    string `json:"userId"`
+			UserName  string `json:"userName"`
+		} `json:"notes"`
+		RequestReason *string    `json:"requestReason"`
+		RequestedBy   string     `json:"requestedBy"`
+		ReviewedAt    *time.Time `json:"reviewedAt"`
+		ReviewedBy    *string    `json:"reviewedBy"`
+		Status        string     `json:"status"`
+		UpdatedAt     time.Time  `json:"updatedAt"`
+	}
+	JSON401 *struct {
+		Error GetMcpServerInstallationRequests_401_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error GetMcpServerInstallationRequests_500_Error `json:"error"`
+	}
+}
+type GetMcpServerInstallationRequests200CustomServerConfig0 struct {
+	DocsUrl     *string `json:"docsUrl,omitempty"`
+	Label       string  `json:"label"`
+	Name        string  `json:"name"`
+	OauthConfig *struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	} `json:"oauthConfig,omitempty"`
+	ServerType string                                                     `json:"serverType"`
+	ServerUrl  *string                                                    `json:"serverUrl,omitempty"`
+	Type       GetMcpServerInstallationRequests200CustomServerConfig0Type `json:"type"`
+	UserConfig *map[string]interface{}                                    `json:"userConfig,omitempty"`
+	Version    *string                                                    `json:"version,omitempty"`
+}
+type GetMcpServerInstallationRequests200CustomServerConfig0Type string
+type GetMcpServerInstallationRequests200CustomServerConfig1 struct {
+	Label       string `json:"label"`
+	LocalConfig struct {
+		Arguments     []string                                                                        `json:"arguments"`
+		Command       string                                                                          `json:"command"`
+		DockerImage   *string                                                                         `json:"dockerImage,omitempty"`
+		Environment   *map[string]string                                                              `json:"environment,omitempty"`
+		HttpPath      *string                                                                         `json:"httpPath,omitempty"`
+		HttpPort      *float32                                                                        `json:"httpPort,omitempty"`
+		TransportType *GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigTransportType `json:"transportType,omitempty"`
+	} `json:"localConfig"`
+	Name       string                                                           `json:"name"`
+	ServerType GetMcpServerInstallationRequests200CustomServerConfig1ServerType `json:"serverType"`
+	Type       GetMcpServerInstallationRequests200CustomServerConfig1Type       `json:"type"`
+	Version    *string                                                          `json:"version,omitempty"`
+}
+type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigTransportType string
+type GetMcpServerInstallationRequests200CustomServerConfig1ServerType string
+type GetMcpServerInstallationRequests200CustomServerConfig1Type string
+type GetMcpServerInstallationRequests_200_CustomServerConfig struct {
+	union json.RawMessage
+}
+type GetMcpServerInstallationRequests401Error0 = string
+type GetMcpServerInstallationRequests401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerInstallationRequests_401_Error struct {
+	union json.RawMessage
+}
+type GetMcpServerInstallationRequests500Error0 = string
+type GetMcpServerInstallationRequests500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerInstallationRequests_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMcpServerInstallationRequestsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMcpServerInstallationRequestsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateMcpServerInstallationRequestResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AdminResponse      *string                                                    `json:"adminResponse"`
+		CreatedAt          time.Time                                                  `json:"createdAt"`
+		CustomServerConfig *CreateMcpServerInstallationRequest_200_CustomServerConfig `json:"customServerConfig"`
+		ExternalCatalogId  *string                                                    `json:"externalCatalogId"`
+		Id                 openapi_types.UUID                                         `json:"id"`
+		Notes              *[]struct {
+			Content   string `json:"content"`
+			CreatedAt string `json:"createdAt"`
+			Id        string `json:"id"`
+			UserId    string `json:"userId"`
+			UserName  string `json:"userName"`
+		} `json:"notes"`
+		RequestReason *string    `json:"requestReason"`
+		RequestedBy   string     `json:"requestedBy"`
+		ReviewedAt    *time.Time `json:"reviewedAt"`
+		ReviewedBy    *string    `json:"reviewedBy"`
+		Status        string     `json:"status"`
+		UpdatedAt     time.Time  `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error CreateMcpServerInstallationRequest_400_Error `json:"error"`
+	}
+	JSON401 *struct {
+		Error CreateMcpServerInstallationRequest_401_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error CreateMcpServerInstallationRequest_500_Error `json:"error"`
+	}
+}
+type CreateMcpServerInstallationRequest200CustomServerConfig0 struct {
+	DocsUrl     *string `json:"docsUrl,omitempty"`
+	Label       string  `json:"label"`
+	Name        string  `json:"name"`
+	OauthConfig *struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	} `json:"oauthConfig,omitempty"`
+	ServerType string                                                       `json:"serverType"`
+	ServerUrl  *string                                                      `json:"serverUrl,omitempty"`
+	Type       CreateMcpServerInstallationRequest200CustomServerConfig0Type `json:"type"`
+	UserConfig *map[string]interface{}                                      `json:"userConfig,omitempty"`
+	Version    *string                                                      `json:"version,omitempty"`
+}
+type CreateMcpServerInstallationRequest200CustomServerConfig0Type string
+type CreateMcpServerInstallationRequest200CustomServerConfig1 struct {
+	Label       string `json:"label"`
+	LocalConfig struct {
+		Arguments     []string                                                                          `json:"arguments"`
+		Command       string                                                                            `json:"command"`
+		DockerImage   *string                                                                           `json:"dockerImage,omitempty"`
+		Environment   *map[string]string                                                                `json:"environment,omitempty"`
+		HttpPath      *string                                                                           `json:"httpPath,omitempty"`
+		HttpPort      *float32                                                                          `json:"httpPort,omitempty"`
+		TransportType *CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType `json:"transportType,omitempty"`
+	} `json:"localConfig"`
+	Name       string                                                             `json:"name"`
+	ServerType CreateMcpServerInstallationRequest200CustomServerConfig1ServerType `json:"serverType"`
+	Type       CreateMcpServerInstallationRequest200CustomServerConfig1Type       `json:"type"`
+	Version    *string                                                            `json:"version,omitempty"`
+}
+type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
+type CreateMcpServerInstallationRequest200CustomServerConfig1ServerType string
+type CreateMcpServerInstallationRequest200CustomServerConfig1Type string
+type CreateMcpServerInstallationRequest_200_CustomServerConfig struct {
+	union json.RawMessage
+}
+type CreateMcpServerInstallationRequest400Error0 = string
+type CreateMcpServerInstallationRequest400Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type CreateMcpServerInstallationRequest_400_Error struct {
+	union json.RawMessage
+}
+type CreateMcpServerInstallationRequest401Error0 = string
+type CreateMcpServerInstallationRequest401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type CreateMcpServerInstallationRequest_401_Error struct {
+	union json.RawMessage
+}
+type CreateMcpServerInstallationRequest500Error0 = string
+type CreateMcpServerInstallationRequest500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type CreateMcpServerInstallationRequest_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateMcpServerInstallationRequestResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateMcpServerInstallationRequestResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteMcpServerInstallationRequestResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON401 *struct {
+		Error DeleteMcpServerInstallationRequest_401_Error `json:"error"`
+	}
+	JSON403 *struct {
+		Error DeleteMcpServerInstallationRequest_403_Error `json:"error"`
+	}
+	JSON404 *struct {
+		Error DeleteMcpServerInstallationRequest_404_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error DeleteMcpServerInstallationRequest_500_Error `json:"error"`
+	}
+}
+type DeleteMcpServerInstallationRequest401Error0 = string
+type DeleteMcpServerInstallationRequest401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type DeleteMcpServerInstallationRequest_401_Error struct {
+	union json.RawMessage
+}
+type DeleteMcpServerInstallationRequest403Error0 = string
+type DeleteMcpServerInstallationRequest403Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type DeleteMcpServerInstallationRequest_403_Error struct {
+	union json.RawMessage
+}
+type DeleteMcpServerInstallationRequest404Error0 = string
+type DeleteMcpServerInstallationRequest404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type DeleteMcpServerInstallationRequest_404_Error struct {
+	union json.RawMessage
+}
+type DeleteMcpServerInstallationRequest500Error0 = string
+type DeleteMcpServerInstallationRequest500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type DeleteMcpServerInstallationRequest_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteMcpServerInstallationRequestResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteMcpServerInstallationRequestResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetMcpServerInstallationRequestResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AdminResponse      *string                                                 `json:"adminResponse"`
+		CreatedAt          time.Time                                               `json:"createdAt"`
+		CustomServerConfig *GetMcpServerInstallationRequest_200_CustomServerConfig `json:"customServerConfig"`
+		ExternalCatalogId  *string                                                 `json:"externalCatalogId"`
+		Id                 openapi_types.UUID                                      `json:"id"`
+		Notes              *[]struct {
+			Content   string `json:"content"`
+			CreatedAt string `json:"createdAt"`
+			Id        string `json:"id"`
+			UserId    string `json:"userId"`
+			UserName  string `json:"userName"`
+		} `json:"notes"`
+		RequestReason *string    `json:"requestReason"`
+		RequestedBy   string     `json:"requestedBy"`
+		ReviewedAt    *time.Time `json:"reviewedAt"`
+		ReviewedBy    *string    `json:"reviewedBy"`
+		Status        string     `json:"status"`
+		UpdatedAt     time.Time  `json:"updatedAt"`
+	}
+	JSON401 *struct {
+		Error GetMcpServerInstallationRequest_401_Error `json:"error"`
+	}
+	JSON403 *struct {
+		Error GetMcpServerInstallationRequest_403_Error `json:"error"`
+	}
+	JSON404 *struct {
+		Error GetMcpServerInstallationRequest_404_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error GetMcpServerInstallationRequest_500_Error `json:"error"`
+	}
+}
+type GetMcpServerInstallationRequest200CustomServerConfig0 struct {
+	DocsUrl     *string `json:"docsUrl,omitempty"`
+	Label       string  `json:"label"`
+	Name        string  `json:"name"`
+	OauthConfig *struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	} `json:"oauthConfig,omitempty"`
+	ServerType string                                                    `json:"serverType"`
+	ServerUrl  *string                                                   `json:"serverUrl,omitempty"`
+	Type       GetMcpServerInstallationRequest200CustomServerConfig0Type `json:"type"`
+	UserConfig *map[string]interface{}                                   `json:"userConfig,omitempty"`
+	Version    *string                                                   `json:"version,omitempty"`
+}
+type GetMcpServerInstallationRequest200CustomServerConfig0Type string
+type GetMcpServerInstallationRequest200CustomServerConfig1 struct {
+	Label       string `json:"label"`
+	LocalConfig struct {
+		Arguments     []string                                                                       `json:"arguments"`
+		Command       string                                                                         `json:"command"`
+		DockerImage   *string                                                                        `json:"dockerImage,omitempty"`
+		Environment   *map[string]string                                                             `json:"environment,omitempty"`
+		HttpPath      *string                                                                        `json:"httpPath,omitempty"`
+		HttpPort      *float32                                                                       `json:"httpPort,omitempty"`
+		TransportType *GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType `json:"transportType,omitempty"`
+	} `json:"localConfig"`
+	Name       string                                                          `json:"name"`
+	ServerType GetMcpServerInstallationRequest200CustomServerConfig1ServerType `json:"serverType"`
+	Type       GetMcpServerInstallationRequest200CustomServerConfig1Type       `json:"type"`
+	Version    *string                                                         `json:"version,omitempty"`
+}
+type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
+type GetMcpServerInstallationRequest200CustomServerConfig1ServerType string
+type GetMcpServerInstallationRequest200CustomServerConfig1Type string
+type GetMcpServerInstallationRequest_200_CustomServerConfig struct {
+	union json.RawMessage
+}
+type GetMcpServerInstallationRequest401Error0 = string
+type GetMcpServerInstallationRequest401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerInstallationRequest_401_Error struct {
+	union json.RawMessage
+}
+type GetMcpServerInstallationRequest403Error0 = string
+type GetMcpServerInstallationRequest403Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerInstallationRequest_403_Error struct {
+	union json.RawMessage
+}
+type GetMcpServerInstallationRequest404Error0 = string
+type GetMcpServerInstallationRequest404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerInstallationRequest_404_Error struct {
+	union json.RawMessage
+}
+type GetMcpServerInstallationRequest500Error0 = string
+type GetMcpServerInstallationRequest500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerInstallationRequest_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMcpServerInstallationRequestResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMcpServerInstallationRequestResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateMcpServerInstallationRequestResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AdminResponse      *string                                                    `json:"adminResponse"`
+		CreatedAt          time.Time                                                  `json:"createdAt"`
+		CustomServerConfig *UpdateMcpServerInstallationRequest_200_CustomServerConfig `json:"customServerConfig"`
+		ExternalCatalogId  *string                                                    `json:"externalCatalogId"`
+		Id                 openapi_types.UUID                                         `json:"id"`
+		Notes              *[]struct {
+			Content   string `json:"content"`
+			CreatedAt string `json:"createdAt"`
+			Id        string `json:"id"`
+			UserId    string `json:"userId"`
+			UserName  string `json:"userName"`
+		} `json:"notes"`
+		RequestReason *string    `json:"requestReason"`
+		RequestedBy   string     `json:"requestedBy"`
+		ReviewedAt    *time.Time `json:"reviewedAt"`
+		ReviewedBy    *string    `json:"reviewedBy"`
+		Status        string     `json:"status"`
+		UpdatedAt     time.Time  `json:"updatedAt"`
+	}
+	JSON401 *struct {
+		Error UpdateMcpServerInstallationRequest_401_Error `json:"error"`
+	}
+	JSON403 *struct {
+		Error UpdateMcpServerInstallationRequest_403_Error `json:"error"`
+	}
+	JSON404 *struct {
+		Error UpdateMcpServerInstallationRequest_404_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error UpdateMcpServerInstallationRequest_500_Error `json:"error"`
+	}
+}
+type UpdateMcpServerInstallationRequest200CustomServerConfig0 struct {
+	DocsUrl     *string `json:"docsUrl,omitempty"`
+	Label       string  `json:"label"`
+	Name        string  `json:"name"`
+	OauthConfig *struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	} `json:"oauthConfig,omitempty"`
+	ServerType string                                                       `json:"serverType"`
+	ServerUrl  *string                                                      `json:"serverUrl,omitempty"`
+	Type       UpdateMcpServerInstallationRequest200CustomServerConfig0Type `json:"type"`
+	UserConfig *map[string]interface{}                                      `json:"userConfig,omitempty"`
+	Version    *string                                                      `json:"version,omitempty"`
+}
+type UpdateMcpServerInstallationRequest200CustomServerConfig0Type string
+type UpdateMcpServerInstallationRequest200CustomServerConfig1 struct {
+	Label       string `json:"label"`
+	LocalConfig struct {
+		Arguments     []string                                                                          `json:"arguments"`
+		Command       string                                                                            `json:"command"`
+		DockerImage   *string                                                                           `json:"dockerImage,omitempty"`
+		Environment   *map[string]string                                                                `json:"environment,omitempty"`
+		HttpPath      *string                                                                           `json:"httpPath,omitempty"`
+		HttpPort      *float32                                                                          `json:"httpPort,omitempty"`
+		TransportType *UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType `json:"transportType,omitempty"`
+	} `json:"localConfig"`
+	Name       string                                                             `json:"name"`
+	ServerType UpdateMcpServerInstallationRequest200CustomServerConfig1ServerType `json:"serverType"`
+	Type       UpdateMcpServerInstallationRequest200CustomServerConfig1Type       `json:"type"`
+	Version    *string                                                            `json:"version,omitempty"`
+}
+type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
+type UpdateMcpServerInstallationRequest200CustomServerConfig1ServerType string
+type UpdateMcpServerInstallationRequest200CustomServerConfig1Type string
+type UpdateMcpServerInstallationRequest_200_CustomServerConfig struct {
+	union json.RawMessage
+}
+type UpdateMcpServerInstallationRequest401Error0 = string
+type UpdateMcpServerInstallationRequest401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type UpdateMcpServerInstallationRequest_401_Error struct {
+	union json.RawMessage
+}
+type UpdateMcpServerInstallationRequest403Error0 = string
+type UpdateMcpServerInstallationRequest403Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type UpdateMcpServerInstallationRequest_403_Error struct {
+	union json.RawMessage
+}
+type UpdateMcpServerInstallationRequest404Error0 = string
+type UpdateMcpServerInstallationRequest404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type UpdateMcpServerInstallationRequest_404_Error struct {
+	union json.RawMessage
+}
+type UpdateMcpServerInstallationRequest500Error0 = string
+type UpdateMcpServerInstallationRequest500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type UpdateMcpServerInstallationRequest_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateMcpServerInstallationRequestResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateMcpServerInstallationRequestResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ApproveMcpServerInstallationRequestResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AdminResponse      *string                                                     `json:"adminResponse"`
+		CreatedAt          time.Time                                                   `json:"createdAt"`
+		CustomServerConfig *ApproveMcpServerInstallationRequest_200_CustomServerConfig `json:"customServerConfig"`
+		ExternalCatalogId  *string                                                     `json:"externalCatalogId"`
+		Id                 openapi_types.UUID                                          `json:"id"`
+		Notes              *[]struct {
+			Content   string `json:"content"`
+			CreatedAt string `json:"createdAt"`
+			Id        string `json:"id"`
+			UserId    string `json:"userId"`
+			UserName  string `json:"userName"`
+		} `json:"notes"`
+		RequestReason *string    `json:"requestReason"`
+		RequestedBy   string     `json:"requestedBy"`
+		ReviewedAt    *time.Time `json:"reviewedAt"`
+		ReviewedBy    *string    `json:"reviewedBy"`
+		Status        string     `json:"status"`
+		UpdatedAt     time.Time  `json:"updatedAt"`
+	}
+	JSON401 *struct {
+		Error ApproveMcpServerInstallationRequest_401_Error `json:"error"`
+	}
+	JSON403 *struct {
+		Error ApproveMcpServerInstallationRequest_403_Error `json:"error"`
+	}
+	JSON404 *struct {
+		Error ApproveMcpServerInstallationRequest_404_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error ApproveMcpServerInstallationRequest_500_Error `json:"error"`
+	}
+}
+type ApproveMcpServerInstallationRequest200CustomServerConfig0 struct {
+	DocsUrl     *string `json:"docsUrl,omitempty"`
+	Label       string  `json:"label"`
+	Name        string  `json:"name"`
+	OauthConfig *struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	} `json:"oauthConfig,omitempty"`
+	ServerType string                                                        `json:"serverType"`
+	ServerUrl  *string                                                       `json:"serverUrl,omitempty"`
+	Type       ApproveMcpServerInstallationRequest200CustomServerConfig0Type `json:"type"`
+	UserConfig *map[string]interface{}                                       `json:"userConfig,omitempty"`
+	Version    *string                                                       `json:"version,omitempty"`
+}
+type ApproveMcpServerInstallationRequest200CustomServerConfig0Type string
+type ApproveMcpServerInstallationRequest200CustomServerConfig1 struct {
+	Label       string `json:"label"`
+	LocalConfig struct {
+		Arguments     []string                                                                           `json:"arguments"`
+		Command       string                                                                             `json:"command"`
+		DockerImage   *string                                                                            `json:"dockerImage,omitempty"`
+		Environment   *map[string]string                                                                 `json:"environment,omitempty"`
+		HttpPath      *string                                                                            `json:"httpPath,omitempty"`
+		HttpPort      *float32                                                                           `json:"httpPort,omitempty"`
+		TransportType *ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType `json:"transportType,omitempty"`
+	} `json:"localConfig"`
+	Name       string                                                              `json:"name"`
+	ServerType ApproveMcpServerInstallationRequest200CustomServerConfig1ServerType `json:"serverType"`
+	Type       ApproveMcpServerInstallationRequest200CustomServerConfig1Type       `json:"type"`
+	Version    *string                                                             `json:"version,omitempty"`
+}
+type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
+type ApproveMcpServerInstallationRequest200CustomServerConfig1ServerType string
+type ApproveMcpServerInstallationRequest200CustomServerConfig1Type string
+type ApproveMcpServerInstallationRequest_200_CustomServerConfig struct {
+	union json.RawMessage
+}
+type ApproveMcpServerInstallationRequest401Error0 = string
+type ApproveMcpServerInstallationRequest401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type ApproveMcpServerInstallationRequest_401_Error struct {
+	union json.RawMessage
+}
+type ApproveMcpServerInstallationRequest403Error0 = string
+type ApproveMcpServerInstallationRequest403Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type ApproveMcpServerInstallationRequest_403_Error struct {
+	union json.RawMessage
+}
+type ApproveMcpServerInstallationRequest404Error0 = string
+type ApproveMcpServerInstallationRequest404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type ApproveMcpServerInstallationRequest_404_Error struct {
+	union json.RawMessage
+}
+type ApproveMcpServerInstallationRequest500Error0 = string
+type ApproveMcpServerInstallationRequest500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type ApproveMcpServerInstallationRequest_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r ApproveMcpServerInstallationRequestResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ApproveMcpServerInstallationRequestResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeclineMcpServerInstallationRequestResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AdminResponse      *string                                                     `json:"adminResponse"`
+		CreatedAt          time.Time                                                   `json:"createdAt"`
+		CustomServerConfig *DeclineMcpServerInstallationRequest_200_CustomServerConfig `json:"customServerConfig"`
+		ExternalCatalogId  *string                                                     `json:"externalCatalogId"`
+		Id                 openapi_types.UUID                                          `json:"id"`
+		Notes              *[]struct {
+			Content   string `json:"content"`
+			CreatedAt string `json:"createdAt"`
+			Id        string `json:"id"`
+			UserId    string `json:"userId"`
+			UserName  string `json:"userName"`
+		} `json:"notes"`
+		RequestReason *string    `json:"requestReason"`
+		RequestedBy   string     `json:"requestedBy"`
+		ReviewedAt    *time.Time `json:"reviewedAt"`
+		ReviewedBy    *string    `json:"reviewedBy"`
+		Status        string     `json:"status"`
+		UpdatedAt     time.Time  `json:"updatedAt"`
+	}
+	JSON401 *struct {
+		Error DeclineMcpServerInstallationRequest_401_Error `json:"error"`
+	}
+	JSON403 *struct {
+		Error DeclineMcpServerInstallationRequest_403_Error `json:"error"`
+	}
+	JSON404 *struct {
+		Error DeclineMcpServerInstallationRequest_404_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error DeclineMcpServerInstallationRequest_500_Error `json:"error"`
+	}
+}
+type DeclineMcpServerInstallationRequest200CustomServerConfig0 struct {
+	DocsUrl     *string `json:"docsUrl,omitempty"`
+	Label       string  `json:"label"`
+	Name        string  `json:"name"`
+	OauthConfig *struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	} `json:"oauthConfig,omitempty"`
+	ServerType string                                                        `json:"serverType"`
+	ServerUrl  *string                                                       `json:"serverUrl,omitempty"`
+	Type       DeclineMcpServerInstallationRequest200CustomServerConfig0Type `json:"type"`
+	UserConfig *map[string]interface{}                                       `json:"userConfig,omitempty"`
+	Version    *string                                                       `json:"version,omitempty"`
+}
+type DeclineMcpServerInstallationRequest200CustomServerConfig0Type string
+type DeclineMcpServerInstallationRequest200CustomServerConfig1 struct {
+	Label       string `json:"label"`
+	LocalConfig struct {
+		Arguments     []string                                                                           `json:"arguments"`
+		Command       string                                                                             `json:"command"`
+		DockerImage   *string                                                                            `json:"dockerImage,omitempty"`
+		Environment   *map[string]string                                                                 `json:"environment,omitempty"`
+		HttpPath      *string                                                                            `json:"httpPath,omitempty"`
+		HttpPort      *float32                                                                           `json:"httpPort,omitempty"`
+		TransportType *DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType `json:"transportType,omitempty"`
+	} `json:"localConfig"`
+	Name       string                                                              `json:"name"`
+	ServerType DeclineMcpServerInstallationRequest200CustomServerConfig1ServerType `json:"serverType"`
+	Type       DeclineMcpServerInstallationRequest200CustomServerConfig1Type       `json:"type"`
+	Version    *string                                                             `json:"version,omitempty"`
+}
+type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
+type DeclineMcpServerInstallationRequest200CustomServerConfig1ServerType string
+type DeclineMcpServerInstallationRequest200CustomServerConfig1Type string
+type DeclineMcpServerInstallationRequest_200_CustomServerConfig struct {
+	union json.RawMessage
+}
+type DeclineMcpServerInstallationRequest401Error0 = string
+type DeclineMcpServerInstallationRequest401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type DeclineMcpServerInstallationRequest_401_Error struct {
+	union json.RawMessage
+}
+type DeclineMcpServerInstallationRequest403Error0 = string
+type DeclineMcpServerInstallationRequest403Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type DeclineMcpServerInstallationRequest_403_Error struct {
+	union json.RawMessage
+}
+type DeclineMcpServerInstallationRequest404Error0 = string
+type DeclineMcpServerInstallationRequest404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type DeclineMcpServerInstallationRequest_404_Error struct {
+	union json.RawMessage
+}
+type DeclineMcpServerInstallationRequest500Error0 = string
+type DeclineMcpServerInstallationRequest500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type DeclineMcpServerInstallationRequest_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r DeclineMcpServerInstallationRequestResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeclineMcpServerInstallationRequestResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type AddMcpServerInstallationRequestNoteResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AdminResponse      *string                                                     `json:"adminResponse"`
+		CreatedAt          time.Time                                                   `json:"createdAt"`
+		CustomServerConfig *AddMcpServerInstallationRequestNote_200_CustomServerConfig `json:"customServerConfig"`
+		ExternalCatalogId  *string                                                     `json:"externalCatalogId"`
+		Id                 openapi_types.UUID                                          `json:"id"`
+		Notes              *[]struct {
+			Content   string `json:"content"`
+			CreatedAt string `json:"createdAt"`
+			Id        string `json:"id"`
+			UserId    string `json:"userId"`
+			UserName  string `json:"userName"`
+		} `json:"notes"`
+		RequestReason *string    `json:"requestReason"`
+		RequestedBy   string     `json:"requestedBy"`
+		ReviewedAt    *time.Time `json:"reviewedAt"`
+		ReviewedBy    *string    `json:"reviewedBy"`
+		Status        string     `json:"status"`
+		UpdatedAt     time.Time  `json:"updatedAt"`
+	}
+	JSON401 *struct {
+		Error AddMcpServerInstallationRequestNote_401_Error `json:"error"`
+	}
+	JSON403 *struct {
+		Error AddMcpServerInstallationRequestNote_403_Error `json:"error"`
+	}
+	JSON404 *struct {
+		Error AddMcpServerInstallationRequestNote_404_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error AddMcpServerInstallationRequestNote_500_Error `json:"error"`
+	}
+}
+type AddMcpServerInstallationRequestNote200CustomServerConfig0 struct {
+	DocsUrl     *string `json:"docsUrl,omitempty"`
+	Label       string  `json:"label"`
+	Name        string  `json:"name"`
+	OauthConfig *struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	} `json:"oauthConfig,omitempty"`
+	ServerType string                                                        `json:"serverType"`
+	ServerUrl  *string                                                       `json:"serverUrl,omitempty"`
+	Type       AddMcpServerInstallationRequestNote200CustomServerConfig0Type `json:"type"`
+	UserConfig *map[string]interface{}                                       `json:"userConfig,omitempty"`
+	Version    *string                                                       `json:"version,omitempty"`
+}
+type AddMcpServerInstallationRequestNote200CustomServerConfig0Type string
+type AddMcpServerInstallationRequestNote200CustomServerConfig1 struct {
+	Label       string `json:"label"`
+	LocalConfig struct {
+		Arguments     []string                                                                           `json:"arguments"`
+		Command       string                                                                             `json:"command"`
+		DockerImage   *string                                                                            `json:"dockerImage,omitempty"`
+		Environment   *map[string]string                                                                 `json:"environment,omitempty"`
+		HttpPath      *string                                                                            `json:"httpPath,omitempty"`
+		HttpPort      *float32                                                                           `json:"httpPort,omitempty"`
+		TransportType *AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigTransportType `json:"transportType,omitempty"`
+	} `json:"localConfig"`
+	Name       string                                                              `json:"name"`
+	ServerType AddMcpServerInstallationRequestNote200CustomServerConfig1ServerType `json:"serverType"`
+	Type       AddMcpServerInstallationRequestNote200CustomServerConfig1Type       `json:"type"`
+	Version    *string                                                             `json:"version,omitempty"`
+}
+type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigTransportType string
+type AddMcpServerInstallationRequestNote200CustomServerConfig1ServerType string
+type AddMcpServerInstallationRequestNote200CustomServerConfig1Type string
+type AddMcpServerInstallationRequestNote_200_CustomServerConfig struct {
+	union json.RawMessage
+}
+type AddMcpServerInstallationRequestNote401Error0 = string
+type AddMcpServerInstallationRequestNote401Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type AddMcpServerInstallationRequestNote_401_Error struct {
+	union json.RawMessage
+}
+type AddMcpServerInstallationRequestNote403Error0 = string
+type AddMcpServerInstallationRequestNote403Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type AddMcpServerInstallationRequestNote_403_Error struct {
+	union json.RawMessage
+}
+type AddMcpServerInstallationRequestNote404Error0 = string
+type AddMcpServerInstallationRequestNote404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type AddMcpServerInstallationRequestNote_404_Error struct {
+	union json.RawMessage
+}
+type AddMcpServerInstallationRequestNote500Error0 = string
+type AddMcpServerInstallationRequestNote500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type AddMcpServerInstallationRequestNote_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r AddMcpServerInstallationRequestNoteResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AddMcpServerInstallationRequestNoteResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type HandleOAuthCallbackResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AccessToken  string             `json:"accessToken"`
+		CatalogId    openapi_types.UUID `json:"catalogId"`
+		ExpiresIn    *float32           `json:"expiresIn,omitempty"`
+		Name         string             `json:"name"`
+		RefreshToken *string            `json:"refreshToken,omitempty"`
+		SecretId     openapi_types.UUID `json:"secretId"`
+		Success      bool               `json:"success"`
+	}
+	JSON400 *struct {
+		Error HandleOAuthCallback_400_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error HandleOAuthCallback_500_Error `json:"error"`
+	}
+}
+type HandleOAuthCallback400Error0 = string
+type HandleOAuthCallback400Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type HandleOAuthCallback_400_Error struct {
+	union json.RawMessage
+}
+type HandleOAuthCallback500Error0 = string
+type HandleOAuthCallback500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type HandleOAuthCallback_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r HandleOAuthCallbackResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r HandleOAuthCallbackResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type InitiateOAuthResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorizationUrl string `json:"authorizationUrl"`
+		State            string `json:"state"`
+	}
+	JSON400 *struct {
+		Error InitiateOAuth_400_Error `json:"error"`
+	}
+	JSON404 *struct {
+		Error InitiateOAuth_404_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error InitiateOAuth_500_Error `json:"error"`
+	}
+}
+type InitiateOAuth400Error0 = string
+type InitiateOAuth400Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type InitiateOAuth_400_Error struct {
+	union json.RawMessage
+}
+type InitiateOAuth404Error0 = string
+type InitiateOAuth404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type InitiateOAuth_404_Error struct {
+	union json.RawMessage
+}
+type InitiateOAuth500Error0 = string
+type InitiateOAuth500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type InitiateOAuth_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r InitiateOAuthResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r InitiateOAuthResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -6279,6 +9659,53 @@ func (r GetHealthResponse) StatusCode() int {
 	return 0
 }
 
+type GetMcpServerLogsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		ContainerName string `json:"containerName"`
+		Logs          string `json:"logs"`
+	}
+	JSON404 *struct {
+		Error GetMcpServerLogs_404_Error `json:"error"`
+	}
+	JSON500 *struct {
+		Error GetMcpServerLogs_500_Error `json:"error"`
+	}
+}
+type GetMcpServerLogs404Error0 = string
+type GetMcpServerLogs404Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerLogs_404_Error struct {
+	union json.RawMessage
+}
+type GetMcpServerLogs500Error0 = string
+type GetMcpServerLogs500Error1 struct {
+	Message string `json:"message"`
+	Type    string `json:"type"`
+}
+type GetMcpServerLogs_500_Error struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMcpServerLogsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMcpServerLogsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // GetAllAgentToolsWithResponse request returning *GetAllAgentToolsResponse
 func (c *ClientWithResponses) GetAllAgentToolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAllAgentToolsResponse, error) {
 	rsp, err := c.GetAllAgentTools(ctx, reqEditors...)
@@ -6338,6 +9765,24 @@ func (c *ClientWithResponses) GetDefaultAgentWithResponse(ctx context.Context, r
 		return nil, err
 	}
 	return ParseGetDefaultAgentResponse(rsp)
+}
+
+// GetLabelKeysWithResponse request returning *GetLabelKeysResponse
+func (c *ClientWithResponses) GetLabelKeysWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLabelKeysResponse, error) {
+	rsp, err := c.GetLabelKeys(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetLabelKeysResponse(rsp)
+}
+
+// GetLabelValuesWithResponse request returning *GetLabelValuesResponse
+func (c *ClientWithResponses) GetLabelValuesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetLabelValuesResponse, error) {
+	rsp, err := c.GetLabelValues(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetLabelValuesResponse(rsp)
 }
 
 // GetAgentToolsWithResponse request returning *GetAgentToolsResponse
@@ -6630,6 +10075,24 @@ func (c *ClientWithResponses) UpdateInternalMcpCatalogItemWithResponse(ctx conte
 	return ParseUpdateInternalMcpCatalogItemResponse(rsp)
 }
 
+// GetMcpToolCallsWithResponse request returning *GetMcpToolCallsResponse
+func (c *ClientWithResponses) GetMcpToolCallsWithResponse(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*GetMcpToolCallsResponse, error) {
+	rsp, err := c.GetMcpToolCalls(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMcpToolCallsResponse(rsp)
+}
+
+// GetMcpToolCallWithResponse request returning *GetMcpToolCallResponse
+func (c *ClientWithResponses) GetMcpToolCallWithResponse(ctx context.Context, mcpToolCallId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpToolCallResponse, error) {
+	rsp, err := c.GetMcpToolCall(ctx, mcpToolCallId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMcpToolCallResponse(rsp)
+}
+
 // GetMcpServersWithResponse request returning *GetMcpServersResponse
 func (c *ClientWithResponses) GetMcpServersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMcpServersResponse, error) {
 	rsp, err := c.GetMcpServers(ctx, reqEditors...)
@@ -6672,6 +10135,179 @@ func (c *ClientWithResponses) GetMcpServerWithResponse(ctx context.Context, id o
 		return nil, err
 	}
 	return ParseGetMcpServerResponse(rsp)
+}
+
+// GetMcpServerInstallationStatusWithResponse request returning *GetMcpServerInstallationStatusResponse
+func (c *ClientWithResponses) GetMcpServerInstallationStatusWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpServerInstallationStatusResponse, error) {
+	rsp, err := c.GetMcpServerInstallationStatus(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMcpServerInstallationStatusResponse(rsp)
+}
+
+// RestartMcpServerWithResponse request returning *RestartMcpServerResponse
+func (c *ClientWithResponses) RestartMcpServerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*RestartMcpServerResponse, error) {
+	rsp, err := c.RestartMcpServer(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRestartMcpServerResponse(rsp)
+}
+
+// GetMcpServerToolsWithResponse request returning *GetMcpServerToolsResponse
+func (c *ClientWithResponses) GetMcpServerToolsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpServerToolsResponse, error) {
+	rsp, err := c.GetMcpServerTools(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMcpServerToolsResponse(rsp)
+}
+
+// GetMcpServerInstallationRequestsWithResponse request returning *GetMcpServerInstallationRequestsResponse
+func (c *ClientWithResponses) GetMcpServerInstallationRequestsWithResponse(ctx context.Context, params *GetMcpServerInstallationRequestsParams, reqEditors ...RequestEditorFn) (*GetMcpServerInstallationRequestsResponse, error) {
+	rsp, err := c.GetMcpServerInstallationRequests(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMcpServerInstallationRequestsResponse(rsp)
+}
+
+// CreateMcpServerInstallationRequestWithBodyWithResponse request with arbitrary body returning *CreateMcpServerInstallationRequestResponse
+func (c *ClientWithResponses) CreateMcpServerInstallationRequestWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateMcpServerInstallationRequestResponse, error) {
+	rsp, err := c.CreateMcpServerInstallationRequestWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateMcpServerInstallationRequestResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateMcpServerInstallationRequestWithResponse(ctx context.Context, body CreateMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateMcpServerInstallationRequestResponse, error) {
+	rsp, err := c.CreateMcpServerInstallationRequest(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateMcpServerInstallationRequestResponse(rsp)
+}
+
+// DeleteMcpServerInstallationRequestWithResponse request returning *DeleteMcpServerInstallationRequestResponse
+func (c *ClientWithResponses) DeleteMcpServerInstallationRequestWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteMcpServerInstallationRequestResponse, error) {
+	rsp, err := c.DeleteMcpServerInstallationRequest(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteMcpServerInstallationRequestResponse(rsp)
+}
+
+// GetMcpServerInstallationRequestWithResponse request returning *GetMcpServerInstallationRequestResponse
+func (c *ClientWithResponses) GetMcpServerInstallationRequestWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpServerInstallationRequestResponse, error) {
+	rsp, err := c.GetMcpServerInstallationRequest(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMcpServerInstallationRequestResponse(rsp)
+}
+
+// UpdateMcpServerInstallationRequestWithBodyWithResponse request with arbitrary body returning *UpdateMcpServerInstallationRequestResponse
+func (c *ClientWithResponses) UpdateMcpServerInstallationRequestWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMcpServerInstallationRequestResponse, error) {
+	rsp, err := c.UpdateMcpServerInstallationRequestWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMcpServerInstallationRequestResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateMcpServerInstallationRequestWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMcpServerInstallationRequestResponse, error) {
+	rsp, err := c.UpdateMcpServerInstallationRequest(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMcpServerInstallationRequestResponse(rsp)
+}
+
+// ApproveMcpServerInstallationRequestWithBodyWithResponse request with arbitrary body returning *ApproveMcpServerInstallationRequestResponse
+func (c *ClientWithResponses) ApproveMcpServerInstallationRequestWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ApproveMcpServerInstallationRequestResponse, error) {
+	rsp, err := c.ApproveMcpServerInstallationRequestWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseApproveMcpServerInstallationRequestResponse(rsp)
+}
+
+func (c *ClientWithResponses) ApproveMcpServerInstallationRequestWithResponse(ctx context.Context, id openapi_types.UUID, body ApproveMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*ApproveMcpServerInstallationRequestResponse, error) {
+	rsp, err := c.ApproveMcpServerInstallationRequest(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseApproveMcpServerInstallationRequestResponse(rsp)
+}
+
+// DeclineMcpServerInstallationRequestWithBodyWithResponse request with arbitrary body returning *DeclineMcpServerInstallationRequestResponse
+func (c *ClientWithResponses) DeclineMcpServerInstallationRequestWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeclineMcpServerInstallationRequestResponse, error) {
+	rsp, err := c.DeclineMcpServerInstallationRequestWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeclineMcpServerInstallationRequestResponse(rsp)
+}
+
+func (c *ClientWithResponses) DeclineMcpServerInstallationRequestWithResponse(ctx context.Context, id openapi_types.UUID, body DeclineMcpServerInstallationRequestJSONRequestBody, reqEditors ...RequestEditorFn) (*DeclineMcpServerInstallationRequestResponse, error) {
+	rsp, err := c.DeclineMcpServerInstallationRequest(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeclineMcpServerInstallationRequestResponse(rsp)
+}
+
+// AddMcpServerInstallationRequestNoteWithBodyWithResponse request with arbitrary body returning *AddMcpServerInstallationRequestNoteResponse
+func (c *ClientWithResponses) AddMcpServerInstallationRequestNoteWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddMcpServerInstallationRequestNoteResponse, error) {
+	rsp, err := c.AddMcpServerInstallationRequestNoteWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddMcpServerInstallationRequestNoteResponse(rsp)
+}
+
+func (c *ClientWithResponses) AddMcpServerInstallationRequestNoteWithResponse(ctx context.Context, id openapi_types.UUID, body AddMcpServerInstallationRequestNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*AddMcpServerInstallationRequestNoteResponse, error) {
+	rsp, err := c.AddMcpServerInstallationRequestNote(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAddMcpServerInstallationRequestNoteResponse(rsp)
+}
+
+// HandleOAuthCallbackWithBodyWithResponse request with arbitrary body returning *HandleOAuthCallbackResponse
+func (c *ClientWithResponses) HandleOAuthCallbackWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*HandleOAuthCallbackResponse, error) {
+	rsp, err := c.HandleOAuthCallbackWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseHandleOAuthCallbackResponse(rsp)
+}
+
+func (c *ClientWithResponses) HandleOAuthCallbackWithResponse(ctx context.Context, body HandleOAuthCallbackJSONRequestBody, reqEditors ...RequestEditorFn) (*HandleOAuthCallbackResponse, error) {
+	rsp, err := c.HandleOAuthCallback(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseHandleOAuthCallbackResponse(rsp)
+}
+
+// InitiateOAuthWithBodyWithResponse request with arbitrary body returning *InitiateOAuthResponse
+func (c *ClientWithResponses) InitiateOAuthWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*InitiateOAuthResponse, error) {
+	rsp, err := c.InitiateOAuthWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseInitiateOAuthResponse(rsp)
+}
+
+func (c *ClientWithResponses) InitiateOAuthWithResponse(ctx context.Context, body InitiateOAuthJSONRequestBody, reqEditors ...RequestEditorFn) (*InitiateOAuthResponse, error) {
+	rsp, err := c.InitiateOAuth(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseInitiateOAuthResponse(rsp)
 }
 
 // GetTeamsWithResponse request returning *GetTeamsResponse
@@ -6858,6 +10494,15 @@ func (c *ClientWithResponses) GetHealthWithResponse(ctx context.Context, reqEdit
 	return ParseGetHealthResponse(rsp)
 }
 
+// GetMcpServerLogsWithResponse request returning *GetMcpServerLogsResponse
+func (c *ClientWithResponses) GetMcpServerLogsWithResponse(ctx context.Context, id openapi_types.UUID, params *GetMcpServerLogsParams, reqEditors ...RequestEditorFn) (*GetMcpServerLogsResponse, error) {
+	rsp, err := c.GetMcpServerLogs(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMcpServerLogsResponse(rsp)
+}
+
 // ParseGetAllAgentToolsResponse parses an HTTP response from a GetAllAgentToolsWithResponse call
 func ParseGetAllAgentToolsResponse(rsp *http.Response) (*GetAllAgentToolsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -6996,9 +10641,15 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 			Id        openapi_types.UUID `json:"id"`
 			IsDefault bool               `json:"isDefault"`
 			IsDemo    bool               `json:"isDemo"`
-			Name      string             `json:"name"`
-			Teams     []string           `json:"teams"`
-			Tools     []struct {
+			Labels    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name  string   `json:"name"`
+			Teams []string `json:"teams"`
+			Tools []struct {
 				AgentId     *openapi_types.UUID             `json:"agentId"`
 				CreatedAt   time.Time                       `json:"createdAt"`
 				Description *string                         `json:"description"`
@@ -7058,9 +10709,15 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 			Id        openapi_types.UUID `json:"id"`
 			IsDefault bool               `json:"isDefault"`
 			IsDemo    bool               `json:"isDemo"`
-			Name      string             `json:"name"`
-			Teams     []string           `json:"teams"`
-			Tools     []struct {
+			Labels    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name  string   `json:"name"`
+			Teams []string `json:"teams"`
+			Tools []struct {
 				AgentId     *openapi_types.UUID               `json:"agentId"`
 				CreatedAt   time.Time                         `json:"createdAt"`
 				Description *string                           `json:"description"`
@@ -7120,9 +10777,15 @@ func ParseGetDefaultAgentResponse(rsp *http.Response) (*GetDefaultAgentResponse,
 			Id        openapi_types.UUID `json:"id"`
 			IsDefault bool               `json:"isDefault"`
 			IsDemo    bool               `json:"isDemo"`
-			Name      string             `json:"name"`
-			Teams     []string           `json:"teams"`
-			Tools     []struct {
+			Labels    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name  string   `json:"name"`
+			Teams []string `json:"teams"`
+			Tools []struct {
 				AgentId     *openapi_types.UUID                   `json:"agentId"`
 				CreatedAt   time.Time                             `json:"createdAt"`
 				Description *string                               `json:"description"`
@@ -7151,6 +10814,94 @@ func ParseGetDefaultAgentResponse(rsp *http.Response) (*GetDefaultAgentResponse,
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest struct {
 			Error GetDefaultAgent_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetLabelKeysResponse parses an HTTP response from a GetLabelKeysWithResponse call
+func ParseGetLabelKeysResponse(rsp *http.Response) (*GetLabelKeysResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetLabelKeysResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []string
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error GetLabelKeys_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error GetLabelKeys_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetLabelValuesResponse parses an HTTP response from a GetLabelValuesWithResponse call
+func ParseGetLabelValuesResponse(rsp *http.Response) (*GetLabelValuesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetLabelValuesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []string
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error GetLabelValues_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error GetLabelValues_500_Error `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -7364,9 +11115,15 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 			Id        openapi_types.UUID `json:"id"`
 			IsDefault bool               `json:"isDefault"`
 			IsDemo    bool               `json:"isDemo"`
-			Name      string             `json:"name"`
-			Teams     []string           `json:"teams"`
-			Tools     []struct {
+			Labels    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name  string   `json:"name"`
+			Teams []string `json:"teams"`
+			Tools []struct {
 				AgentId     *openapi_types.UUID            `json:"agentId"`
 				CreatedAt   time.Time                      `json:"createdAt"`
 				Description *string                        `json:"description"`
@@ -7435,9 +11192,15 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 			Id        openapi_types.UUID `json:"id"`
 			IsDefault bool               `json:"isDefault"`
 			IsDemo    bool               `json:"isDemo"`
-			Name      string             `json:"name"`
-			Teams     []string           `json:"teams"`
-			Tools     []struct {
+			Labels    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name  string   `json:"name"`
+			Teams []string `json:"teams"`
+			Tools []struct {
 				AgentId     *openapi_types.UUID               `json:"agentId"`
 				CreatedAt   time.Time                         `json:"createdAt"`
 				Description *string                           `json:"description"`
@@ -8151,9 +11914,7 @@ func ParseGetFeaturesResponse(rsp *http.Response) (*GetFeaturesResponse, error) 
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			McpRegistry bool `json:"mcp_registry"`
-		}
+		var dest map[string]interface{}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -8180,17 +11941,69 @@ func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCata
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			AuthDescription     *string                               `json:"authDescription"`
-			AuthFields          *GetInternalMcpCatalog_200_AuthFields `json:"authFields"`
-			CreatedAt           time.Time                             `json:"createdAt"`
-			Description         *string                               `json:"description"`
-			Id                  openapi_types.UUID                    `json:"id"`
-			InstallationCommand *string                               `json:"installationCommand"`
-			Name                string                                `json:"name"`
-			Repository          *string                               `json:"repository"`
-			RequiresAuth        bool                                  `json:"requiresAuth"`
-			UpdatedAt           time.Time                             `json:"updatedAt"`
-			Version             *string                               `json:"version"`
+			AuthDescription *string `json:"authDescription"`
+			AuthFields      *[]struct {
+				Description *string `json:"description,omitempty"`
+				Label       string  `json:"label"`
+				Name        string  `json:"name"`
+				Required    bool    `json:"required"`
+				Type        string  `json:"type"`
+			} `json:"authFields"`
+			CreatedAt           time.Time          `json:"createdAt"`
+			Description         *string            `json:"description"`
+			DocsUrl             *string            `json:"docsUrl"`
+			Id                  openapi_types.UUID `json:"id"`
+			InstallationCommand *string            `json:"installationCommand"`
+			Label               *string            `json:"label"`
+			LocalConfig         *struct {
+				Arguments     []string                                          `json:"arguments"`
+				Command       string                                            `json:"command"`
+				DockerImage   *string                                           `json:"dockerImage,omitempty"`
+				Environment   *map[string]string                                `json:"environment,omitempty"`
+				HttpPath      *string                                           `json:"httpPath,omitempty"`
+				HttpPort      *float32                                          `json:"httpPort,omitempty"`
+				TransportType *GetInternalMcpCatalog200LocalConfigTransportType `json:"transportType,omitempty"`
+			} `json:"localConfig"`
+			Name        string `json:"name"`
+			OauthConfig *struct {
+				AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+				AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+				BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+				ClientId                 string   `json:"client_id"`
+				ClientSecret             *string  `json:"client_secret,omitempty"`
+				DefaultScopes            []string `json:"default_scopes"`
+				Description              *string  `json:"description,omitempty"`
+				GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+				Name                     string   `json:"name"`
+				ProviderName             *string  `json:"provider_name,omitempty"`
+				RedirectUris             []string `json:"redirect_uris"`
+				RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+				ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+				Scopes                   []string `json:"scopes"`
+				ServerUrl                string   `json:"server_url"`
+				StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+				TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+				WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+			} `json:"oauthConfig"`
+			Repository   *string                            `json:"repository"`
+			RequiresAuth bool                               `json:"requiresAuth"`
+			ServerType   GetInternalMcpCatalog200ServerType `json:"serverType"`
+			ServerUrl    *string                            `json:"serverUrl"`
+			UpdatedAt    time.Time                          `json:"updatedAt"`
+			UserConfig   *map[string]struct {
+				Default     *GetInternalMcpCatalog_200_UserConfig_Default `json:"default,omitempty"`
+				Description string                                        `json:"description"`
+				Max         *float32                                      `json:"max,omitempty"`
+				Min         *float32                                      `json:"min,omitempty"`
+				Multiple    *bool                                         `json:"multiple,omitempty"`
+				Required    *bool                                         `json:"required,omitempty"`
+				Sensitive   *bool                                         `json:"sensitive,omitempty"`
+				Title       string                                        `json:"title"`
+				Type        GetInternalMcpCatalog200UserConfigType        `json:"type"`
+			} `json:"userConfig"`
+			Version *string `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -8227,17 +12040,69 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AuthDescription     *string                                      `json:"authDescription"`
-			AuthFields          *CreateInternalMcpCatalogItem_200_AuthFields `json:"authFields"`
-			CreatedAt           time.Time                                    `json:"createdAt"`
-			Description         *string                                      `json:"description"`
-			Id                  openapi_types.UUID                           `json:"id"`
-			InstallationCommand *string                                      `json:"installationCommand"`
-			Name                string                                       `json:"name"`
-			Repository          *string                                      `json:"repository"`
-			RequiresAuth        bool                                         `json:"requiresAuth"`
-			UpdatedAt           time.Time                                    `json:"updatedAt"`
-			Version             *string                                      `json:"version"`
+			AuthDescription *string `json:"authDescription"`
+			AuthFields      *[]struct {
+				Description *string `json:"description,omitempty"`
+				Label       string  `json:"label"`
+				Name        string  `json:"name"`
+				Required    bool    `json:"required"`
+				Type        string  `json:"type"`
+			} `json:"authFields"`
+			CreatedAt           time.Time          `json:"createdAt"`
+			Description         *string            `json:"description"`
+			DocsUrl             *string            `json:"docsUrl"`
+			Id                  openapi_types.UUID `json:"id"`
+			InstallationCommand *string            `json:"installationCommand"`
+			Label               *string            `json:"label"`
+			LocalConfig         *struct {
+				Arguments     []string                                                 `json:"arguments"`
+				Command       string                                                   `json:"command"`
+				DockerImage   *string                                                  `json:"dockerImage,omitempty"`
+				Environment   *map[string]string                                       `json:"environment,omitempty"`
+				HttpPath      *string                                                  `json:"httpPath,omitempty"`
+				HttpPort      *float32                                                 `json:"httpPort,omitempty"`
+				TransportType *CreateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+			} `json:"localConfig"`
+			Name        string `json:"name"`
+			OauthConfig *struct {
+				AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+				AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+				BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+				ClientId                 string   `json:"client_id"`
+				ClientSecret             *string  `json:"client_secret,omitempty"`
+				DefaultScopes            []string `json:"default_scopes"`
+				Description              *string  `json:"description,omitempty"`
+				GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+				Name                     string   `json:"name"`
+				ProviderName             *string  `json:"provider_name,omitempty"`
+				RedirectUris             []string `json:"redirect_uris"`
+				RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+				ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+				Scopes                   []string `json:"scopes"`
+				ServerUrl                string   `json:"server_url"`
+				StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+				TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+				WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+			} `json:"oauthConfig"`
+			Repository   *string                                   `json:"repository"`
+			RequiresAuth bool                                      `json:"requiresAuth"`
+			ServerType   CreateInternalMcpCatalogItem200ServerType `json:"serverType"`
+			ServerUrl    *string                                   `json:"serverUrl"`
+			UpdatedAt    time.Time                                 `json:"updatedAt"`
+			UserConfig   *map[string]struct {
+				Default     *CreateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+				Description string                                               `json:"description"`
+				Max         *float32                                             `json:"max,omitempty"`
+				Min         *float32                                             `json:"min,omitempty"`
+				Multiple    *bool                                                `json:"multiple,omitempty"`
+				Required    *bool                                                `json:"required,omitempty"`
+				Sensitive   *bool                                                `json:"sensitive,omitempty"`
+				Title       string                                               `json:"title"`
+				Type        CreateInternalMcpCatalogItem200UserConfigType        `json:"type"`
+			} `json:"userConfig"`
+			Version *string `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -8320,17 +12185,69 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AuthDescription     *string                                   `json:"authDescription"`
-			AuthFields          *GetInternalMcpCatalogItem_200_AuthFields `json:"authFields"`
-			CreatedAt           time.Time                                 `json:"createdAt"`
-			Description         *string                                   `json:"description"`
-			Id                  openapi_types.UUID                        `json:"id"`
-			InstallationCommand *string                                   `json:"installationCommand"`
-			Name                string                                    `json:"name"`
-			Repository          *string                                   `json:"repository"`
-			RequiresAuth        bool                                      `json:"requiresAuth"`
-			UpdatedAt           time.Time                                 `json:"updatedAt"`
-			Version             *string                                   `json:"version"`
+			AuthDescription *string `json:"authDescription"`
+			AuthFields      *[]struct {
+				Description *string `json:"description,omitempty"`
+				Label       string  `json:"label"`
+				Name        string  `json:"name"`
+				Required    bool    `json:"required"`
+				Type        string  `json:"type"`
+			} `json:"authFields"`
+			CreatedAt           time.Time          `json:"createdAt"`
+			Description         *string            `json:"description"`
+			DocsUrl             *string            `json:"docsUrl"`
+			Id                  openapi_types.UUID `json:"id"`
+			InstallationCommand *string            `json:"installationCommand"`
+			Label               *string            `json:"label"`
+			LocalConfig         *struct {
+				Arguments     []string                                              `json:"arguments"`
+				Command       string                                                `json:"command"`
+				DockerImage   *string                                               `json:"dockerImage,omitempty"`
+				Environment   *map[string]string                                    `json:"environment,omitempty"`
+				HttpPath      *string                                               `json:"httpPath,omitempty"`
+				HttpPort      *float32                                              `json:"httpPort,omitempty"`
+				TransportType *GetInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+			} `json:"localConfig"`
+			Name        string `json:"name"`
+			OauthConfig *struct {
+				AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+				AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+				BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+				ClientId                 string   `json:"client_id"`
+				ClientSecret             *string  `json:"client_secret,omitempty"`
+				DefaultScopes            []string `json:"default_scopes"`
+				Description              *string  `json:"description,omitempty"`
+				GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+				Name                     string   `json:"name"`
+				ProviderName             *string  `json:"provider_name,omitempty"`
+				RedirectUris             []string `json:"redirect_uris"`
+				RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+				ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+				Scopes                   []string `json:"scopes"`
+				ServerUrl                string   `json:"server_url"`
+				StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+				TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+				WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+			} `json:"oauthConfig"`
+			Repository   *string                                `json:"repository"`
+			RequiresAuth bool                                   `json:"requiresAuth"`
+			ServerType   GetInternalMcpCatalogItem200ServerType `json:"serverType"`
+			ServerUrl    *string                                `json:"serverUrl"`
+			UpdatedAt    time.Time                              `json:"updatedAt"`
+			UserConfig   *map[string]struct {
+				Default     *GetInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+				Description string                                            `json:"description"`
+				Max         *float32                                          `json:"max,omitempty"`
+				Min         *float32                                          `json:"min,omitempty"`
+				Multiple    *bool                                             `json:"multiple,omitempty"`
+				Required    *bool                                             `json:"required,omitempty"`
+				Sensitive   *bool                                             `json:"sensitive,omitempty"`
+				Title       string                                            `json:"title"`
+				Type        GetInternalMcpCatalogItem200UserConfigType        `json:"type"`
+			} `json:"userConfig"`
+			Version *string `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -8376,17 +12293,69 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AuthDescription     *string                                      `json:"authDescription"`
-			AuthFields          *UpdateInternalMcpCatalogItem_200_AuthFields `json:"authFields"`
-			CreatedAt           time.Time                                    `json:"createdAt"`
-			Description         *string                                      `json:"description"`
-			Id                  openapi_types.UUID                           `json:"id"`
-			InstallationCommand *string                                      `json:"installationCommand"`
-			Name                string                                       `json:"name"`
-			Repository          *string                                      `json:"repository"`
-			RequiresAuth        bool                                         `json:"requiresAuth"`
-			UpdatedAt           time.Time                                    `json:"updatedAt"`
-			Version             *string                                      `json:"version"`
+			AuthDescription *string `json:"authDescription"`
+			AuthFields      *[]struct {
+				Description *string `json:"description,omitempty"`
+				Label       string  `json:"label"`
+				Name        string  `json:"name"`
+				Required    bool    `json:"required"`
+				Type        string  `json:"type"`
+			} `json:"authFields"`
+			CreatedAt           time.Time          `json:"createdAt"`
+			Description         *string            `json:"description"`
+			DocsUrl             *string            `json:"docsUrl"`
+			Id                  openapi_types.UUID `json:"id"`
+			InstallationCommand *string            `json:"installationCommand"`
+			Label               *string            `json:"label"`
+			LocalConfig         *struct {
+				Arguments     []string                                                 `json:"arguments"`
+				Command       string                                                   `json:"command"`
+				DockerImage   *string                                                  `json:"dockerImage,omitempty"`
+				Environment   *map[string]string                                       `json:"environment,omitempty"`
+				HttpPath      *string                                                  `json:"httpPath,omitempty"`
+				HttpPort      *float32                                                 `json:"httpPort,omitempty"`
+				TransportType *UpdateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+			} `json:"localConfig"`
+			Name        string `json:"name"`
+			OauthConfig *struct {
+				AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+				AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+				BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+				ClientId                 string   `json:"client_id"`
+				ClientSecret             *string  `json:"client_secret,omitempty"`
+				DefaultScopes            []string `json:"default_scopes"`
+				Description              *string  `json:"description,omitempty"`
+				GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+				Name                     string   `json:"name"`
+				ProviderName             *string  `json:"provider_name,omitempty"`
+				RedirectUris             []string `json:"redirect_uris"`
+				RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+				ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+				Scopes                   []string `json:"scopes"`
+				ServerUrl                string   `json:"server_url"`
+				StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+				TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+				WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+			} `json:"oauthConfig"`
+			Repository   *string                                   `json:"repository"`
+			RequiresAuth bool                                      `json:"requiresAuth"`
+			ServerType   UpdateInternalMcpCatalogItem200ServerType `json:"serverType"`
+			ServerUrl    *string                                   `json:"serverUrl"`
+			UpdatedAt    time.Time                                 `json:"updatedAt"`
+			UserConfig   *map[string]struct {
+				Default     *UpdateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+				Description string                                               `json:"description"`
+				Max         *float32                                             `json:"max,omitempty"`
+				Min         *float32                                             `json:"min,omitempty"`
+				Multiple    *bool                                                `json:"multiple,omitempty"`
+				Required    *bool                                                `json:"required,omitempty"`
+				Sensitive   *bool                                                `json:"sensitive,omitempty"`
+				Title       string                                               `json:"title"`
+				Type        UpdateInternalMcpCatalogItem200UserConfigType        `json:"type"`
+			} `json:"userConfig"`
+			Version *string `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -8416,6 +12385,127 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 	return response, nil
 }
 
+// ParseGetMcpToolCallsResponse parses an HTTP response from a GetMcpToolCallsWithResponse call
+func ParseGetMcpToolCallsResponse(rsp *http.Response) (*GetMcpToolCallsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMcpToolCallsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				AgentId       openapi_types.UUID `json:"agentId"`
+				CreatedAt     time.Time          `json:"createdAt"`
+				Id            openapi_types.UUID `json:"id"`
+				McpServerName string             `json:"mcpServerName"`
+				ToolCall      struct {
+					Arguments map[string]interface{} `json:"arguments"`
+					Id        string                 `json:"id"`
+					Name      string                 `json:"name"`
+				} `json:"toolCall"`
+				ToolResult struct {
+					Content interface{} `json:"content"`
+					Error   *string     `json:"error,omitempty"`
+					Id      string      `json:"id"`
+					IsError bool        `json:"isError"`
+				} `json:"toolResult"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error GetMcpToolCalls_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMcpToolCallResponse parses an HTTP response from a GetMcpToolCallWithResponse call
+func ParseGetMcpToolCallResponse(rsp *http.Response) (*GetMcpToolCallResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMcpToolCallResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AgentId       openapi_types.UUID `json:"agentId"`
+			CreatedAt     time.Time          `json:"createdAt"`
+			Id            openapi_types.UUID `json:"id"`
+			McpServerName string             `json:"mcpServerName"`
+			ToolCall      struct {
+				Arguments map[string]interface{} `json:"arguments"`
+				Id        string                 `json:"id"`
+				Name      string                 `json:"name"`
+			} `json:"toolCall"`
+			ToolResult struct {
+				Content interface{} `json:"content"`
+				Error   *string     `json:"error,omitempty"`
+				Id      string      `json:"id"`
+				IsError bool        `json:"isError"`
+			} `json:"toolResult"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error GetMcpToolCall_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error GetMcpToolCall_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetMcpServersResponse parses an HTTP response from a GetMcpServersWithResponse call
 func ParseGetMcpServersResponse(rsp *http.Response) (*GetMcpServersResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -8432,13 +12522,16 @@ func ParseGetMcpServersResponse(rsp *http.Response) (*GetMcpServersResponse, err
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			CatalogId *openapi_types.UUID    `json:"catalogId"`
-			CreatedAt time.Time              `json:"createdAt"`
-			Id        openapi_types.UUID     `json:"id"`
-			Metadata  map[string]interface{} `json:"metadata"`
-			Name      string                 `json:"name"`
-			Teams     *[]string              `json:"teams,omitempty"`
-			UpdatedAt time.Time              `json:"updatedAt"`
+			CatalogId               openapi_types.UUID                      `json:"catalogId"`
+			CreatedAt               time.Time                               `json:"createdAt"`
+			Id                      openapi_types.UUID                      `json:"id"`
+			LocalInstallationError  *string                                 `json:"localInstallationError"`
+			LocalInstallationStatus GetMcpServers200LocalInstallationStatus `json:"localInstallationStatus"`
+			Name                    string                                  `json:"name"`
+			ReinstallRequired       bool                                    `json:"reinstallRequired"`
+			SecretId                *openapi_types.UUID                     `json:"secretId"`
+			Teams                   *[]string                               `json:"teams,omitempty"`
+			UpdatedAt               time.Time                               `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -8484,13 +12577,16 @@ func ParseInstallMcpServerResponse(rsp *http.Response) (*InstallMcpServerRespons
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CatalogId *openapi_types.UUID    `json:"catalogId"`
-			CreatedAt time.Time              `json:"createdAt"`
-			Id        openapi_types.UUID     `json:"id"`
-			Metadata  map[string]interface{} `json:"metadata"`
-			Name      string                 `json:"name"`
-			Teams     *[]string              `json:"teams,omitempty"`
-			UpdatedAt time.Time              `json:"updatedAt"`
+			CatalogId               openapi_types.UUID                         `json:"catalogId"`
+			CreatedAt               time.Time                                  `json:"createdAt"`
+			Id                      openapi_types.UUID                         `json:"id"`
+			LocalInstallationError  *string                                    `json:"localInstallationError"`
+			LocalInstallationStatus InstallMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
+			Name                    string                                     `json:"name"`
+			ReinstallRequired       bool                                       `json:"reinstallRequired"`
+			SecretId                *openapi_types.UUID                        `json:"secretId"`
+			Teams                   *[]string                                  `json:"teams,omitempty"`
+			UpdatedAt               time.Time                                  `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -8582,13 +12678,16 @@ func ParseGetMcpServerResponse(rsp *http.Response) (*GetMcpServerResponse, error
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CatalogId *openapi_types.UUID    `json:"catalogId"`
-			CreatedAt time.Time              `json:"createdAt"`
-			Id        openapi_types.UUID     `json:"id"`
-			Metadata  map[string]interface{} `json:"metadata"`
-			Name      string                 `json:"name"`
-			Teams     *[]string              `json:"teams,omitempty"`
-			UpdatedAt time.Time              `json:"updatedAt"`
+			CatalogId               openapi_types.UUID                     `json:"catalogId"`
+			CreatedAt               time.Time                              `json:"createdAt"`
+			Id                      openapi_types.UUID                     `json:"id"`
+			LocalInstallationError  *string                                `json:"localInstallationError"`
+			LocalInstallationStatus GetMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
+			Name                    string                                 `json:"name"`
+			ReinstallRequired       bool                                   `json:"reinstallRequired"`
+			SecretId                *openapi_types.UUID                    `json:"secretId"`
+			Teams                   *[]string                              `json:"teams,omitempty"`
+			UpdatedAt               time.Time                              `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -8616,6 +12715,867 @@ func ParseGetMcpServerResponse(rsp *http.Response) (*GetMcpServerResponse, error
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest struct {
 			Error GetMcpServer_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMcpServerInstallationStatusResponse parses an HTTP response from a GetMcpServerInstallationStatusWithResponse call
+func ParseGetMcpServerInstallationStatusResponse(rsp *http.Response) (*GetMcpServerInstallationStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMcpServerInstallationStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			LocalInstallationError  *string                                                  `json:"localInstallationError"`
+			LocalInstallationStatus GetMcpServerInstallationStatus200LocalInstallationStatus `json:"localInstallationStatus"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error GetMcpServerInstallationStatus_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error GetMcpServerInstallationStatus_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRestartMcpServerResponse parses an HTTP response from a RestartMcpServerWithResponse call
+func ParseRestartMcpServerResponse(rsp *http.Response) (*RestartMcpServerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RestartMcpServerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Message string `json:"message"`
+			Success bool   `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error RestartMcpServer_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error RestartMcpServer_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMcpServerToolsResponse parses an HTTP response from a GetMcpServerToolsWithResponse call
+func ParseGetMcpServerToolsResponse(rsp *http.Response) (*GetMcpServerToolsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMcpServerToolsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			AssignedAgentCount float32 `json:"assignedAgentCount"`
+			AssignedAgents     []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"assignedAgents"`
+			CreatedAt   time.Time              `json:"createdAt"`
+			Description *string                `json:"description"`
+			Id          string                 `json:"id"`
+			Name        string                 `json:"name"`
+			Parameters  map[string]interface{} `json:"parameters"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error GetMcpServerTools_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error GetMcpServerTools_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMcpServerInstallationRequestsResponse parses an HTTP response from a GetMcpServerInstallationRequestsWithResponse call
+func ParseGetMcpServerInstallationRequestsResponse(rsp *http.Response) (*GetMcpServerInstallationRequestsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMcpServerInstallationRequestsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			AdminResponse      *string                                                  `json:"adminResponse"`
+			CreatedAt          time.Time                                                `json:"createdAt"`
+			CustomServerConfig *GetMcpServerInstallationRequests_200_CustomServerConfig `json:"customServerConfig"`
+			ExternalCatalogId  *string                                                  `json:"externalCatalogId"`
+			Id                 openapi_types.UUID                                       `json:"id"`
+			Notes              *[]struct {
+				Content   string `json:"content"`
+				CreatedAt string `json:"createdAt"`
+				Id        string `json:"id"`
+				UserId    string `json:"userId"`
+				UserName  string `json:"userName"`
+			} `json:"notes"`
+			RequestReason *string    `json:"requestReason"`
+			RequestedBy   string     `json:"requestedBy"`
+			ReviewedAt    *time.Time `json:"reviewedAt"`
+			ReviewedBy    *string    `json:"reviewedBy"`
+			Status        string     `json:"status"`
+			UpdatedAt     time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error GetMcpServerInstallationRequests_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error GetMcpServerInstallationRequests_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateMcpServerInstallationRequestResponse parses an HTTP response from a CreateMcpServerInstallationRequestWithResponse call
+func ParseCreateMcpServerInstallationRequestResponse(rsp *http.Response) (*CreateMcpServerInstallationRequestResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateMcpServerInstallationRequestResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AdminResponse      *string                                                    `json:"adminResponse"`
+			CreatedAt          time.Time                                                  `json:"createdAt"`
+			CustomServerConfig *CreateMcpServerInstallationRequest_200_CustomServerConfig `json:"customServerConfig"`
+			ExternalCatalogId  *string                                                    `json:"externalCatalogId"`
+			Id                 openapi_types.UUID                                         `json:"id"`
+			Notes              *[]struct {
+				Content   string `json:"content"`
+				CreatedAt string `json:"createdAt"`
+				Id        string `json:"id"`
+				UserId    string `json:"userId"`
+				UserName  string `json:"userName"`
+			} `json:"notes"`
+			RequestReason *string    `json:"requestReason"`
+			RequestedBy   string     `json:"requestedBy"`
+			ReviewedAt    *time.Time `json:"reviewedAt"`
+			ReviewedBy    *string    `json:"reviewedBy"`
+			Status        string     `json:"status"`
+			UpdatedAt     time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error CreateMcpServerInstallationRequest_400_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error CreateMcpServerInstallationRequest_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error CreateMcpServerInstallationRequest_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteMcpServerInstallationRequestResponse parses an HTTP response from a DeleteMcpServerInstallationRequestWithResponse call
+func ParseDeleteMcpServerInstallationRequestResponse(rsp *http.Response) (*DeleteMcpServerInstallationRequestResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteMcpServerInstallationRequestResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error DeleteMcpServerInstallationRequest_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error DeleteMcpServerInstallationRequest_403_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error DeleteMcpServerInstallationRequest_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error DeleteMcpServerInstallationRequest_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMcpServerInstallationRequestResponse parses an HTTP response from a GetMcpServerInstallationRequestWithResponse call
+func ParseGetMcpServerInstallationRequestResponse(rsp *http.Response) (*GetMcpServerInstallationRequestResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMcpServerInstallationRequestResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AdminResponse      *string                                                 `json:"adminResponse"`
+			CreatedAt          time.Time                                               `json:"createdAt"`
+			CustomServerConfig *GetMcpServerInstallationRequest_200_CustomServerConfig `json:"customServerConfig"`
+			ExternalCatalogId  *string                                                 `json:"externalCatalogId"`
+			Id                 openapi_types.UUID                                      `json:"id"`
+			Notes              *[]struct {
+				Content   string `json:"content"`
+				CreatedAt string `json:"createdAt"`
+				Id        string `json:"id"`
+				UserId    string `json:"userId"`
+				UserName  string `json:"userName"`
+			} `json:"notes"`
+			RequestReason *string    `json:"requestReason"`
+			RequestedBy   string     `json:"requestedBy"`
+			ReviewedAt    *time.Time `json:"reviewedAt"`
+			ReviewedBy    *string    `json:"reviewedBy"`
+			Status        string     `json:"status"`
+			UpdatedAt     time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error GetMcpServerInstallationRequest_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error GetMcpServerInstallationRequest_403_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error GetMcpServerInstallationRequest_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error GetMcpServerInstallationRequest_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateMcpServerInstallationRequestResponse parses an HTTP response from a UpdateMcpServerInstallationRequestWithResponse call
+func ParseUpdateMcpServerInstallationRequestResponse(rsp *http.Response) (*UpdateMcpServerInstallationRequestResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateMcpServerInstallationRequestResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AdminResponse      *string                                                    `json:"adminResponse"`
+			CreatedAt          time.Time                                                  `json:"createdAt"`
+			CustomServerConfig *UpdateMcpServerInstallationRequest_200_CustomServerConfig `json:"customServerConfig"`
+			ExternalCatalogId  *string                                                    `json:"externalCatalogId"`
+			Id                 openapi_types.UUID                                         `json:"id"`
+			Notes              *[]struct {
+				Content   string `json:"content"`
+				CreatedAt string `json:"createdAt"`
+				Id        string `json:"id"`
+				UserId    string `json:"userId"`
+				UserName  string `json:"userName"`
+			} `json:"notes"`
+			RequestReason *string    `json:"requestReason"`
+			RequestedBy   string     `json:"requestedBy"`
+			ReviewedAt    *time.Time `json:"reviewedAt"`
+			ReviewedBy    *string    `json:"reviewedBy"`
+			Status        string     `json:"status"`
+			UpdatedAt     time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error UpdateMcpServerInstallationRequest_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error UpdateMcpServerInstallationRequest_403_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error UpdateMcpServerInstallationRequest_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error UpdateMcpServerInstallationRequest_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseApproveMcpServerInstallationRequestResponse parses an HTTP response from a ApproveMcpServerInstallationRequestWithResponse call
+func ParseApproveMcpServerInstallationRequestResponse(rsp *http.Response) (*ApproveMcpServerInstallationRequestResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ApproveMcpServerInstallationRequestResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AdminResponse      *string                                                     `json:"adminResponse"`
+			CreatedAt          time.Time                                                   `json:"createdAt"`
+			CustomServerConfig *ApproveMcpServerInstallationRequest_200_CustomServerConfig `json:"customServerConfig"`
+			ExternalCatalogId  *string                                                     `json:"externalCatalogId"`
+			Id                 openapi_types.UUID                                          `json:"id"`
+			Notes              *[]struct {
+				Content   string `json:"content"`
+				CreatedAt string `json:"createdAt"`
+				Id        string `json:"id"`
+				UserId    string `json:"userId"`
+				UserName  string `json:"userName"`
+			} `json:"notes"`
+			RequestReason *string    `json:"requestReason"`
+			RequestedBy   string     `json:"requestedBy"`
+			ReviewedAt    *time.Time `json:"reviewedAt"`
+			ReviewedBy    *string    `json:"reviewedBy"`
+			Status        string     `json:"status"`
+			UpdatedAt     time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error ApproveMcpServerInstallationRequest_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error ApproveMcpServerInstallationRequest_403_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error ApproveMcpServerInstallationRequest_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error ApproveMcpServerInstallationRequest_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeclineMcpServerInstallationRequestResponse parses an HTTP response from a DeclineMcpServerInstallationRequestWithResponse call
+func ParseDeclineMcpServerInstallationRequestResponse(rsp *http.Response) (*DeclineMcpServerInstallationRequestResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeclineMcpServerInstallationRequestResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AdminResponse      *string                                                     `json:"adminResponse"`
+			CreatedAt          time.Time                                                   `json:"createdAt"`
+			CustomServerConfig *DeclineMcpServerInstallationRequest_200_CustomServerConfig `json:"customServerConfig"`
+			ExternalCatalogId  *string                                                     `json:"externalCatalogId"`
+			Id                 openapi_types.UUID                                          `json:"id"`
+			Notes              *[]struct {
+				Content   string `json:"content"`
+				CreatedAt string `json:"createdAt"`
+				Id        string `json:"id"`
+				UserId    string `json:"userId"`
+				UserName  string `json:"userName"`
+			} `json:"notes"`
+			RequestReason *string    `json:"requestReason"`
+			RequestedBy   string     `json:"requestedBy"`
+			ReviewedAt    *time.Time `json:"reviewedAt"`
+			ReviewedBy    *string    `json:"reviewedBy"`
+			Status        string     `json:"status"`
+			UpdatedAt     time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error DeclineMcpServerInstallationRequest_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error DeclineMcpServerInstallationRequest_403_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error DeclineMcpServerInstallationRequest_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error DeclineMcpServerInstallationRequest_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAddMcpServerInstallationRequestNoteResponse parses an HTTP response from a AddMcpServerInstallationRequestNoteWithResponse call
+func ParseAddMcpServerInstallationRequestNoteResponse(rsp *http.Response) (*AddMcpServerInstallationRequestNoteResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AddMcpServerInstallationRequestNoteResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AdminResponse      *string                                                     `json:"adminResponse"`
+			CreatedAt          time.Time                                                   `json:"createdAt"`
+			CustomServerConfig *AddMcpServerInstallationRequestNote_200_CustomServerConfig `json:"customServerConfig"`
+			ExternalCatalogId  *string                                                     `json:"externalCatalogId"`
+			Id                 openapi_types.UUID                                          `json:"id"`
+			Notes              *[]struct {
+				Content   string `json:"content"`
+				CreatedAt string `json:"createdAt"`
+				Id        string `json:"id"`
+				UserId    string `json:"userId"`
+				UserName  string `json:"userName"`
+			} `json:"notes"`
+			RequestReason *string    `json:"requestReason"`
+			RequestedBy   string     `json:"requestedBy"`
+			ReviewedAt    *time.Time `json:"reviewedAt"`
+			ReviewedBy    *string    `json:"reviewedBy"`
+			Status        string     `json:"status"`
+			UpdatedAt     time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error AddMcpServerInstallationRequestNote_401_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error AddMcpServerInstallationRequestNote_403_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error AddMcpServerInstallationRequestNote_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error AddMcpServerInstallationRequestNote_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseHandleOAuthCallbackResponse parses an HTTP response from a HandleOAuthCallbackWithResponse call
+func ParseHandleOAuthCallbackResponse(rsp *http.Response) (*HandleOAuthCallbackResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &HandleOAuthCallbackResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AccessToken  string             `json:"accessToken"`
+			CatalogId    openapi_types.UUID `json:"catalogId"`
+			ExpiresIn    *float32           `json:"expiresIn,omitempty"`
+			Name         string             `json:"name"`
+			RefreshToken *string            `json:"refreshToken,omitempty"`
+			SecretId     openapi_types.UUID `json:"secretId"`
+			Success      bool               `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error HandleOAuthCallback_400_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error HandleOAuthCallback_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseInitiateOAuthResponse parses an HTTP response from a InitiateOAuthWithResponse call
+func ParseInitiateOAuthResponse(rsp *http.Response) (*InitiateOAuthResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &InitiateOAuthResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorizationUrl string `json:"authorizationUrl"`
+			State            string `json:"state"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error InitiateOAuth_400_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error InitiateOAuth_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error InitiateOAuth_500_Error `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -9540,6 +14500,53 @@ func ParseGetHealthResponse(rsp *http.Response) (*GetHealthResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMcpServerLogsResponse parses an HTTP response from a GetMcpServerLogsWithResponse call
+func ParseGetMcpServerLogsResponse(rsp *http.Response) (*GetMcpServerLogsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMcpServerLogsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			ContainerName string `json:"containerName"`
+			Logs          string `json:"logs"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error GetMcpServerLogs_404_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error GetMcpServerLogs_500_Error `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 

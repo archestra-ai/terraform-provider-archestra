@@ -100,7 +100,7 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 			resp.Diagnostics.AddError("Invalid Catalog ID", fmt.Sprintf("Unable to parse catalog ID: %s", err))
 			return
 		}
-		requestBody.CatalogId = &catalogID
+		requestBody.CatalogId = catalogID
 	}
 
 	// Call API
@@ -122,9 +122,7 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 	// Map response to Terraform state
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.Name = types.StringValue(apiResp.JSON200.Name)
-	if apiResp.JSON200.CatalogId != nil {
-		data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
-	}
+	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -167,11 +165,7 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
-	if apiResp.JSON200.CatalogId != nil {
-		data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
-	} else {
-		data.CatalogID = types.StringNull()
-	}
+	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
