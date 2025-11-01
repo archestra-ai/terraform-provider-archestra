@@ -26,9 +26,9 @@ type MCPServerResource struct {
 }
 
 type MCPServerResourceModel struct {
-	ID            types.String `tfsdk:"id"`
-	Name          types.String `tfsdk:"name"`
-	MCPServerID   types.String `tfsdk:"mcp_server_id"`
+	ID          types.String `tfsdk:"id"`
+	Name        types.String `tfsdk:"name"`
+	MCPServerID types.String `tfsdk:"mcp_server_id"`
 }
 
 func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

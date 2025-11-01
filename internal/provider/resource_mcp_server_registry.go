@@ -222,12 +222,12 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		}
 
 		lcStruct := struct {
-			Arguments     []string                                                      `json:"arguments"`
-			Command       string                                                        `json:"command"`
-			DockerImage   *string                                                       `json:"dockerImage,omitempty"`
-			Environment   *map[string]string                                            `json:"environment,omitempty"`
-			HttpPath      *string                                                       `json:"httpPath,omitempty"`
-			HttpPort      *float32                                                      `json:"httpPort,omitempty"`
+			Arguments     []string                                                             `json:"arguments"`
+			Command       string                                                               `json:"command"`
+			DockerImage   *string                                                              `json:"dockerImage,omitempty"`
+			Environment   *map[string]string                                                   `json:"environment,omitempty"`
+			HttpPath      *string                                                              `json:"httpPath,omitempty"`
+			HttpPort      *float32                                                             `json:"httpPort,omitempty"`
 			TransportType *client.CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
 		}{
 			Command: localConfig.Command.ValueString(),
@@ -543,12 +543,12 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		}
 
 		lcStruct := struct {
-			Arguments     []string                                                      `json:"arguments"`
-			Command       string                                                        `json:"command"`
-			DockerImage   *string                                                       `json:"dockerImage,omitempty"`
-			Environment   *map[string]string                                            `json:"environment,omitempty"`
-			HttpPath      *string                                                       `json:"httpPath,omitempty"`
-			HttpPort      *float32                                                      `json:"httpPort,omitempty"`
+			Arguments     []string                                                             `json:"arguments"`
+			Command       string                                                               `json:"command"`
+			DockerImage   *string                                                              `json:"dockerImage,omitempty"`
+			Environment   *map[string]string                                                   `json:"environment,omitempty"`
+			HttpPath      *string                                                              `json:"httpPath,omitempty"`
+			HttpPort      *float32                                                             `json:"httpPort,omitempty"`
 			TransportType *client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
 		}{
 			Command: localConfig.Command.ValueString(),
