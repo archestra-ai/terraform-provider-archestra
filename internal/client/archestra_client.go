@@ -315,7 +315,6 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 	Description         *string `json:"description"`
 	DocsUrl             *string `json:"docsUrl"`
 	InstallationCommand *string `json:"installationCommand"`
-	Label               *string `json:"label"`
 	LocalConfig         *struct {
 		Arguments     []string                                                      `json:"arguments"`
 		Command       string                                                        `json:"command"`
@@ -405,7 +404,6 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 	Description         *string `json:"description"`
 	DocsUrl             *string `json:"docsUrl"`
 	InstallationCommand *string `json:"installationCommand"`
-	Label               *string `json:"label"`
 	LocalConfig         *struct {
 		Arguments     []string                                                      `json:"arguments"`
 		Command       string                                                        `json:"command"`
@@ -6612,7 +6610,6 @@ type GetInternalMcpCatalogResponse struct {
 		DocsUrl             *string            `json:"docsUrl"`
 		Id                  openapi_types.UUID `json:"id"`
 		InstallationCommand *string            `json:"installationCommand"`
-		Label               *string            `json:"label"`
 		LocalConfig         *struct {
 			Arguments     []string                                          `json:"arguments"`
 			Command       string                                            `json:"command"`
@@ -6719,7 +6716,6 @@ type CreateInternalMcpCatalogItemResponse struct {
 		DocsUrl             *string            `json:"docsUrl"`
 		Id                  openapi_types.UUID `json:"id"`
 		InstallationCommand *string            `json:"installationCommand"`
-		Label               *string            `json:"label"`
 		LocalConfig         *struct {
 			Arguments     []string                                                 `json:"arguments"`
 			Command       string                                                   `json:"command"`
@@ -6872,7 +6868,6 @@ type GetInternalMcpCatalogItemResponse struct {
 		DocsUrl             *string            `json:"docsUrl"`
 		Id                  openapi_types.UUID `json:"id"`
 		InstallationCommand *string            `json:"installationCommand"`
-		Label               *string            `json:"label"`
 		LocalConfig         *struct {
 			Arguments     []string                                              `json:"arguments"`
 			Command       string                                                `json:"command"`
@@ -6990,7 +6985,6 @@ type UpdateInternalMcpCatalogItemResponse struct {
 		DocsUrl             *string            `json:"docsUrl"`
 		Id                  openapi_types.UUID `json:"id"`
 		InstallationCommand *string            `json:"installationCommand"`
-		Label               *string            `json:"label"`
 		LocalConfig         *struct {
 			Arguments     []string                                                 `json:"arguments"`
 			Command       string                                                   `json:"command"`
@@ -11954,7 +11948,6 @@ func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCata
 			DocsUrl             *string            `json:"docsUrl"`
 			Id                  openapi_types.UUID `json:"id"`
 			InstallationCommand *string            `json:"installationCommand"`
-			Label               *string            `json:"label"`
 			LocalConfig         *struct {
 				Arguments     []string                                          `json:"arguments"`
 				Command       string                                            `json:"command"`
@@ -12053,7 +12046,6 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 			DocsUrl             *string            `json:"docsUrl"`
 			Id                  openapi_types.UUID `json:"id"`
 			InstallationCommand *string            `json:"installationCommand"`
-			Label               *string            `json:"label"`
 			LocalConfig         *struct {
 				Arguments     []string                                                 `json:"arguments"`
 				Command       string                                                   `json:"command"`
@@ -12198,7 +12190,6 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 			DocsUrl             *string            `json:"docsUrl"`
 			Id                  openapi_types.UUID `json:"id"`
 			InstallationCommand *string            `json:"installationCommand"`
-			Label               *string            `json:"label"`
 			LocalConfig         *struct {
 				Arguments     []string                                              `json:"arguments"`
 				Command       string                                                `json:"command"`
@@ -12306,7 +12297,6 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 			DocsUrl             *string            `json:"docsUrl"`
 			Id                  openapi_types.UUID `json:"id"`
 			InstallationCommand *string            `json:"installationCommand"`
-			Label               *string            `json:"label"`
 			LocalConfig         *struct {
 				Arguments     []string                                                 `json:"arguments"`
 				Command       string                                                   `json:"command"`
