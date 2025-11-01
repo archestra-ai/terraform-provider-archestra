@@ -156,14 +156,8 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
-	// Map labels from API response
-	data.Labels = make([]AgentLabelModel, len(apiResp.JSON200.Labels))
-	for i, label := range apiResp.JSON200.Labels {
-		data.Labels[i] = AgentLabelModel{
-			Key:   types.StringValue(label.Key),
-			Value: types.StringValue(label.Value),
-		}
-	}
+	// Map labels from API response, preserving configuration order
+	data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -209,14 +203,8 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
-	// Map labels from API response
-	data.Labels = make([]AgentLabelModel, len(apiResp.JSON200.Labels))
-	for i, label := range apiResp.JSON200.Labels {
-		data.Labels[i] = AgentLabelModel{
-			Key:   types.StringValue(label.Key),
-			Value: types.StringValue(label.Value),
-		}
-	}
+	// Map labels from API response, preserving existing state order
+	data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -283,14 +271,8 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
-	// Map labels from API response
-	data.Labels = make([]AgentLabelModel, len(apiResp.JSON200.Labels))
-	for i, label := range apiResp.JSON200.Labels {
-		data.Labels[i] = AgentLabelModel{
-			Key:   types.StringValue(label.Key),
-			Value: types.StringValue(label.Value),
-		}
-	}
+	// Map labels from API response, preserving configuration order
+	data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -330,4 +312,36 @@ func (r *AgentResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 
 func (r *AgentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+}
+
+// mapLabelsToConfigurationOrder maps API response labels back to the configuration order
+// to ensure Terraform doesn't detect false changes due to API reordering.
+func (r *AgentResource) mapLabelsToConfigurationOrder(configLabels []AgentLabelModel, apiLabels []struct {
+	Key     string              `json:"key"`
+	KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+	Value   string              `json:"value"`
+	ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+}) []AgentLabelModel {
+	// Create a map of API labels for quick lookup
+	apiLabelMap := make(map[string]string)
+	for _, label := range apiLabels {
+		apiLabelMap[label.Key] = label.Value
+	}
+
+	// Build result preserving configuration order
+	result := make([]AgentLabelModel, len(configLabels))
+	for i, configLabel := range configLabels {
+		key := configLabel.Key.ValueString()
+		if apiValue, exists := apiLabelMap[key]; exists {
+			result[i] = AgentLabelModel{
+				Key:   types.StringValue(key),
+				Value: types.StringValue(apiValue),
+			}
+		} else {
+			// Keep original if API doesn't have it (shouldn't happen normally)
+			result[i] = configLabel
+		}
+	}
+
+	return result
 }
