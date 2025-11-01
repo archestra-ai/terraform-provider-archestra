@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -27,10 +28,17 @@ type AgentResource struct {
 	client *client.ClientWithResponses
 }
 
+// AgentLabelModel describes a label data model.
+type AgentLabelModel struct {
+	Key   types.String `tfsdk:"key"`
+	Value types.String `tfsdk:"value"`
+}
+
 // AgentResourceModel describes the resource data model.
 type AgentResourceModel struct {
-	ID   types.String `tfsdk:"id"`
-	Name types.String `tfsdk:"name"`
+	ID     types.String      `tfsdk:"id"`
+	Name   types.String      `tfsdk:"name"`
+	Labels []AgentLabelModel `tfsdk:"labels"`
 }
 
 func (r *AgentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -52,6 +60,22 @@ func (r *AgentResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 			"name": schema.StringAttribute{
 				MarkdownDescription: "The name of the agent",
 				Required:            true,
+			},
+			"labels": schema.ListNestedAttribute{
+				MarkdownDescription: "Labels to organize and identify the agent",
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"key": schema.StringAttribute{
+							MarkdownDescription: "Label key",
+							Required:            true,
+						},
+						"value": schema.StringAttribute{
+							MarkdownDescription: "Label value",
+							Required:            true,
+						},
+					},
+				},
 			},
 		},
 	}
@@ -85,10 +109,31 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
+	// Convert labels to API format
+	var labels []struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	}
+
+	for _, label := range data.Labels {
+		labels = append(labels, struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		}{
+			Key:   label.Key.ValueString(),
+			Value: label.Value.ValueString(),
+		})
+	}
+
 	// Create request body using generated type
 	requestBody := client.CreateAgentJSONRequestBody{
-		Name:  data.Name.ValueString(),
-		Teams: []string{}, // Empty teams array (required by API)
+		Name:   data.Name.ValueString(),
+		Teams:  []string{}, // Empty teams array (required by API)
+		Labels: &labels,
 	}
 
 	// Call API
@@ -110,6 +155,15 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 	// Map response to Terraform state
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.Name = types.StringValue(apiResp.JSON200.Name)
+
+	// Map labels from API response
+	data.Labels = make([]AgentLabelModel, len(apiResp.JSON200.Labels))
+	for i, label := range apiResp.JSON200.Labels {
+		data.Labels[i] = AgentLabelModel{
+			Key:   types.StringValue(label.Key),
+			Value: types.StringValue(label.Value),
+		}
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -155,6 +209,15 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
+	// Map labels from API response
+	data.Labels = make([]AgentLabelModel, len(apiResp.JSON200.Labels))
+	for i, label := range apiResp.JSON200.Labels {
+		data.Labels[i] = AgentLabelModel{
+			Key:   types.StringValue(label.Key),
+			Value: types.StringValue(label.Value),
+		}
+	}
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -174,10 +237,31 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
+	// Convert labels to API format
+	var labels []struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	}
+
+	for _, label := range data.Labels {
+		labels = append(labels, struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		}{
+			Key:   label.Key.ValueString(),
+			Value: label.Value.ValueString(),
+		})
+	}
+
 	// Create request body using generated type
 	name := data.Name.ValueString()
 	requestBody := client.UpdateAgentJSONRequestBody{
-		Name: &name,
+		Name:   &name,
+		Labels: &labels,
 	}
 
 	// Call API
@@ -198,6 +282,15 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
+
+	// Map labels from API response
+	data.Labels = make([]AgentLabelModel, len(apiResp.JSON200.Labels))
+	for i, label := range apiResp.JSON200.Labels {
+		data.Labels[i] = AgentLabelModel{
+			Key:   types.StringValue(label.Key),
+			Value: types.StringValue(label.Value),
+		}
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

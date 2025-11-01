@@ -15,6 +15,21 @@ Manages an Archestra agent.
 ```terraform
 resource "archestra_agent" "example" {
   name = "production-agent"
+
+  labels = [
+    {
+      key   = "environment"
+      value = "production"
+    },
+    {
+      key   = "team"
+      value = "backend"
+    },
+    {
+      key   = "region"
+      value = "us-west-2"
+    }
+  ]
 }
 ```
 
@@ -25,6 +40,18 @@ resource "archestra_agent" "example" {
 
 - `name` (String) The name of the agent
 
+### Optional
+
+- `labels` (Attributes List) Labels to organize and identify the agent (see [below for nested schema](#nestedatt--labels))
+
 ### Read-Only
 
 - `id` (String) Agent identifier
+
+<a id="nestedatt--labels"></a>
+### Nested Schema for `labels`
+
+Required:
+
+- `key` (String) Label key
+- `value` (String) Label value
