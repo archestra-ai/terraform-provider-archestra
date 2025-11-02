@@ -93,27 +93,28 @@ jobs:
       - name: Build
         run: make build
 
-  acceptance-tests:
-    name: Acceptance Tests
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          persist-credentials: false
+  # TODO: uncomment this out once the SSL cert for https://backend.archestra.dev is provisioned/ready
+  # acceptance-tests:
+  #   name: Acceptance Tests
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #   steps:
+  #     - name: Checkout project
+  #       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+  #       with:
+  #         persist-credentials: false
 
-      - name: Setup go
-        uses: ./.github/actions/setup-go
+  #     - name: Setup go
+  #       uses: ./.github/actions/setup-go
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
-        with:
-          terraform_version: "1.13.4"
+  #     - name: Install Terraform
+  #       uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+  #       with:
+  #         terraform_version: "1.13.4"
 
-      - name: Run Acceptance Tests
-        run: make testacc
-        env:
-          ARCHESTRA_BASE_URL: "https://backend.archestra.dev"
-          ARCHESTRA_API_KEY: ${{ secrets.INTEGRATION_TESTS_ARCHESTRA_API_KEY }}
+  #     - name: Run Acceptance Tests
+  #       run: make testacc
+  #       env:
+  #         ARCHESTRA_BASE_URL: "https://backend.archestra.dev"
+  #         ARCHESTRA_API_KEY: ${{ secrets.INTEGRATION_TESTS_ARCHESTRA_API_KEY }}

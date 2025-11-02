@@ -4,7 +4,7 @@ resource "archestra_mcp_server" "filesystem" {
   description = "MCP server for filesystem operations"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem"
 
-  local_config {
+  local_config = {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/home/user"]
 

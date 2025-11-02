@@ -23,7 +23,7 @@ test:
 	go test -v -cover -timeout=120s -parallel=10 ./...
 
 testacc:
-	@echo "Running acceptance tests against production environment..."
+	@echo "Running acceptance tests against remote Archestra environment..."
 	@echo "Using ARCHESTRA_BASE_URL: $(ARCHESTRA_BASE_URL)"
 	@echo "API key configured: $(shell test -n "$(ARCHESTRA_API_KEY)" && echo "✓ Yes" || echo "✗ No")"
 	TF_ACC=1 go test -v -cover -timeout=120m ./...
