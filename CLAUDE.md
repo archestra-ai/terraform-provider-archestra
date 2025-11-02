@@ -22,7 +22,6 @@ go build -v ./...            # Direct build command
 
 ```bash
 make test                     # Run unit tests (timeout=120s, parallel=10)
-./test-env.sh                 # Check environment and run unit tests
 go test -v -cover -timeout=120s -parallel=10 ./...  # Direct test command
 ```
 
