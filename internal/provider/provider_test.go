@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"context"
 	"os"
 	"testing"
 
@@ -42,7 +41,7 @@ func TestProviderResources_RegistrationCount(t *testing.T) {
 	if !ok {
 		t.Fatal("Expected ArchestraProvider type")
 	}
-	resources := provider.Resources(context.Background())
+	resources := provider.Resources(t.Context())
 
 	// We expect 6 resources to be registered
 	expectedCount := 6 // agent, mcp_server, mcp_server_installation, team, tool_invocation_policy, trusted_data_policy
@@ -56,7 +55,7 @@ func TestProviderDataSources_RegistrationCount(t *testing.T) {
 	if !ok {
 		t.Fatal("Expected ArchestraProvider type")
 	}
-	dataSources := provider.DataSources(context.Background())
+	dataSources := provider.DataSources(t.Context())
 
 	// We expect 3 data sources to be registered
 	expectedCount := 3 // team, agent_tool, mcp_server_tool
