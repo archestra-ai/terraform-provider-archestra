@@ -116,4 +116,4 @@ jobs:
         run: make testacc
         env:
           ARCHESTRA_BASE_URL: "https://backend.archestra.dev"
-          ARCHESTRA_API_KEY: ${{ secrets.ARCHESTRA_API_KEY }}
+          ARCHESTRA_API_KEY: ${{ secrets.INTEGRATION_TESTS_ARCHESTRA_API_KEY }}
