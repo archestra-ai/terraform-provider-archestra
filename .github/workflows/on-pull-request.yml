@@ -87,13 +87,33 @@ jobs:
             exit 1
           fi
 
-      - name: Tests
-        run: |
-          make test
-
-          # NOTE: for now don't run "acceptance tests" because the Terraform proposed pattern for these is that
-          # they create real resources and we don't have a way for now to create the local environment to do so
-          # make testacc
+      - name: Unit Tests
+        run: make test
 
       - name: Build
         run: make build
+
+  acceptance-tests:
+    name: Acceptance Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Setup go
+        uses: ./.github/actions/setup-go
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: "1.13.4"
+
+      - name: Run Acceptance Tests
+        run: make testacc
+        env:
+          ARCHESTRA_BASE_URL: "https://backend.archestra.dev"
+          ARCHESTRA_API_KEY: ${{ secrets.ARCHESTRA_API_KEY }}

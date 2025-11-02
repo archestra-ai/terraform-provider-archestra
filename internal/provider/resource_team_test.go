@@ -17,7 +17,7 @@ func TestAccTeamResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccTeamResourceConfig("test-team", "Test Description", "org-123", "user-456"),
+				Config: testAccTeamResourceConfig("test-team", "Test Description"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_team.test",
@@ -29,16 +29,6 @@ func TestAccTeamResource(t *testing.T) {
 						tfjsonpath.New("description"),
 						knownvalue.StringExact("Test Description"),
 					),
-					statecheck.ExpectKnownValue(
-						"archestra_team.test",
-						tfjsonpath.New("organization_id"),
-						knownvalue.StringExact("org-123"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_team.test",
-						tfjsonpath.New("created_by"),
-						knownvalue.StringExact("user-456"),
-					),
 				},
 			},
 			// ImportState testing
@@ -49,7 +39,7 @@ func TestAccTeamResource(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccTeamResourceConfig("test-team-updated", "Updated Description", "org-123", "user-456"),
+				Config: testAccTeamResourceConfig("test-team-updated", "Updated Description"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_team.test",
@@ -68,13 +58,11 @@ func TestAccTeamResource(t *testing.T) {
 	})
 }
 
-func testAccTeamResourceConfig(name, description, orgID, createdBy string) string {
+func testAccTeamResourceConfig(name, description string) string {
 	return fmt.Sprintf(`
 resource "archestra_team" "test" {
-  name            = %[1]q
-  description     = %[2]q
-  organization_id = %[3]q
-  created_by      = %[4]q
+  name        = %[1]q
+  description = %[2]q
 }
-`, name, description, orgID, createdBy)
+`, name, description)
 }

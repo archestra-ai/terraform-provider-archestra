@@ -1,11 +1,12 @@
 package provider
 
 import (
+	"context"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
-	"github.com/hashicorp/terraform-plugin-testing/echoprovider"
 )
 
 // testAccProtoV6ProviderFactories is used to instantiate a provider during acceptance testing.
@@ -17,20 +18,49 @@ var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServe
 	"archestra": providerserver.NewProtocol6WithError(New("test")()),
 }
 
-// testAccProtoV6ProviderFactoriesWithEcho includes the echo provider alongside the archestra provider.
-// It allows for testing assertions on data returned by an ephemeral resource during Open.
-// The echoprovider is used to arrange tests by echoing ephemeral data into the Terraform state.
-// This lets the data be referenced in test assertions with state checks.
-//
-//nolint:unused // Will be used by resource/datasource tests if needed
-var testAccProtoV6ProviderFactoriesWithEcho = map[string]func() (tfprotov6.ProviderServer, error){
-	"archestra": providerserver.NewProtocol6WithError(New("test")()),
-	"echo":      echoprovider.NewProviderServer(),
-}
-
 //nolint:unused // Will be used by resource/datasource tests
 func testAccPreCheck(t *testing.T) {
-	// You can add code here to run prior to any test case execution, for example assertions
-	// about the appropriate environment variables being set are common to see in a pre-check
-	// function.
+	// Check for required environment variables for acceptance tests
+	if v := os.Getenv("ARCHESTRA_API_KEY"); v == "" {
+		t.Fatal("ARCHESTRA_API_KEY must be set for acceptance tests")
+	}
+	if v := os.Getenv("ARCHESTRA_BASE_URL"); v == "" {
+		t.Fatal("ARCHESTRA_BASE_URL must be set for acceptance tests")
+	}
+}
+
+// Unit tests for provider.
+func TestProviderNew(t *testing.T) {
+	provider := New("test")()
+	if provider == nil {
+		t.Fatal("Expected provider to be non-nil")
+	}
+}
+
+func TestProviderResources_RegistrationCount(t *testing.T) {
+	provider, ok := New("test")().(*ArchestraProvider)
+	if !ok {
+		t.Fatal("Expected ArchestraProvider type")
+	}
+	resources := provider.Resources(context.Background())
+
+	// We expect 6 resources to be registered
+	expectedCount := 6 // agent, mcp_server, mcp_server_installation, team, tool_invocation_policy, trusted_data_policy
+	if len(resources) != expectedCount {
+		t.Errorf("Expected %d resources to be registered, got %d", expectedCount, len(resources))
+	}
+}
+
+func TestProviderDataSources_RegistrationCount(t *testing.T) {
+	provider, ok := New("test")().(*ArchestraProvider)
+	if !ok {
+		t.Fatal("Expected ArchestraProvider type")
+	}
+	dataSources := provider.DataSources(context.Background())
+
+	// We expect 3 data sources to be registered
+	expectedCount := 3 // team, agent_tool, mcp_server_tool
+	if len(dataSources) != expectedCount {
+		t.Errorf("Expected %d data sources to be registered, got %d", expectedCount, len(dataSources))
+	}
 }

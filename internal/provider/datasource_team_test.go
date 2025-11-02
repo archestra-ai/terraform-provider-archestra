@@ -15,14 +15,20 @@ func TestAccTeamDataSource(t *testing.T) {
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Read testing
+			// Create team and read it via data source
 			{
-				Config: testAccTeamDataSourceConfig("team-id-here"),
+				Config: testAccTeamDataSourceConfig("test-team-datasource"),
 				ConfigStateChecks: []statecheck.StateCheck{
+					// Check that the data source returns the same data as the resource
 					statecheck.ExpectKnownValue(
 						"data.archestra_team.test",
-						tfjsonpath.New("id"),
-						knownvalue.StringExact("team-id-here"),
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-team-datasource"),
+					),
+					statecheck.ExpectKnownValue(
+						"data.archestra_team.test",
+						tfjsonpath.New("description"),
+						knownvalue.StringExact("Test team for data source testing"),
 					),
 				},
 			},
@@ -30,10 +36,17 @@ func TestAccTeamDataSource(t *testing.T) {
 	})
 }
 
-func testAccTeamDataSourceConfig(teamID string) string {
+func testAccTeamDataSourceConfig(name string) string {
 	return fmt.Sprintf(`
-data "archestra_team" "test" {
-  id = %[1]q
+# First create a team
+resource "archestra_team" "example" {
+  name        = %[1]q
+  description = "Test team for data source testing"
 }
-`, teamID)
+
+# Then read it via data source
+data "archestra_team" "test" {
+  id = archestra_team.example.id
+}
+`, name)
 }

@@ -18,16 +18,22 @@ go build -v ./...            # Direct build command
 
 ### Testing
 
+#### Unit Tests
+
 ```bash
 make test                     # Run unit tests (timeout=120s, parallel=10)
-make testacc                  # Run acceptance tests (requires TF_ACC=1, timeout=120m)
+./test-env.sh                 # Check environment and run unit tests
 go test -v -cover -timeout=120s -parallel=10 ./...  # Direct test command
 ```
 
-Run a single test:
+#### Acceptance Tests
+
+Acceptance tests require environment configuration:
 
 ```bash
-go test -v -run TestAccAgentResource ./internal/provider/
+export ARCHESTRA_BASE_URL="https://backend.archestra.dev"
+export ARCHESTRA_API_KEY="your-api-key"
+make testacc                  # Run acceptance tests against hosted environment
 ```
 
 ### Code Quality
