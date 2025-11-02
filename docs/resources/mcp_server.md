@@ -19,7 +19,7 @@ resource "archestra_mcp_server" "filesystem" {
   description = "MCP server for filesystem operations"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem"
 
-  local_config {
+  local_config = {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/home/user"]
 
@@ -37,7 +37,7 @@ resource "archestra_mcp_server" "github" {
   auth_description     = "Requires a GitHub personal access token"
   installation_command = "npm install -g @modelcontextprotocol/server-github"
 
-  local_config {
+  local_config = {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-github"]
 
@@ -57,16 +57,16 @@ resource "archestra_mcp_server" "github" {
   ]
 }
 
-# Local MCP server with SSE transport
+# Local MCP server with streamable-http transport
 resource "archestra_mcp_server" "web_search" {
   name        = "web-search-mcp-server"
   description = "MCP server for web search using Brave Search API"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search"
 
-  local_config {
+  local_config = {
     command        = "node"
     arguments      = ["dist/index.js"]
-    transport_type = "sse"
+    transport_type = "streamable-http"
     http_port      = 3000
     http_path      = "/sse"
   }
@@ -88,7 +88,7 @@ resource "archestra_mcp_server" "postgres" {
   description = "MCP server for PostgreSQL database operations"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/postgres"
 
-  local_config {
+  local_config = {
     command      = "npx"
     arguments    = ["-y", "@modelcontextprotocol/server-postgres"]
     docker_image = "postgres:16-alpine"
@@ -126,7 +126,7 @@ resource "archestra_mcp_server" "postgres" {
 - `description` (String) Description of the MCP server
 - `docs_url` (String) URL to the MCP server documentation
 - `installation_command` (String) Installation command for the MCP server (e.g., npm install -g @example/mcp-server)
-- `local_config` (Attributes) Configuration for local MCP servers (stdio or SSE transport) (see [below for nested schema](#nestedatt--local_config))
+- `local_config` (Attributes) Configuration for MCP servers run in the Archestra orchestrator MCP runtime (see [below for nested schema](#nestedatt--local_config))
 
 ### Read-Only
 
@@ -152,13 +152,13 @@ Optional:
 
 Required:
 
-- `command` (String) Command to run the MCP server (e.g., 'node', 'python', 'npx')
+- `command` (String) The executable command to run (e.g., 'node', 'python', 'npx'). Optional if Docker Image is set (will use image's default CMD).
 
 Optional:
 
 - `arguments` (List of String) Arguments to pass to the command
-- `docker_image` (String) Docker image to use for running the MCP server
-- `environment` (Map of String) Environment variables for the MCP server
-- `http_path` (String) HTTP path for SSE transport (e.g., '/sse')
-- `http_port` (Number) HTTP port for SSE transport
-- `transport_type` (String) Transport type: 'stdio' or 'sse'. Defaults to 'stdio'
+- `docker_image` (String) Custom Docker image URL. If not specified, Archestra's default base image will be used.
+- `environment` (Map of String) Environment variables for the MCP server (KEY=value format)
+- `http_path` (String) HTTP path for streamable-http transport (e.g., '/sse')
+- `http_port` (Number) HTTP port for streamable-http transport
+- `transport_type` (String) Transport type: 'stdio' or 'streamable-http'. Defaults to 'stdio'

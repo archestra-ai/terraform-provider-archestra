@@ -4,7 +4,7 @@ resource "archestra_mcp_server" "filesystem" {
   description = "MCP server for filesystem operations"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem"
 
-  local_config {
+  local_config = {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/home/user"]
 
@@ -22,7 +22,7 @@ resource "archestra_mcp_server" "github" {
   auth_description     = "Requires a GitHub personal access token"
   installation_command = "npm install -g @modelcontextprotocol/server-github"
 
-  local_config {
+  local_config = {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-github"]
 
@@ -42,16 +42,16 @@ resource "archestra_mcp_server" "github" {
   ]
 }
 
-# Local MCP server with SSE transport
+# Local MCP server with streamable-http transport
 resource "archestra_mcp_server" "web_search" {
   name        = "web-search-mcp-server"
   description = "MCP server for web search using Brave Search API"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search"
 
-  local_config {
+  local_config = {
     command        = "node"
     arguments      = ["dist/index.js"]
-    transport_type = "sse"
+    transport_type = "streamable-http"
     http_port      = 3000
     http_path      = "/sse"
   }
@@ -73,7 +73,7 @@ resource "archestra_mcp_server" "postgres" {
   description = "MCP server for PostgreSQL database operations"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/postgres"
 
-  local_config {
+  local_config = {
     command      = "npx"
     arguments    = ["-y", "@modelcontextprotocol/server-postgres"]
     docker_image = "postgres:16-alpine"

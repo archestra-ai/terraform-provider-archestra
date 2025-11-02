@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"net/http"
+	"os"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -95,17 +96,25 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 	// with Terraform configuration value if set.
 
 	if baseURL == "" {
-		baseURL = "http://localhost:9000"
+		if envBaseURL := os.Getenv("ARCHESTRA_BASE_URL"); envBaseURL != "" {
+			baseURL = envBaseURL
+		} else {
+			baseURL = "http://localhost:9000"
+		}
 	}
 
 	if apiKey == "" {
-		resp.Diagnostics.AddAttributeError(
-			path.Root("api_key"),
-			"Missing Archestra API Key",
-			"The provider cannot create the Archestra API client as there is a missing or empty value for the Archestra API key. "+
-				"Set the api_key value in the configuration or use the ARCHESTRA_API_KEY environment variable. "+
-				"If either is already set, ensure the value is not empty.",
-		)
+		if envAPIKey := os.Getenv("ARCHESTRA_API_KEY"); envAPIKey != "" {
+			apiKey = envAPIKey
+		} else {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("api_key"),
+				"Missing Archestra API Key",
+				"The provider cannot create the Archestra API client as there is a missing or empty value for the Archestra API key. "+
+					"Set the api_key value in the configuration or use the ARCHESTRA_API_KEY environment variable. "+
+					"If either is already set, ensure the value is not empty.",
+			)
+		}
 	}
 
 	if resp.Diagnostics.HasError() {

@@ -95,11 +95,11 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 				Optional:            true,
 			},
 			"local_config": schema.SingleNestedAttribute{
-				MarkdownDescription: "Configuration for local MCP servers (stdio or SSE transport)",
+				MarkdownDescription: "Configuration for MCP servers run in the Archestra orchestrator MCP runtime",
 				Optional:            true,
 				Attributes: map[string]schema.Attribute{
 					"command": schema.StringAttribute{
-						MarkdownDescription: "Command to run the MCP server (e.g., 'node', 'python', 'npx')",
+						MarkdownDescription: "The executable command to run (e.g., 'node', 'python', 'npx'). Optional if Docker Image is set (will use image's default CMD).",
 						Required:            true,
 					},
 					"arguments": schema.ListAttribute{
@@ -108,27 +108,27 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 						ElementType:         types.StringType,
 					},
 					"environment": schema.MapAttribute{
-						MarkdownDescription: "Environment variables for the MCP server",
+						MarkdownDescription: "Environment variables for the MCP server (KEY=value format)",
 						Optional:            true,
 						ElementType:         types.StringType,
 					},
 					"docker_image": schema.StringAttribute{
-						MarkdownDescription: "Docker image to use for running the MCP server",
+						MarkdownDescription: "Custom Docker image URL. If not specified, Archestra's default base image will be used.",
 						Optional:            true,
 					},
 					"transport_type": schema.StringAttribute{
-						MarkdownDescription: "Transport type: 'stdio' or 'sse'. Defaults to 'stdio'",
+						MarkdownDescription: "Transport type: 'stdio' or 'streamable-http'. Defaults to 'stdio'",
 						Optional:            true,
 						Validators: []validator.String{
-							stringvalidator.OneOf("stdio", "sse"),
+							stringvalidator.OneOf("stdio", "streamable-http"),
 						},
 					},
 					"http_port": schema.Int64Attribute{
-						MarkdownDescription: "HTTP port for SSE transport",
+						MarkdownDescription: "HTTP port for streamable-http transport",
 						Optional:            true,
 					},
 					"http_path": schema.StringAttribute{
-						MarkdownDescription: "HTTP path for SSE transport (e.g., '/sse')",
+						MarkdownDescription: "HTTP path for streamable-http transport (e.g., '/sse')",
 						Optional:            true,
 					},
 				},
@@ -222,15 +222,19 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		}
 
 		lcStruct := struct {
-			Arguments     []string                                                             `json:"arguments"`
-			Command       string                                                               `json:"command"`
+			Arguments     *[]string                                                            `json:"arguments,omitempty"`
+			Command       *string                                                              `json:"command,omitempty"`
 			DockerImage   *string                                                              `json:"dockerImage,omitempty"`
 			Environment   *map[string]string                                                   `json:"environment,omitempty"`
 			HttpPath      *string                                                              `json:"httpPath,omitempty"`
 			HttpPort      *float32                                                             `json:"httpPort,omitempty"`
 			TransportType *client.CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
-		}{
-			Command: localConfig.Command.ValueString(),
+		}{}
+
+		// Command
+		if !localConfig.Command.IsNull() {
+			cmd := localConfig.Command.ValueString()
+			lcStruct.Command = &cmd
 		}
 
 		// Arguments
@@ -240,7 +244,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 			if resp.Diagnostics.HasError() {
 				return
 			}
-			lcStruct.Arguments = args
+			lcStruct.Arguments = &args
 		}
 
 		// Environment
@@ -393,7 +397,7 @@ func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadR
 	// Map LocalConfig from API response if present
 	if apiResp.JSON200.LocalConfig != nil {
 		localConfigObj := map[string]attr.Value{
-			"command":        types.StringValue(apiResp.JSON200.LocalConfig.Command),
+			"command":        types.StringNull(),
 			"arguments":      types.ListNull(types.StringType),
 			"environment":    types.MapNull(types.StringType),
 			"docker_image":   types.StringNull(),
@@ -402,10 +406,15 @@ func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadR
 			"http_path":      types.StringNull(),
 		}
 
+		// Command
+		if apiResp.JSON200.LocalConfig.Command != nil {
+			localConfigObj["command"] = types.StringValue(*apiResp.JSON200.LocalConfig.Command)
+		}
+
 		// Arguments
-		if len(apiResp.JSON200.LocalConfig.Arguments) > 0 {
-			argValues := make([]attr.Value, len(apiResp.JSON200.LocalConfig.Arguments))
-			for i, arg := range apiResp.JSON200.LocalConfig.Arguments {
+		if apiResp.JSON200.LocalConfig.Arguments != nil && len(*apiResp.JSON200.LocalConfig.Arguments) > 0 {
+			argValues := make([]attr.Value, len(*apiResp.JSON200.LocalConfig.Arguments))
+			for i, arg := range *apiResp.JSON200.LocalConfig.Arguments {
 				argValues[i] = types.StringValue(arg)
 			}
 			localConfigObj["arguments"], _ = types.ListValue(types.StringType, argValues)
@@ -543,15 +552,19 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		}
 
 		lcStruct := struct {
-			Arguments     []string                                                             `json:"arguments"`
-			Command       string                                                               `json:"command"`
+			Arguments     *[]string                                                            `json:"arguments,omitempty"`
+			Command       *string                                                              `json:"command,omitempty"`
 			DockerImage   *string                                                              `json:"dockerImage,omitempty"`
 			Environment   *map[string]string                                                   `json:"environment,omitempty"`
 			HttpPath      *string                                                              `json:"httpPath,omitempty"`
 			HttpPort      *float32                                                             `json:"httpPort,omitempty"`
 			TransportType *client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
-		}{
-			Command: localConfig.Command.ValueString(),
+		}{}
+
+		// Command
+		if !localConfig.Command.IsNull() {
+			cmd := localConfig.Command.ValueString()
+			lcStruct.Command = &cmd
 		}
 
 		// Arguments
@@ -561,7 +574,7 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 			if resp.Diagnostics.HasError() {
 				return
 			}
-			lcStruct.Arguments = args
+			lcStruct.Arguments = &args
 		}
 
 		// Environment
