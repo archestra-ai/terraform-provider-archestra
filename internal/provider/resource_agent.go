@@ -204,7 +204,20 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
 	// Map labels from API response, preserving existing state order
-	data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	// During import, data.Labels will be empty, so we'll just map them directly
+	if len(data.Labels) == 0 {
+		// This is likely an import, so map API labels directly
+		data.Labels = make([]AgentLabelModel, len(apiResp.JSON200.Labels))
+		for i, label := range apiResp.JSON200.Labels {
+			data.Labels[i] = AgentLabelModel{
+				Key:   types.StringValue(label.Key),
+				Value: types.StringValue(label.Value),
+			}
+		}
+	} else {
+		// This is a normal read, preserve configuration order
+		data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
