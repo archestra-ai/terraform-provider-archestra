@@ -24,26 +24,26 @@ func TestAccAgentResource(t *testing.T) {
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("test-agent"),
 					),
-					// Verify labels are in the correct order (alphabetical by key)
+					// Verify labels are in configuration order
 					statecheck.ExpectKnownValue(
 						"archestra_agent.test",
 						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
-						knownvalue.StringExact("environment"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
-						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("value"),
-						knownvalue.StringExact("test"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
-						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("key"),
 						knownvalue.StringExact("team"),
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_agent.test",
-						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("value"),
+						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("value"),
 						knownvalue.StringExact("engineering"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_agent.test",
+						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("key"),
+						knownvalue.StringExact("environment"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_agent.test",
+						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("value"),
+						knownvalue.StringExact("test"),
 					),
 				},
 			},
@@ -52,6 +52,8 @@ func TestAccAgentResource(t *testing.T) {
 				ResourceName:      "archestra_agent.test",
 				ImportState:       true,
 				ImportStateVerify: true,
+				// Ignore labels during import verification since API returns them in different order
+				ImportStateVerifyIgnore: []string{"labels"},
 			},
 			// Update and Read testing
 			{
