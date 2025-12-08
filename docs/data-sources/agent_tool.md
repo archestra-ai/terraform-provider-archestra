@@ -8,7 +8,9 @@ description: |-
 
 # archestra_agent_tool (Data Source)
 
-Fetches an agent tool by agent ID and tool name. This data source is useful for looking up the agent_tool_id needed to create trusted data policies and tool invocation policies.
+~> **Deprecated** Use [archestra_profile_tool](profile_tool.md) instead.
+
+Fetches an agent tool by agent ID and tool name. This data source is useful for looking up the `agent_tool_id` needed to create trusted data policies and tool invocation policies.
 
 ## Example Usage
 

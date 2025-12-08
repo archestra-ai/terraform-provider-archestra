@@ -16,53 +16,58 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &AgentResource{}
-var _ resource.ResourceWithImportState = &AgentResource{}
+var _ resource.Resource = &ProfileResource{}
+var _ resource.ResourceWithImportState = &ProfileResource{}
 
-func NewAgentResource() resource.Resource {
-	return &AgentResource{}
+func NewProfileResource() resource.Resource {
+	return &ProfileResource{}
 }
 
-// AgentResource defines the resource implementation.
-type AgentResource struct {
+// ProfileResource defines the resource implementation.
+type ProfileResource struct {
 	client *client.ClientWithResponses
+	Legacy bool
 }
 
-// AgentLabelModel describes a label data model.
-type AgentLabelModel struct {
+// ProfileLabelModel describes a label data model.
+type ProfileLabelModel struct {
 	Key   types.String `tfsdk:"key"`
 	Value types.String `tfsdk:"value"`
 }
 
-// AgentResourceModel describes the resource data model.
-type AgentResourceModel struct {
+// ProfileResourceModel describes the resource data model.
+type ProfileResourceModel struct {
 	ID     types.String      `tfsdk:"id"`
 	Name   types.String      `tfsdk:"name"`
-	Labels []AgentLabelModel `tfsdk:"labels"`
+	Labels []ProfileLabelModel `tfsdk:"labels"`
 }
 
-func (r *AgentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_agent"
+func (r *ProfileResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	if r.Legacy {
+		resp.TypeName = req.ProviderTypeName + "_agent"
+	} else {
+		resp.TypeName = req.ProviderTypeName + "_profile"
+	}
 }
 
-func (r *AgentResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *ProfileResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an Archestra agent.",
+		MarkdownDescription: "Manages an Archestra profile (formerly agent).",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "Agent identifier",
+				MarkdownDescription: "Profile identifier",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "The name of the agent",
+				MarkdownDescription: "The name of the profile",
 				Required:            true,
 			},
 			"labels": schema.ListNestedAttribute{
-				MarkdownDescription: "Labels to organize and identify the agent",
+				MarkdownDescription: "Labels to organize and identify the profile",
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -79,9 +84,14 @@ func (r *AgentResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 			},
 		},
 	}
+
+	if r.Legacy {
+		resp.Schema.DeprecationMessage = "This resource is deprecated. Please use archestra_profile instead."
+		resp.Schema.MarkdownDescription = "Manages an Archestra agent (deprecated: use archestra_profile)."
+	}
 }
 
-func (r *AgentResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *ProfileResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -100,8 +110,8 @@ func (r *AgentResource) Configure(ctx context.Context, req resource.ConfigureReq
 	r.client = client
 }
 
-func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data AgentResourceModel
+func (r *ProfileResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data ProfileResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -137,9 +147,10 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 
 	// Call API
+	// Note: We are still using the "Agent" API endpoints as the underlying service likely hasn't renamed them yet.
 	apiResp, err := r.client.CreateAgentWithResponse(ctx, requestBody)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create agent, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create profile, got error: %s", err))
 		return
 	}
 
@@ -162,8 +173,8 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data AgentResourceModel
+func (r *ProfileResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data ProfileResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -174,14 +185,14 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	// Parse UUID from state
 	agentID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse agent ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse profile ID: %s", err))
 		return
 	}
 
 	// Call API
 	apiResp, err := r.client.GetAgentWithResponse(ctx, agentID)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read agent, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read profile, got error: %s", err))
 		return
 	}
 
@@ -209,8 +220,8 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data AgentResourceModel
+func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data ProfileResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -221,7 +232,7 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	// Parse UUID from state
 	agentID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse agent ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse profile ID: %s", err))
 		return
 	}
 
@@ -255,7 +266,7 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	// Call API
 	apiResp, err := r.client.UpdateAgentWithResponse(ctx, agentID, requestBody)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update agent, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update profile, got error: %s", err))
 		return
 	}
 
@@ -277,8 +288,8 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AgentResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data AgentResourceModel
+func (r *ProfileResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data ProfileResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -289,14 +300,14 @@ func (r *AgentResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 	// Parse UUID from state
 	agentID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse agent ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse profile ID: %s", err))
 		return
 	}
 
 	// Call API
 	apiResp, err := r.client.DeleteAgentWithResponse(ctx, agentID)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete agent, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete profile, got error: %s", err))
 		return
 	}
 
@@ -310,18 +321,18 @@ func (r *AgentResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 	}
 }
 
-func (r *AgentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *ProfileResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
 // mapLabelsToConfigurationOrder maps API response labels back to the configuration order
 // to ensure Terraform doesn't detect false changes due to API reordering.
-func (r *AgentResource) mapLabelsToConfigurationOrder(configLabels []AgentLabelModel, apiLabels []struct {
+func (r *ProfileResource) mapLabelsToConfigurationOrder(configLabels []ProfileLabelModel, apiLabels []struct {
 	Key     string              `json:"key"`
 	KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
 	Value   string              `json:"value"`
 	ValueId *openapi_types.UUID `json:"valueId,omitempty"`
-}) []AgentLabelModel {
+}) []ProfileLabelModel {
 	// Create a map of API labels for quick lookup
 	apiLabelMap := make(map[string]string)
 	for _, label := range apiLabels {
@@ -329,11 +340,11 @@ func (r *AgentResource) mapLabelsToConfigurationOrder(configLabels []AgentLabelM
 	}
 
 	// Build result preserving configuration order
-	result := make([]AgentLabelModel, len(configLabels))
+	result := make([]ProfileLabelModel, len(configLabels))
 	for i, configLabel := range configLabels {
 		key := configLabel.Key.ValueString()
 		if apiValue, exists := apiLabelMap[key]; exists {
-			result[i] = AgentLabelModel{
+			result[i] = ProfileLabelModel{
 				Key:   types.StringValue(key),
 				Value: types.StringValue(apiValue),
 			}

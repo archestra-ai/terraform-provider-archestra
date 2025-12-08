@@ -1,10 +1,10 @@
-data "archestra_agent_tool" "fetch_url" {
+data "archestra_profile_tool" "fetch_url" {
   agent_id  = "agent-id-here"
   tool_name = "fetch_url"
 }
 
 resource "archestra_trusted_data_policy" "trust_company_api" {
-  agent_tool_id  = data.archestra_agent_tool.fetch_url.id
+  profile_tool_id  = data.archestra_profile_tool.fetch_url.id
   description    = "Mark data from company API as trusted"
   attribute_path = "url"
   operator       = "contains"

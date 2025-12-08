@@ -1,4 +1,4 @@
-resource "archestra_agent" "example" {
+resource "archestra_profile" "example" {
   name = "production-agent"
 
   labels = [

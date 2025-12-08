@@ -148,7 +148,8 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 
 func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewAgentResource,
+		NewProfileResource,
+		NewAgentResource, // Deprecated
 		NewMCPServerResource,
 		NewMCPServerRegistryResource,
 		NewTrustedDataPolicyResource,
@@ -162,9 +163,20 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 	return []func() datasource.DataSource{
 		NewTeamDataSource,
 		// NewUserDataSource, // TODO: Enable when user API endpoints are implemented
-		NewAgentToolDataSource,
+		NewProfileToolDataSource,
+		NewAgentToolDataSource, // Deprecated
 		NewMCPServerToolDataSource,
 	}
+}
+
+// Deprecated: Use NewProfileResource instead.
+func NewAgentResource() resource.Resource {
+	return &ProfileResource{Legacy: true}
+}
+
+// Deprecated: Use NewProfileToolDataSource instead.
+func NewAgentToolDataSource() datasource.DataSource {
+	return &ProfileToolDataSource{Legacy: true}
 }
 
 func New(version string) func() provider.Provider {
