@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+// Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &TokenPriceResource{}
 var _ resource.ResourceWithImportState = &TokenPriceResource{}
 
@@ -21,10 +22,12 @@ func NewTokenPriceResource() resource.Resource {
 	return &TokenPriceResource{}
 }
 
+// TokenPriceResource defines the resource implementation.
 type TokenPriceResource struct {
 	client *client.ClientWithResponses
 }
 
+// TokenPriceResourceModel describes the resource data model.
 type TokenPriceResourceModel struct {
 	ID                    types.String `tfsdk:"id"`
 	Model                 types.String `tfsdk:"model"`
@@ -38,8 +41,7 @@ func (r *TokenPriceResource) Metadata(ctx context.Context, req resource.Metadata
 
 func (r *TokenPriceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages token pricing configuration for LLM models in Archestra. " +
-			"Token prices are used for cost tracking and optimization features.",
+		MarkdownDescription: "Manages token pricing for LLM models in Archestra.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -50,15 +52,15 @@ func (r *TokenPriceResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"model": schema.StringAttribute{
-				MarkdownDescription: "The model name (e.g., 'gpt-4o', 'claude-3-opus-20240229')",
+				MarkdownDescription: "The model name",
 				Required:            true,
 			},
 			"price_per_million_input": schema.StringAttribute{
-				MarkdownDescription: "Price per million input tokens (e.g., '2.50' for $2.50)",
+				MarkdownDescription: "Price per million input tokens",
 				Required:            true,
 			},
 			"price_per_million_output": schema.StringAttribute{
-				MarkdownDescription: "Price per million output tokens (e.g., '10.00' for $10.00)",
+				MarkdownDescription: "Price per million output tokens",
 				Required:            true,
 			},
 		},
@@ -84,7 +86,9 @@ func (r *TokenPriceResource) Configure(ctx context.Context, req resource.Configu
 
 func (r *TokenPriceResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data TokenPriceResourceModel
+
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -119,7 +123,9 @@ func (r *TokenPriceResource) Create(ctx context.Context, req resource.CreateRequ
 
 func (r *TokenPriceResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var data TokenPriceResourceModel
+
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -158,7 +164,9 @@ func (r *TokenPriceResource) Read(ctx context.Context, req resource.ReadRequest,
 
 func (r *TokenPriceResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data TokenPriceResourceModel
+
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -202,7 +210,9 @@ func (r *TokenPriceResource) Update(ctx context.Context, req resource.UpdateRequ
 
 func (r *TokenPriceResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data TokenPriceResourceModel
+
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+
 	if resp.Diagnostics.HasError() {
 		return
 	}

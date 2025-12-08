@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+// Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &OptimizationRuleResource{}
 var _ resource.ResourceWithImportState = &OptimizationRuleResource{}
 
@@ -23,6 +24,7 @@ func NewOptimizationRuleResource() resource.Resource {
 	return &OptimizationRuleResource{}
 }
 
+// OptimizationRuleResource defines the resource implementation.
 type OptimizationRuleResource struct {
 	client *client.ClientWithResponses
 }
@@ -33,6 +35,7 @@ type OptimizationRuleConditionModel struct {
 	HasTools  types.Bool  `tfsdk:"has_tools"`
 }
 
+// OptimizationRuleResourceModel describes the resource data model.
 type OptimizationRuleResourceModel struct {
 	ID          types.String `tfsdk:"id"`
 	EntityType  types.String `tfsdk:"entity_type"`
@@ -57,11 +60,7 @@ func (r *OptimizationRuleResource) Metadata(ctx context.Context, req resource.Me
 
 func (r *OptimizationRuleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages cost optimization rules in Archestra. Optimization rules automatically " +
-			"switch to cheaper models based on conditions like content length or tool presence.\n\n" +
-			"**Note**: This resource requires the optimization rules API endpoints to be available in the " +
-			"generated API client. If you receive an error about API client limitations, run " +
-			"`make codegen-api-client` with the Archestra backend running.",
+		MarkdownDescription: "Manages cost optimization rules in Archestra.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -72,48 +71,45 @@ func (r *OptimizationRuleResource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"entity_type": schema.StringAttribute{
-				MarkdownDescription: "The type of entity: 'organization', 'team', or 'agent'",
+				MarkdownDescription: "Entity type: organization, team, or agent",
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("organization", "team", "agent"),
 				},
 			},
 			"entity_id": schema.StringAttribute{
-				MarkdownDescription: "The ID of the entity this rule applies to",
+				MarkdownDescription: "Entity ID this rule applies to",
 				Required:            true,
 			},
 			"llm_provider": schema.StringAttribute{
-				MarkdownDescription: "The LLM provider: 'openai', 'anthropic', or 'gemini'",
+				MarkdownDescription: "LLM provider: openai, anthropic, or gemini",
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("openai", "anthropic", "gemini"),
 				},
 			},
 			"target_model": schema.StringAttribute{
-				MarkdownDescription: "The cheaper model to switch to when conditions are met",
+				MarkdownDescription: "Target model to switch to",
 				Required:            true,
 			},
 			"enabled": schema.BoolAttribute{
-				MarkdownDescription: "Whether this optimization rule is enabled",
+				MarkdownDescription: "Whether the rule is enabled",
 				Optional:            true,
 				Computed:            true,
 				Default:             booldefault.StaticBool(true),
 			},
 			"conditions": schema.ListNestedAttribute{
-				MarkdownDescription: "List of conditions that trigger the optimization. " +
-					"Each condition can specify either max_length (for content length) or has_tools (for tool presence).",
-				Required: true,
+				MarkdownDescription: "Conditions that trigger the optimization",
+				Required:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"max_length": schema.Int64Attribute{
-							MarkdownDescription: "Maximum token length to trigger switching to cheaper model. " +
-								"If the request is shorter than this, the cheaper model will be used.",
-							Optional: true,
+							MarkdownDescription: "Maximum token length threshold",
+							Optional:            true,
 						},
 						"has_tools": schema.BoolAttribute{
-							MarkdownDescription: "Whether tools are present. " +
-								"If false, requests without tools will use the cheaper model.",
-							Optional: true,
+							MarkdownDescription: "Whether tools are present",
+							Optional:            true,
 						},
 					},
 				},

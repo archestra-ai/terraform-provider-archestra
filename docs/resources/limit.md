@@ -3,15 +3,12 @@
 page_title: "archestra_limit Resource - archestra"
 subcategory: ""
 description: |-
-  Manages usage limits in Archestra. Limits can be set for organizations, teams, or agents to control token costs, tool calls, or MCP server calls.
-  Note: The model field is currently limited to a single model string due to the generated API client. The backend API actually supports an array of models. This will be resolved when the API client is regenerated.
+  Manages usage limits in Archestra.
 ---
 
 # archestra_limit (Resource)
 
-Manages usage limits in Archestra. Limits can be set for organizations, teams, or agents to control token costs, tool calls, or MCP server calls.
-
-**Note**: The `model` field is currently limited to a single model string due to the generated API client. The backend API actually supports an array of models. This will be resolved when the API client is regenerated.
+Manages usage limits in Archestra.
 
 ## Example Usage
 
@@ -50,16 +47,16 @@ resource "archestra_limit" "tool_limit" {
 
 ### Required
 
-- `entity_id` (String) The ID of the entity (organization, team, or agent) this limit applies to
-- `entity_type` (String) The type of entity: 'organization', 'team', or 'agent'
-- `limit_type` (String) The type of limit: 'token_cost', 'tool_calls', or 'mcp_server_calls'
-- `limit_value` (Number) The limit threshold value
+- `entity_id` (String) The entity ID this limit applies to
+- `entity_type` (String) Entity type: organization, team, or agent
+- `limit_type` (String) Limit type: token_cost, tool_calls, or mcp_server_calls
+- `limit_value` (Number) Limit threshold value
 
 ### Optional
 
-- `mcp_server_name` (String) Optional: Specific MCP server this limit applies to (for mcp_server_calls limits)
-- `model` (String) Optional: Specific model this limit applies to (for token_cost limits)
-- `tool_name` (String) Optional: Specific tool this limit applies to (for tool_calls limits)
+- `mcp_server_name` (String) MCP server this limit applies to
+- `model` (String) Model this limit applies to (for token_cost limits)
+- `tool_name` (String) Tool this limit applies to (for tool_calls limits)
 
 ### Read-Only
 

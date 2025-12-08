@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+// Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &LimitResource{}
 var _ resource.ResourceWithImportState = &LimitResource{}
 
@@ -23,10 +24,12 @@ func NewLimitResource() resource.Resource {
 	return &LimitResource{}
 }
 
+// LimitResource defines the resource implementation.
 type LimitResource struct {
 	client *client.ClientWithResponses
 }
 
+// LimitResourceModel describes the resource data model.
 type LimitResourceModel struct {
 	ID            types.String `tfsdk:"id"`
 	EntityID      types.String `tfsdk:"entity_id"`
@@ -44,10 +47,7 @@ func (r *LimitResource) Metadata(ctx context.Context, req resource.MetadataReque
 
 func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages usage limits in Archestra. Limits can be set for organizations, teams, or agents " +
-			"to control token costs, tool calls, or MCP server calls.\n\n" +
-			"**Note**: The `model` field is currently limited to a single model string due to the generated API client. " +
-			"The backend API actually supports an array of models. This will be resolved when the API client is regenerated.",
+		MarkdownDescription: "Manages usage limits in Archestra.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -58,37 +58,37 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				},
 			},
 			"entity_id": schema.StringAttribute{
-				MarkdownDescription: "The ID of the entity (organization, team, or agent) this limit applies to",
+				MarkdownDescription: "The entity ID this limit applies to",
 				Required:            true,
 			},
 			"entity_type": schema.StringAttribute{
-				MarkdownDescription: "The type of entity: 'organization', 'team', or 'agent'",
+				MarkdownDescription: "Entity type: organization, team, or agent",
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("organization", "team", "agent"),
 				},
 			},
 			"limit_type": schema.StringAttribute{
-				MarkdownDescription: "The type of limit: 'token_cost', 'tool_calls', or 'mcp_server_calls'",
+				MarkdownDescription: "Limit type: token_cost, tool_calls, or mcp_server_calls",
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("token_cost", "tool_calls", "mcp_server_calls"),
 				},
 			},
 			"limit_value": schema.Int64Attribute{
-				MarkdownDescription: "The limit threshold value",
+				MarkdownDescription: "Limit threshold value",
 				Required:            true,
 			},
 			"model": schema.StringAttribute{
-				MarkdownDescription: "Optional: Specific model this limit applies to (for token_cost limits)",
+				MarkdownDescription: "Model this limit applies to (for token_cost limits)",
 				Optional:            true,
 			},
 			"tool_name": schema.StringAttribute{
-				MarkdownDescription: "Optional: Specific tool this limit applies to (for tool_calls limits)",
+				MarkdownDescription: "Tool this limit applies to (for tool_calls limits)",
 				Optional:            true,
 			},
 			"mcp_server_name": schema.StringAttribute{
-				MarkdownDescription: "Optional: Specific MCP server this limit applies to (for mcp_server_calls limits)",
+				MarkdownDescription: "MCP server this limit applies to",
 				Optional:            true,
 			},
 		},
@@ -114,7 +114,9 @@ func (r *LimitResource) Configure(ctx context.Context, req resource.ConfigureReq
 
 func (r *LimitResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data LimitResourceModel
+
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -175,7 +177,9 @@ func (r *LimitResource) Create(ctx context.Context, req resource.CreateRequest, 
 
 func (r *LimitResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var data LimitResourceModel
+
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -231,7 +235,9 @@ func (r *LimitResource) Read(ctx context.Context, req resource.ReadRequest, resp
 
 func (r *LimitResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data LimitResourceModel
+
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -302,7 +308,9 @@ func (r *LimitResource) Update(ctx context.Context, req resource.UpdateRequest, 
 
 func (r *LimitResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data LimitResourceModel
+
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+
 	if resp.Diagnostics.HasError() {
 		return
 	}

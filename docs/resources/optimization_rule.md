@@ -3,15 +3,12 @@
 page_title: "archestra_optimization_rule Resource - archestra"
 subcategory: ""
 description: |-
-  Manages cost optimization rules in Archestra. Optimization rules automatically switch to cheaper models based on conditions like content length or tool presence.
-  Note: This resource requires the optimization rules API endpoints to be available in the generated API client. If you receive an error about API client limitations, run make codegen-api-client with the Archestra backend running.
+  Manages cost optimization rules in Archestra.
 ---
 
 # archestra_optimization_rule (Resource)
 
-Manages cost optimization rules in Archestra. Optimization rules automatically switch to cheaper models based on conditions like content length or tool presence.
-
-**Note**: This resource requires the optimization rules API endpoints to be available in the generated API client. If you receive an error about API client limitations, run `make codegen-api-client` with the Archestra backend running.
+Manages cost optimization rules in Archestra.
 
 ## Example Usage
 
@@ -85,15 +82,15 @@ resource "archestra_optimization_rule" "agent_optimization" {
 
 ### Required
 
-- `conditions` (Attributes List) List of conditions that trigger the optimization. Each condition can specify either max_length (for content length) or has_tools (for tool presence). (see [below for nested schema](#nestedatt--conditions))
-- `entity_id` (String) The ID of the entity this rule applies to
-- `entity_type` (String) The type of entity: 'organization', 'team', or 'agent'
-- `llm_provider` (String) The LLM provider: 'openai', 'anthropic', or 'gemini'
-- `target_model` (String) The cheaper model to switch to when conditions are met
+- `conditions` (Attributes List) Conditions that trigger the optimization (see [below for nested schema](#nestedatt--conditions))
+- `entity_id` (String) Entity ID this rule applies to
+- `entity_type` (String) Entity type: organization, team, or agent
+- `llm_provider` (String) LLM provider: openai, anthropic, or gemini
+- `target_model` (String) Target model to switch to
 
 ### Optional
 
-- `enabled` (Boolean) Whether this optimization rule is enabled
+- `enabled` (Boolean) Whether the rule is enabled
 
 ### Read-Only
 
@@ -104,5 +101,5 @@ resource "archestra_optimization_rule" "agent_optimization" {
 
 Optional:
 
-- `has_tools` (Boolean) Whether tools are present. If false, requests without tools will use the cheaper model.
-- `max_length` (Number) Maximum token length to trigger switching to cheaper model. If the request is shorter than this, the cheaper model will be used.
+- `has_tools` (Boolean) Whether tools are present
+- `max_length` (Number) Maximum token length threshold

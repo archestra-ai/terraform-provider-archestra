@@ -10,16 +10,19 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
+// Ensure provider defined types fully satisfy framework interfaces.
 var _ datasource.DataSource = &TokenPricesDataSource{}
 
 func NewTokenPricesDataSource() datasource.DataSource {
 	return &TokenPricesDataSource{}
 }
 
+// TokenPricesDataSource defines the data source implementation.
 type TokenPricesDataSource struct {
 	client *client.ClientWithResponses
 }
 
+// TokenPriceModel describes a single token price entry.
 type TokenPriceModel struct {
 	ID                    types.String `tfsdk:"id"`
 	Model                 types.String `tfsdk:"model"`
@@ -27,6 +30,7 @@ type TokenPriceModel struct {
 	PricePerMillionOutput types.String `tfsdk:"price_per_million_output"`
 }
 
+// TokenPricesDataSourceModel describes the data source data model.
 type TokenPricesDataSourceModel struct {
 	TokenPrices []TokenPriceModel `tfsdk:"token_prices"`
 }
@@ -37,12 +41,11 @@ func (d *TokenPricesDataSource) Metadata(ctx context.Context, req datasource.Met
 
 func (d *TokenPricesDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Fetches all configured token prices from Archestra. " +
-			"Use this data source to look up existing token pricing configuration for different models.",
+		MarkdownDescription: "Fetches all token prices from Archestra.",
 
 		Attributes: map[string]schema.Attribute{
 			"token_prices": schema.ListNestedAttribute{
-				MarkdownDescription: "List of all configured token prices",
+				MarkdownDescription: "List of token prices",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -51,15 +54,15 @@ func (d *TokenPricesDataSource) Schema(ctx context.Context, req datasource.Schem
 							Computed:            true,
 						},
 						"model": schema.StringAttribute{
-							MarkdownDescription: "The model name (e.g., 'gpt-4o', 'claude-3-opus-20240229')",
+							MarkdownDescription: "The model name",
 							Computed:            true,
 						},
 						"price_per_million_input": schema.StringAttribute{
-							MarkdownDescription: "Price per million input tokens in USD",
+							MarkdownDescription: "Price per million input tokens",
 							Computed:            true,
 						},
 						"price_per_million_output": schema.StringAttribute{
-							MarkdownDescription: "Price per million output tokens in USD",
+							MarkdownDescription: "Price per million output tokens",
 							Computed:            true,
 						},
 					},
@@ -78,7 +81,7 @@ func (d *TokenPricesDataSource) Configure(ctx context.Context, req datasource.Co
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected *client.ClientWithResponses, got: %T", req.ProviderData),
+			fmt.Sprintf("Expected *client.ClientWithResponses, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 		return
 	}

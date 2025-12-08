@@ -3,12 +3,12 @@
 page_title: "archestra_token_price Resource - archestra"
 subcategory: ""
 description: |-
-  Manages token pricing configuration for LLM models in Archestra. Token prices are used for cost tracking and optimization features.
+  Manages token pricing for LLM models in Archestra.
 ---
 
 # archestra_token_price (Resource)
 
-Manages token pricing configuration for LLM models in Archestra. Token prices are used for cost tracking and optimization features.
+Manages token pricing for LLM models in Archestra.
 
 ## Example Usage
 
@@ -40,9 +40,9 @@ resource "archestra_token_price" "gpt4o_mini" {
 
 ### Required
 
-- `model` (String) The model name (e.g., 'gpt-4o', 'claude-3-opus-20240229')
-- `price_per_million_input` (String) Price per million input tokens (e.g., '2.50' for $2.50)
-- `price_per_million_output` (String) Price per million output tokens (e.g., '10.00' for $10.00)
+- `model` (String) The model name
+- `price_per_million_input` (String) Price per million input tokens
+- `price_per_million_output` (String) Price per million output tokens
 
 ### Read-Only
 

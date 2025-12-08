@@ -3,12 +3,12 @@
 page_title: "archestra_token_prices Data Source - archestra"
 subcategory: ""
 description: |-
-  Fetches all configured token prices from Archestra. Use this data source to look up existing token pricing configuration for different models.
+  Fetches all token prices from Archestra.
 ---
 
 # archestra_token_prices (Data Source)
 
-Fetches all configured token prices from Archestra. Use this data source to look up existing token pricing configuration for different models.
+Fetches all token prices from Archestra.
 
 ## Example Usage
 
@@ -35,7 +35,7 @@ output "gpt4o_pricing" {
 
 ### Read-Only
 
-- `token_prices` (Attributes List) List of all configured token prices (see [below for nested schema](#nestedatt--token_prices))
+- `token_prices` (Attributes List) List of token prices (see [below for nested schema](#nestedatt--token_prices))
 
 <a id="nestedatt--token_prices"></a>
 ### Nested Schema for `token_prices`
@@ -43,6 +43,6 @@ output "gpt4o_pricing" {
 Read-Only:
 
 - `id` (String) Token price identifier
-- `model` (String) The model name (e.g., 'gpt-4o', 'claude-3-opus-20240229')
-- `price_per_million_input` (String) Price per million input tokens in USD
-- `price_per_million_output` (String) Price per million output tokens in USD
+- `model` (String) The model name
+- `price_per_million_input` (String) Price per million input tokens
+- `price_per_million_output` (String) Price per million output tokens
