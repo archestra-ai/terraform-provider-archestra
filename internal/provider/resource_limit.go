@@ -45,7 +45,9 @@ func (r *LimitResource) Metadata(ctx context.Context, req resource.MetadataReque
 func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Manages usage limits in Archestra. Limits can be set for organizations, teams, or agents " +
-			"to control token costs, tool calls, or MCP server calls.",
+			"to control token costs, tool calls, or MCP server calls.\n\n" +
+			"**Note**: The `model` field is currently limited to a single model string due to the generated API client. " +
+			"The backend API actually supports an array of models. This will be resolved when the API client is regenerated.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

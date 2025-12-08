@@ -1,28 +1,13 @@
-# Organization-wide token cost limit
-resource "archestra_limit" "org_token_limit" {
+# Model-specific token cost limit (required for token_cost type)
+resource "archestra_limit" "model_limit" {
   entity_id   = "your-organization-id"
   entity_type = "organization"
   limit_type  = "token_cost"
-  limit_value = 1000000 # $1,000,000 limit
+  limit_value = 500000
+  model       = "gpt-4o"
 }
 
-# Team-specific token cost limit
-resource "archestra_limit" "team_token_limit" {
-  entity_id   = archestra_team.engineering.id
-  entity_type = "team"
-  limit_type  = "token_cost"
-  limit_value = 100000 # $100,000 limit
-}
-
-# Agent tool calls limit
-resource "archestra_limit" "agent_tool_limit" {
-  entity_id   = archestra_agent.assistant.id
-  entity_type = "agent"
-  limit_type  = "tool_calls"
-  limit_value = 10000 # 10,000 tool calls
-}
-
-# MCP server calls limit for specific server
+# MCP server calls limit (requires mcp_server_name)
 resource "archestra_limit" "mcp_limit" {
   entity_id       = archestra_team.engineering.id
   entity_type     = "team"
@@ -31,11 +16,12 @@ resource "archestra_limit" "mcp_limit" {
   mcp_server_name = "github-mcp"
 }
 
-# Model-specific token cost limit
-resource "archestra_limit" "model_limit" {
-  entity_id   = "your-organization-id"
-  entity_type = "organization"
-  limit_type  = "token_cost"
-  limit_value = 500000
-  model       = "gpt-4o" # Only applies to GPT-4o usage
+# Tool calls limit (requires both mcp_server_name and tool_name)
+resource "archestra_limit" "tool_limit" {
+  entity_id       = archestra_agent.assistant.id
+  entity_type     = "agent"
+  limit_type      = "tool_calls"
+  limit_value     = 10000
+  mcp_server_name = "github-mcp"
+  tool_name       = "list_repos"
 }

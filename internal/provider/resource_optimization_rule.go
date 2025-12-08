@@ -83,8 +83,11 @@ func (r *OptimizationRuleResource) Schema(ctx context.Context, req resource.Sche
 				Required:            true,
 			},
 			"llm_provider": schema.StringAttribute{
-				MarkdownDescription: "The LLM provider (e.g., 'openai', 'anthropic')",
+				MarkdownDescription: "The LLM provider: 'openai', 'anthropic', or 'gemini'",
 				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("openai", "anthropic", "gemini"),
+				},
 			},
 			"target_model": schema.StringAttribute{
 				MarkdownDescription: "The cheaper model to switch to when conditions are met",
