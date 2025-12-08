@@ -6,9 +6,11 @@ resource "archestra_optimization_rule" "short_prompts" {
   target_model = "gpt-4o-mini"
   enabled      = true
 
-  conditions {
-    max_length = 500 # Use cheaper model for prompts under 500 tokens
-  }
+  conditions = [
+    {
+      max_length = 500 # Use cheaper model for prompts under 500 tokens
+    }
+  ]
 }
 
 # Use cheaper model when no tools are needed
@@ -19,9 +21,11 @@ resource "archestra_optimization_rule" "no_tools" {
   target_model = "claude-3-haiku-20240307"
   enabled      = true
 
-  conditions {
-    has_tools = false # Use cheaper model when no tools are present
-  }
+  conditions = [
+    {
+      has_tools = false # Use cheaper model when no tools are present
+    }
+  ]
 }
 
 # Team-specific optimization rule
@@ -32,9 +36,11 @@ resource "archestra_optimization_rule" "team_optimization" {
   target_model = "gpt-4o-mini"
   enabled      = true
 
-  conditions {
-    max_length = 1000
-  }
+  conditions = [
+    {
+      max_length = 1000
+    }
+  ]
 }
 
 # Agent-specific optimization with multiple conditions
@@ -45,11 +51,12 @@ resource "archestra_optimization_rule" "agent_optimization" {
   target_model = "gpt-4o-mini"
   enabled      = true
 
-  conditions {
-    max_length = 200
-  }
-
-  conditions {
-    has_tools = false
-  }
+  conditions = [
+    {
+      max_length = 200
+    },
+    {
+      has_tools = false
+    }
+  ]
 }
