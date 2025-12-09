@@ -41,7 +41,7 @@ resource "archestra_mcp_server_installation" "example" {
 
 ### Required
 
-- `name` (String) The name of the MCP server
+- `name` (String) The name of the MCP server installation.
 
 ### Optional
 
@@ -49,4 +49,5 @@ resource "archestra_mcp_server_installation" "example" {
 
 ### Read-Only
 
+- `display_name` (String) The actual name of the MCP server installation as returned by the API. The API may append a suffix to ensure uniqueness.
 - `id` (String) MCP server identifier
