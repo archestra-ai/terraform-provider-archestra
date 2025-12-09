@@ -98,7 +98,7 @@ func (d *AgentToolDataSource) Read(ctx context.Context, req datasource.ReadReque
 	}
 
 	// Get all agent tools (which includes configuration)
-	toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx)
+	toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx, nil)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read agent tools, got error: %s", err))
 		return
@@ -114,8 +114,8 @@ func (d *AgentToolDataSource) Read(ctx context.Context, req datasource.ReadReque
 	targetToolName := data.ToolName.ValueString()
 
 	var foundIndex = -1
-	for i := range *toolsResp.JSON200 {
-		agentTool := &(*toolsResp.JSON200)[i]
+	for i := range toolsResp.JSON200.Data {
+		agentTool := &toolsResp.JSON200.Data[i]
 		if agentTool.Agent.Id == targetAgentID && agentTool.Tool.Name == targetToolName {
 			foundIndex = i
 			break
@@ -127,7 +127,7 @@ func (d *AgentToolDataSource) Read(ctx context.Context, req datasource.ReadReque
 		return
 	}
 
-	foundTool := (*toolsResp.JSON200)[foundIndex]
+	foundTool := toolsResp.JSON200.Data[foundIndex]
 
 	// Map to state
 	data.ID = types.StringValue(foundTool.Id.String())
