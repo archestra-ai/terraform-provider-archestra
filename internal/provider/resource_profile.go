@@ -37,8 +37,8 @@ type ProfileLabelModel struct {
 
 // ProfileResourceModel describes the resource data model.
 type ProfileResourceModel struct {
-	ID     types.String      `tfsdk:"id"`
-	Name   types.String      `tfsdk:"name"`
+	ID     types.String        `tfsdk:"id"`
+	Name   types.String        `tfsdk:"name"`
 	Labels []ProfileLabelModel `tfsdk:"labels"`
 }
 
