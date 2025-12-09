@@ -222,10 +222,17 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		}
 
 		lcStruct := struct {
-			Arguments     *[]string                                                            `json:"arguments,omitempty"`
-			Command       *string                                                              `json:"command,omitempty"`
-			DockerImage   *string                                                              `json:"dockerImage,omitempty"`
-			Environment   *map[string]string                                                   `json:"environment,omitempty"`
+			Arguments   *[]string `json:"arguments,omitempty"`
+			Command     *string   `json:"command,omitempty"`
+			DockerImage *string   `json:"dockerImage,omitempty"`
+			Environment *[]struct {
+				Description          *string                                                               `json:"description,omitempty"`
+				Key                  string                                                                `json:"key"`
+				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
+				Required             *bool                                                                 `json:"required,omitempty"`
+				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
+				Value                *string                                                               `json:"value,omitempty"`
+			} `json:"environment,omitempty"`
 			HttpPath      *string                                                              `json:"httpPath,omitempty"`
 			HttpPort      *float32                                                             `json:"httpPort,omitempty"`
 			TransportType *client.CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
@@ -247,14 +254,38 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 			lcStruct.Arguments = &args
 		}
 
-		// Environment
+		// Environment - convert map[string]string to new array structure
 		if !localConfig.Environment.IsNull() {
 			var env map[string]string
 			resp.Diagnostics.Append(localConfig.Environment.ElementsAs(ctx, &env, false)...)
 			if resp.Diagnostics.HasError() {
 				return
 			}
-			lcStruct.Environment = &env
+			envSlice := make([]struct {
+				Description          *string                                                               `json:"description,omitempty"`
+				Key                  string                                                                `json:"key"`
+				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
+				Required             *bool                                                                 `json:"required,omitempty"`
+				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
+				Value                *string                                                               `json:"value,omitempty"`
+			}, 0, len(env))
+			for k, v := range env {
+				val := v
+				envSlice = append(envSlice, struct {
+					Description          *string                                                               `json:"description,omitempty"`
+					Key                  string                                                                `json:"key"`
+					PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
+					Required             *bool                                                                 `json:"required,omitempty"`
+					Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
+					Value                *string                                                               `json:"value,omitempty"`
+				}{
+					Key:                  k,
+					Value:                &val,
+					Type:                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypePlainText,
+					PromptOnInstallation: false,
+				})
+			}
+			lcStruct.Environment = &envSlice
 		}
 
 		// Optional fields
@@ -420,11 +451,15 @@ func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadR
 			localConfigObj["arguments"], _ = types.ListValue(types.StringType, argValues)
 		}
 
-		// Environment
-		if apiResp.JSON200.LocalConfig.Environment != nil {
+		// Environment - convert array structure back to map[string]string
+		if apiResp.JSON200.LocalConfig.Environment != nil && len(*apiResp.JSON200.LocalConfig.Environment) > 0 {
 			envMap := make(map[string]attr.Value)
-			for k, v := range *apiResp.JSON200.LocalConfig.Environment {
-				envMap[k] = types.StringValue(v)
+			for _, envVar := range *apiResp.JSON200.LocalConfig.Environment {
+				val := ""
+				if envVar.Value != nil {
+					val = *envVar.Value
+				}
+				envMap[envVar.Key] = types.StringValue(val)
 			}
 			localConfigObj["environment"], _ = types.MapValue(types.StringType, envMap)
 		}
@@ -552,10 +587,17 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		}
 
 		lcStruct := struct {
-			Arguments     *[]string                                                            `json:"arguments,omitempty"`
-			Command       *string                                                              `json:"command,omitempty"`
-			DockerImage   *string                                                              `json:"dockerImage,omitempty"`
-			Environment   *map[string]string                                                   `json:"environment,omitempty"`
+			Arguments   *[]string `json:"arguments,omitempty"`
+			Command     *string   `json:"command,omitempty"`
+			DockerImage *string   `json:"dockerImage,omitempty"`
+			Environment *[]struct {
+				Description          *string                                                               `json:"description,omitempty"`
+				Key                  string                                                                `json:"key"`
+				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
+				Required             *bool                                                                 `json:"required,omitempty"`
+				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
+				Value                *string                                                               `json:"value,omitempty"`
+			} `json:"environment,omitempty"`
 			HttpPath      *string                                                              `json:"httpPath,omitempty"`
 			HttpPort      *float32                                                             `json:"httpPort,omitempty"`
 			TransportType *client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
@@ -577,14 +619,38 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 			lcStruct.Arguments = &args
 		}
 
-		// Environment
+		// Environment - convert map[string]string to new array structure
 		if !localConfig.Environment.IsNull() {
 			var env map[string]string
 			resp.Diagnostics.Append(localConfig.Environment.ElementsAs(ctx, &env, false)...)
 			if resp.Diagnostics.HasError() {
 				return
 			}
-			lcStruct.Environment = &env
+			envSlice := make([]struct {
+				Description          *string                                                               `json:"description,omitempty"`
+				Key                  string                                                                `json:"key"`
+				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
+				Required             *bool                                                                 `json:"required,omitempty"`
+				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
+				Value                *string                                                               `json:"value,omitempty"`
+			}, 0, len(env))
+			for k, v := range env {
+				val := v
+				envSlice = append(envSlice, struct {
+					Description          *string                                                               `json:"description,omitempty"`
+					Key                  string                                                                `json:"key"`
+					PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
+					Required             *bool                                                                 `json:"required,omitempty"`
+					Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
+					Value                *string                                                               `json:"value,omitempty"`
+				}{
+					Key:                  k,
+					Value:                &val,
+					Type:                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypePlainText,
+					PromptOnInstallation: false,
+				})
+			}
+			lcStruct.Environment = &envSlice
 		}
 
 		// Optional fields
