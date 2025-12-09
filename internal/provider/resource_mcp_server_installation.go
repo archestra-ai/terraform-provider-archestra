@@ -49,7 +49,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "The name of the MCP server installation (used as input to the API).",
+				MarkdownDescription: "The name of the MCP server installation.",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
