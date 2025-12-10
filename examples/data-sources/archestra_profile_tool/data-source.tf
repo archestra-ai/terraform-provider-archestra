@@ -1,6 +1,6 @@
 data "archestra_profile_tool" "example" {
-  profile_id  = "profile-id-here"
-  tool_name = "write_file"
+  profile_id = "profile-id-here"
+  tool_name  = "write_file"
 }
 
 output "profile_tool_id" {

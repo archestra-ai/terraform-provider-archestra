@@ -1,6 +1,6 @@
 data "archestra_profile_tool" "fetch_url" {
-  profile_id  = "profile-id-here"
-  tool_name = "fetch_url"
+  profile_id = "profile-id-here"
+  tool_name  = "fetch_url"
 }
 
 resource "archestra_trusted_data_policy" "trust_company_api" {

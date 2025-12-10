@@ -14,8 +14,8 @@ Manages an Archestra tool invocation policy.
 
 ```terraform
 data "archestra_profile_tool" "file_write" {
-  profile_id  = "profile-id-here"
-  tool_name = "write_file"
+  profile_id = "profile-id-here"
+  tool_name  = "write_file"
 }
 
 resource "archestra_tool_invocation_policy" "block_system_paths" {

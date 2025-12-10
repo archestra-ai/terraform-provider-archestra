@@ -186,47 +186,47 @@ resource "archestra_trusted_data_policy" "test" {
 `
 }
 
-func testAccTrustedDataPolicyResourceConfigSanitize() string {
-	return `
-# Create a profile for testing
-resource "archestra_profile" "sanitize" {
-  name = "trusted-data-policy-sanitize-profile"
-}
-
-# Create an MCP server in the registry
-resource "archestra_mcp_server" "sanitize" {
-  name        = "trusted-data-policy-sanitize-server"
-  description = "MCP server for sanitize action testing"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-# Install the MCP server
-resource "archestra_mcp_server_installation" "sanitize" {
-  name          = "trusted-data-sanitize-installation"
-  mcp_server_id = archestra_mcp_server.sanitize.id
-}
-
-# Look up the profile tool
-data "archestra_profile_tool" "sanitize" {
-  profile_id = archestra_profile.sanitize.id
-  tool_name  = "read_file"
-
-  depends_on = [archestra_mcp_server_installation.sanitize]
-}
-
-# Create a trusted data policy with sanitize action
-resource "archestra_trusted_data_policy" "sanitize" {
-  profile_tool_id = data.archestra_profile_tool.sanitize.id
-  description     = "Sanitize user input with dual LLM"
-  attribute_path  = "user_input"
-  operator        = "regex"
-  value           = ".*"
-  action          = "sanitize_with_dual_llm"
-}
-`
-}
+// func testAccTrustedDataPolicyResourceConfigSanitize() string {
+// 	return `
+// # Create a profile for testing
+// resource "archestra_profile" "sanitize" {
+//   name = "trusted-data-policy-sanitize-profile"
+// }
+//
+// # Create an MCP server in the registry
+// resource "archestra_mcp_server" "sanitize" {
+//   name        = "trusted-data-policy-sanitize-server"
+//   description = "MCP server for sanitize action testing"
+//   docs_url    = "https://github.com/example/test"
+//
+//   local_config = {
+//     command   = "npx"
+//     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+//   }
+// }
+//
+// # Install the MCP server
+// resource "archestra_mcp_server_installation" "sanitize" {
+//   name          = "trusted-data-sanitize-installation"
+//   mcp_server_id = archestra_mcp_server.sanitize.id
+// }
+//
+// # Look up the profile tool
+// data "archestra_profile_tool" "sanitize" {
+//   profile_id = archestra_profile.sanitize.id
+//   tool_name  = "read_file"
+//
+//   depends_on = [archestra_mcp_server_installation.sanitize]
+// }
+//
+// # Create a trusted data policy with sanitize action
+// resource "archestra_trusted_data_policy" "sanitize" {
+//   profile_tool_id = data.archestra_profile_tool.sanitize.id
+//   description     = "Sanitize user input with dual LLM"
+//   attribute_path  = "user_input"
+//   operator        = "regex"
+//   value           = ".*"
+//   action          = "sanitize_with_dual_llm"
+// }
+// `
+// }
