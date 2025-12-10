@@ -14,7 +14,7 @@ Manages an Archestra trusted data policy.
 
 ```terraform
 data "archestra_profile_tool" "fetch_url" {
-  agent_id  = "agent-id-here"
+  profile_id  = "profile-id-here"
   tool_name = "fetch_url"
 }
 

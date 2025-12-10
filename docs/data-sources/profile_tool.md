@@ -14,7 +14,7 @@ Fetches an profile tool by profile ID and tool name. This data source is useful 
 
 ```terraform
 data "archestra_profile_tool" "example" {
-  agent_id  = "agent-id-here"
+  profile_id  = "profile-id-here"
   tool_name = "write_file"
 }
 
