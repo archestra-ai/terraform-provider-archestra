@@ -188,9 +188,9 @@ func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
 
 func testAccToolInvocationPolicyResourceConfig() string {
 	return `
-# Create an agent for testing
-resource "archestra_agent" "test" {
-  name = "tool-invocation-policy-test-agent"
+# Create a profile for testing
+resource "archestra_profile" "test" {
+  name = "tool-invocation-policy-test-profile"
 }
 
 # Create an MCP server in the registry
@@ -211,31 +211,31 @@ resource "archestra_mcp_server_installation" "test" {
   mcp_server_id = archestra_mcp_server.test.id
 }
 
-# Look up the agent tool
-data "archestra_agent_tool" "test" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "archestra__whoami"
+# Look up the profile tool
+data "archestra_profile_tool" "test" {
+  profile_id = archestra_profile.test.id
+  tool_name  = "read_file"
 
   depends_on = [archestra_mcp_server_installation.test]
 }
 
 # Create a tool invocation policy
 resource "archestra_tool_invocation_policy" "test" {
-  agent_tool_id = data.archestra_agent_tool.test.id
-  argument_name = "path"
-  operator      = "contains"
-  value         = "/etc/"
-  action        = "block_always"
-  reason        = "Block access to system configuration files"
+  profile_tool_id = data.archestra_profile_tool.test.id
+  argument_name   = "path"
+  operator        = "contains"
+  value           = "/etc/"
+  action          = "block_always"
+  reason          = "Block access to system configuration files"
 }
 `
 }
 
 func testAccToolInvocationPolicyResourceConfigUpdated() string {
 	return `
-# Create an agent for testing
-resource "archestra_agent" "test" {
-  name = "tool-invocation-policy-test-agent"
+# Create a profile for testing
+resource "archestra_profile" "test" {
+  name = "tool-invocation-policy-test-profile"
 }
 
 # Create an MCP server in the registry
@@ -256,31 +256,31 @@ resource "archestra_mcp_server_installation" "test" {
   mcp_server_id = archestra_mcp_server.test.id
 }
 
-# Look up the agent tool
-data "archestra_agent_tool" "test" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "archestra__whoami"
+# Look up the profile tool
+data "archestra_profile_tool" "test" {
+  profile_id = archestra_profile.test.id
+  tool_name  = "read_file"
 
   depends_on = [archestra_mcp_server_installation.test]
 }
 
 # Create a tool invocation policy (updated)
 resource "archestra_tool_invocation_policy" "test" {
-  agent_tool_id = data.archestra_agent_tool.test.id
-  argument_name = "path"
-  operator      = "startsWith"
-  value         = "/var/log/"
-  action        = "allow_when_context_is_untrusted"
-  reason        = "Allow log file access in untrusted contexts"
+  profile_tool_id = data.archestra_profile_tool.test.id
+  argument_name   = "path"
+  operator        = "startsWith"
+  value           = "/var/log/"
+  action          = "allow_when_context_is_untrusted"
+  reason          = "Allow log file access in untrusted contexts"
 }
 `
 }
 
 func testAccToolInvocationPolicyResourceConfigRegex() string {
 	return `
-# Create an agent for testing
-resource "archestra_agent" "regex" {
-  name = "tool-invocation-policy-regex-agent"
+# Create a profile for testing
+resource "archestra_profile" "regex" {
+  name = "tool-invocation-policy-regex-profile"
 }
 
 # Create an MCP server in the registry
@@ -301,22 +301,22 @@ resource "archestra_mcp_server_installation" "regex" {
   mcp_server_id = archestra_mcp_server.regex.id
 }
 
-# Look up the agent tool
-data "archestra_agent_tool" "regex" {
-  agent_id  = archestra_agent.regex.id
-  tool_name = "archestra__whoami"
+# Look up the profile tool
+data "archestra_profile_tool" "regex" {
+  profile_id = archestra_profile.regex.id
+  tool_name  = "read_file"
 
   depends_on = [archestra_mcp_server_installation.regex]
 }
 
 # Create a tool invocation policy with regex
 resource "archestra_tool_invocation_policy" "regex" {
-  agent_tool_id = data.archestra_agent_tool.regex.id
-  argument_name = "path"
-  operator      = "regex"
-  value         = "^/home/[a-z]+/.ssh/.*"
-  action        = "block_always"
-  reason        = "Block SSH key access using regex pattern"
+  profile_tool_id = data.archestra_profile_tool.regex.id
+  argument_name   = "path"
+  operator        = "regex"
+  value           = "^/home/[a-z]+/.ssh/.*"
+  action          = "block_always"
+  reason          = "Block SSH key access using regex pattern"
 }
 `
 }
