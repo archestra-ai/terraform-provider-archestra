@@ -22,7 +22,7 @@ type ProfileToolDataSource struct {
 
 type ProfileToolDataSourceModel struct {
 	ID                                   types.String `tfsdk:"id"`
-	AgentID                              types.String `tfsdk:"agent_id"`
+	ProfileID                            types.String `tfsdk:"profile_id"`
 	ToolID                               types.String `tfsdk:"tool_id"`
 	ToolName                             types.String `tfsdk:"tool_name"`
 	AllowUsageWhenUntrustedDataIsPresent types.Bool   `tfsdk:"allow_usage_when_untrusted_data_is_present"`
@@ -44,8 +44,8 @@ func (d *ProfileToolDataSource) Schema(ctx context.Context, req datasource.Schem
 				MarkdownDescription: "Profile tool identifier (use this for policy profile_tool_id)",
 				Computed:            true,
 			},
-			"agent_id": schema.StringAttribute{
-				MarkdownDescription: "The profile ID (formerly agent_id)",
+			"profile_id": schema.StringAttribute{
+				MarkdownDescription: "The profile ID",
 				Required:            true,
 			},
 			"tool_name": schema.StringAttribute{
@@ -110,21 +110,21 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	// Filter by agent ID and tool name
-	targetAgentID := data.AgentID.ValueString()
+	// Filter by profile ID and tool name
+	targetProfileID := data.ProfileID.ValueString()
 	targetToolName := data.ToolName.ValueString()
 
 	var foundIndex = -1
 	for i := range toolsResp.JSON200.Data {
 		agentTool := &toolsResp.JSON200.Data[i]
-		if agentTool.Agent.Id == targetAgentID && agentTool.Tool.Name == targetToolName {
+		if agentTool.Agent.Id == targetProfileID && agentTool.Tool.Name == targetToolName {
 			foundIndex = i
 			break
 		}
 	}
 
 	if foundIndex == -1 {
-		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Tool '%s' not found for profile %s", targetToolName, targetAgentID))
+		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Tool '%s' not found for profile %s", targetToolName, targetProfileID))
 		return
 	}
 

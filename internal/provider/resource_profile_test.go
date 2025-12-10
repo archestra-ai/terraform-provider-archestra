@@ -22,7 +22,7 @@ func TestAccProfileResource(t *testing.T) {
 					statecheck.ExpectKnownValue(
 						"archestra_profile.test",
 						tfjsonpath.New("name"),
-						knownvalue.StringExact("test-agent"),
+						knownvalue.StringExact("test-profile"),
 					),
 					// Verify labels are in configuration order
 					statecheck.ExpectKnownValue(
@@ -62,7 +62,7 @@ func TestAccProfileResource(t *testing.T) {
 					statecheck.ExpectKnownValue(
 						"archestra_profile.test",
 						tfjsonpath.New("name"),
-						knownvalue.StringExact("test-agent-updated"),
+						knownvalue.StringExact("test-profile-updated"),
 					),
 					// Verify label order is preserved after update
 					statecheck.ExpectKnownValue(

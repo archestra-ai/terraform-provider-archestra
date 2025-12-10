@@ -3,7 +3,7 @@
 page_title: "archestra_profile Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an Archestra profile.
+  Manages an Archestra profile (formerly agent).
 ---
 
 # archestra_profile (Resource)
@@ -14,7 +14,7 @@ Manages an Archestra profile (formerly agent).
 
 ```terraform
 resource "archestra_profile" "example" {
-  name = "production-profile"
+  name = "production-agent"
 
   labels = [
     {

@@ -13,18 +13,18 @@ Manages an Archestra trusted data policy.
 ## Example Usage
 
 ```terraform
-data "archestra_agent_tool" "fetch_url" {
+data "archestra_profile_tool" "fetch_url" {
   agent_id  = "agent-id-here"
   tool_name = "fetch_url"
 }
 
 resource "archestra_trusted_data_policy" "trust_company_api" {
-  agent_tool_id  = data.archestra_agent_tool.fetch_url.id
-  description    = "Mark data from company API as trusted"
-  attribute_path = "url"
-  operator       = "contains"
-  value          = "api.company.com"
-  action         = "mark_as_trusted"
+  profile_tool_id = data.archestra_profile_tool.fetch_url.id
+  description     = "Mark data from company API as trusted"
+  attribute_path  = "url"
+  operator        = "contains"
+  value           = "api.company.com"
+  action          = "mark_as_trusted"
 }
 ```
 
@@ -33,10 +33,10 @@ resource "archestra_trusted_data_policy" "trust_company_api" {
 
 ### Required
 
-- `agent_tool_id` (String) The agent tool ID this policy applies to
 - `attribute_path` (String) The attribute path to match
 - `description` (String) Description of the policy
 - `operator` (String) The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`
+- `profile_tool_id` (String) The profile tool ID this policy applies to
 - `value` (String) The value to compare against
 
 ### Optional

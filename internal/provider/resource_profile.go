@@ -173,14 +173,14 @@ func (r *ProfileResource) Read(ctx context.Context, req resource.ReadRequest, re
 	}
 
 	// Parse UUID from state
-	agentID, err := uuid.Parse(data.ID.ValueString())
+	profileID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse profile ID: %s", err))
 		return
 	}
 
 	// Call API
-	apiResp, err := r.client.GetAgentWithResponse(ctx, agentID)
+	apiResp, err := r.client.GetAgentWithResponse(ctx, profileID)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read profile, got error: %s", err))
 		return
@@ -220,7 +220,7 @@ func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 
 	// Parse UUID from state
-	agentID, err := uuid.Parse(data.ID.ValueString())
+	profileID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse profile ID: %s", err))
 		return
@@ -254,7 +254,7 @@ func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 
 	// Call API
-	apiResp, err := r.client.UpdateAgentWithResponse(ctx, agentID, requestBody)
+	apiResp, err := r.client.UpdateAgentWithResponse(ctx, profileID, requestBody)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update profile, got error: %s", err))
 		return
@@ -288,14 +288,14 @@ func (r *ProfileResource) Delete(ctx context.Context, req resource.DeleteRequest
 	}
 
 	// Parse UUID from state
-	agentID, err := uuid.Parse(data.ID.ValueString())
+	profileID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse profile ID: %s", err))
 		return
 	}
 
 	// Call API
-	apiResp, err := r.client.DeleteAgentWithResponse(ctx, agentID)
+	apiResp, err := r.client.DeleteAgentWithResponse(ctx, profileID)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete profile, got error: %s", err))
 		return

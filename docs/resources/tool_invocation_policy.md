@@ -13,18 +13,18 @@ Manages an Archestra tool invocation policy.
 ## Example Usage
 
 ```terraform
-data "archestra_agent_tool" "file_write" {
+data "archestra_profile_tool" "file_write" {
   agent_id  = "agent-id-here"
   tool_name = "write_file"
 }
 
 resource "archestra_tool_invocation_policy" "block_system_paths" {
-  agent_tool_id = data.archestra_agent_tool.file_write.id
-  argument_name = "path"
-  operator      = "contains"
-  value         = "/etc/"
-  action        = "block_always"
-  description   = "Block writes to system configuration directories"
+  profile_tool_id = data.archestra_profile_tool.file_write.id
+  argument_name   = "path"
+  operator        = "contains"
+  value           = "/etc/"
+  action          = "block_always"
+  description     = "Block writes to system configuration directories"
 }
 ```
 
@@ -34,9 +34,9 @@ resource "archestra_tool_invocation_policy" "block_system_paths" {
 ### Required
 
 - `action` (String) The action to take when the policy matches. Valid values: `allow_when_context_is_untrusted`, `block_always`
-- `agent_tool_id` (String) The agent tool ID this policy applies to
 - `argument_name` (String) The argument name to match
 - `operator` (String) The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`
+- `profile_tool_id` (String) The profile tool ID this policy applies to
 - `value` (String) The value to compare against
 
 ### Optional

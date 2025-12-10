@@ -3,24 +3,24 @@
 page_title: "archestra_profile_tool Data Source - archestra"
 subcategory: ""
 description: |-
-  Fetches a profile tool by profile ID and tool name. This data source is useful for looking up the profile_tool_id needed to create trusted data policies and tool invocation policies.
+  Fetches an profile tool by profile ID and tool name. This data source is useful for looking up the profile_tool_id needed to create trusted data policies and tool invocation policies.
 ---
 
 # archestra_profile_tool (Data Source)
 
-Fetches a profile tool by profile ID and tool name. This data source is useful for looking up the `profile_tool_id` needed to create trusted data policies and tool invocation policies.
+Fetches an profile tool by profile ID and tool name. This data source is useful for looking up the profile_tool_id needed to create trusted data policies and tool invocation policies.
 
 ## Example Usage
 
 ```terraform
 data "archestra_profile_tool" "example" {
-  agent_id  = "profile-id-here" // Note: agent_id field is currently preserved for compatibility
+  agent_id  = "agent-id-here"
   tool_name = "write_file"
 }
 
 output "profile_tool_id" {
   value       = data.archestra_profile_tool.example.id
-  description = "Use this ID for creating policies via profile_tool_id"
+  description = "Use this ID for creating policies"
 }
 
 output "tool_result_treatment" {
@@ -33,7 +33,7 @@ output "tool_result_treatment" {
 
 ### Required
 
-- `agent_id` (String) The profile ID (formerly agent_id)
+- `profile_id` (String) The profile ID
 - `tool_name` (String) The name of the tool
 
 ### Read-Only

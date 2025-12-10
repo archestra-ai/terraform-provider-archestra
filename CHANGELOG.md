@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.0.0] (2025-12-10)
+
+### ⚠ BREAKING CHANGES
+
+* **provider:** Renamed `archestra_agent` to `archestra_profile` and removed deprecated aliases.
+* **provider:** Renamed `archestra_agent_tool` to `archestra_profile_tool`.
+* **provider:** Removed `agent_tool_id` from `archestra_trusted_data_policy` and `archestra_tool_invocation_policy`, replaced with `profile_tool_id`.
+* **provider:** Removed deprecated `Legacy` fields from resources.
+
+### Features
+
+* **profile:** Renamed Agent resources and data sources to Profile to align with platform terminology.
+* **profile:** Updated `datasource_profile_tool` to use `profile_id` filter instead of `agent_id` (though `agent_id` parameter remains for now but is mapped to `profile_id`).
+
+### Documentation
+
+* **migration:** Removed migration guide as this is a breaking change release.
+* **resources:** Updated all documentation to use "Profile" terminology.
+
 ## [0.0.5](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.0.4...v0.0.5) (2025-11-01)
 
 
