@@ -115,11 +115,9 @@ jobs:
           echo "Cached image loaded successfully"
 
       # Deploy Archestra Platform locally using Kind
-      # This uses the pre-built archestra/platform image from Docker Hub
-      # and the published Helm chart from GAR
+      # This uses the pre-built archestra/platform image from Docker Hub and the published Helm chart from GAR
       - name: Setup Archestra Platform
-        # TODO: update this tag to latest main when done testing
-        uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@4cdeb481c181705eb636b9c0b7ff8dbec7ae4a37
+        uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@8bcfd042c91a76323e13de6f04262310857f5655
         with:
           kind-config-path: ./.github/kind.yaml
           kind-cluster-name: archestra-ci-cluster
