@@ -92,7 +92,74 @@ func TestAccToolInvocationPolicyResource_WithoutReason(t *testing.T) {
 	// The optional "reason" field is tested implicitly in the main test when we update
 	// from one reason to another. Full CRUD coverage is provided by TestAccToolInvocationPolicyResource.
 	t.Skip("Skipping - flaky due to race conditions with built-in tool assignment in CI")
+
+	// resource.Test(t, resource.TestCase{
+	// 	PreCheck:                 func() { testAccPreCheck(t) },
+	// 	ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+	// 	Steps: []resource.TestStep{
+	// 		// Create without optional reason field
+	// 		{
+	// 			Config: testAccToolInvocationPolicyResourceConfigNoReason(),
+	// 			ConfigStateChecks: []statecheck.StateCheck{
+	// 				statecheck.ExpectKnownValue(
+	// 					"archestra_tool_invocation_policy.noreason",
+	// 					tfjsonpath.New("argument_name"),
+	// 					knownvalue.StringExact("command"),
+	// 				),
+	// 				statecheck.ExpectKnownValue(
+	// 					"archestra_tool_invocation_policy.noreason",
+	// 					tfjsonpath.New("action"),
+	// 					knownvalue.StringExact("block_always"),
+	// 				),
+	// 			},
+	// 		},
+	// 	},
+	// })
 }
+
+// func testAccToolInvocationPolicyResourceConfigNoReason() string {
+// 	return `
+// # Create an agent for testing
+// resource "archestra_agent" "noreason" {
+//   name = "tool-invocation-policy-noreason-agent"
+// }
+//
+// # Create an MCP server in the registry
+// resource "archestra_mcp_server" "noreason" {
+//   name        = "tool-invocation-policy-noreason-server"
+//   description = "MCP server for testing without reason"
+//   docs_url    = "https://github.com/example/test"
+//
+//   local_config = {
+//     command   = "npx"
+//     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+//   }
+// }
+//
+// # Install the MCP server
+// resource "archestra_mcp_server_installation" "noreason" {
+//   name          = "tool-invocation-no-reason"
+//   mcp_server_id = archestra_mcp_server.noreason.id
+// }
+//
+// # Look up the agent tool
+// data "archestra_agent_tool" "noreason" {
+//   agent_id  = archestra_agent.noreason.id
+//   tool_name = "archestra__whoami"
+//
+//   depends_on = [archestra_mcp_server_installation.noreason]
+// }
+//
+// # Create a tool invocation policy without reason
+// resource "archestra_tool_invocation_policy" "noreason" {
+//   agent_tool_id = data.archestra_agent_tool.noreason.id
+//   argument_name = "command"
+//   operator      = "equal"
+//   value         = "rm -rf"
+//   action        = "block_always"
+// }
+// `
+// }
 
 func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
 	resource.Test(t, resource.TestCase{
