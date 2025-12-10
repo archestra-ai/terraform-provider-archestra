@@ -52,6 +52,12 @@ func TestAccIntegration_FullWorkflow(t *testing.T) {
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("integration-test-installation"),
 					),
+					// display_name is the actual name from the API (may have suffix)
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("display_name"),
+						knownvalue.NotNull(),
+					),
 				},
 			},
 			// Test data source integration

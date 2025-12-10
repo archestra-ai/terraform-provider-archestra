@@ -28,6 +28,7 @@ type MCPServerResource struct {
 type MCPServerResourceModel struct {
 	ID          types.String `tfsdk:"id"`
 	Name        types.String `tfsdk:"name"`
+	DisplayName types.String `tfsdk:"display_name"`
 	MCPServerID types.String `tfsdk:"mcp_server_id"`
 }
 
@@ -48,10 +49,17 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "The name of the MCP server",
+				MarkdownDescription: "The name of the MCP server installation.",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"display_name": schema.StringAttribute{
+				MarkdownDescription: "The actual name of the MCP server installation as returned by the API. The API may append a suffix to ensure uniqueness.",
+				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"mcp_server_id": schema.StringAttribute{
@@ -120,8 +128,9 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 	}
 
 	// Map response to Terraform state
+	// Note: Keep user's configured name, set display_name to the API-returned name
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
-	data.Name = types.StringValue(apiResp.JSON200.Name)
+	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
 	data.MCPServerID = types.StringValue(apiResp.JSON200.CatalogId.String())
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -164,7 +173,8 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	}
 
 	// Map response to Terraform state
-	data.Name = types.StringValue(apiResp.JSON200.Name)
+	// Note: Keep user's configured name, set display_name to the API-returned name
+	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
 	data.MCPServerID = types.StringValue(apiResp.JSON200.CatalogId.String())
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
