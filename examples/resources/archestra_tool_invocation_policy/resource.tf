@@ -1,5 +1,5 @@
 data "archestra_profile_tool" "file_write" {
-  agent_id  = "agent-id-here"
+  profile_id  = "profile-id-here"
   tool_name = "write_file"
 }
 
