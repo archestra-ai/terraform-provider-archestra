@@ -89,12 +89,12 @@ jobs:
           persist-credentials: false
 
       # Checkout the main archestra repo to get access to Helm charts and the composite action
-      - name: Checkout archestra repo
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          repository: archestra-ai/archestra
-          path: archestra-repo
-          persist-credentials: false
+      # - name: Checkout archestra repo
+      #   uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      #   with:
+      #     repository: archestra-ai/archestra
+      #     path: archestra-repo
+      #     persist-credentials: false
 
       - name: Setup go
         uses: ./.github/actions/setup-go
@@ -105,7 +105,7 @@ jobs:
       # Deploy Archestra Platform locally using Kind
       # This uses the pre-built archestra/platform:latest image from Docker Hub
       - name: Setup Archestra Platform
-        uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@main
+        uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@2d396d65fb3680832326a1257d1231f0cc534cc7
         with:
           kind-config-path: ./.github/kind.yaml
           kind-cluster-name: archestra-ci-cluster
