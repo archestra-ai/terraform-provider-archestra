@@ -4,9 +4,6 @@
 # as they are not needed for Terraform provider acceptance tests
 
 archestra:
-  # Use latest image
-  image: archestra/platform:latest
-
   # Environment variables for acceptance testing
   env:
     # Point to real LLM APIs (or mock as needed)
