@@ -36,7 +36,7 @@ type LimitResourceModel struct {
 	EntityType    types.String `tfsdk:"entity_type"`
 	LimitType     types.String `tfsdk:"limit_type"`
 	LimitValue    types.Int64  `tfsdk:"limit_value"`
-	Model         types.String `tfsdk:"model"`
+	Model         types.List   `tfsdk:"model"`
 	ToolName      types.String `tfsdk:"tool_name"`
 	MCPServerName types.String `tfsdk:"mcp_server_name"`
 }
@@ -79,9 +79,10 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				MarkdownDescription: "Limit threshold value",
 				Required:            true,
 			},
-			"model": schema.StringAttribute{
-				MarkdownDescription: "Model this limit applies to (for token_cost limits)",
+			"model": schema.ListAttribute{
+				MarkdownDescription: "Models this limit applies to (for token_cost limits)",
 				Optional:            true,
+				ElementType:         types.StringType,
 			},
 			"tool_name": schema.StringAttribute{
 				MarkdownDescription: "Tool this limit applies to (for tool_calls limits)",
@@ -130,8 +131,9 @@ func (r *LimitResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 
 	if !data.Model.IsNull() {
-		model := data.Model.ValueString()
-		requestBody.Model = &model
+		var models []string
+		data.Model.ElementsAs(ctx, &models, false)
+		requestBody.Model = &models
 	}
 	if !data.ToolName.IsNull() {
 		toolName := data.ToolName.ValueString()
@@ -162,8 +164,12 @@ func (r *LimitResource) Create(ctx context.Context, req resource.CreateRequest, 
 	data.LimitType = types.StringValue(string(apiResp.JSON200.LimitType))
 	data.LimitValue = types.Int64Value(int64(apiResp.JSON200.LimitValue))
 
-	if apiResp.JSON200.Model != nil {
-		data.Model = types.StringValue(*apiResp.JSON200.Model)
+	if apiResp.JSON200.Model != nil && len(*apiResp.JSON200.Model) > 0 {
+		modelList, diags := types.ListValueFrom(ctx, types.StringType, *apiResp.JSON200.Model)
+		resp.Diagnostics.Append(diags...)
+		data.Model = modelList
+	} else {
+		data.Model = types.ListNull(types.StringType)
 	}
 	if apiResp.JSON200.ToolName != nil {
 		data.ToolName = types.StringValue(*apiResp.JSON200.ToolName)
@@ -214,10 +220,12 @@ func (r *LimitResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	data.LimitType = types.StringValue(string(apiResp.JSON200.LimitType))
 	data.LimitValue = types.Int64Value(int64(apiResp.JSON200.LimitValue))
 
-	if apiResp.JSON200.Model != nil {
-		data.Model = types.StringValue(*apiResp.JSON200.Model)
+	if apiResp.JSON200.Model != nil && len(*apiResp.JSON200.Model) > 0 {
+		modelList, diags := types.ListValueFrom(ctx, types.StringType, *apiResp.JSON200.Model)
+		resp.Diagnostics.Append(diags...)
+		data.Model = modelList
 	} else {
-		data.Model = types.StringNull()
+		data.Model = types.ListNull(types.StringType)
 	}
 	if apiResp.JSON200.ToolName != nil {
 		data.ToolName = types.StringValue(*apiResp.JSON200.ToolName)
@@ -262,8 +270,9 @@ func (r *LimitResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	}
 
 	if !data.Model.IsNull() {
-		model := data.Model.ValueString()
-		requestBody.Model = &model
+		var models []string
+		data.Model.ElementsAs(ctx, &models, false)
+		requestBody.Model = &models
 	}
 	if !data.ToolName.IsNull() {
 		toolName := data.ToolName.ValueString()
@@ -293,14 +302,22 @@ func (r *LimitResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	data.LimitType = types.StringValue(string(apiResp.JSON200.LimitType))
 	data.LimitValue = types.Int64Value(int64(apiResp.JSON200.LimitValue))
 
-	if apiResp.JSON200.Model != nil {
-		data.Model = types.StringValue(*apiResp.JSON200.Model)
+	if apiResp.JSON200.Model != nil && len(*apiResp.JSON200.Model) > 0 {
+		modelList, diags := types.ListValueFrom(ctx, types.StringType, *apiResp.JSON200.Model)
+		resp.Diagnostics.Append(diags...)
+		data.Model = modelList
+	} else {
+		data.Model = types.ListNull(types.StringType)
 	}
 	if apiResp.JSON200.ToolName != nil {
 		data.ToolName = types.StringValue(*apiResp.JSON200.ToolName)
+	} else {
+		data.ToolName = types.StringNull()
 	}
 	if apiResp.JSON200.McpServerName != nil {
 		data.MCPServerName = types.StringValue(*apiResp.JSON200.McpServerName)
+	} else {
+		data.MCPServerName = types.StringNull()
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

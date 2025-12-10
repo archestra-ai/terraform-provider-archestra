@@ -434,10 +434,24 @@ const (
 	CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthenticationClientSecretPost  CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication = "client_secret_post"
 )
 
+// Defines values for CreateSsoProviderJSONBodyRoleMappingDataSource.
+const (
+	CreateSsoProviderJSONBodyRoleMappingDataSourceCombined CreateSsoProviderJSONBodyRoleMappingDataSource = "combined"
+	CreateSsoProviderJSONBodyRoleMappingDataSourceToken    CreateSsoProviderJSONBodyRoleMappingDataSource = "token"
+	CreateSsoProviderJSONBodyRoleMappingDataSourceUserInfo CreateSsoProviderJSONBodyRoleMappingDataSource = "userInfo"
+)
+
 // Defines values for UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication.
 const (
 	UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthenticationClientSecretBasic UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication = "client_secret_basic"
 	UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthenticationClientSecretPost  UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication = "client_secret_post"
+)
+
+// Defines values for UpdateSsoProviderJSONBodyRoleMappingDataSource.
+const (
+	UpdateSsoProviderJSONBodyRoleMappingDataSourceCombined UpdateSsoProviderJSONBodyRoleMappingDataSource = "combined"
+	UpdateSsoProviderJSONBodyRoleMappingDataSourceToken    UpdateSsoProviderJSONBodyRoleMappingDataSource = "token"
+	UpdateSsoProviderJSONBodyRoleMappingDataSourceUserInfo UpdateSsoProviderJSONBodyRoleMappingDataSource = "userInfo"
 )
 
 // Defines values for GetAgentStatisticsParamsTimeframe0.
@@ -605,7 +619,6 @@ type UpdateAgentToolJSONBody struct {
 	ExecutionSourceMcpServerId           *openapi_types.UUID                         `json:"executionSourceMcpServerId"`
 	ResponseModifierTemplate             *string                                     `json:"responseModifierTemplate"`
 	ToolResultTreatment                  *UpdateAgentToolJSONBodyToolResultTreatment `json:"toolResultTreatment,omitempty"`
-	UseDynamicTeamCredential             *bool                                       `json:"useDynamicTeamCredential,omitempty"`
 }
 
 // UpdateAgentToolJSONBodyToolResultTreatment defines parameters for UpdateAgentTool.
@@ -660,7 +673,6 @@ type BulkAssignToolsJSONBody struct {
 		CredentialSourceMcpServerId *openapi_types.UUID `json:"credentialSourceMcpServerId"`
 		ExecutionSourceMcpServerId  *openapi_types.UUID `json:"executionSourceMcpServerId"`
 		ToolId                      openapi_types.UUID  `json:"toolId"`
-		UseDynamicTeamCredential    *bool               `json:"useDynamicTeamCredential,omitempty"`
 	} `json:"assignments"`
 }
 
@@ -668,7 +680,6 @@ type BulkAssignToolsJSONBody struct {
 type AssignToolToAgentJSONBody struct {
 	CredentialSourceMcpServerId *openapi_types.UUID `json:"credentialSourceMcpServerId"`
 	ExecutionSourceMcpServerId  *openapi_types.UUID `json:"executionSourceMcpServerId"`
-	UseDynamicTeamCredential    *bool               `json:"useDynamicTeamCredential,omitempty"`
 }
 
 // UpdateAgentJSONBody defines parameters for UpdateAgent.
@@ -1464,7 +1475,8 @@ type CreateSsoProviderJSONBody struct {
 	} `json:"oidcConfig,omitempty"`
 	ProviderId  string `json:"providerId"`
 	RoleMapping *struct {
-		DefaultRole *string `json:"defaultRole,omitempty"`
+		DataSource  *CreateSsoProviderJSONBodyRoleMappingDataSource `json:"dataSource,omitempty"`
+		DefaultRole *string                                         `json:"defaultRole,omitempty"`
 		Rules       *[]struct {
 			Expression string `json:"expression"`
 			Role       string `json:"role"`
@@ -1525,15 +1537,14 @@ type CreateSsoProviderJSONBody struct {
 		} `json:"spMetadata"`
 		WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
 	} `json:"samlConfig,omitempty"`
-	TeamSyncConfig *struct {
-		Enabled          *bool   `json:"enabled,omitempty"`
-		GroupsExpression *string `json:"groupsExpression,omitempty"`
-	} `json:"teamSyncConfig,omitempty"`
 	UserId *string `json:"userId"`
 }
 
 // CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication defines parameters for CreateSsoProvider.
 type CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication string
+
+// CreateSsoProviderJSONBodyRoleMappingDataSource defines parameters for CreateSsoProvider.
+type CreateSsoProviderJSONBodyRoleMappingDataSource string
 
 // UpdateSsoProviderJSONBody defines parameters for UpdateSsoProvider.
 type UpdateSsoProviderJSONBody struct {
@@ -1568,7 +1579,8 @@ type UpdateSsoProviderJSONBody struct {
 	} `json:"oidcConfig,omitempty"`
 	ProviderId  *string `json:"providerId,omitempty"`
 	RoleMapping *struct {
-		DefaultRole *string `json:"defaultRole,omitempty"`
+		DataSource  *UpdateSsoProviderJSONBodyRoleMappingDataSource `json:"dataSource,omitempty"`
+		DefaultRole *string                                         `json:"defaultRole,omitempty"`
 		Rules       *[]struct {
 			Expression string `json:"expression"`
 			Role       string `json:"role"`
@@ -1629,14 +1641,13 @@ type UpdateSsoProviderJSONBody struct {
 		} `json:"spMetadata"`
 		WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
 	} `json:"samlConfig,omitempty"`
-	TeamSyncConfig *struct {
-		Enabled          *bool   `json:"enabled,omitempty"`
-		GroupsExpression *string `json:"groupsExpression,omitempty"`
-	} `json:"teamSyncConfig,omitempty"`
 }
 
 // UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication defines parameters for UpdateSsoProvider.
 type UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication string
+
+// UpdateSsoProviderJSONBodyRoleMappingDataSource defines parameters for UpdateSsoProvider.
+type UpdateSsoProviderJSONBodyRoleMappingDataSource string
 
 // GetAgentStatisticsParams defines parameters for GetAgentStatistics.
 type GetAgentStatisticsParams struct {
@@ -2451,15 +2462,6 @@ type ClientInterface interface {
 	UpdateTokenPriceWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateTokenPrice(ctx context.Context, id openapi_types.UUID, body UpdateTokenPriceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetTokens request
-	GetTokens(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// RotateToken request
-	RotateToken(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetTokenValue request
-	GetTokenValue(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetTools request
 	GetTools(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4502,42 +4504,6 @@ func (c *Client) UpdateTokenPriceWithBody(ctx context.Context, id openapi_types.
 
 func (c *Client) UpdateTokenPrice(ctx context.Context, id openapi_types.UUID, body UpdateTokenPriceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateTokenPriceRequest(c.Server, id, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetTokens(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetTokensRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) RotateToken(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRotateTokenRequest(c.Server, tokenId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetTokenValue(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetTokenValueRequest(c.Server, tokenId)
 	if err != nil {
 		return nil, err
 	}
@@ -9702,101 +9668,6 @@ func NewUpdateTokenPriceRequestWithBody(server string, id openapi_types.UUID, co
 	return req, nil
 }
 
-// NewGetTokensRequest generates requests for GetTokens
-func NewGetTokensRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/tokens")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewRotateTokenRequest generates requests for RotateToken
-func NewRotateTokenRequest(server string, tokenId openapi_types.UUID) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "tokenId", runtime.ParamLocationPath, tokenId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/tokens/%s/rotate", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetTokenValueRequest generates requests for GetTokenValue
-func NewGetTokenValueRequest(server string, tokenId openapi_types.UUID) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "tokenId", runtime.ParamLocationPath, tokenId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/tokens/%s/value", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
 // NewGetToolsRequest generates requests for GetTools
 func NewGetToolsRequest(server string) (*http.Request, error) {
 	var err error
@@ -10569,15 +10440,6 @@ type ClientWithResponsesInterface interface {
 
 	UpdateTokenPriceWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateTokenPriceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTokenPriceResponse, error)
 
-	// GetTokensWithResponse request
-	GetTokensWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTokensResponse, error)
-
-	// RotateTokenWithResponse request
-	RotateTokenWithResponse(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*RotateTokenResponse, error)
-
-	// GetTokenValueWithResponse request
-	GetTokenValueWithResponse(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetTokenValueResponse, error)
-
 	// GetToolsWithResponse request
 	GetToolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetToolsResponse, error)
 
@@ -10634,9 +10496,8 @@ type GetAllAgentToolsResponse struct {
 				Parameters         *GetAllAgentTools_200_Data_Tool_Parameters `json:"parameters,omitempty"`
 				UpdatedAt          time.Time                                  `json:"updatedAt"`
 			} `json:"tool"`
-			ToolResultTreatment      GetAllAgentTools200DataToolResultTreatment `json:"toolResultTreatment"`
-			UpdatedAt                time.Time                                  `json:"updatedAt"`
-			UseDynamicTeamCredential bool                                       `json:"useDynamicTeamCredential"`
+			ToolResultTreatment GetAllAgentTools200DataToolResultTreatment `json:"toolResultTreatment"`
+			UpdatedAt           time.Time                                  `json:"updatedAt"`
 		} `json:"data"`
 		Pagination struct {
 			CurrentPage int  `json:"currentPage"`
@@ -10792,7 +10653,6 @@ type UpdateAgentToolResponse struct {
 		ToolId                               *openapi_types.UUID                   `json:"toolId,omitempty"`
 		ToolResultTreatment                  UpdateAgentTool200ToolResultTreatment `json:"toolResultTreatment"`
 		UpdatedAt                            *time.Time                            `json:"updatedAt,omitempty"`
-		UseDynamicTeamCredential             *bool                                 `json:"useDynamicTeamCredential,omitempty"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -10871,11 +10731,8 @@ type GetAgentsResponse struct {
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name  string `json:"name"`
-			Teams []struct {
-				Id   string `json:"id"`
-				Name string `json:"name"`
-			} `json:"teams"`
+			Name  string   `json:"name"`
+			Teams []string `json:"teams"`
 			Tools []struct {
 				AgentId     *openapi_types.UUID                  `json:"agentId"`
 				CatalogId   *openapi_types.UUID                  `json:"catalogId"`
@@ -10977,11 +10834,8 @@ type CreateAgentResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name  string `json:"name"`
-		Teams []struct {
-			Id   string `json:"id"`
-			Name string `json:"name"`
-		} `json:"teams"`
+		Name  string   `json:"name"`
+		Teams []string `json:"teams"`
 		Tools []struct {
 			AgentId     *openapi_types.UUID               `json:"agentId"`
 			CatalogId   *openapi_types.UUID               `json:"catalogId"`
@@ -11074,11 +10928,8 @@ type GetAllAgentsResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name  string `json:"name"`
-		Teams []struct {
-			Id   string `json:"id"`
-			Name string `json:"name"`
-		} `json:"teams"`
+		Name  string   `json:"name"`
+		Teams []string `json:"teams"`
 		Tools []struct {
 			AgentId     *openapi_types.UUID                `json:"agentId"`
 			CatalogId   *openapi_types.UUID                `json:"catalogId"`
@@ -11248,11 +11099,8 @@ type GetDefaultAgentResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name  string `json:"name"`
-		Teams []struct {
-			Id   string `json:"id"`
-			Name string `json:"name"`
-		} `json:"teams"`
+		Name  string   `json:"name"`
+		Teams []string `json:"teams"`
 		Tools []struct {
 			AgentId     *openapi_types.UUID                   `json:"agentId"`
 			CatalogId   *openapi_types.UUID                   `json:"catalogId"`
@@ -11827,11 +11675,8 @@ type GetAgentResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name  string `json:"name"`
-		Teams []struct {
-			Id   string `json:"id"`
-			Name string `json:"name"`
-		} `json:"teams"`
+		Name  string   `json:"name"`
+		Teams []string `json:"teams"`
 		Tools []struct {
 			AgentId     *openapi_types.UUID            `json:"agentId"`
 			CatalogId   *openapi_types.UUID            `json:"catalogId"`
@@ -11924,11 +11769,8 @@ type UpdateAgentResponse struct {
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
-		Name  string `json:"name"`
-		Teams []struct {
-			Id   string `json:"id"`
-			Name string `json:"name"`
-		} `json:"teams"`
+		Name  string   `json:"name"`
+		Teams []string `json:"teams"`
 		Tools []struct {
 			AgentId     *openapi_types.UUID               `json:"agentId"`
 			CatalogId   *openapi_types.UUID               `json:"catalogId"`
@@ -18715,7 +18557,8 @@ type GetSsoProvidersResponse struct {
 		OrganizationId *string `json:"organizationId"`
 		ProviderId     string  `json:"providerId"`
 		RoleMapping    *struct {
-			DefaultRole *string `json:"defaultRole,omitempty"`
+			DataSource  *GetSsoProviders200RoleMappingDataSource `json:"dataSource,omitempty"`
+			DefaultRole *string                                  `json:"defaultRole,omitempty"`
 			Rules       *[]struct {
 				Expression string `json:"expression"`
 				Role       string `json:"role"`
@@ -18776,10 +18619,6 @@ type GetSsoProvidersResponse struct {
 			} `json:"spMetadata"`
 			WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
 		} `json:"samlConfig,omitempty"`
-		TeamSyncConfig *struct {
-			Enabled          *bool   `json:"enabled,omitempty"`
-			GroupsExpression *string `json:"groupsExpression,omitempty"`
-		} `json:"teamSyncConfig,omitempty"`
 		UserId *string `json:"userId"`
 	}
 	JSON400 *struct {
@@ -18820,6 +18659,7 @@ type GetSsoProvidersResponse struct {
 	}
 }
 type GetSsoProviders200OidcConfigTokenEndpointAuthentication string
+type GetSsoProviders200RoleMappingDataSource string
 type GetSsoProviders400ErrorType string
 type GetSsoProviders401ErrorType string
 type GetSsoProviders403ErrorType string
@@ -18880,7 +18720,8 @@ type CreateSsoProviderResponse struct {
 		OrganizationId *string `json:"organizationId"`
 		ProviderId     string  `json:"providerId"`
 		RoleMapping    *struct {
-			DefaultRole *string `json:"defaultRole,omitempty"`
+			DataSource  *CreateSsoProvider200RoleMappingDataSource `json:"dataSource,omitempty"`
+			DefaultRole *string                                    `json:"defaultRole,omitempty"`
 			Rules       *[]struct {
 				Expression string `json:"expression"`
 				Role       string `json:"role"`
@@ -18941,10 +18782,6 @@ type CreateSsoProviderResponse struct {
 			} `json:"spMetadata"`
 			WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
 		} `json:"samlConfig,omitempty"`
-		TeamSyncConfig *struct {
-			Enabled          *bool   `json:"enabled,omitempty"`
-			GroupsExpression *string `json:"groupsExpression,omitempty"`
-		} `json:"teamSyncConfig,omitempty"`
 		UserId *string `json:"userId"`
 	}
 	JSON400 *struct {
@@ -18985,6 +18822,7 @@ type CreateSsoProviderResponse struct {
 	}
 }
 type CreateSsoProvider200OidcConfigTokenEndpointAuthentication string
+type CreateSsoProvider200RoleMappingDataSource string
 type CreateSsoProvider400ErrorType string
 type CreateSsoProvider401ErrorType string
 type CreateSsoProvider403ErrorType string
@@ -19178,7 +19016,8 @@ type GetSsoProviderResponse struct {
 		OrganizationId *string `json:"organizationId"`
 		ProviderId     string  `json:"providerId"`
 		RoleMapping    *struct {
-			DefaultRole *string `json:"defaultRole,omitempty"`
+			DataSource  *GetSsoProvider200RoleMappingDataSource `json:"dataSource,omitempty"`
+			DefaultRole *string                                 `json:"defaultRole,omitempty"`
 			Rules       *[]struct {
 				Expression string `json:"expression"`
 				Role       string `json:"role"`
@@ -19239,10 +19078,6 @@ type GetSsoProviderResponse struct {
 			} `json:"spMetadata"`
 			WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
 		} `json:"samlConfig,omitempty"`
-		TeamSyncConfig *struct {
-			Enabled          *bool   `json:"enabled,omitempty"`
-			GroupsExpression *string `json:"groupsExpression,omitempty"`
-		} `json:"teamSyncConfig,omitempty"`
 		UserId *string `json:"userId"`
 	}
 	JSON400 *struct {
@@ -19283,6 +19118,7 @@ type GetSsoProviderResponse struct {
 	}
 }
 type GetSsoProvider200OidcConfigTokenEndpointAuthentication string
+type GetSsoProvider200RoleMappingDataSource string
 type GetSsoProvider400ErrorType string
 type GetSsoProvider401ErrorType string
 type GetSsoProvider403ErrorType string
@@ -19343,7 +19179,8 @@ type UpdateSsoProviderResponse struct {
 		OrganizationId *string `json:"organizationId"`
 		ProviderId     string  `json:"providerId"`
 		RoleMapping    *struct {
-			DefaultRole *string `json:"defaultRole,omitempty"`
+			DataSource  *UpdateSsoProvider200RoleMappingDataSource `json:"dataSource,omitempty"`
+			DefaultRole *string                                    `json:"defaultRole,omitempty"`
 			Rules       *[]struct {
 				Expression string `json:"expression"`
 				Role       string `json:"role"`
@@ -19404,10 +19241,6 @@ type UpdateSsoProviderResponse struct {
 			} `json:"spMetadata"`
 			WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
 		} `json:"samlConfig,omitempty"`
-		TeamSyncConfig *struct {
-			Enabled          *bool   `json:"enabled,omitempty"`
-			GroupsExpression *string `json:"groupsExpression,omitempty"`
-		} `json:"teamSyncConfig,omitempty"`
 		UserId *string `json:"userId"`
 	}
 	JSON400 *struct {
@@ -19448,6 +19281,7 @@ type UpdateSsoProviderResponse struct {
 	}
 }
 type UpdateSsoProvider200OidcConfigTokenEndpointAuthentication string
+type UpdateSsoProvider200RoleMappingDataSource string
 type UpdateSsoProvider400ErrorType string
 type UpdateSsoProvider401ErrorType string
 type UpdateSsoProvider403ErrorType string
@@ -20997,223 +20831,6 @@ func (r UpdateTokenPriceResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateTokenPriceResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetTokensResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *[]struct {
-		CreatedAt           time.Time          `json:"createdAt"`
-		Id                  openapi_types.UUID `json:"id"`
-		IsOrganizationToken bool               `json:"isOrganizationToken"`
-		LastUsedAt          *time.Time         `json:"lastUsedAt"`
-		Name                string             `json:"name"`
-		Team                *struct {
-			Id   string `json:"id"`
-			Name string `json:"name"`
-		} `json:"team"`
-		TokenStart string `json:"tokenStart"`
-	}
-	JSON400 *struct {
-		Error struct {
-			Message string                `json:"message"`
-			Type    GetTokens400ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON401 *struct {
-		Error struct {
-			Message string                `json:"message"`
-			Type    GetTokens401ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON403 *struct {
-		Error struct {
-			Message string                `json:"message"`
-			Type    GetTokens403ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON404 *struct {
-		Error struct {
-			Message string                `json:"message"`
-			Type    GetTokens404ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON409 *struct {
-		Error struct {
-			Message string                `json:"message"`
-			Type    GetTokens409ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON500 *struct {
-		Error struct {
-			Message string                `json:"message"`
-			Type    GetTokens500ErrorType `json:"type"`
-		} `json:"error"`
-	}
-}
-type GetTokens400ErrorType string
-type GetTokens401ErrorType string
-type GetTokens403ErrorType string
-type GetTokens404ErrorType string
-type GetTokens409ErrorType string
-type GetTokens500ErrorType string
-
-// Status returns HTTPResponse.Status
-func (r GetTokensResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetTokensResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type RotateTokenResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		CreatedAt           time.Time          `json:"createdAt"`
-		Id                  openapi_types.UUID `json:"id"`
-		IsOrganizationToken bool               `json:"isOrganizationToken"`
-		LastUsedAt          *time.Time         `json:"lastUsedAt"`
-		Name                string             `json:"name"`
-		Team                *struct {
-			Id   string `json:"id"`
-			Name string `json:"name"`
-		} `json:"team"`
-		TokenStart string `json:"tokenStart"`
-		Value      string `json:"value"`
-	}
-	JSON400 *struct {
-		Error struct {
-			Message string                  `json:"message"`
-			Type    RotateToken400ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON401 *struct {
-		Error struct {
-			Message string                  `json:"message"`
-			Type    RotateToken401ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON403 *struct {
-		Error struct {
-			Message string                  `json:"message"`
-			Type    RotateToken403ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON404 *struct {
-		Error struct {
-			Message string                  `json:"message"`
-			Type    RotateToken404ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON409 *struct {
-		Error struct {
-			Message string                  `json:"message"`
-			Type    RotateToken409ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON500 *struct {
-		Error struct {
-			Message string                  `json:"message"`
-			Type    RotateToken500ErrorType `json:"type"`
-		} `json:"error"`
-	}
-}
-type RotateToken400ErrorType string
-type RotateToken401ErrorType string
-type RotateToken403ErrorType string
-type RotateToken404ErrorType string
-type RotateToken409ErrorType string
-type RotateToken500ErrorType string
-
-// Status returns HTTPResponse.Status
-func (r RotateTokenResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r RotateTokenResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetTokenValueResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		Value string `json:"value"`
-	}
-	JSON400 *struct {
-		Error struct {
-			Message string                    `json:"message"`
-			Type    GetTokenValue400ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON401 *struct {
-		Error struct {
-			Message string                    `json:"message"`
-			Type    GetTokenValue401ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON403 *struct {
-		Error struct {
-			Message string                    `json:"message"`
-			Type    GetTokenValue403ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON404 *struct {
-		Error struct {
-			Message string                    `json:"message"`
-			Type    GetTokenValue404ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON409 *struct {
-		Error struct {
-			Message string                    `json:"message"`
-			Type    GetTokenValue409ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON500 *struct {
-		Error struct {
-			Message string                    `json:"message"`
-			Type    GetTokenValue500ErrorType `json:"type"`
-		} `json:"error"`
-	}
-}
-type GetTokenValue400ErrorType string
-type GetTokenValue401ErrorType string
-type GetTokenValue403ErrorType string
-type GetTokenValue404ErrorType string
-type GetTokenValue409ErrorType string
-type GetTokenValue500ErrorType string
-
-// Status returns HTTPResponse.Status
-func (r GetTokenValueResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetTokenValueResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -23239,33 +22856,6 @@ func (c *ClientWithResponses) UpdateTokenPriceWithResponse(ctx context.Context, 
 	return ParseUpdateTokenPriceResponse(rsp)
 }
 
-// GetTokensWithResponse request returning *GetTokensResponse
-func (c *ClientWithResponses) GetTokensWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTokensResponse, error) {
-	rsp, err := c.GetTokens(ctx, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetTokensResponse(rsp)
-}
-
-// RotateTokenWithResponse request returning *RotateTokenResponse
-func (c *ClientWithResponses) RotateTokenWithResponse(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*RotateTokenResponse, error) {
-	rsp, err := c.RotateToken(ctx, tokenId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseRotateTokenResponse(rsp)
-}
-
-// GetTokenValueWithResponse request returning *GetTokenValueResponse
-func (c *ClientWithResponses) GetTokenValueWithResponse(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetTokenValueResponse, error) {
-	rsp, err := c.GetTokenValue(ctx, tokenId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetTokenValueResponse(rsp)
-}
-
 // GetToolsWithResponse request returning *GetToolsResponse
 func (c *ClientWithResponses) GetToolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetToolsResponse, error) {
 	rsp, err := c.GetTools(ctx, reqEditors...)
@@ -23393,9 +22983,8 @@ func ParseGetAllAgentToolsResponse(rsp *http.Response) (*GetAllAgentToolsRespons
 					Parameters         *GetAllAgentTools_200_Data_Tool_Parameters `json:"parameters,omitempty"`
 					UpdatedAt          time.Time                                  `json:"updatedAt"`
 				} `json:"tool"`
-				ToolResultTreatment      GetAllAgentTools200DataToolResultTreatment `json:"toolResultTreatment"`
-				UpdatedAt                time.Time                                  `json:"updatedAt"`
-				UseDynamicTeamCredential bool                                       `json:"useDynamicTeamCredential"`
+				ToolResultTreatment GetAllAgentTools200DataToolResultTreatment `json:"toolResultTreatment"`
+				UpdatedAt           time.Time                                  `json:"updatedAt"`
 			} `json:"data"`
 			Pagination struct {
 				CurrentPage int  `json:"currentPage"`
@@ -23614,7 +23203,6 @@ func ParseUpdateAgentToolResponse(rsp *http.Response) (*UpdateAgentToolResponse,
 			ToolId                               *openapi_types.UUID                   `json:"toolId,omitempty"`
 			ToolResultTreatment                  UpdateAgentTool200ToolResultTreatment `json:"toolResultTreatment"`
 			UpdatedAt                            *time.Time                            `json:"updatedAt,omitempty"`
-			UseDynamicTeamCredential             *bool                                 `json:"useDynamicTeamCredential,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -23726,11 +23314,8 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 					Value   string              `json:"value"`
 					ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 				} `json:"labels"`
-				Name  string `json:"name"`
-				Teams []struct {
-					Id   string `json:"id"`
-					Name string `json:"name"`
-				} `json:"teams"`
+				Name  string   `json:"name"`
+				Teams []string `json:"teams"`
 				Tools []struct {
 					AgentId     *openapi_types.UUID                  `json:"agentId"`
 					CatalogId   *openapi_types.UUID                  `json:"catalogId"`
@@ -23862,11 +23447,8 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name  string `json:"name"`
-			Teams []struct {
-				Id   string `json:"id"`
-				Name string `json:"name"`
-			} `json:"teams"`
+			Name  string   `json:"name"`
+			Teams []string `json:"teams"`
 			Tools []struct {
 				AgentId     *openapi_types.UUID               `json:"agentId"`
 				CatalogId   *openapi_types.UUID               `json:"catalogId"`
@@ -23989,11 +23571,8 @@ func ParseGetAllAgentsResponse(rsp *http.Response) (*GetAllAgentsResponse, error
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name  string `json:"name"`
-			Teams []struct {
-				Id   string `json:"id"`
-				Name string `json:"name"`
-			} `json:"teams"`
+			Name  string   `json:"name"`
+			Teams []string `json:"teams"`
 			Tools []struct {
 				AgentId     *openapi_types.UUID                `json:"agentId"`
 				CatalogId   *openapi_types.UUID                `json:"catalogId"`
@@ -24226,11 +23805,8 @@ func ParseGetDefaultAgentResponse(rsp *http.Response) (*GetDefaultAgentResponse,
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name  string `json:"name"`
-			Teams []struct {
-				Id   string `json:"id"`
-				Name string `json:"name"`
-			} `json:"teams"`
+			Name  string   `json:"name"`
+			Teams []string `json:"teams"`
 			Tools []struct {
 				AgentId     *openapi_types.UUID                   `json:"agentId"`
 				CatalogId   *openapi_types.UUID                   `json:"catalogId"`
@@ -25069,11 +24645,8 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name  string `json:"name"`
-			Teams []struct {
-				Id   string `json:"id"`
-				Name string `json:"name"`
-			} `json:"teams"`
+			Name  string   `json:"name"`
+			Teams []string `json:"teams"`
 			Tools []struct {
 				AgentId     *openapi_types.UUID            `json:"agentId"`
 				CatalogId   *openapi_types.UUID            `json:"catalogId"`
@@ -25196,11 +24769,8 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 				Value   string              `json:"value"`
 				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 			} `json:"labels"`
-			Name  string `json:"name"`
-			Teams []struct {
-				Id   string `json:"id"`
-				Name string `json:"name"`
-			} `json:"teams"`
+			Name  string   `json:"name"`
+			Teams []string `json:"teams"`
 			Tools []struct {
 				AgentId     *openapi_types.UUID               `json:"agentId"`
 				CatalogId   *openapi_types.UUID               `json:"catalogId"`
@@ -34125,7 +33695,8 @@ func ParseGetSsoProvidersResponse(rsp *http.Response) (*GetSsoProvidersResponse,
 			OrganizationId *string `json:"organizationId"`
 			ProviderId     string  `json:"providerId"`
 			RoleMapping    *struct {
-				DefaultRole *string `json:"defaultRole,omitempty"`
+				DataSource  *GetSsoProviders200RoleMappingDataSource `json:"dataSource,omitempty"`
+				DefaultRole *string                                  `json:"defaultRole,omitempty"`
 				Rules       *[]struct {
 					Expression string `json:"expression"`
 					Role       string `json:"role"`
@@ -34186,10 +33757,6 @@ func ParseGetSsoProvidersResponse(rsp *http.Response) (*GetSsoProvidersResponse,
 				} `json:"spMetadata"`
 				WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
 			} `json:"samlConfig,omitempty"`
-			TeamSyncConfig *struct {
-				Enabled          *bool   `json:"enabled,omitempty"`
-				GroupsExpression *string `json:"groupsExpression,omitempty"`
-			} `json:"teamSyncConfig,omitempty"`
 			UserId *string `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -34323,7 +33890,8 @@ func ParseCreateSsoProviderResponse(rsp *http.Response) (*CreateSsoProviderRespo
 			OrganizationId *string `json:"organizationId"`
 			ProviderId     string  `json:"providerId"`
 			RoleMapping    *struct {
-				DefaultRole *string `json:"defaultRole,omitempty"`
+				DataSource  *CreateSsoProvider200RoleMappingDataSource `json:"dataSource,omitempty"`
+				DefaultRole *string                                    `json:"defaultRole,omitempty"`
 				Rules       *[]struct {
 					Expression string `json:"expression"`
 					Role       string `json:"role"`
@@ -34384,10 +33952,6 @@ func ParseCreateSsoProviderResponse(rsp *http.Response) (*CreateSsoProviderRespo
 				} `json:"spMetadata"`
 				WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
 			} `json:"samlConfig,omitempty"`
-			TeamSyncConfig *struct {
-				Enabled          *bool   `json:"enabled,omitempty"`
-				GroupsExpression *string `json:"groupsExpression,omitempty"`
-			} `json:"teamSyncConfig,omitempty"`
 			UserId *string `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -34722,7 +34286,8 @@ func ParseGetSsoProviderResponse(rsp *http.Response) (*GetSsoProviderResponse, e
 			OrganizationId *string `json:"organizationId"`
 			ProviderId     string  `json:"providerId"`
 			RoleMapping    *struct {
-				DefaultRole *string `json:"defaultRole,omitempty"`
+				DataSource  *GetSsoProvider200RoleMappingDataSource `json:"dataSource,omitempty"`
+				DefaultRole *string                                 `json:"defaultRole,omitempty"`
 				Rules       *[]struct {
 					Expression string `json:"expression"`
 					Role       string `json:"role"`
@@ -34783,10 +34348,6 @@ func ParseGetSsoProviderResponse(rsp *http.Response) (*GetSsoProviderResponse, e
 				} `json:"spMetadata"`
 				WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
 			} `json:"samlConfig,omitempty"`
-			TeamSyncConfig *struct {
-				Enabled          *bool   `json:"enabled,omitempty"`
-				GroupsExpression *string `json:"groupsExpression,omitempty"`
-			} `json:"teamSyncConfig,omitempty"`
 			UserId *string `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -34920,7 +34481,8 @@ func ParseUpdateSsoProviderResponse(rsp *http.Response) (*UpdateSsoProviderRespo
 			OrganizationId *string `json:"organizationId"`
 			ProviderId     string  `json:"providerId"`
 			RoleMapping    *struct {
-				DefaultRole *string `json:"defaultRole,omitempty"`
+				DataSource  *UpdateSsoProvider200RoleMappingDataSource `json:"dataSource,omitempty"`
+				DefaultRole *string                                    `json:"defaultRole,omitempty"`
 				Rules       *[]struct {
 					Expression string `json:"expression"`
 					Role       string `json:"role"`
@@ -34981,10 +34543,6 @@ func ParseUpdateSsoProviderResponse(rsp *http.Response) (*UpdateSsoProviderRespo
 				} `json:"spMetadata"`
 				WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
 			} `json:"samlConfig,omitempty"`
-			TeamSyncConfig *struct {
-				Enabled          *bool   `json:"enabled,omitempty"`
-				GroupsExpression *string `json:"groupsExpression,omitempty"`
-			} `json:"teamSyncConfig,omitempty"`
 			UserId *string `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -37303,325 +36861,6 @@ func ParseUpdateTokenPriceResponse(rsp *http.Response) (*UpdateTokenPriceRespons
 			Error struct {
 				Message string                       `json:"message"`
 				Type    UpdateTokenPrice500ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetTokensResponse parses an HTTP response from a GetTokensWithResponse call
-func ParseGetTokensResponse(rsp *http.Response) (*GetTokensResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetTokensResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []struct {
-			CreatedAt           time.Time          `json:"createdAt"`
-			Id                  openapi_types.UUID `json:"id"`
-			IsOrganizationToken bool               `json:"isOrganizationToken"`
-			LastUsedAt          *time.Time         `json:"lastUsedAt"`
-			Name                string             `json:"name"`
-			Team                *struct {
-				Id   string `json:"id"`
-				Name string `json:"name"`
-			} `json:"team"`
-			TokenStart string `json:"tokenStart"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest struct {
-			Error struct {
-				Message string                `json:"message"`
-				Type    GetTokens400ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest struct {
-			Error struct {
-				Message string                `json:"message"`
-				Type    GetTokens401ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest struct {
-			Error struct {
-				Message string                `json:"message"`
-				Type    GetTokens403ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest struct {
-			Error struct {
-				Message string                `json:"message"`
-				Type    GetTokens404ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest struct {
-			Error struct {
-				Message string                `json:"message"`
-				Type    GetTokens409ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest struct {
-			Error struct {
-				Message string                `json:"message"`
-				Type    GetTokens500ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseRotateTokenResponse parses an HTTP response from a RotateTokenWithResponse call
-func ParseRotateTokenResponse(rsp *http.Response) (*RotateTokenResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &RotateTokenResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			CreatedAt           time.Time          `json:"createdAt"`
-			Id                  openapi_types.UUID `json:"id"`
-			IsOrganizationToken bool               `json:"isOrganizationToken"`
-			LastUsedAt          *time.Time         `json:"lastUsedAt"`
-			Name                string             `json:"name"`
-			Team                *struct {
-				Id   string `json:"id"`
-				Name string `json:"name"`
-			} `json:"team"`
-			TokenStart string `json:"tokenStart"`
-			Value      string `json:"value"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest struct {
-			Error struct {
-				Message string                  `json:"message"`
-				Type    RotateToken400ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest struct {
-			Error struct {
-				Message string                  `json:"message"`
-				Type    RotateToken401ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest struct {
-			Error struct {
-				Message string                  `json:"message"`
-				Type    RotateToken403ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest struct {
-			Error struct {
-				Message string                  `json:"message"`
-				Type    RotateToken404ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest struct {
-			Error struct {
-				Message string                  `json:"message"`
-				Type    RotateToken409ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest struct {
-			Error struct {
-				Message string                  `json:"message"`
-				Type    RotateToken500ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetTokenValueResponse parses an HTTP response from a GetTokenValueWithResponse call
-func ParseGetTokenValueResponse(rsp *http.Response) (*GetTokenValueResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetTokenValueResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			Value string `json:"value"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest struct {
-			Error struct {
-				Message string                    `json:"message"`
-				Type    GetTokenValue400ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest struct {
-			Error struct {
-				Message string                    `json:"message"`
-				Type    GetTokenValue401ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest struct {
-			Error struct {
-				Message string                    `json:"message"`
-				Type    GetTokenValue403ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest struct {
-			Error struct {
-				Message string                    `json:"message"`
-				Type    GetTokenValue404ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest struct {
-			Error struct {
-				Message string                    `json:"message"`
-				Type    GetTokenValue409ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest struct {
-			Error struct {
-				Message string                    `json:"message"`
-				Type    GetTokenValue500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

@@ -6,11 +6,13 @@ import (
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -30,6 +32,7 @@ type TokenPriceResource struct {
 // TokenPriceResourceModel describes the resource data model.
 type TokenPriceResourceModel struct {
 	ID                    types.String `tfsdk:"id"`
+	LLMProvider           types.String `tfsdk:"llm_provider"`
 	Model                 types.String `tfsdk:"model"`
 	PricePerMillionInput  types.String `tfsdk:"price_per_million_input"`
 	PricePerMillionOutput types.String `tfsdk:"price_per_million_output"`
@@ -49,6 +52,13 @@ func (r *TokenPriceResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: "Token price identifier",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
+			"llm_provider": schema.StringAttribute{
+				MarkdownDescription: "LLM provider: openai, anthropic, or gemini",
+				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("openai", "anthropic", "gemini"),
 				},
 			},
 			"model": schema.StringAttribute{
@@ -94,6 +104,7 @@ func (r *TokenPriceResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	requestBody := client.CreateTokenPriceJSONRequestBody{
+		Provider:              client.SupportedProvidersInput(data.LLMProvider.ValueString()),
 		Model:                 data.Model.ValueString(),
 		PricePerMillionInput:  data.PricePerMillionInput.ValueString(),
 		PricePerMillionOutput: data.PricePerMillionOutput.ValueString(),
@@ -114,6 +125,7 @@ func (r *TokenPriceResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
+	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
 	data.Model = types.StringValue(apiResp.JSON200.Model)
 	data.PricePerMillionInput = types.StringValue(apiResp.JSON200.PricePerMillionInput)
 	data.PricePerMillionOutput = types.StringValue(apiResp.JSON200.PricePerMillionOutput)
@@ -155,6 +167,7 @@ func (r *TokenPriceResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
+	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
 	data.Model = types.StringValue(apiResp.JSON200.Model)
 	data.PricePerMillionInput = types.StringValue(apiResp.JSON200.PricePerMillionInput)
 	data.PricePerMillionOutput = types.StringValue(apiResp.JSON200.PricePerMillionOutput)
@@ -177,11 +190,13 @@ func (r *TokenPriceResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
+	provider := client.SupportedProvidersInput(data.LLMProvider.ValueString())
 	model := data.Model.ValueString()
 	priceInput := data.PricePerMillionInput.ValueString()
 	priceOutput := data.PricePerMillionOutput.ValueString()
 
 	requestBody := client.UpdateTokenPriceJSONRequestBody{
+		Provider:              &provider,
 		Model:                 &model,
 		PricePerMillionInput:  &priceInput,
 		PricePerMillionOutput: &priceOutput,
@@ -201,6 +216,7 @@ func (r *TokenPriceResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
+	data.LLMProvider = types.StringValue(apiResp.JSON200.Provider)
 	data.Model = types.StringValue(apiResp.JSON200.Model)
 	data.PricePerMillionInput = types.StringValue(apiResp.JSON200.PricePerMillionInput)
 	data.PricePerMillionOutput = types.StringValue(apiResp.JSON200.PricePerMillionOutput)
