@@ -129,3 +129,63 @@ resource "archestra_agent" "test" {
 }
 `, name)
 }
+
+func TestAccAgentResource_WithoutLabels(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create agent without labels
+			{
+				Config: testAccAgentResourceConfigNoLabels("test-agent-no-labels"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_agent.nolabels",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-agent-no-labels"),
+					),
+				},
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_agent.nolabels",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			// Update to add labels
+			{
+				Config: testAccAgentResourceConfigAddLabels("test-agent-no-labels"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_agent.nolabels",
+						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
+						knownvalue.StringExact("added"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccAgentResourceConfigNoLabels(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_agent" "nolabels" {
+  name = %[1]q
+}
+`, name)
+}
+
+func testAccAgentResourceConfigAddLabels(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_agent" "nolabels" {
+  name = %[1]q
+
+  labels = [
+    {
+      key   = "added"
+      value = "later"
+    }
+  ]
+}
+`, name)
+}
