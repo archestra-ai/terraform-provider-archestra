@@ -48,10 +48,8 @@ jobs:
       - name: Setup go
         uses: ./.github/actions/setup-go
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
-        with:
-          terraform_version: "1.13.4"
+      - name: Setup Terraform
+        uses: ./.github/actions/setup-terraform
 
       - name: Ensure go mod is "tidy"
         run: |
@@ -84,6 +82,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      # Archestra platform version for acceptance tests
+      # Update this single value to bump the version used
+      ARCHESTRA_VERSION: "0.6.26"
     steps:
       - name: Checkout project
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -93,16 +95,72 @@ jobs:
       - name: Setup go
         uses: ./.github/actions/setup-go
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+      - name: Setup Terraform
+        uses: ./.github/actions/setup-terraform
+
+      # Deploy Archestra Platform locally using Kind
+      # This uses the pre-built archestra/platform image from Docker Hub and the published Helm chart from GAR
+      - name: Setup Archestra Platform
+        uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@8bcfd042c91a76323e13de6f04262310857f5655
         with:
-          terraform_version: "1.13.4"
+          kind-config-path: ./.github/kind.yaml
+          kind-cluster-name: archestra-ci-cluster
+          helm-values-path: ./.github/values-ci.yaml
+          helm-chart-ref: oci://europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/helm-charts/archestra-platform:${{ env.ARCHESTRA_VERSION }}
+          deploy-e2e-dependencies: "false"
+          build-platform-image: "false"
+          platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}
+
+      # Login with default credentials and create an API key for acceptance tests
+      # Default credentials: admin@example.com / password
+      - name: Obtain API Key
+        id: api-key
+        run: |
+          BACKEND_URL="http://localhost:9000"
+
+          echo "Logging in with default credentials..."
+          # Sign in and capture cookies
+          LOGIN_RESPONSE=$(curl -s -c cookies.txt -b cookies.txt \
+            -X POST "${BACKEND_URL}/api/auth/sign-in/email" \
+            -H "Content-Type: application/json" \
+            -H "Origin: http://localhost:3000" \
+            -d '{"email":"admin@example.com","password":"password"}')
+
+          echo "Login response: ${LOGIN_RESPONSE}"
+
+          # Create an API key using better-auth API key plugin
+          echo "Creating API key..."
+          API_KEY_RESPONSE=$(curl -s -b cookies.txt \
+            -X POST "${BACKEND_URL}/api/auth/api-key/create" \
+            -H "Content-Type: application/json" \
+            -H "Origin: http://localhost:3000" \
+            -d '{"name":"terraform-acceptance-tests","expiresIn":604800}')
+
+          echo "API key response: ${API_KEY_RESPONSE}"
+
+          # Extract the key from the response
+          API_KEY=$(echo "${API_KEY_RESPONSE}" | jq -r '.key')
+
+          if [ -z "${API_KEY}" ] || [ "${API_KEY}" = "null" ]; then
+            echo "Failed to create API key"
+            echo "Response: ${API_KEY_RESPONSE}"
+            exit 1
+          fi
+
+          echo "Successfully created API key"
+
+          # Mask the API key in logs and set as output
+          echo "::add-mask::${API_KEY}"
+          echo "api-key=${API_KEY}" >> $GITHUB_OUTPUT
+
+          # Cleanup
+          rm -f cookies.txt
 
       - name: Run Acceptance Tests
         run: make testacc
         env:
-          ARCHESTRA_BASE_URL: "https://backend.archestra.dev"
-          ARCHESTRA_API_KEY: ${{ secrets.INTEGRATION_TESTS_ARCHESTRA_API_KEY }}
+          ARCHESTRA_BASE_URL: "http://localhost:9000"
+          ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
 
   zizmor:
     name: Zizmor GitHub Actions static analysis
