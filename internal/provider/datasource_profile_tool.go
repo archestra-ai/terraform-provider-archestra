@@ -99,7 +99,7 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 
 	// Get all agent tools (which includes configuration)
 	// Note: Using existing "Agent" API call
-	toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx)
+	toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx, nil)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read profile tools, got error: %s", err))
 		return
@@ -115,8 +115,8 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 	targetToolName := data.ToolName.ValueString()
 
 	var foundIndex = -1
-	for i := range *toolsResp.JSON200 {
-		agentTool := &(*toolsResp.JSON200)[i]
+	for i := range toolsResp.JSON200.Data {
+		agentTool := &toolsResp.JSON200.Data[i]
 		if agentTool.Agent.Id == targetAgentID && agentTool.Tool.Name == targetToolName {
 			foundIndex = i
 			break
@@ -128,7 +128,7 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	foundTool := (*toolsResp.JSON200)[foundIndex]
+	foundTool := toolsResp.JSON200.Data[foundIndex]
 
 	// Map to state
 	data.ID = types.StringValue(foundTool.Id.String())
