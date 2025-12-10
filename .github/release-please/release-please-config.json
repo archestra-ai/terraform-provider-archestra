@@ -1,7 +1,7 @@
 {
   "changelog-path": "CHANGELOG.md",
   "changelog-type": "default",
-  "bump-minor-pre-major": true,
+  "bump-minor-pre-major": false,
   "bump-patch-for-minor-pre-major": false,
   "pull-request-footer": "",
   "include-v-in-tag": true,
