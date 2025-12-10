@@ -10,38 +10,38 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
-func TestAccAgentResource(t *testing.T) {
+func TestAccProfileResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccAgentResourceConfig("test-agent"),
+				Config: testAccProfileResourceConfig("test-profile"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("test-agent"),
 					),
 					// Verify labels are in configuration order
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
 						knownvalue.StringExact("team"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("value"),
 						knownvalue.StringExact("engineering"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("key"),
 						knownvalue.StringExact("environment"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("value"),
 						knownvalue.StringExact("test"),
 					),
@@ -49,7 +49,7 @@ func TestAccAgentResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
-				ResourceName:      "archestra_agent.test",
+				ResourceName:      "archestra_profile.test",
 				ImportState:       true,
 				ImportStateVerify: true,
 				// Ignore labels during import verification since API returns them in different order
@@ -57,31 +57,31 @@ func TestAccAgentResource(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccAgentResourceConfigUpdated("test-agent-updated"),
+				Config: testAccProfileResourceConfigUpdated("test-profile-updated"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("test-agent-updated"),
 					),
 					// Verify label order is preserved after update
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
 						knownvalue.StringExact("environment"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("value"),
 						knownvalue.StringExact("production"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("key"),
 						knownvalue.StringExact("region"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("value"),
 						knownvalue.StringExact("us-west-2"),
 					),
@@ -92,9 +92,9 @@ func TestAccAgentResource(t *testing.T) {
 	})
 }
 
-func testAccAgentResourceConfig(name string) string {
+func testAccProfileResourceConfig(name string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
+resource "archestra_profile" "test" {
   name = %[1]q
 
   labels = [
@@ -111,9 +111,9 @@ resource "archestra_agent" "test" {
 `, name)
 }
 
-func testAccAgentResourceConfigUpdated(name string) string {
+func testAccProfileResourceConfigUpdated(name string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
+resource "archestra_profile" "test" {
   name = %[1]q
 
   labels = [
