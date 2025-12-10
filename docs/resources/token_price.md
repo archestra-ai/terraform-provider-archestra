@@ -40,6 +40,7 @@ resource "archestra_token_price" "gpt4o_mini" {
 
 ### Required
 
+- `llm_provider` (String) LLM provider: openai, anthropic, or gemini
 - `model` (String) The model name
 - `price_per_million_input` (String) Price per million input tokens
 - `price_per_million_output` (String) Price per million output tokens

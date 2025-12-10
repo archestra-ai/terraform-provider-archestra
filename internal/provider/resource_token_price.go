@@ -125,7 +125,7 @@ func (r *TokenPriceResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
-	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
+	data.LLMProvider = types.StringValue(apiResp.JSON200.Provider)
 	data.Model = types.StringValue(apiResp.JSON200.Model)
 	data.PricePerMillionInput = types.StringValue(apiResp.JSON200.PricePerMillionInput)
 	data.PricePerMillionOutput = types.StringValue(apiResp.JSON200.PricePerMillionOutput)
@@ -167,7 +167,7 @@ func (r *TokenPriceResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
+	data.LLMProvider = types.StringValue(apiResp.JSON200.Provider)
 	data.Model = types.StringValue(apiResp.JSON200.Model)
 	data.PricePerMillionInput = types.StringValue(apiResp.JSON200.PricePerMillionInput)
 	data.PricePerMillionOutput = types.StringValue(apiResp.JSON200.PricePerMillionOutput)

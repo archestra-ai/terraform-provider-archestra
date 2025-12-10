@@ -49,14 +49,14 @@ resource "archestra_limit" "tool_limit" {
 
 - `entity_id` (String) The entity ID this limit applies to
 - `entity_type` (String) Entity type: organization, team, or agent
-- `limit_type` (String) Limit type: token_cost, tool_calls, or mcp_server_calls
+- `limit_type` (String) Limit type: 'token_cost' (requires model), 'tool_calls' (requires mcp_server_name and tool_name), or 'mcp_server_calls' (requires mcp_server_name)
 - `limit_value` (Number) Limit threshold value
 
 ### Optional
 
-- `mcp_server_name` (String) MCP server this limit applies to
-- `model` (String) Model this limit applies to (for token_cost limits)
-- `tool_name` (String) Tool this limit applies to (for tool_calls limits)
+- `mcp_server_name` (String) Required when limit_type is 'mcp_server_calls' or 'tool_calls'. Name of the MCP server.
+- `model` (List of String) Required when limit_type is 'token_cost'. List of model names this limit applies to.
+- `tool_name` (String) Required when limit_type is 'tool_calls'. Name of the tool this limit applies to.
 
 ### Read-Only
 

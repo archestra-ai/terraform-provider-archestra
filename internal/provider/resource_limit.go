@@ -19,6 +19,7 @@ import (
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &LimitResource{}
 var _ resource.ResourceWithImportState = &LimitResource{}
+var _ resource.ResourceWithValidateConfig = &LimitResource{}
 
 func NewLimitResource() resource.Resource {
 	return &LimitResource{}
@@ -69,7 +70,7 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				},
 			},
 			"limit_type": schema.StringAttribute{
-				MarkdownDescription: "Limit type: token_cost, tool_calls, or mcp_server_calls",
+				MarkdownDescription: "Limit type: 'token_cost' (requires model), 'tool_calls' (requires mcp_server_name and tool_name), or 'mcp_server_calls' (requires mcp_server_name)",
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("token_cost", "tool_calls", "mcp_server_calls"),
@@ -80,19 +81,118 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				Required:            true,
 			},
 			"model": schema.ListAttribute{
-				MarkdownDescription: "Models this limit applies to (for token_cost limits)",
+				MarkdownDescription: "Required when limit_type is 'token_cost'. List of model names this limit applies to.",
 				Optional:            true,
 				ElementType:         types.StringType,
 			},
 			"tool_name": schema.StringAttribute{
-				MarkdownDescription: "Tool this limit applies to (for tool_calls limits)",
+				MarkdownDescription: "Required when limit_type is 'tool_calls'. Name of the tool this limit applies to.",
 				Optional:            true,
 			},
 			"mcp_server_name": schema.StringAttribute{
-				MarkdownDescription: "MCP server this limit applies to",
+				MarkdownDescription: "Required when limit_type is 'mcp_server_calls' or 'tool_calls'. Name of the MCP server.",
 				Optional:            true,
 			},
 		},
+	}
+}
+
+func (r *LimitResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var data LimitResourceModel
+
+	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Skip validation if limit_type is unknown (e.g., during plan with variables)
+	if data.LimitType.IsUnknown() {
+		return
+	}
+
+	limitType := data.LimitType.ValueString()
+
+	switch limitType {
+	case "token_cost":
+		// model must be set and non-empty
+		if data.Model.IsNull() || data.Model.IsUnknown() {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("model"),
+				"Missing Required Attribute",
+				"model is required when limit_type is 'token_cost'",
+			)
+		} else {
+			var models []string
+			data.Model.ElementsAs(ctx, &models, false)
+			if len(models) == 0 {
+				resp.Diagnostics.AddAttributeError(
+					path.Root("model"),
+					"Invalid Attribute Value",
+					"model must contain at least one value when limit_type is 'token_cost'",
+				)
+			}
+		}
+		// mcp_server_name must NOT be set
+		if !data.MCPServerName.IsNull() && !data.MCPServerName.IsUnknown() {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("mcp_server_name"),
+				"Invalid Attribute Combination",
+				"mcp_server_name must not be set when limit_type is 'token_cost'",
+			)
+		}
+		// tool_name must NOT be set
+		if !data.ToolName.IsNull() && !data.ToolName.IsUnknown() {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("tool_name"),
+				"Invalid Attribute Combination",
+				"tool_name must not be set when limit_type is 'token_cost'",
+			)
+		}
+
+	case "mcp_server_calls":
+		// mcp_server_name is required
+		if data.MCPServerName.IsNull() || data.MCPServerName.IsUnknown() {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("mcp_server_name"),
+				"Missing Required Attribute",
+				"mcp_server_name is required when limit_type is 'mcp_server_calls'",
+			)
+		}
+		// model must NOT be set
+		if !data.Model.IsNull() && !data.Model.IsUnknown() {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("model"),
+				"Invalid Attribute Combination",
+				"model must not be set when limit_type is 'mcp_server_calls'",
+			)
+		}
+
+	case "tool_calls":
+		// mcp_server_name is required
+		if data.MCPServerName.IsNull() || data.MCPServerName.IsUnknown() {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("mcp_server_name"),
+				"Missing Required Attribute",
+				"mcp_server_name is required when limit_type is 'tool_calls'",
+			)
+		}
+		// tool_name is required
+		if data.ToolName.IsNull() || data.ToolName.IsUnknown() {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("tool_name"),
+				"Missing Required Attribute",
+				"tool_name is required when limit_type is 'tool_calls'",
+			)
+		}
+		// model must NOT be set
+		if !data.Model.IsNull() && !data.Model.IsUnknown() {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("model"),
+				"Invalid Attribute Combination",
+				"model must not be set when limit_type is 'tool_calls'",
+			)
+		}
 	}
 }
 

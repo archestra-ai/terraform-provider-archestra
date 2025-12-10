@@ -1,11 +1,15 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -45,14 +49,6 @@ type OptimizationRuleResourceModel struct {
 	Enabled     types.Bool   `tfsdk:"enabled"`
 	Conditions  types.List   `tfsdk:"conditions"`
 }
-
-// apiClientLimitationError is the standard error message for this resource.
-// The optimization rules API endpoints are not yet available in the generated API client.
-// This resource will be fully functional once the API client is regenerated with the
-// Archestra backend running via 'make codegen-api-client'.
-const apiClientLimitationError = "The optimization rules API endpoints are not yet available in the generated API client. " +
-	"This resource will be fully functional after running 'make codegen-api-client' with the Archestra backend running. " +
-	"Please see the provider documentation for instructions on regenerating the API client."
 
 func (r *OptimizationRuleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_optimization_rule"
@@ -135,20 +131,225 @@ func (r *OptimizationRuleResource) Configure(ctx context.Context, req resource.C
 	r.client = client
 }
 
+// buildConditionsJSON converts Terraform conditions to a slice of JSON-serializable maps.
+func buildConditionsJSON(ctx context.Context, conditionsList types.List) ([]map[string]interface{}, diag.Diagnostics) {
+	var diags diag.Diagnostics
+	var conditions []OptimizationRuleConditionModel
+
+	diags.Append(conditionsList.ElementsAs(ctx, &conditions, false)...)
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	apiConditions := make([]map[string]interface{}, 0, len(conditions))
+	for _, cond := range conditions {
+		if !cond.MaxLength.IsNull() && !cond.MaxLength.IsUnknown() {
+			apiConditions = append(apiConditions, map[string]interface{}{
+				"maxLength": cond.MaxLength.ValueInt64(),
+			})
+		}
+
+		if !cond.HasTools.IsNull() && !cond.HasTools.IsUnknown() {
+			apiConditions = append(apiConditions, map[string]interface{}{
+				"hasTools": cond.HasTools.ValueBool(),
+			})
+		}
+	}
+
+	return apiConditions, diags
+}
+
 func (r *OptimizationRuleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	resp.Diagnostics.AddError("API Client Limitation", apiClientLimitationError)
+	var data OptimizationRuleResourceModel
+
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	apiConditions, diags := buildConditionsJSON(ctx, data.Conditions)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	enabled := data.Enabled.ValueBool()
+	requestBody := map[string]interface{}{
+		"entityId":    data.EntityID.ValueString(),
+		"entityType":  data.EntityType.ValueString(),
+		"provider":    data.LLMProvider.ValueString(),
+		"targetModel": data.TargetModel.ValueString(),
+		"enabled":     enabled,
+		"conditions":  apiConditions,
+	}
+
+	jsonBody, err := json.Marshal(requestBody)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
+	}
+
+	apiResp, err := r.client.CreateOptimizationRuleWithBodyWithResponse(ctx, "application/json", bytes.NewReader(jsonBody))
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create optimization rule, got error: %s", err))
+		return
+	}
+
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d: %s", apiResp.StatusCode(), string(apiResp.Body)),
+		)
+		return
+	}
+
+	data.ID = types.StringValue(apiResp.JSON200.Id.String())
+	data.EntityID = types.StringValue(apiResp.JSON200.EntityId)
+	data.EntityType = types.StringValue(string(apiResp.JSON200.EntityType))
+	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
+	data.TargetModel = types.StringValue(apiResp.JSON200.TargetModel)
+	data.Enabled = types.BoolValue(apiResp.JSON200.Enabled)
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *OptimizationRuleResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	resp.Diagnostics.AddError("API Client Limitation", apiClientLimitationError)
+	var data OptimizationRuleResourceModel
+
+	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// The API only has GetOptimizationRules (list), not GetOptimizationRule (single).
+	// We need to list all rules and find the one matching our ID.
+	apiResp, err := r.client.GetOptimizationRulesWithResponse(ctx)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read optimization rules, got error: %s", err))
+		return
+	}
+
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
+		)
+		return
+	}
+
+	// Find the rule with matching ID
+	ruleID := data.ID.ValueString()
+	var found bool
+	for _, rule := range *apiResp.JSON200 {
+		if rule.Id.String() == ruleID {
+			found = true
+			data.EntityID = types.StringValue(rule.EntityId)
+			data.EntityType = types.StringValue(string(rule.EntityType))
+			data.LLMProvider = types.StringValue(string(rule.Provider))
+			data.TargetModel = types.StringValue(rule.TargetModel)
+			data.Enabled = types.BoolValue(rule.Enabled)
+			// Keep existing conditions since we can't easily parse the union type back
+			break
+		}
+	}
+
+	if !found {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *OptimizationRuleResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	resp.Diagnostics.AddError("API Client Limitation", apiClientLimitationError)
+	var data OptimizationRuleResourceModel
+
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	id, err := uuid.Parse(data.ID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse optimization rule ID: %s", err))
+		return
+	}
+
+	apiConditions, diags := buildConditionsJSON(ctx, data.Conditions)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	requestBody := map[string]interface{}{
+		"entityId":    data.EntityID.ValueString(),
+		"entityType":  data.EntityType.ValueString(),
+		"provider":    data.LLMProvider.ValueString(),
+		"targetModel": data.TargetModel.ValueString(),
+		"enabled":     data.Enabled.ValueBool(),
+		"conditions":  apiConditions,
+	}
+
+	jsonBody, err := json.Marshal(requestBody)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
+	}
+
+	apiResp, err := r.client.UpdateOptimizationRuleWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(jsonBody))
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update optimization rule, got error: %s", err))
+		return
+	}
+
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
+		)
+		return
+	}
+
+	data.EntityID = types.StringValue(apiResp.JSON200.EntityId)
+	data.EntityType = types.StringValue(string(apiResp.JSON200.EntityType))
+	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
+	data.TargetModel = types.StringValue(apiResp.JSON200.TargetModel)
+	data.Enabled = types.BoolValue(apiResp.JSON200.Enabled)
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *OptimizationRuleResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	resp.Diagnostics.AddError("API Client Limitation", apiClientLimitationError)
+	var data OptimizationRuleResourceModel
+
+	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	id, err := uuid.Parse(data.ID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse optimization rule ID: %s", err))
+		return
+	}
+
+	apiResp, err := r.client.DeleteOptimizationRuleWithResponse(ctx, id)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete optimization rule, got error: %s", err))
+		return
+	}
+
+	if apiResp.JSON200 == nil && apiResp.JSON404 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK or 404 Not Found, got status %d", apiResp.StatusCode()),
+		)
+		return
+	}
 }
 
 func (r *OptimizationRuleResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
