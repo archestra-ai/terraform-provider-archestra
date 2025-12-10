@@ -18,7 +18,6 @@ func NewProfileToolDataSource() datasource.DataSource {
 
 type ProfileToolDataSource struct {
 	client *client.ClientWithResponses
-	Legacy bool
 }
 
 type ProfileToolDataSourceModel struct {
@@ -32,11 +31,7 @@ type ProfileToolDataSourceModel struct {
 }
 
 func (d *ProfileToolDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	if d.Legacy {
-		resp.TypeName = req.ProviderTypeName + "_agent_tool"
-	} else {
-		resp.TypeName = req.ProviderTypeName + "_profile_tool"
-	}
+	resp.TypeName = req.ProviderTypeName + "_profile_tool"
 }
 
 func (d *ProfileToolDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
@@ -74,11 +69,6 @@ func (d *ProfileToolDataSource) Schema(ctx context.Context, req datasource.Schem
 				Computed:            true,
 			},
 		},
-	}
-
-	if d.Legacy {
-		resp.Schema.DeprecationMessage = "This data source is deprecated. Please use archestra_profile_tool instead."
-		resp.Schema.MarkdownDescription = "Fetches an agent tool (deprecated: use archestra_profile_tool)."
 	}
 }
 

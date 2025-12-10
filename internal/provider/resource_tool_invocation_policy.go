@@ -28,7 +28,6 @@ type ToolInvocationPolicyResource struct {
 type ToolInvocationPolicyResourceModel struct {
 	ID            types.String `tfsdk:"id"`
 	ProfileToolID types.String `tfsdk:"profile_tool_id"`
-	AgentToolID   types.String `tfsdk:"agent_tool_id"`
 	ArgumentName  types.String `tfsdk:"argument_name"`
 	Operator      types.String `tfsdk:"operator"`
 	Value         types.String `tfsdk:"value"`
@@ -55,20 +54,7 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 			},
 			"profile_tool_id": schema.StringAttribute{
 				MarkdownDescription: "The profile tool ID this policy applies to",
-				Optional:            true,
-				Computed:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
-			"agent_tool_id": schema.StringAttribute{
-				MarkdownDescription: "The agent tool ID this policy applies to (deprecated: use profile_tool_id)",
-				Optional:            true,
-				Computed:            true,
-				DeprecationMessage:  "This attribute is deprecated. Please use profile_tool_id instead.",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
+				Required:            true,
 			},
 			"argument_name": schema.StringAttribute{
 				MarkdownDescription: "The argument name to match",
@@ -118,28 +104,17 @@ func (r *ToolInvocationPolicyResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	// Resolve Tool ID
-	var toolIDStr string
-	if !data.ProfileToolID.IsNull() {
-		toolIDStr = data.ProfileToolID.ValueString()
-	} else if !data.AgentToolID.IsNull() {
-		toolIDStr = data.AgentToolID.ValueString()
-	} else {
-		resp.Diagnostics.AddError("Missing Tool ID", "Either profile_tool_id or agent_tool_id must be specified")
-		return
-	}
-
-	// Parse ToolID as UUID
-	parsedToolID, err := uuid.Parse(toolIDStr)
+	// Parse ProfileToolID as UUID
+	parsedProfileToolID, err := uuid.Parse(data.ProfileToolID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Tool ID", fmt.Sprintf("Unable to parse tool ID: %s", err))
+		resp.Diagnostics.AddError("Invalid Profile Tool ID", fmt.Sprintf("Unable to parse profile tool ID: %s", err))
 		return
 	}
-	toolID := parsedToolID
+	profileToolID := parsedProfileToolID
 
 	// Create request body using generated type
 	requestBody := client.CreateToolInvocationPolicyJSONRequestBody{
-		AgentToolId:  toolID,
+		AgentToolId:  profileToolID,
 		ArgumentName: data.ArgumentName.ValueString(),
 		Operator:     client.CreateToolInvocationPolicyJSONBodyOperator(data.Operator.ValueString()),
 		Value:        data.Value.ValueString(),
@@ -169,15 +144,7 @@ func (r *ToolInvocationPolicyResource) Create(ctx context.Context, req resource.
 
 	// Map response to Terraform state
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
-
-	respID := apiResp.JSON200.AgentToolId.String()
-	if !data.ProfileToolID.IsNull() {
-		data.ProfileToolID = types.StringValue(respID)
-		data.AgentToolID = types.StringNull()
-	} else {
-		data.AgentToolID = types.StringValue(respID)
-		data.ProfileToolID = types.StringNull()
-	}
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
 
 	data.ArgumentName = types.StringValue(apiResp.JSON200.ArgumentName)
 	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
@@ -228,15 +195,7 @@ func (r *ToolInvocationPolicyResource) Read(ctx context.Context, req resource.Re
 	}
 
 	// Map response to Terraform state
-	respID := apiResp.JSON200.AgentToolId.String()
-
-	// Preserve which field was used in state
-	if !data.ProfileToolID.IsNull() {
-		data.ProfileToolID = types.StringValue(respID)
-	}
-	if !data.AgentToolID.IsNull() {
-		data.AgentToolID = types.StringValue(respID)
-	}
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
 
 	data.ArgumentName = types.StringValue(apiResp.JSON200.ArgumentName)
 	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
@@ -266,23 +225,13 @@ func (r *ToolInvocationPolicyResource) Update(ctx context.Context, req resource.
 	}
 	policyID := parsedID
 
-	// Resolve Tool ID
-	var toolIDStr string
-	if !data.ProfileToolID.IsNull() {
-		toolIDStr = data.ProfileToolID.ValueString()
-	} else if !data.AgentToolID.IsNull() {
-		toolIDStr = data.AgentToolID.ValueString()
-	} else {
-		resp.Diagnostics.AddError("Missing Tool ID", "Either profile_tool_id or agent_tool_id must be specified")
-		return
-	}
-
-	parsedToolID, err := uuid.Parse(toolIDStr)
+	// Parse ProfileToolID as UUID
+	parsedProfileToolID, err := uuid.Parse(data.ProfileToolID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Tool ID", fmt.Sprintf("Unable to parse tool ID: %s", err))
+		resp.Diagnostics.AddError("Invalid Profile Tool ID", fmt.Sprintf("Unable to parse profile tool ID: %s", err))
 		return
 	}
-	toolID := parsedToolID
+	profileToolID := parsedProfileToolID
 
 	// Create request body using generated type
 	argumentName := data.ArgumentName.ValueString()
@@ -291,7 +240,7 @@ func (r *ToolInvocationPolicyResource) Update(ctx context.Context, req resource.
 	action := client.UpdateToolInvocationPolicyJSONBodyAction(data.Action.ValueString())
 
 	requestBody := client.UpdateToolInvocationPolicyJSONRequestBody{
-		AgentToolId:  &toolID,
+		AgentToolId:  &profileToolID,
 		ArgumentName: &argumentName,
 		Operator:     &operator,
 		Value:        &value,
@@ -320,14 +269,7 @@ func (r *ToolInvocationPolicyResource) Update(ctx context.Context, req resource.
 	}
 
 	// Map response to Terraform state
-	respID := apiResp.JSON200.AgentToolId.String()
-	if !data.ProfileToolID.IsNull() {
-		data.ProfileToolID = types.StringValue(respID)
-		data.AgentToolID = types.StringNull()
-	} else {
-		data.AgentToolID = types.StringValue(respID)
-		data.ProfileToolID = types.StringNull()
-	}
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
 
 	data.ArgumentName = types.StringValue(apiResp.JSON200.ArgumentName)
 	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))

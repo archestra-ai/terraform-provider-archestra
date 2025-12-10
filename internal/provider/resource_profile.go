@@ -26,7 +26,6 @@ func NewProfileResource() resource.Resource {
 // ProfileResource defines the resource implementation.
 type ProfileResource struct {
 	client *client.ClientWithResponses
-	Legacy bool
 }
 
 // ProfileLabelModel describes a label data model.
@@ -43,11 +42,7 @@ type ProfileResourceModel struct {
 }
 
 func (r *ProfileResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	if r.Legacy {
-		resp.TypeName = req.ProviderTypeName + "_agent"
-	} else {
-		resp.TypeName = req.ProviderTypeName + "_profile"
-	}
+	resp.TypeName = req.ProviderTypeName + "_profile"
 }
 
 func (r *ProfileResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -83,11 +78,6 @@ func (r *ProfileResource) Schema(ctx context.Context, req resource.SchemaRequest
 				},
 			},
 		},
-	}
-
-	if r.Legacy {
-		resp.Schema.DeprecationMessage = "This resource is deprecated. Please use archestra_profile instead."
-		resp.Schema.MarkdownDescription = "Manages an Archestra agent (deprecated: use archestra_profile)."
 	}
 }
 
