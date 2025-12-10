@@ -98,22 +98,6 @@ jobs:
       - name: Setup Terraform
         uses: ./.github/actions/setup-terraform
 
-      # Cache Docker image to avoid re-pulling on every run
-      # See: https://docs.docker.com/build/cache/backends/gha/
-      - name: Restore Docker image cache
-        id: docker-cache
-        uses: actions/cache@v4
-        with:
-          path: /tmp/docker-image-cache
-          key: docker-image-archestra-platform-${{ env.ARCHESTRA_VERSION }}
-
-      - name: Load cached Docker image
-        if: steps.docker-cache.outputs.cache-hit == 'true'
-        run: |
-          echo "Loading Docker image from cache..."
-          docker load -i /tmp/docker-image-cache/archestra-platform.tar
-          echo "Cached image loaded successfully"
-
       # Deploy Archestra Platform locally using Kind
       # This uses the pre-built archestra/platform image from Docker Hub and the published Helm chart from GAR
       - name: Setup Archestra Platform
@@ -126,14 +110,6 @@ jobs:
           deploy-e2e-dependencies: "false"
           build-platform-image: "false"
           platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}
-
-      - name: Save Docker image to cache
-        if: steps.docker-cache.outputs.cache-hit != 'true'
-        run: |
-          echo "Saving Docker image to cache..."
-          mkdir -p /tmp/docker-image-cache
-          docker save "archestra/platform:${ARCHESTRA_VERSION}" -o /tmp/docker-image-cache/archestra-platform.tar
-          echo "Image saved to cache ($(du -h /tmp/docker-image-cache/archestra-platform.tar | cut -f1))"
 
       # Login with default credentials and create an API key for acceptance tests
       # Default credentials: admin@example.com / password
