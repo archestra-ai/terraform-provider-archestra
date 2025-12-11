@@ -97,46 +97,68 @@ func (d *AgentToolDataSource) Read(ctx context.Context, req datasource.ReadReque
 		return
 	}
 
-	// Get all agent tools (which includes configuration)
-	toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx, nil)
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read agent tools, got error: %s", err))
-		return
-	}
-
-	if toolsResp.JSON200 == nil {
-		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", toolsResp.StatusCode()))
-		return
-	}
-
-	// Filter by agent ID and tool name
 	targetAgentID := data.AgentID.ValueString()
 	targetToolName := data.ToolName.ValueString()
 
-	var foundIndex = -1
-	for i := range toolsResp.JSON200.Data {
-		agentTool := &toolsResp.JSON200.Data[i]
-		if agentTool.Agent.Id == targetAgentID && agentTool.Tool.Name == targetToolName {
-			foundIndex = i
-			break
-		}
+	// Use retry logic for built-in tools that may not be immediately available after agent creation.
+	// Built-in tools like "archestra__whoami" are assigned asynchronously.
+	retryConfig := DefaultRetryConfig(fmt.Sprintf("Tool '%s' for agent %s", targetToolName, targetAgentID))
+
+	// agentToolResult holds the extracted data we need from the API response
+	type agentToolResult struct {
+		ID                                   string
+		ToolID                               string
+		AllowUsageWhenUntrustedDataIsPresent bool
+		ToolResultTreatment                  string
+		ResponseModifierTemplate             *string
 	}
 
-	if foundIndex == -1 {
+	result, found, err := RetryUntilFound(ctx, retryConfig, func() (agentToolResult, bool, error) {
+		// Get all agent tools (which includes configuration)
+		toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx, nil)
+		if err != nil {
+			return agentToolResult{}, false, fmt.Errorf("unable to read agent tools: %w", err)
+		}
+
+		if toolsResp.JSON200 == nil {
+			return agentToolResult{}, false, fmt.Errorf("expected 200 OK, got status %d", toolsResp.StatusCode())
+		}
+
+		// Filter by agent ID and tool name
+		for i := range toolsResp.JSON200.Data {
+			agentTool := &toolsResp.JSON200.Data[i]
+			if agentTool.Agent.Id == targetAgentID && agentTool.Tool.Name == targetToolName {
+				return agentToolResult{
+					ID:                                   agentTool.Id.String(),
+					ToolID:                               agentTool.Tool.Id,
+					AllowUsageWhenUntrustedDataIsPresent: agentTool.AllowUsageWhenUntrustedDataIsPresent,
+					ToolResultTreatment:                  string(agentTool.ToolResultTreatment),
+					ResponseModifierTemplate:             agentTool.ResponseModifierTemplate,
+				}, true, nil
+			}
+		}
+
+		return agentToolResult{}, false, nil
+	})
+
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", err.Error())
+		return
+	}
+
+	if !found {
 		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Tool '%s' not found for agent %s", targetToolName, targetAgentID))
 		return
 	}
 
-	foundTool := toolsResp.JSON200.Data[foundIndex]
-
 	// Map to state
-	data.ID = types.StringValue(foundTool.Id.String())
-	data.ToolID = types.StringValue(foundTool.Tool.Id)
-	data.AllowUsageWhenUntrustedDataIsPresent = types.BoolValue(foundTool.AllowUsageWhenUntrustedDataIsPresent)
-	data.ToolResultTreatment = types.StringValue(string(foundTool.ToolResultTreatment))
+	data.ID = types.StringValue(result.ID)
+	data.ToolID = types.StringValue(result.ToolID)
+	data.AllowUsageWhenUntrustedDataIsPresent = types.BoolValue(result.AllowUsageWhenUntrustedDataIsPresent)
+	data.ToolResultTreatment = types.StringValue(result.ToolResultTreatment)
 
-	if foundTool.ResponseModifierTemplate != nil {
-		data.ResponseModifierTemplate = types.StringValue(*foundTool.ResponseModifierTemplate)
+	if result.ResponseModifierTemplate != nil {
+		data.ResponseModifierTemplate = types.StringValue(*result.ResponseModifierTemplate)
 	} else {
 		data.ResponseModifierTemplate = types.StringNull()
 	}
