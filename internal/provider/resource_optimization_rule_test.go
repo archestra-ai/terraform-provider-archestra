@@ -14,10 +14,10 @@ func TestAccOptimizationRuleResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccOptimizationRuleResourceConfig("test-org", "organization", "openai", "gpt-4o-mini", 500),
+				Config: testAccOptimizationRuleResourceConfig("openai", "gpt-4o-mini", 500),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "entity_id", "test-org"),
-					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "entity_type", "organization"),
+					resource.TestCheckResourceAttrSet("archestra_optimization_rule.test", "entity_id"),
+					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "entity_type", "agent"),
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "llm_provider", "openai"),
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "target_model", "gpt-4o-mini"),
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "enabled", "true"),
@@ -34,7 +34,7 @@ func TestAccOptimizationRuleResource(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccOptimizationRuleResourceConfig("test-org", "organization", "openai", "gpt-3.5-turbo", 1000),
+				Config: testAccOptimizationRuleResourceConfig("openai", "gpt-3.5-turbo", 1000),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "target_model", "gpt-3.5-turbo"),
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "conditions.0.max_length", "1000"),
@@ -52,7 +52,7 @@ func TestAccOptimizationRuleResourceWithHasTools(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Create with has_tools condition
 			{
-				Config: testAccOptimizationRuleResourceConfigWithHasTools("test-org", "organization", "anthropic", "claude-3-haiku-20240307", false),
+				Config: testAccOptimizationRuleResourceConfigWithHasTools("anthropic", "claude-3-haiku-20240307", false),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "llm_provider", "anthropic"),
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "target_model", "claude-3-haiku-20240307"),
@@ -72,7 +72,7 @@ func TestAccOptimizationRuleResourceDisabled(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Create with enabled = false
 			{
-				Config: testAccOptimizationRuleResourceConfigDisabled("test-org", "organization", "gemini", "gemini-1.5-flash", 200),
+				Config: testAccOptimizationRuleResourceConfigDisabled("gemini", "gemini-1.5-flash", 200),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "llm_provider", "gemini"),
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "enabled", "false"),
@@ -84,53 +84,65 @@ func TestAccOptimizationRuleResourceDisabled(t *testing.T) {
 	})
 }
 
-func testAccOptimizationRuleResourceConfig(entityID, entityType, provider, targetModel string, maxLength int) string {
+func testAccOptimizationRuleResourceConfig(provider, targetModel string, maxLength int) string {
 	return fmt.Sprintf(`
+resource "archestra_agent" "test" {
+  name = "test-optimization-rule-agent"
+}
+
 resource "archestra_optimization_rule" "test" {
-  entity_id    = %[1]q
-  entity_type  = %[2]q
-  llm_provider = %[3]q
-  target_model = %[4]q
+  entity_id    = archestra_agent.test.id
+  entity_type  = "agent"
+  llm_provider = %[1]q
+  target_model = %[2]q
   enabled      = true
   conditions   = [
     {
-      max_length = %[5]d
+      max_length = %[3]d
     }
   ]
 }
-`, entityID, entityType, provider, targetModel, maxLength)
+`, provider, targetModel, maxLength)
 }
 
-func testAccOptimizationRuleResourceConfigWithHasTools(entityID, entityType, provider, targetModel string, hasTools bool) string {
+func testAccOptimizationRuleResourceConfigWithHasTools(provider, targetModel string, hasTools bool) string {
 	return fmt.Sprintf(`
+resource "archestra_agent" "test" {
+  name = "test-optimization-rule-agent-hastools"
+}
+
 resource "archestra_optimization_rule" "test" {
-  entity_id    = %[1]q
-  entity_type  = %[2]q
-  llm_provider = %[3]q
-  target_model = %[4]q
+  entity_id    = archestra_agent.test.id
+  entity_type  = "agent"
+  llm_provider = %[1]q
+  target_model = %[2]q
   enabled      = true
   conditions   = [
     {
-      has_tools = %[5]t
+      has_tools = %[3]t
     }
   ]
 }
-`, entityID, entityType, provider, targetModel, hasTools)
+`, provider, targetModel, hasTools)
 }
 
-func testAccOptimizationRuleResourceConfigDisabled(entityID, entityType, provider, targetModel string, maxLength int) string {
+func testAccOptimizationRuleResourceConfigDisabled(provider, targetModel string, maxLength int) string {
 	return fmt.Sprintf(`
+resource "archestra_agent" "test" {
+  name = "test-optimization-rule-agent-disabled"
+}
+
 resource "archestra_optimization_rule" "test" {
-  entity_id    = %[1]q
-  entity_type  = %[2]q
-  llm_provider = %[3]q
-  target_model = %[4]q
+  entity_id    = archestra_agent.test.id
+  entity_type  = "agent"
+  llm_provider = %[1]q
+  target_model = %[2]q
   enabled      = false
   conditions   = [
     {
-      max_length = %[5]d
+      max_length = %[3]d
     }
   ]
 }
-`, entityID, entityType, provider, targetModel, maxLength)
+`, provider, targetModel, maxLength)
 }

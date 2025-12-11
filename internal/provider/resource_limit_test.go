@@ -150,4 +150,3 @@ resource "archestra_limit" "test" {
 }
 `, entityID, entityType, limitValue, mcpServerName, toolName)
 }
-
