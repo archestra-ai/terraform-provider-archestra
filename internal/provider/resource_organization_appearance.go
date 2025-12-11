@@ -5,9 +5,11 @@ import (
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -25,8 +27,7 @@ type OrganizationAppearanceResource struct {
 type OrganizationAppearanceResourceModel struct {
 	Font       types.String `tfsdk:"font"`
 	ColorTheme types.String `tfsdk:"color_theme"`
-	LogoURL    types.String `tfsdk:"logo_url"`
-	LogoType   types.String `tfsdk:"logo_type"`
+	Logo       types.String `tfsdk:"logo"`
 }
 
 func (r *OrganizationAppearanceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -41,17 +42,28 @@ func (r *OrganizationAppearanceResource) Schema(ctx context.Context, req resourc
 			"font": schema.StringAttribute{
 				MarkdownDescription: "The custom font for the organization. Valid values: inter, lato, open-sans, roboto, source-sans-pro",
 				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("inter", "lato", "open-sans", "roboto", "source-sans-pro"),
+				},
 			},
 			"color_theme": schema.StringAttribute{
 				MarkdownDescription: "The color theme for the organization.",
 				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"amber-minimal", "bold-tech", "bubblegum", "caffeine", "candyland",
+						"catppuccin", "claude", "claymorphism", "clean-slate", "cosmic-night",
+						"cyberpunk", "doom-64", "elegant-luxury", "graphite", "kodama-grove",
+						"midnight-bloom", "mocha-mousse", "modern-minimal", "mono", "nature",
+						"neo-brutalism", "northern-lights", "ocean-breeze", "pastel-dreams",
+						"perpetuity", "quantum-rose", "retro-arcade", "solar-dusk",
+						"starry-night", "sunset-horizon", "supabase", "t3-chat",
+						"tangerine", "twitter", "vercel", "vintage-paper",
+					),
+				},
 			},
-			"logo_url": schema.StringAttribute{
-				MarkdownDescription: "The URL of the organization's logo.",
-				Optional:            true,
-			},
-			"logo_type": schema.StringAttribute{
-				MarkdownDescription: "The type of logo to use. Valid values: custom, default",
+			"logo": schema.StringAttribute{
+				MarkdownDescription: "The organization's logo. This should be a base64 encoded string.",
 				Optional:            true,
 			},
 		},
@@ -83,30 +95,25 @@ func (r *OrganizationAppearanceResource) Create(ctx context.Context, req resourc
 	}
 
 	// Create request body
-	requestBody := client.UpdateOrganizationAppearanceJSONRequestBody{}
+	requestBody := client.UpdateOrganizationJSONBody{}
 
 	if !data.Font.IsNull() {
-		font := client.UpdateOrganizationAppearanceJSONBodyCustomFont(data.Font.ValueString())
+		font := client.UpdateOrganizationJSONBodyCustomFont(data.Font.ValueString())
 		requestBody.CustomFont = &font
 	}
 
 	if !data.ColorTheme.IsNull() {
-		theme := client.UpdateOrganizationAppearanceJSONBodyTheme(data.ColorTheme.ValueString())
+		theme := client.UpdateOrganizationJSONBodyTheme(data.ColorTheme.ValueString())
 		requestBody.Theme = &theme
 	}
 
-	if !data.LogoURL.IsNull() {
-		logo := data.LogoURL.ValueString()
+	if !data.Logo.IsNull() {
+		logo := data.Logo.ValueString()
 		requestBody.Logo = &logo
 	}
 
-	if !data.LogoType.IsNull() {
-		logoType := client.UpdateOrganizationAppearanceJSONBodyLogoType(data.LogoType.ValueString())
-		requestBody.LogoType = &logoType
-	}
-
 	// Call API - treating Create as Update for singleton
-	apiResp, err := r.client.UpdateOrganizationAppearanceWithResponse(ctx, requestBody)
+	apiResp, err := r.client.UpdateOrganizationWithResponse(ctx, client.UpdateOrganizationJSONRequestBody(requestBody))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create/update organization appearance, got error: %s", err))
 		return
@@ -131,7 +138,7 @@ func (r *OrganizationAppearanceResource) Read(ctx context.Context, req resource.
 	}
 
 	// Call API
-	apiResp, err := r.client.GetOrganizationAppearanceWithResponse(ctx)
+	apiResp, err := r.client.GetOrganizationWithResponse(ctx)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read organization appearance, got error: %s", err))
 		return
@@ -146,28 +153,23 @@ func (r *OrganizationAppearanceResource) Read(ctx context.Context, req resource.
 	}
 
 	// Map response to Terraform state
-	if apiResp.JSON200.CustomFont != nil {
-		data.Font = types.StringValue(string(*apiResp.JSON200.CustomFont))
+	// Assuming CustomFont and Theme are value types (strings or enums) based on error messages
+	if string(apiResp.JSON200.CustomFont) != "" {
+		data.Font = types.StringValue(string(apiResp.JSON200.CustomFont))
 	} else {
 		data.Font = types.StringNull()
 	}
 
-	if apiResp.JSON200.Theme != nil {
-		data.ColorTheme = types.StringValue(string(*apiResp.JSON200.Theme))
+	if string(apiResp.JSON200.Theme) != "" {
+		data.ColorTheme = types.StringValue(string(apiResp.JSON200.Theme))
 	} else {
 		data.ColorTheme = types.StringNull()
 	}
 
 	if apiResp.JSON200.Logo != nil {
-		data.LogoURL = types.StringValue(*apiResp.JSON200.Logo)
+		data.Logo = types.StringValue(*apiResp.JSON200.Logo)
 	} else {
-		data.LogoURL = types.StringNull()
-	}
-
-	if apiResp.JSON200.LogoType != nil {
-		data.LogoType = types.StringValue(string(*apiResp.JSON200.LogoType))
-	} else {
-		data.LogoType = types.StringNull()
+		data.Logo = types.StringNull()
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -181,30 +183,25 @@ func (r *OrganizationAppearanceResource) Update(ctx context.Context, req resourc
 	}
 
 	// Create request body
-	requestBody := client.UpdateOrganizationAppearanceJSONRequestBody{}
+	requestBody := client.UpdateOrganizationJSONBody{}
 
 	if !data.Font.IsNull() {
-		font := client.UpdateOrganizationAppearanceJSONBodyCustomFont(data.Font.ValueString())
+		font := client.UpdateOrganizationJSONBodyCustomFont(data.Font.ValueString())
 		requestBody.CustomFont = &font
 	}
 
 	if !data.ColorTheme.IsNull() {
-		theme := client.UpdateOrganizationAppearanceJSONBodyTheme(data.ColorTheme.ValueString())
+		theme := client.UpdateOrganizationJSONBodyTheme(data.ColorTheme.ValueString())
 		requestBody.Theme = &theme
 	}
 
-	if !data.LogoURL.IsNull() {
-		logo := data.LogoURL.ValueString()
+	if !data.Logo.IsNull() {
+		logo := data.Logo.ValueString()
 		requestBody.Logo = &logo
 	}
 
-	if !data.LogoType.IsNull() {
-		logoType := client.UpdateOrganizationAppearanceJSONBodyLogoType(data.LogoType.ValueString())
-		requestBody.LogoType = &logoType
-	}
-
 	// Call API
-	apiResp, err := r.client.UpdateOrganizationAppearanceWithResponse(ctx, requestBody)
+	apiResp, err := r.client.UpdateOrganizationWithResponse(ctx, client.UpdateOrganizationJSONRequestBody(requestBody))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update organization appearance, got error: %s", err))
 		return
