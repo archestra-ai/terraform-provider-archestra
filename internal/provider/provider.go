@@ -154,6 +154,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewTrustedDataPolicyResource,
 		NewToolInvocationPolicyResource,
 		NewTeamResource,
+		NewMcpServerTeamAccessResource,
 		// NewUserResource, // TODO: Enable when user API endpoints are implemented
 	}
 }
