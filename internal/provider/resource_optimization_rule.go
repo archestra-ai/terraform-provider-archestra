@@ -18,6 +18,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -223,42 +224,71 @@ func (r *OptimizationRuleResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
+	ruleID := data.ID.ValueString()
+
 	// The API only has GetOptimizationRules (list), not GetOptimizationRule (single).
 	// We need to list all rules and find the one matching our ID.
-	apiResp, err := r.client.GetOptimizationRulesWithResponse(ctx)
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read optimization rules, got error: %s", err))
-		return
+	// Use retry logic for eventual consistency - the rule may not appear immediately after creation.
+	retryConfig := DefaultRetryConfig(fmt.Sprintf("Optimization rule %s", ruleID))
+
+	// optimizationRuleResult holds the extracted data we need from the API response
+	type optimizationRuleResult struct {
+		EntityID    string
+		EntityType  string
+		Provider    string
+		TargetModel string
+		Enabled     bool
 	}
 
-	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
-		)
-		return
-	}
-
-	// Find the rule with matching ID
-	ruleID := data.ID.ValueString()
-	var found bool
-	for _, rule := range *apiResp.JSON200 {
-		if rule.Id.String() == ruleID {
-			found = true
-			data.EntityID = types.StringValue(rule.EntityId)
-			data.EntityType = types.StringValue(string(rule.EntityType))
-			data.LLMProvider = types.StringValue(string(rule.Provider))
-			data.TargetModel = types.StringValue(rule.TargetModel)
-			data.Enabled = types.BoolValue(rule.Enabled)
-			// Keep existing conditions since we can't easily parse the union type back
-			break
+	result, found, err := RetryUntilFound(ctx, retryConfig, func() (optimizationRuleResult, bool, error) {
+		apiResp, err := r.client.GetOptimizationRulesWithResponse(ctx)
+		if err != nil {
+			return optimizationRuleResult{}, false, fmt.Errorf("unable to read optimization rules: %w", err)
 		}
+
+		if apiResp.JSON200 == nil {
+			return optimizationRuleResult{}, false, fmt.Errorf("expected 200 OK, got status %d: %s", apiResp.StatusCode(), string(apiResp.Body))
+		}
+
+		rules := *apiResp.JSON200
+		tflog.Debug(ctx, fmt.Sprintf("Looking for rule %s in %d rules returned by API", ruleID, len(rules)))
+		for _, rule := range rules {
+			tflog.Debug(ctx, fmt.Sprintf("Found rule: %s (entity: %s, type: %s)", rule.Id.String(), rule.EntityId, rule.EntityType))
+		}
+
+		// Find the rule with matching ID
+		for _, rule := range rules {
+			if rule.Id.String() == ruleID {
+				return optimizationRuleResult{
+					EntityID:    rule.EntityId,
+					EntityType:  string(rule.EntityType),
+					Provider:    string(rule.Provider),
+					TargetModel: rule.TargetModel,
+					Enabled:     rule.Enabled,
+				}, true, nil
+			}
+		}
+
+		return optimizationRuleResult{}, false, nil
+	})
+
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", err.Error())
+		return
 	}
 
 	if !found {
+		tflog.Warn(ctx, fmt.Sprintf("Rule %s not found in API response after retries, removing from state", ruleID))
 		resp.State.RemoveResource(ctx)
 		return
 	}
+
+	data.EntityID = types.StringValue(result.EntityID)
+	data.EntityType = types.StringValue(result.EntityType)
+	data.LLMProvider = types.StringValue(result.Provider)
+	data.TargetModel = types.StringValue(result.TargetModel)
+	data.Enabled = types.BoolValue(result.Enabled)
+	// Keep existing conditions since we can't easily parse the union type back
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

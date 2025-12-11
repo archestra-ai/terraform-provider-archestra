@@ -16,8 +16,8 @@ func TestAccOptimizationRuleResource(t *testing.T) {
 			{
 				Config: testAccOptimizationRuleResourceConfig("openai", "gpt-4o-mini", 500),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttrSet("archestra_optimization_rule.test", "entity_id"),
-					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "entity_type", "agent"),
+					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "entity_id", "default-org"),
+					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "entity_type", "organization"),
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "llm_provider", "openai"),
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "target_model", "gpt-4o-mini"),
 					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "enabled", "true"),
@@ -86,13 +86,9 @@ func TestAccOptimizationRuleResourceDisabled(t *testing.T) {
 
 func testAccOptimizationRuleResourceConfig(provider, targetModel string, maxLength int) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
-  name = "test-optimization-rule-agent"
-}
-
 resource "archestra_optimization_rule" "test" {
-  entity_id    = archestra_agent.test.id
-  entity_type  = "agent"
+  entity_id    = "default-org"
+  entity_type  = "organization"
   llm_provider = %[1]q
   target_model = %[2]q
   enabled      = true
@@ -107,13 +103,9 @@ resource "archestra_optimization_rule" "test" {
 
 func testAccOptimizationRuleResourceConfigWithHasTools(provider, targetModel string, hasTools bool) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
-  name = "test-optimization-rule-agent-hastools"
-}
-
 resource "archestra_optimization_rule" "test" {
-  entity_id    = archestra_agent.test.id
-  entity_type  = "agent"
+  entity_id    = "default-org"
+  entity_type  = "organization"
   llm_provider = %[1]q
   target_model = %[2]q
   enabled      = true
@@ -128,13 +120,9 @@ resource "archestra_optimization_rule" "test" {
 
 func testAccOptimizationRuleResourceConfigDisabled(provider, targetModel string, maxLength int) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
-  name = "test-optimization-rule-agent-disabled"
-}
-
 resource "archestra_optimization_rule" "test" {
-  entity_id    = archestra_agent.test.id
-  entity_type  = "agent"
+  entity_id    = "default-org"
+  entity_type  = "organization"
   llm_provider = %[1]q
   target_model = %[2]q
   enabled      = false
