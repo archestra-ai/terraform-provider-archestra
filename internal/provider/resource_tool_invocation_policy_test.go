@@ -88,108 +88,97 @@ func TestAccToolInvocationPolicyResource(t *testing.T) {
 }
 
 func TestAccToolInvocationPolicyResource_WithoutReason(t *testing.T) {
-	// Skip this test - it's flaky in CI due to race conditions with tool assignment.
-	// The optional "reason" field is tested implicitly in the main test when we update
-	// from one reason to another. Full CRUD coverage is provided by TestAccToolInvocationPolicyResource.
-	t.Skip("Skipping - flaky due to race conditions with built-in tool assignment in CI")
-
-	// resource.Test(t, resource.TestCase{
-	// 	PreCheck:                 func() { testAccPreCheck(t) },
-	// 	ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-	// 	Steps: []resource.TestStep{
-	// 		// Create without optional reason field
-	// 		{
-	// 			Config: testAccToolInvocationPolicyResourceConfigNoReason(),
-	// 			ConfigStateChecks: []statecheck.StateCheck{
-	// 				statecheck.ExpectKnownValue(
-	// 					"archestra_tool_invocation_policy.noreason",
-	// 					tfjsonpath.New("argument_name"),
-	// 					knownvalue.StringExact("command"),
-	// 				),
-	// 				statecheck.ExpectKnownValue(
-	// 					"archestra_tool_invocation_policy.noreason",
-	// 					tfjsonpath.New("action"),
-	// 					knownvalue.StringExact("block_always"),
-	// 				),
-	// 			},
-	// 		},
-	// 	},
-	// })
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create without optional reason field
+			{
+				Config: testAccToolInvocationPolicyResourceConfigNoReason(),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_tool_invocation_policy.noreason",
+						tfjsonpath.New("argument_name"),
+						knownvalue.StringExact("command"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_tool_invocation_policy.noreason",
+						tfjsonpath.New("action"),
+						knownvalue.StringExact("block_always"),
+					),
+				},
+			},
+		},
+	})
 }
 
-// func testAccToolInvocationPolicyResourceConfigNoReason() string {
-// 	return `
-// # Create an agent for testing
-// resource "archestra_agent" "noreason" {
-//   name = "tool-invocation-policy-noreason-agent"
-// }
-//
-// # Create an MCP server in the registry
-// resource "archestra_mcp_server" "noreason" {
-//   name        = "tool-invocation-policy-noreason-server"
-//   description = "MCP server for testing without reason"
-//   docs_url    = "https://github.com/example/test"
-//
-//   local_config = {
-//     command   = "npx"
-//     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-//   }
-// }
-//
-// # Install the MCP server
-// resource "archestra_mcp_server_installation" "noreason" {
-//   name          = "tool-invocation-no-reason"
-//   mcp_server_id = archestra_mcp_server.noreason.id
-// }
-//
-// # Look up the agent tool
-// data "archestra_agent_tool" "noreason" {
-//   agent_id  = archestra_agent.noreason.id
-//   tool_name = "archestra__whoami"
-//
-//   depends_on = [archestra_mcp_server_installation.noreason]
-// }
-//
-// # Create a tool invocation policy without reason
-// resource "archestra_tool_invocation_policy" "noreason" {
-//   agent_tool_id = data.archestra_agent_tool.noreason.id
-//   argument_name = "command"
-//   operator      = "equal"
-//   value         = "rm -rf"
-//   action        = "block_always"
-// }
-// `
-// }
+func testAccToolInvocationPolicyResourceConfigNoReason() string {
+	return `
+# Create an agent for testing
+resource "archestra_agent" "noreason" {
+  name = "tool-invocation-policy-noreason-agent"
+}
+
+# Create an MCP server in the registry
+resource "archestra_mcp_server" "noreason" {
+  name        = "tool-invocation-policy-noreason-server"
+  description = "MCP server for testing without reason"
+  docs_url    = "https://github.com/example/test"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+}
+
+# Install the MCP server
+resource "archestra_mcp_server_installation" "noreason" {
+  name          = "tool-invocation-no-reason"
+  mcp_server_id = archestra_mcp_server.noreason.id
+}
+
+# Look up the agent tool
+data "archestra_agent_tool" "noreason" {
+  agent_id  = archestra_agent.noreason.id
+  tool_name = "archestra__whoami"
+
+  depends_on = [archestra_mcp_server_installation.noreason]
+}
+
+# Create a tool invocation policy without reason
+resource "archestra_tool_invocation_policy" "noreason" {
+  agent_tool_id = data.archestra_agent_tool.noreason.id
+  argument_name = "command"
+  operator      = "equal"
+  value         = "rm -rf"
+  action        = "block_always"
+}
+`
+}
 
 func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
-	// Skip this test - it's flaky in CI due to race conditions with tool assignment.
-	// The archestra__whoami tool isn't immediately available for newly created agents.
-	// The regex operator is tested implicitly in TestAccToolInvocationPolicyResource when we update
-	// the operator from "contains" to "startsWith". Full CRUD coverage is provided there.
-	t.Skip("Skipping - flaky due to race conditions with built-in tool assignment in CI")
-
-	// resource.Test(t, resource.TestCase{
-	// 	PreCheck:                 func() { testAccPreCheck(t) },
-	// 	ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-	// 	Steps: []resource.TestStep{
-	// 		// Create with regex operator
-	// 		{
-	// 			Config: testAccToolInvocationPolicyResourceConfigRegex(),
-	// 			ConfigStateChecks: []statecheck.StateCheck{
-	// 				statecheck.ExpectKnownValue(
-	// 					"archestra_tool_invocation_policy.regex",
-	// 					tfjsonpath.New("operator"),
-	// 					knownvalue.StringExact("regex"),
-	// 				),
-	// 				statecheck.ExpectKnownValue(
-	// 					"archestra_tool_invocation_policy.regex",
-	// 					tfjsonpath.New("value"),
-	// 					knownvalue.StringExact("^/home/[a-z]+/.ssh/.*"),
-	// 				),
-	// 			},
-	// 		},
-	// 	},
-	// })
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create with regex operator
+			{
+				Config: testAccToolInvocationPolicyResourceConfigRegex(),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_tool_invocation_policy.regex",
+						tfjsonpath.New("operator"),
+						knownvalue.StringExact("regex"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_tool_invocation_policy.regex",
+						tfjsonpath.New("value"),
+						knownvalue.StringExact("^/home/[a-z]+/.ssh/.*"),
+					),
+				},
+			},
+		},
+	})
 }
 
 func testAccToolInvocationPolicyResourceConfig() string {
@@ -282,51 +271,47 @@ resource "archestra_tool_invocation_policy" "test" {
 `
 }
 
-// Skip this test - it's flaky in CI due to race conditions with tool assignment.
-// The archestra__whoami tool isn't immediately available for newly created agents.
-// The regex operator is tested implicitly in TestAccToolInvocationPolicyResource when we update
-// the operator from "contains" to "startsWith". Full CRUD coverage is provided there.
-// func testAccToolInvocationPolicyResourceConfigRegex() string {
-// 	return `
-// # Create an agent for testing
-// resource "archestra_agent" "regex" {
-//   name = "tool-invocation-policy-regex-agent"
-// }
+func testAccToolInvocationPolicyResourceConfigRegex() string {
+	return `
+# Create an agent for testing
+resource "archestra_agent" "regex" {
+  name = "tool-invocation-policy-regex-agent"
+}
 
-// # Create an MCP server in the registry
-// resource "archestra_mcp_server" "regex" {
-//   name        = "tool-invocation-policy-regex-server"
-//   description = "MCP server for regex testing"
-//   docs_url    = "https://github.com/example/test"
+# Create an MCP server in the registry
+resource "archestra_mcp_server" "regex" {
+  name        = "tool-invocation-policy-regex-server"
+  description = "MCP server for regex testing"
+  docs_url    = "https://github.com/example/test"
 
-//   local_config = {
-//     command   = "npx"
-//     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-//   }
-// }
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+}
 
-// # Install the MCP server
-// resource "archestra_mcp_server_installation" "regex" {
-//   name          = "tool-invocation-regex-install"
-//   mcp_server_id = archestra_mcp_server.regex.id
-// }
+# Install the MCP server
+resource "archestra_mcp_server_installation" "regex" {
+  name          = "tool-invocation-regex-install"
+  mcp_server_id = archestra_mcp_server.regex.id
+}
 
-// # Look up the agent tool
-// data "archestra_agent_tool" "regex" {
-//   agent_id  = archestra_agent.regex.id
-//   tool_name = "archestra__whoami"
+# Look up the agent tool
+data "archestra_agent_tool" "regex" {
+  agent_id  = archestra_agent.regex.id
+  tool_name = "archestra__whoami"
 
-//   depends_on = [archestra_mcp_server_installation.regex]
-// }
+  depends_on = [archestra_mcp_server_installation.regex]
+}
 
-// # Create a tool invocation policy with regex
-// resource "archestra_tool_invocation_policy" "regex" {
-//   agent_tool_id = data.archestra_agent_tool.regex.id
-//   argument_name = "path"
-//   operator      = "regex"
-//   value         = "^/home/[a-z]+/.ssh/.*"
-//   action        = "block_always"
-//   reason        = "Block SSH key access using regex pattern"
-// }
-// `
-// }
+# Create a tool invocation policy with regex
+resource "archestra_tool_invocation_policy" "regex" {
+  agent_tool_id = data.archestra_agent_tool.regex.id
+  argument_name = "path"
+  operator      = "regex"
+  value         = "^/home/[a-z]+/.ssh/.*"
+  action        = "block_always"
+  reason        = "Block SSH key access using regex pattern"
+}
+`
+}
