@@ -154,7 +154,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewTrustedDataPolicyResource,
 		NewToolInvocationPolicyResource,
 		NewTeamResource,
-		NewOrganizationAppearanceResource,
+		NewOrganizationSettingsResource,
 		NewTokenPriceResource,
 		NewLimitResource,
 		NewOptimizationRuleResource,

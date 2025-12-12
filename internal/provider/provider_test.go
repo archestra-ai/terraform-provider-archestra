@@ -43,9 +43,8 @@ func TestProviderResources_RegistrationCount(t *testing.T) {
 	}
 	resources := provider.Resources(t.Context())
 
-
 	// We expect 10 resources to be registered
-	expectedCount := 10 // agent, mcp_server, mcp_server_installation, team, tool_invocation_policy, trusted_data_policy, token_price, limit, optimization_rule, organization_appearance
+	expectedCount := 10 // agent, mcp_server, mcp_server_installation, team, tool_invocation_policy, trusted_data_policy, token_price, limit, optimization_rule, organization_settings
 
 	if len(resources) != expectedCount {
 		t.Errorf("Expected %d resources to be registered, got %d", expectedCount, len(resources))
