@@ -15,7 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Ensure interfaces are satisfied
+// Ensure interfaces are satisfied.
 var _ resource.Resource = &McpServerTeamAccessResource{}
 var _ resource.ResourceWithImportState = &McpServerTeamAccessResource{}
 
@@ -165,7 +165,7 @@ func (r *McpServerTeamAccessResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	// FIXED: Passing TeamID string directly. 
+	// FIXED: Passing TeamID string directly.
 	_, err = r.client.RevokeTeamMcpServerAccessWithResponse(ctx, serverUUID, data.TeamID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to revoke team access: %s", err))
