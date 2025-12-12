@@ -158,7 +158,10 @@ func (r *ProfileResource) Create(ctx context.Context, req resource.CreateRequest
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
 	// Map labels from API response, preserving configuration order
-	data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	// If labels were not specified in config (nil), keep them nil in state
+	if data.Labels != nil {
+		data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -205,7 +208,10 @@ func (r *ProfileResource) Read(ctx context.Context, req resource.ReadRequest, re
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
 	// Map labels from API response, preserving existing state order
-	data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	// If labels were not specified in state (nil), keep them nil
+	if data.Labels != nil {
+		data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
