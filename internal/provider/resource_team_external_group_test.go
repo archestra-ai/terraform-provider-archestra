@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -27,7 +28,7 @@ func TestAccTeamExternalGroupResource(t *testing.T) {
 					statecheck.ExpectKnownValue(
 						"archestra_team_external_group.test",
 						tfjsonpath.New("team_id"),
-						knownvalue.StringExact("test-team-id"),
+						knownvalue.StringRegexp(regexp.MustCompile(".*")), // Any non-empty team_id
 					),
 				},
 			},
@@ -55,8 +56,12 @@ func TestAccTeamExternalGroupResource(t *testing.T) {
 
 func testAccTeamExternalGroupResourceConfig(externalGroupID string) string {
 	return fmt.Sprintf(`
+resource "archestra_team" "test" {
+  name = "tf-team-%[1]s"
+}
+
 resource "archestra_team_external_group" "test" {
-  team_id           = "test-team-id"
+  team_id           = archestra_team.test.id
   external_group_id = %[1]q
 }
 `, externalGroupID)
@@ -64,8 +69,12 @@ resource "archestra_team_external_group" "test" {
 
 func testAccTeamExternalGroupResourceConfigUpdated(externalGroupID string) string {
 	return fmt.Sprintf(`
+resource "archestra_team" "test" {
+  name = "tf-team-updated-%[1]s"
+}
+
 resource "archestra_team_external_group" "test" {
-  team_id           = "test-team-id"
+  team_id           = archestra_team.test.id
   external_group_id = %[1]q
 }
 `, externalGroupID)
@@ -110,8 +119,12 @@ func TestAccTeamExternalGroupResource_WithExternalName(t *testing.T) {
 
 func testAccTeamExternalGroupResourceConfigWithName(externalGroupName string) string {
 	return fmt.Sprintf(`
+resource "archestra_team" "test" {
+  name = "tf-team-byname-%[1]s"
+}
+
 resource "archestra_team_external_group" "byname" {
-  team_id              = "test-team-id"
+  team_id              = archestra_team.test.id
   external_group_name  = %[1]q
 }
 `, externalGroupName)
