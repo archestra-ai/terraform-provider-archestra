@@ -1,8 +1,10 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -10,208 +12,151 @@ import (
 )
 
 func TestAccToolInvocationPolicyResource(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create and Read testing
 			{
-				Config: testAccToolInvocationPolicyResourceConfig(),
+				Config: testAccToolInvocationPolicyResourceConfig(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("argument_name"),
-						knownvalue.StringExact("path"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("operator"),
-						knownvalue.StringExact("contains"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("value"),
-						knownvalue.StringExact("/etc/"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("action"),
-						knownvalue.StringExact("block_always"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.test",
+						tfjsonpath.New("argument_name"), knownvalue.StringExact("path")),
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.test",
+						tfjsonpath.New("operator"), knownvalue.StringExact("contains")),
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.test",
+						tfjsonpath.New("value"), knownvalue.StringExact("/etc/")),
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.test",
+						tfjsonpath.New("action"), knownvalue.StringExact("block_always")),
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.test",
 						tfjsonpath.New("reason"),
-						knownvalue.StringExact("Block access to system configuration files"),
-					),
+						knownvalue.StringExact("Block access to system configuration files")),
 				},
 			},
-			// ImportState testing
 			{
 				ResourceName:      "archestra_tool_invocation_policy.test",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Update and Read testing
 			{
-				Config: testAccToolInvocationPolicyResourceConfigUpdated(),
+				Config: testAccToolInvocationPolicyResourceConfigUpdated(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("argument_name"),
-						knownvalue.StringExact("path"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("operator"),
-						knownvalue.StringExact("startsWith"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("value"),
-						knownvalue.StringExact("/var/log/"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.test",
+						tfjsonpath.New("argument_name"), knownvalue.StringExact("path")),
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.test",
+						tfjsonpath.New("operator"), knownvalue.StringExact("startsWith")),
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.test",
+						tfjsonpath.New("value"), knownvalue.StringExact("/var/log/")),
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.test",
 						tfjsonpath.New("action"),
-						knownvalue.StringExact("allow_when_context_is_untrusted"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
+						knownvalue.StringExact("allow_when_context_is_untrusted")),
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.test",
 						tfjsonpath.New("reason"),
-						knownvalue.StringExact("Allow log file access in untrusted contexts"),
-					),
+						knownvalue.StringExact("Allow log file access in untrusted contexts")),
 				},
 			},
-			// Delete testing automatically occurs in TestCase
 		},
 	})
 }
 
 func TestAccToolInvocationPolicyResource_WithoutReason(t *testing.T) {
-	// Skip this test - it's flaky in CI due to race conditions with tool assignment.
-	// The optional "reason" field is tested implicitly in the main test when we update
-	// from one reason to another. Full CRUD coverage is provided by TestAccToolInvocationPolicyResource.
-	t.Skip("Skipping - flaky due to race conditions with built-in tool assignment in CI")
-
-	// resource.Test(t, resource.TestCase{
-	// 	PreCheck:                 func() { testAccPreCheck(t) },
-	// 	ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-	// 	Steps: []resource.TestStep{
-	// 		// Create without optional reason field
-	// 		{
-	// 			Config: testAccToolInvocationPolicyResourceConfigNoReason(),
-	// 			ConfigStateChecks: []statecheck.StateCheck{
-	// 				statecheck.ExpectKnownValue(
-	// 					"archestra_tool_invocation_policy.noreason",
-	// 					tfjsonpath.New("argument_name"),
-	// 					knownvalue.StringExact("command"),
-	// 				),
-	// 				statecheck.ExpectKnownValue(
-	// 					"archestra_tool_invocation_policy.noreason",
-	// 					tfjsonpath.New("action"),
-	// 					knownvalue.StringExact("block_always"),
-	// 				),
-	// 			},
-	// 		},
-	// 	},
-	// })
-}
-
-// func testAccToolInvocationPolicyResourceConfigNoReason() string {
-// 	return `
-// # Create an agent for testing
-// resource "archestra_agent" "noreason" {
-//   name = "tool-invocation-policy-noreason-agent"
-// }
-//
-// # Create an MCP server in the registry
-// resource "archestra_mcp_server" "noreason" {
-//   name        = "tool-invocation-policy-noreason-server"
-//   description = "MCP server for testing without reason"
-//   docs_url    = "https://github.com/example/test"
-//
-//   local_config = {
-//     command   = "npx"
-//     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-//   }
-// }
-//
-// # Install the MCP server
-// resource "archestra_mcp_server_installation" "noreason" {
-//   name          = "tool-invocation-no-reason"
-//   mcp_server_id = archestra_mcp_server.noreason.id
-// }
-//
-// # Look up the agent tool
-// data "archestra_agent_tool" "noreason" {
-//   agent_id  = archestra_agent.noreason.id
-//   tool_name = "archestra__whoami"
-//
-//   depends_on = [archestra_mcp_server_installation.noreason]
-// }
-//
-// # Create a tool invocation policy without reason
-// resource "archestra_tool_invocation_policy" "noreason" {
-//   agent_tool_id = data.archestra_agent_tool.noreason.id
-//   argument_name = "command"
-//   operator      = "equal"
-//   value         = "rm -rf"
-//   action        = "block_always"
-// }
-// `
-// }
-
-func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create with regex operator
 			{
-				Config: testAccToolInvocationPolicyResourceConfigRegex(),
+				Config: testAccToolInvocationPolicyResourceConfigNoReason(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.regex",
-						tfjsonpath.New("operator"),
-						knownvalue.StringExact("regex"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.regex",
-						tfjsonpath.New("value"),
-						knownvalue.StringExact("^/home/[a-z]+/.ssh/.*"),
-					),
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.noreason",
+						tfjsonpath.New("argument_name"), knownvalue.StringExact("command")),
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.noreason",
+						tfjsonpath.New("action"), knownvalue.StringExact("block_always")),
 				},
 			},
 		},
 	})
 }
 
-func testAccToolInvocationPolicyResourceConfig() string {
-	return `
-# Create a profile for testing
-resource "archestra_profile" "test" {
-  name = "tool-invocation-policy-test-profile"
+func testAccToolInvocationPolicyResourceConfigNoReason(rName string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "noreason" {
+  name = "tip-noreason-profile-%[1]s"
 }
 
-# Create an MCP server in the registry
-resource "archestra_mcp_server" "test" {
-  name        = "tool-invocation-policy-test-server"
-  description = "MCP server for tool invocation policy testing"
+resource "archestra_mcp_server" "noreason" {
+  name        = "tip-noreason-server-%[1]s"
+  description = "MCP server for testing without reason"
   docs_url    = "https://github.com/example/test"
-
   local_config = {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
   }
 }
 
-# Install the MCP server
+resource "archestra_mcp_server_installation" "noreason" {
+  name          = "tip-noreason-install-%[1]s"
+  mcp_server_id = archestra_mcp_server.noreason.id
+}
+
+data "archestra_profile_tool" "noreason" {
+  profile_id = archestra_profile.noreason.id
+  tool_name  = "archestra__whoami"
+
+  depends_on = [archestra_mcp_server_installation.noreason]
+}
+
+resource "archestra_tool_invocation_policy" "noreason" {
+  profile_tool_id = data.archestra_profile_tool.noreason.id
+  argument_name   = "command"
+  operator        = "equal"
+  value           = "rm -rf"
+  action          = "block_always"
+}
+`, rName)
+}
+
+func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccToolInvocationPolicyResourceConfigRegex(rName),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.regex",
+						tfjsonpath.New("operator"), knownvalue.StringExact("regex")),
+					statecheck.ExpectKnownValue("archestra_tool_invocation_policy.regex",
+						tfjsonpath.New("value"),
+						knownvalue.StringExact("^/home/[a-z]+/.ssh/.*")),
+				},
+			},
+		},
+	})
+}
+
+func testAccToolInvocationPolicyResourceConfig(rName string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "test" {
+  name = "tip-test-profile-%[1]s"
+}
+
+resource "archestra_mcp_server" "test" {
+  name        = "tip-test-server-%[1]s"
+  description = "MCP server for tool invocation policy testing"
+  docs_url    = "https://github.com/example/test"
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+}
+
 resource "archestra_mcp_server_installation" "test" {
-  name          = "tool-invocation-policy-installation"
+  name          = "tip-test-install-%[1]s"
   mcp_server_id = archestra_mcp_server.test.id
 }
 
-# Look up the profile tool
 data "archestra_profile_tool" "test" {
   profile_id = archestra_profile.test.id
   tool_name  = "read_file"
@@ -219,7 +164,6 @@ data "archestra_profile_tool" "test" {
   depends_on = [archestra_mcp_server_installation.test]
 }
 
-# Create a tool invocation policy
 resource "archestra_tool_invocation_policy" "test" {
   profile_tool_id = data.archestra_profile_tool.test.id
   argument_name   = "path"
@@ -228,35 +172,30 @@ resource "archestra_tool_invocation_policy" "test" {
   action          = "block_always"
   reason          = "Block access to system configuration files"
 }
-`
+`, rName)
 }
 
-func testAccToolInvocationPolicyResourceConfigUpdated() string {
-	return `
-# Create a profile for testing
+func testAccToolInvocationPolicyResourceConfigUpdated(rName string) string {
+	return fmt.Sprintf(`
 resource "archestra_profile" "test" {
-  name = "tool-invocation-policy-test-profile"
+  name = "tip-test-profile-%[1]s"
 }
 
-# Create an MCP server in the registry
 resource "archestra_mcp_server" "test" {
-  name        = "tool-invocation-policy-test-server"
+  name        = "tip-test-server-%[1]s"
   description = "MCP server for tool invocation policy testing"
   docs_url    = "https://github.com/example/test"
-
   local_config = {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
   }
 }
 
-# Install the MCP server
 resource "archestra_mcp_server_installation" "test" {
-  name          = "tool-invocation-policy-installation"
+  name          = "tip-test-install-%[1]s"
   mcp_server_id = archestra_mcp_server.test.id
 }
 
-# Look up the profile tool
 data "archestra_profile_tool" "test" {
   profile_id = archestra_profile.test.id
   tool_name  = "read_file"
@@ -264,7 +203,6 @@ data "archestra_profile_tool" "test" {
   depends_on = [archestra_mcp_server_installation.test]
 }
 
-# Create a tool invocation policy (updated)
 resource "archestra_tool_invocation_policy" "test" {
   profile_tool_id = data.archestra_profile_tool.test.id
   argument_name   = "path"
@@ -273,35 +211,30 @@ resource "archestra_tool_invocation_policy" "test" {
   action          = "allow_when_context_is_untrusted"
   reason          = "Allow log file access in untrusted contexts"
 }
-`
+`, rName)
 }
 
-func testAccToolInvocationPolicyResourceConfigRegex() string {
-	return `
-# Create a profile for testing
+func testAccToolInvocationPolicyResourceConfigRegex(rName string) string {
+	return fmt.Sprintf(`
 resource "archestra_profile" "regex" {
-  name = "tool-invocation-policy-regex-profile"
+  name = "tip-regex-profile-%[1]s"
 }
 
-# Create an MCP server in the registry
 resource "archestra_mcp_server" "regex" {
-  name        = "tool-invocation-policy-regex-server"
+  name        = "tip-regex-server-%[1]s"
   description = "MCP server for regex testing"
   docs_url    = "https://github.com/example/test"
-
   local_config = {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
   }
 }
 
-# Install the MCP server
 resource "archestra_mcp_server_installation" "regex" {
-  name          = "tool-invocation-regex-install"
+  name          = "tip-regex-install-%[1]s"
   mcp_server_id = archestra_mcp_server.regex.id
 }
 
-# Look up the profile tool
 data "archestra_profile_tool" "regex" {
   profile_id = archestra_profile.regex.id
   tool_name  = "read_file"
@@ -309,7 +242,6 @@ data "archestra_profile_tool" "regex" {
   depends_on = [archestra_mcp_server_installation.regex]
 }
 
-# Create a tool invocation policy with regex
 resource "archestra_tool_invocation_policy" "regex" {
   profile_tool_id = data.archestra_profile_tool.regex.id
   argument_name   = "path"
@@ -318,5 +250,5 @@ resource "archestra_tool_invocation_policy" "regex" {
   action          = "block_always"
   reason          = "Block SSH key access using regex pattern"
 }
-`
+`, rName)
 }
