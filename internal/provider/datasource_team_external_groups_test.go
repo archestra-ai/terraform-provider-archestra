@@ -25,8 +25,22 @@ func TestAccTeamExternalGroupsDataSource(t *testing.T) {
 
 func testAccTeamExternalGroupsDataSourceConfig() string {
 	return `
+resource "archestra_team" "test" {
+  name = "tf-ds-team"
+}
+
+resource "archestra_team_external_group" "g1" {
+  team_id           = archestra_team.test.id
+  external_group_id = "ext-1"
+}
+
+resource "archestra_team_external_group" "g2" {
+  team_id           = archestra_team.test.id
+  external_group_id = "ext-2"
+}
+
 data "archestra_team_external_groups" "test" {
-  team_id = "test-team-id"
+  team_id = archestra_team.test.id
 }
 `
 }
