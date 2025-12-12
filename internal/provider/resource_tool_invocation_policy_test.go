@@ -1,8 +1,10 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -10,13 +12,14 @@ import (
 )
 
 func TestAccToolInvocationPolicyResource(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccToolInvocationPolicyResourceConfig(),
+				Config: testAccToolInvocationPolicyResourceConfig(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_tool_invocation_policy.test",
@@ -53,7 +56,7 @@ func TestAccToolInvocationPolicyResource(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccToolInvocationPolicyResourceConfigUpdated(),
+				Config: testAccToolInvocationPolicyResourceConfigUpdated(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_tool_invocation_policy.test",
@@ -88,13 +91,14 @@ func TestAccToolInvocationPolicyResource(t *testing.T) {
 }
 
 func TestAccToolInvocationPolicyResource_WithoutReason(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create without optional reason field
 			{
-				Config: testAccToolInvocationPolicyResourceConfigNoReason(),
+				Config: testAccToolInvocationPolicyResourceConfigNoReason(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_tool_invocation_policy.noreason",
@@ -112,16 +116,16 @@ func TestAccToolInvocationPolicyResource_WithoutReason(t *testing.T) {
 	})
 }
 
-func testAccToolInvocationPolicyResourceConfigNoReason() string {
-	return `
+func testAccToolInvocationPolicyResourceConfigNoReason(rName string) string {
+	return fmt.Sprintf(`
 # Create an agent for testing
 resource "archestra_agent" "noreason" {
-  name = "tool-invocation-policy-noreason-agent"
+  name = "tip-noreason-agent-%[1]s"
 }
 
 # Create an MCP server in the registry
 resource "archestra_mcp_server" "noreason" {
-  name        = "tool-invocation-policy-noreason-server"
+  name        = "tip-noreason-server-%[1]s"
   description = "MCP server for testing without reason"
   docs_url    = "https://github.com/example/test"
 
@@ -133,7 +137,7 @@ resource "archestra_mcp_server" "noreason" {
 
 # Install the MCP server
 resource "archestra_mcp_server_installation" "noreason" {
-  name          = "tool-invocation-no-reason"
+  name          = "tip-noreason-install-%[1]s"
   mcp_server_id = archestra_mcp_server.noreason.id
 }
 
@@ -153,17 +157,18 @@ resource "archestra_tool_invocation_policy" "noreason" {
   value         = "rm -rf"
   action        = "block_always"
 }
-`
+`, rName)
 }
 
 func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create with regex operator
 			{
-				Config: testAccToolInvocationPolicyResourceConfigRegex(),
+				Config: testAccToolInvocationPolicyResourceConfigRegex(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_tool_invocation_policy.regex",
@@ -181,16 +186,16 @@ func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
 	})
 }
 
-func testAccToolInvocationPolicyResourceConfig() string {
-	return `
+func testAccToolInvocationPolicyResourceConfig(rName string) string {
+	return fmt.Sprintf(`
 # Create an agent for testing
 resource "archestra_agent" "test" {
-  name = "tool-invocation-policy-test-agent"
+  name = "tip-test-agent-%[1]s"
 }
 
 # Create an MCP server in the registry
 resource "archestra_mcp_server" "test" {
-  name        = "tool-invocation-policy-test-server"
+  name        = "tip-test-server-%[1]s"
   description = "MCP server for tool invocation policy testing"
   docs_url    = "https://github.com/example/test"
 
@@ -202,7 +207,7 @@ resource "archestra_mcp_server" "test" {
 
 # Install the MCP server
 resource "archestra_mcp_server_installation" "test" {
-  name          = "tool-invocation-policy-installation"
+  name          = "tip-test-install-%[1]s"
   mcp_server_id = archestra_mcp_server.test.id
 }
 
@@ -223,19 +228,19 @@ resource "archestra_tool_invocation_policy" "test" {
   action        = "block_always"
   reason        = "Block access to system configuration files"
 }
-`
+`, rName)
 }
 
-func testAccToolInvocationPolicyResourceConfigUpdated() string {
-	return `
+func testAccToolInvocationPolicyResourceConfigUpdated(rName string) string {
+	return fmt.Sprintf(`
 # Create an agent for testing
 resource "archestra_agent" "test" {
-  name = "tool-invocation-policy-test-agent"
+  name = "tip-test-agent-%[1]s"
 }
 
 # Create an MCP server in the registry
 resource "archestra_mcp_server" "test" {
-  name        = "tool-invocation-policy-test-server"
+  name        = "tip-test-server-%[1]s"
   description = "MCP server for tool invocation policy testing"
   docs_url    = "https://github.com/example/test"
 
@@ -247,7 +252,7 @@ resource "archestra_mcp_server" "test" {
 
 # Install the MCP server
 resource "archestra_mcp_server_installation" "test" {
-  name          = "tool-invocation-policy-installation"
+  name          = "tip-test-install-%[1]s"
   mcp_server_id = archestra_mcp_server.test.id
 }
 
@@ -268,19 +273,19 @@ resource "archestra_tool_invocation_policy" "test" {
   action        = "allow_when_context_is_untrusted"
   reason        = "Allow log file access in untrusted contexts"
 }
-`
+`, rName)
 }
 
-func testAccToolInvocationPolicyResourceConfigRegex() string {
-	return `
+func testAccToolInvocationPolicyResourceConfigRegex(rName string) string {
+	return fmt.Sprintf(`
 # Create an agent for testing
 resource "archestra_agent" "regex" {
-  name = "tool-invocation-policy-regex-agent"
+  name = "tip-regex-agent-%[1]s"
 }
 
 # Create an MCP server in the registry
 resource "archestra_mcp_server" "regex" {
-  name        = "tool-invocation-policy-regex-server"
+  name        = "tip-regex-server-%[1]s"
   description = "MCP server for regex testing"
   docs_url    = "https://github.com/example/test"
 
@@ -292,7 +297,7 @@ resource "archestra_mcp_server" "regex" {
 
 # Install the MCP server
 resource "archestra_mcp_server_installation" "regex" {
-  name          = "tool-invocation-regex-install"
+  name          = "tip-regex-install-%[1]s"
   mcp_server_id = archestra_mcp_server.regex.id
 }
 
@@ -313,5 +318,5 @@ resource "archestra_tool_invocation_policy" "regex" {
   action        = "block_always"
   reason        = "Block SSH key access using regex pattern"
 }
-`
+`, rName)
 }
