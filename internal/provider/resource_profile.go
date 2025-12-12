@@ -110,12 +110,12 @@ func (r *ProfileResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 
 	// Convert labels to API format
-	var labels []struct {
+	labels := make([]struct {
 		Key     string              `json:"key"`
 		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
-	}
+	}, 0, len(data.Labels))
 
 	for _, label := range data.Labels {
 		labels = append(labels, struct {
@@ -227,12 +227,12 @@ func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 
 	// Convert labels to API format
-	var labels []struct {
+	labels := make([]struct {
 		Key     string              `json:"key"`
 		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
-	}
+	}, 0, len(data.Labels))
 
 	for _, label := range data.Labels {
 		labels = append(labels, struct {
