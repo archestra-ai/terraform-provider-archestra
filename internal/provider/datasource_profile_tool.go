@@ -10,19 +10,19 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-var _ datasource.DataSource = &AgentToolDataSource{}
+var _ datasource.DataSource = &ProfileToolDataSource{}
 
-func NewAgentToolDataSource() datasource.DataSource {
-	return &AgentToolDataSource{}
+func NewProfileToolDataSource() datasource.DataSource {
+	return &ProfileToolDataSource{}
 }
 
-type AgentToolDataSource struct {
+type ProfileToolDataSource struct {
 	client *client.ClientWithResponses
 }
 
-type AgentToolDataSourceModel struct {
+type ProfileToolDataSourceModel struct {
 	ID                                   types.String `tfsdk:"id"`
-	AgentID                              types.String `tfsdk:"agent_id"`
+	ProfileID                            types.String `tfsdk:"profile_id"`
 	ToolID                               types.String `tfsdk:"tool_id"`
 	ToolName                             types.String `tfsdk:"tool_name"`
 	AllowUsageWhenUntrustedDataIsPresent types.Bool   `tfsdk:"allow_usage_when_untrusted_data_is_present"`
@@ -30,22 +30,22 @@ type AgentToolDataSourceModel struct {
 	ResponseModifierTemplate             types.String `tfsdk:"response_modifier_template"`
 }
 
-func (d *AgentToolDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_agent_tool"
+func (d *ProfileToolDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_profile_tool"
 }
 
-func (d *AgentToolDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *ProfileToolDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Fetches an agent tool by agent ID and tool name. This data source is useful for " +
-			"looking up the agent_tool_id needed to create trusted data policies and tool invocation policies.",
+		MarkdownDescription: "Fetches an profile tool by profile ID and tool name. This data source is useful for " +
+			"looking up the profile_tool_id needed to create trusted data policies and tool invocation policies.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				MarkdownDescription: "Agent tool identifier (use this for policy agent_tool_id)",
+				MarkdownDescription: "Profile tool identifier (use this for policy profile_tool_id)",
 				Computed:            true,
 			},
-			"agent_id": schema.StringAttribute{
-				MarkdownDescription: "The agent ID",
+			"profile_id": schema.StringAttribute{
+				MarkdownDescription: "The profile ID",
 				Required:            true,
 			},
 			"tool_name": schema.StringAttribute{
@@ -72,7 +72,7 @@ func (d *AgentToolDataSource) Schema(ctx context.Context, req datasource.SchemaR
 	}
 }
 
-func (d *AgentToolDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *ProfileToolDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -89,23 +89,23 @@ func (d *AgentToolDataSource) Configure(ctx context.Context, req datasource.Conf
 	d.client = client
 }
 
-func (d *AgentToolDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data AgentToolDataSourceModel
+func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data ProfileToolDataSourceModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	targetAgentID := data.AgentID.ValueString()
+	targetProfileID := data.ProfileID.ValueString()
 	targetToolName := data.ToolName.ValueString()
 
-	// Use retry logic for built-in tools that may not be immediately available after agent creation.
-	// Built-in tools like "archestra__whoami" are assigned asynchronously.
-	retryConfig := DefaultRetryConfig(fmt.Sprintf("Tool '%s' for agent %s", targetToolName, targetAgentID))
+	// Use retry logic for tools that may not be immediately available after profile creation.
+	// Tools are assigned asynchronously, especially for MCP server installations.
+	retryConfig := DefaultRetryConfig(fmt.Sprintf("Tool '%s' for profile %s", targetToolName, targetProfileID))
 
-	// agentToolResult holds the extracted data we need from the API response
-	type agentToolResult struct {
+	// profileToolResult holds the extracted data we need from the API response
+	type profileToolResult struct {
 		ID                                   string
 		ToolID                               string
 		AllowUsageWhenUntrustedDataIsPresent bool
@@ -113,22 +113,23 @@ func (d *AgentToolDataSource) Read(ctx context.Context, req datasource.ReadReque
 		ResponseModifierTemplate             *string
 	}
 
-	result, found, err := RetryUntilFound(ctx, retryConfig, func() (agentToolResult, bool, error) {
+	result, found, err := RetryUntilFound(ctx, retryConfig, func() (profileToolResult, bool, error) {
 		// Get all agent tools (which includes configuration)
+		// Note: Using existing "Agent" API call
 		toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx, nil)
 		if err != nil {
-			return agentToolResult{}, false, fmt.Errorf("unable to read agent tools: %w", err)
+			return profileToolResult{}, false, fmt.Errorf("unable to read profile tools: %w", err)
 		}
 
 		if toolsResp.JSON200 == nil {
-			return agentToolResult{}, false, fmt.Errorf("expected 200 OK, got status %d", toolsResp.StatusCode())
+			return profileToolResult{}, false, fmt.Errorf("expected 200 OK, got status %d", toolsResp.StatusCode())
 		}
 
-		// Filter by agent ID and tool name
+		// Filter by profile ID and tool name
 		for i := range toolsResp.JSON200.Data {
 			agentTool := &toolsResp.JSON200.Data[i]
-			if agentTool.Agent.Id == targetAgentID && agentTool.Tool.Name == targetToolName {
-				return agentToolResult{
+			if agentTool.Agent.Id == targetProfileID && agentTool.Tool.Name == targetToolName {
+				return profileToolResult{
 					ID:                                   agentTool.Id.String(),
 					ToolID:                               agentTool.Tool.Id,
 					AllowUsageWhenUntrustedDataIsPresent: agentTool.AllowUsageWhenUntrustedDataIsPresent,
@@ -138,7 +139,7 @@ func (d *AgentToolDataSource) Read(ctx context.Context, req datasource.ReadReque
 			}
 		}
 
-		return agentToolResult{}, false, nil
+		return profileToolResult{}, false, nil
 	})
 
 	if err != nil {
@@ -147,7 +148,7 @@ func (d *AgentToolDataSource) Read(ctx context.Context, req datasource.ReadReque
 	}
 
 	if !found {
-		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Tool '%s' not found for agent %s", targetToolName, targetAgentID))
+		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Tool '%s' not found for profile %s", targetToolName, targetProfileID))
 		return
 	}
 

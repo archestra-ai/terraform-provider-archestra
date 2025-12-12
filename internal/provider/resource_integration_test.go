@@ -26,17 +26,17 @@ func TestAccIntegration_FullWorkflow(t *testing.T) {
 					),
 					// Agent checks
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("name"),
-						knownvalue.StringExact("integration-test-agent"),
+						knownvalue.StringExact("integration-test-profile"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
 						knownvalue.StringExact("environment"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("value"),
 						knownvalue.StringExact("test"),
 					),
@@ -70,6 +70,12 @@ func TestAccIntegration_FullWorkflow(t *testing.T) {
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("Integration Test Team"),
 					),
+					// Verify profile tool lookup works
+					statecheck.ExpectKnownValue(
+						"data.archestra_profile_tool.lookup",
+						tfjsonpath.New("tool_name"),
+						knownvalue.StringExact("read_file"),
+					),
 				},
 			},
 		},
@@ -84,9 +90,9 @@ resource "archestra_team" "test" {
   description = "Team for integration testing"
 }
 
-# Create a test agent with labels
-resource "archestra_agent" "test" {
-  name = "integration-test-agent"
+# Create a test profile with labels
+resource "archestra_profile" "test" {
+  name = "integration-test-profile"
 
   labels = [
     {
@@ -133,9 +139,9 @@ data "archestra_team" "lookup" {
   id = archestra_team.test.id
 }
 
-# Create a test agent with labels
-resource "archestra_agent" "test" {
-  name = "integration-test-agent"
+# Create a test profile with labels
+resource "archestra_profile" "test" {
+  name = "integration-test-profile"
 
   labels = [
     {
@@ -165,6 +171,14 @@ resource "archestra_mcp_server" "test" {
 resource "archestra_mcp_server_installation" "test" {
   name          = "integration-test-installation"
   mcp_server_id = archestra_mcp_server.test.id
+}
+
+# Look up a tool from the profile (filesystem server should provide tools)
+# Note: we use depends_on to ensure installation is complete
+data "archestra_profile_tool" "lookup" {
+  profile_id = archestra_profile.test.id
+  tool_name  = "read_file"
+  depends_on = [archestra_mcp_server_installation.test]
 }
 `
 }

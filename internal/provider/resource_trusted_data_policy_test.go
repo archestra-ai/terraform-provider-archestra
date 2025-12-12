@@ -14,7 +14,6 @@ func TestAccTrustedDataPolicyResource(t *testing.T) {
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create and Read testing
 			{
 				Config: testAccTrustedDataPolicyResourceConfig(),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -45,13 +44,11 @@ func TestAccTrustedDataPolicyResource(t *testing.T) {
 					),
 				},
 			},
-			// ImportState testing
 			{
 				ResourceName:      "archestra_trusted_data_policy.test",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Update and Read testing
 			{
 				Config: testAccTrustedDataPolicyResourceConfigUpdated(),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -82,7 +79,6 @@ func TestAccTrustedDataPolicyResource(t *testing.T) {
 					),
 				},
 			},
-			// Delete testing automatically occurs in TestCase
 		},
 	})
 }
@@ -92,7 +88,6 @@ func TestAccTrustedDataPolicyResource_SanitizeAction(t *testing.T) {
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create with sanitize_with_dual_llm action
 			{
 				Config: testAccTrustedDataPolicyResourceConfigSanitize(),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -109,12 +104,10 @@ func TestAccTrustedDataPolicyResource_SanitizeAction(t *testing.T) {
 
 func testAccTrustedDataPolicyResourceConfig() string {
 	return `
-# Create an agent for testing
-resource "archestra_agent" "test" {
-  name = "trusted-data-policy-test-agent"
+resource "archestra_profile" "test" {
+  name = "trusted-data-policy-test-profile"
 }
 
-# Create an MCP server in the registry
 resource "archestra_mcp_server" "test" {
   name        = "trusted-data-policy-test-server"
   description = "MCP server for trusted data policy testing"
@@ -126,40 +119,35 @@ resource "archestra_mcp_server" "test" {
   }
 }
 
-# Install the MCP server
 resource "archestra_mcp_server_installation" "test" {
   name          = "trusted-data-policy-installation"
   mcp_server_id = archestra_mcp_server.test.id
 }
 
-# Look up the agent tool
-data "archestra_agent_tool" "test" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "archestra__whoami"
+data "archestra_profile_tool" "test" {
+  profile_id = archestra_profile.test.id
+  tool_name  = "read_file"
 
   depends_on = [archestra_mcp_server_installation.test]
 }
 
-# Create a trusted data policy
 resource "archestra_trusted_data_policy" "test" {
-  agent_tool_id  = data.archestra_agent_tool.test.id
-  description    = "Trust internal API responses"
-  attribute_path = "url"
-  operator       = "contains"
-  value          = "api.internal.example.com"
-  action         = "mark_as_trusted"
+  profile_tool_id = data.archestra_profile_tool.test.id
+  description     = "Trust internal API responses"
+  attribute_path  = "url"
+  operator        = "contains"
+  value           = "api.internal.example.com"
+  action          = "mark_as_trusted"
 }
 `
 }
 
 func testAccTrustedDataPolicyResourceConfigUpdated() string {
 	return `
-# Create an agent for testing
-resource "archestra_agent" "test" {
-  name = "trusted-data-policy-test-agent"
+resource "archestra_profile" "test" {
+  name = "trusted-data-policy-test-profile"
 }
 
-# Create an MCP server in the registry
 resource "archestra_mcp_server" "test" {
   name        = "trusted-data-policy-test-server"
   description = "MCP server for trusted data policy testing"
@@ -171,40 +159,35 @@ resource "archestra_mcp_server" "test" {
   }
 }
 
-# Install the MCP server
 resource "archestra_mcp_server_installation" "test" {
   name          = "trusted-data-policy-installation"
   mcp_server_id = archestra_mcp_server.test.id
 }
 
-# Look up the agent tool
-data "archestra_agent_tool" "test" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "archestra__whoami"
+data "archestra_profile_tool" "test" {
+  profile_id = archestra_profile.test.id
+  tool_name  = "read_file"
 
   depends_on = [archestra_mcp_server_installation.test]
 }
 
-# Create a trusted data policy (updated)
 resource "archestra_trusted_data_policy" "test" {
-  agent_tool_id  = data.archestra_agent_tool.test.id
-  description    = "Block untrusted external data"
-  attribute_path = "source"
-  operator       = "notContains"
-  value          = "example.com"
-  action         = "block_always"
+  profile_tool_id = data.archestra_profile_tool.test.id
+  description     = "Block untrusted external data"
+  attribute_path  = "source"
+  operator        = "notContains"
+  value           = "example.com"
+  action          = "block_always"
 }
 `
 }
 
 func testAccTrustedDataPolicyResourceConfigSanitize() string {
 	return `
-# Create an agent for testing
-resource "archestra_agent" "sanitize" {
-  name = "trusted-data-policy-sanitize-agent"
+resource "archestra_profile" "sanitize" {
+  name = "trusted-data-policy-sanitize-profile"
 }
 
-# Create an MCP server in the registry
 resource "archestra_mcp_server" "sanitize" {
   name        = "trusted-data-policy-sanitize-server"
   description = "MCP server for sanitize action testing"
@@ -216,28 +199,25 @@ resource "archestra_mcp_server" "sanitize" {
   }
 }
 
-# Install the MCP server
 resource "archestra_mcp_server_installation" "sanitize" {
   name          = "trusted-data-sanitize-installation"
   mcp_server_id = archestra_mcp_server.sanitize.id
 }
 
-# Look up the agent tool
-data "archestra_agent_tool" "sanitize" {
-  agent_id  = archestra_agent.sanitize.id
-  tool_name = "archestra__whoami"
+data "archestra_profile_tool" "sanitize" {
+  profile_id = archestra_profile.sanitize.id
+  tool_name  = "read_file"
 
   depends_on = [archestra_mcp_server_installation.sanitize]
 }
 
-# Create a trusted data policy with sanitize action
 resource "archestra_trusted_data_policy" "sanitize" {
-  agent_tool_id  = data.archestra_agent_tool.sanitize.id
-  description    = "Sanitize user input with dual LLM"
-  attribute_path = "user_input"
-  operator       = "regex"
-  value          = ".*"
-  action         = "sanitize_with_dual_llm"
+  profile_tool_id = data.archestra_profile_tool.sanitize.id
+  description     = "Sanitize user input with dual LLM"
+  attribute_path  = "user_input"
+  operator        = "regex"
+  value           = ".*"
+  action          = "sanitize_with_dual_llm"
 }
 `
 }
