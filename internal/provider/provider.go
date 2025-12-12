@@ -155,6 +155,9 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewToolInvocationPolicyResource,
 		NewTeamResource,
 		NewMcpServerTeamAccessResource,
+		NewTokenPriceResource,
+		NewLimitResource,
+		NewOptimizationRuleResource,
 		// NewUserResource, // TODO: Enable when user API endpoints are implemented
 	}
 }
@@ -165,6 +168,7 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		// NewUserDataSource, // TODO: Enable when user API endpoints are implemented
 		NewAgentToolDataSource,
 		NewMCPServerToolDataSource,
+		NewTokenPricesDataSource,
 	}
 }
 
