@@ -9,6 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -86,6 +88,8 @@ type OrganizationSettingsResource struct {
 }
 
 type OrganizationSettingsResourceModel struct {
+	ID                       types.String `tfsdk:"id"`
+	Name                     types.String `tfsdk:"name"`
 	Font                     types.String `tfsdk:"font"`
 	ColorTheme               types.String `tfsdk:"color_theme"`
 	Logo                     types.String `tfsdk:"logo"`
@@ -104,6 +108,17 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "Manages the organization settings (font, color theme, logo, cleanup interval, compression scope, and onboarding). This is a singleton resource.",
 
 		Attributes: map[string]schema.Attribute{
+			"id": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "Organization identifier",
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
+			"name": schema.StringAttribute{
+				Computed:            true,
+				MarkdownDescription: "Organization name (read-only)",
+			},
 			"font": schema.StringAttribute{
 				MarkdownDescription: "The custom font for the organization.",
 				Optional:            true,
@@ -225,6 +240,10 @@ func (r *OrganizationSettingsResource) Create(ctx context.Context, req resource.
 		return
 	}
 
+	// Map response to Terraform state
+	data.ID = types.StringValue(apiResp.JSON200.Id)
+	data.Name = types.StringValue(apiResp.JSON200.Name)
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -251,6 +270,9 @@ func (r *OrganizationSettingsResource) Read(ctx context.Context, req resource.Re
 	}
 
 	// Map response to Terraform state
+	data.ID = types.StringValue(apiResp.JSON200.Id)
+	data.Name = types.StringValue(apiResp.JSON200.Name)
+
 	if string(apiResp.JSON200.CustomFont) != "" {
 		data.Font = types.StringValue(string(apiResp.JSON200.CustomFont))
 	} else {
@@ -347,6 +369,10 @@ func (r *OrganizationSettingsResource) Update(ctx context.Context, req resource.
 		)
 		return
 	}
+
+	// Map response to Terraform state
+	data.ID = types.StringValue(apiResp.JSON200.Id)
+	data.Name = types.StringValue(apiResp.JSON200.Name)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
