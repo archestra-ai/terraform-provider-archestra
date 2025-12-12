@@ -3,10 +3,14 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -67,7 +71,7 @@ func (r *TeamExternalGroupResource) Schema(ctx context.Context, req resource.Sch
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:            true,
 				MarkdownDescription: "Terraform resource ID (synthetic, team_id:external_group)",
 			},
 
@@ -79,6 +83,9 @@ func (r *TeamExternalGroupResource) Schema(ctx context.Context, req resource.Sch
 			"external_group_id": schema.StringAttribute{
 				Optional:            true,
 				MarkdownDescription: "The external group ID (e.g., LDAP DN).",
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 
 			"external_group_name": schema.StringAttribute{
@@ -207,7 +214,6 @@ func (r *TeamExternalGroupResource) Read(ctx context.Context, req resource.ReadR
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-
 // ---------------------
 // Delete
 // ---------------------
@@ -250,12 +256,9 @@ func (r *TeamExternalGroupResource) Delete(ctx context.Context, req resource.Del
 // ---------------------
 
 func (r *TeamExternalGroupResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	// External group mappings typically cannot be updated; they must be deleted and recreated
-	// If your API supports updates, implement here
-	resp.Diagnostics.AddError(
-		"Update Not Supported",
-		"External group mappings cannot be updated. Please delete and recreate the resource.",
-	)
+	// Updates are not supported for external group mappings; changes will require replacement
+	// No-op here because plan modifiers will force replacement
+	return
 }
 
 // ---------------------
@@ -263,13 +266,12 @@ func (r *TeamExternalGroupResource) Update(ctx context.Context, req resource.Upd
 // ---------------------
 
 func (r *TeamExternalGroupResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	// Import format: team_id:external_group_id
-	// Parse the import ID and set the state accordingly
-	id := req.ID
-
-	var data TeamExternalGroupModel
-	data.ID = types.StringValue(id)
-
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	// Expect import format: team_id/mapping_id
+	parts := strings.Split(req.ID, "/")
+	if len(parts) != 2 {
+		resp.Diagnostics.AddError("Invalid Import ID", "Expected format: team_id/mapping_id")
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("team_id"), parts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), parts[1])...)
 }
-        
