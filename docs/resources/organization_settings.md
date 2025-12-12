@@ -3,12 +3,12 @@
 page_title: "archestra_organization_settings Resource - archestra"
 subcategory: ""
 description: |-
-  Manages the organization settings (appearance, limits, features). This is a singleton resource.
+  Manages the organization settings (font, color theme, logo, cleanup interval, compression scope, and onboarding). This is a singleton resource.
 ---
 
 # archestra_organization_settings (Resource)
 
-Manages the organization settings (appearance, limits, features). This is a singleton resource.
+Manages the organization settings (font, color theme, logo, cleanup interval, compression scope, and onboarding). This is a singleton resource.
 
 
 
@@ -20,7 +20,7 @@ Manages the organization settings (appearance, limits, features). This is a sing
 - `color_theme` (String) The color theme for the organization.
 - `compression_scope` (String) The scope for compression. Valid values: organization, team
 - `convert_tool_results_to_toon` (Boolean) Whether to convert tool results to Toon format.
-- `font` (String) The custom font for the organization. Valid values: inter, lato, open-sans, roboto, source-sans-pro
+- `font` (String) The custom font for the organization.
 - `limit_cleanup_interval` (String) The interval for cleaning up limits. Valid values: 1h, 12h, 24h, 1w, 1m
 - `logo` (String) The organization's logo. This should be a base64 encoded string.
 - `onboarding_complete` (Boolean) Whether onboarding is complete for the organization.

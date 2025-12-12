@@ -13,7 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// Enum value lists derived from the generated client constants
+// Enum value lists derived from the generated client constants.
 var fontValues = []string{
 	string(client.Inter),
 	string(client.Lato),
