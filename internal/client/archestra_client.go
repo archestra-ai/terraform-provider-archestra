@@ -1370,6 +1370,8 @@ type UpdateOrganizationJSONBody struct {
 	CompressionScope         *UpdateOrganizationJSONBodyCompressionScope     `json:"compressionScope,omitempty"`
 	ConvertToolResultsToToon *bool                                           `json:"convertToolResultsToToon,omitempty"`
 	CustomFont               *UpdateOrganizationJSONBodyCustomFont           `json:"customFont,omitempty"`
+	DefaultDualLlmConfigId   *string                                         `json:"defaultDualLlmConfigId,omitempty"`
+	DefaultLlmConfigId       *string                                         `json:"defaultLlmConfigId,omitempty"`
 	LimitCleanupInterval     *UpdateOrganizationJSONBodyLimitCleanupInterval `json:"limitCleanupInterval"`
 	Logo                     *string                                         `json:"logo"`
 	OnboardingComplete       *bool                                           `json:"onboardingComplete,omitempty"`
@@ -17281,6 +17283,8 @@ type GetOrganizationResponse struct {
 		ConvertToolResultsToToon bool                                    `json:"convertToolResultsToToon"`
 		CreatedAt                time.Time                               `json:"createdAt"`
 		CustomFont               GetOrganization200CustomFont            `json:"customFont"`
+		DefaultDualLlmConfigId   *string                                 `json:"defaultDualLlmConfigId"`
+		DefaultLlmConfigId       *string                                 `json:"defaultLlmConfigId"`
 		Id                       string                                  `json:"id"`
 		LimitCleanupInterval     *GetOrganization200LimitCleanupInterval `json:"limitCleanupInterval"`
 		Logo                     *string                                 `json:"logo"`
@@ -17362,6 +17366,8 @@ type UpdateOrganizationResponse struct {
 		ConvertToolResultsToToon bool                                       `json:"convertToolResultsToToon"`
 		CreatedAt                time.Time                                  `json:"createdAt"`
 		CustomFont               UpdateOrganization200CustomFont            `json:"customFont"`
+		DefaultDualLlmConfigId   *string                                    `json:"defaultDualLlmConfigId"`
+		DefaultLlmConfigId       *string                                    `json:"defaultLlmConfigId"`
 		Id                       string                                     `json:"id"`
 		LimitCleanupInterval     *UpdateOrganization200LimitCleanupInterval `json:"limitCleanupInterval"`
 		Logo                     *string                                    `json:"logo"`
@@ -31854,6 +31860,8 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 			ConvertToolResultsToToon bool                                    `json:"convertToolResultsToToon"`
 			CreatedAt                time.Time                               `json:"createdAt"`
 			CustomFont               GetOrganization200CustomFont            `json:"customFont"`
+			DefaultDualLlmConfigId   *string                                 `json:"defaultDualLlmConfigId"`
+			DefaultLlmConfigId       *string                                 `json:"defaultLlmConfigId"`
 			Id                       string                                  `json:"id"`
 			LimitCleanupInterval     *GetOrganization200LimitCleanupInterval `json:"limitCleanupInterval"`
 			Logo                     *string                                 `json:"logo"`
@@ -31965,6 +31973,8 @@ func ParseUpdateOrganizationResponse(rsp *http.Response) (*UpdateOrganizationRes
 			ConvertToolResultsToToon bool                                       `json:"convertToolResultsToToon"`
 			CreatedAt                time.Time                                  `json:"createdAt"`
 			CustomFont               UpdateOrganization200CustomFont            `json:"customFont"`
+			DefaultDualLlmConfigId   *string                                    `json:"defaultDualLlmConfigId"`
+			DefaultLlmConfigId       *string                                    `json:"defaultLlmConfigId"`
 			Id                       string                                     `json:"id"`
 			LimitCleanupInterval     *UpdateOrganization200LimitCleanupInterval `json:"limitCleanupInterval"`
 			Logo                     *string                                    `json:"logo"`

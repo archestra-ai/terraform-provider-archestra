@@ -27,6 +27,16 @@ func TestAccOrganizationSettingsResource(t *testing.T) {
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_organization_settings.test",
+						tfjsonpath.New("id"),
+						knownvalue.NotNull(),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_organization_settings.test",
+						tfjsonpath.New("name"),
+						knownvalue.NotNull(),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_organization_settings.test",
 						tfjsonpath.New("color_theme"),
 						knownvalue.StringExact("amber-minimal"),
 					),
@@ -62,6 +72,12 @@ func TestAccOrganizationSettingsResource(t *testing.T) {
 				ResourceName:      "archestra_organization_settings.test",
 				ImportState:       true,
 				ImportStateVerify: true,
+				// The ID in state (UUID) will differ from the import ID ("settings"),
+				// so we might need to ignore it or ensure the framework handles it.
+				// Since we update the ID in Read, the final state has the UUID.
+				// If the Create step produced a UUID, then they should match.
+				// However, if the framework asserts Import ID == State ID, that will fail.
+				// Let's rely on standard verification for now.
 			},
 			// Update and Read testing
 			{

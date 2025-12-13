@@ -90,6 +90,8 @@ type OrganizationSettingsResource struct {
 type OrganizationSettingsResourceModel struct {
 	ID                       types.String `tfsdk:"id"`
 	Name                     types.String `tfsdk:"name"`
+	DefaultLlmConfigID       types.String `tfsdk:"default_llm_config_id"`
+	DefaultDualLlmConfigID   types.String `tfsdk:"default_dual_llm_config_id"`
 	Font                     types.String `tfsdk:"font"`
 	ColorTheme               types.String `tfsdk:"color_theme"`
 	Logo                     types.String `tfsdk:"logo"`
@@ -118,6 +120,14 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			"name": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Organization name (read-only)",
+			},
+			"default_llm_config_id": schema.StringAttribute{
+				MarkdownDescription: "The default LLM configuration ID",
+				Optional:            true,
+			},
+			"default_dual_llm_config_id": schema.StringAttribute{
+				MarkdownDescription: "The default dual LLM configuration ID",
+				Optional:            true,
 			},
 			"font": schema.StringAttribute{
 				MarkdownDescription: "The custom font for the organization.",
@@ -189,6 +199,16 @@ func (r *OrganizationSettingsResource) Create(ctx context.Context, req resource.
 
 	// Create request body
 	requestBody := client.UpdateOrganizationJSONBody{}
+
+	if !data.DefaultLlmConfigID.IsNull() {
+		id := data.DefaultLlmConfigID.ValueString()
+		requestBody.DefaultLlmConfigId = &id
+	}
+
+	if !data.DefaultDualLlmConfigID.IsNull() {
+		id := data.DefaultDualLlmConfigID.ValueString()
+		requestBody.DefaultDualLlmConfigId = &id
+	}
 
 	if !data.Font.IsNull() {
 		font := client.UpdateOrganizationJSONBodyCustomFont(data.Font.ValueString())
@@ -273,6 +293,18 @@ func (r *OrganizationSettingsResource) Read(ctx context.Context, req resource.Re
 	data.ID = types.StringValue(apiResp.JSON200.Id)
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
+	if apiResp.JSON200.DefaultLlmConfigId != nil {
+		data.DefaultLlmConfigID = types.StringValue(*apiResp.JSON200.DefaultLlmConfigId)
+	} else {
+		data.DefaultLlmConfigID = types.StringNull()
+	}
+
+	if apiResp.JSON200.DefaultDualLlmConfigId != nil {
+		data.DefaultDualLlmConfigID = types.StringValue(*apiResp.JSON200.DefaultDualLlmConfigId)
+	} else {
+		data.DefaultDualLlmConfigID = types.StringNull()
+	}
+
 	if string(apiResp.JSON200.CustomFont) != "" {
 		data.Font = types.StringValue(string(apiResp.JSON200.CustomFont))
 	} else {
@@ -319,6 +351,16 @@ func (r *OrganizationSettingsResource) Update(ctx context.Context, req resource.
 
 	// Create request body
 	requestBody := client.UpdateOrganizationJSONBody{}
+
+	if !data.DefaultLlmConfigID.IsNull() {
+		id := data.DefaultLlmConfigID.ValueString()
+		requestBody.DefaultLlmConfigId = &id
+	}
+
+	if !data.DefaultDualLlmConfigID.IsNull() {
+		id := data.DefaultDualLlmConfigID.ValueString()
+		requestBody.DefaultDualLlmConfigId = &id
+	}
 
 	if !data.Font.IsNull() {
 		font := client.UpdateOrganizationJSONBodyCustomFont(data.Font.ValueString())
@@ -370,9 +412,21 @@ func (r *OrganizationSettingsResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	// Map response to Terraform state
+	// Map response to Terraform state (preserve ID)
 	data.ID = types.StringValue(apiResp.JSON200.Id)
 	data.Name = types.StringValue(apiResp.JSON200.Name)
+
+	if apiResp.JSON200.DefaultLlmConfigId != nil {
+		data.DefaultLlmConfigID = types.StringValue(*apiResp.JSON200.DefaultLlmConfigId)
+	} else {
+		data.DefaultLlmConfigID = types.StringNull()
+	}
+
+	if apiResp.JSON200.DefaultDualLlmConfigId != nil {
+		data.DefaultDualLlmConfigID = types.StringValue(*apiResp.JSON200.DefaultDualLlmConfigId)
+	} else {
+		data.DefaultDualLlmConfigID = types.StringNull()
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -384,10 +438,7 @@ func (r *OrganizationSettingsResource) Delete(ctx context.Context, req resource.
 }
 
 func (r *OrganizationSettingsResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	// Since it's a singleton, we ignore the ID passed in import (or enforce it's "current" or "settings")
-	// and read the current state.
-	// Usually ImportState just sets the ID and lets Read handle it.
-	// But our resource doesn't strictly use the ID in Read/Update (it calls the singleton endpoints).
-	// So setting any ID is fine, but "current" is good convention.
-	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	// For singleton, just trigger a Read to populate state
+	// Set a placeholder ID, Read will get the real one from the API
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), "settings")...)
 }
