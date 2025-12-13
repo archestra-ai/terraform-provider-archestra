@@ -12,6 +12,9 @@ archestra:
     ARCHESTRA_METRICS_SECRET: "acceptance-test-metrics-secret"
     ARCHESTRA_FRONTEND_URL: "http://localhost:3000"
     ARCHESTRA_AUTH_SECRET: "acceptance-test-auth-secret-32chars"
+
+    ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
+
     # Enable test MCP server seeding (useful for acceptance tests)
     ENABLE_TEST_MCP_SERVER: "true"
 
