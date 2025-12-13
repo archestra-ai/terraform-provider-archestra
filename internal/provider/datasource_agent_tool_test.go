@@ -1,9 +1,11 @@
 package provider
 
 import (
+	"fmt"
 	"regexp"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -11,13 +13,14 @@ import (
 )
 
 func TestAccAgentToolDataSource(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create agent, MCP server, and installation, then look up the tool
+			// Create agent and look up the built-in tool
 			{
-				Config: testAccAgentToolDataSourceConfig(),
+				Config: testAccAgentToolDataSourceConfig(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					// Verify the data source returns the expected values
 					statecheck.ExpectKnownValue(
@@ -41,65 +44,47 @@ func TestAccAgentToolDataSource(t *testing.T) {
 	})
 }
 
-func testAccAgentToolDataSourceConfig() string {
-	return `
-# Create an agent for testing
+// testAccAgentToolDataSourceConfig creates a minimal config to test the agent_tool
+// data source using the built-in archestra__whoami tool which is immediately
+// available after agent creation (no MCP server needed).
+func testAccAgentToolDataSourceConfig(rName string) string {
+	return fmt.Sprintf(`
 resource "archestra_agent" "test" {
-  name = "agent-tool-datasource-test"
+  name = "agent-tool-ds-test-%[1]s"
 }
 
-# Create an MCP server in the registry
-resource "archestra_mcp_server" "test" {
-  name        = "agent-tool-test-server"
-  description = "MCP server for agent tool data source testing"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-# Install the MCP server (this makes tools available)
-resource "archestra_mcp_server_installation" "test" {
-  name          = "agent-tool-installation"
-  mcp_server_id = archestra_mcp_server.test.id
-}
-
-# Look up a tool from the installed MCP server
-# Note: The filesystem MCP server provides tools like "read_file", "write_file", etc.
-# We use the agent's built-in Archestra tools which are always available
+# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# No MCP server or installation needed - the tool is immediately available.
 data "archestra_agent_tool" "test" {
   agent_id  = archestra_agent.test.id
   tool_name = "archestra__whoami"
-
-  depends_on = [archestra_mcp_server_installation.test]
 }
-`
+`, rName)
 }
 
 func TestAccAgentToolDataSource_NotFound(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config:      testAccAgentToolDataSourceConfigNotFound(),
+				Config:      testAccAgentToolDataSourceConfigNotFound(rName),
 				ExpectError: regexp.MustCompile(`not found`),
 			},
 		},
 	})
 }
 
-func testAccAgentToolDataSourceConfigNotFound() string {
-	return `
+func testAccAgentToolDataSourceConfigNotFound(rName string) string {
+	return fmt.Sprintf(`
 resource "archestra_agent" "test" {
-  name = "agent-tool-notfound-test"
+  name = "agent-tool-notfound-test-%[1]s"
 }
 
 data "archestra_agent_tool" "test" {
   agent_id  = archestra_agent.test.id
   tool_name = "nonexistent_tool_that_does_not_exist"
 }
-`
+`, rName)
 }

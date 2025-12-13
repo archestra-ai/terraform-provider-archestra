@@ -1,8 +1,10 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -10,13 +12,14 @@ import (
 )
 
 func TestAccTrustedDataPolicyResource(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccTrustedDataPolicyResourceConfig(),
+				Config: testAccTrustedDataPolicyResourceConfig(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
@@ -53,7 +56,7 @@ func TestAccTrustedDataPolicyResource(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccTrustedDataPolicyResourceConfigUpdated(),
+				Config: testAccTrustedDataPolicyResourceConfigUpdated(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
@@ -88,13 +91,14 @@ func TestAccTrustedDataPolicyResource(t *testing.T) {
 }
 
 func TestAccTrustedDataPolicyResource_SanitizeAction(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create with sanitize_with_dual_llm action
 			{
-				Config: testAccTrustedDataPolicyResourceConfigSanitize(),
+				Config: testAccTrustedDataPolicyResourceConfigSanitize(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.sanitize",
@@ -107,40 +111,21 @@ func TestAccTrustedDataPolicyResource_SanitizeAction(t *testing.T) {
 	})
 }
 
-func testAccTrustedDataPolicyResourceConfig() string {
-	return `
-# Create an agent for testing
+// testAccTrustedDataPolicyResourceConfig creates a config using only the built-in
+// archestra__whoami tool which is immediately available after agent creation.
+func testAccTrustedDataPolicyResourceConfig(rName string) string {
+	return fmt.Sprintf(`
 resource "archestra_agent" "test" {
-  name = "trusted-data-policy-test-agent"
+  name = "tdp-test-agent-%[1]s"
 }
 
-# Create an MCP server in the registry
-resource "archestra_mcp_server" "test" {
-  name        = "trusted-data-policy-test-server"
-  description = "MCP server for trusted data policy testing"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-# Install the MCP server
-resource "archestra_mcp_server_installation" "test" {
-  name          = "trusted-data-policy-installation"
-  mcp_server_id = archestra_mcp_server.test.id
-}
-
-# Look up the agent tool
+# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# No MCP server or installation needed - the tool is immediately available.
 data "archestra_agent_tool" "test" {
   agent_id  = archestra_agent.test.id
   tool_name = "archestra__whoami"
-
-  depends_on = [archestra_mcp_server_installation.test]
 }
 
-# Create a trusted data policy
 resource "archestra_trusted_data_policy" "test" {
   agent_tool_id  = data.archestra_agent_tool.test.id
   description    = "Trust internal API responses"
@@ -149,43 +134,22 @@ resource "archestra_trusted_data_policy" "test" {
   value          = "api.internal.example.com"
   action         = "mark_as_trusted"
 }
-`
+`, rName)
 }
 
-func testAccTrustedDataPolicyResourceConfigUpdated() string {
-	return `
-# Create an agent for testing
+func testAccTrustedDataPolicyResourceConfigUpdated(rName string) string {
+	return fmt.Sprintf(`
 resource "archestra_agent" "test" {
-  name = "trusted-data-policy-test-agent"
+  name = "tdp-test-agent-%[1]s"
 }
 
-# Create an MCP server in the registry
-resource "archestra_mcp_server" "test" {
-  name        = "trusted-data-policy-test-server"
-  description = "MCP server for trusted data policy testing"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-# Install the MCP server
-resource "archestra_mcp_server_installation" "test" {
-  name          = "trusted-data-policy-installation"
-  mcp_server_id = archestra_mcp_server.test.id
-}
-
-# Look up the agent tool
+# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# No MCP server or installation needed - the tool is immediately available.
 data "archestra_agent_tool" "test" {
   agent_id  = archestra_agent.test.id
   tool_name = "archestra__whoami"
-
-  depends_on = [archestra_mcp_server_installation.test]
 }
 
-# Create a trusted data policy (updated)
 resource "archestra_trusted_data_policy" "test" {
   agent_tool_id  = data.archestra_agent_tool.test.id
   description    = "Block untrusted external data"
@@ -194,43 +158,22 @@ resource "archestra_trusted_data_policy" "test" {
   value          = "example.com"
   action         = "block_always"
 }
-`
+`, rName)
 }
 
-func testAccTrustedDataPolicyResourceConfigSanitize() string {
-	return `
-# Create an agent for testing
+func testAccTrustedDataPolicyResourceConfigSanitize(rName string) string {
+	return fmt.Sprintf(`
 resource "archestra_agent" "sanitize" {
-  name = "trusted-data-policy-sanitize-agent"
+  name = "tdp-sanitize-agent-%[1]s"
 }
 
-# Create an MCP server in the registry
-resource "archestra_mcp_server" "sanitize" {
-  name        = "trusted-data-policy-sanitize-server"
-  description = "MCP server for sanitize action testing"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-# Install the MCP server
-resource "archestra_mcp_server_installation" "sanitize" {
-  name          = "trusted-data-sanitize-installation"
-  mcp_server_id = archestra_mcp_server.sanitize.id
-}
-
-# Look up the agent tool
+# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# No MCP server or installation needed - the tool is immediately available.
 data "archestra_agent_tool" "sanitize" {
   agent_id  = archestra_agent.sanitize.id
   tool_name = "archestra__whoami"
-
-  depends_on = [archestra_mcp_server_installation.sanitize]
 }
 
-# Create a trusted data policy with sanitize action
 resource "archestra_trusted_data_policy" "sanitize" {
   agent_tool_id  = data.archestra_agent_tool.sanitize.id
   description    = "Sanitize user input with dual LLM"
@@ -239,5 +182,5 @@ resource "archestra_trusted_data_policy" "sanitize" {
   value          = ".*"
   action         = "sanitize_with_dual_llm"
 }
-`
+`, rName)
 }

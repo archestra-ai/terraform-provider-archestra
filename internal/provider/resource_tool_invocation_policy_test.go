@@ -116,40 +116,22 @@ func TestAccToolInvocationPolicyResource_WithoutReason(t *testing.T) {
 	})
 }
 
+// testAccToolInvocationPolicyResourceConfigNoReason creates a minimal config
+// using only the built-in archestra__whoami tool which is immediately available
+// after agent creation (no MCP server needed).
 func testAccToolInvocationPolicyResourceConfigNoReason(rName string) string {
 	return fmt.Sprintf(`
-# Create an agent for testing
 resource "archestra_agent" "noreason" {
   name = "tip-noreason-agent-%[1]s"
 }
 
-# Create an MCP server in the registry
-resource "archestra_mcp_server" "noreason" {
-  name        = "tip-noreason-server-%[1]s"
-  description = "MCP server for testing without reason"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-# Install the MCP server
-resource "archestra_mcp_server_installation" "noreason" {
-  name          = "tip-noreason-install-%[1]s"
-  mcp_server_id = archestra_mcp_server.noreason.id
-}
-
-# Look up the agent tool
+# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# No MCP server or installation needed - the tool is immediately available.
 data "archestra_agent_tool" "noreason" {
   agent_id  = archestra_agent.noreason.id
   tool_name = "archestra__whoami"
-
-  depends_on = [archestra_mcp_server_installation.noreason]
 }
 
-# Create a tool invocation policy without reason
 resource "archestra_tool_invocation_policy" "noreason" {
   agent_tool_id = data.archestra_agent_tool.noreason.id
   argument_name = "command"
@@ -186,40 +168,21 @@ func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
 	})
 }
 
+// testAccToolInvocationPolicyResourceConfig creates a config using only the built-in
+// archestra__whoami tool which is immediately available after agent creation.
 func testAccToolInvocationPolicyResourceConfig(rName string) string {
 	return fmt.Sprintf(`
-# Create an agent for testing
 resource "archestra_agent" "test" {
   name = "tip-test-agent-%[1]s"
 }
 
-# Create an MCP server in the registry
-resource "archestra_mcp_server" "test" {
-  name        = "tip-test-server-%[1]s"
-  description = "MCP server for tool invocation policy testing"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-# Install the MCP server
-resource "archestra_mcp_server_installation" "test" {
-  name          = "tip-test-install-%[1]s"
-  mcp_server_id = archestra_mcp_server.test.id
-}
-
-# Look up the agent tool
+# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# No MCP server or installation needed - the tool is immediately available.
 data "archestra_agent_tool" "test" {
   agent_id  = archestra_agent.test.id
   tool_name = "archestra__whoami"
-
-  depends_on = [archestra_mcp_server_installation.test]
 }
 
-# Create a tool invocation policy
 resource "archestra_tool_invocation_policy" "test" {
   agent_tool_id = data.archestra_agent_tool.test.id
   argument_name = "path"
@@ -233,38 +196,17 @@ resource "archestra_tool_invocation_policy" "test" {
 
 func testAccToolInvocationPolicyResourceConfigUpdated(rName string) string {
 	return fmt.Sprintf(`
-# Create an agent for testing
 resource "archestra_agent" "test" {
   name = "tip-test-agent-%[1]s"
 }
 
-# Create an MCP server in the registry
-resource "archestra_mcp_server" "test" {
-  name        = "tip-test-server-%[1]s"
-  description = "MCP server for tool invocation policy testing"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-# Install the MCP server
-resource "archestra_mcp_server_installation" "test" {
-  name          = "tip-test-install-%[1]s"
-  mcp_server_id = archestra_mcp_server.test.id
-}
-
-# Look up the agent tool
+# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# No MCP server or installation needed - the tool is immediately available.
 data "archestra_agent_tool" "test" {
   agent_id  = archestra_agent.test.id
   tool_name = "archestra__whoami"
-
-  depends_on = [archestra_mcp_server_installation.test]
 }
 
-# Create a tool invocation policy (updated)
 resource "archestra_tool_invocation_policy" "test" {
   agent_tool_id = data.archestra_agent_tool.test.id
   argument_name = "path"
@@ -278,38 +220,17 @@ resource "archestra_tool_invocation_policy" "test" {
 
 func testAccToolInvocationPolicyResourceConfigRegex(rName string) string {
 	return fmt.Sprintf(`
-# Create an agent for testing
 resource "archestra_agent" "regex" {
   name = "tip-regex-agent-%[1]s"
 }
 
-# Create an MCP server in the registry
-resource "archestra_mcp_server" "regex" {
-  name        = "tip-regex-server-%[1]s"
-  description = "MCP server for regex testing"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-# Install the MCP server
-resource "archestra_mcp_server_installation" "regex" {
-  name          = "tip-regex-install-%[1]s"
-  mcp_server_id = archestra_mcp_server.regex.id
-}
-
-# Look up the agent tool
+# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# No MCP server or installation needed - the tool is immediately available.
 data "archestra_agent_tool" "regex" {
   agent_id  = archestra_agent.regex.id
   tool_name = "archestra__whoami"
-
-  depends_on = [archestra_mcp_server_installation.regex]
 }
 
-# Create a tool invocation policy with regex
 resource "archestra_tool_invocation_policy" "regex" {
   agent_tool_id = data.archestra_agent_tool.regex.id
   argument_name = "path"
