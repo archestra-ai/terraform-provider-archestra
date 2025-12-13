@@ -96,12 +96,19 @@ func (r *McpServerTeamAccessResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
-	// FIXED: Using TeamIds (plural) and wrapping the single ID in a slice []string
-	_, err = r.client.GrantTeamMcpServerAccessWithResponse(ctx, serverUUID, client.GrantTeamMcpServerAccessJSONRequestBody{
+	apiResp, err := r.client.GrantTeamMcpServerAccessWithResponse(ctx, serverUUID, client.GrantTeamMcpServerAccessJSONRequestBody{
 		TeamIds: []string{data.TeamID.ValueString()},
 	})
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to grant team access: %s", err))
+		return
+	}
+
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK when granting team access, got status %d", apiResp.StatusCode()),
+		)
 		return
 	}
 
@@ -165,10 +172,18 @@ func (r *McpServerTeamAccessResource) Delete(ctx context.Context, req resource.D
 		return
 	}
 
-	// FIXED: Passing TeamID string directly.
-	_, err = r.client.RevokeTeamMcpServerAccessWithResponse(ctx, serverUUID, data.TeamID.ValueString())
+	apiResp, err := r.client.RevokeTeamMcpServerAccessWithResponse(ctx, serverUUID, data.TeamID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to revoke team access: %s", err))
+		return
+	}
+
+	// Accept both 200 OK (success) and 404 Not Found (already deleted)
+	if apiResp.JSON200 == nil && apiResp.JSON404 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK or 404 Not Found when revoking team access, got status %d", apiResp.StatusCode()),
+		)
 		return
 	}
 }
