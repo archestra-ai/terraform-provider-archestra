@@ -111,6 +111,15 @@ jobs:
           build-platform-image: "false"
           platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}
 
+      - name: Check for codegen'd API client changes
+        run: |
+          make codegen-api-client
+
+          if ! git diff --exit-code; then
+            echo "::error::Generated API client code is not up to date. Please run 'make codegen-api-client' locally and commit the changes."
+            exit 1
+          fi
+
       # Login with default credentials and create an API key for acceptance tests
       # Default credentials: admin@example.com / password
       - name: Obtain API Key
