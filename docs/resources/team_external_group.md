@@ -26,4 +26,4 @@ Manages a mapping between an Archestra team and an external identity provider gr
 
 ### Read-Only
 
-- `id` (String) Terraform resource ID (synthetic, team_id:external_group)
+- `id` (String) Resource identifier in format team_id/mapping_id

@@ -72,7 +72,7 @@ func (r *TeamExternalGroupResource) Schema(ctx context.Context, req resource.Sch
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "Terraform resource ID (synthetic, team_id:external_group)",
+				MarkdownDescription: "Resource identifier in format team_id/mapping_id",
 			},
 
 			"team_id": schema.StringAttribute{
@@ -154,7 +154,8 @@ func (r *TeamExternalGroupResource) Create(ctx context.Context, req resource.Cre
 	}
 
 	// Set Terraform state values
-	data.ID = types.StringValue(apiResp.JSON200.Id)
+	// Store composite ID for import compatibility (team_id/mapping_id)
+	data.ID = types.StringValue(fmt.Sprintf("%s/%s", apiResp.JSON200.TeamId, apiResp.JSON200.Id))
 	data.TeamID = types.StringValue(apiResp.JSON200.TeamId)
 
 	// Preserve which field was originally configured to avoid state drift
@@ -204,10 +205,17 @@ func (r *TeamExternalGroupResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
+	// Extract mapping ID from composite ID (team_id/mapping_id)
+	idParts := strings.Split(data.ID.ValueString(), "/")
+	mappingID := data.ID.ValueString()
+	if len(idParts) == 2 {
+		mappingID = idParts[1]
+	}
+
 	// Look for THIS external group in API results
 	found := false
 	for _, g := range *apiResp.JSON200 {
-		if g.Id == data.ID.ValueString() {
+		if g.Id == mappingID {
 			// Update state with actual backend values
 			// Preserve which field was originally configured to avoid state drift
 			if !data.ExternalGroupID.IsNull() {
@@ -245,7 +253,13 @@ func (r *TeamExternalGroupResource) Delete(ctx context.Context, req resource.Del
 	}
 
 	teamID := data.TeamID.ValueString()
+
+	// Extract mapping ID from composite ID (team_id/mapping_id)
+	idParts := strings.Split(data.ID.ValueString(), "/")
 	mappingID := data.ID.ValueString()
+	if len(idParts) == 2 {
+		mappingID = idParts[1]
+	}
 
 	// Call API
 	apiResp, err := r.client.RemoveTeamExternalGroupWithResponse(ctx, teamID, mappingID)
