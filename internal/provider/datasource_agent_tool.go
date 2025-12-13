@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -113,9 +114,23 @@ func (d *AgentToolDataSource) Read(ctx context.Context, req datasource.ReadReque
 		ResponseModifierTemplate             *string
 	}
 
+	// Parse agent ID as UUID for the API filter
+	agentUUID, err := uuid.Parse(targetAgentID)
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid Agent ID", fmt.Sprintf("Could not parse agent ID as UUID: %s", err))
+		return
+	}
+
+	// Use max allowed limit to get all tools for this agent in one request
+	// (built-in tools are typically <30, so 100 is more than enough)
+	limit := 100
+
 	result, found, err := RetryUntilFound(ctx, retryConfig, func() (agentToolResult, bool, error) {
-		// Get all agent tools (which includes configuration)
-		toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx, nil)
+		// Get agent tools filtered by agent ID (more efficient than fetching all)
+		toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx, &client.GetAllAgentToolsParams{
+			AgentId: &agentUUID,
+			Limit:   &limit,
+		})
 		if err != nil {
 			return agentToolResult{}, false, fmt.Errorf("unable to read agent tools: %w", err)
 		}
@@ -124,10 +139,10 @@ func (d *AgentToolDataSource) Read(ctx context.Context, req datasource.ReadReque
 			return agentToolResult{}, false, fmt.Errorf("expected 200 OK, got status %d", toolsResp.StatusCode())
 		}
 
-		// Filter by agent ID and tool name
+		// Find the specific tool by name
 		for i := range toolsResp.JSON200.Data {
 			agentTool := &toolsResp.JSON200.Data[i]
-			if agentTool.Agent.Id == targetAgentID && agentTool.Tool.Name == targetToolName {
+			if agentTool.Tool.Name == targetToolName {
 				return agentToolResult{
 					ID:                                   agentTool.Id.String(),
 					ToolID:                               agentTool.Tool.Id,
