@@ -21,7 +21,6 @@ type TeamExternalGroupsDataSource struct {
 	client *client.ClientWithResponses
 }
 
-
 // ---------------------
 // Data Source Schema Models
 // ---------------------
@@ -104,7 +103,6 @@ func (d *TeamExternalGroupsDataSource) Configure(ctx context.Context, req dataso
 
 	d.client = client
 }
-
 
 // ---------------------
 // Read

@@ -256,9 +256,7 @@ func (r *TeamExternalGroupResource) Delete(ctx context.Context, req resource.Del
 // ---------------------
 
 func (r *TeamExternalGroupResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	// Updates are not supported for external group mappings; changes will require replacement
-	// No-op here because plan modifiers will force replacement
-	return
+	// Updates are not supported; RequiresReplace plan modifiers handle this.
 }
 
 // ---------------------
