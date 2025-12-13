@@ -50,3 +50,41 @@ data "archestra_team" "test" {
 }
 `, name)
 }
+
+func TestAccTeamDataSource_WithMembers(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccTeamDataSourceConfigWithMembers(),
+				ConfigStateChecks: []statecheck.StateCheck{
+					// Check that members is populated (may be empty but should exist)
+					statecheck.ExpectKnownValue(
+						"data.archestra_team.withmembers",
+						tfjsonpath.New("members"),
+						knownvalue.NotNull(),
+					),
+					statecheck.ExpectKnownValue(
+						"data.archestra_team.withmembers",
+						tfjsonpath.New("organization_id"),
+						knownvalue.NotNull(),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccTeamDataSourceConfigWithMembers() string {
+	return `
+resource "archestra_team" "withmembers" {
+  name        = "test-team-with-members"
+  description = "Team to test members field in data source"
+}
+
+data "archestra_team" "withmembers" {
+  id = archestra_team.withmembers.id
+}
+`
+}

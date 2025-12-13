@@ -254,7 +254,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 			lcStruct.Arguments = &args
 		}
 
-		// Environment - convert map[string]string to new array structure
+		// Environment - convert map[string]string to new struct format
 		if !localConfig.Environment.IsNull() {
 			var env map[string]string
 			resp.Diagnostics.Append(localConfig.Environment.ElementsAs(ctx, &env, false)...)
@@ -279,10 +279,9 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 					Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
 					Value                *string                                                               `json:"value,omitempty"`
 				}{
-					Key:                  k,
-					Value:                &val,
-					Type:                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypePlainText,
-					PromptOnInstallation: false,
+					Key:   k,
+					Value: &val,
+					Type:  "string",
 				})
 			}
 			lcStruct.Environment = &envSlice
@@ -451,15 +450,15 @@ func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadR
 			localConfigObj["arguments"], _ = types.ListValue(types.StringType, argValues)
 		}
 
-		// Environment - convert array structure back to map[string]string
+		// Environment
 		if apiResp.JSON200.LocalConfig.Environment != nil && len(*apiResp.JSON200.LocalConfig.Environment) > 0 {
 			envMap := make(map[string]attr.Value)
 			for _, envVar := range *apiResp.JSON200.LocalConfig.Environment {
-				val := ""
 				if envVar.Value != nil {
-					val = *envVar.Value
+					envMap[envVar.Key] = types.StringValue(*envVar.Value)
+				} else {
+					envMap[envVar.Key] = types.StringValue("")
 				}
-				envMap[envVar.Key] = types.StringValue(val)
 			}
 			localConfigObj["environment"], _ = types.MapValue(types.StringType, envMap)
 		}
@@ -619,7 +618,7 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 			lcStruct.Arguments = &args
 		}
 
-		// Environment - convert map[string]string to new array structure
+		// Environment - convert map[string]string to new struct format
 		if !localConfig.Environment.IsNull() {
 			var env map[string]string
 			resp.Diagnostics.Append(localConfig.Environment.ElementsAs(ctx, &env, false)...)
@@ -644,10 +643,9 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 					Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
 					Value                *string                                                               `json:"value,omitempty"`
 				}{
-					Key:                  k,
-					Value:                &val,
-					Type:                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypePlainText,
-					PromptOnInstallation: false,
+					Key:   k,
+					Value: &val,
+					Type:  "string",
 				})
 			}
 			lcStruct.Environment = &envSlice

@@ -110,13 +110,13 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
-	// Convert labels to API format
-	var labels []struct {
+	// Convert labels to API format (initialize as empty slice to avoid null in JSON)
+	labels := make([]struct {
 		Key     string              `json:"key"`
 		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
-	}
+	}, 0)
 
 	for _, label := range data.Labels {
 		labels = append(labels, struct {
@@ -158,7 +158,10 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
 	// Map labels from API response, preserving configuration order
-	data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	// If labels were not specified in config (nil), keep them nil in state
+	if data.Labels != nil {
+		data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -205,7 +208,10 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
 	// Map labels from API response, preserving existing state order
-	data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	// If labels were not specified in state (nil), keep them nil
+	if data.Labels != nil {
+		data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -226,13 +232,13 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
-	// Convert labels to API format
-	var labels []struct {
+	// Convert labels to API format (initialize as empty slice to avoid null in JSON)
+	labels := make([]struct {
 		Key     string              `json:"key"`
 		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
-	}
+	}, 0)
 
 	for _, label := range data.Labels {
 		labels = append(labels, struct {
