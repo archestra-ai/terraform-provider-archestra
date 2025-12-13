@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
@@ -13,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Enum value lists derived from the generated client constants.
@@ -246,10 +248,19 @@ func (r *OrganizationSettingsResource) Create(ctx context.Context, req resource.
 	}
 
 	// Call API - treating Create as Update for singleton
+	jsonBody, _ := json.Marshal(requestBody)
+	tflog.Debug(ctx, fmt.Sprintf("DEBUG: Create Request Body: %s", string(jsonBody)))
+	fmt.Printf("\nDEBUG: Create Request Body: %s\n", string(jsonBody))
+
 	apiResp, err := r.client.UpdateOrganizationWithResponse(ctx, client.UpdateOrganizationJSONRequestBody(requestBody))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create/update organization settings, got error: %s", err))
 		return
+	}
+
+	fmt.Printf("\nDEBUG: Create Response Status: %d\n", apiResp.StatusCode())
+	if apiResp.JSON200 == nil {
+		fmt.Printf("DEBUG: Response Body: %s\n", string(apiResp.Body))
 	}
 
 	if apiResp.JSON200 == nil {
@@ -398,10 +409,19 @@ func (r *OrganizationSettingsResource) Update(ctx context.Context, req resource.
 	}
 
 	// Call API
+	jsonBody, _ := json.Marshal(requestBody)
+	tflog.Debug(ctx, fmt.Sprintf("DEBUG: Update Request Body: %s", string(jsonBody)))
+	fmt.Printf("\nDEBUG: Update Request Body: %s\n", string(jsonBody))
+
 	apiResp, err := r.client.UpdateOrganizationWithResponse(ctx, client.UpdateOrganizationJSONRequestBody(requestBody))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update organization settings, got error: %s", err))
 		return
+	}
+
+	fmt.Printf("\nDEBUG: Update Response Status: %d\n", apiResp.StatusCode())
+	if apiResp.JSON200 == nil {
+		fmt.Printf("DEBUG: Response Body: %s\n", string(apiResp.Body))
 	}
 
 	if apiResp.JSON200 == nil {
