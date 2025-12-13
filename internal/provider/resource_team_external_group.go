@@ -78,6 +78,9 @@ func (r *TeamExternalGroupResource) Schema(ctx context.Context, req resource.Sch
 			"team_id": schema.StringAttribute{
 				Required:            true,
 				MarkdownDescription: "The ID of the Archestra team.",
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 
 			"external_group_id": schema.StringAttribute{
@@ -91,6 +94,9 @@ func (r *TeamExternalGroupResource) Schema(ctx context.Context, req resource.Sch
 			"external_group_name": schema.StringAttribute{
 				Optional:            true,
 				MarkdownDescription: "The external group name (for OIDC/SAML providers).",
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 		},
 	}
@@ -148,9 +154,15 @@ func (r *TeamExternalGroupResource) Create(ctx context.Context, req resource.Cre
 	}
 
 	// Set Terraform state values
-	data.ID = types.StringValue(apiResp.JSON200.Id) // REAL BACKEND ID (preferred)
-	data.ExternalGroupID = types.StringValue(apiResp.JSON200.GroupIdentifier)
+	data.ID = types.StringValue(apiResp.JSON200.Id)
 	data.TeamID = types.StringValue(apiResp.JSON200.TeamId)
+
+	// Preserve which field was originally configured to avoid state drift
+	if !data.ExternalGroupID.IsNull() {
+		data.ExternalGroupID = types.StringValue(apiResp.JSON200.GroupIdentifier)
+	} else if !data.ExternalName.IsNull() {
+		data.ExternalName = types.StringValue(apiResp.JSON200.GroupIdentifier)
+	}
 
 	// Save into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -197,7 +209,12 @@ func (r *TeamExternalGroupResource) Read(ctx context.Context, req resource.ReadR
 	for _, g := range *apiResp.JSON200 {
 		if g.Id == data.ID.ValueString() {
 			// Update state with actual backend values
-			data.ExternalGroupID = types.StringValue(g.GroupIdentifier)
+			// Preserve which field was originally configured to avoid state drift
+			if !data.ExternalGroupID.IsNull() {
+				data.ExternalGroupID = types.StringValue(g.GroupIdentifier)
+			} else if !data.ExternalName.IsNull() {
+				data.ExternalName = types.StringValue(g.GroupIdentifier)
+			}
 			data.TeamID = types.StringValue(g.TeamId)
 			found = true
 			break
