@@ -122,9 +122,6 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Validators: []validator.String{
 					stringvalidator.OneOf(allowedFonts...),
 				},
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
 			},
 			"color_theme": schema.StringAttribute{
 				MarkdownDescription: "Color theme for the organization",
@@ -133,18 +130,12 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Validators: []validator.String{
 					stringvalidator.OneOf(allowedThemes...),
 				},
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
 			},
 			"logo": schema.StringAttribute{
 				MarkdownDescription: "Base64 encoded logo image for the organization",
 				Optional:            true,
 				Computed:            true,
 				Sensitive:           true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
 			},
 			"limit_cleanup_interval": schema.StringAttribute{
 				MarkdownDescription: "Interval for cleaning up limits. Set to null to disable.",
@@ -153,9 +144,6 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Validators: []validator.String{
 					stringvalidator.OneOf(allowedCleanupIntervals...),
 				},
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
 			},
 			"compression_scope": schema.StringAttribute{
 				MarkdownDescription: "Compression scope for the organization",
@@ -163,9 +151,6 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Computed:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf(allowedCompressionScopes...),
-				},
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 			"onboarding_complete": schema.BoolAttribute{
@@ -191,7 +176,7 @@ func (r *OrganizationSettingsResource) Configure(ctx context.Context, req resour
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *client.ClientWithResponses, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *client.ClientWithResponses, got: %T", req.ProviderData),
 		)
 		return
 	}
@@ -199,8 +184,89 @@ func (r *OrganizationSettingsResource) Configure(ctx context.Context, req resour
 	r.client = client
 }
 
-func buildUpdateRequestBody(plan OrganizationSettingsResourceModel) client.UpdateOrganizationJSONRequestBody {
-	requestBody := client.UpdateOrganizationJSONRequestBody{}
+func (r *OrganizationSettingsResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data OrganizationSettingsResourceModel
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	requestBody := buildUpdateRequestBody(data)
+
+	apiResp, err := r.client.UpdateOrganizationWithResponse(ctx, client.UpdateOrganizationJSONRequestBody(requestBody))
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update organization settings: %s", err))
+		return
+	}
+
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()))
+		return
+	}
+
+	mapResponseToState(&data, apiResp.JSON200)
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+func (r *OrganizationSettingsResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data OrganizationSettingsResourceModel
+	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	apiResp, err := r.client.GetOrganizationWithResponse(ctx)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read organization settings: %s", err))
+		return
+	}
+
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()))
+		return
+	}
+
+	mapResponseToState(&data, apiResp.JSON200)
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+func (r *OrganizationSettingsResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data OrganizationSettingsResourceModel
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	requestBody := buildUpdateRequestBody(data)
+
+	apiResp, err := r.client.UpdateOrganizationWithResponse(ctx, client.UpdateOrganizationJSONRequestBody(requestBody))
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update organization settings: %s", err))
+		return
+	}
+
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()))
+		return
+	}
+
+	mapResponseToState(&data, apiResp.JSON200)
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+func (r *OrganizationSettingsResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	resp.State.RemoveResource(ctx)
+}
+
+func (r *OrganizationSettingsResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+}
+
+func buildUpdateRequestBody(plan OrganizationSettingsResourceModel) client.UpdateOrganizationJSONBody {
+	requestBody := client.UpdateOrganizationJSONBody{}
 
 	if !plan.Font.IsNull() {
 		font := client.UpdateOrganizationJSONBodyCustomFont(plan.Font.ValueString())
@@ -228,200 +294,120 @@ func buildUpdateRequestBody(plan OrganizationSettingsResourceModel) client.Updat
 	}
 
 	if !plan.OnboardingComplete.IsNull() {
-		onboarding := plan.OnboardingComplete.ValueBool()
-		requestBody.OnboardingComplete = &onboarding
+		val := plan.OnboardingComplete.ValueBool()
+		requestBody.OnboardingComplete = &val
 	}
 
 	if !plan.ConvertToolResultsToToon.IsNull() {
-		convert := plan.ConvertToolResultsToToon.ValueBool()
-		requestBody.ConvertToolResultsToToon = &convert
+		val := plan.ConvertToolResultsToToon.ValueBool()
+		requestBody.ConvertToolResultsToToon = &val
 	}
 
 	return requestBody
 }
 
-func (r *OrganizationSettingsResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data OrganizationSettingsResourceModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-	if resp.Diagnostics.HasError() {
-		return
+func mapResponseToState(data *OrganizationSettingsResourceModel, org any) {
+	switch v := org.(type) {
+	// Case 1: Update Response
+	case *struct {
+		CompressionScope         client.UpdateOrganization200CompressionScope
+		ConvertToolResultsToToon bool
+		CreatedAt                interface{}
+		CustomFont               client.UpdateOrganization200CustomFont
+		Id                       string
+		LimitCleanupInterval     *client.UpdateOrganization200LimitCleanupInterval
+		Logo                     *string
+		Metadata                 *string
+		Name                     string
+		OnboardingComplete       bool
+		Slug                     string
+		Theme                    client.UpdateOrganization200Theme
+	}:
+		data.ID = types.StringValue(v.Id)
+
+		if string(v.CustomFont) != "" {
+			data.Font = types.StringValue(string(v.CustomFont))
+		} else {
+			data.Font = types.StringNull()
+		}
+
+		if string(v.Theme) != "" {
+			data.ColorTheme = types.StringValue(string(v.Theme))
+		} else {
+			data.ColorTheme = types.StringNull()
+		}
+
+		if v.Logo != nil {
+			data.Logo = types.StringValue(*v.Logo)
+		} else {
+			data.Logo = types.StringNull()
+		}
+
+		if v.LimitCleanupInterval != nil {
+			data.LimitCleanupInterval = types.StringValue(string(*v.LimitCleanupInterval))
+		} else {
+			data.LimitCleanupInterval = types.StringNull()
+		}
+
+		if string(v.CompressionScope) != "" {
+			data.CompressionScope = types.StringValue(string(v.CompressionScope))
+		} else {
+			data.CompressionScope = types.StringNull()
+		}
+
+		data.OnboardingComplete = types.BoolValue(v.OnboardingComplete)
+
+		data.ConvertToolResultsToToon = types.BoolValue(v.ConvertToolResultsToToon)
+
+	// Case 2: Get Response
+	case *struct {
+		CompressionScope         client.GetOrganization200CompressionScope
+		ConvertToolResultsToToon bool
+		CreatedAt                interface{}
+		CustomFont               client.GetOrganization200CustomFont
+		Id                       string
+		LimitCleanupInterval     *client.GetOrganization200LimitCleanupInterval
+		Logo                     *string
+		Metadata                 *string
+		Name                     string
+		OnboardingComplete       bool
+		Slug                     string
+		Theme                    client.GetOrganization200Theme
+	}:
+		data.ID = types.StringValue(v.Id)
+
+		if string(v.CustomFont) != "" {
+			data.Font = types.StringValue(string(v.CustomFont))
+		} else {
+			data.Font = types.StringNull()
+		}
+
+		if string(v.Theme) != "" {
+			data.ColorTheme = types.StringValue(string(v.Theme))
+		} else {
+			data.ColorTheme = types.StringNull()
+		}
+
+		if v.Logo != nil {
+			data.Logo = types.StringValue(*v.Logo)
+		} else {
+			data.Logo = types.StringNull()
+		}
+
+		if v.LimitCleanupInterval != nil {
+			data.LimitCleanupInterval = types.StringValue(string(*v.LimitCleanupInterval))
+		} else {
+			data.LimitCleanupInterval = types.StringNull()
+		}
+
+		if string(v.CompressionScope) != "" {
+			data.CompressionScope = types.StringValue(string(v.CompressionScope))
+		} else {
+			data.CompressionScope = types.StringNull()
+		}
+
+		data.OnboardingComplete = types.BoolValue(v.OnboardingComplete)
+
+		data.ConvertToolResultsToToon = types.BoolValue(v.ConvertToolResultsToToon)
 	}
-
-	requestBody := buildUpdateRequestBody(data)
-
-	apiResp, err := r.client.UpdateOrganizationWithResponse(ctx, requestBody)
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update organization settings, got error: %s", err))
-		return
-	}
-
-	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
-		)
-		return
-	}
-
-	data.ID = types.StringValue(apiResp.JSON200.Id)
-
-	if apiResp.JSON200.CustomFont != "" {
-		data.Font = types.StringValue(string(apiResp.JSON200.CustomFont))
-	} else {
-		data.Font = types.StringNull()
-	}
-
-	if apiResp.JSON200.Theme != "" {
-		data.ColorTheme = types.StringValue(string(apiResp.JSON200.Theme))
-	} else {
-		data.ColorTheme = types.StringNull()
-	}
-
-	if apiResp.JSON200.Logo != nil {
-		data.Logo = types.StringValue(*apiResp.JSON200.Logo)
-	} else {
-		data.Logo = types.StringNull()
-	}
-
-	if apiResp.JSON200.LimitCleanupInterval != nil {
-		data.LimitCleanupInterval = types.StringValue(string(*apiResp.JSON200.LimitCleanupInterval))
-	} else {
-		data.LimitCleanupInterval = types.StringNull()
-	}
-
-	if apiResp.JSON200.CompressionScope != "" {
-		data.CompressionScope = types.StringValue(string(apiResp.JSON200.CompressionScope))
-	} else {
-		data.CompressionScope = types.StringNull()
-	}
-
-	data.OnboardingComplete = types.BoolValue(apiResp.JSON200.OnboardingComplete)
-	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
-
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-}
-
-func (r *OrganizationSettingsResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data OrganizationSettingsResourceModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	apiResp, err := r.client.GetOrganizationWithResponse(ctx)
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read organization settings, got error: %s", err))
-		return
-	}
-
-	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
-		)
-		return
-	}
-
-	data.ID = types.StringValue(apiResp.JSON200.Id)
-
-	if apiResp.JSON200.CustomFont != "" {
-		data.Font = types.StringValue(string(apiResp.JSON200.CustomFont))
-	} else {
-		data.Font = types.StringNull()
-	}
-
-	if apiResp.JSON200.Theme != "" {
-		data.ColorTheme = types.StringValue(string(apiResp.JSON200.Theme))
-	} else {
-		data.ColorTheme = types.StringNull()
-	}
-
-	if apiResp.JSON200.Logo != nil {
-		data.Logo = types.StringValue(*apiResp.JSON200.Logo)
-	} else {
-		data.Logo = types.StringNull()
-	}
-
-	if apiResp.JSON200.LimitCleanupInterval != nil {
-		data.LimitCleanupInterval = types.StringValue(string(*apiResp.JSON200.LimitCleanupInterval))
-	} else {
-		data.LimitCleanupInterval = types.StringNull()
-	}
-
-	if apiResp.JSON200.CompressionScope != "" {
-		data.CompressionScope = types.StringValue(string(apiResp.JSON200.CompressionScope))
-	} else {
-		data.CompressionScope = types.StringNull()
-	}
-
-	data.OnboardingComplete = types.BoolValue(apiResp.JSON200.OnboardingComplete)
-	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
-
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-}
-
-func (r *OrganizationSettingsResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data OrganizationSettingsResourceModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	requestBody := buildUpdateRequestBody(data)
-
-	apiResp, err := r.client.UpdateOrganizationWithResponse(ctx, requestBody)
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update organization settings, got error: %s", err))
-		return
-	}
-
-	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
-		)
-		return
-	}
-
-	if apiResp.JSON200.CustomFont != "" {
-		data.Font = types.StringValue(string(apiResp.JSON200.CustomFont))
-	} else {
-		data.Font = types.StringNull()
-	}
-
-	if apiResp.JSON200.Theme != "" {
-		data.ColorTheme = types.StringValue(string(apiResp.JSON200.Theme))
-	} else {
-		data.ColorTheme = types.StringNull()
-	}
-
-	if apiResp.JSON200.Logo != nil {
-		data.Logo = types.StringValue(*apiResp.JSON200.Logo)
-	} else {
-		data.Logo = types.StringNull()
-	}
-
-	if apiResp.JSON200.LimitCleanupInterval != nil {
-		data.LimitCleanupInterval = types.StringValue(string(*apiResp.JSON200.LimitCleanupInterval))
-	} else {
-		data.LimitCleanupInterval = types.StringNull()
-	}
-
-	if apiResp.JSON200.CompressionScope != "" {
-		data.CompressionScope = types.StringValue(string(apiResp.JSON200.CompressionScope))
-	} else {
-		data.CompressionScope = types.StringNull()
-	}
-
-	data.OnboardingComplete = types.BoolValue(apiResp.JSON200.OnboardingComplete)
-	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
-
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-}
-
-func (r *OrganizationSettingsResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-}
-
-func (r *OrganizationSettingsResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

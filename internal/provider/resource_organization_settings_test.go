@@ -18,7 +18,7 @@ func TestAccOrganizationSettings(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Step 1: Create and Read testing
 			{
-				Config: testAccOrganizationSettingsConfig("roboto", "ocean-breeze", "initial-logo-base64"),
+				Config: testAccOrganizationSettingsConfig("roboto", "ocean-breeze", "initial-logo-base64", false),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_organization_settings.main",
@@ -40,6 +40,11 @@ func TestAccOrganizationSettings(t *testing.T) {
 						tfjsonpath.New("compression_scope"),
 						knownvalue.StringExact("organization"),
 					),
+					statecheck.ExpectKnownValue(
+						"archestra_organization_settings.main",
+						tfjsonpath.New("convert_tool_results_to_toon"),
+						knownvalue.Bool(false),
+					),
 				},
 			},
 			// Step 2: ImportState testing
@@ -50,7 +55,7 @@ func TestAccOrganizationSettings(t *testing.T) {
 			},
 			// Step 3: Update and Read testing
 			{
-				Config: testAccOrganizationSettingsConfig("inter", "amber-minimal", "updated-logo-base64"),
+				Config: testAccOrganizationSettingsConfig("inter", "amber-minimal", "updated-logo-base64", true),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_organization_settings.main",
@@ -67,6 +72,11 @@ func TestAccOrganizationSettings(t *testing.T) {
 						tfjsonpath.New("logo"),
 						knownvalue.StringExact("updated-logo-base64"),
 					),
+					statecheck.ExpectKnownValue(
+						"archestra_organization_settings.main",
+						tfjsonpath.New("convert_tool_results_to_toon"),
+						knownvalue.Bool(true),
+					),
 				},
 			},
 		},
@@ -80,11 +90,11 @@ func TestAccOrganizationSettings_validation(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config:      testAccOrganizationSettingsConfig("comic-sans", "ocean-breeze", ""),
+				Config:      testAccOrganizationSettingsConfig("comic-sans", "ocean-breeze", "", false),
 				ExpectError: regexp.MustCompile(`Attribute font value must be one of:`),
 			},
 			{
-				Config:      testAccOrganizationSettingsConfig("roboto", "ugly-theme", ""),
+				Config:      testAccOrganizationSettingsConfig("roboto", "ugly-theme", "", false),
 				ExpectError: regexp.MustCompile(`Attribute color_theme value must be one of:`),
 			},
 			{
@@ -99,7 +109,7 @@ resource "archestra_organization_settings" "main" {
 	})
 }
 
-func testAccOrganizationSettingsConfig(font, theme, logo string) string {
+func testAccOrganizationSettingsConfig(font, theme, logo string, toon bool) string {
 	// We handle empty logo logic here to keep the config cleaner
 	logoLine := ""
 	if logo != "" {
@@ -108,12 +118,13 @@ func testAccOrganizationSettingsConfig(font, theme, logo string) string {
 
 	return fmt.Sprintf(`
 resource "archestra_organization_settings" "main" {
-  font                   = "%s"
-  color_theme            = "%s"
-  limit_cleanup_interval = "1w"
-  compression_scope      = "organization"
-  onboarding_complete    = true
+  font                         = "%s"
+  color_theme                  = "%s"
+  limit_cleanup_interval       = "1w"
+  compression_scope            = "organization"
+  onboarding_complete          = true
+  convert_tool_results_to_toon = %t
   %s
 }
-`, font, theme, logoLine)
+`, font, theme, toon, logoLine)
 }
