@@ -1,8 +1,10 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -10,12 +12,14 @@ import (
 )
 
 func TestAccTrustedDataPolicyResource(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccTrustedDataPolicyResourceConfig(),
+				Config: testAccTrustedDataPolicyResourceConfig(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
@@ -50,7 +54,7 @@ func TestAccTrustedDataPolicyResource(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccTrustedDataPolicyResourceConfigUpdated(),
+				Config: testAccTrustedDataPolicyResourceConfigUpdated(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
@@ -84,12 +88,14 @@ func TestAccTrustedDataPolicyResource(t *testing.T) {
 }
 
 func TestAccTrustedDataPolicyResource_SanitizeAction(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccTrustedDataPolicyResourceConfigSanitize(),
+				Config: testAccTrustedDataPolicyResourceConfigSanitize(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.sanitize",
@@ -102,33 +108,15 @@ func TestAccTrustedDataPolicyResource_SanitizeAction(t *testing.T) {
 	})
 }
 
-func testAccTrustedDataPolicyResourceConfig() string {
-	return `
+func testAccTrustedDataPolicyResourceConfig(rName string) string {
+	return fmt.Sprintf(`
 resource "archestra_profile" "test" {
-  name = "trusted-data-policy-test-profile"
-}
-
-resource "archestra_mcp_server" "test" {
-  name        = "trusted-data-policy-test-server"
-  description = "MCP server for trusted data policy testing"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-resource "archestra_mcp_server_installation" "test" {
-  name          = "trusted-data-policy-installation"
-  mcp_server_id = archestra_mcp_server.test.id
+  name = "tdp-test-profile-%[1]s"
 }
 
 data "archestra_profile_tool" "test" {
   profile_id = archestra_profile.test.id
-  tool_name  = "read_file"
-
-  depends_on = [archestra_mcp_server_installation.test]
+  tool_name  = "archestra__whoami"
 }
 
 resource "archestra_trusted_data_policy" "test" {
@@ -139,36 +127,18 @@ resource "archestra_trusted_data_policy" "test" {
   value           = "api.internal.example.com"
   action          = "mark_as_trusted"
 }
-`
+`, rName)
 }
 
-func testAccTrustedDataPolicyResourceConfigUpdated() string {
-	return `
+func testAccTrustedDataPolicyResourceConfigUpdated(rName string) string {
+	return fmt.Sprintf(`
 resource "archestra_profile" "test" {
-  name = "trusted-data-policy-test-profile"
-}
-
-resource "archestra_mcp_server" "test" {
-  name        = "trusted-data-policy-test-server"
-  description = "MCP server for trusted data policy testing"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-resource "archestra_mcp_server_installation" "test" {
-  name          = "trusted-data-policy-installation"
-  mcp_server_id = archestra_mcp_server.test.id
+  name = "tdp-test-profile-%[1]s"
 }
 
 data "archestra_profile_tool" "test" {
   profile_id = archestra_profile.test.id
-  tool_name  = "read_file"
-
-  depends_on = [archestra_mcp_server_installation.test]
+  tool_name  = "archestra__whoami"
 }
 
 resource "archestra_trusted_data_policy" "test" {
@@ -179,36 +149,18 @@ resource "archestra_trusted_data_policy" "test" {
   value           = "example.com"
   action          = "block_always"
 }
-`
+`, rName)
 }
 
-func testAccTrustedDataPolicyResourceConfigSanitize() string {
-	return `
+func testAccTrustedDataPolicyResourceConfigSanitize(rName string) string {
+	return fmt.Sprintf(`
 resource "archestra_profile" "sanitize" {
-  name = "trusted-data-policy-sanitize-profile"
-}
-
-resource "archestra_mcp_server" "sanitize" {
-  name        = "trusted-data-policy-sanitize-server"
-  description = "MCP server for sanitize action testing"
-  docs_url    = "https://github.com/example/test"
-
-  local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
-  }
-}
-
-resource "archestra_mcp_server_installation" "sanitize" {
-  name          = "trusted-data-sanitize-installation"
-  mcp_server_id = archestra_mcp_server.sanitize.id
+  name = "tdp-sanitize-profile-%[1]s"
 }
 
 data "archestra_profile_tool" "sanitize" {
   profile_id = archestra_profile.sanitize.id
-  tool_name  = "read_file"
-
-  depends_on = [archestra_mcp_server_installation.sanitize]
+  tool_name  = "archestra__whoami"
 }
 
 resource "archestra_trusted_data_policy" "sanitize" {
@@ -219,5 +171,5 @@ resource "archestra_trusted_data_policy" "sanitize" {
   value           = ".*"
   action          = "sanitize_with_dual_llm"
 }
-`
+`, rName)
 }

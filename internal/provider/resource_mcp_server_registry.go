@@ -233,9 +233,10 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
 				Value                *string                                                               `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
-			HttpPath      *string                                                              `json:"httpPath,omitempty"`
-			HttpPort      *float32                                                             `json:"httpPort,omitempty"`
-			TransportType *client.CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
+			HttpPath       *string                                                              `json:"httpPath,omitempty"`
+			HttpPort       *float32                                                             `json:"httpPort,omitempty"`
+			ServiceAccount *string                                                              `json:"serviceAccount,omitempty"`
+			TransportType  *client.CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
 		}{}
 
 		// Command
@@ -597,9 +598,10 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
 				Value                *string                                                               `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
-			HttpPath      *string                                                              `json:"httpPath,omitempty"`
-			HttpPort      *float32                                                             `json:"httpPort,omitempty"`
-			TransportType *client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
+			HttpPath       *string                                                              `json:"httpPath,omitempty"`
+			HttpPort       *float32                                                             `json:"httpPort,omitempty"`
+			ServiceAccount *string                                                              `json:"serviceAccount,omitempty"`
+			TransportType  *client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType `json:"transportType,omitempty"`
 		}{}
 
 		// Command
