@@ -157,17 +157,20 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewTokenPriceResource,
 		NewLimitResource,
 		NewOptimizationRuleResource,
-		// NewUserResource, // TODO: Enable when user API endpoints are implemented
+		NewUserResource,
+		NewRoleResource,
+		NewUserRoleAssignmentResource,
 	}
 }
 
 func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewTeamDataSource,
-		// NewUserDataSource, // TODO: Enable when user API endpoints are implemented
+		NewUserDataSource,
 		NewAgentToolDataSource,
 		NewMCPServerToolDataSource,
 		NewTokenPricesDataSource,
+		NewRoleDataSource,
 	}
 }
 
