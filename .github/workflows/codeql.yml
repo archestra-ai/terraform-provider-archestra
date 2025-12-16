@@ -1,0 +1,79 @@
+# CodeQL Code Scanning
+#
+# This workflow runs CodeQL analysis for security vulnerability detection.
+# Reference: https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning
+#
+# Why these triggers?
+# - push (main): Establishes a baseline of results on the default branch. This baseline
+#   is used to compare against PR results to show only NEW alerts introduced by the PR.
+# - pull_request: Scans PR code and shows alerts as annotations on the PR.
+# - schedule: Weekly scan catches newly discovered vulnerabilities in dependencies
+#   even when the code isn't actively being changed.
+#
+# Without the push trigger on main, PRs would show ALL alerts (not just new ones),
+# and the branch protection rule requiring CodeQL results would fail.
+
+name: CodeQL
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: "29 14 * * 6"
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    # Runner size impacts CodeQL analysis time. To learn more, please see:
+    #   - https://gh.io/recommended-hardware-resources-for-running-codeql
+    #   - https://gh.io/supported-runners-and-hardware-resources
+    #   - https://gh.io/using-larger-runners (GitHub.com only)
+    # Consider using larger runners or machines with greater resources for possible analysis time improvements.
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    permissions:
+      # required for all workflows
+      security-events: write
+
+      # required to fetch internal or private CodeQL packs
+      packages: read
+
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: actions
+            build-mode: none
+          - language: go
+            build-mode: manual
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Go
+        if: matrix.language == 'go'
+        uses: ./.github/actions/setup-go
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      # For Go, we need to explicitly build to ensure CodeQL analyzes all files
+      - name: Build Go code
+        if: matrix.language == 'go'
+        run: make build
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:${{matrix.language}}"
