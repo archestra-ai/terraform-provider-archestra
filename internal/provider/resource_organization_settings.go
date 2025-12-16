@@ -45,7 +45,7 @@ func (r *OrganizationSettingsResource) Metadata(ctx context.Context, req resourc
 
 func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages organization settings in Archestra. This is a singleton resource - only one instance can exist per organization.",
+		MarkdownDescription: "Manages organization settings in Archestra. This is a singleton resource - only one instance can exist per organization. Note: Running `terraform destroy` will only remove this resource from Terraform state; the organization settings will remain unchanged on the server.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

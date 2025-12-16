@@ -3,12 +3,12 @@
 page_title: "archestra_organization_settings Resource - archestra"
 subcategory: ""
 description: |-
-  Manages organization settings in Archestra. This is a singleton resource - only one instance can exist per organization.
+  Manages organization settings in Archestra. This is a singleton resource - only one instance can exist per organization. Note: Running terraform destroy will only remove this resource from Terraform state; the organization settings will remain unchanged on the server.
 ---
 
 # archestra_organization_settings (Resource)
 
-Manages organization settings in Archestra. This is a singleton resource - only one instance can exist per organization.
+Manages organization settings in Archestra. This is a singleton resource - only one instance can exist per organization. Note: Running `terraform destroy` will only remove this resource from Terraform state; the organization settings will remain unchanged on the server.
 
 ## Example Usage
 
