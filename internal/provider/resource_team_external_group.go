@@ -87,7 +87,7 @@ func (r *TeamExternalGroupResource) Schema(
 			},
 
 			"external_group_id": schema.StringAttribute{
-				Required: true,
+				Required:            true,
 				MarkdownDescription: "External IdP group identifier (LDAP DN, OIDC group name, SAML attribute, etc).",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
