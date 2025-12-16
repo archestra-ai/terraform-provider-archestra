@@ -1,0 +1,50 @@
+# CodeQL Code Scanning
+#
+# This workflow runs CodeQL analysis for security vulnerability detection.
+# Reference: https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning
+#
+# Why separate triggers?
+# - push (main): Establishes a baseline of results on the default branch. This baseline
+#   is used to compare against PR results to show only NEW alerts introduced by the PR.
+# - pull_request: Scans PR code and shows alerts as annotations on the PR.
+# - schedule: Weekly scan catches newly discovered vulnerabilities in dependencies
+#   even when the code isn't actively being changed.
+#
+# Without the push trigger on main, PRs would show ALL alerts (not just new ones),
+# and the branch protection rule requiring CodeQL results would fail.
+
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run CodeQL analysis weekly on Monday at 14:00 UTC
+    - cron: "0 14 * * 1"
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: go
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
