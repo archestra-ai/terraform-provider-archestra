@@ -13,26 +13,13 @@ Manages organization settings in Archestra. This is a singleton resource - only 
 ## Example Usage
 
 ```terraform
-# Configure organization appearance and behavior settings
-resource "archestra_organization_settings" "main" {
+resource "archestra_organization_settings" "example" {
   font                         = "inter"
   color_theme                  = "modern-minimal"
   compression_scope            = "organization"
   onboarding_complete          = true
   convert_tool_results_to_toon = true
   limit_cleanup_interval       = "24h"
-}
-
-# Minimal configuration using defaults
-resource "archestra_organization_settings" "minimal" {
-  onboarding_complete = true
-}
-
-# Custom branding with logo
-resource "archestra_organization_settings" "branded" {
-  font        = "roboto"
-  color_theme = "claude"
-  logo        = filebase64("${path.module}/logo.png")
 }
 ```
 

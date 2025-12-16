@@ -153,14 +153,14 @@ func TestAccOrganizationSettingsResourceWithLogo(t *testing.T) {
 			{
 				Config: testAccOrganizationSettingsResourceConfigWithLogo(),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_organization_settings.test", "logo", "aW1hZ2VkYXRh"),
+					resource.TestCheckResourceAttr("archestra_organization_settings.test", "logo", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="),
 					resource.TestCheckResourceAttrSet("archestra_organization_settings.test", "id"),
 				),
 			},
 			{
 				Config: testAccOrganizationSettingsResourceConfigWithLogoUpdated(),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_organization_settings.test", "logo", "bmV3aW1hZ2U="),
+					resource.TestCheckResourceAttr("archestra_organization_settings.test", "logo", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="),
 				),
 			},
 		},
@@ -203,7 +203,7 @@ func testAccOrganizationSettingsResourceConfigWithLogo() string {
 	return `
 resource "archestra_organization_settings" "test" {
   onboarding_complete = true
-  logo                = "aW1hZ2VkYXRh"
+  logo                = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
 }
 `
 }
@@ -212,7 +212,8 @@ func testAccOrganizationSettingsResourceConfigWithLogoUpdated() string {
 	return `
 resource "archestra_organization_settings" "test" {
   onboarding_complete = true
-  logo                = "bmV3aW1hZ2U="
+  logo                = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
 }
 `
 }
+
