@@ -1,7 +1,8 @@
 terraform {
   required_providers {
     archestra = {
-      source = "archestra-ai/archestra"
+      source  = "archestra-ai/archestra"
+      version = "~> 1.0.6"
     }
   }
 }
