@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -100,6 +101,24 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 	targetProfileID := data.ProfileID.ValueString()
 	targetToolName := data.ToolName.ValueString()
 
+	// Parse the Profile ID (which is a UUID) to use in the API request
+	profileID, err := uuid.Parse(targetProfileID)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Invalid Profile ID",
+			fmt.Sprintf("Profile ID must be a valid UUID: %s", err),
+		)
+		return
+	}
+
+	// We need to request tools specifically for this profile (agent).
+	// Previously this was filtering client-side on a default page, which caused tools to be missed.
+	limit := 100
+	params := &client.GetAllAgentToolsParams{
+		AgentId: &profileID,
+		Limit:   &limit,
+	}
+
 	// Use retry logic for tools that may not be immediately available after profile creation.
 	// Tools are assigned asynchronously, especially for MCP server installations.
 	retryConfig := DefaultRetryConfig(fmt.Sprintf("Tool '%s' for profile %s", targetToolName, targetProfileID))
@@ -116,7 +135,7 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 	result, found, err := RetryUntilFound(ctx, retryConfig, func() (profileToolResult, bool, error) {
 		// Get all agent tools (which includes configuration)
 		// Note: Using existing "Agent" API call
-		toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx, nil)
+		toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx, params)
 		if err != nil {
 			return profileToolResult{}, false, fmt.Errorf("unable to read profile tools: %w", err)
 		}
