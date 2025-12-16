@@ -17,7 +17,6 @@ func NewSSOProviderDataSource() datasource.DataSource {
 	return &SSOProviderDataSource{}
 }
 
-
 type SSOProviderDataSource struct {
 	client *client.ClientWithResponses
 }
@@ -134,17 +133,15 @@ func (d *SSOProviderDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	
 	state := SSOProviderDataSourceModel{
 		ID:             types.StringValue(apiResp.JSON200.Id),
 		Issuer:         types.StringValue(apiResp.JSON200.Issuer),
-		ProviderID:     types.StringValue(""), 
+		ProviderID:     types.StringValue(""),
 		Domain:         types.StringValue(apiResp.JSON200.Domain),
-		OrganizationID: types.StringValue(""), 
-		UserID:         types.StringValue(""), 
+		OrganizationID: types.StringValue(""),
+		UserID:         types.StringValue(""),
 		DomainVerified: types.BoolValue(apiResp.JSON200.DomainVerified != nil && *apiResp.JSON200.DomainVerified),
 	}
-
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)

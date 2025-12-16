@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-
 var _ resource.Resource = &SSOProviderResource{}
 var _ resource.ResourceWithImportState = &SSOProviderResource{}
 
@@ -22,11 +21,9 @@ func NewSSOProviderResource() resource.Resource {
 	return &SSOProviderResource{}
 }
 
-
 type SSOProviderResource struct {
 	client *client.ClientWithResponses
 }
-
 
 type SSOProviderResourceModel struct {
 	ID             types.String `tfsdk:"id"`
@@ -37,19 +34,14 @@ type SSOProviderResourceModel struct {
 	UserID         types.String `tfsdk:"user_id"`
 	DomainVerified types.Bool   `tfsdk:"domain_verified"`
 
-
 	OidcConfig *SSOProviderOIDCConfigModel `tfsdk:"oidc_config"`
-
 
 	SamlConfig *SSOProviderSAMLConfigModel `tfsdk:"saml_config"`
 
-
 	RoleMapping *SSOProviderRoleMappingModel `tfsdk:"role_mapping"`
-
 
 	TeamSyncConfig *SSOProviderTeamSyncConfigModel `tfsdk:"team_sync_config"`
 }
-
 
 type SSOProviderOIDCConfigModel struct {
 	AuthorizationEndpoint       types.String                 `tfsdk:"authorization_endpoint"`
@@ -67,7 +59,6 @@ type SSOProviderOIDCConfigModel struct {
 	Mapping                     *SSOProviderOIDCMappingModel `tfsdk:"mapping"`
 }
 
-
 type SSOProviderOIDCMappingModel struct {
 	Email         types.String `tfsdk:"email"`
 	EmailVerified types.String `tfsdk:"email_verified"`
@@ -76,7 +67,6 @@ type SSOProviderOIDCMappingModel struct {
 	Image         types.String `tfsdk:"image"`
 	Name          types.String `tfsdk:"name"`
 }
-
 
 type SSOProviderSAMLConfigModel struct {
 	Audience             types.String                     `tfsdk:"audience"`
@@ -96,7 +86,6 @@ type SSOProviderSAMLConfigModel struct {
 	AdditionalParams     types.Map                        `tfsdk:"additional_params"`
 }
 
-
 type SSOProviderSAMLMappingModel struct {
 	Email         types.String `tfsdk:"email"`
 	EmailVerified types.String `tfsdk:"email_verified"`
@@ -106,7 +95,6 @@ type SSOProviderSAMLMappingModel struct {
 	LastName      types.String `tfsdk:"last_name"`
 	Name          types.String `tfsdk:"name"`
 }
-
 
 type SSOProviderSAMLIdpMetadataModel struct {
 	Cert                 types.String `tfsdk:"cert"`
@@ -122,7 +110,6 @@ type SSOProviderSAMLIdpMetadataModel struct {
 	SingleSignOnService  types.List   `tfsdk:"single_sign_on_service"`
 }
 
-
 type SSOProviderSAMLSpMetadataModel struct {
 	Binding              types.String `tfsdk:"binding"`
 	EncPrivateKey        types.String `tfsdk:"enc_private_key"`
@@ -134,7 +121,6 @@ type SSOProviderSAMLSpMetadataModel struct {
 	PrivateKeyPass       types.String `tfsdk:"private_key_pass"`
 }
 
-
 type SSOProviderRoleMappingModel struct {
 	DefaultRole  types.String `tfsdk:"default_role"`
 	Rules        types.List   `tfsdk:"rules"`
@@ -142,12 +128,10 @@ type SSOProviderRoleMappingModel struct {
 	StrictMode   types.Bool   `tfsdk:"strict_mode"`
 }
 
-
 type SSOProviderRoleMappingRuleModel struct {
 	Expression types.String `tfsdk:"expression"`
 	Role       types.String `tfsdk:"role"`
 }
-
 
 type SSOProviderTeamSyncConfigModel struct {
 	Enabled          types.Bool   `tfsdk:"enabled"`
@@ -563,7 +547,6 @@ func (r *SSOProviderResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	
 	issuer := plan.Issuer.ValueString()
 	providerId := plan.ProviderID.ValueString()
 	domain := plan.Domain.ValueString()
@@ -574,7 +557,6 @@ func (r *SSOProviderResource) Create(ctx context.Context, req resource.CreateReq
 		Domain:     domain,
 	}
 
-	
 	apiResp, err := r.client.CreateSsoProviderWithResponse(ctx, client.CreateSsoProviderJSONRequestBody(createReq))
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -600,7 +582,6 @@ func (r *SSOProviderResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	
 	orgId := ""
 	if apiResp.JSON200.OrganizationId != nil {
 		orgId = *apiResp.JSON200.OrganizationId
@@ -621,7 +602,6 @@ func (r *SSOProviderResource) Create(ctx context.Context, req resource.CreateReq
 		DomainVerified: types.BoolValue(apiResp.JSON200.DomainVerified != nil && *apiResp.JSON200.DomainVerified),
 	}
 
-	
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -668,7 +648,6 @@ func (r *SSOProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	
 	orgId := ""
 	if apiResp.JSON200.OrganizationId != nil {
 		orgId = *apiResp.JSON200.OrganizationId
@@ -783,7 +762,7 @@ func (r *SSOProviderResource) Delete(ctx context.Context, req resource.DeleteReq
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	
+
 	apiResp, err := r.client.DeleteSsoProviderWithResponse(ctx, state.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -802,8 +781,6 @@ func (r *SSOProviderResource) Delete(ctx context.Context, req resource.DeleteReq
 	}
 }
 
-
-
 func (r *SSOProviderResource) modelToCreateAPIRequest(plan *SSOProviderResourceModel) *client.CreateSsoProviderJSONBody {
 	req := &client.CreateSsoProviderJSONBody{
 		Domain:     plan.Domain.ValueString(),
@@ -811,22 +788,18 @@ func (r *SSOProviderResource) modelToCreateAPIRequest(plan *SSOProviderResourceM
 		ProviderId: plan.ProviderID.ValueString(),
 	}
 
-	
 	if plan.OidcConfig != nil {
 		req.OidcConfig = r.modelToOIDCConfigCreate(plan.OidcConfig)
 	}
 
-	
 	if plan.SamlConfig != nil {
 		req.SamlConfig = r.modelToSAMLConfigCreate(plan.SamlConfig)
 	}
 
-	
 	if plan.RoleMapping != nil {
 		req.RoleMapping = r.modelToRoleMappingCreate(plan.RoleMapping)
 	}
 
-	
 	if plan.TeamSyncConfig != nil {
 		req.TeamSyncConfig = r.modelToTeamSyncConfigCreate(plan.TeamSyncConfig)
 	}
