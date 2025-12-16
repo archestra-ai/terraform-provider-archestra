@@ -50,7 +50,7 @@ jobs:
           - language: actions
             build-mode: none
           - language: go
-            build-mode: autobuild
+            build-mode: manual
 
     steps:
       - name: Checkout repository
@@ -58,11 +58,20 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Setup Go
+        if: matrix.language == 'go'
+        uses: ./.github/actions/setup-go
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
+
+      # For Go, we need to explicitly build to ensure CodeQL analyzes all files
+      - name: Build Go code
+        if: matrix.language == 'go'
+        run: make build
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
