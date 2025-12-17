@@ -547,15 +547,8 @@ func (r *SSOProviderResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	issuer := plan.Issuer.ValueString()
-	providerId := plan.ProviderID.ValueString()
-	domain := plan.Domain.ValueString()
-
-	createReq := client.CreateSsoProviderJSONBody{
-		Issuer:     issuer,
-		ProviderId: providerId,
-		Domain:     domain,
-	}
+	createReqPtr := r.modelToCreateAPIRequest(&plan)
+	createReq := *createReqPtr
 
 	apiResp, err := r.client.CreateSsoProviderWithResponse(ctx, client.CreateSsoProviderJSONRequestBody(createReq))
 	if err != nil {

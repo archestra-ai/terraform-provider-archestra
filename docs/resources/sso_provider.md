@@ -3,12 +3,12 @@
 page_title: "archestra_sso_provider Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an Archestra SSO provider configuration for OIDC or SAML authentication.
+  Manages an Archestra SSO provider configuration for OIDC or SAML authentication with full configuration support.
 ---
 
 # archestra_sso_provider (Resource)
 
-Manages an Archestra SSO provider configuration for OIDC or SAML authentication.
+Manages an Archestra SSO provider configuration for OIDC or SAML authentication with full configuration support.
 
 ## Example Usage
 
@@ -49,9 +49,146 @@ data "archestra_sso_provider" "existing" {
 - `issuer` (String) The issuer identifier for SSO provider
 - `provider_id` (String) The provider ID (e.g., 'google', 'okta', 'saml')
 
+### Optional
+
+- `oidc_config` (Attributes) OIDC configuration for the SSO provider (see [below for nested schema](#nestedatt--oidc_config))
+- `role_mapping` (Attributes) Role mapping configuration (see [below for nested schema](#nestedatt--role_mapping))
+- `saml_config` (Attributes) SAML configuration for the SSO provider (see [below for nested schema](#nestedatt--saml_config))
+- `team_sync_config` (Attributes) Team synchronization configuration (see [below for nested schema](#nestedatt--team_sync_config))
+
 ### Read-Only
 
 - `domain_verified` (Boolean) Whether domain has been verified
 - `id` (String) SSO provider identifier
 - `organization_id` (String) Organization ID this SSO provider belongs to
 - `user_id` (String) User ID who created this SSO provider
+
+<a id="nestedatt--oidc_config"></a>
+### Nested Schema for `oidc_config`
+
+Optional:
+
+- `authorization_endpoint` (String) OIDC authorization endpoint
+- `client_id` (String) OIDC client ID
+- `client_secret` (String, Sensitive) OIDC client secret
+- `discovery_endpoint` (String) OIDC discovery endpoint
+- `issuer` (String) OIDC issuer
+- `jwks_endpoint` (String) OIDC JWKS endpoint
+- `mapping` (Attributes) OIDC attribute mapping (see [below for nested schema](#nestedatt--oidc_config--mapping))
+- `override_user_info` (Boolean) Override user info from provider
+- `pkce` (Boolean) Enable PKCE flow
+- `scopes` (List of String) OIDC scopes to request
+- `token_endpoint` (String) OIDC token endpoint
+- `token_endpoint_authentication` (String) Token endpoint authentication method (client_secret_basic, client_secret_post)
+- `user_info_endpoint` (String) OIDC user info endpoint
+
+<a id="nestedatt--oidc_config--mapping"></a>
+### Nested Schema for `oidc_config.mapping`
+
+Optional:
+
+- `email` (String) Email attribute mapping
+- `email_verified` (String) Email verified attribute mapping
+- `extra_fields` (Map of String) Extra field mappings
+- `id` (String) ID attribute mapping
+- `image` (String) Image attribute mapping
+- `name` (String) Name attribute mapping
+
+
+
+<a id="nestedatt--role_mapping"></a>
+### Nested Schema for `role_mapping`
+
+Optional:
+
+- `default_role` (String) Default role for users
+- `rules` (Attributes List) Role mapping rules (see [below for nested schema](#nestedatt--role_mapping--rules))
+- `skip_role_sync` (Boolean) Skip role synchronization
+- `strict_mode` (Boolean) Enable strict mode for role mapping
+
+<a id="nestedatt--role_mapping--rules"></a>
+### Nested Schema for `role_mapping.rules`
+
+Required:
+
+- `expression` (String) Expression to match
+- `role` (String) Role to assign
+
+
+
+<a id="nestedatt--saml_config"></a>
+### Nested Schema for `saml_config`
+
+Optional:
+
+- `additional_params` (Map of String) Additional SAML parameters
+- `audience` (String) SAML audience
+- `callback_url` (String) SAML callback URL
+- `cert` (String) SAML certificate
+- `decryption_pvk` (String, Sensitive) SAML decryption private key
+- `digest_algorithm` (String) SAML digest algorithm
+- `entry_point` (String) SAML entry point
+- `identifier_format` (String) SAML identifier format
+- `idp_metadata` (Attributes) SAML IdP metadata (see [below for nested schema](#nestedatt--saml_config--idp_metadata))
+- `issuer` (String) SAML issuer
+- `mapping` (Attributes) SAML attribute mapping (see [below for nested schema](#nestedatt--saml_config--mapping))
+- `private_key` (String, Sensitive) SAML private key
+- `signature_algorithm` (String) SAML signature algorithm
+- `sp_metadata` (Attributes) SAML SP metadata (see [below for nested schema](#nestedatt--saml_config--sp_metadata))
+- `want_assertions_signed` (Boolean) Require signed assertions
+
+<a id="nestedatt--saml_config--idp_metadata"></a>
+### Nested Schema for `saml_config.idp_metadata`
+
+Optional:
+
+- `cert` (String) IdP certificate
+- `enc_private_key` (String, Sensitive) IdP encryption private key
+- `enc_private_key_pass` (String, Sensitive) IdP encryption private key password
+- `entity_id` (String) IdP entity ID
+- `entity_url` (String) IdP entity URL
+- `is_assertion_encrypted` (Boolean) Whether assertions are encrypted
+- `metadata` (String) IdP metadata XML
+- `private_key` (String, Sensitive) IdP private key
+- `private_key_pass` (String, Sensitive) IdP private key password
+- `redirect_url` (String) IdP redirect URL
+- `single_sign_on_service` (List of String) IdP SSO service endpoints
+
+
+<a id="nestedatt--saml_config--mapping"></a>
+### Nested Schema for `saml_config.mapping`
+
+Optional:
+
+- `email` (String) Email attribute mapping
+- `email_verified` (String) Email verified attribute mapping
+- `extra_fields` (Map of String) Extra field mappings
+- `first_name` (String) First name attribute mapping
+- `id` (String) ID attribute mapping
+- `last_name` (String) Last name attribute mapping
+- `name` (String) Name attribute mapping
+
+
+<a id="nestedatt--saml_config--sp_metadata"></a>
+### Nested Schema for `saml_config.sp_metadata`
+
+Optional:
+
+- `binding` (String) SP binding
+- `enc_private_key` (String, Sensitive) SP encryption private key
+- `enc_private_key_pass` (String, Sensitive) SP encryption private key password
+- `entity_id` (String) SP entity ID
+- `is_assertion_encrypted` (Boolean) Whether assertions are encrypted
+- `metadata` (String) SP metadata XML
+- `private_key` (String, Sensitive) SP private key
+- `private_key_pass` (String, Sensitive) SP private key password
+
+
+
+<a id="nestedatt--team_sync_config"></a>
+### Nested Schema for `team_sync_config`
+
+Optional:
+
+- `enabled` (Boolean) Enable team synchronization
+- `groups_expression` (String) Expression for group mapping

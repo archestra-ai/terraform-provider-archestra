@@ -15,7 +15,8 @@ The Archestra provider is used to interact with Archestra resources. The provide
 terraform {
   required_providers {
     archestra = {
-      source = "archestra-ai/archestra"
+      source  = "archestra-ai/archestra"
+      version = "~> 1.0.6"
     }
   }
 }
