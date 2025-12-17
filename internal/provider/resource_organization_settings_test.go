@@ -216,4 +216,3 @@ resource "archestra_organization_settings" "test" {
 }
 `
 }
-
