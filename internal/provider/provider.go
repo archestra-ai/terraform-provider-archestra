@@ -160,6 +160,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewOrganizationSettingsResource,
 		// NewUserResource, // TODO: Enable when user API endpoints are implemented
 		NewTeamExternalGroupResource,
+		NewChatLLMProviderApiKeyResource,
 	}
 }
 
