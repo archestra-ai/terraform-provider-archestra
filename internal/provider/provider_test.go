@@ -43,8 +43,8 @@ func TestProviderResources_RegistrationCount(t *testing.T) {
 	}
 	resources := provider.Resources(t.Context())
 
-	// We expect 10 resources to be registered
-	expectedCount := 10 // agent, mcp_server, mcp_server_installation, team, team_external_group, tool_invocation_policy, trusted_data_policy, token_price, limit, optimization_rule
+	// We expect this many resources to be registered
+	expectedCount := 11
 	if len(resources) != expectedCount {
 		t.Errorf("Expected %d resources to be registered, got %d", expectedCount, len(resources))
 	}
@@ -57,8 +57,8 @@ func TestProviderDataSources_RegistrationCount(t *testing.T) {
 	}
 	dataSources := provider.DataSources(t.Context())
 
-	// We expect 5 data sources to be registered
-	expectedCount := 5 // team, team_external_groups, agent_tool, mcp_server_tool, token_prices
+	// We expect this many data sources to be registered
+	expectedCount := 5
 	if len(dataSources) != expectedCount {
 		t.Errorf("Expected %d data sources to be registered, got %d", expectedCount, len(dataSources))
 	}
