@@ -96,7 +96,7 @@ func TestAccMCPServerInstallationResource(t *testing.T) {
 
 func testAccMCPServerResourceConfig(name string) string {
 	return fmt.Sprintf(`
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name        = %[1]q
   description = "Test MCP server for acceptance testing"
   docs_url    = "https://github.com/example/test-server"
@@ -111,7 +111,7 @@ resource "archestra_mcp_server" "test" {
 
 func testAccMCPServerResourceConfigUpdated(name string) string {
 	return fmt.Sprintf(`
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name        = %[1]q
   description = "Updated test MCP server"
   docs_url    = "https://github.com/example/test-server-updated"

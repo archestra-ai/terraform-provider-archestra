@@ -45,7 +45,7 @@ resource "archestra_mcp_server_installation" "example" {
 
 ### Optional
 
-- `mcp_server_id` (String) The MCP server ID from the private MCP registry (archestra_mcp_server resource)
+- `mcp_server_id` (String) The MCP server ID from the private MCP registry (archestra_mcp_registry_catalog_item resource)
 
 ### Read-Only
 
