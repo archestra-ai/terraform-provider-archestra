@@ -80,6 +80,16 @@ func TestAccDualLlmConfigResource(t *testing.T) {
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_dual_llm_config.test",
+						tfjsonpath.New("quarantined_agent_prompt"),
+						knownvalue.StringExact("Updated quarantined agent prompt"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_dual_llm_config.test",
+						tfjsonpath.New("summary_prompt"),
+						knownvalue.StringExact("Updated summary prompt"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_dual_llm_config.test",
 						tfjsonpath.New("enabled"),
 						knownvalue.Bool(false),
 					),
