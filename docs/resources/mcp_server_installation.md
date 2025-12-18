@@ -32,7 +32,7 @@ resource "archestra_mcp_registry_catalog_item" "filesystem" {
 # Then, install the MCP server from the private registry
 resource "archestra_mcp_server_installation" "example" {
   name          = "my-filesystem-server"
-  mcp_server_id = archestra_mcp_server.filesystem.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.filesystem.id
 }
 ```
 
