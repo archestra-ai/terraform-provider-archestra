@@ -141,7 +141,7 @@ resource "archestra_mcp_registry_catalog_item" "dependency" {
 # Then create an installation of it
 resource "archestra_mcp_server_installation" "test" {
   name          = %[1]q
-  mcp_server_id = archestra_mcp_server.dependency.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.dependency.id
 }
 `, name)
 }
