@@ -187,49 +187,40 @@ func (r *ProfileToolResource) Create(ctx context.Context, req resource.CreateReq
 
 	data.ID = types.StringValue(internalId.String())
 
-	needsUpdate := !data.AllowUsageWhenUntrustedDataIsPresent.IsNull() ||
-		!data.ToolResultTreatment.IsNull()
+	updateBody := client.UpdateAgentToolJSONRequestBody{}
 
-	if needsUpdate {
-		updateBody := client.UpdateAgentToolJSONRequestBody{}
+	allow := data.AllowUsageWhenUntrustedDataIsPresent.ValueBool()
+	updateBody.AllowUsageWhenUntrustedDataIsPresent = &allow
 
-		if !data.AllowUsageWhenUntrustedDataIsPresent.IsNull() {
-			allow := data.AllowUsageWhenUntrustedDataIsPresent.ValueBool()
-			updateBody.AllowUsageWhenUntrustedDataIsPresent = &allow
-		}
+	treatment := client.UpdateAgentToolJSONBodyToolResultTreatment(data.ToolResultTreatment.ValueString())
+	updateBody.ToolResultTreatment = &treatment
 
-		if !data.ToolResultTreatment.IsNull() {
-			treatment := client.UpdateAgentToolJSONBodyToolResultTreatment(data.ToolResultTreatment.ValueString())
-			updateBody.ToolResultTreatment = &treatment
-		}
+	updateResp, err := r.client.UpdateAgentToolWithResponse(ctx, internalId, updateBody)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update profile tool settings, got error: %s", err))
+		return
+	}
 
-		updateResp, err := r.client.UpdateAgentToolWithResponse(ctx, internalId, updateBody)
-		if err != nil {
-			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update profile tool settings, got error: %s", err))
-			return
-		}
+	if updateResp.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK on update, got status %d: %s", updateResp.StatusCode(), string(updateResp.Body)),
+		)
+		return
+	}
 
-		if updateResp.JSON200 == nil {
-			resp.Diagnostics.AddError(
-				"Unexpected API Response",
-				fmt.Sprintf("Expected 200 OK on update, got status %d: %s", updateResp.StatusCode(), string(updateResp.Body)),
-			)
-			return
-		}
-
-		if updateResp.JSON200.AllowUsageWhenUntrustedDataIsPresent != nil {
-			data.AllowUsageWhenUntrustedDataIsPresent = types.BoolValue(*updateResp.JSON200.AllowUsageWhenUntrustedDataIsPresent)
-		}
-		data.ToolResultTreatment = types.StringValue(string(updateResp.JSON200.ToolResultTreatment))
-		if updateResp.JSON200.UseDynamicTeamCredential != nil {
-			data.UseDynamicTeamCredential = types.BoolValue(*updateResp.JSON200.UseDynamicTeamCredential)
-		}
-		if updateResp.JSON200.CredentialSourceMcpServerId != nil {
-			data.CredentialSourceMcpServerId = types.StringValue(updateResp.JSON200.CredentialSourceMcpServerId.String())
-		}
-		if updateResp.JSON200.ExecutionSourceMcpServerId != nil {
-			data.ExecutionSourceMcpServerId = types.StringValue(updateResp.JSON200.ExecutionSourceMcpServerId.String())
-		}
+	if updateResp.JSON200.AllowUsageWhenUntrustedDataIsPresent != nil {
+		data.AllowUsageWhenUntrustedDataIsPresent = types.BoolValue(*updateResp.JSON200.AllowUsageWhenUntrustedDataIsPresent)
+	}
+	data.ToolResultTreatment = types.StringValue(string(updateResp.JSON200.ToolResultTreatment))
+	if updateResp.JSON200.UseDynamicTeamCredential != nil {
+		data.UseDynamicTeamCredential = types.BoolValue(*updateResp.JSON200.UseDynamicTeamCredential)
+	}
+	if updateResp.JSON200.CredentialSourceMcpServerId != nil {
+		data.CredentialSourceMcpServerId = types.StringValue(updateResp.JSON200.CredentialSourceMcpServerId.String())
+	}
+	if updateResp.JSON200.ExecutionSourceMcpServerId != nil {
+		data.ExecutionSourceMcpServerId = types.StringValue(updateResp.JSON200.ExecutionSourceMcpServerId.String())
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -256,27 +247,27 @@ func (r *ProfileToolResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	apiResp, err := r.client.GetAgentToolsWithResponse(ctx, profileId)
+	listResp, err := r.client.GetAgentToolsWithResponse(ctx, profileId)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read profile tools, got error: %s", err))
 		return
 	}
 
-	if apiResp.JSON404 != nil {
+	if listResp.JSON404 != nil {
 		resp.State.RemoveResource(ctx)
 		return
 	}
 
-	if apiResp.JSON200 == nil {
+	if listResp.JSON200 == nil {
 		resp.Diagnostics.AddError(
 			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
+			fmt.Sprintf("Expected 200 OK, got status %d", listResp.StatusCode()),
 		)
 		return
 	}
 
 	var found bool
-	for _, tool := range *apiResp.JSON200 {
+	for _, tool := range *listResp.JSON200 {
 		if tool.Id == internalId {
 			found = true
 			if tool.CatalogId != nil {
@@ -289,6 +280,45 @@ func (r *ProfileToolResource) Read(ctx context.Context, req resource.ReadRequest
 	if !found {
 		resp.State.RemoveResource(ctx)
 		return
+	}
+
+	// Call UpdateAgentTool with empty body to retrieve current field values for drift detection
+	// The GetAgentTools endpoint doesn't return detailed configuration fields
+	updateResp, err := r.client.UpdateAgentToolWithResponse(ctx, internalId, client.UpdateAgentToolJSONRequestBody{})
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read profile tool details, got error: %s", err))
+		return
+	}
+
+	if updateResp.JSON404 != nil {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
+	if updateResp.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d: %s", updateResp.StatusCode(), string(updateResp.Body)),
+		)
+		return
+	}
+
+	if updateResp.JSON200.AllowUsageWhenUntrustedDataIsPresent != nil {
+		data.AllowUsageWhenUntrustedDataIsPresent = types.BoolValue(*updateResp.JSON200.AllowUsageWhenUntrustedDataIsPresent)
+	}
+	data.ToolResultTreatment = types.StringValue(string(updateResp.JSON200.ToolResultTreatment))
+	if updateResp.JSON200.UseDynamicTeamCredential != nil {
+		data.UseDynamicTeamCredential = types.BoolValue(*updateResp.JSON200.UseDynamicTeamCredential)
+	}
+	if updateResp.JSON200.CredentialSourceMcpServerId != nil {
+		data.CredentialSourceMcpServerId = types.StringValue(updateResp.JSON200.CredentialSourceMcpServerId.String())
+	} else {
+		data.CredentialSourceMcpServerId = types.StringNull()
+	}
+	if updateResp.JSON200.ExecutionSourceMcpServerId != nil {
+		data.ExecutionSourceMcpServerId = types.StringValue(updateResp.JSON200.ExecutionSourceMcpServerId.String())
+	} else {
+		data.ExecutionSourceMcpServerId = types.StringNull()
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
