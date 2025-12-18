@@ -151,4 +151,3 @@ resource "archestra_dual_llm_config" "minimal" {
 }
 `, mainPrompt, quarantinedPrompt, summaryPrompt)
 }
-
