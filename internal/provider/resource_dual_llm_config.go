@@ -236,25 +236,19 @@ func (r *DualLlmConfigResource) Update(ctx context.Context, req resource.UpdateR
 		requestBody.Enabled = &enabled
 	}
 
-	if !data.MainAgentPrompt.IsNull() && !data.MainAgentPrompt.IsUnknown() {
-		mainAgentPrompt := data.MainAgentPrompt.ValueString()
-		requestBody.MainAgentPrompt = &mainAgentPrompt
-	}
+	mainAgentPrompt := data.MainAgentPrompt.ValueString()
+	requestBody.MainAgentPrompt = &mainAgentPrompt
 
 	if !data.MaxRounds.IsNull() && !data.MaxRounds.IsUnknown() {
 		maxRounds := int(data.MaxRounds.ValueInt64())
 		requestBody.MaxRounds = &maxRounds
 	}
 
-	if !data.QuarantinedAgentPrompt.IsNull() && !data.QuarantinedAgentPrompt.IsUnknown() {
-		quarantinedAgentPrompt := data.QuarantinedAgentPrompt.ValueString()
-		requestBody.QuarantinedAgentPrompt = &quarantinedAgentPrompt
-	}
+	quarantinedAgentPrompt := data.QuarantinedAgentPrompt.ValueString()
+	requestBody.QuarantinedAgentPrompt = &quarantinedAgentPrompt
 
-	if !data.SummaryPrompt.IsNull() && !data.SummaryPrompt.IsUnknown() {
-		summaryPrompt := data.SummaryPrompt.ValueString()
-		requestBody.SummaryPrompt = &summaryPrompt
-	}
+	summaryPrompt := data.SummaryPrompt.ValueString()
+	requestBody.SummaryPrompt = &summaryPrompt
 
 	// Call API
 	apiResp, err := r.client.UpdateDualLlmConfigWithResponse(ctx, configID, requestBody)
@@ -276,6 +270,7 @@ func (r *DualLlmConfigResource) Update(ctx context.Context, req resource.UpdateR
 	data.MaxRounds = types.Int64Value(int64(apiResp.JSON200.MaxRounds))
 	data.QuarantinedAgentPrompt = types.StringValue(apiResp.JSON200.QuarantinedAgentPrompt)
 	data.SummaryPrompt = types.StringValue(apiResp.JSON200.SummaryPrompt)
+	data.CreatedAt = types.StringValue(apiResp.JSON200.CreatedAt.Format(time.RFC3339))
 	data.UpdatedAt = types.StringValue(apiResp.JSON200.UpdatedAt.Format(time.RFC3339))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
