@@ -63,7 +63,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"mcp_server_id": schema.StringAttribute{
-				MarkdownDescription: "The MCP server ID from the private MCP registry (archestra_mcp_server resource)",
+				MarkdownDescription: "The MCP server ID from the private MCP registry (archestra_mcp_registry_catalog_item resource)",
 				Optional:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
