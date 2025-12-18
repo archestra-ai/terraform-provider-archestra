@@ -187,4 +187,3 @@ func (d *DualLlmConfigDataSource) mapAPIResponseToModel(apiConfig *struct {
 	data.CreatedAt = types.StringValue(apiConfig.CreatedAt.Format(time.RFC3339))
 	data.UpdatedAt = types.StringValue(apiConfig.UpdatedAt.Format(time.RFC3339))
 }
-
