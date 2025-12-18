@@ -41,15 +41,15 @@ func (d *DualLlmConfigDataSource) Metadata(ctx context.Context, req datasource.M
 
 func (d *DualLlmConfigDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Fetches a Dual LLM Security Config by ID. If name is provided, lists all configs and filters by name.",
+		MarkdownDescription: "Fetches a Dual LLM Security Config by ID. Name-based lookup is not currently supported; the name field is reserved for future use.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				MarkdownDescription: "Dual LLM Config identifier. Either id or name must be provided.",
-				Optional:            true,
+				MarkdownDescription: "Dual LLM Config identifier used to look up configs. This field must be provided to fetch a config.",
+				Required:            true,
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Name of the Dual LLM Config. Either id or name must be provided. Note: Name filtering is not currently supported by the API, so this field is reserved for future use.",
+				MarkdownDescription: "Name of the Dual LLM Config. Name-based lookup and filtering are not currently supported by the API; this field is reserved for future use. Please use `id` instead.",
 				Optional:            true,
 			},
 			"enabled": schema.BoolAttribute{
@@ -109,63 +109,30 @@ func (d *DualLlmConfigDataSource) Read(ctx context.Context, req datasource.ReadR
 		return
 	}
 
-	if data.ID.IsNull() && data.Name.IsNull() {
-		resp.Diagnostics.AddError(
-			"Missing Required Attribute",
-			"Either 'id' or 'name' must be provided to look up a dual LLM config.",
-		)
+	configID, err := uuid.Parse(data.ID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse dual LLM config ID: %s", err))
 		return
 	}
 
-	if !data.ID.IsNull() && !data.ID.IsUnknown() {
-		configID, err := uuid.Parse(data.ID.ValueString())
-		if err != nil {
-			resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse dual LLM config ID: %s", err))
-			return
-		}
-
-		apiResp, err := d.client.GetDualLlmConfigWithResponse(ctx, configID)
-		if err != nil {
-			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read dual LLM config, got error: %s", err))
-			return
-		}
-
-		if apiResp.JSON404 != nil {
-			resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Dual LLM config with ID %s not found", data.ID.ValueString()))
-			return
-		}
-
-		if apiResp.JSON200 == nil {
-			resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()))
-			return
-		}
-
-		d.mapAPIResponseToModel(apiResp.JSON200, &data)
-		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	apiResp, err := d.client.GetDualLlmConfigWithResponse(ctx, configID)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read dual LLM config, got error: %s", err))
 		return
 	}
 
-	if !data.Name.IsNull() && !data.Name.IsUnknown() {
-		// List all configs
-		configsResp, err := d.client.GetDualLlmConfigsWithResponse(ctx)
-		if err != nil {
-			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list dual LLM configs, got error: %s", err))
-			return
-		}
-
-		if configsResp.JSON200 == nil {
-			resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", configsResp.StatusCode()))
-			return
-		}
-
-		targetName := data.Name.ValueString()
-
-		resp.Diagnostics.AddError(
-			"Name Lookup Not Supported",
-			fmt.Sprintf("Name-based lookup is not currently supported because the API does not expose a name field for dual LLM configs. Please use 'id' instead. (Requested name: %s)", targetName),
-		)
+	if apiResp.JSON404 != nil {
+		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Dual LLM config with ID %s not found", data.ID.ValueString()))
 		return
 	}
+
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()))
+		return
+	}
+
+	d.mapAPIResponseToModel(apiResp.JSON200, &data)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (d *DualLlmConfigDataSource) mapAPIResponseToModel(apiConfig *struct {
@@ -179,6 +146,7 @@ func (d *DualLlmConfigDataSource) mapAPIResponseToModel(apiConfig *struct {
 	UpdatedAt              time.Time          `json:"updatedAt"`
 }, data *DualLlmConfigDataSourceModel) {
 	data.ID = types.StringValue(apiConfig.Id.String())
+	data.Name = types.StringNull()
 	data.Enabled = types.BoolValue(apiConfig.Enabled)
 	data.MainAgentPrompt = types.StringValue(apiConfig.MainAgentPrompt)
 	data.MaxRounds = types.Int64Value(int64(apiConfig.MaxRounds))
