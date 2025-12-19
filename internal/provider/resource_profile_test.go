@@ -1,0 +1,246 @@
+package provider
+
+import (
+	"fmt"
+	"testing"
+
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
+	"github.com/hashicorp/terraform-plugin-testing/statecheck"
+	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
+)
+
+func TestAccProfileResource(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create and Read testing
+			{
+				Config: testAccProfileResourceConfig("test-profile"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-profile"),
+					),
+					// Verify labels are in configuration order
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
+						knownvalue.StringExact("team"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("value"),
+						knownvalue.StringExact("engineering"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("key"),
+						knownvalue.StringExact("environment"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("value"),
+						knownvalue.StringExact("test"),
+					),
+				},
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_profile.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				// Ignore labels during import verification since API returns them in different order
+				ImportStateVerifyIgnore: []string{"labels"},
+			},
+			// Update and Read testing
+			{
+				Config: testAccProfileResourceConfigUpdated("test-profile-updated"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-profile-updated"),
+					),
+					// Verify label order is preserved after update
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
+						knownvalue.StringExact("environment"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("value"),
+						knownvalue.StringExact("production"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("key"),
+						knownvalue.StringExact("region"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("labels").AtSliceIndex(1).AtMapKey("value"),
+						knownvalue.StringExact("us-west-2"),
+					),
+				},
+			},
+			// Delete testing automatically occurs in TestCase
+		},
+	})
+}
+
+func TestAccProfileResource_Migration(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// 1. Create agent using old resource
+			{
+				Config: testAccAgentResourceConfig("test-migration"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_agent.test",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-migration"),
+					),
+				},
+			},
+			// 2. Migrate to profile using moved block
+			{
+				Config: testAccProfileResourceConfigMigration("test-migration"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-migration"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccProfileResourceConfig(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "test" {
+  name = %[1]q
+
+  labels = [
+    {
+      key   = "team"
+      value = "engineering"
+    },
+    {
+      key   = "environment"
+      value = "test"
+    }
+  ]
+}
+`, name)
+}
+
+func testAccProfileResourceConfigUpdated(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "test" {
+  name = %[1]q
+
+  labels = [
+    {
+      key   = "environment"
+      value = "production"
+    },
+    {
+      key   = "region"
+      value = "us-west-2"
+    }
+  ]
+}
+`, name)
+}
+
+func testAccProfileResourceConfigMigration(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "test" {
+  name = %[1]q
+
+  labels = [
+    {
+      key   = "team"
+      value = "engineering"
+    },
+    {
+      key   = "environment"
+      value = "test"
+    }
+  ]
+}
+
+moved {
+  from = archestra_agent.test
+  to   = archestra_profile.test
+}
+`, name)
+}
+
+func TestAccProfileResource_WithoutLabels(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create profile without labels
+			{
+				Config: testAccProfileResourceConfigNoLabels("test-profile-no-labels"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.nolabels",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-profile-no-labels"),
+					),
+				},
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_profile.nolabels",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			// Update to add labels
+			{
+				Config: testAccProfileResourceConfigAddLabels("test-profile-no-labels"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.nolabels",
+						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
+						knownvalue.StringExact("added"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccProfileResourceConfigNoLabels(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "nolabels" {
+  name = %[1]q
+}
+`, name)
+}
+
+func testAccProfileResourceConfigAddLabels(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "nolabels" {
+  name = %[1]q
+
+  labels = [
+    {
+      key   = "added"
+      value = "later"
+    }
+  ]
+}
+`, name)
+}

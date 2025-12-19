@@ -36,8 +36,8 @@ type ProfileLabelModel struct {
 
 // ProfileResourceModel describes the resource data model.
 type ProfileResourceModel struct {
-	ID     types.String      `tfsdk:"id"`
-	Name   types.String      `tfsdk:"name"`
+	ID     types.String        `tfsdk:"id"`
+	Name   types.String        `tfsdk:"name"`
 	Labels []ProfileLabelModel `tfsdk:"labels"`
 }
 
@@ -130,14 +130,14 @@ func (r *ProfileResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 
 	// Create request body using generated type
-	requestBody := client.CreateProfileJSONRequestBody{
+	requestBody := client.CreateAgentJSONRequestBody{
 		Name:   data.Name.ValueString(),
 		Teams:  []string{}, // Empty teams array (required by API)
 		Labels: &labels,
 	}
 
 	// Call API
-	apiResp, err := r.client.CreateProfileWithResponse(ctx, requestBody)
+	apiResp, err := r.client.CreateAgentWithResponse(ctx, requestBody)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create profile, got error: %s", err))
 		return
@@ -179,7 +179,7 @@ func (r *ProfileResource) Read(ctx context.Context, req resource.ReadRequest, re
 	}
 
 	// Call API
-	apiResp, err := r.client.GetProfileWithResponse(ctx, profileID)
+	apiResp, err := r.client.GetAgentWithResponse(ctx, profileID)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read profile, got error: %s", err))
 		return
@@ -247,13 +247,13 @@ func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest
 
 	// Create request body using generated type
 	name := data.Name.ValueString()
-	requestBody := client.UpdateProfileJSONRequestBody{
+	requestBody := client.UpdateAgentJSONRequestBody{
 		Name:   &name,
 		Labels: &labels,
 	}
 
 	// Call API
-	apiResp, err := r.client.UpdateProfileWithResponse(ctx, profileID, requestBody)
+	apiResp, err := r.client.UpdateAgentWithResponse(ctx, profileID, requestBody)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update profile, got error: %s", err))
 		return
@@ -294,7 +294,7 @@ func (r *ProfileResource) Delete(ctx context.Context, req resource.DeleteRequest
 	}
 
 	// Call API
-	apiResp, err := r.client.DeleteProfileWithResponse(ctx, profileID)
+	apiResp, err := r.client.DeleteAgentWithResponse(ctx, profileID)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete profile, got error: %s", err))
 		return
@@ -345,37 +345,43 @@ func (r *ProfileResource) mapLabelsToConfigurationOrder(configLabels []ProfileLa
 
 	return result
 }
+
 // Ensure the interface is implemented
 var _ resource.ResourceWithMoveState = &ProfileResource{}
 
 func (r *ProfileResource) MoveState(ctx context.Context) []resource.StateMover {
-    return []resource.StateMover{
-        {
-            SourceTypeName: "archestra_agent",
-            SourceSchema: (&AgentResource{}).Schema(ctx, resource.SchemaRequest{}, &resource.SchemaResponse{}).Schema,
-            StateMover: func(ctx context.Context, req resource.MoveStateRequest, resp *resource.MoveStateResponse) {
-                // 1. Read OLD data (Matching your exact struct)
-                type OldState struct {
-                    ID     types.String        `tfsdk:"id"`
-                    Name   types.String        `tfsdk:"name"`
-                    Labels []ProfileLabelModel `tfsdk:"labels"`
-                }
-                var old OldState
-                diags := req.SourceState.Get(ctx, &old)
-                resp.Diagnostics.Append(diags...)
-                if resp.Diagnostics.HasError() { return }
+	return []resource.StateMover{
+		{
+			SourceSchema: func() *schema.Schema {
+				resp := &resource.SchemaResponse{}
+				(&AgentResource{}).Schema(ctx, resource.SchemaRequest{}, resp)
+				return &resp.Schema
+			}(),
+			StateMover: func(ctx context.Context, req resource.MoveStateRequest, resp *resource.MoveStateResponse) {
+				// 1. Read OLD data (Matching your exact struct)
+				type OldState struct {
+					ID     types.String        `tfsdk:"id"`
+					Name   types.String        `tfsdk:"name"`
+					Labels []ProfileLabelModel `tfsdk:"labels"`
+				}
+				var old OldState
+				diags := req.SourceState.Get(ctx, &old)
+				resp.Diagnostics.Append(diags...)
+				if resp.Diagnostics.HasError() {
+					return
+				}
 
-                // 2. Map to NEW data
-                newState := ProfileResourceModel{
-                    ID:     old.ID,
-                    Name:   old.Name,
-                    Labels: old.Labels,
-                }
+				// 2. Map to NEW data
+				newState := ProfileResourceModel{
+					ID:     old.ID,
+					Name:   old.Name,
+					Labels: old.Labels,
+				}
 
-                // 3. Set NEW state
-                diags = resp.TargetState.Set(ctx, newState)
-                resp.Diagnostics.Append(diags...)
-            },
-        },
-    }
+				// 3. Set NEW state
+				diags = resp.TargetState.Set(ctx, newState)
+				resp.Diagnostics.Append(diags...)
+			},
+		},
+	}
 }
