@@ -348,30 +348,31 @@ func (r *AgentToolResource) Update(ctx context.Context, req resource.UpdateReque
 
 	// Update credentials/sources if changed
 	if !data.CredentialSourceMCPServerID.IsNull() {
-		id, _ := uuid.Parse(data.CredentialSourceMCPServerID.ValueString())
+		id, err := uuid.Parse(data.CredentialSourceMCPServerID.ValueString())
+		if err != nil {
+			resp.Diagnostics.AddError("Invalid Credential Source MCP Server ID", fmt.Sprintf("Unable to parse ID: %s", err))
+			return
+		}
 		updateBody.CredentialSourceMcpServerId = &id
-	} else {
-		// Explicitly set to null if removed (how to do this with generated client?
-		// The pointer being nil usually means "no change".
-		// If the generated client treats nil as undefined, we can't unset it easily unless there's a Nullable type.
-		// Checking generated code... Usually nullable fields are *openapi_types.UUID or similar.
-		// If the field is optional in the struct, nil means omitted.
-		// We might need to check if the generated client supports sending explicit nulls.)
-
-		// NOTE: For now assuming standard behavior: if it's in the Plan, we send it.
-		// If Terraform plan says it's null, we might want to send null.
-		// However, looking at the generated types usually they are `*UUID`.
-		// If we can't send literal null via the generated struct, we might have an issue unsetting credentials.
-		// But let's proceed with what we have.
 	}
+	// If null, we do nothing. The struct field is (*UUID)(nil), which serializes to null in JSON
+	// because the generated client logic (or lack of omitempty) handles it.
 
 	if !data.ExecutionSourceMCPServerID.IsNull() {
-		id, _ := uuid.Parse(data.ExecutionSourceMCPServerID.ValueString())
+		id, err := uuid.Parse(data.ExecutionSourceMCPServerID.ValueString())
+		if err != nil {
+			resp.Diagnostics.AddError("Invalid Execution Source MCP Server ID", fmt.Sprintf("Unable to parse ID: %s", err))
+			return
+		}
 		updateBody.ExecutionSourceMcpServerId = &id
 	}
 
 	if !data.UseDynamicTeamCredential.IsNull() {
 		val := data.UseDynamicTeamCredential.ValueBool()
+		updateBody.UseDynamicTeamCredential = &val
+	} else {
+		// Explicitly set to false if unset/null
+		val := false
 		updateBody.UseDynamicTeamCredential = &val
 	}
 
@@ -388,10 +389,6 @@ func (r *AgentToolResource) Update(ctx context.Context, req resource.UpdateReque
 	if !data.ResponseModifierTemplate.IsNull() {
 		val := data.ResponseModifierTemplate.ValueString()
 		updateBody.ResponseModifierTemplate = &val
-	} else {
-		// Handle unsetting if needed
-		empty := ""
-		updateBody.ResponseModifierTemplate = &empty // Or null logic
 	}
 
 	updateResp, err := r.client.UpdateAgentToolWithResponse(ctx, agentToolID, updateBody)
@@ -461,7 +458,7 @@ func (r *AgentToolResource) ImportState(ctx context.Context, req resource.Import
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-// Helper: Find the AgentTool ID (which is the relationship ID, not the Tool ID)
+// Helper: Find the AgentTool ID (which is the relationship ID, not the Tool ID).
 func (r *AgentToolResource) findAgentToolID(ctx context.Context, agentID, toolID uuid.UUID) (openapi_types.UUID, error) {
 	// Helper logic to list tools and find the one matching toolID
 	limit := 100
@@ -494,7 +491,7 @@ func (r *AgentToolResource) findAgentToolID(ctx context.Context, agentID, toolID
 	return uuid.Nil, fmt.Errorf("tool assignment not found")
 }
 
-// Helper: Read state from API into model
+// Helper: Read state from API into model.
 func (r *AgentToolResource) readState(
 	ctx context.Context,
 	agentToolID openapi_types.UUID,

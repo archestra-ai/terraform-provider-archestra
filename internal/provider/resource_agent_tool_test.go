@@ -14,15 +14,10 @@ func TestAccAgentToolResource(t *testing.T) {
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"archestra": providerserver.NewProtocol6WithError(New("test")()),
 		},
-		ExternalProviders: map[string]resource.ExternalProvider{
-			// Need to register the provider itself to get the mcp_server resource if it wasn't already available
-			// But New("test")() likely registers all resources including mcp_server.
-			// Assumption: New("test")() returns a provider with all resources.
-		},
 		Steps: []resource.TestStep{
 			// Create and Read
 			{
-				Config: testAccAgentToolResourceConfig("archestra-test-agent", "archestra__calculator"),
+				Config: testAccAgentToolResourceConfig("archestra-test-agent"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrPair("archestra_profile_tool.test", "profile_id", "archestra_agent.test", "id"),
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "tool_result_treatment", "untrusted"),
@@ -34,13 +29,27 @@ func TestAccAgentToolResource(t *testing.T) {
 			},
 			// Update
 			{
-				Config: testAccAgentToolResourceConfigUpdate("archestra-test-agent", "archestra__calculator"),
+				Config: testAccAgentToolResourceConfigUpdate("archestra-test-agent"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "tool_result_treatment", "trusted"),
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "allow_usage_when_untrusted_data_is_present", "true"),
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "use_dynamic_team_credential", "false"),
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "response_modifier_template", "Modified {{.Result}}"),
 					resource.TestCheckResourceAttrPair("archestra_profile_tool.test", "credential_source_mcp_server_id", "archestra_mcp_server_installation.test", "id"),
+					resource.TestCheckResourceAttrPair("archestra_profile_tool.test", "execution_source_mcp_server_id", "archestra_mcp_server_installation.test", "id"),
+				),
+			},
+			// Unset optional fields
+			{
+				Config: testAccAgentToolResourceConfigUnset("archestra-test-agent"),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("archestra_profile_tool.test", "tool_result_treatment", "trusted"),
+					resource.TestCheckResourceAttr("archestra_profile_tool.test", "allow_usage_when_untrusted_data_is_present", "true"),
+					// Verify optional fields are unset (null) or defaulted
+					resource.TestCheckResourceAttr("archestra_profile_tool.test", "use_dynamic_team_credential", "false"),
+					resource.TestCheckNoResourceAttr("archestra_profile_tool.test", "credential_source_mcp_server_id"),
+					resource.TestCheckNoResourceAttr("archestra_profile_tool.test", "execution_source_mcp_server_id"),
+					resource.TestCheckNoResourceAttr("archestra_profile_tool.test", "response_modifier_template"),
 				),
 			},
 			// Import
@@ -54,37 +63,17 @@ func TestAccAgentToolResource(t *testing.T) {
 	})
 }
 
-// Since we need real IDs for profiles and tools, we should use data sources or depend on created resources.
-// However, creating an Agent and then using its ID is cleaner.
-// Finding a tool ID is harder without querying. We can use `archestra_mcp_server_tool` data source if available, or just use a known built-in tool name strategy if we had a data source for "tool by name".
-// The `datasource_agent_tool` gets tools *assigned* to an agent.
-// We need a way to get a tool ID *before* assignment.
-// `datasource_mcp_server_tool` might work if we have a server.
-// Alternatively, we can use the `archestra_agent` resource and maybe a `archestra_tool` data source if it exists?
-// Currently we only have `agent_tool` data source (assigned tools) and `mcp_server_tool` (tools on a server).
-// Let's assume we can use a built-in tool that exists? Or an MCP tool.
-// For the test to be reliable, we probably need to setup a real scenario or mock it.
-// Given strict environment, I will write the test assuming we can Create an Agent, and then assign a tool that we know exists or can find.
-// The `archestra__calculator` is a standard built-in tool. But built-in tools are often auto-assigned or special.
-// Let's try to reference a data source for a tool.
-// Actually, `datasource_mcp_server_tool.go` exists.
-
-func testAccAgentToolResourceConfig(agentName, toolName string) string {
+func testAccAgentToolResourceConfig(agentName string) string {
 	return fmt.Sprintf(`
 resource "archestra_agent" "test" {
   name = "%[1]s"
 }
 
-data "archestra_agent_tool" "builtin" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "archestra__whoami"
-}
-
 resource "archestra_mcp_server" "test" {
   name = "test-server"
   local_config = {
-    command = "echo"
-    arguments = ["hello"]
+    command = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "./"]
   }
 }
 
@@ -93,35 +82,37 @@ resource "archestra_mcp_server_installation" "test" {
   mcp_server_id = archestra_mcp_server.test.id
 }
 
+data "archestra_mcp_server_tool" "test" {
+  mcp_server_id = archestra_mcp_server_installation.test.id
+  name          = "test-server__read_file"
+  depends_on    = [archestra_mcp_server_installation.test]
+}
+
 resource "archestra_profile_tool" "test" {
   profile_id = archestra_agent.test.id
-  tool_id    = data.archestra_agent_tool.builtin.tool_id
+  tool_id    = data.archestra_mcp_server_tool.test.id
   
   # Set a specific treatment to verify it is applied
   tool_result_treatment = "untrusted"
   use_dynamic_team_credential = true
   response_modifier_template  = "Hello {{.Result}}"
   credential_source_mcp_server_id = archestra_mcp_server_installation.test.id
+  execution_source_mcp_server_id  = archestra_mcp_server_installation.test.id
 }
 `, agentName)
 }
 
-func testAccAgentToolResourceConfigUpdate(agentName, toolName string) string {
+func testAccAgentToolResourceConfigUpdate(agentName string) string {
 	return fmt.Sprintf(`
 resource "archestra_agent" "test" {
   name = "%[1]s"
 }
 
-data "archestra_agent_tool" "builtin" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "archestra__whoami"
-}
-
 resource "archestra_mcp_server" "test" {
   name = "test-server"
   local_config = {
-    command = "echo"
-    arguments = ["hello"]
+    command = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "./"]
   }
 }
 
@@ -130,15 +121,64 @@ resource "archestra_mcp_server_installation" "test" {
   mcp_server_id = archestra_mcp_server.test.id
 }
 
+data "archestra_mcp_server_tool" "test" {
+  mcp_server_id = archestra_mcp_server_installation.test.id
+  name          = "test-server__read_file"
+  depends_on    = [archestra_mcp_server_installation.test]
+}
+
 resource "archestra_profile_tool" "test" {
   profile_id = archestra_agent.test.id
-  tool_id    = data.archestra_agent_tool.builtin.tool_id
+  tool_id    = data.archestra_mcp_server_tool.test.id
   
   tool_result_treatment = "trusted"
   allow_usage_when_untrusted_data_is_present = true
   use_dynamic_team_credential = false
   response_modifier_template  = "Modified {{.Result}}"
   credential_source_mcp_server_id = archestra_mcp_server_installation.test.id
+  execution_source_mcp_server_id  = archestra_mcp_server_installation.test.id
+}
+`, agentName)
+}
+
+func testAccAgentToolResourceConfigUnset(agentName string) string {
+	return fmt.Sprintf(`
+resource "archestra_agent" "test" {
+  name = "%[1]s"
+}
+
+resource "archestra_mcp_server" "test" {
+  name = "test-server"
+  local_config = {
+    command = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "./"]
+  }
+}
+
+resource "archestra_mcp_server_installation" "test" {
+  name          = "test-server-inst"
+  mcp_server_id = archestra_mcp_server.test.id
+}
+
+data "archestra_mcp_server_tool" "test" {
+  mcp_server_id = archestra_mcp_server_installation.test.id
+  name          = "test-server__read_file"
+  depends_on    = [archestra_mcp_server_installation.test]
+}
+
+resource "archestra_profile_tool" "test" {
+  profile_id = archestra_agent.test.id
+  tool_id    = data.archestra_mcp_server_tool.test.id
+  
+  // Keep required/other fields
+  tool_result_treatment = "trusted"
+  allow_usage_when_untrusted_data_is_present = true
+  
+  // Explicitly removed:
+  // use_dynamic_team_credential
+  // credential_source_mcp_server_id
+  // execution_source_mcp_server_id
+  // response_modifier_template
 }
 `, agentName)
 }
