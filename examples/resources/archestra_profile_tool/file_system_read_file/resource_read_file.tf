@@ -8,7 +8,7 @@ terraform {
 
 # 1. Create an Agent (Profile)
 resource "archestra_agent" "demo_agent" {
-  name        = "Demo Agent Filesystem"
+  name = "Demo Agent Filesystem"
 }
 
 

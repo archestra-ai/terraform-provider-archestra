@@ -13,28 +13,30 @@ Assigns a tool to an Archestra Profile (Agent) and configures its execution and 
 ## Example Usage
 
 ```terraform
-# Reference an existing profile
-data "archestra_profile" "default" {
-  name = "Default Agent"
+# 1. Create an Agent (Profile)
+resource "archestra_agent" "demo_agent" {
+  name = "Demo Agent"
 }
 
-# Reference a tool from the MCP registry
-data "archestra_mcp_server_tool" "github_create_issue" {
-  mcp_server_id = archestra_mcp_server.github.id
-  name          = "create_issue"
+# 2. Look up the 'whoami' tool
+data "archestra_agent_tool" "whoami" {
+  tool_name = "archestra__whoami"
+  agent_id  = archestra_agent.demo_agent.id
 }
 
-# Assign the tool to the profile with credentials
-resource "archestra_profile_tool" "github_create_issue" {
-  profile_id = data.archestra_profile.default.id
-  tool_id    = data.archestra_mcp_server_tool.github_create_issue.id
+# 3. Assign the Tool to the Profile
+resource "archestra_profile_tool" "demo_assignment" {
+  profile_id = archestra_agent.demo_agent.id
+  tool_id    = data.archestra_agent_tool.whoami.tool_id
 
-  # Link to the server that holds the credentials
-  credential_source_mcp_server_id = archestra_mcp_server.github.id
-
-  # Security Configuration
-  tool_result_treatment = "trusted"
+  # Configuration Options
+  tool_result_treatment                      = "trusted"
   allow_usage_when_untrusted_data_is_present = true
+
+  # Note: dynamic team credentials can be toggled
+  use_dynamic_team_credential = false
+
+  response_modifier_template = "This is a modified response: {{.Result}}"
 }
 ```
 
@@ -57,4 +59,4 @@ resource "archestra_profile_tool" "github_create_issue" {
 
 ### Read-Only
 
-- `id` (String) The unique identifier of the agent-tool assignment (Composite ID: agent_id:tool_id)
+- `id` (String) The unique identifier of the profile-tool assignment (Composite ID: profile_id:tool_id)

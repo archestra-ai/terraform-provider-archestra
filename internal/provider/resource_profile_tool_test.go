@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccAgentToolResource(t *testing.T) {
+func TestAccProfileToolResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"archestra": providerserver.NewProtocol6WithError(New("test")()),
@@ -17,7 +17,7 @@ func TestAccAgentToolResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			// Create and Read
 			{
-				Config: testAccAgentToolResourceConfig("archestra-test-agent"),
+				Config: testAccProfileToolResourceConfig("archestra-test-profile"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrPair("archestra_profile_tool.test", "profile_id", "archestra_agent.test", "id"),
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "tool_result_treatment", "untrusted"),
@@ -29,7 +29,7 @@ func TestAccAgentToolResource(t *testing.T) {
 			},
 			// Update
 			{
-				Config: testAccAgentToolResourceConfigUpdate("archestra-test-agent"),
+				Config: testAccProfileToolResourceConfigUpdate("archestra-test-profile"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "tool_result_treatment", "trusted"),
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "allow_usage_when_untrusted_data_is_present", "true"),
@@ -41,7 +41,7 @@ func TestAccAgentToolResource(t *testing.T) {
 			},
 			// Unset optional fields
 			{
-				Config: testAccAgentToolResourceConfigUnset("archestra-test-agent"),
+				Config: testAccProfileToolResourceConfigUnset("archestra-test-profile"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "tool_result_treatment", "trusted"),
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "allow_usage_when_untrusted_data_is_present", "true"),
@@ -63,7 +63,7 @@ func TestAccAgentToolResource(t *testing.T) {
 	})
 }
 
-func testAccAgentToolResourceConfig(agentName string) string {
+func testAccProfileToolResourceConfig(profileName string) string {
 	return fmt.Sprintf(`
 resource "archestra_agent" "test" {
   name = "%[1]s"
@@ -99,10 +99,10 @@ resource "archestra_profile_tool" "test" {
   credential_source_mcp_server_id = archestra_mcp_server_installation.test.id
   execution_source_mcp_server_id  = archestra_mcp_server_installation.test.id
 }
-`, agentName)
+`, profileName)
 }
 
-func testAccAgentToolResourceConfigUpdate(agentName string) string {
+func testAccProfileToolResourceConfigUpdate(profileName string) string {
 	return fmt.Sprintf(`
 resource "archestra_agent" "test" {
   name = "%[1]s"
@@ -138,10 +138,10 @@ resource "archestra_profile_tool" "test" {
   credential_source_mcp_server_id = archestra_mcp_server_installation.test.id
   execution_source_mcp_server_id  = archestra_mcp_server_installation.test.id
 }
-`, agentName)
+`, profileName)
 }
 
-func testAccAgentToolResourceConfigUnset(agentName string) string {
+func testAccProfileToolResourceConfigUnset(profileName string) string {
 	return fmt.Sprintf(`
 resource "archestra_agent" "test" {
   name = "%[1]s"
@@ -180,5 +180,5 @@ resource "archestra_profile_tool" "test" {
   // execution_source_mcp_server_id
   // response_modifier_template
 }
-`, agentName)
+`, profileName)
 }

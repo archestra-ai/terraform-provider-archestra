@@ -19,20 +19,20 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &AgentToolResource{}
-var _ resource.ResourceWithImportState = &AgentToolResource{}
+var _ resource.Resource = &ProfileToolResource{}
+var _ resource.ResourceWithImportState = &ProfileToolResource{}
 
-func NewAgentToolResource() resource.Resource {
-	return &AgentToolResource{}
+func NewProfileToolResource() resource.Resource {
+	return &ProfileToolResource{}
 }
 
-// AgentToolResource defines the resource implementation.
-type AgentToolResource struct {
+// ProfileToolResource defines the resource implementation.
+type ProfileToolResource struct {
 	client *client.ClientWithResponses
 }
 
-// AgentToolResourceModel describes the resource data model.
-type AgentToolResourceModel struct {
+// ProfileToolResourceModel describes the resource data model.
+type ProfileToolResourceModel struct {
 	ID                                   types.String `tfsdk:"id"`
 	ProfileID                            types.String `tfsdk:"profile_id"`
 	ToolID                               types.String `tfsdk:"tool_id"`
@@ -44,18 +44,18 @@ type AgentToolResourceModel struct {
 	ResponseModifierTemplate             types.String `tfsdk:"response_modifier_template"`
 }
 
-func (r *AgentToolResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (r *ProfileToolResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_profile_tool"
 }
 
-func (r *AgentToolResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *ProfileToolResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Assigns a tool to an Archestra Profile (Agent) and configures its execution and security policies.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "The unique identifier of the agent-tool assignment (Composite ID: agent_id:tool_id)",
+				MarkdownDescription: "The unique identifier of the profile-tool assignment (Composite ID: profile_id:tool_id)",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
@@ -114,7 +114,7 @@ func (r *AgentToolResource) Schema(ctx context.Context, req resource.SchemaReque
 	}
 }
 
-func (r *AgentToolResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *ProfileToolResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -133,8 +133,8 @@ func (r *AgentToolResource) Configure(ctx context.Context, req resource.Configur
 	r.client = client
 }
 
-func (r *AgentToolResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data AgentToolResourceModel
+func (r *ProfileToolResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data ProfileToolResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -142,10 +142,10 @@ func (r *AgentToolResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 
-	agentIDStr := data.ProfileID.ValueString()
+	profileIDStr := data.ProfileID.ValueString()
 	toolIDStr := data.ToolID.ValueString()
 
-	agentUUID, err := uuid.Parse(agentIDStr)
+	profileUUID, err := uuid.Parse(profileIDStr)
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid Profile ID", fmt.Sprintf("Unable to parse profile ID: %s", err))
 		return
@@ -187,7 +187,7 @@ func (r *AgentToolResource) Create(ctx context.Context, req resource.CreateReque
 		body.UseDynamicTeamCredential = &val
 	}
 
-	assignResp, err := r.client.AssignToolToAgentWithResponse(ctx, agentUUID, toolUUID, body)
+	assignResp, err := r.client.AssignToolToAgentWithResponse(ctx, profileUUID, toolUUID, body)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to assign tool to profile, got error: %s", err))
 		return
@@ -233,14 +233,14 @@ func (r *AgentToolResource) Create(ctx context.Context, req resource.CreateReque
 		updateBody.UseDynamicTeamCredential = &val
 	}
 
-	agentToolID, err := r.findAgentToolID(ctx, agentUUID, toolUUID)
+	profileToolID, err := r.findProfileToolID(ctx, profileUUID, toolUUID)
 	if err != nil {
 		resp.Diagnostics.AddError("Lookup Error", fmt.Sprintf("Unable to find assigned tool: %s", err))
 		return
 	}
 
 	if needsUpdate {
-		updateResp, err := r.client.UpdateAgentToolWithResponse(ctx, agentToolID, updateBody)
+		updateResp, err := r.client.UpdateAgentToolWithResponse(ctx, profileToolID, updateBody)
 		if err != nil {
 			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update tool configuration, got error: %s", err))
 			return
@@ -254,18 +254,18 @@ func (r *AgentToolResource) Create(ctx context.Context, req resource.CreateReque
 		}
 	}
 
-	r.readState(ctx, agentToolID, agentUUID, &data, &resp.Diagnostics)
+	r.readState(ctx, profileToolID, profileUUID, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	data.ID = types.StringValue(fmt.Sprintf("%s:%s", agentIDStr, toolIDStr))
+	data.ID = types.StringValue(fmt.Sprintf("%s:%s", profileIDStr, toolIDStr))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AgentToolResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data AgentToolResourceModel
+func (r *ProfileToolResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data ProfileToolResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -280,10 +280,10 @@ func (r *AgentToolResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
-	agentIDStr := parts[0]
+	profileIDStr := parts[0]
 	toolIDStr := parts[1]
 
-	agentUUID, err := uuid.Parse(agentIDStr)
+	profileUUID, err := uuid.Parse(profileIDStr)
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid Profile ID", fmt.Sprintf("Unable to parse profile ID: %s", err))
 		return
@@ -295,18 +295,18 @@ func (r *AgentToolResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
-	agentToolID, err := r.findAgentToolID(ctx, agentUUID, toolUUID)
+	profileToolID, err := r.findProfileToolID(ctx, profileUUID, toolUUID)
 	if err != nil {
 		// If not found, remove from state
 		if strings.Contains(err.Error(), "not found") {
 			resp.State.RemoveResource(ctx)
 			return
 		}
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to find agent tool: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to find profile tool: %s", err))
 		return
 	}
 
-	r.readState(ctx, agentToolID, agentUUID, &data, &resp.Diagnostics)
+	r.readState(ctx, profileToolID, profileUUID, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -314,8 +314,8 @@ func (r *AgentToolResource) Read(ctx context.Context, req resource.ReadRequest, 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AgentToolResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data AgentToolResourceModel
+func (r *ProfileToolResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data ProfileToolResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -323,10 +323,10 @@ func (r *AgentToolResource) Update(ctx context.Context, req resource.UpdateReque
 		return
 	}
 
-	agentIDStr := data.ProfileID.ValueString()
+	profileIDStr := data.ProfileID.ValueString()
 	toolIDStr := data.ToolID.ValueString()
 
-	agentUUID, err := uuid.Parse(agentIDStr)
+	profileUUID, err := uuid.Parse(profileIDStr)
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid Profile ID", fmt.Sprintf("Unable to parse profile ID: %s", err))
 		return
@@ -338,7 +338,7 @@ func (r *AgentToolResource) Update(ctx context.Context, req resource.UpdateReque
 		return
 	}
 
-	agentToolID, err := r.findAgentToolID(ctx, agentUUID, toolUUID)
+	profileToolID, err := r.findProfileToolID(ctx, profileUUID, toolUUID)
 	if err != nil {
 		resp.Diagnostics.AddError("Lookup Error", fmt.Sprintf("Unable to find assigned tool: %s", err))
 		return
@@ -391,9 +391,9 @@ func (r *AgentToolResource) Update(ctx context.Context, req resource.UpdateReque
 		updateBody.ResponseModifierTemplate = &val
 	}
 
-	updateResp, err := r.client.UpdateAgentToolWithResponse(ctx, agentToolID, updateBody)
+	updateResp, err := r.client.UpdateAgentToolWithResponse(ctx, profileToolID, updateBody)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update agent tool, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update profile tool, got error: %s", err))
 		return
 	}
 
@@ -406,7 +406,7 @@ func (r *AgentToolResource) Update(ctx context.Context, req resource.UpdateReque
 	}
 
 	// Read state back
-	r.readState(ctx, agentToolID, agentUUID, &data, &resp.Diagnostics)
+	r.readState(ctx, profileToolID, profileUUID, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -414,8 +414,8 @@ func (r *AgentToolResource) Update(ctx context.Context, req resource.UpdateReque
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *AgentToolResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data AgentToolResourceModel
+func (r *ProfileToolResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data ProfileToolResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -423,10 +423,10 @@ func (r *AgentToolResource) Delete(ctx context.Context, req resource.DeleteReque
 		return
 	}
 
-	agentIDStr := data.ProfileID.ValueString()
+	profileIDStr := data.ProfileID.ValueString()
 	toolIDStr := data.ToolID.ValueString()
 
-	agentUUID, err := uuid.Parse(agentIDStr)
+	profileUUID, err := uuid.Parse(profileIDStr)
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid Profile ID", fmt.Sprintf("Unable to parse profile ID: %s", err))
 		return
@@ -438,7 +438,7 @@ func (r *AgentToolResource) Delete(ctx context.Context, req resource.DeleteReque
 		return
 	}
 
-	delResp, err := r.client.UnassignToolFromAgentWithResponse(ctx, agentUUID, toolUUID)
+	delResp, err := r.client.UnassignToolFromAgentWithResponse(ctx, profileUUID, toolUUID)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to unassign tool, got error: %s", err))
 		return
@@ -453,21 +453,21 @@ func (r *AgentToolResource) Delete(ctx context.Context, req resource.DeleteReque
 	}
 }
 
-func (r *AgentToolResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	// Import by composite ID: "agent_id:tool_id"
+func (r *ProfileToolResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	// Import by composite ID: "profile_id:tool_id"
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-// Helper: Find the AgentTool ID (which is the relationship ID, not the Tool ID).
-func (r *AgentToolResource) findAgentToolID(ctx context.Context, agentID, toolID uuid.UUID) (openapi_types.UUID, error) {
+// Helper: Find the ProfileTool ID (which is the relationship ID, not the Tool ID).
+func (r *ProfileToolResource) findProfileToolID(ctx context.Context, profileID, toolID uuid.UUID) (openapi_types.UUID, error) {
 	// Helper logic to list tools and find the one matching toolID
 	limit := 100
 	params := &client.GetAllAgentToolsParams{
-		AgentId: &agentID,
+		AgentId: &profileID,
 		Limit:   &limit,
 	}
 
-	// This finds based on AgentID.
+	// This finds based on ProfileID.
 	resp, err := r.client.GetAllAgentToolsWithResponse(ctx, params)
 	if err != nil {
 		return uuid.Nil, err
@@ -477,12 +477,6 @@ func (r *AgentToolResource) findAgentToolID(ctx context.Context, agentID, toolID
 	}
 
 	for _, at := range resp.JSON200.Data {
-		// at.Tool.Id is a string in the API definition for some reason? Or UUID?
-		// Checking datasource_agent_tool.go, it says `agentTool.Tool.Id` is string (implied by types.String).
-		// But in openapi it's usually UUID. Let's compare as string.
-		// Wait, in `datasource_agent_tool.go`: `ToolID: agentTool.Tool.Id`
-		// And `agentTool.Id.String()`
-		// `Tool` struct likely has `Id` field.
 		if at.Tool.Id == toolID.String() {
 			return at.Id, nil
 		}
@@ -492,44 +486,34 @@ func (r *AgentToolResource) findAgentToolID(ctx context.Context, agentID, toolID
 }
 
 // Helper: Read state from API into model.
-func (r *AgentToolResource) readState(
+func (r *ProfileToolResource) readState(
 	ctx context.Context,
-	agentToolID openapi_types.UUID,
-	agentUUID uuid.UUID,
-	data *AgentToolResourceModel,
+	profileToolID openapi_types.UUID,
+	profileUUID uuid.UUID,
+	data *ProfileToolResourceModel,
 	diags *diag.Diagnostics,
 ) {
-	// Wait, we don't have a direct "GetAgentTool" endpoint by ID.
-	// `GetAgentTools` by AgentID is what we have.
-	// But wait, the `GetAllAgentTools` endpoint returns the relationship object which has the ID.
-	// Does it allow filtering by ID? No.
-	// So we have to re-fetch by listing.
-	// Or we can assume we already found it?
-
-	// Actually, `findAgentToolID` already fetches the list.
-	// We should probably have a `getAgentTool` that returns the object.
-
 	limit := 100
-	// We need the AgentID to filter efficiently.
+	// We need the ProfileID to filter efficiently.
 	params := &client.GetAllAgentToolsParams{
-		AgentId: &agentUUID,
+		AgentId: &profileUUID,
 		Limit:   &limit,
 	}
 
 	resp, err := r.client.GetAllAgentToolsWithResponse(ctx, params)
 	if err != nil {
-		diags.AddError("API Error", fmt.Sprintf("Unable to read agent tool: %s", err))
+		diags.AddError("API Error", fmt.Sprintf("Unable to read profile tool: %s", err))
 		return
 	}
 
 	if resp.JSON200 == nil {
-		diags.AddError("API Error", fmt.Sprintf("Unable to read agent tool: unexpected status code %d", resp.StatusCode()))
+		diags.AddError("API Error", fmt.Sprintf("Unable to read profile tool: unexpected status code %d", resp.StatusCode()))
 		return
 	}
 
 	for i := range resp.JSON200.Data {
 		at := &resp.JSON200.Data[i]
-		if at.Id == agentToolID {
+		if at.Id == profileToolID {
 			// Map to model directly
 			data.ProfileID = types.StringValue(at.Agent.Id)
 			data.ToolID = types.StringValue(at.Tool.Id)
@@ -558,5 +542,5 @@ func (r *AgentToolResource) readState(
 		}
 	}
 
-	diags.AddError("Not Found", "Agent tool assignment not found")
+	diags.AddError("Not Found", "Profile tool assignment not found")
 }
