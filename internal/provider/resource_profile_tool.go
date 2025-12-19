@@ -61,7 +61,7 @@ func (r *ProfileToolResource) Schema(ctx context.Context, req resource.SchemaReq
 				},
 			},
 			"profile_id": schema.StringAttribute{
-				MarkdownDescription: "The ID of the Profile (Agent) to assign the tool to",
+				MarkdownDescription: "The ID of the Profile to assign the tool to",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),

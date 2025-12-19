@@ -3,12 +3,12 @@
 page_title: "archestra_profile_tool Resource - archestra"
 subcategory: ""
 description: |-
-  Assigns a tool to an Archestra Profile (Agent) and configures its execution and security policies.
+  Assigns a tool to an Archestra Profile and configures its execution and security policies.
 ---
 
 # archestra_profile_tool (Resource)
 
-Assigns a tool to an Archestra Profile (Agent) and configures its execution and security policies.
+Assigns a tool to an Archestra Profile and configures its execution and security policies.
 
 ## Example Usage
 
@@ -17,21 +17,21 @@ Assigns a tool to an Archestra Profile (Agent) and configures its execution and 
 # Example 1: Assign a built-in tool to a profile
 # =============================================================================
 
-# Create an Agent (Profile)
+# Create a Profile
 resource "archestra_agent" "demo_agent" {
   name = "Demo Agent"
 }
 
 # Look up the built-in 'whoami' tool
-data "archestra_agent_tool" "whoami" {
-  tool_name = "archestra__whoami"
-  agent_id  = archestra_agent.demo_agent.id
+data "archestra_profile_tool" "whoami" {
+  tool_name  = "archestra__whoami"
+  profile_id = archestra_agent.demo_agent.id
 }
 
 # Assign the Tool to the Profile
 resource "archestra_profile_tool" "whoami" {
   profile_id = archestra_agent.demo_agent.id
-  tool_id    = data.archestra_agent_tool.whoami.tool_id
+  tool_id    = data.archestra_profile_tool.whoami.tool_id
 
   # Configuration Options
   tool_result_treatment                      = "trusted"
@@ -103,7 +103,7 @@ resource "archestra_profile_tool" "read_text_file" {
 
 ### Required
 
-- `profile_id` (String) The ID of the Profile (Agent) to assign the tool to
+- `profile_id` (String) The ID of the Profile to assign the tool to
 - `tool_id` (String) The ID of the Tool to assign
 
 ### Optional

@@ -2,21 +2,21 @@
 # Example 1: Assign a built-in tool to a profile
 # =============================================================================
 
-# Create an Agent (Profile)
+# Create a Profile
 resource "archestra_agent" "demo_agent" {
   name = "Demo Agent"
 }
 
 # Look up the built-in 'whoami' tool
-data "archestra_agent_tool" "whoami" {
-  tool_name = "archestra__whoami"
-  agent_id  = archestra_agent.demo_agent.id
+data "archestra_profile_tool" "whoami" {
+  tool_name  = "archestra__whoami"
+  profile_id = archestra_agent.demo_agent.id
 }
 
 # Assign the Tool to the Profile
 resource "archestra_profile_tool" "whoami" {
   profile_id = archestra_agent.demo_agent.id
-  tool_id    = data.archestra_agent_tool.whoami.tool_id
+  tool_id    = data.archestra_profile_tool.whoami.tool_id
 
   # Configuration Options
   tool_result_treatment                      = "trusted"

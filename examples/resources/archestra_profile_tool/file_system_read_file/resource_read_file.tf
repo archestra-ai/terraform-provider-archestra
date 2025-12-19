@@ -6,7 +6,7 @@ terraform {
   }
 }
 
-# 1. Create an Agent (Profile)
+# 1. Create a Profile
 resource "archestra_agent" "demo_agent" {
   name = "Demo Agent Filesystem"
 }
