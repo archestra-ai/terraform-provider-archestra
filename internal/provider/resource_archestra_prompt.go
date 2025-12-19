@@ -1,0 +1,196 @@
+package provider
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	openapi_types "github.com/oapi-codegen/runtime/types"
+)
+
+var _ resource.Resource = &ArchestraPromptResource{}
+
+func NewArchestraPromptResource() resource.Resource {
+	return &ArchestraPromptResource{}
+}
+
+type ArchestraPromptResource struct {
+	client *client.ClientWithResponses
+}
+
+type ArchestraPromptResourceModel struct {
+    ID           types.String `tfsdk:"id"`
+    Name         types.String `tfsdk:"name"`
+    SystemPrompt types.String `tfsdk:"system_prompt"`
+    Prompt       types.String `tfsdk:"prompt"`
+    IsActive     types.Bool   `tfsdk:"is_active"`
+    Version      types.Int64  `tfsdk:"version"`
+}
+
+func (r *ArchestraPromptResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_archestra_prompt"
+}
+
+func (r *ArchestraPromptResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+    resp.Schema = schema.Schema{
+        Attributes: map[string]schema.Attribute{
+            "id": schema.StringAttribute{
+                Computed: true,
+            },
+            "name": schema.StringAttribute{
+                Required: true,
+            },
+            "system_prompt": schema.StringAttribute{
+                Optional: true,
+            },
+            "prompt": schema.StringAttribute{
+                Required: true,
+            },
+            "is_active": schema.BoolAttribute{
+                Optional: true,
+            },
+            "version": schema.Int64Attribute{
+                Computed: true,
+            },
+        },
+    }
+}
+
+
+func (r *ArchestraPromptResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+	if req.ProviderData == nil {
+		return
+	}
+
+	client, ok := req.ProviderData.(*client.ClientWithResponses)
+	if !ok {
+		resp.Diagnostics.AddError(
+			"Unexpected Resource Configure Type",
+			fmt.Sprintf("Expected *client.ClientWithResponses, got: %T", req.ProviderData),
+		)
+		return
+	}
+
+	r.client = client
+}
+
+func (r *ArchestraPromptResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+    var plan ArchestraPromptResourceModel
+    resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+    if resp.Diagnostics.HasError() {
+        return
+    }
+
+    body := client.CreatePromptJSONRequestBody{
+        // AgentId:      r.client.AgentID, // comes from provider config
+        Name:         plan.Name.ValueString(),
+        SystemPrompt: plan.SystemPrompt.ValueStringPointer(),
+        UserPrompt:   plan.Prompt.ValueStringPointer(),
+        IsActive:     plan.IsActive.ValueBoolPointer(),
+    }
+
+    createResp, err := r.client.CreatePromptWithResponse(ctx, body)
+    if err != nil {
+        resp.Diagnostics.AddError("API Error", err.Error())
+        return
+    }
+
+    prompt := createResp.JSON200
+
+    plan.ID = types.StringValue(prompt.Id.String())
+    plan.Version = types.Int64Value(int64(prompt.Version))
+
+    resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+}
+
+
+func (r *ArchestraPromptResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+    var data ArchestraPromptResourceModel
+    resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+    if resp.Diagnostics.HasError() {
+        return
+    }
+
+	ID, err := uuid.Parse(data.ID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to get Prompt: %s", err))
+		return
+	}
+	
+    getResp, err := r.client.GetPromptWithResponse(ctx, ID)
+    if err != nil {
+        resp.Diagnostics.AddError("API Error", err.Error())
+        return
+    }
+
+    p := getResp.JSON200
+
+    data.Name = types.StringValue(p.Name)
+    data.SystemPrompt = types.StringPointerValue(p.SystemPrompt)
+    data.Prompt = types.StringPointerValue(p.UserPrompt)
+    data.IsActive = types.BoolValue(p.IsActive)
+    data.Version = types.Int64Value(int64(p.Version))
+
+    resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+
+func (r *ArchestraPromptResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+    var data ArchestraPromptResourceModel
+    var state ArchestraPromptResourceModel
+
+    resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+    resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+    if resp.Diagnostics.HasError() {
+        return
+    }
+
+    parentID := openapi_types.UUID(state.ID.ValueString())
+
+    // Create new version by referencing the parent prompt
+    body := client.CreatePromptJSONRequestBody{
+        // AgentId:        r.client.AgentID,
+        Name:           data.Name.ValueString(),
+        SystemPrompt:   data.SystemPrompt.ValueStringPointer(),
+        UserPrompt:     data.Prompt.ValueStringPointer(),
+        IsActive:       data.IsActive.ValueBoolPointer(),
+        ParentPromptId: parentID,
+    }
+
+    createResp, err := r.client.CreatePromptWithResponse(ctx, body)
+    if err != nil {
+        resp.Diagnostics.AddError("API Error", err.Error())
+        return
+    }
+
+    prompt := createResp.JSON200
+
+    // Update Terraform state to new version
+    data.ID = types.StringValue(prompt.Id.String())
+    data.Version = types.Int64Value(int64(prompt.Version))
+
+    resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+
+func (r *ArchestraPromptResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+    var state ArchestraPromptResourceModel
+    resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+    if resp.Diagnostics.HasError() {
+        return
+    }
+
+    _, err := r.client.DeletePromptWithResponse(ctx, state.ID.ValueString())
+    if err != nil {
+        resp.Diagnostics.AddError("API Error", err.Error())
+    }
+}
+
+func ptrUUID(id string) *openapi_types.UUID {
+    u := openapi_types.UUID(id)
+    return &u
+}
