@@ -44,7 +44,7 @@ func TestProviderResources_RegistrationCount(t *testing.T) {
 	resources := provider.Resources(t.Context())
 
 	// We expect this many resources to be registered
-	expectedCount := 12
+	expectedCount := 13
 	if len(resources) != expectedCount {
 		t.Errorf("Expected %d resources to be registered, got %d", expectedCount, len(resources))
 	}
@@ -58,7 +58,7 @@ func TestProviderDataSources_RegistrationCount(t *testing.T) {
 	dataSources := provider.DataSources(t.Context())
 
 	// We expect this many data sources to be registered
-	expectedCount := 5
+	expectedCount := 6
 	if len(dataSources) != expectedCount {
 		t.Errorf("Expected %d data sources to be registered, got %d", expectedCount, len(dataSources))
 	}

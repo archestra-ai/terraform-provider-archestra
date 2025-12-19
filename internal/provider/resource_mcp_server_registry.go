@@ -46,8 +46,8 @@ type LocalConfigModel struct {
 	Environment   types.Map    `tfsdk:"environment"`
 	DockerImage   types.String `tfsdk:"docker_image"`
 	TransportType types.String `tfsdk:"transport_type"`
-	HTTPPort      types.Int64  `tfsdk:"http_port"`
-	HTTPPath      types.String `tfsdk:"http_path"`
+	HttpPort      types.Int64  `tfsdk:"http_port"`
+	HttpPath      types.String `tfsdk:"http_path"`
 }
 
 type AuthFieldModel struct {
@@ -130,8 +130,7 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 					"http_path": schema.StringAttribute{
 						MarkdownDescription: "HTTP path for streamable-http transport (e.g., '/sse')",
 						Optional:            true,
-					},
-				},
+					}},
 			},
 			"auth_fields": schema.ListNestedAttribute{
 				MarkdownDescription: "Custom authentication fields required by the MCP server",
@@ -226,12 +225,13 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 			Command     *string   `json:"command,omitempty"`
 			DockerImage *string   `json:"dockerImage,omitempty"`
 			Environment *[]struct {
-				Description          *string                                                               `json:"description,omitempty"`
-				Key                  string                                                                `json:"key"`
-				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-				Required             *bool                                                                 `json:"required,omitempty"`
-				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-				Value                *string                                                               `json:"value,omitempty"`
+				Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                                      `json:"description,omitempty"`
+				Key                  string                                                                       `json:"key"`
+				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+				Required             *bool                                                                        `json:"required,omitempty"`
+				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+				Value                *string                                                                      `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath       *string                                                              `json:"httpPath,omitempty"`
 			HttpPort       *float32                                                             `json:"httpPort,omitempty"`
@@ -263,26 +263,29 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 				return
 			}
 			envSlice := make([]struct {
-				Description          *string                                                               `json:"description,omitempty"`
-				Key                  string                                                                `json:"key"`
-				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-				Required             *bool                                                                 `json:"required,omitempty"`
-				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-				Value                *string                                                               `json:"value,omitempty"`
+				Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                                      `json:"description,omitempty"`
+				Key                  string                                                                       `json:"key"`
+				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+				Required             *bool                                                                        `json:"required,omitempty"`
+				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+				Value                *string                                                                      `json:"value,omitempty"`
 			}, 0, len(env))
 			for k, v := range env {
 				val := v
 				envSlice = append(envSlice, struct {
-					Description          *string                                                               `json:"description,omitempty"`
-					Key                  string                                                                `json:"key"`
-					PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-					Required             *bool                                                                 `json:"required,omitempty"`
-					Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-					Value                *string                                                               `json:"value,omitempty"`
+					Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+					Description          *string                                                                      `json:"description,omitempty"`
+					Key                  string                                                                       `json:"key"`
+					PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+					Required             *bool                                                                        `json:"required,omitempty"`
+					Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+					Value                *string                                                                      `json:"value,omitempty"`
 				}{
-					Key:   k,
-					Value: &val,
-					Type:  "string",
+					Default: nil,
+					Key:     k,
+					Value:   &val,
+					Type:    "string",
 				})
 			}
 			lcStruct.Environment = &envSlice
@@ -293,12 +296,12 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 			img := localConfig.DockerImage.ValueString()
 			lcStruct.DockerImage = &img
 		}
-		if !localConfig.HTTPPath.IsNull() {
-			path := localConfig.HTTPPath.ValueString()
+		if !localConfig.HttpPath.IsNull() {
+			path := localConfig.HttpPath.ValueString()
 			lcStruct.HttpPath = &path
 		}
-		if !localConfig.HTTPPort.IsNull() {
-			port := float32(localConfig.HTTPPort.ValueInt64())
+		if !localConfig.HttpPort.IsNull() {
+			port := float32(localConfig.HttpPort.ValueInt64())
 			lcStruct.HttpPort = &port
 		}
 		if !localConfig.TransportType.IsNull() {
@@ -586,17 +589,18 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 			return
 		}
 
-		lcStruct := struct {
+		lcStruct := &struct {
 			Arguments   *[]string `json:"arguments,omitempty"`
 			Command     *string   `json:"command,omitempty"`
 			DockerImage *string   `json:"dockerImage,omitempty"`
 			Environment *[]struct {
-				Description          *string                                                               `json:"description,omitempty"`
-				Key                  string                                                                `json:"key"`
-				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-				Required             *bool                                                                 `json:"required,omitempty"`
-				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-				Value                *string                                                               `json:"value,omitempty"`
+				Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                                      `json:"description,omitempty"`
+				Key                  string                                                                       `json:"key"`
+				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+				Required             *bool                                                                        `json:"required,omitempty"`
+				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+				Value                *string                                                                      `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath       *string                                                              `json:"httpPath,omitempty"`
 			HttpPort       *float32                                                             `json:"httpPort,omitempty"`
@@ -628,26 +632,29 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 				return
 			}
 			envSlice := make([]struct {
-				Description          *string                                                               `json:"description,omitempty"`
-				Key                  string                                                                `json:"key"`
-				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-				Required             *bool                                                                 `json:"required,omitempty"`
-				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-				Value                *string                                                               `json:"value,omitempty"`
+				Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                                      `json:"description,omitempty"`
+				Key                  string                                                                       `json:"key"`
+				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+				Required             *bool                                                                        `json:"required,omitempty"`
+				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+				Value                *string                                                                      `json:"value,omitempty"`
 			}, 0, len(env))
 			for k, v := range env {
 				val := v
 				envSlice = append(envSlice, struct {
-					Description          *string                                                               `json:"description,omitempty"`
-					Key                  string                                                                `json:"key"`
-					PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-					Required             *bool                                                                 `json:"required,omitempty"`
-					Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-					Value                *string                                                               `json:"value,omitempty"`
+					Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+					Description          *string                                                                      `json:"description,omitempty"`
+					Key                  string                                                                       `json:"key"`
+					PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+					Required             *bool                                                                        `json:"required,omitempty"`
+					Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+					Value                *string                                                                      `json:"value,omitempty"`
 				}{
-					Key:   k,
-					Value: &val,
-					Type:  "string",
+					Default: nil,
+					Key:     k,
+					Value:   &val,
+					Type:    "string",
 				})
 			}
 			lcStruct.Environment = &envSlice
@@ -658,12 +665,12 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 			img := localConfig.DockerImage.ValueString()
 			lcStruct.DockerImage = &img
 		}
-		if !localConfig.HTTPPath.IsNull() {
-			path := localConfig.HTTPPath.ValueString()
+		if !localConfig.HttpPath.IsNull() {
+			path := localConfig.HttpPath.ValueString()
 			lcStruct.HttpPath = &path
 		}
-		if !localConfig.HTTPPort.IsNull() {
-			port := float32(localConfig.HTTPPort.ValueInt64())
+		if !localConfig.HttpPort.IsNull() {
+			port := float32(localConfig.HttpPort.ValueInt64())
 			lcStruct.HttpPort = &port
 		}
 		if !localConfig.TransportType.IsNull() {
@@ -671,7 +678,7 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 			lcStruct.TransportType = &tt
 		}
 
-		requestBody.LocalConfig = &lcStruct
+		requestBody.LocalConfig = lcStruct
 	}
 
 	// Handle AuthFields

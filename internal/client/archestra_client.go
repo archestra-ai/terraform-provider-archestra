@@ -18,20 +18,6 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
-// Defines values for SupportedProviders.
-const (
-	SupportedProvidersAnthropic SupportedProviders = "anthropic"
-	SupportedProvidersGemini    SupportedProviders = "gemini"
-	SupportedProvidersOpenai    SupportedProviders = "openai"
-)
-
-// Defines values for SupportedProvidersInput.
-const (
-	SupportedProvidersInputAnthropic SupportedProvidersInput = "anthropic"
-	SupportedProvidersInputGemini    SupportedProvidersInput = "gemini"
-	SupportedProvidersInputOpenai    SupportedProvidersInput = "openai"
-)
-
 // Defines values for GetAllAgentToolsParamsSortBy.
 const (
 	GetAllAgentToolsParamsSortByAgent                                GetAllAgentToolsParamsSortBy = "agent"
@@ -123,9 +109,9 @@ const (
 
 // Defines values for CreateChatApiKeyJSONBodyProvider.
 const (
-	Anthropic CreateChatApiKeyJSONBodyProvider = "anthropic"
-	Gemini    CreateChatApiKeyJSONBodyProvider = "gemini"
-	Openai    CreateChatApiKeyJSONBodyProvider = "openai"
+	CreateChatApiKeyJSONBodyProviderAnthropic CreateChatApiKeyJSONBodyProvider = "anthropic"
+	CreateChatApiKeyJSONBodyProviderGemini    CreateChatApiKeyJSONBodyProvider = "gemini"
+	CreateChatApiKeyJSONBodyProviderOpenai    CreateChatApiKeyJSONBodyProvider = "openai"
 )
 
 // Defines values for CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType.
@@ -330,11 +316,25 @@ const (
 	CreateOptimizationRuleJSONBodyEntityTypeTeam         CreateOptimizationRuleJSONBodyEntityType = "team"
 )
 
+// Defines values for CreateOptimizationRuleJSONBodyProvider.
+const (
+	CreateOptimizationRuleJSONBodyProviderAnthropic CreateOptimizationRuleJSONBodyProvider = "anthropic"
+	CreateOptimizationRuleJSONBodyProviderGemini    CreateOptimizationRuleJSONBodyProvider = "gemini"
+	CreateOptimizationRuleJSONBodyProviderOpenai    CreateOptimizationRuleJSONBodyProvider = "openai"
+)
+
 // Defines values for UpdateOptimizationRuleJSONBodyEntityType.
 const (
 	UpdateOptimizationRuleJSONBodyEntityTypeAgent        UpdateOptimizationRuleJSONBodyEntityType = "agent"
 	UpdateOptimizationRuleJSONBodyEntityTypeOrganization UpdateOptimizationRuleJSONBodyEntityType = "organization"
 	UpdateOptimizationRuleJSONBodyEntityTypeTeam         UpdateOptimizationRuleJSONBodyEntityType = "team"
+)
+
+// Defines values for UpdateOptimizationRuleJSONBodyProvider.
+const (
+	UpdateOptimizationRuleJSONBodyProviderAnthropic UpdateOptimizationRuleJSONBodyProvider = "anthropic"
+	UpdateOptimizationRuleJSONBodyProviderGemini    UpdateOptimizationRuleJSONBodyProvider = "gemini"
+	UpdateOptimizationRuleJSONBodyProviderOpenai    UpdateOptimizationRuleJSONBodyProvider = "openai"
 )
 
 // Defines values for UpdateOrganizationJSONBodyCompressionScope.
@@ -435,6 +435,13 @@ const (
 	UpdateRoleJSONBodyPermissionUpdate UpdateRoleJSONBodyPermission = "update"
 )
 
+// Defines values for InitializeSecretsManagerJSONBodyType.
+const (
+	BYOSVAULT InitializeSecretsManagerJSONBodyType = "BYOS_VAULT"
+	DB        InitializeSecretsManagerJSONBodyType = "DB"
+	Vault     InitializeSecretsManagerJSONBodyType = "Vault"
+)
+
 // Defines values for CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication.
 const (
 	CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthenticationClientSecretBasic CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication = "client_secret_basic"
@@ -517,6 +524,20 @@ const (
 	GetTeamStatisticsParamsTimeframe0N90d GetTeamStatisticsParamsTimeframe0 = "90d"
 )
 
+// Defines values for CreateTokenPriceJSONBodyProvider.
+const (
+	CreateTokenPriceJSONBodyProviderAnthropic CreateTokenPriceJSONBodyProvider = "anthropic"
+	CreateTokenPriceJSONBodyProviderGemini    CreateTokenPriceJSONBodyProvider = "gemini"
+	CreateTokenPriceJSONBodyProviderOpenai    CreateTokenPriceJSONBodyProvider = "openai"
+)
+
+// Defines values for UpdateTokenPriceJSONBodyProvider.
+const (
+	Anthropic UpdateTokenPriceJSONBodyProvider = "anthropic"
+	Gemini    UpdateTokenPriceJSONBodyProvider = "gemini"
+	Openai    UpdateTokenPriceJSONBodyProvider = "openai"
+)
+
 // Defines values for CreateTrustedDataPolicyJSONBodyAction.
 const (
 	CreateTrustedDataPolicyJSONBodyActionBlockAlways         CreateTrustedDataPolicyJSONBodyAction = "block_always"
@@ -552,12 +573,6 @@ const (
 	UpdateTrustedDataPolicyJSONBodyOperatorRegex       UpdateTrustedDataPolicyJSONBodyOperator = "regex"
 	UpdateTrustedDataPolicyJSONBodyOperatorStartsWith  UpdateTrustedDataPolicyJSONBodyOperator = "startsWith"
 )
-
-// SupportedProviders defines model for SupportedProviders.
-type SupportedProviders string
-
-// SupportedProvidersInput defines model for SupportedProvidersInput.
-type SupportedProvidersInput string
 
 // GetAllAgentToolsParams defines parameters for GetAllAgentTools.
 type GetAllAgentToolsParams struct {
@@ -741,6 +756,12 @@ type CreateChatApiKeyJSONBody struct {
 // CreateChatApiKeyJSONBodyProvider defines parameters for CreateChatApiKey.
 type CreateChatApiKeyJSONBodyProvider string
 
+// BulkAssignChatApiKeysToProfilesJSONBody defines parameters for BulkAssignChatApiKeysToProfiles.
+type BulkAssignChatApiKeysToProfilesJSONBody struct {
+	ChatApiKeyIds []openapi_types.UUID `json:"chatApiKeyIds"`
+	ProfileIds    []openapi_types.UUID `json:"profileIds"`
+}
+
 // UpdateChatApiKeyJSONBody defines parameters for UpdateChatApiKey.
 type UpdateChatApiKeyJSONBody struct {
 	ApiKey *string `json:"apiKey,omitempty"`
@@ -810,12 +831,13 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 		Command     *string   `json:"command,omitempty"`
 		DockerImage *string   `json:"dockerImage,omitempty"`
 		Environment *[]struct {
-			Description          *string                                                        `json:"description,omitempty"`
-			Key                  string                                                         `json:"key"`
-			PromptOnInstallation bool                                                           `json:"promptOnInstallation"`
-			Required             *bool                                                          `json:"required,omitempty"`
-			Type                 CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-			Value                *string                                                        `json:"value,omitempty"`
+			Default              *CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+			Description          *string                                                               `json:"description,omitempty"`
+			Key                  string                                                                `json:"key"`
+			PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
+			Required             *bool                                                                 `json:"required,omitempty"`
+			Type                 CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+			Value                *string                                                               `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath       *string                                                       `json:"httpPath,omitempty"`
 		HttpPort       *float32                                                      `json:"httpPort,omitempty"`
@@ -868,6 +890,20 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 	Version *string `json:"version"`
 }
 
+// CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault0 defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault0 = string
+
+// CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault1 defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault1 = float32
+
+// CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault2 defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault2 = bool
+
+// CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default struct {
+	union json.RawMessage
+}
+
 // CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType string
 
@@ -917,12 +953,13 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 		Command     *string   `json:"command,omitempty"`
 		DockerImage *string   `json:"dockerImage,omitempty"`
 		Environment *[]struct {
-			Description          *string                                                        `json:"description,omitempty"`
-			Key                  string                                                         `json:"key"`
-			PromptOnInstallation bool                                                           `json:"promptOnInstallation"`
-			Required             *bool                                                          `json:"required,omitempty"`
-			Type                 UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-			Value                *string                                                        `json:"value,omitempty"`
+			Default              *UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+			Description          *string                                                               `json:"description,omitempty"`
+			Key                  string                                                                `json:"key"`
+			PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
+			Required             *bool                                                                 `json:"required,omitempty"`
+			Type                 UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+			Value                *string                                                               `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath       *string                                                       `json:"httpPath,omitempty"`
 		HttpPort       *float32                                                      `json:"httpPort,omitempty"`
@@ -973,6 +1010,20 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 		Type        UpdateInternalMcpCatalogItemJSONBodyUserConfigType       `json:"type"`
 	} `json:"userConfig"`
 	Version *string `json:"version"`
+}
+
+// UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault0 defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault0 = string
+
+// UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault1 defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault1 = float32
+
+// UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault2 defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault2 = bool
+
+// UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default struct {
+	union json.RawMessage
 }
 
 // UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType defines parameters for UpdateInternalMcpCatalogItem.
@@ -1162,12 +1213,13 @@ type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
 		Command     *string   `json:"command,omitempty"`
 		DockerImage *string   `json:"dockerImage,omitempty"`
 		Environment *[]struct {
-			Description          *string                                                                                 `json:"description,omitempty"`
-			Key                  string                                                                                  `json:"key"`
-			PromptOnInstallation bool                                                                                    `json:"promptOnInstallation"`
-			Required             *bool                                                                                   `json:"required,omitempty"`
-			Type                 CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType `json:"type"`
-			Value                *string                                                                                 `json:"value,omitempty"`
+			Default              *CreateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
+			Description          *string                                                                                          `json:"description,omitempty"`
+			Key                  string                                                                                           `json:"key"`
+			PromptOnInstallation bool                                                                                             `json:"promptOnInstallation"`
+			Required             *bool                                                                                            `json:"required,omitempty"`
+			Type                 CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType          `json:"type"`
+			Value                *string                                                                                          `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath       *string                                                                                `json:"httpPath,omitempty"`
 		HttpPort       *float32                                                                               `json:"httpPort,omitempty"`
@@ -1178,6 +1230,20 @@ type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
 	ServerType CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType `json:"serverType"`
 	Type       CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type       `json:"type"`
 	Version    *string                                                                 `json:"version,omitempty"`
+}
+
+// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault0 defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault0 = string
+
+// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault1 defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault1 = float32
+
+// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault2 defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault2 = bool
+
+// CreateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default struct {
+	union json.RawMessage
 }
 
 // CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType defines parameters for CreateMcpServerInstallationRequest.
@@ -1259,12 +1325,13 @@ type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
 		Command     *string   `json:"command,omitempty"`
 		DockerImage *string   `json:"dockerImage,omitempty"`
 		Environment *[]struct {
-			Description          *string                                                                                 `json:"description,omitempty"`
-			Key                  string                                                                                  `json:"key"`
-			PromptOnInstallation bool                                                                                    `json:"promptOnInstallation"`
-			Required             *bool                                                                                   `json:"required,omitempty"`
-			Type                 UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType `json:"type"`
-			Value                *string                                                                                 `json:"value,omitempty"`
+			Default              *UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
+			Description          *string                                                                                          `json:"description,omitempty"`
+			Key                  string                                                                                           `json:"key"`
+			PromptOnInstallation bool                                                                                             `json:"promptOnInstallation"`
+			Required             *bool                                                                                            `json:"required,omitempty"`
+			Type                 UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType          `json:"type"`
+			Value                *string                                                                                          `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath       *string                                                                                `json:"httpPath,omitempty"`
 		HttpPort       *float32                                                                               `json:"httpPort,omitempty"`
@@ -1275,6 +1342,20 @@ type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
 	ServerType UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1ServerType `json:"serverType"`
 	Type       UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type       `json:"type"`
 	Version    *string                                                                 `json:"version,omitempty"`
+}
+
+// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault0 defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault0 = string
+
+// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault1 defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault1 = float32
+
+// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault2 defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault2 = bool
+
+// UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default struct {
+	union json.RawMessage
 }
 
 // UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType defines parameters for UpdateMcpServerInstallationRequest.
@@ -1332,7 +1413,7 @@ type CreateOptimizationRuleJSONBody struct {
 	EntityId    string                                           `json:"entityId"`
 	EntityType  CreateOptimizationRuleJSONBodyEntityType         `json:"entityType"`
 	Id          *openapi_types.UUID                              `json:"id,omitempty"`
-	Provider    SupportedProvidersInput                          `json:"provider"`
+	Provider    CreateOptimizationRuleJSONBodyProvider           `json:"provider"`
 	TargetModel string                                           `json:"targetModel"`
 	UpdatedAt   interface{}                                      `json:"updatedAt,omitempty"`
 }
@@ -1355,6 +1436,9 @@ type CreateOptimizationRuleJSONBody_Conditions_Item struct {
 // CreateOptimizationRuleJSONBodyEntityType defines parameters for CreateOptimizationRule.
 type CreateOptimizationRuleJSONBodyEntityType string
 
+// CreateOptimizationRuleJSONBodyProvider defines parameters for CreateOptimizationRule.
+type CreateOptimizationRuleJSONBodyProvider string
+
 // UpdateOptimizationRuleJSONBody defines parameters for UpdateOptimizationRule.
 type UpdateOptimizationRuleJSONBody struct {
 	Conditions  *[]UpdateOptimizationRuleJSONBody_Conditions_Item `json:"conditions,omitempty"`
@@ -1363,7 +1447,7 @@ type UpdateOptimizationRuleJSONBody struct {
 	EntityId    *string                                           `json:"entityId,omitempty"`
 	EntityType  *UpdateOptimizationRuleJSONBodyEntityType         `json:"entityType,omitempty"`
 	Id          *openapi_types.UUID                               `json:"id,omitempty"`
-	Provider    *SupportedProvidersInput                          `json:"provider,omitempty"`
+	Provider    *UpdateOptimizationRuleJSONBodyProvider           `json:"provider,omitempty"`
 	TargetModel *string                                           `json:"targetModel,omitempty"`
 	UpdatedAt   interface{}                                       `json:"updatedAt,omitempty"`
 }
@@ -1385,6 +1469,9 @@ type UpdateOptimizationRuleJSONBody_Conditions_Item struct {
 
 // UpdateOptimizationRuleJSONBodyEntityType defines parameters for UpdateOptimizationRule.
 type UpdateOptimizationRuleJSONBodyEntityType string
+
+// UpdateOptimizationRuleJSONBodyProvider defines parameters for UpdateOptimizationRule.
+type UpdateOptimizationRuleJSONBodyProvider string
 
 // UpdateOrganizationJSONBody defines parameters for UpdateOrganization.
 type UpdateOrganizationJSONBody struct {
@@ -1462,6 +1549,14 @@ type UpdateRoleParamsRoleId1 = string
 
 // UpdateRoleJSONBodyPermission defines parameters for UpdateRole.
 type UpdateRoleJSONBodyPermission string
+
+// InitializeSecretsManagerJSONBody defines parameters for InitializeSecretsManager.
+type InitializeSecretsManagerJSONBody struct {
+	Type InitializeSecretsManagerJSONBodyType `json:"type"`
+}
+
+// InitializeSecretsManagerJSONBodyType defines parameters for InitializeSecretsManager.
+type InitializeSecretsManagerJSONBodyType string
 
 // CreateSsoProviderJSONBody defines parameters for CreateSsoProvider.
 type CreateSsoProviderJSONBody struct {
@@ -1776,19 +1871,25 @@ type GetTeamVaultSecretKeysJSONBody struct {
 
 // CreateTokenPriceJSONBody defines parameters for CreateTokenPrice.
 type CreateTokenPriceJSONBody struct {
-	Model                 string                  `json:"model"`
-	PricePerMillionInput  string                  `json:"pricePerMillionInput"`
-	PricePerMillionOutput string                  `json:"pricePerMillionOutput"`
-	Provider              SupportedProvidersInput `json:"provider"`
+	Model                 string                           `json:"model"`
+	PricePerMillionInput  string                           `json:"pricePerMillionInput"`
+	PricePerMillionOutput string                           `json:"pricePerMillionOutput"`
+	Provider              CreateTokenPriceJSONBodyProvider `json:"provider"`
 }
+
+// CreateTokenPriceJSONBodyProvider defines parameters for CreateTokenPrice.
+type CreateTokenPriceJSONBodyProvider string
 
 // UpdateTokenPriceJSONBody defines parameters for UpdateTokenPrice.
 type UpdateTokenPriceJSONBody struct {
-	Model                 *string                  `json:"model,omitempty"`
-	PricePerMillionInput  *string                  `json:"pricePerMillionInput,omitempty"`
-	PricePerMillionOutput *string                  `json:"pricePerMillionOutput,omitempty"`
-	Provider              *SupportedProvidersInput `json:"provider,omitempty"`
+	Model                 *string                           `json:"model,omitempty"`
+	PricePerMillionInput  *string                           `json:"pricePerMillionInput,omitempty"`
+	PricePerMillionOutput *string                           `json:"pricePerMillionOutput,omitempty"`
+	Provider              *UpdateTokenPriceJSONBodyProvider `json:"provider,omitempty"`
 }
+
+// UpdateTokenPriceJSONBodyProvider defines parameters for UpdateTokenPrice.
+type UpdateTokenPriceJSONBodyProvider string
 
 // CreateTrustedDataPolicyJSONBody defines parameters for CreateTrustedDataPolicy.
 type CreateTrustedDataPolicyJSONBody struct {
@@ -1851,6 +1952,9 @@ type StreamChatJSONRequestBody StreamChatJSONBody
 
 // CreateChatApiKeyJSONRequestBody defines body for CreateChatApiKey for application/json ContentType.
 type CreateChatApiKeyJSONRequestBody CreateChatApiKeyJSONBody
+
+// BulkAssignChatApiKeysToProfilesJSONRequestBody defines body for BulkAssignChatApiKeysToProfiles for application/json ContentType.
+type BulkAssignChatApiKeysToProfilesJSONRequestBody BulkAssignChatApiKeysToProfilesJSONBody
 
 // UpdateChatApiKeyJSONRequestBody defines body for UpdateChatApiKey for application/json ContentType.
 type UpdateChatApiKeyJSONRequestBody UpdateChatApiKeyJSONBody
@@ -1932,6 +2036,9 @@ type CreateRoleJSONRequestBody CreateRoleJSONBody
 
 // UpdateRoleJSONRequestBody defines body for UpdateRole for application/json ContentType.
 type UpdateRoleJSONRequestBody UpdateRoleJSONBody
+
+// InitializeSecretsManagerJSONRequestBody defines body for InitializeSecretsManager for application/json ContentType.
+type InitializeSecretsManagerJSONRequestBody InitializeSecretsManagerJSONBody
 
 // CreateSsoProviderJSONRequestBody defines body for CreateSsoProvider for application/json ContentType.
 type CreateSsoProviderJSONRequestBody CreateSsoProviderJSONBody
@@ -2140,6 +2247,11 @@ type ClientInterface interface {
 
 	CreateChatApiKey(ctx context.Context, body CreateChatApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// BulkAssignChatApiKeysToProfilesWithBody request with any body
+	BulkAssignChatApiKeysToProfilesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	BulkAssignChatApiKeysToProfiles(ctx context.Context, body BulkAssignChatApiKeysToProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteChatApiKey request
 	DeleteChatApiKey(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -2227,6 +2339,9 @@ type ClientInterface interface {
 	CreateInternalMcpCatalogItemWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateInternalMcpCatalogItem(ctx context.Context, body CreateInternalMcpCatalogItemJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteInternalMcpCatalogItemByName request
+	DeleteInternalMcpCatalogItemByName(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteInternalMcpCatalogItem request
 	DeleteInternalMcpCatalogItem(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2415,6 +2530,11 @@ type ClientInterface interface {
 
 	// CheckSecretsConnectivity request
 	CheckSecretsConnectivity(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// InitializeSecretsManagerWithBody request with any body
+	InitializeSecretsManagerWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	InitializeSecretsManager(ctx context.Context, body InitializeSecretsManagerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSecretsType request
 	GetSecretsType(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3001,6 +3121,30 @@ func (c *Client) CreateChatApiKey(ctx context.Context, body CreateChatApiKeyJSON
 	return c.Client.Do(req)
 }
 
+func (c *Client) BulkAssignChatApiKeysToProfilesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBulkAssignChatApiKeysToProfilesRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) BulkAssignChatApiKeysToProfiles(ctx context.Context, body BulkAssignChatApiKeysToProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBulkAssignChatApiKeysToProfilesRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) DeleteChatApiKey(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteChatApiKeyRequest(c.Server, id)
 	if err != nil {
@@ -3375,6 +3519,18 @@ func (c *Client) CreateInternalMcpCatalogItemWithBody(ctx context.Context, conte
 
 func (c *Client) CreateInternalMcpCatalogItem(ctx context.Context, body CreateInternalMcpCatalogItemJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateInternalMcpCatalogItemRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteInternalMcpCatalogItemByName(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteInternalMcpCatalogItemByNameRequest(c.Server, name)
 	if err != nil {
 		return nil, err
 	}
@@ -4185,6 +4341,30 @@ func (c *Client) UpdateRole(ctx context.Context, roleId struct {
 
 func (c *Client) CheckSecretsConnectivity(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCheckSecretsConnectivityRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) InitializeSecretsManagerWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewInitializeSecretsManagerRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) InitializeSecretsManager(ctx context.Context, body InitializeSecretsManagerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewInitializeSecretsManagerRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -6050,6 +6230,46 @@ func NewCreateChatApiKeyRequestWithBody(server string, contentType string, body 
 	return req, nil
 }
 
+// NewBulkAssignChatApiKeysToProfilesRequest calls the generic BulkAssignChatApiKeysToProfiles builder with application/json body
+func NewBulkAssignChatApiKeysToProfilesRequest(server string, body BulkAssignChatApiKeysToProfilesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewBulkAssignChatApiKeysToProfilesRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewBulkAssignChatApiKeysToProfilesRequestWithBody generates requests for BulkAssignChatApiKeysToProfiles with any type of body
+func NewBulkAssignChatApiKeysToProfilesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chat-api-keys/bulk-assign")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewDeleteChatApiKeyRequest generates requests for DeleteChatApiKey
 func NewDeleteChatApiKeyRequest(server string, id openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -6910,6 +7130,40 @@ func NewCreateInternalMcpCatalogItemRequestWithBody(server string, contentType s
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteInternalMcpCatalogItemByNameRequest generates requests for DeleteInternalMcpCatalogItemByName
+func NewDeleteInternalMcpCatalogItemByNameRequest(server string, name string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "name", runtime.ParamLocationPath, name)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/internal_mcp_catalog/by-name/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -8888,6 +9142,46 @@ func NewCheckSecretsConnectivityRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewInitializeSecretsManagerRequest calls the generic InitializeSecretsManager builder with application/json body
+func NewInitializeSecretsManagerRequest(server string, body InitializeSecretsManagerJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewInitializeSecretsManagerRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewInitializeSecretsManagerRequestWithBody generates requests for InitializeSecretsManager with any type of body
+func NewInitializeSecretsManagerRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/secrets/initialize-secrets-manager")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetSecretsTypeRequest generates requests for GetSecretsType
 func NewGetSecretsTypeRequest(server string) (*http.Request, error) {
 	var err error
@@ -10750,6 +11044,11 @@ type ClientWithResponsesInterface interface {
 
 	CreateChatApiKeyWithResponse(ctx context.Context, body CreateChatApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateChatApiKeyResponse, error)
 
+	// BulkAssignChatApiKeysToProfilesWithBodyWithResponse request with any body
+	BulkAssignChatApiKeysToProfilesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkAssignChatApiKeysToProfilesResponse, error)
+
+	BulkAssignChatApiKeysToProfilesWithResponse(ctx context.Context, body BulkAssignChatApiKeysToProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkAssignChatApiKeysToProfilesResponse, error)
+
 	// DeleteChatApiKeyWithResponse request
 	DeleteChatApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteChatApiKeyResponse, error)
 
@@ -10837,6 +11136,9 @@ type ClientWithResponsesInterface interface {
 	CreateInternalMcpCatalogItemWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateInternalMcpCatalogItemResponse, error)
 
 	CreateInternalMcpCatalogItemWithResponse(ctx context.Context, body CreateInternalMcpCatalogItemJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateInternalMcpCatalogItemResponse, error)
+
+	// DeleteInternalMcpCatalogItemByNameWithResponse request
+	DeleteInternalMcpCatalogItemByNameWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*DeleteInternalMcpCatalogItemByNameResponse, error)
 
 	// DeleteInternalMcpCatalogItemWithResponse request
 	DeleteInternalMcpCatalogItemWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteInternalMcpCatalogItemResponse, error)
@@ -11025,6 +11327,11 @@ type ClientWithResponsesInterface interface {
 
 	// CheckSecretsConnectivityWithResponse request
 	CheckSecretsConnectivityWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CheckSecretsConnectivityResponse, error)
+
+	// InitializeSecretsManagerWithBodyWithResponse request with any body
+	InitializeSecretsManagerWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*InitializeSecretsManagerResponse, error)
+
+	InitializeSecretsManagerWithResponse(ctx context.Context, body InitializeSecretsManagerJSONRequestBody, reqEditors ...RequestEditorFn) (*InitializeSecretsManagerResponse, error)
 
 	// GetSecretsTypeWithResponse request
 	GetSecretsTypeWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetSecretsTypeResponse, error)
@@ -13166,6 +13473,73 @@ func (r CreateChatApiKeyResponse) StatusCode() int {
 	return 0
 }
 
+type BulkAssignChatApiKeysToProfilesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AssignedCount float32 `json:"assignedCount"`
+		Success       bool    `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    BulkAssignChatApiKeysToProfiles400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    BulkAssignChatApiKeysToProfiles401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    BulkAssignChatApiKeysToProfiles403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    BulkAssignChatApiKeysToProfiles404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    BulkAssignChatApiKeysToProfiles409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    BulkAssignChatApiKeysToProfiles500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type BulkAssignChatApiKeysToProfiles400ErrorType string
+type BulkAssignChatApiKeysToProfiles401ErrorType string
+type BulkAssignChatApiKeysToProfiles403ErrorType string
+type BulkAssignChatApiKeysToProfiles404ErrorType string
+type BulkAssignChatApiKeysToProfiles409ErrorType string
+type BulkAssignChatApiKeysToProfiles500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r BulkAssignChatApiKeysToProfilesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BulkAssignChatApiKeysToProfilesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeleteChatApiKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -14788,12 +15162,13 @@ type GetInternalMcpCatalogResponse struct {
 			Command     *string   `json:"command,omitempty"`
 			DockerImage *string   `json:"dockerImage,omitempty"`
 			Environment *[]struct {
-				Description          *string                                            `json:"description,omitempty"`
-				Key                  string                                             `json:"key"`
-				PromptOnInstallation bool                                               `json:"promptOnInstallation"`
-				Required             *bool                                              `json:"required,omitempty"`
-				Type                 GetInternalMcpCatalog200LocalConfigEnvironmentType `json:"type"`
-				Value                *string                                            `json:"value,omitempty"`
+				Default              *GetInternalMcpCatalog_200_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                    `json:"description,omitempty"`
+				Key                  string                                                     `json:"key"`
+				PromptOnInstallation bool                                                       `json:"promptOnInstallation"`
+				Required             *bool                                                      `json:"required,omitempty"`
+				Type                 GetInternalMcpCatalog200LocalConfigEnvironmentType         `json:"type"`
+				Value                *string                                                    `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath      *string                                           `json:"httpPath,omitempty"`
 			HttpPort      *float32                                          `json:"httpPort,omitempty"`
@@ -14878,6 +15253,12 @@ type GetInternalMcpCatalogResponse struct {
 		} `json:"error"`
 	}
 }
+type GetInternalMcpCatalog200LocalConfigEnvironmentDefault0 = string
+type GetInternalMcpCatalog200LocalConfigEnvironmentDefault1 = float32
+type GetInternalMcpCatalog200LocalConfigEnvironmentDefault2 = bool
+type GetInternalMcpCatalog_200_LocalConfig_Environment_Default struct {
+	union json.RawMessage
+}
 type GetInternalMcpCatalog200LocalConfigEnvironmentType string
 type GetInternalMcpCatalog200LocalConfigTransportType string
 type GetInternalMcpCatalog200ServerType string
@@ -14936,12 +15317,13 @@ type CreateInternalMcpCatalogItemResponse struct {
 			Command     *string   `json:"command,omitempty"`
 			DockerImage *string   `json:"dockerImage,omitempty"`
 			Environment *[]struct {
-				Description          *string                                                   `json:"description,omitempty"`
-				Key                  string                                                    `json:"key"`
-				PromptOnInstallation bool                                                      `json:"promptOnInstallation"`
-				Required             *bool                                                     `json:"required,omitempty"`
-				Type                 CreateInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
-				Value                *string                                                   `json:"value,omitempty"`
+				Default              *CreateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                           `json:"description,omitempty"`
+				Key                  string                                                            `json:"key"`
+				PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
+				Required             *bool                                                             `json:"required,omitempty"`
+				Type                 CreateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
+				Value                *string                                                           `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath      *string                                                  `json:"httpPath,omitempty"`
 			HttpPort      *float32                                                 `json:"httpPort,omitempty"`
@@ -15026,6 +15408,12 @@ type CreateInternalMcpCatalogItemResponse struct {
 		} `json:"error"`
 	}
 }
+type CreateInternalMcpCatalogItem200LocalConfigEnvironmentDefault0 = string
+type CreateInternalMcpCatalogItem200LocalConfigEnvironmentDefault1 = float32
+type CreateInternalMcpCatalogItem200LocalConfigEnvironmentDefault2 = bool
+type CreateInternalMcpCatalogItem_200_LocalConfig_Environment_Default struct {
+	union json.RawMessage
+}
 type CreateInternalMcpCatalogItem200LocalConfigEnvironmentType string
 type CreateInternalMcpCatalogItem200LocalConfigTransportType string
 type CreateInternalMcpCatalogItem200ServerType string
@@ -15054,6 +15442,72 @@ func (r CreateInternalMcpCatalogItemResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CreateInternalMcpCatalogItemResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteInternalMcpCatalogItemByNameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    DeleteInternalMcpCatalogItemByName400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    DeleteInternalMcpCatalogItemByName401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    DeleteInternalMcpCatalogItemByName403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    DeleteInternalMcpCatalogItemByName404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    DeleteInternalMcpCatalogItemByName409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    DeleteInternalMcpCatalogItemByName500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteInternalMcpCatalogItemByName400ErrorType string
+type DeleteInternalMcpCatalogItemByName401ErrorType string
+type DeleteInternalMcpCatalogItemByName403ErrorType string
+type DeleteInternalMcpCatalogItemByName404ErrorType string
+type DeleteInternalMcpCatalogItemByName409ErrorType string
+type DeleteInternalMcpCatalogItemByName500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteInternalMcpCatalogItemByNameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteInternalMcpCatalogItemByNameResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -15150,12 +15604,13 @@ type GetInternalMcpCatalogItemResponse struct {
 			Command     *string   `json:"command,omitempty"`
 			DockerImage *string   `json:"dockerImage,omitempty"`
 			Environment *[]struct {
-				Description          *string                                                `json:"description,omitempty"`
-				Key                  string                                                 `json:"key"`
-				PromptOnInstallation bool                                                   `json:"promptOnInstallation"`
-				Required             *bool                                                  `json:"required,omitempty"`
-				Type                 GetInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
-				Value                *string                                                `json:"value,omitempty"`
+				Default              *GetInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                        `json:"description,omitempty"`
+				Key                  string                                                         `json:"key"`
+				PromptOnInstallation bool                                                           `json:"promptOnInstallation"`
+				Required             *bool                                                          `json:"required,omitempty"`
+				Type                 GetInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
+				Value                *string                                                        `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath      *string                                               `json:"httpPath,omitempty"`
 			HttpPort      *float32                                              `json:"httpPort,omitempty"`
@@ -15240,6 +15695,12 @@ type GetInternalMcpCatalogItemResponse struct {
 		} `json:"error"`
 	}
 }
+type GetInternalMcpCatalogItem200LocalConfigEnvironmentDefault0 = string
+type GetInternalMcpCatalogItem200LocalConfigEnvironmentDefault1 = float32
+type GetInternalMcpCatalogItem200LocalConfigEnvironmentDefault2 = bool
+type GetInternalMcpCatalogItem_200_LocalConfig_Environment_Default struct {
+	union json.RawMessage
+}
 type GetInternalMcpCatalogItem200LocalConfigEnvironmentType string
 type GetInternalMcpCatalogItem200LocalConfigTransportType string
 type GetInternalMcpCatalogItem200ServerType string
@@ -15298,12 +15759,13 @@ type UpdateInternalMcpCatalogItemResponse struct {
 			Command     *string   `json:"command,omitempty"`
 			DockerImage *string   `json:"dockerImage,omitempty"`
 			Environment *[]struct {
-				Description          *string                                                   `json:"description,omitempty"`
-				Key                  string                                                    `json:"key"`
-				PromptOnInstallation bool                                                      `json:"promptOnInstallation"`
-				Required             *bool                                                     `json:"required,omitempty"`
-				Type                 UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
-				Value                *string                                                   `json:"value,omitempty"`
+				Default              *UpdateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                           `json:"description,omitempty"`
+				Key                  string                                                            `json:"key"`
+				PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
+				Required             *bool                                                             `json:"required,omitempty"`
+				Type                 UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
+				Value                *string                                                           `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath      *string                                                  `json:"httpPath,omitempty"`
 			HttpPort      *float32                                                 `json:"httpPort,omitempty"`
@@ -15387,6 +15849,12 @@ type UpdateInternalMcpCatalogItemResponse struct {
 			Type    UpdateInternalMcpCatalogItem500ErrorType `json:"type"`
 		} `json:"error"`
 	}
+}
+type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentDefault0 = string
+type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentDefault1 = float32
+type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentDefault2 = bool
+type UpdateInternalMcpCatalogItem_200_LocalConfig_Environment_Default struct {
+	union json.RawMessage
 }
 type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType string
 type UpdateInternalMcpCatalogItem200LocalConfigTransportType string
@@ -16699,12 +17167,13 @@ type GetMcpServerInstallationRequests200CustomServerConfig1 struct {
 		Command     *string   `json:"command,omitempty"`
 		DockerImage *string   `json:"dockerImage,omitempty"`
 		Environment *[]struct {
-			Description          *string                                                                          `json:"description,omitempty"`
-			Key                  string                                                                           `json:"key"`
-			PromptOnInstallation bool                                                                             `json:"promptOnInstallation"`
-			Required             *bool                                                                            `json:"required,omitempty"`
-			Type                 GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
-			Value                *string                                                                          `json:"value,omitempty"`
+			Default              *GetMcpServerInstallationRequests_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
+			Description          *string                                                                                    `json:"description,omitempty"`
+			Key                  string                                                                                     `json:"key"`
+			PromptOnInstallation bool                                                                                       `json:"promptOnInstallation"`
+			Required             *bool                                                                                      `json:"required,omitempty"`
+			Type                 GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
+			Value                *string                                                                                    `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath       *string                                                                         `json:"httpPath,omitempty"`
 		HttpPort       *float32                                                                        `json:"httpPort,omitempty"`
@@ -16715,6 +17184,12 @@ type GetMcpServerInstallationRequests200CustomServerConfig1 struct {
 	ServerType GetMcpServerInstallationRequests200CustomServerConfig1ServerType `json:"serverType"`
 	Type       GetMcpServerInstallationRequests200CustomServerConfig1Type       `json:"type"`
 	Version    *string                                                          `json:"version,omitempty"`
+}
+type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
+type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
+type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
+type GetMcpServerInstallationRequests_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
+	union json.RawMessage
 }
 type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentType string
 type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigTransportType string
@@ -16846,12 +17321,13 @@ type CreateMcpServerInstallationRequest200CustomServerConfig1 struct {
 		Command     *string   `json:"command,omitempty"`
 		DockerImage *string   `json:"dockerImage,omitempty"`
 		Environment *[]struct {
-			Description          *string                                                                            `json:"description,omitempty"`
-			Key                  string                                                                             `json:"key"`
-			PromptOnInstallation bool                                                                               `json:"promptOnInstallation"`
-			Required             *bool                                                                              `json:"required,omitempty"`
-			Type                 CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
-			Value                *string                                                                            `json:"value,omitempty"`
+			Default              *CreateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
+			Description          *string                                                                                      `json:"description,omitempty"`
+			Key                  string                                                                                       `json:"key"`
+			PromptOnInstallation bool                                                                                         `json:"promptOnInstallation"`
+			Required             *bool                                                                                        `json:"required,omitempty"`
+			Type                 CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
+			Value                *string                                                                                      `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath       *string                                                                           `json:"httpPath,omitempty"`
 		HttpPort       *float32                                                                          `json:"httpPort,omitempty"`
@@ -16862,6 +17338,12 @@ type CreateMcpServerInstallationRequest200CustomServerConfig1 struct {
 	ServerType CreateMcpServerInstallationRequest200CustomServerConfig1ServerType `json:"serverType"`
 	Type       CreateMcpServerInstallationRequest200CustomServerConfig1Type       `json:"type"`
 	Version    *string                                                            `json:"version,omitempty"`
+}
+type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
+type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
+type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
+type CreateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
+	union json.RawMessage
 }
 type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
@@ -17059,12 +17541,13 @@ type GetMcpServerInstallationRequest200CustomServerConfig1 struct {
 		Command     *string   `json:"command,omitempty"`
 		DockerImage *string   `json:"dockerImage,omitempty"`
 		Environment *[]struct {
-			Description          *string                                                                         `json:"description,omitempty"`
-			Key                  string                                                                          `json:"key"`
-			PromptOnInstallation bool                                                                            `json:"promptOnInstallation"`
-			Required             *bool                                                                           `json:"required,omitempty"`
-			Type                 GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
-			Value                *string                                                                         `json:"value,omitempty"`
+			Default              *GetMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
+			Description          *string                                                                                   `json:"description,omitempty"`
+			Key                  string                                                                                    `json:"key"`
+			PromptOnInstallation bool                                                                                      `json:"promptOnInstallation"`
+			Required             *bool                                                                                     `json:"required,omitempty"`
+			Type                 GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
+			Value                *string                                                                                   `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath       *string                                                                        `json:"httpPath,omitempty"`
 		HttpPort       *float32                                                                       `json:"httpPort,omitempty"`
@@ -17075,6 +17558,12 @@ type GetMcpServerInstallationRequest200CustomServerConfig1 struct {
 	ServerType GetMcpServerInstallationRequest200CustomServerConfig1ServerType `json:"serverType"`
 	Type       GetMcpServerInstallationRequest200CustomServerConfig1Type       `json:"type"`
 	Version    *string                                                         `json:"version,omitempty"`
+}
+type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
+type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
+type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
+type GetMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
+	union json.RawMessage
 }
 type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
@@ -17206,12 +17695,13 @@ type UpdateMcpServerInstallationRequest200CustomServerConfig1 struct {
 		Command     *string   `json:"command,omitempty"`
 		DockerImage *string   `json:"dockerImage,omitempty"`
 		Environment *[]struct {
-			Description          *string                                                                            `json:"description,omitempty"`
-			Key                  string                                                                             `json:"key"`
-			PromptOnInstallation bool                                                                               `json:"promptOnInstallation"`
-			Required             *bool                                                                              `json:"required,omitempty"`
-			Type                 UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
-			Value                *string                                                                            `json:"value,omitempty"`
+			Default              *UpdateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
+			Description          *string                                                                                      `json:"description,omitempty"`
+			Key                  string                                                                                       `json:"key"`
+			PromptOnInstallation bool                                                                                         `json:"promptOnInstallation"`
+			Required             *bool                                                                                        `json:"required,omitempty"`
+			Type                 UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
+			Value                *string                                                                                      `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath       *string                                                                           `json:"httpPath,omitempty"`
 		HttpPort       *float32                                                                          `json:"httpPort,omitempty"`
@@ -17222,6 +17712,12 @@ type UpdateMcpServerInstallationRequest200CustomServerConfig1 struct {
 	ServerType UpdateMcpServerInstallationRequest200CustomServerConfig1ServerType `json:"serverType"`
 	Type       UpdateMcpServerInstallationRequest200CustomServerConfig1Type       `json:"type"`
 	Version    *string                                                            `json:"version,omitempty"`
+}
+type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
+type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
+type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
+type UpdateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
+	union json.RawMessage
 }
 type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
@@ -17353,12 +17849,13 @@ type ApproveMcpServerInstallationRequest200CustomServerConfig1 struct {
 		Command     *string   `json:"command,omitempty"`
 		DockerImage *string   `json:"dockerImage,omitempty"`
 		Environment *[]struct {
-			Description          *string                                                                             `json:"description,omitempty"`
-			Key                  string                                                                              `json:"key"`
-			PromptOnInstallation bool                                                                                `json:"promptOnInstallation"`
-			Required             *bool                                                                               `json:"required,omitempty"`
-			Type                 ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
-			Value                *string                                                                             `json:"value,omitempty"`
+			Default              *ApproveMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
+			Description          *string                                                                                       `json:"description,omitempty"`
+			Key                  string                                                                                        `json:"key"`
+			PromptOnInstallation bool                                                                                          `json:"promptOnInstallation"`
+			Required             *bool                                                                                         `json:"required,omitempty"`
+			Type                 ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
+			Value                *string                                                                                       `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath       *string                                                                            `json:"httpPath,omitempty"`
 		HttpPort       *float32                                                                           `json:"httpPort,omitempty"`
@@ -17369,6 +17866,12 @@ type ApproveMcpServerInstallationRequest200CustomServerConfig1 struct {
 	ServerType ApproveMcpServerInstallationRequest200CustomServerConfig1ServerType `json:"serverType"`
 	Type       ApproveMcpServerInstallationRequest200CustomServerConfig1Type       `json:"type"`
 	Version    *string                                                             `json:"version,omitempty"`
+}
+type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
+type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
+type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
+type ApproveMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
+	union json.RawMessage
 }
 type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
@@ -17500,12 +18003,13 @@ type DeclineMcpServerInstallationRequest200CustomServerConfig1 struct {
 		Command     *string   `json:"command,omitempty"`
 		DockerImage *string   `json:"dockerImage,omitempty"`
 		Environment *[]struct {
-			Description          *string                                                                             `json:"description,omitempty"`
-			Key                  string                                                                              `json:"key"`
-			PromptOnInstallation bool                                                                                `json:"promptOnInstallation"`
-			Required             *bool                                                                               `json:"required,omitempty"`
-			Type                 DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
-			Value                *string                                                                             `json:"value,omitempty"`
+			Default              *DeclineMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
+			Description          *string                                                                                       `json:"description,omitempty"`
+			Key                  string                                                                                        `json:"key"`
+			PromptOnInstallation bool                                                                                          `json:"promptOnInstallation"`
+			Required             *bool                                                                                         `json:"required,omitempty"`
+			Type                 DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
+			Value                *string                                                                                       `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath       *string                                                                            `json:"httpPath,omitempty"`
 		HttpPort       *float32                                                                           `json:"httpPort,omitempty"`
@@ -17516,6 +18020,12 @@ type DeclineMcpServerInstallationRequest200CustomServerConfig1 struct {
 	ServerType DeclineMcpServerInstallationRequest200CustomServerConfig1ServerType `json:"serverType"`
 	Type       DeclineMcpServerInstallationRequest200CustomServerConfig1Type       `json:"type"`
 	Version    *string                                                             `json:"version,omitempty"`
+}
+type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
+type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
+type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
+type DeclineMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
+	union json.RawMessage
 }
 type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
@@ -17647,12 +18157,13 @@ type AddMcpServerInstallationRequestNote200CustomServerConfig1 struct {
 		Command     *string   `json:"command,omitempty"`
 		DockerImage *string   `json:"dockerImage,omitempty"`
 		Environment *[]struct {
-			Description          *string                                                                             `json:"description,omitempty"`
-			Key                  string                                                                              `json:"key"`
-			PromptOnInstallation bool                                                                                `json:"promptOnInstallation"`
-			Required             *bool                                                                               `json:"required,omitempty"`
-			Type                 AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
-			Value                *string                                                                             `json:"value,omitempty"`
+			Default              *AddMcpServerInstallationRequestNote_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
+			Description          *string                                                                                       `json:"description,omitempty"`
+			Key                  string                                                                                        `json:"key"`
+			PromptOnInstallation bool                                                                                          `json:"promptOnInstallation"`
+			Required             *bool                                                                                         `json:"required,omitempty"`
+			Type                 AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
+			Value                *string                                                                                       `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath       *string                                                                            `json:"httpPath,omitempty"`
 		HttpPort       *float32                                                                           `json:"httpPort,omitempty"`
@@ -17663,6 +18174,12 @@ type AddMcpServerInstallationRequestNote200CustomServerConfig1 struct {
 	ServerType AddMcpServerInstallationRequestNote200CustomServerConfig1ServerType `json:"serverType"`
 	Type       AddMcpServerInstallationRequestNote200CustomServerConfig1Type       `json:"type"`
 	Version    *string                                                             `json:"version,omitempty"`
+}
+type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
+type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
+type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
+type AddMcpServerInstallationRequestNote_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
+	union json.RawMessage
 }
 type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentType string
 type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigTransportType string
@@ -17843,7 +18360,7 @@ type GetOptimizationRulesResponse struct {
 		EntityId    string                                     `json:"entityId"`
 		EntityType  GetOptimizationRules200EntityType          `json:"entityType"`
 		Id          openapi_types.UUID                         `json:"id"`
-		Provider    SupportedProviders                         `json:"provider"`
+		Provider    GetOptimizationRules200Provider            `json:"provider"`
 		TargetModel string                                     `json:"targetModel"`
 		UpdatedAt   time.Time                                  `json:"updatedAt"`
 	}
@@ -17894,6 +18411,7 @@ type GetOptimizationRules_200_Conditions_Item struct {
 	union json.RawMessage
 }
 type GetOptimizationRules200EntityType string
+type GetOptimizationRules200Provider string
 type GetOptimizationRules400ErrorType string
 type GetOptimizationRules401ErrorType string
 type GetOptimizationRules403ErrorType string
@@ -17927,7 +18445,7 @@ type CreateOptimizationRuleResponse struct {
 		EntityId    string                                       `json:"entityId"`
 		EntityType  CreateOptimizationRule200EntityType          `json:"entityType"`
 		Id          openapi_types.UUID                           `json:"id"`
-		Provider    SupportedProviders                           `json:"provider"`
+		Provider    CreateOptimizationRule200Provider            `json:"provider"`
 		TargetModel string                                       `json:"targetModel"`
 		UpdatedAt   time.Time                                    `json:"updatedAt"`
 	}
@@ -17978,6 +18496,7 @@ type CreateOptimizationRule_200_Conditions_Item struct {
 	union json.RawMessage
 }
 type CreateOptimizationRule200EntityType string
+type CreateOptimizationRule200Provider string
 type CreateOptimizationRule400ErrorType string
 type CreateOptimizationRule401ErrorType string
 type CreateOptimizationRule403ErrorType string
@@ -18077,7 +18596,7 @@ type UpdateOptimizationRuleResponse struct {
 		EntityId    string                                       `json:"entityId"`
 		EntityType  UpdateOptimizationRule200EntityType          `json:"entityType"`
 		Id          openapi_types.UUID                           `json:"id"`
-		Provider    SupportedProviders                           `json:"provider"`
+		Provider    UpdateOptimizationRule200Provider            `json:"provider"`
 		TargetModel string                                       `json:"targetModel"`
 		UpdatedAt   time.Time                                    `json:"updatedAt"`
 	}
@@ -18128,6 +18647,7 @@ type UpdateOptimizationRule_200_Conditions_Item struct {
 	union json.RawMessage
 }
 type UpdateOptimizationRule200EntityType string
+type UpdateOptimizationRule200Provider string
 type UpdateOptimizationRule400ErrorType string
 type UpdateOptimizationRule401ErrorType string
 type UpdateOptimizationRule403ErrorType string
@@ -19324,6 +19844,74 @@ func (r CheckSecretsConnectivityResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CheckSecretsConnectivityResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type InitializeSecretsManagerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Meta map[string]string               `json:"meta"`
+		Type InitializeSecretsManager200Type `json:"type"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                               `json:"message"`
+			Type    InitializeSecretsManager400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                               `json:"message"`
+			Type    InitializeSecretsManager401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                               `json:"message"`
+			Type    InitializeSecretsManager403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                               `json:"message"`
+			Type    InitializeSecretsManager404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                               `json:"message"`
+			Type    InitializeSecretsManager409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                               `json:"message"`
+			Type    InitializeSecretsManager500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type InitializeSecretsManager200Type string
+type InitializeSecretsManager400ErrorType string
+type InitializeSecretsManager401ErrorType string
+type InitializeSecretsManager403ErrorType string
+type InitializeSecretsManager404ErrorType string
+type InitializeSecretsManager409ErrorType string
+type InitializeSecretsManager500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r InitializeSecretsManagerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r InitializeSecretsManagerResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -21852,13 +22440,13 @@ type GetTokenPricesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		CreatedAt             time.Time          `json:"createdAt"`
-		Id                    openapi_types.UUID `json:"id"`
-		Model                 string             `json:"model"`
-		PricePerMillionInput  string             `json:"pricePerMillionInput"`
-		PricePerMillionOutput string             `json:"pricePerMillionOutput"`
-		Provider              string             `json:"provider"`
-		UpdatedAt             time.Time          `json:"updatedAt"`
+		CreatedAt             time.Time                 `json:"createdAt"`
+		Id                    openapi_types.UUID        `json:"id"`
+		Model                 string                    `json:"model"`
+		PricePerMillionInput  string                    `json:"pricePerMillionInput"`
+		PricePerMillionOutput string                    `json:"pricePerMillionOutput"`
+		Provider              GetTokenPrices200Provider `json:"provider"`
+		UpdatedAt             time.Time                 `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -21897,6 +22485,7 @@ type GetTokenPricesResponse struct {
 		} `json:"error"`
 	}
 }
+type GetTokenPrices200Provider string
 type GetTokenPrices400ErrorType string
 type GetTokenPrices401ErrorType string
 type GetTokenPrices403ErrorType string
@@ -21924,13 +22513,13 @@ type CreateTokenPriceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CreatedAt             time.Time          `json:"createdAt"`
-		Id                    openapi_types.UUID `json:"id"`
-		Model                 string             `json:"model"`
-		PricePerMillionInput  string             `json:"pricePerMillionInput"`
-		PricePerMillionOutput string             `json:"pricePerMillionOutput"`
-		Provider              string             `json:"provider"`
-		UpdatedAt             time.Time          `json:"updatedAt"`
+		CreatedAt             time.Time                   `json:"createdAt"`
+		Id                    openapi_types.UUID          `json:"id"`
+		Model                 string                      `json:"model"`
+		PricePerMillionInput  string                      `json:"pricePerMillionInput"`
+		PricePerMillionOutput string                      `json:"pricePerMillionOutput"`
+		Provider              CreateTokenPrice200Provider `json:"provider"`
+		UpdatedAt             time.Time                   `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -21969,6 +22558,7 @@ type CreateTokenPriceResponse struct {
 		} `json:"error"`
 	}
 }
+type CreateTokenPrice200Provider string
 type CreateTokenPrice400ErrorType string
 type CreateTokenPrice401ErrorType string
 type CreateTokenPrice403ErrorType string
@@ -22062,13 +22652,13 @@ type GetTokenPriceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CreatedAt             time.Time          `json:"createdAt"`
-		Id                    openapi_types.UUID `json:"id"`
-		Model                 string             `json:"model"`
-		PricePerMillionInput  string             `json:"pricePerMillionInput"`
-		PricePerMillionOutput string             `json:"pricePerMillionOutput"`
-		Provider              string             `json:"provider"`
-		UpdatedAt             time.Time          `json:"updatedAt"`
+		CreatedAt             time.Time                `json:"createdAt"`
+		Id                    openapi_types.UUID       `json:"id"`
+		Model                 string                   `json:"model"`
+		PricePerMillionInput  string                   `json:"pricePerMillionInput"`
+		PricePerMillionOutput string                   `json:"pricePerMillionOutput"`
+		Provider              GetTokenPrice200Provider `json:"provider"`
+		UpdatedAt             time.Time                `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -22107,6 +22697,7 @@ type GetTokenPriceResponse struct {
 		} `json:"error"`
 	}
 }
+type GetTokenPrice200Provider string
 type GetTokenPrice400ErrorType string
 type GetTokenPrice401ErrorType string
 type GetTokenPrice403ErrorType string
@@ -22134,13 +22725,13 @@ type UpdateTokenPriceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CreatedAt             time.Time          `json:"createdAt"`
-		Id                    openapi_types.UUID `json:"id"`
-		Model                 string             `json:"model"`
-		PricePerMillionInput  string             `json:"pricePerMillionInput"`
-		PricePerMillionOutput string             `json:"pricePerMillionOutput"`
-		Provider              string             `json:"provider"`
-		UpdatedAt             time.Time          `json:"updatedAt"`
+		CreatedAt             time.Time                   `json:"createdAt"`
+		Id                    openapi_types.UUID          `json:"id"`
+		Model                 string                      `json:"model"`
+		PricePerMillionInput  string                      `json:"pricePerMillionInput"`
+		PricePerMillionOutput string                      `json:"pricePerMillionOutput"`
+		Provider              UpdateTokenPrice200Provider `json:"provider"`
+		UpdatedAt             time.Time                   `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -22179,6 +22770,7 @@ type UpdateTokenPriceResponse struct {
 		} `json:"error"`
 	}
 }
+type UpdateTokenPrice200Provider string
 type UpdateTokenPrice400ErrorType string
 type UpdateTokenPrice401ErrorType string
 type UpdateTokenPrice403ErrorType string
@@ -23269,6 +23861,23 @@ func (c *ClientWithResponses) CreateChatApiKeyWithResponse(ctx context.Context, 
 	return ParseCreateChatApiKeyResponse(rsp)
 }
 
+// BulkAssignChatApiKeysToProfilesWithBodyWithResponse request with arbitrary body returning *BulkAssignChatApiKeysToProfilesResponse
+func (c *ClientWithResponses) BulkAssignChatApiKeysToProfilesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkAssignChatApiKeysToProfilesResponse, error) {
+	rsp, err := c.BulkAssignChatApiKeysToProfilesWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBulkAssignChatApiKeysToProfilesResponse(rsp)
+}
+
+func (c *ClientWithResponses) BulkAssignChatApiKeysToProfilesWithResponse(ctx context.Context, body BulkAssignChatApiKeysToProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkAssignChatApiKeysToProfilesResponse, error) {
+	rsp, err := c.BulkAssignChatApiKeysToProfiles(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBulkAssignChatApiKeysToProfilesResponse(rsp)
+}
+
 // DeleteChatApiKeyWithResponse request returning *DeleteChatApiKeyResponse
 func (c *ClientWithResponses) DeleteChatApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteChatApiKeyResponse, error) {
 	rsp, err := c.DeleteChatApiKey(ctx, id, reqEditors...)
@@ -23547,6 +24156,15 @@ func (c *ClientWithResponses) CreateInternalMcpCatalogItemWithResponse(ctx conte
 		return nil, err
 	}
 	return ParseCreateInternalMcpCatalogItemResponse(rsp)
+}
+
+// DeleteInternalMcpCatalogItemByNameWithResponse request returning *DeleteInternalMcpCatalogItemByNameResponse
+func (c *ClientWithResponses) DeleteInternalMcpCatalogItemByNameWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*DeleteInternalMcpCatalogItemByNameResponse, error) {
+	rsp, err := c.DeleteInternalMcpCatalogItemByName(ctx, name, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteInternalMcpCatalogItemByNameResponse(rsp)
 }
 
 // DeleteInternalMcpCatalogItemWithResponse request returning *DeleteInternalMcpCatalogItemResponse
@@ -24137,6 +24755,23 @@ func (c *ClientWithResponses) CheckSecretsConnectivityWithResponse(ctx context.C
 		return nil, err
 	}
 	return ParseCheckSecretsConnectivityResponse(rsp)
+}
+
+// InitializeSecretsManagerWithBodyWithResponse request with arbitrary body returning *InitializeSecretsManagerResponse
+func (c *ClientWithResponses) InitializeSecretsManagerWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*InitializeSecretsManagerResponse, error) {
+	rsp, err := c.InitializeSecretsManagerWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseInitializeSecretsManagerResponse(rsp)
+}
+
+func (c *ClientWithResponses) InitializeSecretsManagerWithResponse(ctx context.Context, body InitializeSecretsManagerJSONRequestBody, reqEditors ...RequestEditorFn) (*InitializeSecretsManagerResponse, error) {
+	rsp, err := c.InitializeSecretsManager(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseInitializeSecretsManagerResponse(rsp)
 }
 
 // GetSecretsTypeWithResponse request returning *GetSecretsTypeResponse
@@ -27431,6 +28066,107 @@ func ParseCreateChatApiKeyResponse(rsp *http.Response) (*CreateChatApiKeyRespons
 	return response, nil
 }
 
+// ParseBulkAssignChatApiKeysToProfilesResponse parses an HTTP response from a BulkAssignChatApiKeysToProfilesWithResponse call
+func ParseBulkAssignChatApiKeysToProfilesResponse(rsp *http.Response) (*BulkAssignChatApiKeysToProfilesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BulkAssignChatApiKeysToProfilesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AssignedCount float32 `json:"assignedCount"`
+			Success       bool    `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    BulkAssignChatApiKeysToProfiles400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    BulkAssignChatApiKeysToProfiles401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    BulkAssignChatApiKeysToProfiles403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    BulkAssignChatApiKeysToProfiles404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    BulkAssignChatApiKeysToProfiles409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    BulkAssignChatApiKeysToProfiles500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseDeleteChatApiKeyResponse parses an HTTP response from a DeleteChatApiKeyWithResponse call
 func ParseDeleteChatApiKeyResponse(rsp *http.Response) (*DeleteChatApiKeyResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -29753,12 +30489,13 @@ func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCata
 				Command     *string   `json:"command,omitempty"`
 				DockerImage *string   `json:"dockerImage,omitempty"`
 				Environment *[]struct {
-					Description          *string                                            `json:"description,omitempty"`
-					Key                  string                                             `json:"key"`
-					PromptOnInstallation bool                                               `json:"promptOnInstallation"`
-					Required             *bool                                              `json:"required,omitempty"`
-					Type                 GetInternalMcpCatalog200LocalConfigEnvironmentType `json:"type"`
-					Value                *string                                            `json:"value,omitempty"`
+					Default              *GetInternalMcpCatalog_200_LocalConfig_Environment_Default `json:"default,omitempty"`
+					Description          *string                                                    `json:"description,omitempty"`
+					Key                  string                                                     `json:"key"`
+					PromptOnInstallation bool                                                       `json:"promptOnInstallation"`
+					Required             *bool                                                      `json:"required,omitempty"`
+					Type                 GetInternalMcpCatalog200LocalConfigEnvironmentType         `json:"type"`
+					Value                *string                                                    `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
 				HttpPath      *string                                           `json:"httpPath,omitempty"`
 				HttpPort      *float32                                          `json:"httpPort,omitempty"`
@@ -29924,12 +30661,13 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 				Command     *string   `json:"command,omitempty"`
 				DockerImage *string   `json:"dockerImage,omitempty"`
 				Environment *[]struct {
-					Description          *string                                                   `json:"description,omitempty"`
-					Key                  string                                                    `json:"key"`
-					PromptOnInstallation bool                                                      `json:"promptOnInstallation"`
-					Required             *bool                                                     `json:"required,omitempty"`
-					Type                 CreateInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
-					Value                *string                                                   `json:"value,omitempty"`
+					Default              *CreateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
+					Description          *string                                                           `json:"description,omitempty"`
+					Key                  string                                                            `json:"key"`
+					PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
+					Required             *bool                                                             `json:"required,omitempty"`
+					Type                 CreateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
+					Value                *string                                                           `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
 				HttpPath      *string                                                  `json:"httpPath,omitempty"`
 				HttpPort      *float32                                                 `json:"httpPort,omitempty"`
@@ -30047,6 +30785,106 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 			Error struct {
 				Message string                                   `json:"message"`
 				Type    CreateInternalMcpCatalogItem500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteInternalMcpCatalogItemByNameResponse parses an HTTP response from a DeleteInternalMcpCatalogItemByNameWithResponse call
+func ParseDeleteInternalMcpCatalogItemByNameResponse(rsp *http.Response) (*DeleteInternalMcpCatalogItemByNameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteInternalMcpCatalogItemByNameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    DeleteInternalMcpCatalogItemByName400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    DeleteInternalMcpCatalogItemByName401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    DeleteInternalMcpCatalogItemByName403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    DeleteInternalMcpCatalogItemByName404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    DeleteInternalMcpCatalogItemByName409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    DeleteInternalMcpCatalogItemByName500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -30195,12 +31033,13 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 				Command     *string   `json:"command,omitempty"`
 				DockerImage *string   `json:"dockerImage,omitempty"`
 				Environment *[]struct {
-					Description          *string                                                `json:"description,omitempty"`
-					Key                  string                                                 `json:"key"`
-					PromptOnInstallation bool                                                   `json:"promptOnInstallation"`
-					Required             *bool                                                  `json:"required,omitempty"`
-					Type                 GetInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
-					Value                *string                                                `json:"value,omitempty"`
+					Default              *GetInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
+					Description          *string                                                        `json:"description,omitempty"`
+					Key                  string                                                         `json:"key"`
+					PromptOnInstallation bool                                                           `json:"promptOnInstallation"`
+					Required             *bool                                                          `json:"required,omitempty"`
+					Type                 GetInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
+					Value                *string                                                        `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
 				HttpPath      *string                                               `json:"httpPath,omitempty"`
 				HttpPort      *float32                                              `json:"httpPort,omitempty"`
@@ -30366,12 +31205,13 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 				Command     *string   `json:"command,omitempty"`
 				DockerImage *string   `json:"dockerImage,omitempty"`
 				Environment *[]struct {
-					Description          *string                                                   `json:"description,omitempty"`
-					Key                  string                                                    `json:"key"`
-					PromptOnInstallation bool                                                      `json:"promptOnInstallation"`
-					Required             *bool                                                     `json:"required,omitempty"`
-					Type                 UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
-					Value                *string                                                   `json:"value,omitempty"`
+					Default              *UpdateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
+					Description          *string                                                           `json:"description,omitempty"`
+					Key                  string                                                            `json:"key"`
+					PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
+					Required             *bool                                                             `json:"required,omitempty"`
+					Type                 UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
+					Value                *string                                                           `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
 				HttpPath      *string                                                  `json:"httpPath,omitempty"`
 				HttpPort      *float32                                                 `json:"httpPort,omitempty"`
@@ -33318,7 +34158,7 @@ func ParseGetOptimizationRulesResponse(rsp *http.Response) (*GetOptimizationRule
 			EntityId    string                                     `json:"entityId"`
 			EntityType  GetOptimizationRules200EntityType          `json:"entityType"`
 			Id          openapi_types.UUID                         `json:"id"`
-			Provider    SupportedProviders                         `json:"provider"`
+			Provider    GetOptimizationRules200Provider            `json:"provider"`
 			TargetModel string                                     `json:"targetModel"`
 			UpdatedAt   time.Time                                  `json:"updatedAt"`
 		}
@@ -33426,7 +34266,7 @@ func ParseCreateOptimizationRuleResponse(rsp *http.Response) (*CreateOptimizatio
 			EntityId    string                                       `json:"entityId"`
 			EntityType  CreateOptimizationRule200EntityType          `json:"entityType"`
 			Id          openapi_types.UUID                           `json:"id"`
-			Provider    SupportedProviders                           `json:"provider"`
+			Provider    CreateOptimizationRule200Provider            `json:"provider"`
 			TargetModel string                                       `json:"targetModel"`
 			UpdatedAt   time.Time                                    `json:"updatedAt"`
 		}
@@ -33634,7 +34474,7 @@ func ParseUpdateOptimizationRuleResponse(rsp *http.Response) (*UpdateOptimizatio
 			EntityId    string                                       `json:"entityId"`
 			EntityType  UpdateOptimizationRule200EntityType          `json:"entityType"`
 			Id          openapi_types.UUID                           `json:"id"`
-			Provider    SupportedProviders                           `json:"provider"`
+			Provider    UpdateOptimizationRule200Provider            `json:"provider"`
 			TargetModel string                                       `json:"targetModel"`
 			UpdatedAt   time.Time                                    `json:"updatedAt"`
 		}
@@ -35419,6 +36259,107 @@ func ParseCheckSecretsConnectivityResponse(rsp *http.Response) (*CheckSecretsCon
 			Error struct {
 				Message string                               `json:"message"`
 				Type    CheckSecretsConnectivity500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseInitializeSecretsManagerResponse parses an HTTP response from a InitializeSecretsManagerWithResponse call
+func ParseInitializeSecretsManagerResponse(rsp *http.Response) (*InitializeSecretsManagerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &InitializeSecretsManagerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Meta map[string]string               `json:"meta"`
+			Type InitializeSecretsManager200Type `json:"type"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                               `json:"message"`
+				Type    InitializeSecretsManager400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                               `json:"message"`
+				Type    InitializeSecretsManager401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                               `json:"message"`
+				Type    InitializeSecretsManager403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                               `json:"message"`
+				Type    InitializeSecretsManager404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                               `json:"message"`
+				Type    InitializeSecretsManager409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                               `json:"message"`
+				Type    InitializeSecretsManager500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -38980,13 +39921,13 @@ func ParseGetTokenPricesResponse(rsp *http.Response) (*GetTokenPricesResponse, e
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			CreatedAt             time.Time          `json:"createdAt"`
-			Id                    openapi_types.UUID `json:"id"`
-			Model                 string             `json:"model"`
-			PricePerMillionInput  string             `json:"pricePerMillionInput"`
-			PricePerMillionOutput string             `json:"pricePerMillionOutput"`
-			Provider              string             `json:"provider"`
-			UpdatedAt             time.Time          `json:"updatedAt"`
+			CreatedAt             time.Time                 `json:"createdAt"`
+			Id                    openapi_types.UUID        `json:"id"`
+			Model                 string                    `json:"model"`
+			PricePerMillionInput  string                    `json:"pricePerMillionInput"`
+			PricePerMillionOutput string                    `json:"pricePerMillionOutput"`
+			Provider              GetTokenPrices200Provider `json:"provider"`
+			UpdatedAt             time.Time                 `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -39086,13 +40027,13 @@ func ParseCreateTokenPriceResponse(rsp *http.Response) (*CreateTokenPriceRespons
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CreatedAt             time.Time          `json:"createdAt"`
-			Id                    openapi_types.UUID `json:"id"`
-			Model                 string             `json:"model"`
-			PricePerMillionInput  string             `json:"pricePerMillionInput"`
-			PricePerMillionOutput string             `json:"pricePerMillionOutput"`
-			Provider              string             `json:"provider"`
-			UpdatedAt             time.Time          `json:"updatedAt"`
+			CreatedAt             time.Time                   `json:"createdAt"`
+			Id                    openapi_types.UUID          `json:"id"`
+			Model                 string                      `json:"model"`
+			PricePerMillionInput  string                      `json:"pricePerMillionInput"`
+			PricePerMillionOutput string                      `json:"pricePerMillionOutput"`
+			Provider              CreateTokenPrice200Provider `json:"provider"`
+			UpdatedAt             time.Time                   `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -39292,13 +40233,13 @@ func ParseGetTokenPriceResponse(rsp *http.Response) (*GetTokenPriceResponse, err
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CreatedAt             time.Time          `json:"createdAt"`
-			Id                    openapi_types.UUID `json:"id"`
-			Model                 string             `json:"model"`
-			PricePerMillionInput  string             `json:"pricePerMillionInput"`
-			PricePerMillionOutput string             `json:"pricePerMillionOutput"`
-			Provider              string             `json:"provider"`
-			UpdatedAt             time.Time          `json:"updatedAt"`
+			CreatedAt             time.Time                `json:"createdAt"`
+			Id                    openapi_types.UUID       `json:"id"`
+			Model                 string                   `json:"model"`
+			PricePerMillionInput  string                   `json:"pricePerMillionInput"`
+			PricePerMillionOutput string                   `json:"pricePerMillionOutput"`
+			Provider              GetTokenPrice200Provider `json:"provider"`
+			UpdatedAt             time.Time                `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -39398,13 +40339,13 @@ func ParseUpdateTokenPriceResponse(rsp *http.Response) (*UpdateTokenPriceRespons
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CreatedAt             time.Time          `json:"createdAt"`
-			Id                    openapi_types.UUID `json:"id"`
-			Model                 string             `json:"model"`
-			PricePerMillionInput  string             `json:"pricePerMillionInput"`
-			PricePerMillionOutput string             `json:"pricePerMillionOutput"`
-			Provider              string             `json:"provider"`
-			UpdatedAt             time.Time          `json:"updatedAt"`
+			CreatedAt             time.Time                   `json:"createdAt"`
+			Id                    openapi_types.UUID          `json:"id"`
+			Model                 string                      `json:"model"`
+			PricePerMillionInput  string                      `json:"pricePerMillionInput"`
+			PricePerMillionOutput string                      `json:"pricePerMillionOutput"`
+			Provider              UpdateTokenPrice200Provider `json:"provider"`
+			UpdatedAt             time.Time                   `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err

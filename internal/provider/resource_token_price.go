@@ -104,7 +104,7 @@ func (r *TokenPriceResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	requestBody := client.CreateTokenPriceJSONRequestBody{
-		Provider:              client.SupportedProvidersInput(data.LLMProvider.ValueString()),
+		Provider:              client.CreateTokenPriceJSONBodyProvider(data.LLMProvider.ValueString()),
 		Model:                 data.Model.ValueString(),
 		PricePerMillionInput:  data.PricePerMillionInput.ValueString(),
 		PricePerMillionOutput: data.PricePerMillionOutput.ValueString(),
@@ -125,7 +125,7 @@ func (r *TokenPriceResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
-	data.LLMProvider = types.StringValue(apiResp.JSON200.Provider)
+	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
 	data.Model = types.StringValue(apiResp.JSON200.Model)
 	data.PricePerMillionInput = types.StringValue(apiResp.JSON200.PricePerMillionInput)
 	data.PricePerMillionOutput = types.StringValue(apiResp.JSON200.PricePerMillionOutput)
@@ -167,7 +167,7 @@ func (r *TokenPriceResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	data.LLMProvider = types.StringValue(apiResp.JSON200.Provider)
+	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
 	data.Model = types.StringValue(apiResp.JSON200.Model)
 	data.PricePerMillionInput = types.StringValue(apiResp.JSON200.PricePerMillionInput)
 	data.PricePerMillionOutput = types.StringValue(apiResp.JSON200.PricePerMillionOutput)
@@ -190,7 +190,7 @@ func (r *TokenPriceResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	provider := client.SupportedProvidersInput(data.LLMProvider.ValueString())
+	provider := client.UpdateTokenPriceJSONBodyProvider(data.LLMProvider.ValueString())
 	model := data.Model.ValueString()
 	priceInput := data.PricePerMillionInput.ValueString()
 	priceOutput := data.PricePerMillionOutput.ValueString()
@@ -216,7 +216,7 @@ func (r *TokenPriceResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	data.LLMProvider = types.StringValue(apiResp.JSON200.Provider)
+	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
 	data.Model = types.StringValue(apiResp.JSON200.Model)
 	data.PricePerMillionInput = types.StringValue(apiResp.JSON200.PricePerMillionInput)
 	data.PricePerMillionOutput = types.StringValue(apiResp.JSON200.PricePerMillionOutput)
