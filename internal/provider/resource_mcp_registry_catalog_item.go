@@ -59,7 +59,7 @@ type AuthFieldModel struct {
 }
 
 func (r *MCPServerRegistryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mcp_server"
+	resp.TypeName = req.ProviderTypeName + "_mcp_registry_catalog_item"
 }
 
 func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {

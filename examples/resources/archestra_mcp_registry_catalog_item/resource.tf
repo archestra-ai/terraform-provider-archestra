@@ -1,5 +1,5 @@
 # Local MCP server with stdio transport (default)
-resource "archestra_mcp_server" "filesystem" {
+resource "archestra_mcp_registry_catalog_item" "filesystem" {
   name        = "filesystem-mcp-server"
   description = "MCP server for filesystem operations"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem"
@@ -15,7 +15,7 @@ resource "archestra_mcp_server" "filesystem" {
 }
 
 # Local MCP server with custom auth fields
-resource "archestra_mcp_server" "github" {
+resource "archestra_mcp_registry_catalog_item" "github" {
   name                 = "github-mcp-server"
   description          = "MCP server for GitHub API operations"
   docs_url             = "https://github.com/modelcontextprotocol/servers/tree/main/src/github"
@@ -43,7 +43,7 @@ resource "archestra_mcp_server" "github" {
 }
 
 # Local MCP server with streamable-http transport
-resource "archestra_mcp_server" "web_search" {
+resource "archestra_mcp_registry_catalog_item" "web_search" {
   name        = "web-search-mcp-server"
   description = "MCP server for web search using Brave Search API"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/brave-search"
@@ -68,7 +68,7 @@ resource "archestra_mcp_server" "web_search" {
 }
 
 # Local MCP server with Docker
-resource "archestra_mcp_server" "postgres" {
+resource "archestra_mcp_registry_catalog_item" "postgres" {
   name        = "postgres-mcp-server"
   description = "MCP server for PostgreSQL database operations"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/postgres"

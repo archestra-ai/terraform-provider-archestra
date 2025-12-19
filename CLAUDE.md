@@ -96,7 +96,7 @@ All resources follow Terraform Plugin Framework patterns (`internal/provider/res
 | ------------------------------------- | --------------------------------------- | ----------------------------------------------------------- |
 | `archestra_profile`                   | `resource_profile.go`                   | Manage Archestra profiles (name, labels)                    |
 | `archestra_profile_tool`              | `resource_profile_tool.go`              | Assign tools to profiles with execution/security config     |
-| `archestra_mcp_server`                | `resource_mcp_server_registry.go`       | Register MCP server definitions                             |
+| `archestra_mcp_registry_catalog_item` | `resource_mcp_registry_catalog_item.go` | Register an MCP server in the MCP registry                  |
 | `archestra_mcp_server_installation`   | `resource_mcp_server_installation.go`   | Install MCP servers                                         |
 | `archestra_team`                      | `resource_team.go`                      | Manage teams                                                |
 | `archestra_team_external_group`       | `resource_team_external_group.go`       | Map external IdP groups to teams                            |

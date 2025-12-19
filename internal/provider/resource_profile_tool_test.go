@@ -69,7 +69,7 @@ resource "archestra_profile" "test" {
   name = "%[1]s"
 }
 
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name = "test-server"
   local_config = {
     command = "npx"
@@ -79,7 +79,7 @@ resource "archestra_mcp_server" "test" {
 
 resource "archestra_mcp_server_installation" "test" {
   name          = "test-server-inst"
-  mcp_server_id = archestra_mcp_server.test.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
 }
 
 data "archestra_mcp_server_tool" "test" {
@@ -108,7 +108,7 @@ resource "archestra_profile" "test" {
   name = "%[1]s"
 }
 
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name = "test-server"
   local_config = {
     command = "npx"
@@ -118,7 +118,7 @@ resource "archestra_mcp_server" "test" {
 
 resource "archestra_mcp_server_installation" "test" {
   name          = "test-server-inst"
-  mcp_server_id = archestra_mcp_server.test.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
 }
 
 data "archestra_mcp_server_tool" "test" {
@@ -147,7 +147,7 @@ resource "archestra_profile" "test" {
   name = "%[1]s"
 }
 
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name = "test-server"
   local_config = {
     command = "npx"
@@ -157,7 +157,7 @@ resource "archestra_mcp_server" "test" {
 
 resource "archestra_mcp_server_installation" "test" {
   name          = "test-server-inst"
-  mcp_server_id = archestra_mcp_server.test.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
 }
 
 data "archestra_mcp_server_tool" "test" {

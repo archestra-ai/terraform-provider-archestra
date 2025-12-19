@@ -40,7 +40,7 @@ func TestAccMCPServerToolDataSource(t *testing.T) {
 func testAccMCPServerToolDataSourceConfig() string {
 	return `
 # Create an MCP server in the registry
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name        = "test-mcp-server-for-tool-datasource"
   description = "MCP server for tool data source test"
   docs_url    = "https://github.com/modelcontextprotocol/servers"
@@ -54,14 +54,14 @@ resource "archestra_mcp_server" "test" {
 # Install the MCP server (this now waits for tools to be available)
 resource "archestra_mcp_server_installation" "test" {
   name          = "test-tool-datasource-installation"
-  mcp_server_id = archestra_mcp_server.test.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
 }
 
 # Look up a tool from the installed MCP server
 # Tool names are prefixed with the server name, e.g., "servername__toolname"
 data "archestra_mcp_server_tool" "test" {
   mcp_server_id = archestra_mcp_server_installation.test.id
-  name          = "${archestra_mcp_server.test.name}__list_directory"
+  name          = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
 }
 `
 }
