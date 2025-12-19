@@ -69,9 +69,9 @@ func (r *ChatLLMProviderApiKeyResource) Schema(ctx context.Context, req resource
 				},
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						string(client.Anthropic),
-						string(client.Gemini),
-						string(client.Openai),
+						string(client.CreateChatApiKeyJSONBodyProviderAnthropic),
+						string(client.CreateChatApiKeyJSONBodyProviderGemini),
+						string(client.CreateChatApiKeyJSONBodyProviderOpenai),
 					),
 				},
 			},

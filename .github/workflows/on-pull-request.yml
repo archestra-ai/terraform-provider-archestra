@@ -101,7 +101,7 @@ jobs:
       # Deploy Archestra Platform locally using Kind
       # This uses the pre-built archestra/platform image from Docker Hub and the published Helm chart from GAR
       - name: Setup Archestra Platform
-        uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@8bcfd042c91a76323e13de6f04262310857f5655
+        uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@ab0c93762d005ccb9475d883c4a47970f480bf5b # v1.0.8
         with:
           kind-config-path: ./.github/kind.yaml
           kind-cluster-name: archestra-ci-cluster

@@ -226,12 +226,13 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 			Command     *string   `json:"command,omitempty"`
 			DockerImage *string   `json:"dockerImage,omitempty"`
 			Environment *[]struct {
-				Description          *string                                                               `json:"description,omitempty"`
-				Key                  string                                                                `json:"key"`
-				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-				Required             *bool                                                                 `json:"required,omitempty"`
-				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-				Value                *string                                                               `json:"value,omitempty"`
+				Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                                      `json:"description,omitempty"`
+				Key                  string                                                                       `json:"key"`
+				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+				Required             *bool                                                                        `json:"required,omitempty"`
+				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+				Value                *string                                                                      `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath       *string                                                              `json:"httpPath,omitempty"`
 			HttpPort       *float32                                                             `json:"httpPort,omitempty"`
@@ -263,22 +264,24 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 				return
 			}
 			envSlice := make([]struct {
-				Description          *string                                                               `json:"description,omitempty"`
-				Key                  string                                                                `json:"key"`
-				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-				Required             *bool                                                                 `json:"required,omitempty"`
-				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-				Value                *string                                                               `json:"value,omitempty"`
+				Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                                      `json:"description,omitempty"`
+				Key                  string                                                                       `json:"key"`
+				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+				Required             *bool                                                                        `json:"required,omitempty"`
+				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+				Value                *string                                                                      `json:"value,omitempty"`
 			}, 0, len(env))
 			for k, v := range env {
 				val := v
 				envSlice = append(envSlice, struct {
-					Description          *string                                                               `json:"description,omitempty"`
-					Key                  string                                                                `json:"key"`
-					PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-					Required             *bool                                                                 `json:"required,omitempty"`
-					Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-					Value                *string                                                               `json:"value,omitempty"`
+					Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+					Description          *string                                                                      `json:"description,omitempty"`
+					Key                  string                                                                       `json:"key"`
+					PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+					Required             *bool                                                                        `json:"required,omitempty"`
+					Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+					Value                *string                                                                      `json:"value,omitempty"`
 				}{
 					Key:   k,
 					Value: &val,
@@ -591,12 +594,13 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 			Command     *string   `json:"command,omitempty"`
 			DockerImage *string   `json:"dockerImage,omitempty"`
 			Environment *[]struct {
-				Description          *string                                                               `json:"description,omitempty"`
-				Key                  string                                                                `json:"key"`
-				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-				Required             *bool                                                                 `json:"required,omitempty"`
-				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-				Value                *string                                                               `json:"value,omitempty"`
+				Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                                      `json:"description,omitempty"`
+				Key                  string                                                                       `json:"key"`
+				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+				Required             *bool                                                                        `json:"required,omitempty"`
+				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+				Value                *string                                                                      `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath       *string                                                              `json:"httpPath,omitempty"`
 			HttpPort       *float32                                                             `json:"httpPort,omitempty"`
@@ -628,22 +632,24 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 				return
 			}
 			envSlice := make([]struct {
-				Description          *string                                                               `json:"description,omitempty"`
-				Key                  string                                                                `json:"key"`
-				PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-				Required             *bool                                                                 `json:"required,omitempty"`
-				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-				Value                *string                                                               `json:"value,omitempty"`
+				Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+				Description          *string                                                                      `json:"description,omitempty"`
+				Key                  string                                                                       `json:"key"`
+				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+				Required             *bool                                                                        `json:"required,omitempty"`
+				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+				Value                *string                                                                      `json:"value,omitempty"`
 			}, 0, len(env))
 			for k, v := range env {
 				val := v
 				envSlice = append(envSlice, struct {
-					Description          *string                                                               `json:"description,omitempty"`
-					Key                  string                                                                `json:"key"`
-					PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-					Required             *bool                                                                 `json:"required,omitempty"`
-					Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
-					Value                *string                                                               `json:"value,omitempty"`
+					Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
+					Description          *string                                                                      `json:"description,omitempty"`
+					Key                  string                                                                       `json:"key"`
+					PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
+					Required             *bool                                                                        `json:"required,omitempty"`
+					Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
+					Value                *string                                                                      `json:"value,omitempty"`
 				}{
 					Key:   k,
 					Value: &val,
