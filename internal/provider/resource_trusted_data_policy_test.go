@@ -119,15 +119,15 @@ resource "archestra_agent" "test" {
   name = "tdp-test-agent-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
-data "archestra_agent_tool" "test" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "archestra__whoami"
+data "archestra_profile_tool" "test" {
+  profile_id = archestra_agent.test.id
+  tool_name  = "archestra__whoami"
 }
 
 resource "archestra_trusted_data_policy" "test" {
-  agent_tool_id  = data.archestra_agent_tool.test.id
+  agent_tool_id  = data.archestra_profile_tool.test.id
   description    = "Trust internal API responses"
   attribute_path = "url"
   operator       = "contains"
@@ -143,15 +143,15 @@ resource "archestra_agent" "test" {
   name = "tdp-test-agent-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
-data "archestra_agent_tool" "test" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "archestra__whoami"
+data "archestra_profile_tool" "test" {
+  profile_id = archestra_agent.test.id
+  tool_name  = "archestra__whoami"
 }
 
 resource "archestra_trusted_data_policy" "test" {
-  agent_tool_id  = data.archestra_agent_tool.test.id
+  agent_tool_id  = data.archestra_profile_tool.test.id
   description    = "Block untrusted external data"
   attribute_path = "source"
   operator       = "notContains"
@@ -167,15 +167,15 @@ resource "archestra_agent" "sanitize" {
   name = "tdp-sanitize-agent-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
-data "archestra_agent_tool" "sanitize" {
-  agent_id  = archestra_agent.sanitize.id
-  tool_name = "archestra__whoami"
+data "archestra_profile_tool" "sanitize" {
+  profile_id = archestra_agent.sanitize.id
+  tool_name  = "archestra__whoami"
 }
 
 resource "archestra_trusted_data_policy" "sanitize" {
-  agent_tool_id  = data.archestra_agent_tool.sanitize.id
+  agent_tool_id  = data.archestra_profile_tool.sanitize.id
   description    = "Sanitize user input with dual LLM"
   attribute_path = "user_input"
   operator       = "regex"

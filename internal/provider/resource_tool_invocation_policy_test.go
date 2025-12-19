@@ -125,15 +125,15 @@ resource "archestra_agent" "noreason" {
   name = "tip-noreason-agent-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
-data "archestra_agent_tool" "noreason" {
-  agent_id  = archestra_agent.noreason.id
-  tool_name = "archestra__whoami"
+data "archestra_profile_tool" "noreason" {
+  profile_id = archestra_agent.noreason.id
+  tool_name  = "archestra__whoami"
 }
 
 resource "archestra_tool_invocation_policy" "noreason" {
-  agent_tool_id = data.archestra_agent_tool.noreason.id
+  agent_tool_id = data.archestra_profile_tool.noreason.id
   argument_name = "command"
   operator      = "equal"
   value         = "rm -rf"
@@ -176,15 +176,15 @@ resource "archestra_agent" "test" {
   name = "tip-test-agent-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
-data "archestra_agent_tool" "test" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "archestra__whoami"
+data "archestra_profile_tool" "test" {
+  profile_id = archestra_agent.test.id
+  tool_name  = "archestra__whoami"
 }
 
 resource "archestra_tool_invocation_policy" "test" {
-  agent_tool_id = data.archestra_agent_tool.test.id
+  agent_tool_id = data.archestra_profile_tool.test.id
   argument_name = "path"
   operator      = "contains"
   value         = "/etc/"
@@ -200,15 +200,15 @@ resource "archestra_agent" "test" {
   name = "tip-test-agent-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
-data "archestra_agent_tool" "test" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "archestra__whoami"
+data "archestra_profile_tool" "test" {
+  profile_id = archestra_agent.test.id
+  tool_name  = "archestra__whoami"
 }
 
 resource "archestra_tool_invocation_policy" "test" {
-  agent_tool_id = data.archestra_agent_tool.test.id
+  agent_tool_id = data.archestra_profile_tool.test.id
   argument_name = "path"
   operator      = "startsWith"
   value         = "/var/log/"
@@ -224,15 +224,15 @@ resource "archestra_agent" "regex" {
   name = "tip-regex-agent-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
-data "archestra_agent_tool" "regex" {
-  agent_id  = archestra_agent.regex.id
-  tool_name = "archestra__whoami"
+data "archestra_profile_tool" "regex" {
+  profile_id = archestra_agent.regex.id
+  tool_name  = "archestra__whoami"
 }
 
 resource "archestra_tool_invocation_policy" "regex" {
-  agent_tool_id = data.archestra_agent_tool.regex.id
+  agent_tool_id = data.archestra_profile_tool.regex.id
   argument_name = "path"
   operator      = "regex"
   value         = "^/home/[a-z]+/.ssh/.*"

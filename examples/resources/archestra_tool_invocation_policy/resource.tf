@@ -1,10 +1,14 @@
-data "archestra_agent_tool" "file_write" {
-  agent_id  = "agent-id-here"
+data "archestra_profile" "test" {
+  profile_id = "profile-id-here"
+}
+
+data "archestra_profile_tool" "file_write" {
+  profile_id  = data.archestra_profile.test.id
   tool_name = "write_file"
 }
 
 resource "archestra_tool_invocation_policy" "block_system_paths" {
-  agent_tool_id = data.archestra_agent_tool.file_write.id
+  agent_tool_id = data.archestra_profile_tool.file_write.id
   argument_name = "path"
   operator      = "contains"
   value         = "/etc/"
