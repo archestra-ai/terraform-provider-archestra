@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a Terraform provider for Archestra, built using the Terraform Plugin Framework. It enables infrastructure-as-code management of Archestra resources including agents, MCP servers, teams, users, and security policies.
+This is a Terraform provider for Archestra, built using the Terraform Plugin Framework. It enables infrastructure-as-code management of Archestra resources including profiles, MCP servers, teams, users, and security policies.
 
 ## Development Commands
 
@@ -94,7 +94,7 @@ All resources and data sources follow Terraform Plugin Framework patterns:
 
 **Resources** (`internal/provider/resource_*.go`):
 
-- `resource_agent.go` - Manage Archestra agents (name, is_demo, is_default)
+- `resource_profile.go` - Manage Archestra profiles (name, labels)
 - `resource_mcp_server.go` - Manage MCP server installations
 - `resource_team.go` - Manage teams with members
 - `resource_tool_invocation_policy.go` - Security policies for tool invocations
@@ -103,7 +103,7 @@ All resources and data sources follow Terraform Plugin Framework patterns:
 
 **Data Sources** (`internal/provider/datasource_*.go`):
 
-- `datasource_agent_tool.go` - Look up agent tools
+- `datasource_profile_tool.go` - Look up profile tools
 - `datasource_mcp_server_tool.go` - Look up MCP server tools
 - `datasource_team.go` - Look up team information
 - `datasource_user.go` - User lookups (currently commented out in provider.go)
