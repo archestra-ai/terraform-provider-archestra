@@ -57,10 +57,13 @@ The API client is generated from the Archestra platform's OpenAPI spec and is pi
 
    ```bash
    docker run -p 9000:9000 -p 3000:3000 \
+     -e ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true \
      -v archestra-postgres-data:/var/lib/postgresql/data \
      -v archestra-app-data:/app/data \
      archestra/platform:<version-tag>
    ```
+
+   **Note:** The `-e ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true` flag is required to ensure the OpenAPI spec includes all routes and types.
 
    See the [Archestra Platform Quickstart](https://archestra.ai/docs/platform-quickstart) for more details.
 
