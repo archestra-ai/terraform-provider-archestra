@@ -133,7 +133,7 @@ data "archestra_profile_tool" "noreason" {
 }
 
 resource "archestra_tool_invocation_policy" "noreason" {
-  agent_tool_id = data.archestra_profile_tool.noreason.id
+  profile_tool_id = data.archestra_profile_tool.noreason.id
   argument_name = "command"
   operator      = "equal"
   value         = "rm -rf"
@@ -184,12 +184,12 @@ data "archestra_profile_tool" "test" {
 }
 
 resource "archestra_tool_invocation_policy" "test" {
-  agent_tool_id = data.archestra_profile_tool.test.id
-  argument_name = "path"
-  operator      = "contains"
-  value         = "/etc/"
-  action        = "block_always"
-  reason        = "Block access to system configuration files"
+  profile_tool_id = data.archestra_profile_tool.test.id
+  argument_name   = "path"
+  operator        = "contains"
+  value           = "/etc/"
+  action          = "block_always"
+  reason          = "Block access to system configuration files"
 }
 `, rName)
 }
@@ -208,12 +208,12 @@ data "archestra_profile_tool" "test" {
 }
 
 resource "archestra_tool_invocation_policy" "test" {
-  agent_tool_id = data.archestra_profile_tool.test.id
-  argument_name = "path"
-  operator      = "startsWith"
-  value         = "/var/log/"
-  action        = "allow_when_context_is_untrusted"
-  reason        = "Allow log file access in untrusted contexts"
+  profile_tool_id = data.archestra_profile_tool.test.id
+  argument_name   = "path"
+  operator        = "startsWith"
+  value           = "/var/log/"
+  action          = "allow_when_context_is_untrusted"
+  reason          = "Allow log file access in untrusted contexts"
 }
 `, rName)
 }
@@ -232,8 +232,8 @@ data "archestra_profile_tool" "regex" {
 }
 
 resource "archestra_tool_invocation_policy" "regex" {
-  agent_tool_id = data.archestra_profile_tool.regex.id
-  argument_name = "path"
+  profile_tool_id = data.archestra_profile_tool.regex.id
+  argument_name   = "path"
   operator      = "regex"
   value         = "^/home/[a-z]+/.ssh/.*"
   action        = "block_always"

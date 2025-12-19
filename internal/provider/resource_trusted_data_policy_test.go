@@ -127,8 +127,8 @@ data "archestra_profile_tool" "test" {
 }
 
 resource "archestra_trusted_data_policy" "test" {
-  agent_tool_id  = data.archestra_profile_tool.test.id
-  description    = "Trust internal API responses"
+  profile_tool_id = data.archestra_profile_tool.test.id
+  description     = "Trust internal API responses"
   attribute_path = "url"
   operator       = "contains"
   value          = "api.internal.example.com"
@@ -151,8 +151,8 @@ data "archestra_profile_tool" "test" {
 }
 
 resource "archestra_trusted_data_policy" "test" {
-  agent_tool_id  = data.archestra_profile_tool.test.id
-  description    = "Block untrusted external data"
+  profile_tool_id = data.archestra_profile_tool.test.id
+  description     = "Block untrusted external data"
   attribute_path = "source"
   operator       = "notContains"
   value          = "example.com"
@@ -175,8 +175,8 @@ data "archestra_profile_tool" "sanitize" {
 }
 
 resource "archestra_trusted_data_policy" "sanitize" {
-  agent_tool_id  = data.archestra_profile_tool.sanitize.id
-  description    = "Sanitize user input with dual LLM"
+  profile_tool_id = data.archestra_profile_tool.sanitize.id
+  description     = "Sanitize user input with dual LLM"
   attribute_path = "user_input"
   operator       = "regex"
   value          = ".*"

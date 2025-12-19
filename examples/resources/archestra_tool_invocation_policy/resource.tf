@@ -3,15 +3,15 @@ data "archestra_profile" "test" {
 }
 
 data "archestra_profile_tool" "file_write" {
-  profile_id  = data.archestra_profile.test.id
-  tool_name = "write_file"
+  profile_id = data.archestra_profile.test.id
+  tool_name  = "write_file"
 }
 
 resource "archestra_tool_invocation_policy" "block_system_paths" {
-  agent_tool_id = data.archestra_profile_tool.file_write.id
-  argument_name = "path"
-  operator      = "contains"
-  value         = "/etc/"
-  action        = "block_always"
-  description   = "Block writes to system configuration directories"
+  profile_tool_id = data.archestra_profile_tool.file_write.id
+  argument_name   = "path"
+  operator        = "contains"
+  value           = "/etc/"
+  action          = "block_always"
+  description     = "Block writes to system configuration directories"
 }
