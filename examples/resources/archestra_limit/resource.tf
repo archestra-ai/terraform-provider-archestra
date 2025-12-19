@@ -18,8 +18,8 @@ resource "archestra_limit" "mcp_limit" {
 
 # Tool calls limit (requires both mcp_server_name and tool_name)
 resource "archestra_limit" "tool_limit" {
-  entity_id       = archestra_agent.assistant.id
-  entity_type     = "agent"
+  entity_id       = archestra_profile.assistant.id
+  entity_type     = "profile"
   limit_type      = "tool_calls"
   limit_value     = 10000
   mcp_server_name = "github-mcp"
