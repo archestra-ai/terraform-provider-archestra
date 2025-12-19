@@ -34,7 +34,7 @@ resource "archestra_profile_tool" "whoami" {
 # =============================================================================
 
 # Create an MCP Server definition
-resource "archestra_mcp_server" "filesystem" {
+resource "archestra_mcp_registry_catalog_item" "filesystem" {
   name        = "filesystem-mcp-server"
   description = "MCP server for filesystem operations"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem"
@@ -48,13 +48,13 @@ resource "archestra_mcp_server" "filesystem" {
 # Install the MCP server
 resource "archestra_mcp_server_installation" "filesystem" {
   name          = "my-filesystem-server"
-  mcp_server_id = archestra_mcp_server.filesystem.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.filesystem.id
 }
 
 # Look up a tool from the installed MCP server
 data "archestra_mcp_server_tool" "read_text_file" {
   mcp_server_id = archestra_mcp_server_installation.filesystem.id
-  name          = "${archestra_mcp_server.filesystem.name}__read_text_file"
+  name          = "${archestra_mcp_registry_catalog_item.filesystem.name}__read_text_file"
   depends_on    = [archestra_mcp_server_installation.filesystem]
 }
 
