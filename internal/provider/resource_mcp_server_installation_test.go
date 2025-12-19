@@ -20,12 +20,12 @@ func TestAccMCPServerResource(t *testing.T) {
 				Config: testAccMCPServerResourceConfig("test-mcp-server"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"archestra_mcp_server.test",
+						"archestra_mcp_registry_catalog_item.test",
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("test-mcp-server"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_mcp_server.test",
+						"archestra_mcp_registry_catalog_item.test",
 						tfjsonpath.New("description"),
 						knownvalue.StringExact("Test MCP server for acceptance testing"),
 					),
@@ -33,7 +33,7 @@ func TestAccMCPServerResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
-				ResourceName:      "archestra_mcp_server.test",
+				ResourceName:      "archestra_mcp_registry_catalog_item.test",
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -42,12 +42,12 @@ func TestAccMCPServerResource(t *testing.T) {
 				Config: testAccMCPServerResourceConfigUpdated("test-mcp-server-updated"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"archestra_mcp_server.test",
+						"archestra_mcp_registry_catalog_item.test",
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("test-mcp-server-updated"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_mcp_server.test",
+						"archestra_mcp_registry_catalog_item.test",
 						tfjsonpath.New("description"),
 						knownvalue.StringExact("Updated test MCP server"),
 					),
@@ -96,7 +96,7 @@ func TestAccMCPServerInstallationResource(t *testing.T) {
 
 func testAccMCPServerResourceConfig(name string) string {
 	return fmt.Sprintf(`
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name        = %[1]q
   description = "Test MCP server for acceptance testing"
   docs_url    = "https://github.com/example/test-server"
@@ -111,7 +111,7 @@ resource "archestra_mcp_server" "test" {
 
 func testAccMCPServerResourceConfigUpdated(name string) string {
 	return fmt.Sprintf(`
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name        = %[1]q
   description = "Updated test MCP server"
   docs_url    = "https://github.com/example/test-server-updated"
@@ -127,7 +127,7 @@ resource "archestra_mcp_server" "test" {
 func testAccMCPServerInstallationResourceConfig(name string) string {
 	return fmt.Sprintf(`
 # First create an MCP server in the registry
-resource "archestra_mcp_server" "dependency" {
+resource "archestra_mcp_registry_catalog_item" "dependency" {
   name        = "test-dependency-server"
   description = "Dependency server for installation test"
   docs_url    = "https://github.com/example/dependency-server"
@@ -141,7 +141,7 @@ resource "archestra_mcp_server" "dependency" {
 # Then create an installation of it
 resource "archestra_mcp_server_installation" "test" {
   name          = %[1]q
-  mcp_server_id = archestra_mcp_server.dependency.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.dependency.id
 }
 `, name)
 }

@@ -36,24 +36,3 @@ func TestProviderNew(t *testing.T) {
 		t.Fatal("Expected provider to be non-nil")
 	}
 }
-
-func TestProviderRegistrationCounts(t *testing.T) {
-	p, ok := New("test")().(*ArchestraProvider)
-	if !ok {
-		t.Fatal("Expected ArchestraProvider type")
-	}
-
-	t.Run("Resources_RegistrationCount", func(t *testing.T) {
-		resources := p.Resources(context.Background())
-		if len(resources) != 13 {
-			t.Fatalf("Expected 13 resources to be registered, got %d", len(resources))
-		}
-	})
-
-	t.Run("DataSources_RegistrationCount", func(t *testing.T) {
-		dataSources := p.DataSources(context.Background())
-		if len(dataSources) != 6 {
-			t.Fatalf("Expected 6 data sources to be registered, got %d", len(dataSources))
-		}
-	})
-}

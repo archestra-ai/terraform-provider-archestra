@@ -14,7 +14,7 @@ func TestAccIntegration_FullWorkflow(t *testing.T) {
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create team, agent, MCP server, and installation
+			// Create team, profile, MCP server, and installation
 			{
 				Config: testAccIntegrationConfig(),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -24,25 +24,25 @@ func TestAccIntegration_FullWorkflow(t *testing.T) {
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("Integration Test Team"),
 					),
-					// Agent checks
+					// Profile checks
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("name"),
-						knownvalue.StringExact("integration-test-agent"),
+						knownvalue.StringExact("integration-test-profile"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
 						knownvalue.StringExact("environment"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_agent.test",
+						"archestra_profile.test",
 						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("value"),
 						knownvalue.StringExact("test"),
 					),
 					// MCP Server checks
 					statecheck.ExpectKnownValue(
-						"archestra_mcp_server.test",
+						"archestra_mcp_registry_catalog_item.test",
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("integration-test-server"),
 					),
@@ -84,9 +84,9 @@ resource "archestra_team" "test" {
   description = "Team for integration testing"
 }
 
-# Create a test agent with labels
-resource "archestra_agent" "test" {
-  name = "integration-test-agent"
+# Create a test profile with labels
+resource "archestra_profile" "test" {
+  name = "integration-test-profile"
 
   labels = [
     {
@@ -101,7 +101,7 @@ resource "archestra_agent" "test" {
 }
 
 # Create an MCP server
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name        = "integration-test-server"
   description = "MCP server for integration testing"
   docs_url    = "https://github.com/example/integration-test"
@@ -115,7 +115,7 @@ resource "archestra_mcp_server" "test" {
 # Install the MCP server
 resource "archestra_mcp_server_installation" "test" {
   name          = "integration-test-installation"
-  mcp_server_id = archestra_mcp_server.test.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
 }
 `
 }
@@ -133,9 +133,9 @@ data "archestra_team" "lookup" {
   id = archestra_team.test.id
 }
 
-# Create a test agent with labels
-resource "archestra_agent" "test" {
-  name = "integration-test-agent"
+# Create a test profile with labels
+resource "archestra_profile" "test" {
+  name = "integration-test-profile"
 
   labels = [
     {
@@ -150,7 +150,7 @@ resource "archestra_agent" "test" {
 }
 
 # Create an MCP server
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name        = "integration-test-server"
   description = "MCP server for integration testing"
   docs_url    = "https://github.com/example/integration-test"
@@ -164,7 +164,7 @@ resource "archestra_mcp_server" "test" {
 # Install the MCP server
 resource "archestra_mcp_server_installation" "test" {
   name          = "integration-test-installation"
-  mcp_server_id = archestra_mcp_server.test.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
 }
 `
 }

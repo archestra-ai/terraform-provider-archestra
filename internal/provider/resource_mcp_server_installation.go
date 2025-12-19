@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"time"
+
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -12,6 +14,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+)
+
+const (
+	mcpServerPollTimeout  = 30 * time.Second
+	mcpServerPollInterval = 1 * time.Second
 )
 
 var _ resource.Resource = &MCPServerResource{}
@@ -63,7 +71,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"mcp_server_id": schema.StringAttribute{
-				MarkdownDescription: "The MCP server ID from the private MCP registry (archestra_mcp_server resource)",
+				MarkdownDescription: "The MCP server ID from the private MCP registry (archestra_mcp_registry_catalog_item resource)",
 				Optional:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -127,11 +135,16 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 
-	// Map response to Terraform state
-	// Note: Keep user's configured name, set display_name to the API-returned name
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
 	data.MCPServerID = types.StringValue(apiResp.JSON200.CatalogId.String())
+
+	if err := r.waitForServerTools(ctx, apiResp.JSON200.Id.String()); err != nil {
+		resp.Diagnostics.AddWarning(
+			"MCP Server Not Fully Ready",
+			fmt.Sprintf("Server created successfully but tools are not yet available. They may appear shortly. Error: %s", err),
+		)
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -223,4 +236,58 @@ func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteReque
 
 func (r *MCPServerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+}
+
+func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID string) error {
+	ctx, cancel := context.WithTimeout(ctx, mcpServerPollTimeout)
+	defer cancel()
+
+	ticker := time.NewTicker(mcpServerPollInterval)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return fmt.Errorf("timeout waiting for MCP server tools to be ready")
+
+		case <-ticker.C:
+			ready, err := r.checkServerToolsReady(ctx, serverID)
+			if err != nil {
+				tflog.Debug(ctx, "Error checking server tools", map[string]interface{}{
+					"error": err.Error(),
+				})
+				continue
+			}
+
+			if ready {
+				tflog.Info(ctx, "MCP server tools are ready", map[string]interface{}{
+					"server_id": serverID,
+				})
+				return nil
+			}
+
+			tflog.Debug(ctx, "MCP server tools not yet ready, retrying...", map[string]interface{}{
+				"server_id": serverID,
+			})
+		}
+	}
+}
+
+func (r *MCPServerResource) checkServerToolsReady(ctx context.Context, serverID string) (bool, error) {
+	toolsResp, err := r.client.GetToolsWithResponse(ctx)
+	if err != nil {
+		return false, fmt.Errorf("failed to get tools: %w", err)
+	}
+
+	if toolsResp.JSON200 == nil {
+		return false, fmt.Errorf("unexpected response status: %d", toolsResp.StatusCode())
+	}
+
+	for _, tool := range *toolsResp.JSON200 {
+		if tool.McpServer != nil && tool.McpServer.Id == serverID {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }

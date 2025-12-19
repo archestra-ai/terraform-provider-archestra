@@ -148,7 +148,7 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 
 func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewAgentResource,
+		NewProfileResource,
 		NewMCPServerResource,
 		NewMCPServerRegistryResource,
 		NewTrustedDataPolicyResource,
@@ -162,6 +162,8 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewTeamExternalGroupResource,
 		NewChatLLMProviderApiKeyResource,
 		NewArchestraRoleResource,
+		NewDualLlmConfigResource,
+		NewProfileToolResource,
 	}
 }
 
@@ -169,7 +171,7 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 	return []func() datasource.DataSource{
 		NewTeamDataSource,
 		// NewUserDataSource, // TODO: Enable when user API endpoints are implemented
-		NewAgentToolDataSource,
+		NewProfileToolDataSource,
 		NewMCPServerToolDataSource,
 		NewTokenPricesDataSource,
 		NewTeamExternalGroupsDataSource,

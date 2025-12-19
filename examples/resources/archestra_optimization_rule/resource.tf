@@ -43,10 +43,10 @@ resource "archestra_optimization_rule" "team_optimization" {
   ]
 }
 
-# Agent-specific optimization with multiple conditions
-resource "archestra_optimization_rule" "agent_optimization" {
-  entity_type  = "agent"
-  entity_id    = archestra_agent.chatbot.id
+# Profile-specific optimization with multiple conditions
+resource "archestra_optimization_rule" "profile_optimization" {
+  entity_type  = "profile"
+  entity_id    = archestra_profile.chatbot.id
   llm_provider = "openai"
   target_model = "gpt-4o-mini"
   enabled      = true
