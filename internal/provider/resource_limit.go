@@ -63,10 +63,10 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				Required:            true,
 			},
 			"entity_type": schema.StringAttribute{
-				MarkdownDescription: "Entity type: organization, team, or agent",
+				MarkdownDescription: "Entity type: organization, team, or profile",
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("organization", "team", "agent"),
+					stringvalidator.OneOf("organization", "team", "profile"),
 				},
 			},
 			"limit_type": schema.StringAttribute{

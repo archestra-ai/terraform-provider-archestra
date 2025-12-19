@@ -118,17 +118,17 @@ func TestAccToolInvocationPolicyResource_WithoutReason(t *testing.T) {
 
 // testAccToolInvocationPolicyResourceConfigNoReason creates a minimal config
 // using only the built-in archestra__whoami tool which is immediately available
-// after agent creation (no MCP server needed).
+// after profile creation (no MCP server needed).
 func testAccToolInvocationPolicyResourceConfigNoReason(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "noreason" {
-  name = "tip-noreason-agent-%[1]s"
+resource "archestra_profile" "noreason" {
+  name = "tip-noreason-profile-%[1]s"
 }
 
 # archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
 data "archestra_profile_tool" "noreason" {
-  profile_id = archestra_agent.noreason.id
+  profile_id = archestra_profile.noreason.id
   tool_name  = "archestra__whoami"
 }
 
@@ -169,17 +169,17 @@ func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
 }
 
 // testAccToolInvocationPolicyResourceConfig creates a config using only the built-in
-// archestra__whoami tool which is immediately available after agent creation.
+// archestra__whoami tool which is immediately available after profile creation.
 func testAccToolInvocationPolicyResourceConfig(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
-  name = "tip-test-agent-%[1]s"
+resource "archestra_profile" "test" {
+  name = "tip-test-profile-%[1]s"
 }
 
 # archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
 data "archestra_profile_tool" "test" {
-  profile_id = archestra_agent.test.id
+  profile_id = archestra_profile.test.id
   tool_name  = "archestra__whoami"
 }
 
@@ -196,14 +196,14 @@ resource "archestra_tool_invocation_policy" "test" {
 
 func testAccToolInvocationPolicyResourceConfigUpdated(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
-  name = "tip-test-agent-%[1]s"
+resource "archestra_profile" "test" {
+  name = "tip-test-profile-%[1]s"
 }
 
 # archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
 data "archestra_profile_tool" "test" {
-  profile_id = archestra_agent.test.id
+  profile_id = archestra_profile.test.id
   tool_name  = "archestra__whoami"
 }
 
@@ -220,14 +220,14 @@ resource "archestra_tool_invocation_policy" "test" {
 
 func testAccToolInvocationPolicyResourceConfigRegex(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "regex" {
-  name = "tip-regex-agent-%[1]s"
+resource "archestra_profile" "regex" {
+  name = "tip-regex-profile-%[1]s"
 }
 
 # archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
 data "archestra_profile_tool" "regex" {
-  profile_id = archestra_agent.regex.id
+  profile_id = archestra_profile.regex.id
   tool_name  = "archestra__whoami"
 }
 
