@@ -18,19 +18,19 @@ Assigns a tool to an Archestra Profile and configures its execution and security
 # =============================================================================
 
 # Create a Profile
-resource "archestra_agent" "demo_agent" {
-  name = "Demo Agent"
+resource "archestra_profile" "demo_profile" {
+  name = "Demo Profile"
 }
 
 # Look up the built-in 'whoami' tool
 data "archestra_profile_tool" "whoami" {
   tool_name  = "archestra__whoami"
-  profile_id = archestra_agent.demo_agent.id
+  profile_id = archestra_profile.demo_profile.id
 }
 
 # Assign the Tool to the Profile
 resource "archestra_profile_tool" "whoami" {
-  profile_id = archestra_agent.demo_agent.id
+  profile_id = archestra_profile.demo_profile.id
   tool_id    = data.archestra_profile_tool.whoami.tool_id
 
   # Configuration Options
@@ -75,7 +75,7 @@ data "archestra_mcp_server_tool" "read_text_file" {
 
 # Assign the MCP tool to the profile with full configuration
 resource "archestra_profile_tool" "read_text_file" {
-  profile_id = archestra_agent.demo_agent.id
+  profile_id = archestra_profile.demo_profile.id
   tool_id    = data.archestra_mcp_server_tool.read_text_file.id
 
   # Specify which MCP server provides credentials

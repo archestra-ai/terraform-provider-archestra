@@ -1,5 +1,5 @@
-resource "archestra_agent" "example" {
-  name = "production-agent"
+resource "archestra_profile" "example" {
+  name = "production-profile"
 
   labels = [
     {

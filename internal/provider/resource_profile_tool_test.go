@@ -19,7 +19,7 @@ func TestAccProfileToolResource(t *testing.T) {
 			{
 				Config: testAccProfileToolResourceConfig("archestra-test-profile"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttrPair("archestra_profile_tool.test", "profile_id", "archestra_agent.test", "id"),
+					resource.TestCheckResourceAttrPair("archestra_profile_tool.test", "profile_id", "archestra_profile.test", "id"),
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "tool_result_treatment", "untrusted"),
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "use_dynamic_team_credential", "true"),
 					resource.TestCheckResourceAttr("archestra_profile_tool.test", "response_modifier_template", "Hello {{.Result}}"),
@@ -65,7 +65,7 @@ func TestAccProfileToolResource(t *testing.T) {
 
 func testAccProfileToolResourceConfig(profileName string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
+resource "archestra_profile" "test" {
   name = "%[1]s"
 }
 
@@ -89,7 +89,7 @@ data "archestra_mcp_server_tool" "test" {
 }
 
 resource "archestra_profile_tool" "test" {
-  profile_id = archestra_agent.test.id
+  profile_id = archestra_profile.test.id
   tool_id    = data.archestra_mcp_server_tool.test.id
   
   # Set a specific treatment to verify it is applied
@@ -104,7 +104,7 @@ resource "archestra_profile_tool" "test" {
 
 func testAccProfileToolResourceConfigUpdate(profileName string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
+resource "archestra_profile" "test" {
   name = "%[1]s"
 }
 
@@ -128,7 +128,7 @@ data "archestra_mcp_server_tool" "test" {
 }
 
 resource "archestra_profile_tool" "test" {
-  profile_id = archestra_agent.test.id
+  profile_id = archestra_profile.test.id
   tool_id    = data.archestra_mcp_server_tool.test.id
   
   tool_result_treatment = "trusted"
@@ -143,7 +143,7 @@ resource "archestra_profile_tool" "test" {
 
 func testAccProfileToolResourceConfigUnset(profileName string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
+resource "archestra_profile" "test" {
   name = "%[1]s"
 }
 
@@ -167,7 +167,7 @@ data "archestra_mcp_server_tool" "test" {
 }
 
 resource "archestra_profile_tool" "test" {
-  profile_id = archestra_agent.test.id
+  profile_id = archestra_profile.test.id
   tool_id    = data.archestra_mcp_server_tool.test.id
   
   // Keep required/other fields

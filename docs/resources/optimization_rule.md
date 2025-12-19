@@ -58,10 +58,10 @@ resource "archestra_optimization_rule" "team_optimization" {
   ]
 }
 
-# Agent-specific optimization with multiple conditions
-resource "archestra_optimization_rule" "agent_optimization" {
-  entity_type  = "agent"
-  entity_id    = archestra_agent.chatbot.id
+# Profile-specific optimization with multiple conditions
+resource "archestra_optimization_rule" "profile_optimization" {
+  entity_type  = "profile"
+  entity_id    = archestra_profile.chatbot.id
   llm_provider = "openai"
   target_model = "gpt-4o-mini"
   enabled      = true
@@ -84,7 +84,7 @@ resource "archestra_optimization_rule" "agent_optimization" {
 
 - `conditions` (Attributes List) Conditions that trigger the optimization (see [below for nested schema](#nestedatt--conditions))
 - `entity_id` (String) Entity ID this rule applies to
-- `entity_type` (String) Entity type: organization, team, or agent
+- `entity_type` (String) Entity type: organization, team, or profile
 - `llm_provider` (String) LLM provider: openai, anthropic, or gemini
 - `target_model` (String) Target model to switch to
 

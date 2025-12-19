@@ -49,14 +49,14 @@ func TestAccProfileToolDataSource(t *testing.T) {
 // available after profile creation (no MCP server needed).
 func testAccProfileToolDataSourceConfig(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
+resource "archestra_profile" "test" {
   name = "profile-tool-ds-test-%[1]s"
 }
 
 # archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
 data "archestra_profile_tool" "test" {
-  profile_id = archestra_agent.test.id
+  profile_id = archestra_profile.test.id
   tool_name  = "archestra__whoami"
 }
 `, rName)
@@ -78,12 +78,12 @@ func TestAccProfileToolDataSource_NotFound(t *testing.T) {
 
 func testAccProfileToolDataSourceConfigNotFound(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
+resource "archestra_profile" "test" {
   name = "profile-tool-notfound-test-%[1]s"
 }
 
 data "archestra_profile_tool" "test" {
-  profile_id = archestra_agent.test.id
+  profile_id = archestra_profile.test.id
   tool_name  = "nonexistent_tool_that_does_not_exist"
 }
 `, rName)

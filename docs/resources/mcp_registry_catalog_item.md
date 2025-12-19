@@ -3,12 +3,12 @@
 page_title: "archestra_mcp_registry_catalog_item Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an MCP server in the Private MCP Registry. This allows you to register local MCP servers that can then be installed by agents.
+  Manages an MCP server in the Private MCP Registry. This allows you to register local MCP servers that can then be installed by profiles.
 ---
 
 # archestra_mcp_registry_catalog_item (Resource)
 
-Manages an MCP server in the Private MCP Registry. This allows you to register local MCP servers that can then be installed by agents.
+Manages an MCP server in the Private MCP Registry. This allows you to register local MCP servers that can then be installed by profiles.
 
 ## Example Usage
 
