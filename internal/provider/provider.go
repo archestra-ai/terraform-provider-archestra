@@ -161,6 +161,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		// NewUserResource, // TODO: Enable when user API endpoints are implemented
 		NewTeamExternalGroupResource,
 		NewChatLLMProviderApiKeyResource,
+		NewArchestraRoleResource,
 	}
 }
 
@@ -172,6 +173,7 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewMCPServerToolDataSource,
 		NewTokenPricesDataSource,
 		NewTeamExternalGroupsDataSource,
+		NewArchestraRoleDataSource,
 	}
 }
 

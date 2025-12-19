@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"context"
 	"os"
 	"testing"
 
@@ -36,30 +37,23 @@ func TestProviderNew(t *testing.T) {
 	}
 }
 
-func TestProviderResources_RegistrationCount(t *testing.T) {
-	provider, ok := New("test")().(*ArchestraProvider)
+func TestProviderRegistrationCounts(t *testing.T) {
+	p, ok := New("test")().(*ArchestraProvider)
 	if !ok {
 		t.Fatal("Expected ArchestraProvider type")
 	}
-	resources := provider.Resources(t.Context())
 
-	// We expect this many resources to be registered
-	expectedCount := 12
-	if len(resources) != expectedCount {
-		t.Errorf("Expected %d resources to be registered, got %d", expectedCount, len(resources))
-	}
-}
+	t.Run("Resources_RegistrationCount", func(t *testing.T) {
+		resources := p.Resources(context.Background())
+		if len(resources) != 13 {
+			t.Fatalf("Expected 13 resources to be registered, got %d", len(resources))
+		}
+	})
 
-func TestProviderDataSources_RegistrationCount(t *testing.T) {
-	provider, ok := New("test")().(*ArchestraProvider)
-	if !ok {
-		t.Fatal("Expected ArchestraProvider type")
-	}
-	dataSources := provider.DataSources(t.Context())
-
-	// We expect this many data sources to be registered
-	expectedCount := 5
-	if len(dataSources) != expectedCount {
-		t.Errorf("Expected %d data sources to be registered, got %d", expectedCount, len(dataSources))
-	}
+	t.Run("DataSources_RegistrationCount", func(t *testing.T) {
+		dataSources := p.DataSources(context.Background())
+		if len(dataSources) != 6 {
+			t.Fatalf("Expected 6 data sources to be registered, got %d", len(dataSources))
+		}
+	})
 }
