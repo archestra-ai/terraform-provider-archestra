@@ -51,11 +51,26 @@ make generate
 
 #### Archestra API Client
 
-Ensure that you have the Archestra platform running locally (and the backend's openapi spec is consumable at <http://localhost:9000/openapi.json>)
+The API client is generated from the Archestra platform's OpenAPI spec and is pinned to a specific version of Archestra. To regenerate/bump the client:
 
-```bash
-make codegen-api-client
-```
+1. Run the Archestra platform locally at the desired version. The easiest way is using Docker:
+
+   ```bash
+   docker run -p 9000:9000 -p 3000:3000 \
+     -v archestra-postgres-data:/var/lib/postgresql/data \
+     -v archestra-app-data:/app/data \
+     archestra/platform:<version-tag>
+   ```
+
+   See the [Archestra Platform Quickstart](https://archestra.ai/docs/platform-quickstart) for more details.
+
+2. Generate the client from the running platform's OpenAPI spec (served at <http://localhost:9000/openapi.json>):
+
+   ```bash
+   make codegen-api-client
+   ```
+
+3. Update the `ARCHESTRA_VERSION` env var in `.github/workflows/on-pull-request.yml` to match the version you generated the client from. This ensures CI acceptance tests run against the same version.
 
 ### Code Style
 
