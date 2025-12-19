@@ -28,7 +28,7 @@ type TrustedDataPolicyResource struct {
 
 type TrustedDataPolicyResourceModel struct {
 	ID            types.String `tfsdk:"id"`
-	AgentToolID   types.String `tfsdk:"agent_tool_id"`
+	ProfileToolID types.String `tfsdk:"profile_tool_id"`
 	Description   types.String `tfsdk:"description"`
 	AttributePath types.String `tfsdk:"attribute_path"`
 	Operator      types.String `tfsdk:"operator"`
@@ -52,8 +52,8 @@ func (r *TrustedDataPolicyResource) Schema(ctx context.Context, req resource.Sch
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"agent_tool_id": schema.StringAttribute{
-				MarkdownDescription: "The agent tool ID this policy applies to",
+			"profile_tool_id": schema.StringAttribute{
+				MarkdownDescription: "The profile tool ID this policy applies to",
 				Required:            true,
 			},
 			"description": schema.StringAttribute{
@@ -106,17 +106,17 @@ func (r *TrustedDataPolicyResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	// Parse AgentToolID as UUID
-	parsedAgentToolID, err := uuid.Parse(data.AgentToolID.ValueString())
+	// Parse ProfileToolID as UUID
+	parsedProfileToolID, err := uuid.Parse(data.ProfileToolID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Agent Tool ID", fmt.Sprintf("Unable to parse agent tool ID: %s", err))
+		resp.Diagnostics.AddError("Invalid Profile Tool ID", fmt.Sprintf("Unable to parse profile tool ID: %s", err))
 		return
 	}
-	agentToolID := parsedAgentToolID
+	profileToolID := parsedProfileToolID
 
 	// Create request body using generated type
 	requestBody := client.CreateTrustedDataPolicyJSONRequestBody{
-		AgentToolId:   agentToolID,
+		AgentToolId:   profileToolID,
 		Description:   data.Description.ValueString(),
 		AttributePath: data.AttributePath.ValueString(),
 		Operator:      client.CreateTrustedDataPolicyJSONBodyOperator(data.Operator.ValueString()),
@@ -142,7 +142,7 @@ func (r *TrustedDataPolicyResource) Create(ctx context.Context, req resource.Cre
 
 	// Map response to Terraform state
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
-	data.AgentToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
 	data.Description = types.StringValue(apiResp.JSON200.Description)
 	data.AttributePath = types.StringValue(apiResp.JSON200.AttributePath)
 	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
@@ -190,7 +190,7 @@ func (r *TrustedDataPolicyResource) Read(ctx context.Context, req resource.ReadR
 	}
 
 	// Map response to Terraform state
-	data.AgentToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
 	data.Description = types.StringValue(apiResp.JSON200.Description)
 	data.AttributePath = types.StringValue(apiResp.JSON200.AttributePath)
 	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
@@ -215,12 +215,12 @@ func (r *TrustedDataPolicyResource) Update(ctx context.Context, req resource.Upd
 	}
 	policyID := parsedID
 
-	parsedAgentToolID, err := uuid.Parse(data.AgentToolID.ValueString())
+	parsedProfileToolID, err := uuid.Parse(data.ProfileToolID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Agent Tool ID", fmt.Sprintf("Unable to parse agent tool ID: %s", err))
+		resp.Diagnostics.AddError("Invalid Profile Tool ID", fmt.Sprintf("Unable to parse profile tool ID: %s", err))
 		return
 	}
-	agentToolID := parsedAgentToolID
+	profileToolID := parsedProfileToolID
 
 	// Create request body using generated type
 	description := data.Description.ValueString()
@@ -230,7 +230,7 @@ func (r *TrustedDataPolicyResource) Update(ctx context.Context, req resource.Upd
 	action := client.UpdateTrustedDataPolicyJSONBodyAction(data.Action.ValueString())
 
 	requestBody := client.UpdateTrustedDataPolicyJSONRequestBody{
-		AgentToolId:   &agentToolID,
+		AgentToolId:   &profileToolID,
 		Description:   &description,
 		AttributePath: &attributePath,
 		Operator:      &operator,
@@ -255,7 +255,7 @@ func (r *TrustedDataPolicyResource) Update(ctx context.Context, req resource.Upd
 	}
 
 	// Map response to Terraform state
-	data.AgentToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
 	data.Description = types.StringValue(apiResp.JSON200.Description)
 	data.AttributePath = types.StringValue(apiResp.JSON200.AttributePath)
 	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))

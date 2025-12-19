@@ -12,29 +12,29 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
-func TestAccAgentToolDataSource(t *testing.T) {
+func TestAccProfileToolDataSource(t *testing.T) {
 	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create agent and look up the built-in tool
+			// Create profile and look up the built-in tool
 			{
-				Config: testAccAgentToolDataSourceConfig(rName),
+				Config: testAccProfileToolDataSourceConfig(rName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					// Verify the data source returns the expected values
 					statecheck.ExpectKnownValue(
-						"data.archestra_agent_tool.test",
+						"data.archestra_profile_tool.test",
 						tfjsonpath.New("id"),
 						knownvalue.NotNull(),
 					),
 					statecheck.ExpectKnownValue(
-						"data.archestra_agent_tool.test",
+						"data.archestra_profile_tool.test",
 						tfjsonpath.New("tool_id"),
 						knownvalue.NotNull(),
 					),
 					statecheck.ExpectKnownValue(
-						"data.archestra_agent_tool.test",
+						"data.archestra_profile_tool.test",
 						tfjsonpath.New("tool_result_treatment"),
 						knownvalue.NotNull(),
 					),
@@ -44,47 +44,47 @@ func TestAccAgentToolDataSource(t *testing.T) {
 	})
 }
 
-// testAccAgentToolDataSourceConfig creates a minimal config to test the agent_tool
+// testAccProfileToolDataSourceConfig creates a minimal config to test the profile_tool
 // data source using the built-in archestra__whoami tool which is immediately
-// available after agent creation (no MCP server needed).
-func testAccAgentToolDataSourceConfig(rName string) string {
+// available after profile creation (no MCP server needed).
+func testAccProfileToolDataSourceConfig(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
-  name = "agent-tool-ds-test-%[1]s"
+resource "archestra_profile" "test" {
+  name = "profile-tool-ds-test-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the agent is created.
+# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
 # No MCP server or installation needed - the tool is immediately available.
-data "archestra_agent_tool" "test" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "archestra__whoami"
+data "archestra_profile_tool" "test" {
+  profile_id = archestra_profile.test.id
+  tool_name  = "archestra__whoami"
 }
 `, rName)
 }
 
-func TestAccAgentToolDataSource_NotFound(t *testing.T) {
+func TestAccProfileToolDataSource_NotFound(t *testing.T) {
 	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config:      testAccAgentToolDataSourceConfigNotFound(rName),
+				Config:      testAccProfileToolDataSourceConfigNotFound(rName),
 				ExpectError: regexp.MustCompile(`not found`),
 			},
 		},
 	})
 }
 
-func testAccAgentToolDataSourceConfigNotFound(rName string) string {
+func testAccProfileToolDataSourceConfigNotFound(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_agent" "test" {
-  name = "agent-tool-notfound-test-%[1]s"
+resource "archestra_profile" "test" {
+  name = "profile-tool-notfound-test-%[1]s"
 }
 
-data "archestra_agent_tool" "test" {
-  agent_id  = archestra_agent.test.id
-  tool_name = "nonexistent_tool_that_does_not_exist"
+data "archestra_profile_tool" "test" {
+  profile_id = archestra_profile.test.id
+  tool_name  = "nonexistent_tool_that_does_not_exist"
 }
 `, rName)
 }
