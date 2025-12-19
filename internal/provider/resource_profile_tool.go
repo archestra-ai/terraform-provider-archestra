@@ -50,7 +50,7 @@ func (r *ProfileToolResource) Metadata(ctx context.Context, req resource.Metadat
 
 func (r *ProfileToolResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Assigns a tool to an Archestra Profile (Agent) and configures its execution and security policies.",
+		MarkdownDescription: "Assigns a tool to an Archestra Profile and configures its execution and security policies.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
