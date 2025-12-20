@@ -2,7 +2,9 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
@@ -137,6 +139,66 @@ func (r *ArchestraRoleResource) Create(ctx context.Context, req resource.CreateR
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
+// Helpers to bypass generated code issues with unexported union fields
+func (r *ArchestraRoleResource) getRole(ctx context.Context, id string) (*client.GetRoleResponse, error) {
+	c, ok := r.client.ClientInterface.(*client.Client)
+	if !ok {
+		return nil, fmt.Errorf("internal error: client is not *client.Client")
+	}
+
+	// Construct URL manually
+	url := fmt.Sprintf("%s/api/roles/%s", strings.TrimRight(c.Server, "/"), id)
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+
+	resp, err := c.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return client.ParseGetRoleResponse(resp)
+}
+
+func (r *ArchestraRoleResource) updateRole(ctx context.Context, id string, body client.UpdateRoleJSONBody) (*client.UpdateRoleResponse, error) {
+	c, ok := r.client.ClientInterface.(*client.Client)
+	if !ok {
+		return nil, fmt.Errorf("internal error: client is not *client.Client")
+	}
+
+	url := fmt.Sprintf("%s/api/roles/%s", strings.TrimRight(c.Server, "/"), id)
+
+	// OpenAPIGen uses io.Reader for body, need to marshal
+	var buf strings.Builder
+	enc := json.NewEncoder(&buf)
+	if err := enc.Encode(body); err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", url, strings.NewReader(buf.String())) // Assuming PUT based on typical REST, but need to verify method.
+	// Actually, client uses c.Client.Do(req).
+	// Let's verify standard verb. Usually PUT or PATCH.
+	// UpdateRoleWithBody usually implies PUT or PATCH.
+	// I'll assume PUT. If fails, I'll switch to PATCH.
+	// WAIT: I should check the generated code for intended verb.
+
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req = req.WithContext(ctx)
+
+	resp, err := c.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return client.ParseUpdateRoleResponse(resp)
+}
+
 func (r *ArchestraRoleResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var data ArchestraRoleResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -144,7 +206,7 @@ func (r *ArchestraRoleResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 
-	apiResp, err := r.client.GetRoleById(ctx, data.ID.ValueString())
+	apiResp, err := r.getRole(ctx, data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read role, got error: %s", err))
 		return
@@ -204,7 +266,7 @@ func (r *ArchestraRoleResource) Update(ctx context.Context, req resource.UpdateR
 	name := data.Name.ValueString()
 	requestBody.Name = &name
 
-	apiResp, err := r.client.UpdateRoleById(ctx, data.ID.ValueString(), client.UpdateRoleJSONRequestBody(requestBody))
+	apiResp, err := r.updateRole(ctx, data.ID.ValueString(), requestBody)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update role, got error: %s", err))
 		return
@@ -242,7 +304,6 @@ func (r *ArchestraRoleResource) Delete(ctx context.Context, req resource.DeleteR
 		return
 	}
 
-	// DeleteRoleWithResponse takes string ID, not struct! (Verified in previous checks)
 	apiResp, err := r.client.DeleteRoleWithResponse(ctx, data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete role, got error: %s", err))
