@@ -42,7 +42,7 @@ func TestAccIntegration_FullWorkflow(t *testing.T) {
 					),
 					// MCP Server checks
 					statecheck.ExpectKnownValue(
-						"archestra_mcp_server.test",
+						"archestra_mcp_registry_catalog_item.test",
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("integration-test-server"),
 					),
@@ -101,7 +101,7 @@ resource "archestra_profile" "test" {
 }
 
 # Create an MCP server
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name        = "integration-test-server"
   description = "MCP server for integration testing"
   docs_url    = "https://github.com/example/integration-test"
@@ -115,7 +115,7 @@ resource "archestra_mcp_server" "test" {
 # Install the MCP server
 resource "archestra_mcp_server_installation" "test" {
   name          = "integration-test-installation"
-  mcp_server_id = archestra_mcp_server.test.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
 }
 `
 }
@@ -150,7 +150,7 @@ resource "archestra_profile" "test" {
 }
 
 # Create an MCP server
-resource "archestra_mcp_server" "test" {
+resource "archestra_mcp_registry_catalog_item" "test" {
   name        = "integration-test-server"
   description = "MCP server for integration testing"
   docs_url    = "https://github.com/example/integration-test"
@@ -164,7 +164,7 @@ resource "archestra_mcp_server" "test" {
 # Install the MCP server
 resource "archestra_mcp_server_installation" "test" {
   name          = "integration-test-installation"
-  mcp_server_id = archestra_mcp_server.test.id
+  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
 }
 `
 }

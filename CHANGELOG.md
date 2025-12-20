@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.2.0...v0.3.0) (2025-12-19)
+
+
+### Features
+
+* add `archestra_dual_llm_config` resource ([#50](https://github.com/archestra-ai/terraform-provider-archestra/issues/50)) ([9e55ec8](https://github.com/archestra-ai/terraform-provider-archestra/commit/9e55ec860fde2cd4dd14f0d4582d0a30290bb2b6))
+* add `archestra_profile_tool` resource + rename `archestra_agent_tool` datasource -&gt; `archestra_profile_tool` ([#47](https://github.com/archestra-ai/terraform-provider-archestra/issues/47)) ([e2345ec](https://github.com/archestra-ai/terraform-provider-archestra/commit/e2345ec0436ae2b12159bb3aba907c55cb687a7d))
+* after mcp server installation, wait for tools to be available ([#54](https://github.com/archestra-ai/terraform-provider-archestra/issues/54)) ([2b69232](https://github.com/archestra-ai/terraform-provider-archestra/commit/2b6923253b1bd07c7b7e099856f929e5ac2d1262))
+* rename `archestra_mcp_server` resource to `archestra_mcp_registry_catalog_item` ([#46](https://github.com/archestra-ai/terraform-provider-archestra/issues/46)) ([baf01b6](https://github.com/archestra-ai/terraform-provider-archestra/commit/baf01b64bd1b8018379e0d54428f8451aafeb0e7))
+
 ## [0.2.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.1.0...v0.2.0) (2025-12-17)
 
 
