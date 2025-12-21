@@ -9,7 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 var _ resource.Resource = &ArchestraPromptResource{}
@@ -24,6 +23,7 @@ type ArchestraPromptResource struct {
 
 type ArchestraPromptResourceModel struct {
     ID           types.String `tfsdk:"id"`
+    ProfileId    types.String `tfsdk:"profile_id"`
     Name         types.String `tfsdk:"name"`
     SystemPrompt types.String `tfsdk:"system_prompt"`
     Prompt       types.String `tfsdk:"prompt"`
@@ -32,7 +32,7 @@ type ArchestraPromptResourceModel struct {
 }
 
 func (r *ArchestraPromptResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_archestra_prompt"
+	resp.TypeName = req.ProviderTypeName + "_prompt"
 }
 
 func (r *ArchestraPromptResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -40,6 +40,9 @@ func (r *ArchestraPromptResource) Schema(ctx context.Context, req resource.Schem
         Attributes: map[string]schema.Attribute{
             "id": schema.StringAttribute{
                 Computed: true,
+            },
+            "profile_id": schema.StringAttribute{
+                Required: true,
             },
             "name": schema.StringAttribute{
                 Required: true,
@@ -79,18 +82,24 @@ func (r *ArchestraPromptResource) Configure(ctx context.Context, req resource.Co
 }
 
 func (r *ArchestraPromptResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-    var plan ArchestraPromptResourceModel
-    resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+    var data ArchestraPromptResourceModel
+    resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
     if resp.Diagnostics.HasError() {
         return
     }
 
+    Profile_Id, err := uuid.Parse(data.ProfileId.ValueString())
+    if err != nil {
+		resp.Diagnostics.AddError("Invalid Profile ID", fmt.Sprintf("Unable to get Prompt: %s", err))
+		return
+	}
+
     body := client.CreatePromptJSONRequestBody{
-        // AgentId:      r.client.AgentID, // comes from provider config
-        Name:         plan.Name.ValueString(),
-        SystemPrompt: plan.SystemPrompt.ValueStringPointer(),
-        UserPrompt:   plan.Prompt.ValueStringPointer(),
-        IsActive:     plan.IsActive.ValueBoolPointer(),
+        AgentId:      Profile_Id, 
+        Name:         data.Name.ValueString(),
+        SystemPrompt: data.SystemPrompt.ValueStringPointer(),
+        UserPrompt:   data.Prompt.ValueStringPointer(),
+        IsActive:     data.IsActive.ValueBoolPointer(),
     }
 
     createResp, err := r.client.CreatePromptWithResponse(ctx, body)
@@ -101,10 +110,10 @@ func (r *ArchestraPromptResource) Create(ctx context.Context, req resource.Creat
 
     prompt := createResp.JSON200
 
-    plan.ID = types.StringValue(prompt.Id.String())
-    plan.Version = types.Int64Value(int64(prompt.Version))
+    data.ID = types.StringValue(prompt.Id.String())
+    data.Version = types.Int64Value(int64(prompt.Version))
 
-    resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+    resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 
@@ -149,16 +158,26 @@ func (r *ArchestraPromptResource) Update(ctx context.Context, req resource.Updat
         return
     }
 
-    parentID := openapi_types.UUID(state.ID.ValueString())
+    Profile_Id, err := uuid.Parse(data.ProfileId.ValueString())
+    if err != nil {
+		resp.Diagnostics.AddError("Invalid Profile ID", fmt.Sprintf("Unable to get Prompt: %s", err))
+		return
+	}
+
+    parentID, err := uuid.Parse(state.ID.ValueString())
+    if err != nil {
+		resp.Diagnostics.AddError("Invalid Parent ID", fmt.Sprintf("Unable to get Prompt: %s", err))
+		return
+	}
 
     // Create new version by referencing the parent prompt
     body := client.CreatePromptJSONRequestBody{
-        // AgentId:        r.client.AgentID,
+        AgentId:        Profile_Id,
         Name:           data.Name.ValueString(),
         SystemPrompt:   data.SystemPrompt.ValueStringPointer(),
         UserPrompt:     data.Prompt.ValueStringPointer(),
         IsActive:       data.IsActive.ValueBoolPointer(),
-        ParentPromptId: parentID,
+        ParentPromptId: &parentID,
     }
 
     createResp, err := r.client.CreatePromptWithResponse(ctx, body)
@@ -183,14 +202,23 @@ func (r *ArchestraPromptResource) Delete(ctx context.Context, req resource.Delet
     if resp.Diagnostics.HasError() {
         return
     }
+    
+    ID, err := uuid.Parse(state.ID.ValueString())
+    if err != nil {
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to Delete Prompt: %s", err))
+		return
+	}
 
-    _, err := r.client.DeletePromptWithResponse(ctx, state.ID.ValueString())
+    
+    delResp, err := r.client.DeletePromptWithResponse(ctx, ID)
     if err != nil {
         resp.Diagnostics.AddError("API Error", err.Error())
     }
-}
 
-func ptrUUID(id string) *openapi_types.UUID {
-    u := openapi_types.UUID(id)
-    return &u
+    if delResp.StatusCode() != 200  && delResp.StatusCode() != 400 {
+        resp.Diagnostics.AddError(
+            "Unexpected API Response",
+            fmt.Sprintf("Expected 200 OK or 404 Not Found, got status %d", delResp.StatusCode()),
+        )
+    }
 }
