@@ -22,7 +22,7 @@ type ArchestraPromptResource struct {
 }
 
 type ArchestraPromptResourceModel struct {
-    ID           types.String `tfsdk:"id"`
+    ID           types.String `tfsdk:"prompt_id"`
     ProfileId    types.String `tfsdk:"profile_id"`
     Name         types.String `tfsdk:"name"`
     SystemPrompt types.String `tfsdk:"system_prompt"`
@@ -38,7 +38,7 @@ func (r *ArchestraPromptResource) Metadata(ctx context.Context, req resource.Met
 func (r *ArchestraPromptResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
     resp.Schema = schema.Schema{
         Attributes: map[string]schema.Attribute{
-            "id": schema.StringAttribute{
+            "prompt_id": schema.StringAttribute{
                 Computed: true,
             },
             "profile_id": schema.StringAttribute{

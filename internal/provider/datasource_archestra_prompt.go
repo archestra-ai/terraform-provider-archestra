@@ -22,7 +22,7 @@ type ArchestraPromptDataSource struct {
 }
 
 type ArchestraPromptDataSourceModel struct {
-	ID           types.String `tfsdk:"id"`
+	ID           types.String `tfsdk:"prompt_id"`
     ProfileId    types.String `tfsdk:"profile_id"`
     Name         types.String `tfsdk:"name"`
     SystemPrompt types.String `tfsdk:"system_prompt"`
@@ -40,14 +40,13 @@ func (d *ArchestraPromptDataSource) Schema(ctx context.Context, req datasource.S
 		MarkdownDescription: "Fetches an existing Archestra prompt by ID or name.",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"prompt_id": schema.StringAttribute{
 				MarkdownDescription: "Prompt identifier",
 				Optional:            true,
 				Computed:            true,
 			},
 			"profile_id": schema.StringAttribute{
 				MarkdownDescription: "The Profile ID for the prompt",
-				Required:            true,
 			},
 			"name": schema.StringAttribute{
 				MarkdownDescription: "The name of the prompt",

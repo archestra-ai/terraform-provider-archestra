@@ -1,5 +1,5 @@
 data "archestra_prompt_versions" "example" {
-  id = "prompt-123"
+  prompt_id = "prompt-123"
 }
 
 output "versions" {

@@ -28,7 +28,7 @@ type ArchestraPromptVersionsDataSourceModel struct {
 }
 
 type PromptVersionModel struct {
-	ID            types.String `tfsdk:"id"`
+	ID            types.String `tfsdk:"prompt_id"`
 	Version       types.Int64  `tfsdk:"version"`
 	CreatedAt     types.String `tfsdk:"created_at"`
 	UserPrompt    types.String `tfsdk:"user_prompt"`
@@ -54,7 +54,7 @@ func (d *ArchestraPromptVersionsDataSource) Schema(ctx context.Context, req data
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"id": schema.StringAttribute{
+						"prompt_id": schema.StringAttribute{
 							MarkdownDescription: "Version identifier",
 							Computed:            true,
 						},
