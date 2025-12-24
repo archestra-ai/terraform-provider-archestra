@@ -630,7 +630,7 @@ type BulkUpdateAgentToolsJSONBodyValue1 string
 
 // BulkUpdateAgentToolsJSONBody_Value defines parameters for BulkUpdateAgentTools.
 type BulkUpdateAgentToolsJSONBody_Value struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 
 // UpdateAgentToolJSONBody defines parameters for UpdateAgentTool.
@@ -928,7 +928,7 @@ type CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault2 = bool
 
 // CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 
 // CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType defines parameters for CreateInternalMcpCatalogItem.
@@ -954,7 +954,7 @@ type CreateInternalMcpCatalogItemJSONBodyUserConfigDefault3 = []string
 
 // CreateInternalMcpCatalogItemJSONBody_UserConfig_Default defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBody_UserConfig_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 
 // CreateInternalMcpCatalogItemJSONBodyUserConfigType defines parameters for CreateInternalMcpCatalogItem.
@@ -1050,7 +1050,7 @@ type UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault2 = bool
 
 // UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 
 // UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType defines parameters for UpdateInternalMcpCatalogItem.
@@ -1076,7 +1076,7 @@ type UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault3 = []string
 
 // UpdateInternalMcpCatalogItemJSONBody_UserConfig_Default defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBody_UserConfig_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 
 // UpdateInternalMcpCatalogItemJSONBodyUserConfigType defines parameters for UpdateInternalMcpCatalogItem.
@@ -1270,7 +1270,7 @@ type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnv
 
 // CreateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default defines parameters for CreateMcpServerInstallationRequest.
 type CreateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 
 // CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType defines parameters for CreateMcpServerInstallationRequest.
@@ -1287,7 +1287,7 @@ type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type string
 
 // CreateMcpServerInstallationRequestJSONBody_CustomServerConfig defines parameters for CreateMcpServerInstallationRequest.
 type CreateMcpServerInstallationRequestJSONBody_CustomServerConfig struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 
 // UpdateMcpServerInstallationRequestJSONBody defines parameters for UpdateMcpServerInstallationRequest.
@@ -1382,7 +1382,7 @@ type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnv
 
 // UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default defines parameters for UpdateMcpServerInstallationRequest.
 type UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 
 // UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType defines parameters for UpdateMcpServerInstallationRequest.
@@ -1399,7 +1399,7 @@ type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type string
 
 // UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig defines parameters for UpdateMcpServerInstallationRequest.
 type UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 
 // UpdateMcpServerInstallationRequestJSONBodyStatus defines parameters for UpdateMcpServerInstallationRequest.
@@ -1457,7 +1457,7 @@ type CreateOptimizationRuleJSONBodyConditions1 struct {
 
 // CreateOptimizationRuleJSONBody_Conditions_Item defines parameters for CreateOptimizationRule.
 type CreateOptimizationRuleJSONBody_Conditions_Item struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 
 // CreateOptimizationRuleJSONBodyEntityType defines parameters for CreateOptimizationRule.
@@ -1491,7 +1491,7 @@ type UpdateOptimizationRuleJSONBodyConditions1 struct {
 
 // UpdateOptimizationRuleJSONBody_Conditions_Item defines parameters for UpdateOptimizationRule.
 type UpdateOptimizationRuleJSONBody_Conditions_Item struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 
 // UpdateOptimizationRuleJSONBodyEntityType defines parameters for UpdateOptimizationRule.
@@ -1796,7 +1796,7 @@ type UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication string
 // GetAgentStatisticsParams defines parameters for GetAgentStatistics.
 type GetAgentStatisticsParams struct {
 	Timeframe *struct {
-		union json.RawMessage
+		Union json.RawMessage
 	} `form:"timeframe,omitempty" json:"timeframe,omitempty"`
 }
 
@@ -1809,7 +1809,7 @@ type GetAgentStatisticsParamsTimeframe1 = string
 // GetCostSavingsStatisticsParams defines parameters for GetCostSavingsStatistics.
 type GetCostSavingsStatisticsParams struct {
 	Timeframe *struct {
-		union json.RawMessage
+		Union json.RawMessage
 	} `form:"timeframe,omitempty" json:"timeframe,omitempty"`
 }
 
@@ -1822,7 +1822,7 @@ type GetCostSavingsStatisticsParamsTimeframe1 = string
 // GetModelStatisticsParams defines parameters for GetModelStatistics.
 type GetModelStatisticsParams struct {
 	Timeframe *struct {
-		union json.RawMessage
+		Union json.RawMessage
 	} `form:"timeframe,omitempty" json:"timeframe,omitempty"`
 }
 
@@ -1835,7 +1835,7 @@ type GetModelStatisticsParamsTimeframe1 = string
 // GetOverviewStatisticsParams defines parameters for GetOverviewStatistics.
 type GetOverviewStatisticsParams struct {
 	Timeframe *struct {
-		union json.RawMessage
+		Union json.RawMessage
 	} `form:"timeframe,omitempty" json:"timeframe,omitempty"`
 }
 
@@ -1848,7 +1848,7 @@ type GetOverviewStatisticsParamsTimeframe1 = string
 // GetTeamStatisticsParams defines parameters for GetTeamStatistics.
 type GetTeamStatisticsParams struct {
 	Timeframe *struct {
-		union json.RawMessage
+		Union json.RawMessage
 	} `form:"timeframe,omitempty" json:"timeframe,omitempty"`
 }
 
@@ -2572,16 +2572,16 @@ type ClientInterface interface {
 
 	// GetRole request
 	GetRole(ctx context.Context, roleId struct {
-		union json.RawMessage
+		Union json.RawMessage
 	}, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateRoleWithBody request with any body
 	UpdateRoleWithBody(ctx context.Context, roleId struct {
-		union json.RawMessage
+		Union json.RawMessage
 	}, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateRole(ctx context.Context, roleId struct {
-		union json.RawMessage
+		Union json.RawMessage
 	}, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CheckSecretsConnectivity request
@@ -4459,7 +4459,7 @@ func (c *Client) DeleteRole(ctx context.Context, roleId string, reqEditors ...Re
 }
 
 func (c *Client) GetRole(ctx context.Context, roleId struct {
-	union json.RawMessage
+	Union json.RawMessage
 }, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetRoleRequest(c.Server, roleId)
 	if err != nil {
@@ -4473,7 +4473,7 @@ func (c *Client) GetRole(ctx context.Context, roleId struct {
 }
 
 func (c *Client) UpdateRoleWithBody(ctx context.Context, roleId struct {
-	union json.RawMessage
+	Union json.RawMessage
 }, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateRoleRequestWithBody(c.Server, roleId, contentType, body)
 	if err != nil {
@@ -4487,7 +4487,7 @@ func (c *Client) UpdateRoleWithBody(ctx context.Context, roleId struct {
 }
 
 func (c *Client) UpdateRole(ctx context.Context, roleId struct {
-	union json.RawMessage
+	Union json.RawMessage
 }, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateRoleRequest(c.Server, roleId, body)
 	if err != nil {
@@ -9458,7 +9458,7 @@ func NewDeleteRoleRequest(server string, roleId string) (*http.Request, error) {
 
 // NewGetRoleRequest generates requests for GetRole
 func NewGetRoleRequest(server string, roleId struct {
-	union json.RawMessage
+	Union json.RawMessage
 }) (*http.Request, error) {
 	var err error
 
@@ -9494,7 +9494,7 @@ func NewGetRoleRequest(server string, roleId struct {
 
 // NewUpdateRoleRequest calls the generic UpdateRole builder with application/json body
 func NewUpdateRoleRequest(server string, roleId struct {
-	union json.RawMessage
+	Union json.RawMessage
 }, body UpdateRoleJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
@@ -9507,7 +9507,7 @@ func NewUpdateRoleRequest(server string, roleId struct {
 
 // NewUpdateRoleRequestWithBody generates requests for UpdateRole with any type of body
 func NewUpdateRoleRequestWithBody(server string, roleId struct {
-	union json.RawMessage
+	Union json.RawMessage
 }, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
@@ -11844,16 +11844,16 @@ type ClientWithResponsesInterface interface {
 
 	// GetRoleWithResponse request
 	GetRoleWithResponse(ctx context.Context, roleId struct {
-		union json.RawMessage
+		Union json.RawMessage
 	}, reqEditors ...RequestEditorFn) (*GetRoleResponse, error)
 
 	// UpdateRoleWithBodyWithResponse request with any body
 	UpdateRoleWithBodyWithResponse(ctx context.Context, roleId struct {
-		union json.RawMessage
+		Union json.RawMessage
 	}, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
 
 	UpdateRoleWithResponse(ctx context.Context, roleId struct {
-		union json.RawMessage
+		Union json.RawMessage
 	}, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
 
 	// CheckSecretsConnectivityWithResponse request
@@ -12120,7 +12120,7 @@ type GetAllAgentToolsResponse struct {
 }
 type GetAllAgentTools200DataToolParameters0 map[string]interface{}
 type GetAllAgentTools_200_Data_Tool_Parameters struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetAllAgentTools200DataToolResultTreatment string
 type GetAllAgentTools400ErrorType string
@@ -12451,7 +12451,7 @@ type GetAgentsResponse struct {
 }
 type GetAgents200DataToolsParameters0 map[string]interface{}
 type GetAgents_200_Data_Tools_Parameters struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetAgents400ErrorType string
 type GetAgents401ErrorType string
@@ -12548,7 +12548,7 @@ type CreateAgentResponse struct {
 }
 type CreateAgent200ToolsParameters0 map[string]interface{}
 type CreateAgent_200_Tools_Parameters struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type CreateAgent400ErrorType string
 type CreateAgent401ErrorType string
@@ -12645,7 +12645,7 @@ type GetAllAgentsResponse struct {
 }
 type GetAllAgents200ToolsParameters0 map[string]interface{}
 type GetAllAgents_200_Tools_Parameters struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetAllAgents400ErrorType string
 type GetAllAgents401ErrorType string
@@ -12742,7 +12742,7 @@ type GetDefaultAgentResponse struct {
 }
 type GetDefaultAgent200ToolsParameters0 map[string]interface{}
 type GetDefaultAgent_200_Tools_Parameters struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetDefaultAgent400ErrorType string
 type GetDefaultAgent401ErrorType string
@@ -13026,7 +13026,7 @@ type GetAgentToolsResponse struct {
 }
 type GetAgentTools200Parameters0 map[string]interface{}
 type GetAgentTools_200_Parameters struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetAgentTools400ErrorType string
 type GetAgentTools401ErrorType string
@@ -13321,7 +13321,7 @@ type GetAgentResponse struct {
 }
 type GetAgent200ToolsParameters0 map[string]interface{}
 type GetAgent_200_Tools_Parameters struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetAgent400ErrorType string
 type GetAgent401ErrorType string
@@ -13418,7 +13418,7 @@ type UpdateAgentResponse struct {
 }
 type UpdateAgent200ToolsParameters0 map[string]interface{}
 type UpdateAgent_200_Tools_Parameters struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type UpdateAgent400ErrorType string
 type UpdateAgent401ErrorType string
@@ -15886,7 +15886,7 @@ type GetDualLlmResultsByInteractionResponse struct {
 	}
 }
 type GetDualLlmResultsByInteraction200Conversations0 struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetDualLlmResultsByInteraction200Conversations00 = string
 type GetDualLlmResultsByInteraction200Conversations01 = float32
@@ -15895,7 +15895,7 @@ type GetDualLlmResultsByInteraction200Conversations03 string
 type GetDualLlmResultsByInteraction200Conversations1 map[string]interface{}
 type GetDualLlmResultsByInteraction200Conversations2 = []interface{}
 type GetDualLlmResultsByInteraction_200_Conversations struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetDualLlmResultsByInteraction400ErrorType string
 type GetDualLlmResultsByInteraction401ErrorType string
@@ -15969,7 +15969,7 @@ type GetDualLlmResultByToolCallIdResponse struct {
 	}
 }
 type GetDualLlmResultByToolCallId200Conversations0 struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetDualLlmResultByToolCallId200Conversations00 = string
 type GetDualLlmResultByToolCallId200Conversations01 = float32
@@ -15978,7 +15978,7 @@ type GetDualLlmResultByToolCallId200Conversations03 string
 type GetDualLlmResultByToolCallId200Conversations1 map[string]interface{}
 type GetDualLlmResultByToolCallId200Conversations2 = []interface{}
 type GetDualLlmResultByToolCallId_200_Conversations struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetDualLlmResultByToolCallId400ErrorType string
 type GetDualLlmResultByToolCallId401ErrorType string
@@ -16150,7 +16150,7 @@ type GetInternalMcpCatalog200LocalConfigEnvironmentDefault0 = string
 type GetInternalMcpCatalog200LocalConfigEnvironmentDefault1 = float32
 type GetInternalMcpCatalog200LocalConfigEnvironmentDefault2 = bool
 type GetInternalMcpCatalog_200_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetInternalMcpCatalog200LocalConfigEnvironmentType string
 type GetInternalMcpCatalog200LocalConfigTransportType string
@@ -16160,7 +16160,7 @@ type GetInternalMcpCatalog200UserConfigDefault1 = float32
 type GetInternalMcpCatalog200UserConfigDefault2 = bool
 type GetInternalMcpCatalog200UserConfigDefault3 = []string
 type GetInternalMcpCatalog_200_UserConfig_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetInternalMcpCatalog200UserConfigType string
 type GetInternalMcpCatalog400ErrorType string
@@ -16305,7 +16305,7 @@ type CreateInternalMcpCatalogItem200LocalConfigEnvironmentDefault0 = string
 type CreateInternalMcpCatalogItem200LocalConfigEnvironmentDefault1 = float32
 type CreateInternalMcpCatalogItem200LocalConfigEnvironmentDefault2 = bool
 type CreateInternalMcpCatalogItem_200_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type CreateInternalMcpCatalogItem200LocalConfigEnvironmentType string
 type CreateInternalMcpCatalogItem200LocalConfigTransportType string
@@ -16315,7 +16315,7 @@ type CreateInternalMcpCatalogItem200UserConfigDefault1 = float32
 type CreateInternalMcpCatalogItem200UserConfigDefault2 = bool
 type CreateInternalMcpCatalogItem200UserConfigDefault3 = []string
 type CreateInternalMcpCatalogItem_200_UserConfig_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type CreateInternalMcpCatalogItem200UserConfigType string
 type CreateInternalMcpCatalogItem400ErrorType string
@@ -16592,7 +16592,7 @@ type GetInternalMcpCatalogItem200LocalConfigEnvironmentDefault0 = string
 type GetInternalMcpCatalogItem200LocalConfigEnvironmentDefault1 = float32
 type GetInternalMcpCatalogItem200LocalConfigEnvironmentDefault2 = bool
 type GetInternalMcpCatalogItem_200_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetInternalMcpCatalogItem200LocalConfigEnvironmentType string
 type GetInternalMcpCatalogItem200LocalConfigTransportType string
@@ -16602,7 +16602,7 @@ type GetInternalMcpCatalogItem200UserConfigDefault1 = float32
 type GetInternalMcpCatalogItem200UserConfigDefault2 = bool
 type GetInternalMcpCatalogItem200UserConfigDefault3 = []string
 type GetInternalMcpCatalogItem_200_UserConfig_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetInternalMcpCatalogItem200UserConfigType string
 type GetInternalMcpCatalogItem400ErrorType string
@@ -16747,7 +16747,7 @@ type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentDefault0 = string
 type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentDefault1 = float32
 type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentDefault2 = bool
 type UpdateInternalMcpCatalogItem_200_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType string
 type UpdateInternalMcpCatalogItem200LocalConfigTransportType string
@@ -16757,7 +16757,7 @@ type UpdateInternalMcpCatalogItem200UserConfigDefault1 = float32
 type UpdateInternalMcpCatalogItem200UserConfigDefault2 = bool
 type UpdateInternalMcpCatalogItem200UserConfigDefault3 = []string
 type UpdateInternalMcpCatalogItem_200_UserConfig_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type UpdateInternalMcpCatalogItem200UserConfigType string
 type UpdateInternalMcpCatalogItem400ErrorType string
@@ -18082,14 +18082,14 @@ type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmen
 type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
 type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
 type GetMcpServerInstallationRequests_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentType string
 type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigTransportType string
 type GetMcpServerInstallationRequests200CustomServerConfig1ServerType string
 type GetMcpServerInstallationRequests200CustomServerConfig1Type string
 type GetMcpServerInstallationRequests_200_CustomServerConfig struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetMcpServerInstallationRequests400ErrorType string
 type GetMcpServerInstallationRequests401ErrorType string
@@ -18236,14 +18236,14 @@ type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironm
 type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
 type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
 type CreateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
 type CreateMcpServerInstallationRequest200CustomServerConfig1ServerType string
 type CreateMcpServerInstallationRequest200CustomServerConfig1Type string
 type CreateMcpServerInstallationRequest_200_CustomServerConfig struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type CreateMcpServerInstallationRequest400ErrorType string
 type CreateMcpServerInstallationRequest401ErrorType string
@@ -18456,14 +18456,14 @@ type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironment
 type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
 type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
 type GetMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
 type GetMcpServerInstallationRequest200CustomServerConfig1ServerType string
 type GetMcpServerInstallationRequest200CustomServerConfig1Type string
 type GetMcpServerInstallationRequest_200_CustomServerConfig struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetMcpServerInstallationRequest400ErrorType string
 type GetMcpServerInstallationRequest401ErrorType string
@@ -18610,14 +18610,14 @@ type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironm
 type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
 type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
 type UpdateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
 type UpdateMcpServerInstallationRequest200CustomServerConfig1ServerType string
 type UpdateMcpServerInstallationRequest200CustomServerConfig1Type string
 type UpdateMcpServerInstallationRequest_200_CustomServerConfig struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type UpdateMcpServerInstallationRequest400ErrorType string
 type UpdateMcpServerInstallationRequest401ErrorType string
@@ -18764,14 +18764,14 @@ type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnviron
 type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
 type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
 type ApproveMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
 type ApproveMcpServerInstallationRequest200CustomServerConfig1ServerType string
 type ApproveMcpServerInstallationRequest200CustomServerConfig1Type string
 type ApproveMcpServerInstallationRequest_200_CustomServerConfig struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type ApproveMcpServerInstallationRequest400ErrorType string
 type ApproveMcpServerInstallationRequest401ErrorType string
@@ -18918,14 +18918,14 @@ type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnviron
 type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
 type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
 type DeclineMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigTransportType string
 type DeclineMcpServerInstallationRequest200CustomServerConfig1ServerType string
 type DeclineMcpServerInstallationRequest200CustomServerConfig1Type string
 type DeclineMcpServerInstallationRequest_200_CustomServerConfig struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type DeclineMcpServerInstallationRequest400ErrorType string
 type DeclineMcpServerInstallationRequest401ErrorType string
@@ -19072,14 +19072,14 @@ type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnviron
 type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
 type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
 type AddMcpServerInstallationRequestNote_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentType string
 type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigTransportType string
 type AddMcpServerInstallationRequestNote200CustomServerConfig1ServerType string
 type AddMcpServerInstallationRequestNote200CustomServerConfig1Type string
 type AddMcpServerInstallationRequestNote_200_CustomServerConfig struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type AddMcpServerInstallationRequestNote400ErrorType string
 type AddMcpServerInstallationRequestNote401ErrorType string
@@ -19301,7 +19301,7 @@ type GetOptimizationRules200Conditions1 struct {
 	HasTools bool `json:"hasTools"`
 }
 type GetOptimizationRules_200_Conditions_Item struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetOptimizationRules200EntityType string
 type GetOptimizationRules200Provider string
@@ -19386,7 +19386,7 @@ type CreateOptimizationRule200Conditions1 struct {
 	HasTools bool `json:"hasTools"`
 }
 type CreateOptimizationRule_200_Conditions_Item struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type CreateOptimizationRule200EntityType string
 type CreateOptimizationRule200Provider string
@@ -19537,7 +19537,7 @@ type UpdateOptimizationRule200Conditions1 struct {
 	HasTools bool `json:"hasTools"`
 }
 type UpdateOptimizationRule_200_Conditions_Item struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type UpdateOptimizationRule200EntityType string
 type UpdateOptimizationRule200Provider string
@@ -24031,7 +24031,7 @@ type GetToolsResponse struct {
 }
 type GetTools200Parameters0 map[string]interface{}
 type GetTools_200_Parameters struct {
-	union json.RawMessage
+	Union json.RawMessage
 }
 type GetTools400ErrorType string
 type GetTools401ErrorType string
@@ -25956,7 +25956,7 @@ func (c *ClientWithResponses) DeleteRoleWithResponse(ctx context.Context, roleId
 
 // GetRoleWithResponse request returning *GetRoleResponse
 func (c *ClientWithResponses) GetRoleWithResponse(ctx context.Context, roleId struct {
-	union json.RawMessage
+	Union json.RawMessage
 }, reqEditors ...RequestEditorFn) (*GetRoleResponse, error) {
 	rsp, err := c.GetRole(ctx, roleId, reqEditors...)
 	if err != nil {
@@ -25967,7 +25967,7 @@ func (c *ClientWithResponses) GetRoleWithResponse(ctx context.Context, roleId st
 
 // UpdateRoleWithBodyWithResponse request with arbitrary body returning *UpdateRoleResponse
 func (c *ClientWithResponses) UpdateRoleWithBodyWithResponse(ctx context.Context, roleId struct {
-	union json.RawMessage
+	Union json.RawMessage
 }, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
 	rsp, err := c.UpdateRoleWithBody(ctx, roleId, contentType, body, reqEditors...)
 	if err != nil {
@@ -25977,7 +25977,7 @@ func (c *ClientWithResponses) UpdateRoleWithBodyWithResponse(ctx context.Context
 }
 
 func (c *ClientWithResponses) UpdateRoleWithResponse(ctx context.Context, roleId struct {
-	union json.RawMessage
+	Union json.RawMessage
 }, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
 	rsp, err := c.UpdateRole(ctx, roleId, body, reqEditors...)
 	if err != nil {
