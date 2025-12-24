@@ -1,8 +1,10 @@
-// TODO: User API endpoints are not exposed by the backend, in a way that they can be easily codegen'd
-// (right now they are exposed as a single "catch-all" route, /api/auth/*, which makes codegen impossible)
-// so this datasource is not yet available.
+// NOTE: User API endpoints (specifically GetUser) are not currently available in the generated client.
+// This datasource remains disabled until the GET /users/{userId} endpoint is properly exposed
+// in the OpenAPI spec and generated in the client.
 
 package provider
+
+// When the GetUser endpoint becomes available, uncomment the code below:
 
 // import (
 // 	"context"
@@ -46,7 +48,7 @@ package provider
 // 		Attributes: map[string]schema.Attribute{
 // 			"id": schema.StringAttribute{
 // 				MarkdownDescription: "User identifier",
-// 				Required:            true,
+// 			Required:            true,
 // 			},
 // 			"name": schema.StringAttribute{
 // 				MarkdownDescription: "The name of the user",
@@ -105,7 +107,6 @@ package provider
 // 		return
 // 	}
 
-// 	// Get user data
 // 	userResp, err := d.client.GetUserWithResponse(ctx, data.ID.ValueString())
 // 	if err != nil {
 // 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read user, got error: %s", err))
