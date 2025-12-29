@@ -63,6 +63,11 @@ func testAccMcpRegistryCatalogItemResourceConfig(name, description string) strin
 resource "archestra_mcp_registry_catalog_item" "test" {
   name        = %[1]q
   description = %[2]q
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
 }
 `, name, description)
 }
