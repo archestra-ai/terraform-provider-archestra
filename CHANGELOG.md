@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.3.0...v0.4.0) (2025-12-29)
+
+
+### Features
+
+* Add `remote_config` support to `archestra_mcp_registry_catalog_item` resource ([#60](https://github.com/archestra-ai/terraform-provider-archestra/issues/60)) ([836cb78](https://github.com/archestra-ai/terraform-provider-archestra/commit/836cb78d14c1917f00ca944e05a0e46c85576174))
+
 ## [0.3.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.2.0...v0.3.0) (2025-12-19)
 
 
