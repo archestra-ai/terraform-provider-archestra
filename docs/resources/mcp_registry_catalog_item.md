@@ -189,13 +189,10 @@ Optional:
 <a id="nestedatt--local_config"></a>
 ### Nested Schema for `local_config`
 
-Required:
-
-- `command` (String) The executable command to run (e.g., 'node', 'python', 'npx'). Optional if Docker Image is set (will use image's default CMD).
-
 Optional:
 
 - `arguments` (List of String) Arguments to pass to the command
+- `command` (String) The executable command to run (e.g., 'node', 'python', 'npx'). Optional if Docker Image is set (will use image's default CMD).
 - `docker_image` (String) Custom Docker image URL. If not specified, Archestra's default base image will be used.
 - `environment` (Map of String) Environment variables for the MCP server (KEY=value format)
 - `http_path` (String) HTTP path for streamable-http transport (e.g., '/sse')
