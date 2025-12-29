@@ -341,3 +341,71 @@ resource "archestra_mcp_registry_catalog_item" "test_docker_env" {
 }
 `, name)
 }
+
+func TestAccMcpRegistryCatalogItemResourceRemoteWithPAT(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create remote server with PAT authentication
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigRemoteWithPAT("test-remote-pat-server"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_remote_pat",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-remote-pat-server"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_remote_pat",
+						tfjsonpath.New("remote_config").AtMapKey("url"),
+						knownvalue.StringExact("https://api.githubcopilot.com/mcp/"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_remote_pat",
+						tfjsonpath.New("auth_fields"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"name":        knownvalue.StringExact("GITHUB_TOKEN"),
+								"label":       knownvalue.StringExact("GitHub Personal Access Token"),
+								"type":        knownvalue.StringExact("password"),
+								"required":    knownvalue.Bool(true),
+								"description": knownvalue.StringExact("A GitHub PAT with appropriate permissions for the MCP server"),
+							}),
+						}),
+					),
+				},
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_mcp_registry_catalog_item.test_remote_pat",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigRemoteWithPAT(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "test_remote_pat" {
+  name        = %[1]q
+  description = "Test remote MCP server with Personal Access Token authentication"
+  docs_url    = "https://github.com/github/github-mcp-server"
+
+  remote_config = {
+    url = "https://api.githubcopilot.com/mcp/"
+  }
+
+  auth_fields = [
+    {
+      name        = "GITHUB_TOKEN"
+      label       = "GitHub Personal Access Token"
+      type        = "password"
+      required    = true
+      description = "A GitHub PAT with appropriate permissions for the MCP server"
+    }
+  ]
+}
+`, name)
+}
