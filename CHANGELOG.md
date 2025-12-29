@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.4.0...v0.4.1) (2025-12-29)
+
+
+### Bug Fixes
+
+* address `docker_image` without `command` + env var bugs in `archestra_mcp_registry_catalog_item` resource ([#62](https://github.com/archestra-ai/terraform-provider-archestra/issues/62)) ([4f5c02b](https://github.com/archestra-ai/terraform-provider-archestra/commit/4f5c02be8590af3915cd48d11b7bef995d6fe470))
+
 ## [0.4.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.3.0...v0.4.0) (2025-12-29)
 
 
