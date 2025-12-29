@@ -267,7 +267,7 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 				Attributes: map[string]schema.Attribute{
 					"command": schema.StringAttribute{
 						MarkdownDescription: "The executable command to run (e.g., 'node', 'python', 'npx'). Optional if Docker Image is set (will use image's default CMD).",
-						Required:            true,
+						Optional:            true,
 					},
 					"arguments": schema.ListAttribute{
 						MarkdownDescription: "Arguments to pass to the command",
@@ -452,6 +452,15 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 			return
 		}
 
+		// Validate that either command or docker_image is provided
+		if localConfig.Command.IsNull() && localConfig.DockerImage.IsNull() {
+			resp.Diagnostics.AddError(
+				"Invalid Configuration",
+				"Either 'command' or 'docker_image' must be specified in 'local_config'.",
+			)
+			return
+		}
+
 		lcStruct := struct {
 			Arguments   *[]string `json:"arguments,omitempty"`
 			Command     *string   `json:"command,omitempty"`
@@ -516,7 +525,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 				}{
 					Key:   k,
 					Value: &val,
-					Type:  "string",
+					Type:  "plain_text",
 				})
 			}
 			lcStruct.Environment = &envSlice
@@ -600,6 +609,14 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		}
 
 		requestBody.AuthFields = &afSlice
+	}
+
+	// Set RequiresAuth for remote servers with authentication (PAT via auth_fields or OAuth)
+	if !data.RemoteConfig.IsNull() {
+		if !data.AuthFields.IsNull() || requestBody.OauthConfig != nil {
+			requiresAuth := true
+			requestBody.RequiresAuth = &requiresAuth
+		}
 	}
 
 	// Call API
@@ -933,6 +950,15 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 			return
 		}
 
+		// Validate that either command or docker_image is provided
+		if localConfig.Command.IsNull() && localConfig.DockerImage.IsNull() {
+			resp.Diagnostics.AddError(
+				"Invalid Configuration",
+				"Either 'command' or 'docker_image' must be specified in 'local_config'.",
+			)
+			return
+		}
+
 		lcStruct := struct {
 			Arguments   *[]string `json:"arguments,omitempty"`
 			Command     *string   `json:"command,omitempty"`
@@ -997,7 +1023,7 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 				}{
 					Key:   k,
 					Value: &val,
-					Type:  "string",
+					Type:  "plain_text",
 				})
 			}
 			lcStruct.Environment = &envSlice
@@ -1085,6 +1111,14 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		}
 
 		requestBody.AuthFields = &afSlice
+	}
+
+	// Set RequiresAuth for remote servers with authentication (PAT via auth_fields or OAuth)
+	if !data.RemoteConfig.IsNull() {
+		if !data.AuthFields.IsNull() || requestBody.OauthConfig != nil {
+			requiresAuth := true
+			requestBody.RequiresAuth = &requiresAuth
+		}
 	}
 
 	// Call API
