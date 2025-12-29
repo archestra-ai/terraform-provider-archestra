@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -37,6 +38,7 @@ type MCPServerRegistryResourceModel struct {
 	InstallationCommand types.String `tfsdk:"installation_command"`
 	AuthDescription     types.String `tfsdk:"auth_description"`
 	LocalConfig         types.Object `tfsdk:"local_config"`
+	RemoteConfig        types.Object `tfsdk:"remote_config"`
 	AuthFields          types.List   `tfsdk:"auth_fields"`
 }
 
@@ -48,6 +50,171 @@ type LocalConfigModel struct {
 	TransportType types.String `tfsdk:"transport_type"`
 	HTTPPort      types.Int64  `tfsdk:"http_port"`
 	HTTPPath      types.String `tfsdk:"http_path"`
+}
+
+type RemoteConfigModel struct {
+	URL         types.String `tfsdk:"url"`
+	OAuthConfig types.Object `tfsdk:"oauth_config"`
+}
+
+type OAuthConfigModel struct {
+	ClientID                 types.String `tfsdk:"client_id"`
+	ClientSecret             types.String `tfsdk:"client_secret"`
+	RedirectURIs             types.List   `tfsdk:"redirect_uris"`
+	Scopes                   types.List   `tfsdk:"scopes"`
+	SupportsResourceMetadata types.Bool   `tfsdk:"supports_resource_metadata"`
+}
+
+// buildCreateOAuthConfig builds the OauthConfig for Create requests.
+func buildCreateOAuthConfig(ctx context.Context, oauthConfig OAuthConfigModel, serverURL string, serverName string, diags *diag.Diagnostics) *struct {
+	AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+	AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+	BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+	ClientId                 string   `json:"client_id"`
+	ClientSecret             *string  `json:"client_secret,omitempty"`
+	DefaultScopes            []string `json:"default_scopes"`
+	Description              *string  `json:"description,omitempty"`
+	GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+	Name                     string   `json:"name"`
+	ProviderName             *string  `json:"provider_name,omitempty"`
+	RedirectUris             []string `json:"redirect_uris"`
+	RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+	ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+	Scopes                   []string `json:"scopes"`
+	ServerUrl                string   `json:"server_url"`
+	StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+	StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+	SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+	TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+	WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+} {
+	result := &struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	}{
+		DefaultScopes: []string{},
+		RedirectUris:  []string{},
+		Scopes:        []string{},
+		ServerUrl:     serverURL,
+		Name:          serverName,
+	}
+
+	if !oauthConfig.ClientID.IsNull() {
+		result.ClientId = oauthConfig.ClientID.ValueString()
+	}
+	if !oauthConfig.ClientSecret.IsNull() {
+		secret := oauthConfig.ClientSecret.ValueString()
+		result.ClientSecret = &secret
+	}
+	if !oauthConfig.RedirectURIs.IsNull() {
+		var redirectURIs []string
+		diags.Append(oauthConfig.RedirectURIs.ElementsAs(ctx, &redirectURIs, false)...)
+		result.RedirectUris = redirectURIs
+	}
+	if !oauthConfig.Scopes.IsNull() {
+		var scopes []string
+		diags.Append(oauthConfig.Scopes.ElementsAs(ctx, &scopes, false)...)
+		result.Scopes = scopes
+	}
+	if !oauthConfig.SupportsResourceMetadata.IsNull() {
+		result.SupportsResourceMetadata = oauthConfig.SupportsResourceMetadata.ValueBool()
+	}
+
+	return result
+}
+
+// buildUpdateOAuthConfig builds the OauthConfig for Update requests.
+func buildUpdateOAuthConfig(ctx context.Context, oauthConfig OAuthConfigModel, serverURL string, serverName string, diags *diag.Diagnostics) *struct {
+	AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+	AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+	BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+	ClientId                 string   `json:"client_id"`
+	ClientSecret             *string  `json:"client_secret,omitempty"`
+	DefaultScopes            []string `json:"default_scopes"`
+	Description              *string  `json:"description,omitempty"`
+	GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+	Name                     string   `json:"name"`
+	ProviderName             *string  `json:"provider_name,omitempty"`
+	RedirectUris             []string `json:"redirect_uris"`
+	RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+	ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+	Scopes                   []string `json:"scopes"`
+	ServerUrl                string   `json:"server_url"`
+	StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+	StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+	SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+	TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+	WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+} {
+	result := &struct {
+		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
+		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
+		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
+		ClientId                 string   `json:"client_id"`
+		ClientSecret             *string  `json:"client_secret,omitempty"`
+		DefaultScopes            []string `json:"default_scopes"`
+		Description              *string  `json:"description,omitempty"`
+		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
+		Name                     string   `json:"name"`
+		ProviderName             *string  `json:"provider_name,omitempty"`
+		RedirectUris             []string `json:"redirect_uris"`
+		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string `json:"scopes"`
+		ServerUrl                string   `json:"server_url"`
+		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
+		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	}{
+		DefaultScopes: []string{},
+		RedirectUris:  []string{},
+		Scopes:        []string{},
+		ServerUrl:     serverURL,
+		Name:          serverName,
+	}
+
+	if !oauthConfig.ClientID.IsNull() {
+		result.ClientId = oauthConfig.ClientID.ValueString()
+	}
+	if !oauthConfig.ClientSecret.IsNull() {
+		secret := oauthConfig.ClientSecret.ValueString()
+		result.ClientSecret = &secret
+	}
+	if !oauthConfig.RedirectURIs.IsNull() {
+		var redirectURIs []string
+		diags.Append(oauthConfig.RedirectURIs.ElementsAs(ctx, &redirectURIs, false)...)
+		result.RedirectUris = redirectURIs
+	}
+	if !oauthConfig.Scopes.IsNull() {
+		var scopes []string
+		diags.Append(oauthConfig.Scopes.ElementsAs(ctx, &scopes, false)...)
+		result.Scopes = scopes
+	}
+	if !oauthConfig.SupportsResourceMetadata.IsNull() {
+		result.SupportsResourceMetadata = oauthConfig.SupportsResourceMetadata.ValueBool()
+	}
+
+	return result
 }
 
 type AuthFieldModel struct {
@@ -133,6 +300,45 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 					},
 				},
 			},
+			"remote_config": schema.SingleNestedAttribute{
+				MarkdownDescription: "Configuration for remote/hosted MCP servers accessed via HTTP",
+				Optional:            true,
+				Attributes: map[string]schema.Attribute{
+					"url": schema.StringAttribute{
+						MarkdownDescription: "The URL of the remote MCP server (e.g., https://api.githubcopilot.com/mcp/)",
+						Required:            true,
+					},
+					"oauth_config": schema.SingleNestedAttribute{
+						MarkdownDescription: "OAuth configuration for the remote MCP server. If not specified, users can authenticate with a Personal Access Token (PAT) via auth_fields.",
+						Optional:            true,
+						Attributes: map[string]schema.Attribute{
+							"client_id": schema.StringAttribute{
+								MarkdownDescription: "OAuth Client ID. Leave empty if the server supports dynamic client registration.",
+								Optional:            true,
+							},
+							"client_secret": schema.StringAttribute{
+								MarkdownDescription: "OAuth Client Secret (optional)",
+								Optional:            true,
+								Sensitive:           true,
+							},
+							"redirect_uris": schema.ListAttribute{
+								MarkdownDescription: "Comma-separated list of redirect URIs",
+								Required:            true,
+								ElementType:         types.StringType,
+							},
+							"scopes": schema.ListAttribute{
+								MarkdownDescription: "List of OAuth scopes to request (e.g., ['read', 'write'])",
+								Optional:            true,
+								ElementType:         types.StringType,
+							},
+							"supports_resource_metadata": schema.BoolAttribute{
+								MarkdownDescription: "Enable if the server publishes OAuth metadata at /.well-known/oauth-authorization-server for automatic endpoint discovery",
+								Optional:            true,
+							},
+						},
+					},
+				},
+			},
 			"auth_fields": schema.ListNestedAttribute{
 				MarkdownDescription: "Custom authentication fields required by the MCP server",
 				Optional:            true,
@@ -189,10 +395,35 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
+	// Validate mutual exclusivity of local_config and remote_config
+	if !data.LocalConfig.IsNull() && !data.RemoteConfig.IsNull() {
+		resp.Diagnostics.AddError(
+			"Invalid Configuration",
+			"Only one of 'local_config' or 'remote_config' can be specified, not both.",
+		)
+		return
+	}
+
+	if data.LocalConfig.IsNull() && data.RemoteConfig.IsNull() {
+		resp.Diagnostics.AddError(
+			"Invalid Configuration",
+			"One of 'local_config' or 'remote_config' must be specified.",
+		)
+		return
+	}
+
+	// Determine server type based on config
+	var serverType client.CreateInternalMcpCatalogItemJSONBodyServerType
+	if !data.RemoteConfig.IsNull() {
+		serverType = client.CreateInternalMcpCatalogItemJSONBodyServerTypeRemote
+	} else {
+		serverType = client.CreateInternalMcpCatalogItemJSONBodyServerTypeLocal
+	}
+
 	// Build the request body
 	requestBody := client.CreateInternalMcpCatalogItemJSONRequestBody{
 		Name:       data.Name.ValueString(),
-		ServerType: "local", // For now, we only support local servers
+		ServerType: serverType,
 	}
 
 	// Set optional string fields
@@ -310,6 +541,35 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		}
 
 		requestBody.LocalConfig = &lcStruct
+	}
+
+	// Handle RemoteConfig
+	if !data.RemoteConfig.IsNull() {
+		var remoteConfig RemoteConfigModel
+		resp.Diagnostics.Append(data.RemoteConfig.As(ctx, &remoteConfig, basetypes.ObjectAsOptions{})...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+
+		// Set the server URL
+		if !remoteConfig.URL.IsNull() {
+			url := remoteConfig.URL.ValueString()
+			requestBody.ServerUrl = &url
+		}
+
+		// Handle OAuth config if present
+		if !remoteConfig.OAuthConfig.IsNull() {
+			var oauthConfig OAuthConfigModel
+			resp.Diagnostics.Append(remoteConfig.OAuthConfig.As(ctx, &oauthConfig, basetypes.ObjectAsOptions{})...)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+
+			requestBody.OauthConfig = buildCreateOAuthConfig(ctx, oauthConfig, remoteConfig.URL.ValueString(), data.Name.ValueString(), &resp.Diagnostics)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+		}
 	}
 
 	// Handle AuthFields
@@ -504,6 +764,63 @@ func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadR
 		})
 	}
 
+	// Map RemoteConfig from API response if server type is remote
+	oauthConfigAttrTypes := map[string]attr.Type{
+		"client_id":                  types.StringType,
+		"client_secret":              types.StringType,
+		"redirect_uris":              types.ListType{ElemType: types.StringType},
+		"scopes":                     types.ListType{ElemType: types.StringType},
+		"supports_resource_metadata": types.BoolType,
+	}
+
+	remoteConfigAttrTypes := map[string]attr.Type{
+		"url":          types.StringType,
+		"oauth_config": types.ObjectType{AttrTypes: oauthConfigAttrTypes},
+	}
+
+	if string(apiResp.JSON200.ServerType) == "remote" && apiResp.JSON200.ServerUrl != nil {
+		remoteConfigObj := map[string]attr.Value{
+			"url": types.StringValue(*apiResp.JSON200.ServerUrl),
+		}
+
+		// Map OAuth config if present
+		if apiResp.JSON200.OauthConfig != nil {
+			oauthConfigObj := map[string]attr.Value{
+				"client_id":                  types.StringValue(apiResp.JSON200.OauthConfig.ClientId),
+				"client_secret":              types.StringNull(), // Client secret is not returned from API for security
+				"redirect_uris":              types.ListNull(types.StringType),
+				"scopes":                     types.ListNull(types.StringType),
+				"supports_resource_metadata": types.BoolValue(apiResp.JSON200.OauthConfig.SupportsResourceMetadata),
+			}
+
+			// Redirect URIs
+			if len(apiResp.JSON200.OauthConfig.RedirectUris) > 0 {
+				redirectValues := make([]attr.Value, len(apiResp.JSON200.OauthConfig.RedirectUris))
+				for i, uri := range apiResp.JSON200.OauthConfig.RedirectUris {
+					redirectValues[i] = types.StringValue(uri)
+				}
+				oauthConfigObj["redirect_uris"], _ = types.ListValue(types.StringType, redirectValues)
+			}
+
+			// Scopes
+			if len(apiResp.JSON200.OauthConfig.Scopes) > 0 {
+				scopeValues := make([]attr.Value, len(apiResp.JSON200.OauthConfig.Scopes))
+				for i, scope := range apiResp.JSON200.OauthConfig.Scopes {
+					scopeValues[i] = types.StringValue(scope)
+				}
+				oauthConfigObj["scopes"], _ = types.ListValue(types.StringType, scopeValues)
+			}
+
+			remoteConfigObj["oauth_config"], _ = types.ObjectValue(oauthConfigAttrTypes, oauthConfigObj)
+		} else {
+			remoteConfigObj["oauth_config"] = types.ObjectNull(oauthConfigAttrTypes)
+		}
+
+		data.RemoteConfig, _ = types.ObjectValue(remoteConfigAttrTypes, remoteConfigObj)
+	} else {
+		data.RemoteConfig = types.ObjectNull(remoteConfigAttrTypes)
+	}
+
 	// Map AuthFields from API response if present
 	if apiResp.JSON200.AuthFields != nil && len(*apiResp.JSON200.AuthFields) > 0 {
 		authFieldValues := make([]attr.Value, len(*apiResp.JSON200.AuthFields))
@@ -549,6 +866,23 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
+	// Validate mutual exclusivity of local_config and remote_config
+	if !data.LocalConfig.IsNull() && !data.RemoteConfig.IsNull() {
+		resp.Diagnostics.AddError(
+			"Invalid Configuration",
+			"Only one of 'local_config' or 'remote_config' can be specified, not both.",
+		)
+		return
+	}
+
+	if data.LocalConfig.IsNull() && data.RemoteConfig.IsNull() {
+		resp.Diagnostics.AddError(
+			"Invalid Configuration",
+			"One of 'local_config' or 'remote_config' must be specified.",
+		)
+		return
+	}
+
 	// Parse UUID from state
 	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
@@ -556,8 +890,18 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
+	// Determine server type based on config
+	var serverType client.UpdateInternalMcpCatalogItemJSONBodyServerType
+	if !data.RemoteConfig.IsNull() {
+		serverType = client.UpdateInternalMcpCatalogItemJSONBodyServerTypeRemote
+	} else {
+		serverType = client.UpdateInternalMcpCatalogItemJSONBodyServerTypeLocal
+	}
+
 	// Build the request body
-	requestBody := client.UpdateInternalMcpCatalogItemJSONRequestBody{}
+	requestBody := client.UpdateInternalMcpCatalogItemJSONRequestBody{
+		ServerType: &serverType,
+	}
 
 	// Set optional string fields
 	if !data.Name.IsNull() {
@@ -678,6 +1022,39 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		}
 
 		requestBody.LocalConfig = &lcStruct
+	}
+
+	// Handle RemoteConfig
+	if !data.RemoteConfig.IsNull() {
+		var remoteConfig RemoteConfigModel
+		resp.Diagnostics.Append(data.RemoteConfig.As(ctx, &remoteConfig, basetypes.ObjectAsOptions{})...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+
+		// Set the server URL
+		if !remoteConfig.URL.IsNull() {
+			url := remoteConfig.URL.ValueString()
+			requestBody.ServerUrl = &url
+		}
+
+		// Handle OAuth config if present
+		if !remoteConfig.OAuthConfig.IsNull() {
+			var oauthConfig OAuthConfigModel
+			resp.Diagnostics.Append(remoteConfig.OAuthConfig.As(ctx, &oauthConfig, basetypes.ObjectAsOptions{})...)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+
+			serverName := ""
+			if !data.Name.IsNull() {
+				serverName = data.Name.ValueString()
+			}
+			requestBody.OauthConfig = buildUpdateOAuthConfig(ctx, oauthConfig, remoteConfig.URL.ValueString(), serverName, &resp.Diagnostics)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+		}
 	}
 
 	// Handle AuthFields
