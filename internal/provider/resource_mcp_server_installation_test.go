@@ -145,3 +145,85 @@ resource "archestra_mcp_server_installation" "test" {
 }
 `, name)
 }
+
+func TestAccMCPServerResourceRemote(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMCPServerResourceConfigRemote("test-remote-mcp-server"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_remote",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-remote-mcp-server"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func TestAccMCPServerResourceRemoteWithOAuth(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMCPServerResourceConfigRemoteWithOAuth("test-remote-oauth-server"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_remote_oauth",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-remote-oauth-server"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccMCPServerResourceConfigRemote(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "test_remote" {
+  name        = %[1]q
+  description = "Test remote MCP server"
+  docs_url    = "https://github.com/github/github-mcp-server"
+
+  remote_config = {
+    url = "https://api.githubcopilot.com/mcp/"
+  }
+
+  auth_fields = [
+    {
+      name        = "GITHUB_TOKEN"
+      label       = "GitHub Token"
+      type        = "password"
+      required    = true
+      description = "GitHub Personal Access Token"
+    }
+  ]
+}
+`, name)
+}
+
+func testAccMCPServerResourceConfigRemoteWithOAuth(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "test_remote_oauth" {
+  name        = %[1]q
+  description = "Test remote MCP server with OAuth"
+  docs_url    = "https://github.com/example/mcp-server"
+
+  remote_config = {
+    url = "https://api.example.com/mcp/"
+    oauth_config = {
+      client_id                  = "my-client-id"
+      redirect_uris              = ["https://frontend.archestra.dev/oauth-callback"]
+      scopes                     = ["read", "write"]
+      supports_resource_metadata = true
+    }
+  }
+}
+`, name)
+}
