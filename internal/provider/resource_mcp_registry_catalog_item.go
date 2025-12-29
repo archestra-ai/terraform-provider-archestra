@@ -611,6 +611,14 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		requestBody.AuthFields = &afSlice
 	}
 
+	// Set RequiresAuth for remote servers with authentication (PAT via auth_fields or OAuth)
+	if !data.RemoteConfig.IsNull() {
+		if !data.AuthFields.IsNull() || requestBody.OauthConfig != nil {
+			requiresAuth := true
+			requestBody.RequiresAuth = &requiresAuth
+		}
+	}
+
 	// Call API
 	apiResp, err := r.client.CreateInternalMcpCatalogItemWithResponse(ctx, requestBody)
 	if err != nil {
@@ -1103,6 +1111,14 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		}
 
 		requestBody.AuthFields = &afSlice
+	}
+
+	// Set RequiresAuth for remote servers with authentication (PAT via auth_fields or OAuth)
+	if !data.RemoteConfig.IsNull() {
+		if !data.AuthFields.IsNull() || requestBody.OauthConfig != nil {
+			requiresAuth := true
+			requestBody.RequiresAuth = &requiresAuth
+		}
 	}
 
 	// Call API
