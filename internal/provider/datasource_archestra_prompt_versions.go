@@ -28,12 +28,12 @@ type ArchestraPromptVersionsDataSourceModel struct {
 }
 
 type PromptVersionModel struct {
-	ID            types.String `tfsdk:"prompt_id"`
-	Version       types.Int64  `tfsdk:"version"`
-	CreatedAt     types.String `tfsdk:"created_at"`
-	UserPrompt    types.String `tfsdk:"user_prompt"`
-	SystemPrompt  types.String `tfsdk:"system_prompt"`
-	Name          types.String `tfsdk:"name"`
+	ID           types.String `tfsdk:"prompt_id"`
+	Version      types.Int64  `tfsdk:"version"`
+	CreatedAt    types.String `tfsdk:"created_at"`
+	UserPrompt   types.String `tfsdk:"user_prompt"`
+	SystemPrompt types.String `tfsdk:"system_prompt"`
+	Name         types.String `tfsdk:"name"`
 }
 
 func (d *ArchestraPromptVersionsDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -111,7 +111,7 @@ func (d *ArchestraPromptVersionsDataSource) Read(ctx context.Context, req dataso
 	}
 
 	ID, err := uuid.Parse(data.ID.ValueString())
-    if err != nil {
+	if err != nil {
 		resp.Diagnostics.AddError("Invalid Parent ID", fmt.Sprintf("Unable to get Prompt: %s", err))
 		return
 	}
@@ -131,22 +131,22 @@ func (d *ArchestraPromptVersionsDataSource) Read(ctx context.Context, req dataso
 	var versionList []PromptVersionModel
 	for _, v := range *versionsResp.JSON200 {
 		versionList = append(versionList, PromptVersionModel{
-			ID:            types.StringValue(v.Id.String()),
-			Version:       types.Int64Value(int64(v.Version)),
-			CreatedAt:     types.StringValue(v.CreatedAt.String()),
-			UserPrompt:    types.StringPointerValue(v.UserPrompt),
-			SystemPrompt:  types.StringPointerValue(v.SystemPrompt),
-			Name:          types.StringValue(v.Name),
+			ID:           types.StringValue(v.Id.String()),
+			Version:      types.Int64Value(int64(v.Version)),
+			CreatedAt:    types.StringValue(v.CreatedAt.String()),
+			UserPrompt:   types.StringPointerValue(v.UserPrompt),
+			SystemPrompt: types.StringPointerValue(v.SystemPrompt),
+			Name:         types.StringValue(v.Name),
 		})
 	}
 
 	data.Versions, _ = types.ListValueFrom(ctx, types.ObjectType{AttrTypes: map[string]attr.Type{
-		"id":             types.StringType,
-		"version":        types.Int64Type,
-		"created_at":     types.StringType,
-		"user_prompt":    types.StringType,
-		"system_prompt":  types.StringType,
-		"name":           types.StringType,
+		"id":            types.StringType,
+		"version":       types.Int64Type,
+		"created_at":    types.StringType,
+		"user_prompt":   types.StringType,
+		"system_prompt": types.StringType,
+		"name":          types.StringType,
 	}}, versionList)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

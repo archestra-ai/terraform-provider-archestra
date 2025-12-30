@@ -23,12 +23,12 @@ type ArchestraPromptDataSource struct {
 
 type ArchestraPromptDataSourceModel struct {
 	ID           types.String `tfsdk:"prompt_id"`
-    ProfileId    types.String `tfsdk:"profile_id"`
-    Name         types.String `tfsdk:"name"`
-    SystemPrompt types.String `tfsdk:"system_prompt"`
-    Prompt       types.String `tfsdk:"prompt"`
-    IsActive     types.Bool   `tfsdk:"is_active"`
-    Version      types.Int64  `tfsdk:"version"`
+	ProfileId    types.String `tfsdk:"profile_id"`
+	Name         types.String `tfsdk:"name"`
+	SystemPrompt types.String `tfsdk:"system_prompt"`
+	Prompt       types.String `tfsdk:"prompt"`
+	IsActive     types.Bool   `tfsdk:"is_active"`
+	Version      types.Int64  `tfsdk:"version"`
 }
 
 func (d *ArchestraPromptDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -60,11 +60,11 @@ func (d *ArchestraPromptDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "the Main Prompt",
 				Computed:            true,
 			},
-			"is_active": schema.ListAttribute{
+			"is_active": schema.BoolAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"version": schema.StringAttribute{
+			"version": schema.Int64Attribute{
 				MarkdownDescription: "Version of the prompt",
 				Computed:            true,
 			},
@@ -97,15 +97,12 @@ func (d *ArchestraPromptDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
-	var prompt *client.GetPromptResponse
-	var err error
-
 	if !data.ID.IsNull() {
 		Id, err := uuid.Parse(data.ID.ValueString())
 		if err != nil {
-		  	resp.Diagnostics.AddError("Invalid Profile ID", fmt.Sprintf("Unable to get Prompt: %s", err))
+			resp.Diagnostics.AddError("Invalid Prompt  ID", fmt.Sprintf("Unable to get Prompt: %s", err))
 			return
-	    }
+		}
 		getResp, apiErr := d.client.GetPromptWithResponse(ctx, Id)
 		if apiErr != nil {
 			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read prompt, got error: %s", apiErr))
@@ -115,7 +112,19 @@ func (d *ArchestraPromptDataSource) Read(ctx context.Context, req datasource.Rea
 			resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", getResp.StatusCode()))
 			return
 		}
-		prompt.JSON200 = getResp.JSON200
+
+		data.ID = types.StringValue(getResp.JSON200.Id.String())
+		data.Name = types.StringValue(getResp.JSON200.Name)
+		data.Prompt = types.StringPointerValue(getResp.JSON200.UserPrompt)
+		if getResp.JSON200.SystemPrompt != nil {
+			data.SystemPrompt = types.StringValue(*getResp.JSON200.SystemPrompt)
+		} else {
+			data.SystemPrompt = types.StringNull()
+		}
+		data.Version = types.Int64Value(int64(getResp.JSON200.Version))
+		data.IsActive = types.BoolValue(getResp.JSON200.IsActive)
+
+		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	} else if !data.Name.IsNull() {
 		promptsResp, apiErr := d.client.GetPromptsWithResponse(ctx)
 		if apiErr != nil {
@@ -126,27 +135,39 @@ func (d *ArchestraPromptDataSource) Read(ctx context.Context, req datasource.Rea
 			resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", promptsResp.StatusCode()))
 			return
 		}
+		found := false
+
 		for _, p := range *promptsResp.JSON200 {
 			if p.Name == data.Name.ValueString() {
-				prompt.JSON200 = &p
+				found = true
+
+				data.ID = types.StringValue(p.Id.String())
+				data.Name = types.StringValue(p.Name)
+				data.Prompt = types.StringPointerValue(p.UserPrompt)
+
+				if p.SystemPrompt != nil {
+					data.SystemPrompt = types.StringValue(*p.SystemPrompt)
+				} else {
+					data.SystemPrompt = types.StringNull()
+				}
+
+				data.IsActive = types.BoolValue(p.IsActive)
+				data.Version = types.Int64Value(int64(p.Version))
+
+				resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 				break
 			}
 		}
-		if prompt == nil {
-			resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Prompt with name '%s' not found", data.Name.ValueString()))
+
+		if !found {
+			resp.Diagnostics.AddError(
+				"Not Found",
+				fmt.Sprintf("Prompt with name '%s' not found", data.Name.ValueString()),
+			)
 			return
 		}
 	} else {
 		resp.Diagnostics.AddError("Invalid Configuration", "Either 'id' or 'name' must be provided")
 		return
 	}
-
-	// Map to state
-	data.ID = types.StringValue(prompt.JSON200.Id.String())
-	data.Name = types.StringValue(prompt.JSON200.Name)
-	data.Prompt = types.StringPointerValue(prompt.JSON200.UserPrompt)
-	data.SystemPrompt = types.StringValue(*prompt.JSON200.SystemPrompt)
-	data.Version = types.Int64Value(int64(prompt.JSON200.Version))
-
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
