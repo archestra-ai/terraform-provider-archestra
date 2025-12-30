@@ -724,10 +724,6 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 	if !data.Issuer.IsNull() {
 		val := data.Issuer.ValueString()
 		body.Issuer = &val
-	} else {
-		// If null, should we nil it out? The API takes *string, so sending nil means no change usually.
-		// If we want to unset it, we might need to send empty string if API supports it, or it depends on API behavior.
-		// For now, assume nil means no change.
 	}
 
 	if data.OidcConfig != nil {
