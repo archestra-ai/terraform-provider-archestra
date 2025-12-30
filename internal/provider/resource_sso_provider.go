@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -1643,190 +1642,9 @@ func expandTeamSyncConfig(cfg *TeamSyncConfigModel) *struct {
 }
 
 // ssoAPIModel is a normalized view of SSO provider responses to handle differing token auth enum types.
-type ssoAPIModel struct {
-	Domain         string `json:"domain"`
-	DomainVerified *bool  `json:"domainVerified"`
-	Id             string `json:"id"`
-	Issuer         string `json:"issuer"`
-	OidcConfig     *struct {
-		AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
-		ClientId              string  `json:"clientId"`
-		ClientSecret          string  `json:"clientSecret"`
-		DiscoveryEndpoint     string  `json:"discoveryEndpoint"`
-		Issuer                string  `json:"issuer"`
-		JwksEndpoint          *string `json:"jwksEndpoint,omitempty"`
-		Mapping               *struct {
-			Email         *string            `json:"email,omitempty"`
-			EmailVerified *string            `json:"emailVerified,omitempty"`
-			ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-			Id            *string            `json:"id,omitempty"`
-			Image         *string            `json:"image,omitempty"`
-			Name          *string            `json:"name,omitempty"`
-		} `json:"mapping,omitempty"`
-		OverrideUserInfo            *bool       `json:"overrideUserInfo,omitempty"`
-		Pkce                        bool        `json:"pkce"`
-		Scopes                      *[]string   `json:"scopes,omitempty"`
-		TokenEndpoint               *string     `json:"tokenEndpoint,omitempty"`
-		TokenEndpointAuthentication interface{} `json:"tokenEndpointAuthentication,omitempty"`
-		UserInfoEndpoint            *string     `json:"userInfoEndpoint,omitempty"`
-	} `json:"oidcConfig,omitempty"`
-	OrganizationId *string `json:"organizationId"`
-	ProviderId     string  `json:"providerId"`
-	RoleMapping    *struct {
-		DefaultRole *string `json:"defaultRole,omitempty"`
-		Rules       *[]struct {
-			Expression string `json:"expression"`
-			Role       string `json:"role"`
-		} `json:"rules,omitempty"`
-		SkipRoleSync *bool `json:"skipRoleSync,omitempty"`
-		StrictMode   *bool `json:"strictMode,omitempty"`
-	} `json:"roleMapping,omitempty"`
-	SamlConfig *struct {
-		AdditionalParams *map[string]interface{} `json:"additionalParams,omitempty"`
-		Audience         *string                 `json:"audience,omitempty"`
-		CallbackUrl      string                  `json:"callbackUrl"`
-		Cert             string                  `json:"cert"`
-		DecryptionPvk    *string                 `json:"decryptionPvk,omitempty"`
-		DigestAlgorithm  *string                 `json:"digestAlgorithm,omitempty"`
-		EntryPoint       string                  `json:"entryPoint"`
-		IdentifierFormat *string                 `json:"identifierFormat,omitempty"`
-		IdpMetadata      *struct {
-			Cert                 *string `json:"cert,omitempty"`
-			EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-			EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-			EntityID             *string `json:"entityID,omitempty"`
-			EntityURL            *string `json:"entityURL,omitempty"`
-			IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-			Metadata             *string `json:"metadata,omitempty"`
-			PrivateKey           *string `json:"privateKey,omitempty"`
-			PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-			RedirectURL          *string `json:"redirectURL,omitempty"`
-			SingleSignOnService  *[]struct {
-				Binding  string `json:"Binding"`
-				Location string `json:"Location"`
-			} `json:"singleSignOnService,omitempty"`
-		} `json:"idpMetadata,omitempty"`
-		Issuer  string `json:"issuer"`
-		Mapping *struct {
-			Email         *string            `json:"email,omitempty"`
-			EmailVerified *string            `json:"emailVerified,omitempty"`
-			ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-			FirstName     *string            `json:"firstName,omitempty"`
-			Id            *string            `json:"id,omitempty"`
-			LastName      *string            `json:"lastName,omitempty"`
-			Name          *string            `json:"name,omitempty"`
-		} `json:"mapping,omitempty"`
-		PrivateKey         *string `json:"privateKey,omitempty"`
-		SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty"`
-		SpMetadata         struct {
-			Binding              *string `json:"binding,omitempty"`
-			EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-			EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-			EntityID             *string `json:"entityID,omitempty"`
-			IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-			Metadata             *string `json:"metadata,omitempty"`
-			PrivateKey           *string `json:"privateKey,omitempty"`
-			PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-		} `json:"spMetadata"`
-		WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
-	} `json:"samlConfig,omitempty"`
-	TeamSyncConfig *struct {
-		Enabled          *bool   `json:"enabled,omitempty"`
-		GroupsExpression *string `json:"groupsExpression,omitempty"`
-	} `json:"teamSyncConfig,omitempty"`
-	UserId *string `json:"userId"`
-}
 
 // flattenSsoProvider maps the normalized API model into Terraform state.
-// mapSsoProviderToState maps API response to Terraform state
-func mapSsoProviderToState(apiResp interface{}, state *SsoProviderResourceModel, prior *SsoProviderResourceModel) {
-	// Use reflection to handle different API response struct types that all have the same fields
-	if apiResp == nil {
-		return
-	}
-
-	// Helper to get field value from interface{} by reflection
-	extractString := func(obj interface{}, fieldName string) *string {
-		v := reflect.ValueOf(obj)
-		if v.Kind() == reflect.Ptr {
-			v = v.Elem()
-		}
-		if !v.IsValid() {
-			return nil
-		}
-		field := v.FieldByName(fieldName)
-		if !field.IsValid() {
-			return nil
-		}
-		if field.Kind() == reflect.Ptr {
-			if field.IsNil() {
-				return nil
-			}
-			field = field.Elem()
-		}
-		if field.Kind() == reflect.String {
-			s := field.String()
-			return &s
-		}
-		return nil
-	}
-
-	extractBool := func(obj interface{}, fieldName string) *bool {
-		v := reflect.ValueOf(obj)
-		if v.Kind() == reflect.Ptr {
-			v = v.Elem()
-		}
-		if !v.IsValid() {
-			return nil
-		}
-		field := v.FieldByName(fieldName)
-		if !field.IsValid() {
-			return nil
-		}
-		if field.Kind() == reflect.Ptr {
-			if field.IsNil() {
-				return nil
-			}
-			field = field.Elem()
-		}
-		if field.Kind() == reflect.Bool {
-			b := field.Bool()
-			return &b
-		}
-		return nil
-	}
-
-	// Extract top-level fields
-	state.ID = stringValueOrNull(extractString(apiResp, "Id"))
-	state.ProviderID = stringValueOrNull(extractString(apiResp, "ProviderId"))
-	state.Domain = stringValueOrNull(extractString(apiResp, "Domain"))
-	state.Issuer = stringValueOrNull(extractString(apiResp, "Issuer"))
-	state.DomainVerified = boolValueOrNull(extractBool(apiResp, "DomainVerified"))
-	state.OrganizationID = stringValueOrNull(extractString(apiResp, "OrganizationId"))
-	state.UserID = stringValueOrNull(extractString(apiResp, "UserId"))
-
-	// For nested objects, preserve the input from the plan if available, since we know that was validated
-	// This avoids spurious diffs when the API returns defaults different from our state
-	// OIDC config - keep what was sent if present, don't overwrite with API defaults
-	if state.OidcConfig != nil {
-		// Keep the existing state.OidcConfig as is - it contains what we sent
-	}
-
-	// SAML config - keep what was sent if present
-	if state.SamlConfig != nil {
-		// Keep the existing state.SamlConfig as is - it contains what we sent
-	}
-
-	// Role mapping - keep what was sent if present
-	if state.RoleMapping != nil {
-		// Keep the existing state.RoleMapping as is - it contains what we sent
-	}
-
-	// Team sync config - keep what was sent if present
-	if state.TeamSyncConfig != nil {
-		// Keep the existing state.TeamSyncConfig as is - it contains what we sent
-	}
-}
+// mapSsoProviderToState maps API response to Terraform state.
 
 func stringValueOrNull(ptr *string) types.String {
 	if ptr == nil {
@@ -1856,19 +1674,6 @@ func mapStringToTypes(in *map[string]string) types.Map {
 func preserveSensitive(value string, prior *SsoProviderResourceModel, getter func(*SsoProviderResourceModel) types.String) types.String {
 	if value != "" {
 		return types.StringValue(value)
-	}
-	if prior != nil {
-		prev := getter(prior)
-		if !prev.IsNull() {
-			return prev
-		}
-	}
-	return types.StringNull()
-}
-
-func preserveSensitivePtr(value *string, prior *SsoProviderResourceModel, getter func(*SsoProviderResourceModel) types.String) types.String {
-	if value != nil {
-		return types.StringValue(*value)
 	}
 	if prior != nil {
 		prev := getter(prior)
