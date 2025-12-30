@@ -95,3 +95,41 @@ resource "archestra_mcp_registry_catalog_item" "postgres" {
     }
   ]
 }
+
+# Remote MCP server with PAT authentication
+resource "archestra_mcp_registry_catalog_item" "github_remote" {
+  name        = "github-mcp-server-remote"
+  description = "GitHub's official remote MCP Server"
+  docs_url    = "https://github.com/github/github-mcp-server"
+
+  remote_config = {
+    url = "https://api.githubcopilot.com/mcp/"
+  }
+
+  auth_fields = [
+    {
+      name        = "GITHUB_PERSONAL_ACCESS_TOKEN"
+      label       = "GitHub Personal Access Token"
+      type        = "password"
+      required    = true
+      description = "GitHub PAT with appropriate repository permissions"
+    }
+  ]
+}
+
+# Remote MCP server with OAuth authentication
+resource "archestra_mcp_registry_catalog_item" "remote_oauth" {
+  name        = "remote-oauth-mcp-server"
+  description = "Remote MCP Server with OAuth authentication"
+  docs_url    = "https://example.com/mcp-server"
+
+  remote_config = {
+    url = "https://api.example.com/mcp/"
+    oauth_config = {
+      client_id                  = "your-client-id"
+      redirect_uris              = ["https://frontend.archestra.dev/oauth-callback"]
+      scopes                     = ["read", "write"]
+      supports_resource_metadata = true
+    }
+  }
+}
