@@ -139,7 +139,7 @@ func (r *ArchestraRoleResource) Create(ctx context.Context, req resource.CreateR
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-// Helpers to bypass generated code issues with unexported union fields
+// Helpers to bypass generated code issues with unexported union fields.
 func (r *ArchestraRoleResource) getRole(ctx context.Context, id string) (*client.GetRoleResponse, error) {
 	c, ok := r.client.ClientInterface.(*client.Client)
 	if !ok {
