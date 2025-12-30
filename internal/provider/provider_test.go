@@ -45,8 +45,8 @@ func TestProviderRegistrationCounts(t *testing.T) {
 
 	t.Run("Resources_RegistrationCount", func(t *testing.T) {
 		resources := p.Resources(context.Background())
-		if len(resources) != 13 {
-			t.Fatalf("Expected 13 resources to be registered, got %d", len(resources))
+		if len(resources) != 15 {
+			t.Fatalf("Expected 15 resources to be registered, got %d", len(resources))
 		}
 	})
 
