@@ -149,6 +149,7 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewProfileResource,
+		NewSSOProviderResource,
 		NewMCPServerResource,
 		NewMCPServerRegistryResource,
 		NewTrustedDataPolicyResource,
