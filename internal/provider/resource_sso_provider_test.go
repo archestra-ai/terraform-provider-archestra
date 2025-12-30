@@ -20,23 +20,27 @@ func TestAccSSOProviderResource_Mocked(t *testing.T) {
 		// Handle POST (Create) and GET (Read)
 		if r.Method == http.MethodPost || r.Method == http.MethodGet {
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{
-                "id": "sso-12345",
-                "providerId": "google",
-                "domain": "example.com",
-                "issuer": "https://accounts.google.com",
-                "oidcConfig": {
-                    "clientId": "test-client",
-                    "clientSecret": "test-secret"
-                }
-            }`))
+			if _, err := w.Write([]byte(`{
+				"id": "sso-12345",
+				"providerId": "google",
+				"domain": "example.com",
+				"issuer": "https://accounts.google.com",
+				"oidcConfig": {
+					"clientId": "test-client",
+					"clientSecret": "test-secret"
+				}
+			}`)); err != nil {
+				t.Fatalf("write response error: %v", err)
+			}
 			return
 		}
 
 		// Handle DELETE
 		if r.Method == http.MethodDelete {
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("{}"))
+			if _, err := w.Write([]byte("{}")); err != nil {
+				t.Fatalf("write response error: %v", err)
+			}
 			return
 		}
 
