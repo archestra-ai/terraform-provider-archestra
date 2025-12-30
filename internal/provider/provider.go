@@ -163,6 +163,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewChatLLMProviderApiKeyResource,
 		NewDualLlmConfigResource,
 		NewProfileToolResource,
+		NewSSOProviderResource,
 	}
 }
 
