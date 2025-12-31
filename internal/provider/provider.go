@@ -153,6 +153,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewMCPServerRegistryResource,
 		NewTrustedDataPolicyResource,
 		NewToolInvocationPolicyResource,
+		NewArchestraPromptResource,
 		NewTeamResource,
 		NewTokenPriceResource,
 		NewLimitResource,
@@ -174,6 +175,8 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewMCPServerToolDataSource,
 		NewTokenPricesDataSource,
 		NewTeamExternalGroupsDataSource,
+		NewArchestraPromptVersionsDataSource,
+		NewArchestraPromptDataSource,
 	}
 }
 
