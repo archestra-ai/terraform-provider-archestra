@@ -45,7 +45,7 @@ func (d *ArchestraPromptVersionsDataSource) Schema(ctx context.Context, req data
 		MarkdownDescription: "Lists versions of a specific Archestra prompt.",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"prompt_id": schema.StringAttribute{
 				MarkdownDescription: "The ID of the prompt",
 				Required:            true,
 			},
@@ -141,7 +141,7 @@ func (d *ArchestraPromptVersionsDataSource) Read(ctx context.Context, req dataso
 	}
 
 	data.Versions, _ = types.ListValueFrom(ctx, types.ObjectType{AttrTypes: map[string]attr.Type{
-		"id":            types.StringType,
+		"prompt_id":     types.StringType,
 		"version":       types.Int64Type,
 		"created_at":    types.StringType,
 		"user_prompt":   types.StringType,

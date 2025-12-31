@@ -47,6 +47,7 @@ func (d *ArchestraPromptDataSource) Schema(ctx context.Context, req datasource.S
 			},
 			"profile_id": schema.StringAttribute{
 				MarkdownDescription: "The Profile ID for the prompt",
+				Computed:            true,
 			},
 			"name": schema.StringAttribute{
 				MarkdownDescription: "The name of the prompt",
@@ -123,6 +124,7 @@ func (d *ArchestraPromptDataSource) Read(ctx context.Context, req datasource.Rea
 		}
 		data.Version = types.Int64Value(int64(getResp.JSON200.Version))
 		data.IsActive = types.BoolValue(getResp.JSON200.IsActive)
+		data.ProfileId = types.StringValue(getResp.JSON200.AgentId.String())
 
 		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	} else if !data.Name.IsNull() {
@@ -153,6 +155,7 @@ func (d *ArchestraPromptDataSource) Read(ctx context.Context, req datasource.Rea
 
 				data.IsActive = types.BoolValue(p.IsActive)
 				data.Version = types.Int64Value(int64(p.Version))
+				data.ProfileId = types.StringValue(p.AgentId.String())
 
 				resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 				break

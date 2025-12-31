@@ -54,7 +54,7 @@ func (r *ArchestraPromptResource) Schema(ctx context.Context, req resource.Schem
 				Required: true,
 			},
 			"is_active": schema.BoolAttribute{
-				Optional: true,
+				Computed: true,
 			},
 			"version": schema.Int64Attribute{
 				Computed: true,
@@ -93,12 +93,13 @@ func (r *ArchestraPromptResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
+	is_active := true
 	body := client.CreatePromptJSONRequestBody{
 		AgentId:      Profile_Id,
 		Name:         data.Name.ValueString(),
 		SystemPrompt: data.SystemPrompt.ValueStringPointer(),
 		UserPrompt:   data.Prompt.ValueStringPointer(),
-		IsActive:     data.IsActive.ValueBoolPointer(),
+		IsActive:     &is_active,
 	}
 
 	createResp, err := r.client.CreatePromptWithResponse(ctx, body)
@@ -162,14 +163,17 @@ func (r *ArchestraPromptResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError("Invalid Parent ID", fmt.Sprintf("Unable to get Prompt: %s", err))
 		return
 	}
+	// Deactivate previous version prompt
+	state.IsActive = types.BoolValue(false)
 
 	// Create new version by referencing the parent prompt
+	is_active := true
 	body := client.CreatePromptJSONRequestBody{
 		AgentId:        Profile_Id,
 		Name:           data.Name.ValueString(),
 		SystemPrompt:   data.SystemPrompt.ValueStringPointer(),
 		UserPrompt:     data.Prompt.ValueStringPointer(),
-		IsActive:       data.IsActive.ValueBoolPointer(),
+		IsActive:       &is_active,
 		ParentPromptId: &parentID,
 	}
 
