@@ -8,6 +8,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -37,17 +39,17 @@ type SsoProviderResourceModel struct {
 }
 
 type OidcConfigModel struct {
-	ClientID              types.String   `tfsdk:"client_id"`
-	ClientSecret          types.String   `tfsdk:"client_secret"`
-	DiscoveryEndpoint     types.String   `tfsdk:"discovery_endpoint"`
-	Issuer                types.String   `tfsdk:"issuer"`
-	AuthorizationEndpoint types.String   `tfsdk:"authorization_endpoint"`
-	TokenEndpoint         types.String   `tfsdk:"token_endpoint"`
-	UserInfoEndpoint      types.String   `tfsdk:"user_info_endpoint"`
-	JwksEndpoint          types.String   `tfsdk:"jwks_endpoint"`
-	Pkce                  types.Bool     `tfsdk:"pkce"`
-	Scopes                []types.String `tfsdk:"scopes"`
-	Mapping               *OidcMapping   `tfsdk:"mapping"`
+	ClientID              types.String `tfsdk:"client_id"`
+	ClientSecret          types.String `tfsdk:"client_secret"`
+	DiscoveryEndpoint     types.String `tfsdk:"discovery_endpoint"`
+	Issuer                types.String `tfsdk:"issuer"`
+	AuthorizationEndpoint types.String `tfsdk:"authorization_endpoint"`
+	TokenEndpoint         types.String `tfsdk:"token_endpoint"`
+	UserInfoEndpoint      types.String `tfsdk:"user_info_endpoint"`
+	JwksEndpoint          types.String `tfsdk:"jwks_endpoint"`
+	Pkce                  types.Bool   `tfsdk:"pkce"`
+	Scopes                types.List   `tfsdk:"scopes"`
+	Mapping               *OidcMapping `tfsdk:"mapping"`
 }
 
 type OidcMapping struct {
@@ -112,10 +114,17 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 			"domain_verified": schema.BoolAttribute{
 				MarkdownDescription: "Whether the domain has been verified.",
 				Computed:            true,
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"issuer": schema.StringAttribute{
 				MarkdownDescription: "The OIDC issuer URL.",
 				Optional:            true,
+				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"oidc_config": schema.SingleNestedAttribute{
 				MarkdownDescription: "Configuration for OIDC providers.",
@@ -157,11 +166,19 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 					"pkce": schema.BoolAttribute{
 						MarkdownDescription: "Enable PKCE.",
 						Optional:            true,
+						Computed:            true,
+						PlanModifiers: []planmodifier.Bool{
+							boolplanmodifier.UseStateForUnknown(),
+						},
 					},
 					"scopes": schema.ListAttribute{
 						MarkdownDescription: "List of scopes.",
 						Optional:            true,
+						Computed:            true,
 						ElementType:         types.StringType,
+						PlanModifiers: []planmodifier.List{
+							listplanmodifier.UseStateForUnknown(),
+						},
 					},
 					"mapping": schema.SingleNestedAttribute{
 						MarkdownDescription: "Field mappings.",
@@ -219,10 +236,18 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 					"skip_role_sync": schema.BoolAttribute{
 						MarkdownDescription: "Skip role synchronization on login.",
 						Optional:            true,
+						Computed:            true,
+						PlanModifiers: []planmodifier.Bool{
+							boolplanmodifier.UseStateForUnknown(),
+						},
 					},
 					"strict_mode": schema.BoolAttribute{
 						MarkdownDescription: "Enable strict mode (deny login if no rule matches).",
 						Optional:            true,
+						Computed:            true,
+						PlanModifiers: []planmodifier.Bool{
+							boolplanmodifier.UseStateForUnknown(),
+						},
 					},
 					"rules": schema.ListNestedAttribute{
 						MarkdownDescription: "Role mapping rules.",
@@ -249,6 +274,10 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 					"enabled": schema.BoolAttribute{
 						MarkdownDescription: "Enable team synchronization.",
 						Optional:            true,
+						Computed:            true,
+						PlanModifiers: []planmodifier.Bool{
+							boolplanmodifier.UseStateForUnknown(),
+						},
 					},
 					"groups_expression": schema.StringAttribute{
 						MarkdownDescription: "Handlebars template to extract groups.",
@@ -309,9 +338,14 @@ func (r *SsoProviderResource) Create(ctx context.Context, req resource.CreateReq
 
 	if data.OidcConfig != nil {
 		oidc := data.OidcConfig
-		scopes := make([]string, len(oidc.Scopes))
-		for i, s := range oidc.Scopes {
-			scopes[i] = s.ValueString()
+		var bodyScopes *[]string
+		if !oidc.Scopes.IsNull() && !oidc.Scopes.IsUnknown() {
+			var s []string
+			resp.Diagnostics.Append(oidc.Scopes.ElementsAs(ctx, &s, false)...)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+			bodyScopes = &s
 		}
 
 		body.OidcConfig = &struct {
@@ -341,7 +375,7 @@ func (r *SsoProviderResource) Create(ctx context.Context, req resource.CreateReq
 			DiscoveryEndpoint: oidc.DiscoveryEndpoint.ValueString(),
 			Issuer:            oidc.Issuer.ValueString(),
 			Pkce:              oidc.Pkce.ValueBool(),
-			Scopes:            &scopes,
+			Scopes:            bodyScopes,
 		}
 
 		if !oidc.AuthorizationEndpoint.IsNull() {
@@ -534,9 +568,162 @@ func (r *SsoProviderResource) Create(ctx context.Context, req resource.CreateReq
 
 	// Update state
 	data.ID = types.StringValue(apiResp.JSON200.Id)
+	data.ProviderID = types.StringValue(apiResp.JSON200.ProviderId)
 	data.Domain = types.StringValue(apiResp.JSON200.Domain)
 	if apiResp.JSON200.DomainVerified != nil {
 		data.DomainVerified = types.BoolValue(*apiResp.JSON200.DomainVerified)
+	} else {
+		data.DomainVerified = types.BoolValue(false)
+	}
+
+	if apiResp.JSON200.Issuer != "" {
+		data.Issuer = types.StringValue(apiResp.JSON200.Issuer)
+	} else {
+		data.Issuer = types.StringNull()
+	}
+
+	// Map OIDC Config
+	if apiResp.JSON200.OidcConfig != nil {
+		if data.OidcConfig == nil {
+			data.OidcConfig = &OidcConfigModel{}
+		}
+		data.OidcConfig.ClientID = types.StringValue(apiResp.JSON200.OidcConfig.ClientId)
+		data.OidcConfig.ClientSecret = types.StringValue(apiResp.JSON200.OidcConfig.ClientSecret)
+		data.OidcConfig.DiscoveryEndpoint = types.StringValue(apiResp.JSON200.OidcConfig.DiscoveryEndpoint)
+		data.OidcConfig.Issuer = types.StringValue(apiResp.JSON200.OidcConfig.Issuer)
+		data.OidcConfig.Pkce = types.BoolValue(apiResp.JSON200.OidcConfig.Pkce)
+
+		// Map other optional fields
+		if apiResp.JSON200.OidcConfig.AuthorizationEndpoint != nil {
+			data.OidcConfig.AuthorizationEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.AuthorizationEndpoint)
+		} else {
+			data.OidcConfig.AuthorizationEndpoint = types.StringNull()
+		}
+		if apiResp.JSON200.OidcConfig.TokenEndpoint != nil {
+			data.OidcConfig.TokenEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.TokenEndpoint)
+		} else {
+			data.OidcConfig.TokenEndpoint = types.StringNull()
+		}
+		if apiResp.JSON200.OidcConfig.UserInfoEndpoint != nil {
+			data.OidcConfig.UserInfoEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.UserInfoEndpoint)
+		} else {
+			data.OidcConfig.UserInfoEndpoint = types.StringNull()
+		}
+		if apiResp.JSON200.OidcConfig.JwksEndpoint != nil {
+			data.OidcConfig.JwksEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.JwksEndpoint)
+		} else {
+			data.OidcConfig.JwksEndpoint = types.StringNull()
+		}
+
+		if apiResp.JSON200.OidcConfig.Scopes != nil {
+			scopes, diags := types.ListValueFrom(ctx, types.StringType, *apiResp.JSON200.OidcConfig.Scopes)
+			resp.Diagnostics.Append(diags...)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+			data.OidcConfig.Scopes = scopes
+		} else {
+			data.OidcConfig.Scopes = types.ListNull(types.StringType)
+		}
+
+		if apiResp.JSON200.OidcConfig.Mapping != nil {
+			if data.OidcConfig.Mapping == nil {
+				data.OidcConfig.Mapping = &OidcMapping{}
+			}
+			if apiResp.JSON200.OidcConfig.Mapping.Email != nil {
+				data.OidcConfig.Mapping.Email = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Email)
+			} else {
+				data.OidcConfig.Mapping.Email = types.StringNull()
+			}
+			if apiResp.JSON200.OidcConfig.Mapping.EmailVerified != nil {
+				data.OidcConfig.Mapping.EmailVerified = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.EmailVerified)
+			} else {
+				data.OidcConfig.Mapping.EmailVerified = types.StringNull()
+			}
+			if apiResp.JSON200.OidcConfig.Mapping.Id != nil {
+				data.OidcConfig.Mapping.Id = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Id)
+			} else {
+				data.OidcConfig.Mapping.Id = types.StringNull()
+			}
+			if apiResp.JSON200.OidcConfig.Mapping.Name != nil {
+				data.OidcConfig.Mapping.Name = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Name)
+			} else {
+				data.OidcConfig.Mapping.Name = types.StringNull()
+			}
+			if apiResp.JSON200.OidcConfig.Mapping.Image != nil {
+				data.OidcConfig.Mapping.Image = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Image)
+			} else {
+				data.OidcConfig.Mapping.Image = types.StringNull()
+			}
+		}
+	} else {
+		data.OidcConfig = nil
+	}
+
+	// Map SAML Config
+	if apiResp.JSON200.SamlConfig != nil {
+		if data.SamlConfig == nil {
+			data.SamlConfig = &SamlConfigModel{}
+		}
+		data.SamlConfig.CallbackUrl = types.StringValue(apiResp.JSON200.SamlConfig.CallbackUrl)
+		data.SamlConfig.Cert = types.StringValue(apiResp.JSON200.SamlConfig.Cert)
+		data.SamlConfig.EntryPoint = types.StringValue(apiResp.JSON200.SamlConfig.EntryPoint)
+		data.SamlConfig.Issuer = types.StringValue(apiResp.JSON200.SamlConfig.Issuer)
+	} else {
+		data.SamlConfig = nil
+	}
+
+	// Map Role Mapping
+	if apiResp.JSON200.RoleMapping != nil {
+		if data.RoleMapping == nil {
+			data.RoleMapping = &RoleMappingModel{}
+		}
+		if apiResp.JSON200.RoleMapping.DefaultRole != nil {
+			data.RoleMapping.DefaultRole = types.StringValue(*apiResp.JSON200.RoleMapping.DefaultRole)
+		} else {
+			data.RoleMapping.DefaultRole = types.StringNull()
+		}
+		if apiResp.JSON200.RoleMapping.SkipRoleSync != nil {
+			data.RoleMapping.SkipRoleSync = types.BoolValue(*apiResp.JSON200.RoleMapping.SkipRoleSync)
+		} else {
+			data.RoleMapping.SkipRoleSync = types.BoolValue(false)
+		}
+		if apiResp.JSON200.RoleMapping.StrictMode != nil {
+			data.RoleMapping.StrictMode = types.BoolValue(*apiResp.JSON200.RoleMapping.StrictMode)
+		} else {
+			data.RoleMapping.StrictMode = types.BoolValue(false)
+		}
+		if apiResp.JSON200.RoleMapping.Rules != nil {
+			rules := make([]RoleMappingRule, len(*apiResp.JSON200.RoleMapping.Rules))
+			for i, r := range *apiResp.JSON200.RoleMapping.Rules {
+				rules[i] = RoleMappingRule{
+					Expression: types.StringValue(r.Expression),
+					Role:       types.StringValue(r.Role),
+				}
+			}
+			data.RoleMapping.Rules = rules
+		}
+	} else {
+		data.RoleMapping = nil
+	}
+
+	// Map Team Sync Config
+	if apiResp.JSON200.TeamSyncConfig != nil {
+		if data.TeamSyncConfig == nil {
+			data.TeamSyncConfig = &TeamSyncConfigModel{}
+		}
+		if apiResp.JSON200.TeamSyncConfig.Enabled != nil {
+			data.TeamSyncConfig.Enabled = types.BoolValue(*apiResp.JSON200.TeamSyncConfig.Enabled)
+		} else {
+			data.TeamSyncConfig.Enabled = types.BoolValue(false)
+		}
+		if apiResp.JSON200.TeamSyncConfig.GroupsExpression != nil {
+			data.TeamSyncConfig.GroupsExpression = types.StringValue(*apiResp.JSON200.TeamSyncConfig.GroupsExpression)
+		} else {
+			data.TeamSyncConfig.GroupsExpression = types.StringNull()
+		}
+	} else {
+		data.TeamSyncConfig = nil
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -578,9 +765,18 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 
 	// Update state
 	data.ID = types.StringValue(apiResp.JSON200.Id)
+	data.ProviderID = types.StringValue(apiResp.JSON200.ProviderId)
 	data.Domain = types.StringValue(apiResp.JSON200.Domain)
 	if apiResp.JSON200.DomainVerified != nil {
 		data.DomainVerified = types.BoolValue(*apiResp.JSON200.DomainVerified)
+	} else {
+		data.DomainVerified = types.BoolValue(false)
+	}
+
+	if apiResp.JSON200.Issuer != "" {
+		data.Issuer = types.StringValue(apiResp.JSON200.Issuer)
+	} else {
+		data.Issuer = types.StringNull()
 	}
 
 	// Map OIDC Config
@@ -597,23 +793,34 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		// Map other optional fields
 		if apiResp.JSON200.OidcConfig.AuthorizationEndpoint != nil {
 			data.OidcConfig.AuthorizationEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.AuthorizationEndpoint)
+		} else {
+			data.OidcConfig.AuthorizationEndpoint = types.StringNull()
 		}
 		if apiResp.JSON200.OidcConfig.TokenEndpoint != nil {
 			data.OidcConfig.TokenEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.TokenEndpoint)
+		} else {
+			data.OidcConfig.TokenEndpoint = types.StringNull()
 		}
 		if apiResp.JSON200.OidcConfig.UserInfoEndpoint != nil {
 			data.OidcConfig.UserInfoEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.UserInfoEndpoint)
+		} else {
+			data.OidcConfig.UserInfoEndpoint = types.StringNull()
 		}
 		if apiResp.JSON200.OidcConfig.JwksEndpoint != nil {
 			data.OidcConfig.JwksEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.JwksEndpoint)
+		} else {
+			data.OidcConfig.JwksEndpoint = types.StringNull()
 		}
 
 		if apiResp.JSON200.OidcConfig.Scopes != nil {
-			scopes := make([]types.String, len(*apiResp.JSON200.OidcConfig.Scopes))
-			for i, s := range *apiResp.JSON200.OidcConfig.Scopes {
-				scopes[i] = types.StringValue(s)
+			scopes, diags := types.ListValueFrom(ctx, types.StringType, *apiResp.JSON200.OidcConfig.Scopes)
+			resp.Diagnostics.Append(diags...)
+			if resp.Diagnostics.HasError() {
+				return
 			}
 			data.OidcConfig.Scopes = scopes
+		} else {
+			data.OidcConfig.Scopes = types.ListNull(types.StringType)
 		}
 
 		if apiResp.JSON200.OidcConfig.Mapping != nil {
@@ -622,18 +829,28 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 			}
 			if apiResp.JSON200.OidcConfig.Mapping.Email != nil {
 				data.OidcConfig.Mapping.Email = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Email)
+			} else {
+				data.OidcConfig.Mapping.Email = types.StringNull()
 			}
 			if apiResp.JSON200.OidcConfig.Mapping.EmailVerified != nil {
 				data.OidcConfig.Mapping.EmailVerified = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.EmailVerified)
+			} else {
+				data.OidcConfig.Mapping.EmailVerified = types.StringNull()
 			}
 			if apiResp.JSON200.OidcConfig.Mapping.Id != nil {
 				data.OidcConfig.Mapping.Id = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Id)
+			} else {
+				data.OidcConfig.Mapping.Id = types.StringNull()
 			}
 			if apiResp.JSON200.OidcConfig.Mapping.Name != nil {
 				data.OidcConfig.Mapping.Name = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Name)
+			} else {
+				data.OidcConfig.Mapping.Name = types.StringNull()
 			}
 			if apiResp.JSON200.OidcConfig.Mapping.Image != nil {
 				data.OidcConfig.Mapping.Image = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Image)
+			} else {
+				data.OidcConfig.Mapping.Image = types.StringNull()
 			}
 		}
 	} else {
@@ -660,12 +877,18 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		}
 		if apiResp.JSON200.RoleMapping.DefaultRole != nil {
 			data.RoleMapping.DefaultRole = types.StringValue(*apiResp.JSON200.RoleMapping.DefaultRole)
+		} else {
+			data.RoleMapping.DefaultRole = types.StringNull()
 		}
 		if apiResp.JSON200.RoleMapping.SkipRoleSync != nil {
 			data.RoleMapping.SkipRoleSync = types.BoolValue(*apiResp.JSON200.RoleMapping.SkipRoleSync)
+		} else {
+			data.RoleMapping.SkipRoleSync = types.BoolValue(false)
 		}
 		if apiResp.JSON200.RoleMapping.StrictMode != nil {
 			data.RoleMapping.StrictMode = types.BoolValue(*apiResp.JSON200.RoleMapping.StrictMode)
+		} else {
+			data.RoleMapping.StrictMode = types.BoolValue(false)
 		}
 		if apiResp.JSON200.RoleMapping.Rules != nil {
 			rules := make([]RoleMappingRule, len(*apiResp.JSON200.RoleMapping.Rules))
@@ -688,9 +911,13 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		}
 		if apiResp.JSON200.TeamSyncConfig.Enabled != nil {
 			data.TeamSyncConfig.Enabled = types.BoolValue(*apiResp.JSON200.TeamSyncConfig.Enabled)
+		} else {
+			data.TeamSyncConfig.Enabled = types.BoolValue(false)
 		}
 		if apiResp.JSON200.TeamSyncConfig.GroupsExpression != nil {
 			data.TeamSyncConfig.GroupsExpression = types.StringValue(*apiResp.JSON200.TeamSyncConfig.GroupsExpression)
+		} else {
+			data.TeamSyncConfig.GroupsExpression = types.StringNull()
 		}
 	} else {
 		data.TeamSyncConfig = nil
@@ -728,9 +955,14 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 
 	if data.OidcConfig != nil {
 		oidc := data.OidcConfig
-		scopes := make([]string, len(oidc.Scopes))
-		for i, s := range oidc.Scopes {
-			scopes[i] = s.ValueString()
+		var bodyScopes *[]string
+		if !oidc.Scopes.IsNull() && !oidc.Scopes.IsUnknown() {
+			var s []string
+			resp.Diagnostics.Append(oidc.Scopes.ElementsAs(ctx, &s, false)...)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+			bodyScopes = &s
 		}
 
 		body.OidcConfig = &struct {
@@ -760,7 +992,7 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 			DiscoveryEndpoint: oidc.DiscoveryEndpoint.ValueString(),
 			Issuer:            oidc.Issuer.ValueString(),
 			Pkce:              oidc.Pkce.ValueBool(),
-			Scopes:            &scopes,
+			Scopes:            bodyScopes,
 		}
 
 		// Ensure top-level issuer is set for the platform if not explicitly in plan
@@ -956,9 +1188,163 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 
 	// Update state
+	data.ID = types.StringValue(apiResp.JSON200.Id)
+	data.ProviderID = types.StringValue(apiResp.JSON200.ProviderId)
 	data.Domain = types.StringValue(apiResp.JSON200.Domain)
 	if apiResp.JSON200.DomainVerified != nil {
 		data.DomainVerified = types.BoolValue(*apiResp.JSON200.DomainVerified)
+	} else {
+		data.DomainVerified = types.BoolValue(false)
+	}
+
+	if apiResp.JSON200.Issuer != "" {
+		data.Issuer = types.StringValue(apiResp.JSON200.Issuer)
+	} else {
+		data.Issuer = types.StringNull()
+	}
+
+	// Map OIDC Config
+	if apiResp.JSON200.OidcConfig != nil {
+		if data.OidcConfig == nil {
+			data.OidcConfig = &OidcConfigModel{}
+		}
+		data.OidcConfig.ClientID = types.StringValue(apiResp.JSON200.OidcConfig.ClientId)
+		data.OidcConfig.ClientSecret = types.StringValue(apiResp.JSON200.OidcConfig.ClientSecret)
+		data.OidcConfig.DiscoveryEndpoint = types.StringValue(apiResp.JSON200.OidcConfig.DiscoveryEndpoint)
+		data.OidcConfig.Issuer = types.StringValue(apiResp.JSON200.OidcConfig.Issuer)
+		data.OidcConfig.Pkce = types.BoolValue(apiResp.JSON200.OidcConfig.Pkce)
+
+		// Map other optional fields
+		if apiResp.JSON200.OidcConfig.AuthorizationEndpoint != nil {
+			data.OidcConfig.AuthorizationEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.AuthorizationEndpoint)
+		} else {
+			data.OidcConfig.AuthorizationEndpoint = types.StringNull()
+		}
+		if apiResp.JSON200.OidcConfig.TokenEndpoint != nil {
+			data.OidcConfig.TokenEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.TokenEndpoint)
+		} else {
+			data.OidcConfig.TokenEndpoint = types.StringNull()
+		}
+		if apiResp.JSON200.OidcConfig.UserInfoEndpoint != nil {
+			data.OidcConfig.UserInfoEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.UserInfoEndpoint)
+		} else {
+			data.OidcConfig.UserInfoEndpoint = types.StringNull()
+		}
+		if apiResp.JSON200.OidcConfig.JwksEndpoint != nil {
+			data.OidcConfig.JwksEndpoint = types.StringValue(*apiResp.JSON200.OidcConfig.JwksEndpoint)
+		} else {
+			data.OidcConfig.JwksEndpoint = types.StringNull()
+		}
+
+		if apiResp.JSON200.OidcConfig.Scopes != nil {
+			scopes, diags := types.ListValueFrom(ctx, types.StringType, *apiResp.JSON200.OidcConfig.Scopes)
+			resp.Diagnostics.Append(diags...)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+			data.OidcConfig.Scopes = scopes
+		} else {
+			data.OidcConfig.Scopes = types.ListNull(types.StringType)
+		}
+
+		if apiResp.JSON200.OidcConfig.Mapping != nil {
+			if data.OidcConfig.Mapping == nil {
+				data.OidcConfig.Mapping = &OidcMapping{}
+			}
+			if apiResp.JSON200.OidcConfig.Mapping.Email != nil {
+				data.OidcConfig.Mapping.Email = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Email)
+			} else {
+				data.OidcConfig.Mapping.Email = types.StringNull()
+			}
+			if apiResp.JSON200.OidcConfig.Mapping.EmailVerified != nil {
+				data.OidcConfig.Mapping.EmailVerified = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.EmailVerified)
+			} else {
+				data.OidcConfig.Mapping.EmailVerified = types.StringNull()
+			}
+			if apiResp.JSON200.OidcConfig.Mapping.Id != nil {
+				data.OidcConfig.Mapping.Id = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Id)
+			} else {
+				data.OidcConfig.Mapping.Id = types.StringNull()
+			}
+			if apiResp.JSON200.OidcConfig.Mapping.Name != nil {
+				data.OidcConfig.Mapping.Name = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Name)
+			} else {
+				data.OidcConfig.Mapping.Name = types.StringNull()
+			}
+			if apiResp.JSON200.OidcConfig.Mapping.Image != nil {
+				data.OidcConfig.Mapping.Image = types.StringValue(*apiResp.JSON200.OidcConfig.Mapping.Image)
+			} else {
+				data.OidcConfig.Mapping.Image = types.StringNull()
+			}
+		}
+	} else {
+		data.OidcConfig = nil
+	}
+
+	// Map SAML Config
+	if apiResp.JSON200.SamlConfig != nil {
+		if data.SamlConfig == nil {
+			data.SamlConfig = &SamlConfigModel{}
+		}
+		data.SamlConfig.CallbackUrl = types.StringValue(apiResp.JSON200.SamlConfig.CallbackUrl)
+		data.SamlConfig.Cert = types.StringValue(apiResp.JSON200.SamlConfig.Cert)
+		data.SamlConfig.EntryPoint = types.StringValue(apiResp.JSON200.SamlConfig.EntryPoint)
+		data.SamlConfig.Issuer = types.StringValue(apiResp.JSON200.SamlConfig.Issuer)
+	} else {
+		data.SamlConfig = nil
+	}
+
+	// Map Role Mapping
+	if apiResp.JSON200.RoleMapping != nil {
+		if data.RoleMapping == nil {
+			data.RoleMapping = &RoleMappingModel{}
+		}
+		if apiResp.JSON200.RoleMapping.DefaultRole != nil {
+			data.RoleMapping.DefaultRole = types.StringValue(*apiResp.JSON200.RoleMapping.DefaultRole)
+		} else {
+			data.RoleMapping.DefaultRole = types.StringNull()
+		}
+		if apiResp.JSON200.RoleMapping.SkipRoleSync != nil {
+			data.RoleMapping.SkipRoleSync = types.BoolValue(*apiResp.JSON200.RoleMapping.SkipRoleSync)
+		} else {
+			data.RoleMapping.SkipRoleSync = types.BoolValue(false)
+		}
+		if apiResp.JSON200.RoleMapping.StrictMode != nil {
+			data.RoleMapping.StrictMode = types.BoolValue(*apiResp.JSON200.RoleMapping.StrictMode)
+		} else {
+			data.RoleMapping.StrictMode = types.BoolValue(false)
+		}
+		if apiResp.JSON200.RoleMapping.Rules != nil {
+			rules := make([]RoleMappingRule, len(*apiResp.JSON200.RoleMapping.Rules))
+			for i, r := range *apiResp.JSON200.RoleMapping.Rules {
+				rules[i] = RoleMappingRule{
+					Expression: types.StringValue(r.Expression),
+					Role:       types.StringValue(r.Role),
+				}
+			}
+			data.RoleMapping.Rules = rules
+		}
+	} else {
+		data.RoleMapping = nil
+	}
+
+	// Map Team Sync Config
+	if apiResp.JSON200.TeamSyncConfig != nil {
+		if data.TeamSyncConfig == nil {
+			data.TeamSyncConfig = &TeamSyncConfigModel{}
+		}
+		if apiResp.JSON200.TeamSyncConfig.Enabled != nil {
+			data.TeamSyncConfig.Enabled = types.BoolValue(*apiResp.JSON200.TeamSyncConfig.Enabled)
+		} else {
+			data.TeamSyncConfig.Enabled = types.BoolValue(false)
+		}
+		if apiResp.JSON200.TeamSyncConfig.GroupsExpression != nil {
+			data.TeamSyncConfig.GroupsExpression = types.StringValue(*apiResp.JSON200.TeamSyncConfig.GroupsExpression)
+		} else {
+			data.TeamSyncConfig.GroupsExpression = types.StringNull()
+		}
+	} else {
+		data.TeamSyncConfig = nil
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

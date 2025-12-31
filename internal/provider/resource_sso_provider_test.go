@@ -94,6 +94,7 @@ resource "archestra_sso_provider" "saml_test" {
     entry_point  = %[3]q
     cert         = %[4]q
     callback_url = %[5]q
+    issuer       = "https://okta.com"
   }
 }
 `, providerId, domain, entryPoint, cert, callbackUrl)
