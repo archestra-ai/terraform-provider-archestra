@@ -37,8 +37,18 @@ var (
 		"saml_config.mapping.id",
 	}
 
+	// ssoTeamSyncFields contains team sync config fields (optional, may not be returned).
+	ssoTeamSyncFields = []string{
+		"team_sync_config.0.%",
+		"team_sync_config.0.enabled",
+		"team_sync_config.0.groups_expression",
+		"team_sync_config.%",
+		"team_sync_config.enabled",
+		"team_sync_config.groups_expression",
+	}
+
 	// ssoImportStateVerifyIgnore is the combined list of all fields to ignore during import verification.
-	ssoImportStateVerifyIgnore = append(append([]string{}, ssoSensitiveFields...), ssoAPIDefaultFields...)
+	ssoImportStateVerifyIgnore = append(append(append([]string{}, ssoSensitiveFields...), ssoAPIDefaultFields...), ssoTeamSyncFields...)
 )
 
 func TestAccSsoProviderResource_oidc(t *testing.T) {
@@ -98,6 +108,11 @@ resource "archestra_sso_provider" "test" {
       expression = "true"
       role       = "admin"
     }]
+  }
+
+  team_sync_config {
+    enabled           = true
+    groups_expression = "{{#each groups}}{{this}},{{/each}}"
   }
 }
 `, providerID, domain)
@@ -202,6 +217,11 @@ resource "archestra_sso_provider" "test" {
       expression = "{{#includes groups \"saml-admins\"}}true{{/includes}}"
       role       = "admin"
     }]
+  }
+
+  team_sync_config {
+    enabled           = true
+    groups_expression = "{{#each groups}}{{this}},{{/each}}"
   }
 }
 `, providerID, domain, providerID, providerID)

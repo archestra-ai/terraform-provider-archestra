@@ -41,6 +41,11 @@ resource "archestra_sso_provider" "oidc" {
       role       = "admin"
     }]
   }
+
+  team_sync_config {
+    enabled           = true
+    groups_expression = "{{#each groups}}{{this}},{{/each}}"
+  }
 }
 
 # SAML provider example (Okta SAML)
@@ -102,6 +107,7 @@ resource "archestra_sso_provider" "saml" {
 - `oidc_config` (Block, Optional) OIDC configuration (cannot be set with saml_config). (see [below for nested schema](#nestedblock--oidc_config))
 - `role_mapping` (Block, Optional) Optional role mapping rules using Handlebars expressions. (see [below for nested schema](#nestedblock--role_mapping))
 - `saml_config` (Block, Optional) SAML configuration (cannot be set with oidc_config). (see [below for nested schema](#nestedblock--saml_config))
+- `team_sync_config` (Block, Optional) Optional team sync configuration for group extraction. (see [below for nested schema](#nestedblock--team_sync_config))
 
 ### Read-Only
 
@@ -237,3 +243,13 @@ Optional:
 - `metadata` (String)
 - `private_key` (String, Sensitive)
 - `private_key_pass` (String, Sensitive)
+
+
+
+<a id="nestedblock--team_sync_config"></a>
+### Nested Schema for `team_sync_config`
+
+Optional:
+
+- `enabled` (Boolean)
+- `groups_expression` (String)

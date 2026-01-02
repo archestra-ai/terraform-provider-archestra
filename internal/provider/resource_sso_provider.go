@@ -29,16 +29,17 @@ type SsoProviderResource struct {
 }
 
 type SsoProviderResourceModel struct {
-	ID             types.String      `tfsdk:"id"`
-	ProviderID     types.String      `tfsdk:"provider_id"`
-	Domain         types.String      `tfsdk:"domain"`
-	DomainVerified types.Bool        `tfsdk:"domain_verified"`
-	Issuer         types.String      `tfsdk:"issuer"`
-	OidcConfig     *OidcConfigModel  `tfsdk:"oidc_config"`
-	SamlConfig     *SamlConfigModel  `tfsdk:"saml_config"`
-	RoleMapping    *RoleMappingModel `tfsdk:"role_mapping"`
-	UserID         types.String      `tfsdk:"user_id"`
-	OrganizationID types.String      `tfsdk:"organization_id"`
+	ID             types.String         `tfsdk:"id"`
+	ProviderID     types.String         `tfsdk:"provider_id"`
+	Domain         types.String         `tfsdk:"domain"`
+	DomainVerified types.Bool           `tfsdk:"domain_verified"`
+	Issuer         types.String         `tfsdk:"issuer"`
+	OidcConfig     *OidcConfigModel     `tfsdk:"oidc_config"`
+	SamlConfig     *SamlConfigModel     `tfsdk:"saml_config"`
+	RoleMapping    *RoleMappingModel    `tfsdk:"role_mapping"`
+	TeamSyncConfig *TeamSyncConfigModel `tfsdk:"team_sync_config"`
+	UserID         types.String         `tfsdk:"user_id"`
+	OrganizationID types.String         `tfsdk:"organization_id"`
 }
 
 type OidcConfigModel struct {
@@ -133,6 +134,11 @@ type RoleMappingModel struct {
 type RoleRuleModel struct {
 	Expression types.String `tfsdk:"expression"`
 	Role       types.String `tfsdk:"role"`
+}
+
+type TeamSyncConfigModel struct {
+	Enabled          types.Bool   `tfsdk:"enabled"`
+	GroupsExpression types.String `tfsdk:"groups_expression"`
 }
 
 func (r *SsoProviderResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -290,6 +296,13 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 					},
 				},
 			},
+			"team_sync_config": schema.SingleNestedBlock{
+				MarkdownDescription: "Optional team sync configuration for group extraction.",
+				Attributes: map[string]schema.Attribute{
+					"enabled":           schema.BoolAttribute{Optional: true},
+					"groups_expression": schema.StringAttribute{Optional: true},
+				},
+			},
 		},
 	}
 }
@@ -339,6 +352,10 @@ func (r *SsoProviderResource) Create(ctx context.Context, req resource.CreateReq
 
 	if data.RoleMapping != nil {
 		body.RoleMapping = expandRoleMapping(data.RoleMapping)
+	}
+
+	if data.TeamSyncConfig != nil {
+		body.TeamSyncConfig = expandTeamSyncConfig(data.TeamSyncConfig)
 	}
 
 	apiResp, err := r.client.CreateSsoProviderWithResponse(ctx, body)
@@ -625,6 +642,18 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		newState.RoleMapping = state.RoleMapping
 	}
 
+	// Map team sync config if present
+	if apiResp.JSON200.TeamSyncConfig != nil {
+		tsc := apiResp.JSON200.TeamSyncConfig
+		newState.TeamSyncConfig = &TeamSyncConfigModel{
+			Enabled:          boolValueOrNull(tsc.Enabled),
+			GroupsExpression: stringValueOrNull(tsc.GroupsExpression),
+		}
+	} else if state.TeamSyncConfig != nil {
+		// Preserve team sync config from prior state if API doesn't return it
+		newState.TeamSyncConfig = state.TeamSyncConfig
+	}
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &newState)...)
 }
 
@@ -669,6 +698,10 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 
 	if plan.RoleMapping != nil {
 		body.RoleMapping = expandRoleMapping(plan.RoleMapping)
+	}
+
+	if plan.TeamSyncConfig != nil {
+		body.TeamSyncConfig = expandTeamSyncConfig(plan.TeamSyncConfig)
 	}
 
 	apiResp, err := r.client.UpdateSsoProviderWithResponse(ctx, state.ID.ValueString(), body)
@@ -832,6 +865,15 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 				}
 			}
 			newState.RoleMapping.Rules = rules
+		}
+	}
+
+	// Map team sync config if present (similar to Read method)
+	if apiResp.JSON200.TeamSyncConfig != nil {
+		tsc := apiResp.JSON200.TeamSyncConfig
+		newState.TeamSyncConfig = &TeamSyncConfigModel{
+			Enabled:          boolValueOrNull(tsc.Enabled),
+			GroupsExpression: stringValueOrNull(tsc.GroupsExpression),
 		}
 	}
 
@@ -1622,6 +1664,30 @@ func expandRoleMapping(mapping *RoleMappingModel) *struct {
 	if !mapping.StrictMode.IsNull() {
 		v := mapping.StrictMode.ValueBool()
 		out.StrictMode = &v
+	}
+
+	return out
+}
+
+func expandTeamSyncConfig(cfg *TeamSyncConfigModel) *struct {
+	Enabled          *bool   `json:"enabled,omitempty"`
+	GroupsExpression *string `json:"groupsExpression,omitempty"`
+} {
+	if cfg == nil {
+		return nil
+	}
+	out := &struct {
+		Enabled          *bool   `json:"enabled,omitempty"`
+		GroupsExpression *string `json:"groupsExpression,omitempty"`
+	}{}
+
+	if !cfg.Enabled.IsNull() {
+		v := cfg.Enabled.ValueBool()
+		out.Enabled = &v
+	}
+	if !cfg.GroupsExpression.IsNull() {
+		v := cfg.GroupsExpression.ValueString()
+		out.GroupsExpression = &v
 	}
 
 	return out
