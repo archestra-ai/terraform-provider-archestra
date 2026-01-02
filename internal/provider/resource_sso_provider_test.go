@@ -10,6 +10,47 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
+var (
+	ssoSensitiveFields = []string{
+		"oidc_config.0.client_secret",
+		"saml_config.0.cert",
+		"saml_config.0.decryption_pvk",
+		"saml_config.0.private_key",
+		"saml_config.0.idp_metadata.0.cert",
+		"saml_config.0.idp_metadata.0.enc_private_key",
+		"saml_config.0.idp_metadata.0.enc_private_key_pass",
+		"saml_config.0.idp_metadata.0.private_key",
+		"saml_config.0.idp_metadata.0.private_key_pass",
+		"saml_config.0.sp_metadata.0.enc_private_key",
+		"saml_config.0.sp_metadata.0.enc_private_key_pass",
+		"saml_config.0.sp_metadata.0.private_key",
+		"saml_config.0.sp_metadata.0.private_key_pass",
+	}
+
+	// ssoAPIDefaultFields contains fields where API returns defaults that may differ from config.
+	ssoAPIDefaultFields = []string{
+		"oidc_config.0.override_user_info",
+		"oidc_config.0.mapping.0.id",
+		"oidc_config.override_user_info",
+		"oidc_config.mapping.id",
+		"saml_config.0.mapping.0.id",
+		"saml_config.mapping.id",
+	}
+
+	// ssoTeamSyncFields contains team sync config fields (optional, may not be returned).
+	ssoTeamSyncFields = []string{
+		"team_sync_config.0.%",
+		"team_sync_config.0.enabled",
+		"team_sync_config.0.groups_expression",
+		"team_sync_config.%",
+		"team_sync_config.enabled",
+		"team_sync_config.groups_expression",
+	}
+
+	// ssoImportStateVerifyIgnore is the combined list of all fields to ignore during import verification.
+	ssoImportStateVerifyIgnore = append(append(append([]string{}, ssoSensitiveFields...), ssoAPIDefaultFields...), ssoTeamSyncFields...)
+)
+
 func TestAccSsoProviderResource_oidc(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -26,7 +67,7 @@ func TestAccSsoProviderResource_oidc(t *testing.T) {
 				ResourceName:            "archestra_sso_provider.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"oidc_config.0.client_secret", "oidc_config.0.override_user_info", "oidc_config.0.mapping.0.id", "team_sync_config.0.%", "team_sync_config.0.enabled", "team_sync_config.0.groups_expression", "oidc_config.override_user_info", "oidc_config.mapping.id", "team_sync_config.%", "team_sync_config.enabled", "team_sync_config.groups_expression", "saml_config.0.cert", "saml_config.0.decryption_pvk", "saml_config.0.private_key", "saml_config.0.mapping.0.id", "saml_config.0.idp_metadata.0.cert", "saml_config.0.idp_metadata.0.enc_private_key", "saml_config.0.idp_metadata.0.enc_private_key_pass", "saml_config.0.idp_metadata.0.private_key", "saml_config.0.idp_metadata.0.private_key_pass", "saml_config.0.sp_metadata.0.enc_private_key", "saml_config.0.sp_metadata.0.enc_private_key_pass", "saml_config.0.sp_metadata.0.private_key", "saml_config.0.sp_metadata.0.private_key_pass", "team_sync_config.0.%", "team_sync_config.0.enabled", "team_sync_config.0.groups_expression", "saml_config.mapping.id", "team_sync_config.%", "team_sync_config.enabled", "team_sync_config.groups_expression"},
+				ImportStateVerifyIgnore: ssoImportStateVerifyIgnore,
 			},
 			{
 				Config: testAccSsoProviderOIDCConfigUpdated("test-oidc", "example.org"),
@@ -117,7 +158,7 @@ func TestAccSsoProviderResource_saml(t *testing.T) {
 				ResourceName:            "archestra_sso_provider.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"oidc_config.0.client_secret", "saml_config.0.cert", "saml_config.0.decryption_pvk", "saml_config.0.private_key", "saml_config.0.mapping.0.id", "saml_config.0.idp_metadata.0.cert", "saml_config.0.idp_metadata.0.enc_private_key", "saml_config.0.idp_metadata.0.enc_private_key_pass", "saml_config.0.idp_metadata.0.private_key", "saml_config.0.idp_metadata.0.private_key_pass", "saml_config.0.sp_metadata.0.enc_private_key", "saml_config.0.sp_metadata.0.enc_private_key_pass", "saml_config.0.sp_metadata.0.private_key", "saml_config.0.sp_metadata.0.private_key_pass", "team_sync_config.0.%", "team_sync_config.0.enabled", "team_sync_config.0.groups_expression", "saml_config.mapping.id", "team_sync_config.%", "team_sync_config.enabled", "team_sync_config.groups_expression"},
+				ImportStateVerifyIgnore: ssoImportStateVerifyIgnore,
 			},
 			{
 				Config: testAccSsoProviderSAMLConfigUpdated("test-saml", "example.org"),

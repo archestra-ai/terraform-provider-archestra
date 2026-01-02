@@ -904,24 +904,39 @@ func (r *SsoProviderResource) ImportState(ctx context.Context, req resource.Impo
 
 // Helpers
 
+func isOidcConfigSet(cfg *OidcConfigModel) bool {
+	if cfg == nil {
+		return false
+	}
+	return !cfg.Issuer.IsNull() ||
+		!cfg.DiscoveryEndpoint.IsNull() ||
+		!cfg.ClientID.IsNull() ||
+		!cfg.ClientSecret.IsNull()
+}
+func isSamlConfigSet(cfg *SamlConfigModel) bool {
+	if cfg == nil {
+		return false
+	}
+	return !cfg.Issuer.IsNull() ||
+		!cfg.EntryPoint.IsNull() ||
+		!cfg.CallbackURL.IsNull() ||
+		!cfg.Cert.IsNull()
+}
+
 func validateSsoConfigChoice(oidc *OidcConfigModel, saml *SamlConfigModel) error {
-	count := 0
-	if oidc != nil {
-		count++
-	}
-	if saml != nil {
-		count++
-	}
-	if count == 0 {
+	oidcSet := isOidcConfigSet(oidc)
+	samlSet := isSamlConfigSet(saml)
+
+	if !oidcSet && !samlSet {
 		return fmt.Errorf("exactly one of oidc_config or saml_config must be set")
 	}
-	if count > 1 {
+	if oidcSet && samlSet {
 		return fmt.Errorf("only one of oidc_config or saml_config can be set at a time")
 	}
 	return nil
 }
 
-func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
+func buildOidcConfig(cfg OidcConfigModel) *struct {
 	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
 	ClientId              string  `json:"clientId"`
 	ClientSecret          string  `json:"clientSecret"`
@@ -936,12 +951,11 @@ func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
 		Image         *string            `json:"image,omitempty"`
 		Name          *string            `json:"name,omitempty"`
 	} `json:"mapping,omitempty"`
-	OverrideUserInfo            *bool                                                                  `json:"overrideUserInfo,omitempty"`
-	Pkce                        bool                                                                   `json:"pkce"`
-	Scopes                      *[]string                                                              `json:"scopes,omitempty"`
-	TokenEndpoint               *string                                                                `json:"tokenEndpoint,omitempty"`
-	TokenEndpointAuthentication *client.CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-	UserInfoEndpoint            *string                                                                `json:"userInfoEndpoint,omitempty"`
+	OverrideUserInfo *bool     `json:"overrideUserInfo,omitempty"`
+	Pkce             bool      `json:"pkce"`
+	Scopes           *[]string `json:"scopes,omitempty"`
+	TokenEndpoint    *string   `json:"tokenEndpoint,omitempty"`
+	UserInfoEndpoint *string   `json:"userInfoEndpoint,omitempty"`
 } {
 	out := &struct {
 		AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
@@ -958,12 +972,11 @@ func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
 			Image         *string            `json:"image,omitempty"`
 			Name          *string            `json:"name,omitempty"`
 		} `json:"mapping,omitempty"`
-		OverrideUserInfo            *bool                                                                  `json:"overrideUserInfo,omitempty"`
-		Pkce                        bool                                                                   `json:"pkce"`
-		Scopes                      *[]string                                                              `json:"scopes,omitempty"`
-		TokenEndpoint               *string                                                                `json:"tokenEndpoint,omitempty"`
-		TokenEndpointAuthentication *client.CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-		UserInfoEndpoint            *string                                                                `json:"userInfoEndpoint,omitempty"`
+		OverrideUserInfo *bool     `json:"overrideUserInfo,omitempty"`
+		Pkce             bool      `json:"pkce"`
+		Scopes           *[]string `json:"scopes,omitempty"`
+		TokenEndpoint    *string   `json:"tokenEndpoint,omitempty"`
+		UserInfoEndpoint *string   `json:"userInfoEndpoint,omitempty"`
 	}{
 		ClientId:          cfg.ClientID.ValueString(),
 		ClientSecret:      cfg.ClientSecret.ValueString(),
@@ -1001,13 +1014,76 @@ func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
 		v := cfg.OverrideUserInfo.ValueBool()
 		out.OverrideUserInfo = &v
 	}
+	if cfg.Mapping != nil {
+		out.Mapping = expandOidcMapping(cfg.Mapping)
+	}
+
+	return out
+}
+
+func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
+	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
+	ClientId              string  `json:"clientId"`
+	ClientSecret          string  `json:"clientSecret"`
+	DiscoveryEndpoint     string  `json:"discoveryEndpoint"`
+	Issuer                string  `json:"issuer"`
+	JwksEndpoint          *string `json:"jwksEndpoint,omitempty"`
+	Mapping               *struct {
+		Email         *string            `json:"email,omitempty"`
+		EmailVerified *string            `json:"emailVerified,omitempty"`
+		ExtraFields   *map[string]string `json:"extraFields,omitempty"`
+		Id            *string            `json:"id,omitempty"`
+		Image         *string            `json:"image,omitempty"`
+		Name          *string            `json:"name,omitempty"`
+	} `json:"mapping,omitempty"`
+	OverrideUserInfo            *bool                                                                  `json:"overrideUserInfo,omitempty"`
+	Pkce                        bool                                                                   `json:"pkce"`
+	Scopes                      *[]string                                                              `json:"scopes,omitempty"`
+	TokenEndpoint               *string                                                                `json:"tokenEndpoint,omitempty"`
+	TokenEndpointAuthentication *client.CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+	UserInfoEndpoint            *string                                                                `json:"userInfoEndpoint,omitempty"`
+} {
+	base := buildOidcConfig(cfg)
+	out := &struct {
+		AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
+		ClientId              string  `json:"clientId"`
+		ClientSecret          string  `json:"clientSecret"`
+		DiscoveryEndpoint     string  `json:"discoveryEndpoint"`
+		Issuer                string  `json:"issuer"`
+		JwksEndpoint          *string `json:"jwksEndpoint,omitempty"`
+		Mapping               *struct {
+			Email         *string            `json:"email,omitempty"`
+			EmailVerified *string            `json:"emailVerified,omitempty"`
+			ExtraFields   *map[string]string `json:"extraFields,omitempty"`
+			Id            *string            `json:"id,omitempty"`
+			Image         *string            `json:"image,omitempty"`
+			Name          *string            `json:"name,omitempty"`
+		} `json:"mapping,omitempty"`
+		OverrideUserInfo            *bool                                                                  `json:"overrideUserInfo,omitempty"`
+		Pkce                        bool                                                                   `json:"pkce"`
+		Scopes                      *[]string                                                              `json:"scopes,omitempty"`
+		TokenEndpoint               *string                                                                `json:"tokenEndpoint,omitempty"`
+		TokenEndpointAuthentication *client.CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+		UserInfoEndpoint            *string                                                                `json:"userInfoEndpoint,omitempty"`
+	}{
+		AuthorizationEndpoint: base.AuthorizationEndpoint,
+		ClientId:              base.ClientId,
+		ClientSecret:          base.ClientSecret,
+		DiscoveryEndpoint:     base.DiscoveryEndpoint,
+		Issuer:                base.Issuer,
+		JwksEndpoint:          base.JwksEndpoint,
+		Mapping:               base.Mapping,
+		OverrideUserInfo:      base.OverrideUserInfo,
+		Pkce:                  base.Pkce,
+		Scopes:                base.Scopes,
+		TokenEndpoint:         base.TokenEndpoint,
+		UserInfoEndpoint:      base.UserInfoEndpoint,
+	}
+
 	if !cfg.TokenEndpointAuthentication.IsNull() {
 		v := cfg.TokenEndpointAuthentication.ValueString()
 		cast := client.CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication(v)
 		out.TokenEndpointAuthentication = &cast
-	}
-	if cfg.Mapping != nil {
-		out.Mapping = expandOidcMapping(cfg.Mapping)
 	}
 
 	return out
@@ -1035,6 +1111,7 @@ func expandOidcConfigUpdate(cfg OidcConfigModel) *struct {
 	TokenEndpointAuthentication *client.UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 	UserInfoEndpoint            *string                                                                `json:"userInfoEndpoint,omitempty"`
 } {
+	base := buildOidcConfig(cfg)
 	out := &struct {
 		AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
 		ClientId              string  `json:"clientId"`
@@ -1057,49 +1134,24 @@ func expandOidcConfigUpdate(cfg OidcConfigModel) *struct {
 		TokenEndpointAuthentication *client.UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 		UserInfoEndpoint            *string                                                                `json:"userInfoEndpoint,omitempty"`
 	}{
-		ClientId:          cfg.ClientID.ValueString(),
-		ClientSecret:      cfg.ClientSecret.ValueString(),
-		DiscoveryEndpoint: cfg.DiscoveryEndpoint.ValueString(),
-		Issuer:            cfg.Issuer.ValueString(),
-		Pkce:              cfg.Pkce.ValueBool(),
+		AuthorizationEndpoint: base.AuthorizationEndpoint,
+		ClientId:              base.ClientId,
+		ClientSecret:          base.ClientSecret,
+		DiscoveryEndpoint:     base.DiscoveryEndpoint,
+		Issuer:                base.Issuer,
+		JwksEndpoint:          base.JwksEndpoint,
+		Mapping:               base.Mapping,
+		OverrideUserInfo:      base.OverrideUserInfo,
+		Pkce:                  base.Pkce,
+		Scopes:                base.Scopes,
+		TokenEndpoint:         base.TokenEndpoint,
+		UserInfoEndpoint:      base.UserInfoEndpoint,
 	}
 
-	if !cfg.AuthorizationEndpoint.IsNull() {
-		v := cfg.AuthorizationEndpoint.ValueString()
-		out.AuthorizationEndpoint = &v
-	}
-	if !cfg.TokenEndpoint.IsNull() {
-		v := cfg.TokenEndpoint.ValueString()
-		out.TokenEndpoint = &v
-	}
-	if !cfg.UserInfoEndpoint.IsNull() {
-		v := cfg.UserInfoEndpoint.ValueString()
-		out.UserInfoEndpoint = &v
-	}
-	if !cfg.JwksEndpoint.IsNull() {
-		v := cfg.JwksEndpoint.ValueString()
-		out.JwksEndpoint = &v
-	}
-	if len(cfg.Scopes) > 0 {
-		scopes := make([]string, 0, len(cfg.Scopes))
-		for _, s := range cfg.Scopes {
-			if !s.IsNull() {
-				scopes = append(scopes, s.ValueString())
-			}
-		}
-		out.Scopes = &scopes
-	}
-	if !cfg.OverrideUserInfo.IsNull() {
-		v := cfg.OverrideUserInfo.ValueBool()
-		out.OverrideUserInfo = &v
-	}
 	if !cfg.TokenEndpointAuthentication.IsNull() {
 		v := cfg.TokenEndpointAuthentication.ValueString()
 		cast := client.UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication(v)
 		out.TokenEndpointAuthentication = &cast
-	}
-	if cfg.Mapping != nil {
-		out.Mapping = expandOidcMapping(cfg.Mapping)
 	}
 
 	return out
