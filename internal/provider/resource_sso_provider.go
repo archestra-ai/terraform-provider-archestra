@@ -619,8 +619,9 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		}
 	}
 
-	// Map role mapping if present
-	if apiResp.JSON200.RoleMapping != nil {
+	// Map role mapping - populate during import, only update existing during refresh
+	isImport := state.OidcConfig == nil && state.SamlConfig == nil
+	if (isImport || state.RoleMapping != nil) && apiResp.JSON200.RoleMapping != nil {
 		rm := apiResp.JSON200.RoleMapping
 		newState.RoleMapping = &RoleMappingModel{
 			DefaultRole:  stringValueOrNull(rm.DefaultRole),
@@ -637,21 +638,15 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 			}
 			newState.RoleMapping.Rules = rules
 		}
-	} else if state.RoleMapping != nil {
-		// Preserve role mapping from prior state if API doesn't return it
-		newState.RoleMapping = state.RoleMapping
 	}
 
-	// Map team sync config if present
-	if apiResp.JSON200.TeamSyncConfig != nil {
+	// Map team sync config - populate during import, only update existing during refresh
+	if (isImport || state.TeamSyncConfig != nil) && apiResp.JSON200.TeamSyncConfig != nil {
 		tsc := apiResp.JSON200.TeamSyncConfig
 		newState.TeamSyncConfig = &TeamSyncConfigModel{
 			Enabled:          boolValueOrNull(tsc.Enabled),
 			GroupsExpression: stringValueOrNull(tsc.GroupsExpression),
 		}
-	} else if state.TeamSyncConfig != nil {
-		// Preserve team sync config from prior state if API doesn't return it
-		newState.TeamSyncConfig = state.TeamSyncConfig
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &newState)...)
@@ -716,6 +711,15 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 
 	newState := plan
+
+	// Ensure optional fields are nil if not present in plan
+	if plan.RoleMapping == nil {
+		newState.RoleMapping = nil
+	}
+	if plan.TeamSyncConfig == nil {
+		newState.TeamSyncConfig = nil
+	}
+
 	newState.ID = types.StringValue(apiResp.JSON200.Id)
 	newState.ProviderID = types.StringValue(apiResp.JSON200.ProviderId)
 	newState.Domain = types.StringValue(apiResp.JSON200.Domain)
@@ -845,35 +849,6 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 				LastName:      stringValueOrNull(mapping.LastName),
 				Name:          stringValueOrNull(mapping.Name),
 			}
-		}
-	}
-
-	// Map role mapping if present (similar to Read method)
-	if apiResp.JSON200.RoleMapping != nil {
-		rm := apiResp.JSON200.RoleMapping
-		newState.RoleMapping = &RoleMappingModel{
-			DefaultRole:  stringValueOrNull(rm.DefaultRole),
-			SkipRoleSync: boolValueOrNull(rm.SkipRoleSync),
-			StrictMode:   boolValueOrNull(rm.StrictMode),
-		}
-		if rm.Rules != nil {
-			rules := make([]RoleRuleModel, len(*rm.Rules))
-			for i, rule := range *rm.Rules {
-				rules[i] = RoleRuleModel{
-					Expression: types.StringValue(rule.Expression),
-					Role:       types.StringValue(rule.Role),
-				}
-			}
-			newState.RoleMapping.Rules = rules
-		}
-	}
-
-	// Map team sync config if present (similar to Read method)
-	if apiResp.JSON200.TeamSyncConfig != nil {
-		tsc := apiResp.JSON200.TeamSyncConfig
-		newState.TeamSyncConfig = &TeamSyncConfigModel{
-			Enabled:          boolValueOrNull(tsc.Enabled),
-			GroupsExpression: stringValueOrNull(tsc.GroupsExpression),
 		}
 	}
 
