@@ -26,11 +26,6 @@ resource "archestra_sso_provider" "oidc" {
       role       = "admin"
     }]
   }
-
-  team_sync_config {
-    enabled           = true
-    groups_expression = "{{#each groups}}{{this}},{{/each}}"
-  }
 }
 
 # SAML provider example (Okta SAML)
