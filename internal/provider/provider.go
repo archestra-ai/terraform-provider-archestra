@@ -163,6 +163,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewChatLLMProviderApiKeyResource,
 		NewDualLlmConfigResource,
 		NewProfileToolResource,
+		NewPromptResource,
 	}
 }
 
@@ -174,6 +175,8 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewMCPServerToolDataSource,
 		NewTokenPricesDataSource,
 		NewTeamExternalGroupsDataSource,
+		NewPromptDataSource,
+		NewPromptVersionsDataSource,
 	}
 }
 
