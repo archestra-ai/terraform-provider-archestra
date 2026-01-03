@@ -31,19 +31,9 @@ type PromptResource struct {
 	client *client.ClientWithResponses
 }
 
-// PromptResourceModel describes the resource data model.
-type PromptResourceModel struct {
-	ID             types.String `tfsdk:"id"`
-	ProfileID      types.String `tfsdk:"profile_id"`
-	Name           types.String `tfsdk:"name"`
-	SystemPrompt   types.String `tfsdk:"system_prompt"`
-	UserPrompt     types.String `tfsdk:"user_prompt"`
-	IsActive       types.Bool   `tfsdk:"is_active"`
-	Version        types.Int64  `tfsdk:"version"`
-	ParentPromptID types.String `tfsdk:"parent_prompt_id"`
-	CreatedAt      types.String `tfsdk:"created_at"`
-	UpdatedAt      types.String `tfsdk:"updated_at"`
-}
+// PromptResourceModel is now redundant but kept for type safety if needed elsewhere,
+// though we'll use PromptModel from prompt_shared.go.
+type PromptResourceModel = PromptModel
 
 func (r *PromptResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_prompt"
@@ -307,6 +297,10 @@ func (r *PromptResource) ImportState(ctx context.Context, req resource.ImportSta
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
+// ModifyPlan handles the versioning behavior of Archestra prompts.
+// Whenever the name, system_prompt, or user_prompt is changed, the Archestra API
+// creates a new version of the prompt, resulting in a new ID. We mark the ID
+// as unknown in the plan to inform Terraform that a new ID will be generated.
 func (r *PromptResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
 	if req.State.Raw.IsNull() {
 		return
@@ -343,30 +337,6 @@ func (r *PromptResource) mapResponseToModel(item *struct {
 	UpdatedAt      time.Time           `json:"updatedAt"`
 	UserPrompt     *string             `json:"userPrompt"`
 	Version        int                 `json:"version"`
-}, data *PromptResourceModel) {
-	data.ID = types.StringValue(item.Id.String())
-	data.ProfileID = types.StringValue(item.AgentId.String())
-	data.Name = types.StringValue(item.Name)
-	data.IsActive = types.BoolValue(item.IsActive)
-	data.Version = types.Int64Value(int64(item.Version))
-	data.CreatedAt = types.StringValue(item.CreatedAt.Format(time.RFC3339))
-	data.UpdatedAt = types.StringValue(item.UpdatedAt.Format(time.RFC3339))
-
-	if item.SystemPrompt != nil {
-		data.SystemPrompt = types.StringValue(*item.SystemPrompt)
-	} else {
-		data.SystemPrompt = types.StringNull()
-	}
-
-	if item.UserPrompt != nil {
-		data.UserPrompt = types.StringValue(*item.UserPrompt)
-	} else {
-		data.UserPrompt = types.StringNull()
-	}
-
-	if item.ParentPromptId != nil {
-		data.ParentPromptID = types.StringValue(item.ParentPromptId.String())
-	} else {
-		data.ParentPromptID = types.StringNull()
-	}
+}, data *PromptModel) {
+	mapPromptResponseToModel(item, data)
 }

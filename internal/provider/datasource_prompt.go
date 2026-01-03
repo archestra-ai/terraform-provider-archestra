@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
@@ -28,19 +27,8 @@ type PromptDataSource struct {
 	client *client.ClientWithResponses
 }
 
-// PromptDataSourceModel describes the data source data model.
-type PromptDataSourceModel struct {
-	ID             types.String `tfsdk:"id"`
-	Name           types.String `tfsdk:"name"`
-	ProfileID      types.String `tfsdk:"profile_id"`
-	SystemPrompt   types.String `tfsdk:"system_prompt"`
-	UserPrompt     types.String `tfsdk:"user_prompt"`
-	IsActive       types.Bool   `tfsdk:"is_active"`
-	Version        types.Int64  `tfsdk:"version"`
-	ParentPromptID types.String `tfsdk:"parent_prompt_id"`
-	CreatedAt      types.String `tfsdk:"created_at"`
-	UpdatedAt      types.String `tfsdk:"updated_at"`
-}
+// PromptDataSourceModel is now redundant but kept for type safety.
+type PromptDataSourceModel = PromptModel
 
 func (d *PromptDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_prompt"
@@ -217,30 +205,6 @@ func (d *PromptDataSource) mapResponseToModel(item *struct {
 	UpdatedAt      time.Time           `json:"updatedAt"`
 	UserPrompt     *string             `json:"userPrompt"`
 	Version        int                 `json:"version"`
-}, data *PromptDataSourceModel) {
-	data.ID = types.StringValue(item.Id.String())
-	data.ProfileID = types.StringValue(item.AgentId.String())
-	data.Name = types.StringValue(item.Name)
-	data.IsActive = types.BoolValue(item.IsActive)
-	data.Version = types.Int64Value(int64(item.Version))
-	data.CreatedAt = types.StringValue(item.CreatedAt.Format(time.RFC3339))
-	data.UpdatedAt = types.StringValue(item.UpdatedAt.Format(time.RFC3339))
-
-	if item.SystemPrompt != nil {
-		data.SystemPrompt = types.StringValue(*item.SystemPrompt)
-	} else {
-		data.SystemPrompt = types.StringNull()
-	}
-
-	if item.UserPrompt != nil {
-		data.UserPrompt = types.StringValue(*item.UserPrompt)
-	} else {
-		data.UserPrompt = types.StringNull()
-	}
-
-	if item.ParentPromptId != nil {
-		data.ParentPromptID = types.StringValue(item.ParentPromptId.String())
-	} else {
-		data.ParentPromptID = types.StringNull()
-	}
+}, data *PromptModel) {
+	mapPromptResponseToModel(item, data)
 }

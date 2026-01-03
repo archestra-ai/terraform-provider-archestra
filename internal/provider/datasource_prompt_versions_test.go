@@ -10,23 +10,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
-func TestAccPromptDataSource(t *testing.T) {
+func TestAccPromptVersionsDataSource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccPromptDataSourceConfig("ds-test-prompt"),
+				Config: testAccPromptVersionsDataSourceConfig("versions-test-prompt"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.archestra_prompt.test",
-						tfjsonpath.New("name"),
-						knownvalue.StringExact("ds-test-prompt"),
-					),
-					statecheck.ExpectKnownValue(
-						"data.archestra_prompt.test_by_name",
-						tfjsonpath.New("name"),
-						knownvalue.StringExact("ds-test-prompt"),
+						"data.archestra_prompt_versions.test",
+						tfjsonpath.New("versions"),
+						knownvalue.ListSizeExact(1),
 					),
 				},
 			},
@@ -34,25 +29,20 @@ func TestAccPromptDataSource(t *testing.T) {
 	})
 }
 
-func testAccPromptDataSourceConfig(name string) string {
+func testAccPromptVersionsDataSourceConfig(name string) string {
 	return fmt.Sprintf(`
 resource "archestra_profile" "test" {
-  name = "Profile for Prompt DS Test"
+  name = "Profile for Prompt Versions DS Test"
 }
 
 resource "archestra_prompt" "test" {
   profile_id    = archestra_profile.test.id
   name          = %[1]q
-  system_prompt = "system"
-  user_prompt   = "user"
+  system_prompt = "v1"
 }
 
-data "archestra_prompt" "test" {
-  id = archestra_prompt.test.id
-}
-
-data "archestra_prompt" "test_by_name" {
-  name = archestra_prompt.test.name
+data "archestra_prompt_versions" "test" {
+  prompt_id = archestra_prompt.test.id
 }
 `, name)
 }
