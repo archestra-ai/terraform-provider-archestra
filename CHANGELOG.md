@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.4.1...v0.5.0) (2026-01-06)
+
+
+### Features
+
+* add `archestra_prompt` resource + data sources ([#67](https://github.com/archestra-ai/terraform-provider-archestra/issues/67)) ([8b1f024](https://github.com/archestra-ai/terraform-provider-archestra/commit/8b1f024a286f9bfe22b3633d747c2f33f99188ca))
+* add `archestra_sso_provider` resource ([#65](https://github.com/archestra-ai/terraform-provider-archestra/issues/65)) ([37bf7ac](https://github.com/archestra-ai/terraform-provider-archestra/commit/37bf7ac08c90f9dc33bb4be8f17ad3b4bde956e6))
+
 ## [0.4.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.4.0...v0.4.1) (2025-12-29)
 
 
