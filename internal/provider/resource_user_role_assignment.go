@@ -88,11 +88,11 @@ func (r *UserRoleAssignmentResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
-	body := client.AssignRoleToUserJSONRequestBody{
+	body := client.AssignMemberRoleJSONRequestBody{
 		RoleId: data.RoleID.ValueString(),
 	}
 
-	apiResp, err := r.client.AssignRoleToUserWithResponse(ctx, data.UserID.ValueString(), body)
+	apiResp, err := r.client.AssignMemberRoleWithResponse(ctx, data.UserID.ValueString(), body)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to assign role: %s", err))
 		return
@@ -108,7 +108,12 @@ func (r *UserRoleAssignmentResource) Create(ctx context.Context, req resource.Cr
 
 	data.ID = types.StringValue(apiResp.JSON200.Id)
 	data.UserID = types.StringValue(apiResp.JSON200.UserId)
-	data.RoleID = types.StringValue(apiResp.JSON200.RoleId)
+	// Keep the requested role_id to avoid drift when API returns a name/alias.
+	if !data.RoleID.IsNull() && data.RoleID.ValueString() != "" {
+		data.RoleID = data.RoleID
+	} else {
+		data.RoleID = types.StringValue(apiResp.JSON200.RoleId)
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -120,7 +125,7 @@ func (r *UserRoleAssignmentResource) Read(ctx context.Context, req resource.Read
 		return
 	}
 
-	apiResp, err := r.client.GetUserRoleAssignmentWithResponse(ctx, data.UserID.ValueString(), data.RoleID.ValueString())
+	apiResp, err := r.client.GetMemberRoleAssignmentWithResponse(ctx, data.UserID.ValueString(), data.RoleID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read user role assignment: %s", err))
 		return
@@ -134,7 +139,10 @@ func (r *UserRoleAssignmentResource) Read(ctx context.Context, req resource.Read
 		}
 		data.ID = types.StringValue(apiResp.JSON200.Assignment.Id)
 		data.UserID = types.StringValue(apiResp.JSON200.Assignment.UserId)
-		data.RoleID = types.StringValue(apiResp.JSON200.Assignment.RoleId)
+		// Avoid state churn if the API returns a role name; prefer existing state when set.
+		if data.RoleID.IsNull() || data.RoleID.ValueString() == "" {
+			data.RoleID = types.StringValue(apiResp.JSON200.Assignment.RoleId)
+		}
 	case 404:
 		resp.State.RemoveResource(ctx)
 		return
@@ -176,7 +184,7 @@ func (r *UserRoleAssignmentResource) Delete(ctx context.Context, req resource.De
 		return
 	}
 
-	apiResp, err := r.client.RemoveRoleFromUserWithResponse(ctx, data.UserID.ValueString(), data.RoleID.ValueString())
+	apiResp, err := r.client.RemoveMemberRoleWithResponse(ctx, data.UserID.ValueString(), data.RoleID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete user role assignment: %s", err))
 		return
