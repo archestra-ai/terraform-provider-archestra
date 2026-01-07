@@ -16,7 +16,7 @@ func TestAccRoleResource_Basic(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccRoleResourceConfig(roleName, "Administrator role", []string{"read", "write", "delete"}),
+				Config: testAccRoleResourceConfig(roleName, "Administrator role", []string{"profile:read", "profile:update", "tool:read"}),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_role.test", "name", roleName),
 					resource.TestCheckResourceAttr("archestra_role.test", "description", "Administrator role"),
@@ -24,7 +24,7 @@ func TestAccRoleResource_Basic(t *testing.T) {
 				),
 			},
 			{
-				Config: testAccRoleResourceConfig(roleName, "Updated role", []string{"read", "write"}),
+				Config: testAccRoleResourceConfig(roleName, "Updated role", []string{"profile:read", "profile:update"}),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_role.test", "name", roleName),
 					resource.TestCheckResourceAttr("archestra_role.test", "description", "Updated role"),
