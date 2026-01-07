@@ -151,7 +151,7 @@ func (d *RoleDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	}
 }
 
-// Helper to update data from response
+// Helper to update data from response.
 func (d *RoleDataSource) updateDataFromResponse(data *RoleDataSourceModel, id, name string, permissions map[string][]string, predefined bool, orgId *string, diagsResult *diag.Diagnostics) {
 	data.ID = types.StringValue(id)
 	data.Name = types.StringValue(name)

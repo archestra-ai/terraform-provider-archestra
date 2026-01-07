@@ -296,7 +296,7 @@ func (r *RoleResource) ImportState(ctx context.Context, req resource.ImportState
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-// Helper function to convert Terraform permissions map to API format for Create
+// Helper function to convert Terraform permissions map to API format for Create.
 func (r *RoleResource) permissionsToAPIFormat(ctx context.Context, permissions types.Map) (map[string][]client.CreateRoleJSONBodyPermission, diag.Diagnostics) {
 	result := make(map[string][]client.CreateRoleJSONBodyPermission)
 	var diagsResult diag.Diagnostics
@@ -326,7 +326,7 @@ func (r *RoleResource) permissionsToAPIFormat(ctx context.Context, permissions t
 	return result, diagsResult
 }
 
-// Helper to update state from API response
+// Helper to update state from API response.
 func (r *RoleResource) updateStateFromResponse(data *RoleResourceModel, id, name string, permissions map[string][]string, predefined bool, orgId *string, diagsResult *diag.Diagnostics) {
 	data.ID = types.StringValue(id)
 	data.Name = types.StringValue(name)
