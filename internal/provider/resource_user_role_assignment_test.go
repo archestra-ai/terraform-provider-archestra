@@ -15,7 +15,7 @@ const testAccUserEnvVar = "ARCHES_TEST_USER_ID"
 func TestAccUserRoleAssignmentResource_Basic(t *testing.T) {
 	userID := os.Getenv(testAccUserEnvVar)
 	if userID == "" {
-		t.Skipf("set %s to run user role assignment acceptance test", testAccUserEnvVar)
+		t.Skipf("set %s to a non-admin test user ID to run user role assignment acceptance test", testAccUserEnvVar)
 	}
 
 	roleName := fmt.Sprintf("acc-role-%s", strings.ToLower(acctest.RandString(6)))
@@ -39,7 +39,7 @@ func testAccUserRoleAssignmentResourceConfig(userID, roleName string) string {
 resource "archestra_role" "role" {
   name        = "` + roleName + `"
   description = "assignment role"
-  permissions = ["read"]
+	permissions = ["profile:read"]
 }
 
 resource "archestra_user_role_assignment" "test" {
