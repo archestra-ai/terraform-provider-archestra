@@ -107,6 +107,7 @@ All resources follow Terraform Plugin Framework patterns (`internal/provider/res
 | `archestra_optimization_rule`         | `resource_optimization_rule.go`         | Cost optimization rules for model routing                   |
 | `archestra_organization_settings`     | `resource_organization_settings.go`     | Organization-wide settings                                  |
 | `archestra_chat_llm_provider_api_key` | `resource_chat_llm_provider_api_key.go` | Manage LLM provider API keys                                |
+| `archestra_role`                      | `resource_role.go`                      | Manage custom RBAC roles with permissions                   |
 
 **Disabled Resources**:
 
@@ -123,6 +124,7 @@ Data sources for reading existing resources (`internal/provider/datasource_*.go`
 | `archestra_team`                 | `datasource_team.go`                 | Look up team information        |
 | `archestra_team_external_groups` | `datasource_team_external_groups.go` | List external groups for a team |
 | `archestra_token_prices`         | `datasource_token_prices.go`         | List token prices               |
+| `archestra_role`                 | `datasource_role.go`                 | Look up roles by name           |
 
 **Disabled Data Sources**:
 
