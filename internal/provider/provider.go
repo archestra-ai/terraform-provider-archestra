@@ -154,6 +154,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewTrustedDataPolicyResource,
 		NewToolInvocationPolicyResource,
 		NewTeamResource,
+		NewRoleResource,
 		NewTokenPriceResource,
 		NewLimitResource,
 		NewOptimizationRuleResource,
@@ -171,6 +172,8 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewTeamDataSource,
+		NewRoleDataSource,
+		NewRolesDataSource,
 		// NewUserDataSource, // TODO: Enable when user API endpoints are implemented
 		NewProfileToolDataSource,
 		NewMCPServerToolDataSource,
