@@ -164,7 +164,9 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewDualLlmConfigResource,
 		NewProfileToolResource,
 		NewSsoProviderResource,
+		NewSsoProviderResource,
 		NewPromptResource,
+		NewRoleResource,
 	}
 }
 

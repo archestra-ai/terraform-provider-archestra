@@ -139,32 +139,60 @@ func (d *PromptVersionsDataSource) Read(ctx context.Context, req datasource.Read
 		return
 	}
 
-	versions := make([]PromptVersionModel, 0, len(*apiResp.JSON200))
-	for _, item := range *apiResp.JSON200 {
-		v := PromptVersionModel{
-			ID:        types.StringValue(item.Id.String()),
-			Name:      types.StringValue(item.Name),
-			IsActive:  types.BoolValue(item.IsActive),
-			Version:   types.Int64Value(int64(item.Version)),
-			UpdatedAt: types.StringValue(item.UpdatedAt.Format(time.RFC3339)),
+	// Map response to state
+	versions := make([]PromptVersionModel, 0)
+	
+	if apiResp.JSON200 != nil {
+		// Handle Current version
+		current := apiResp.JSON200.Current
+		currentVersion := PromptVersionModel{
+			ID:        types.StringValue(current.Id.String()),
+			Name:      types.StringValue(current.Name),
+			// IsActive:  types.BoolValue(current.IsActive), // Removed from API
+			Version:   types.Int64Value(int64(current.Version)),
+			UpdatedAt: types.StringValue(current.UpdatedAt.Format(time.RFC3339)),
+			SystemPrompt: func() types.String {
+				if current.SystemPrompt != nil {
+					return types.StringValue(*current.SystemPrompt)
+				}
+				return types.StringNull()
+			}(),
+			UserPrompt: func() types.String {
+				if current.UserPrompt != nil {
+					return types.StringValue(*current.UserPrompt)
+				}
+				return types.StringNull()
+			}(),
 		}
+		versions = append(versions, currentVersion)
 
-		if item.SystemPrompt != nil {
-			v.SystemPrompt = types.StringValue(*item.SystemPrompt)
-		} else {
-			v.SystemPrompt = types.StringNull()
+		// Handle History versions
+		for _, item := range apiResp.JSON200.History {
+			v := PromptVersionModel{
+				// History items lack ID, Name, IsActive in the new API spec
+				ID:        types.StringNull(), 
+				Name:      types.StringNull(),
+				IsActive:  types.BoolNull(), 
+				Version:   types.Int64Value(int64(item.Version)),
+				UpdatedAt: types.StringValue(item.CreatedAt), // API returns CreatedAt for history items
+			}
+
+			if item.SystemPrompt != nil {
+				v.SystemPrompt = types.StringValue(*item.SystemPrompt)
+			} else {
+				v.SystemPrompt = types.StringNull()
+			}
+
+			if item.UserPrompt != nil {
+				v.UserPrompt = types.StringValue(*item.UserPrompt)
+			} else {
+				v.UserPrompt = types.StringNull()
+			}
+
+			versions = append(versions, v)
 		}
-
-		if item.UserPrompt != nil {
-			v.UserPrompt = types.StringValue(*item.UserPrompt)
-		} else {
-			v.UserPrompt = types.StringNull()
-		}
-
-		versions = append(versions, v)
 	}
 
 	data.Versions = versions
-
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

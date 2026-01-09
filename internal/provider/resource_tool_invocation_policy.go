@@ -43,7 +43,6 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Manages an Archestra tool invocation policy.",
 
-		// NOTE: it would be nice to "automatically have"
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
@@ -61,7 +60,7 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 				Required:            true,
 			},
 			"operator": schema.StringAttribute{
-				MarkdownDescription: "The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`",
+				MarkdownDescription: "The comparison operator. Valid values: equal, notEqual, contains, notContains, startsWith, endsWith, regex",
 				Required:            true,
 			},
 			"value": schema.StringAttribute{
@@ -69,7 +68,7 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 				Required:            true,
 			},
 			"action": schema.StringAttribute{
-				MarkdownDescription: "The action to take when the policy matches. Valid values: `allow_when_context_is_untrusted`, `block_always`",
+				MarkdownDescription: "The action to take when the policy matches. Valid values: allow_when_context_is_untrusted, block_always",
 				Required:            true,
 			},
 			"reason": schema.StringAttribute{
@@ -104,53 +103,58 @@ func (r *ToolInvocationPolicyResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	// Parse ProfileToolID as UUID
-	parsedProfileToolID, err := uuid.Parse(data.ProfileToolID.ValueString())
+	toolID, err := uuid.Parse(data.ProfileToolID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Profile Tool ID", fmt.Sprintf("Unable to parse profile tool ID: %s", err))
+		resp.Diagnostics.AddError("Invalid profile_tool_id", err.Error())
 		return
 	}
-	profileToolID := parsedProfileToolID
 
-	// Create request body using generated type
-	requestBody := client.CreateToolInvocationPolicyJSONRequestBody{
-		AgentToolId:  profileToolID,
-		ArgumentName: data.ArgumentName.ValueString(),
-		Operator:     client.CreateToolInvocationPolicyJSONBodyOperator(data.Operator.ValueString()),
-		Value:        data.Value.ValueString(),
-		Action:       client.CreateToolInvocationPolicyJSONBodyAction(data.Action.ValueString()),
+	request := client.CreateToolInvocationPolicyJSONRequestBody{
+		ToolId: toolID,
+		Action: client.CreateToolInvocationPolicyJSONBodyAction(data.Action.ValueString()),
+		Conditions: []struct {
+			Key      string                                              `json:"key"`
+			Operator client.CreateToolInvocationPolicyJSONBodyConditionsOperator `json:"operator"`
+			Value    string                                              `json:"value"`
+		}{
+			{
+				Key:      data.ArgumentName.ValueString(),
+				Operator: client.CreateToolInvocationPolicyJSONBodyConditionsOperator(data.Operator.ValueString()),
+				Value:    data.Value.ValueString(),
+			},
+		},
 	}
 
 	if !data.Reason.IsNull() {
-		reason := data.Reason.ValueString()
-		requestBody.Reason = &reason
+		r := data.Reason.ValueString()
+		request.Reason = &r
 	}
 
-	// Call API
-	apiResp, err := r.client.CreateToolInvocationPolicyWithResponse(ctx, requestBody)
+	apiResp, err := r.client.CreateToolInvocationPolicyWithResponse(ctx, request)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create tool invocation policy, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", err.Error())
 		return
 	}
-
-	// Check response
 	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
-		)
+		resp.Diagnostics.AddError("Create failed", fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()))
 		return
 	}
 
-	// Map response to Terraform state
+	// Map response
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
-	data.ArgumentName = types.StringValue(apiResp.JSON200.ArgumentName)
-	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
-	data.Value = types.StringValue(apiResp.JSON200.Value)
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
 	data.Action = types.StringValue(string(apiResp.JSON200.Action))
+
+	if len(apiResp.JSON200.Conditions) > 0 {
+		data.ArgumentName = types.StringValue(apiResp.JSON200.Conditions[0].Key)
+		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))
+		data.Value = types.StringValue(apiResp.JSON200.Conditions[0].Value)
+	}
+
 	if apiResp.JSON200.Reason != nil {
 		data.Reason = types.StringValue(*apiResp.JSON200.Reason)
+	} else {
+		data.Reason = types.StringNull()
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -163,42 +167,36 @@ func (r *ToolInvocationPolicyResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	// Parse UUID from state
-	parsedID, err := uuid.Parse(data.ID.ValueString())
+	policyID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse policy ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", err.Error())
 		return
 	}
-	policyID := parsedID
 
-	// Call API
 	apiResp, err := r.client.GetToolInvocationPolicyWithResponse(ctx, policyID)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read tool invocation policy, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", err.Error())
 		return
 	}
-
-	// Handle not found
 	if apiResp.JSON404 != nil {
 		resp.State.RemoveResource(ctx)
 		return
 	}
-
-	// Check response
 	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
-		)
+		resp.Diagnostics.AddError("Read failed", fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()))
 		return
 	}
 
-	// Map response to Terraform state
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
-	data.ArgumentName = types.StringValue(apiResp.JSON200.ArgumentName)
-	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
-	data.Value = types.StringValue(apiResp.JSON200.Value)
+	// Map response
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
 	data.Action = types.StringValue(string(apiResp.JSON200.Action))
+
+	if len(apiResp.JSON200.Conditions) > 0 {
+		data.ArgumentName = types.StringValue(apiResp.JSON200.Conditions[0].Key)
+		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))
+		data.Value = types.StringValue(apiResp.JSON200.Conditions[0].Value)
+	}
+
 	if apiResp.JSON200.Reason != nil {
 		data.Reason = types.StringValue(*apiResp.JSON200.Reason)
 	} else {
@@ -215,64 +213,64 @@ func (r *ToolInvocationPolicyResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	// Parse UUIDs from state
-	parsedID, err := uuid.Parse(data.ID.ValueString())
+	policyID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse policy ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", err.Error())
 		return
 	}
-	policyID := parsedID
-
-	parsedProfileToolID, err := uuid.Parse(data.ProfileToolID.ValueString())
+	
+	toolID, err := uuid.Parse(data.ProfileToolID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Profile Tool ID", fmt.Sprintf("Unable to parse profile tool ID: %s", err))
+		resp.Diagnostics.AddError("Invalid profile_tool_id", err.Error())
 		return
 	}
-	profileToolID := parsedProfileToolID
 
-	// Create request body using generated type
-	argumentName := data.ArgumentName.ValueString()
-	operator := client.UpdateToolInvocationPolicyJSONBodyOperator(data.Operator.ValueString())
-	value := data.Value.ValueString()
 	action := client.UpdateToolInvocationPolicyJSONBodyAction(data.Action.ValueString())
-
-	requestBody := client.UpdateToolInvocationPolicyJSONRequestBody{
-		AgentToolId:  &profileToolID,
-		ArgumentName: &argumentName,
-		Operator:     &operator,
-		Value:        &value,
-		Action:       &action,
+	request := client.UpdateToolInvocationPolicyJSONRequestBody{
+		ToolId: &toolID,
+		Action: &action,
+		Conditions: &[]struct {
+			Key      string                                              `json:"key"`
+			Operator client.UpdateToolInvocationPolicyJSONBodyConditionsOperator `json:"operator"`
+			Value    string                                              `json:"value"`
+		}{
+			{
+				Key:      data.ArgumentName.ValueString(),
+				Operator: client.UpdateToolInvocationPolicyJSONBodyConditionsOperator(data.Operator.ValueString()),
+				Value:    data.Value.ValueString(),
+			},
+		},
 	}
 
 	if !data.Reason.IsNull() {
-		reason := data.Reason.ValueString()
-		requestBody.Reason = &reason
+		r := data.Reason.ValueString()
+		request.Reason = &r
 	}
 
-	// Call API
-	apiResp, err := r.client.UpdateToolInvocationPolicyWithResponse(ctx, policyID, requestBody)
+	apiResp, err := r.client.UpdateToolInvocationPolicyWithResponse(ctx, policyID, request)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update tool invocation policy, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", err.Error())
 		return
 	}
-
-	// Check response
 	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
-		)
+		resp.Diagnostics.AddError("Update failed", fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()))
 		return
 	}
 
-	// Map response to Terraform state
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
-	data.ArgumentName = types.StringValue(apiResp.JSON200.ArgumentName)
-	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
-	data.Value = types.StringValue(apiResp.JSON200.Value)
+	// Map response
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
 	data.Action = types.StringValue(string(apiResp.JSON200.Action))
+
+	if len(apiResp.JSON200.Conditions) > 0 {
+		data.ArgumentName = types.StringValue(apiResp.JSON200.Conditions[0].Key)
+		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))
+		data.Value = types.StringValue(apiResp.JSON200.Conditions[0].Value)
+	}
+
 	if apiResp.JSON200.Reason != nil {
 		data.Reason = types.StringValue(*apiResp.JSON200.Reason)
+	} else {
+		data.Reason = types.StringNull()
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -285,27 +283,19 @@ func (r *ToolInvocationPolicyResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	// Parse UUID from state
-	parsedID, err := uuid.Parse(data.ID.ValueString())
+	policyID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse policy ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", err.Error())
 		return
 	}
-	policyID := parsedID
 
-	// Call API
 	apiResp, err := r.client.DeleteToolInvocationPolicyWithResponse(ctx, policyID)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete tool invocation policy, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", err.Error())
 		return
 	}
-
-	// Check response (200 or 404 are both acceptable for delete)
 	if apiResp.JSON200 == nil && apiResp.JSON404 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK or 404 Not Found, got status %d", apiResp.StatusCode()),
-		)
+		resp.Diagnostics.AddError("Delete failed", fmt.Sprintf("Expected 200 or 404, got status %d", apiResp.StatusCode()))
 		return
 	}
 }
