@@ -3,6 +3,7 @@ package provider
 import (
 	"time"
 
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
@@ -23,22 +24,21 @@ type PromptModel struct {
 
 // mapPromptResponseToModel maps a prompt API response to a Terraform model.
 func mapPromptResponseToModel(item *struct {
-	AgentId        openapi_types.UUID  `json:"agentId"`
-	CreatedAt      time.Time           `json:"createdAt"`
-	Id             openapi_types.UUID  `json:"id"`
-	IsActive       bool                `json:"isActive"`
-	Name           string              `json:"name"`
-	OrganizationId string              `json:"organizationId"`
-	ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-	SystemPrompt   *string             `json:"systemPrompt"`
-	UpdatedAt      time.Time           `json:"updatedAt"`
-	UserPrompt     *string             `json:"userPrompt"`
-	Version        int                 `json:"version"`
+	AgentId        openapi_types.UUID           `json:"agentId"`
+	CreatedAt      time.Time                    `json:"createdAt"`
+	History        client.GetPrompt_200_History `json:"history"`
+	Id             openapi_types.UUID           `json:"id"`
+	Name           string                       `json:"name"`
+	OrganizationId string                       `json:"organizationId"`
+	SystemPrompt   *string                      `json:"systemPrompt"`
+	UpdatedAt      time.Time                    `json:"updatedAt"`
+	UserPrompt     *string                      `json:"userPrompt"`
+	Version        int                          `json:"version"`
 }, data *PromptModel) {
 	data.ID = types.StringValue(item.Id.String())
 	data.ProfileID = types.StringValue(item.AgentId.String())
 	data.Name = types.StringValue(item.Name)
-	data.IsActive = types.BoolValue(item.IsActive)
+	data.IsActive = types.BoolNull() // Field removed from API
 	data.Version = types.Int64Value(int64(item.Version))
 	data.CreatedAt = types.StringValue(item.CreatedAt.Format(time.RFC3339))
 	data.UpdatedAt = types.StringValue(item.UpdatedAt.Format(time.RFC3339))
@@ -55,9 +55,5 @@ func mapPromptResponseToModel(item *struct {
 		data.UserPrompt = types.StringNull()
 	}
 
-	if item.ParentPromptId != nil {
-		data.ParentPromptID = types.StringValue(item.ParentPromptId.String())
-	} else {
-		data.ParentPromptID = types.StringNull()
-	}
+	data.ParentPromptID = types.StringNull() // Field removed from API
 }

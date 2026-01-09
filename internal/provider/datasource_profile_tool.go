@@ -109,8 +109,8 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 	type profileToolResult struct {
 		ID                                   string
 		ToolID                               string
-		AllowUsageWhenUntrustedDataIsPresent bool
-		ToolResultTreatment                  string
+		// ConsiderContextUntrusted bool // Removed from API
+		// ToolResultTreatment                  string
 		ResponseModifierTemplate             *string
 	}
 
@@ -146,8 +146,8 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 				return profileToolResult{
 					ID:                                   profileTool.Id.String(),
 					ToolID:                               profileTool.Tool.Id,
-					AllowUsageWhenUntrustedDataIsPresent: profileTool.AllowUsageWhenUntrustedDataIsPresent,
-					ToolResultTreatment:                  string(profileTool.ToolResultTreatment),
+					// ConsiderContextUntrusted: profileTool.ConsiderContextUntrusted,
+					// ToolResultTreatment:                  string(profileTool.ToolResultTreatment),
 					ResponseModifierTemplate:             profileTool.ResponseModifierTemplate,
 				}, true, nil
 			}
@@ -169,8 +169,8 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 	// Map to state
 	data.ID = types.StringValue(result.ID)
 	data.ToolID = types.StringValue(result.ToolID)
-	data.AllowUsageWhenUntrustedDataIsPresent = types.BoolValue(result.AllowUsageWhenUntrustedDataIsPresent)
-	data.ToolResultTreatment = types.StringValue(result.ToolResultTreatment)
+	data.AllowUsageWhenUntrustedDataIsPresent = types.BoolNull() // Field removed from API response
+	data.ToolResultTreatment = types.StringNull() // Field removed from API response
 
 	if result.ResponseModifierTemplate != nil {
 		data.ResponseModifierTemplate = types.StringValue(*result.ResponseModifierTemplate)

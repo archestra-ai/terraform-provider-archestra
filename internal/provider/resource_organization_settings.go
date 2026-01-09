@@ -137,11 +137,11 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: "Scope for tool results compression",
 				Optional:            true,
 				Computed:            true,
-				Default:             stringdefault.StaticString(string(client.Organization)),
+				Default:             stringdefault.StaticString(string(client.UpdateOrganizationJSONBodyCompressionScopeOrganization)),
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						string(client.Organization),
-						string(client.Team),
+						string(client.UpdateOrganizationJSONBodyCompressionScopeOrganization),
+						string(client.UpdateOrganizationJSONBodyCompressionScopeTeam),
 					),
 				},
 			},

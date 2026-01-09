@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
@@ -116,19 +117,7 @@ func (d *PromptDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		return
 	}
 
-	var foundItem *struct {
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		IsActive       bool                `json:"isActive"`
-		Name           string              `json:"name"`
-		OrganizationId string              `json:"organizationId"`
-		ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-		SystemPrompt   *string             `json:"systemPrompt"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserPrompt     *string             `json:"userPrompt"`
-		Version        int                 `json:"version"`
-	}
+	// foundItem removed
 
 	if !data.ID.IsNull() {
 		promptID, err := uuid.Parse(data.ID.ValueString())
@@ -155,7 +144,10 @@ func (d *PromptDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 			)
 			return
 		}
-		foundItem = apiResp.JSON200
+		
+		// Use shared mapping for Detail response
+		d.mapResponseToModel(apiResp.JSON200, &data)
+
 	} else {
 		// Lookup by name
 		apiResp, err := d.client.GetPromptsWithResponse(ctx)
@@ -173,38 +165,57 @@ func (d *PromptDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		}
 
 		targetName := data.Name.ValueString()
+		found := false
 		for _, item := range *apiResp.JSON200 {
 			if item.Name == targetName {
-				// We need to copy because &item will point to the loop variable
-				itemCopy := item
-				foundItem = &itemCopy
+				data.ID = types.StringValue(item.Id.String())
+				data.ProfileID = types.StringValue(item.AgentId.String())
+				data.Name = types.StringValue(item.Name)
+				data.IsActive = types.BoolNull() // List items don't have IsActive
+				data.Version = types.Int64Value(int64(item.Version))
+				data.CreatedAt = types.StringValue(item.CreatedAt.Format(time.RFC3339))
+				// data.UpdatedAt = types.StringValue(item.UpdatedAt.Format(time.RFC3339)) // List items might lack UpdatedAt? Check later if error.
+				
+				if item.SystemPrompt != nil {
+					data.SystemPrompt = types.StringValue(*item.SystemPrompt)
+				} else {
+					data.SystemPrompt = types.StringNull()
+				}
+				
+				if item.UserPrompt != nil {
+					data.UserPrompt = types.StringValue(*item.UserPrompt)
+				} else {
+					data.UserPrompt = types.StringNull()
+				}
+				
+				data.ParentPromptID = types.StringNull()
+				
+				found = true
 				break
 			}
 		}
 
-		if foundItem == nil {
+		if !found {
 			resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Prompt not found with name: %s", targetName))
 			return
 		}
 	}
-
-	d.mapResponseToModel(foundItem, &data)
+	// Removed d.mapResponseToModel call at the end
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (d *PromptDataSource) mapResponseToModel(item *struct {
-	AgentId        openapi_types.UUID  `json:"agentId"`
-	CreatedAt      time.Time           `json:"createdAt"`
-	Id             openapi_types.UUID  `json:"id"`
-	IsActive       bool                `json:"isActive"`
-	Name           string              `json:"name"`
-	OrganizationId string              `json:"organizationId"`
-	ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-	SystemPrompt   *string             `json:"systemPrompt"`
-	UpdatedAt      time.Time           `json:"updatedAt"`
-	UserPrompt     *string             `json:"userPrompt"`
-	Version        int                 `json:"version"`
+	AgentId        openapi_types.UUID           `json:"agentId"`
+	CreatedAt      time.Time                    `json:"createdAt"`
+	History        client.GetPrompt_200_History `json:"history"`
+	Id             openapi_types.UUID           `json:"id"`
+	Name           string                       `json:"name"`
+	OrganizationId string                       `json:"organizationId"`
+	SystemPrompt   *string                      `json:"systemPrompt"`
+	UpdatedAt      time.Time                    `json:"updatedAt"`
+	UserPrompt     *string                      `json:"userPrompt"`
+	Version        int                          `json:"version"`
 }, data *PromptModel) {
 	mapPromptResponseToModel(item, data)
 }

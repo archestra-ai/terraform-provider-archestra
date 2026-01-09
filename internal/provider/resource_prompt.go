@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
@@ -14,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -128,11 +126,11 @@ func (r *PromptResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	isActive := data.IsActive.ValueBool()
+	// isActive := data.IsActive.ValueBool()
 	requestBody := client.CreatePromptJSONRequestBody{
 		AgentId:  agentID,
 		Name:     data.Name.ValueString(),
-		IsActive: &isActive,
+		// IsActive: &isActive, // Removed from API
 	}
 
 	if !data.SystemPrompt.IsNull() && !data.SystemPrompt.IsUnknown() {
@@ -143,6 +141,7 @@ func (r *PromptResource) Create(ctx context.Context, req resource.CreateRequest,
 		val := data.UserPrompt.ValueString()
 		requestBody.UserPrompt = &val
 	}
+	/*
 	if !data.ParentPromptID.IsNull() && !data.ParentPromptID.IsUnknown() {
 		parentID, err := uuid.Parse(data.ParentPromptID.ValueString())
 		if err != nil {
@@ -151,6 +150,7 @@ func (r *PromptResource) Create(ctx context.Context, req resource.CreateRequest,
 		}
 		requestBody.ParentPromptId = &parentID
 	}
+	*/
 
 	apiResp, err := r.client.CreatePromptWithResponse(ctx, requestBody)
 	if err != nil {
@@ -166,7 +166,23 @@ func (r *PromptResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	r.mapResponseToModel(apiResp.JSON200, &data)
+	// Map response to model
+	data.ID = types.StringValue(apiResp.JSON200.Id.String())
+	data.ProfileID = types.StringValue(apiResp.JSON200.AgentId.String())
+	data.Name = types.StringValue(apiResp.JSON200.Name)
+	data.Version = types.Int64Value(int64(apiResp.JSON200.Version))
+	
+	if apiResp.JSON200.SystemPrompt != nil {
+		data.SystemPrompt = types.StringValue(*apiResp.JSON200.SystemPrompt)
+	} else {
+		data.SystemPrompt = types.StringNull()
+	}
+	
+	if apiResp.JSON200.UserPrompt != nil {
+		data.UserPrompt = types.StringValue(*apiResp.JSON200.UserPrompt)
+	} else {
+		data.UserPrompt = types.StringNull()
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -204,7 +220,23 @@ func (r *PromptResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	r.mapResponseToModel(apiResp.JSON200, &data)
+	// Map response to model
+	data.ID = types.StringValue(apiResp.JSON200.Id.String())
+	data.ProfileID = types.StringValue(apiResp.JSON200.AgentId.String())
+	data.Name = types.StringValue(apiResp.JSON200.Name)
+	data.Version = types.Int64Value(int64(apiResp.JSON200.Version))
+	
+	if apiResp.JSON200.SystemPrompt != nil {
+		data.SystemPrompt = types.StringValue(*apiResp.JSON200.SystemPrompt)
+	} else {
+		data.SystemPrompt = types.StringNull()
+	}
+	
+	if apiResp.JSON200.UserPrompt != nil {
+		data.UserPrompt = types.StringValue(*apiResp.JSON200.UserPrompt)
+	} else {
+		data.UserPrompt = types.StringNull()
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -259,7 +291,23 @@ func (r *PromptResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
-	r.mapResponseToModel(apiResp.JSON200, &data)
+	// Map response to model
+	data.ID = types.StringValue(apiResp.JSON200.Id.String())
+	data.ProfileID = types.StringValue(apiResp.JSON200.AgentId.String())
+	data.Name = types.StringValue(apiResp.JSON200.Name)
+	data.Version = types.Int64Value(int64(apiResp.JSON200.Version))
+	
+	if apiResp.JSON200.SystemPrompt != nil {
+		data.SystemPrompt = types.StringValue(*apiResp.JSON200.SystemPrompt)
+	} else {
+		data.SystemPrompt = types.StringNull()
+	}
+	
+	if apiResp.JSON200.UserPrompt != nil {
+		data.UserPrompt = types.StringValue(*apiResp.JSON200.UserPrompt)
+	} else {
+		data.UserPrompt = types.StringNull()
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -325,18 +373,3 @@ func (r *PromptResource) ModifyPlan(ctx context.Context, req resource.ModifyPlan
 	}
 }
 
-func (r *PromptResource) mapResponseToModel(item *struct {
-	AgentId        openapi_types.UUID  `json:"agentId"`
-	CreatedAt      time.Time           `json:"createdAt"`
-	Id             openapi_types.UUID  `json:"id"`
-	IsActive       bool                `json:"isActive"`
-	Name           string              `json:"name"`
-	OrganizationId string              `json:"organizationId"`
-	ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-	SystemPrompt   *string             `json:"systemPrompt"`
-	UpdatedAt      time.Time           `json:"updatedAt"`
-	UserPrompt     *string             `json:"userPrompt"`
-	Version        int                 `json:"version"`
-}, data *PromptModel) {
-	mapPromptResponseToModel(item, data)
-}
