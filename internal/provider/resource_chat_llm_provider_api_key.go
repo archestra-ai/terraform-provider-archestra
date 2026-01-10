@@ -111,12 +111,11 @@ func (r *ChatLLMProviderApiKeyResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	isDefault := data.IsOrganizationDefault.ValueBool()
+	apiKey := data.ApiKey.ValueString()
 	requestBody := client.CreateChatApiKeyJSONRequestBody{
-		Name:                  data.Name.ValueString(),
-		ApiKey:                data.ApiKey.ValueString(),
-		Provider:              client.CreateChatApiKeyJSONBodyProvider(data.LLMProvider.ValueString()),
-		IsOrganizationDefault: &isDefault,
+		Name:     data.Name.ValueString(),
+		ApiKey:   &apiKey,
+		Provider: client.CreateChatApiKeyJSONBodyProvider(data.LLMProvider.ValueString()),
 	}
 
 	apiResp, err := r.client.CreateChatApiKeyWithResponse(ctx, requestBody)
@@ -136,7 +135,6 @@ func (r *ChatLLMProviderApiKeyResource) Create(ctx context.Context, req resource
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsOrganizationDefault)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -177,7 +175,6 @@ func (r *ChatLLMProviderApiKeyResource) Read(ctx context.Context, req resource.R
 
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsOrganizationDefault)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -220,36 +217,6 @@ func (r *ChatLLMProviderApiKeyResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	if data.IsOrganizationDefault.ValueBool() != state.IsOrganizationDefault.ValueBool() {
-		if data.IsOrganizationDefault.ValueBool() {
-			defaultResp, err := r.client.SetChatApiKeyDefaultWithResponse(ctx, id)
-			if err != nil {
-				resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to set chat LLM provider API key as default, got error: %s", err))
-				return
-			}
-			if defaultResp.JSON200 == nil {
-				resp.Diagnostics.AddError(
-					"Unexpected API Response",
-					fmt.Sprintf("Expected 200 OK when setting default, got status %d: %s", defaultResp.StatusCode(), string(defaultResp.Body)),
-				)
-				return
-			}
-		} else {
-			defaultResp, err := r.client.UnsetChatApiKeyDefaultWithResponse(ctx, id)
-			if err != nil {
-				resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to unset chat LLM provider API key as default, got error: %s", err))
-				return
-			}
-			if defaultResp.JSON200 == nil {
-				resp.Diagnostics.AddError(
-					"Unexpected API Response",
-					fmt.Sprintf("Expected 200 OK when unsetting default, got status %d: %s", defaultResp.StatusCode(), string(defaultResp.Body)),
-				)
-				return
-			}
-		}
-	}
-
 	readResp, err := r.client.GetChatApiKeyWithResponse(ctx, id)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read chat LLM provider API key after update, got error: %s", err))
@@ -266,7 +233,6 @@ func (r *ChatLLMProviderApiKeyResource) Update(ctx context.Context, req resource
 
 	data.Name = types.StringValue(readResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(readResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(readResp.JSON200.IsOrganizationDefault)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
