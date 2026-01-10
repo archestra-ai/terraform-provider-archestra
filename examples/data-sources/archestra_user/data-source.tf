@@ -6,12 +6,8 @@ terraform {
   }
 }
 
-provider "archestra" {
-  base_url = "http://localhost:8080"
-}
-
 data "archestra_user" "example" {
-  id = "8ChlX1zlOGPlGvsAI6GE3AA1dr5dvd1d"
+  id = "user-id"
 }
 
 output "user_name" {

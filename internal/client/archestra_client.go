@@ -439,13 +439,6 @@ const (
 	CreateRoleJSONBodyPermissionUpdate CreateRoleJSONBodyPermission = "update"
 )
 
-// Defines values for GetRoleParamsRoleId0.
-const (
-	GetRoleParamsRoleId0Admin  GetRoleParamsRoleId0 = "admin"
-	GetRoleParamsRoleId0Editor GetRoleParamsRoleId0 = "editor"
-	GetRoleParamsRoleId0Member GetRoleParamsRoleId0 = "member"
-)
-
 // Defines values for UpdateRoleParamsRoleId0.
 const (
 	UpdateRoleParamsRoleId0Admin  UpdateRoleParamsRoleId0 = "admin"
@@ -455,12 +448,12 @@ const (
 
 // Defines values for UpdateRoleJSONBodyPermission.
 const (
-	UpdateRoleJSONBodyPermissionAdmin  UpdateRoleJSONBodyPermission = "admin"
-	UpdateRoleJSONBodyPermissionCancel UpdateRoleJSONBodyPermission = "cancel"
-	UpdateRoleJSONBodyPermissionCreate UpdateRoleJSONBodyPermission = "create"
-	UpdateRoleJSONBodyPermissionDelete UpdateRoleJSONBodyPermission = "delete"
-	UpdateRoleJSONBodyPermissionRead   UpdateRoleJSONBodyPermission = "read"
-	UpdateRoleJSONBodyPermissionUpdate UpdateRoleJSONBodyPermission = "update"
+	Admin  UpdateRoleJSONBodyPermission = "admin"
+	Cancel UpdateRoleJSONBodyPermission = "cancel"
+	Create UpdateRoleJSONBodyPermission = "create"
+	Delete UpdateRoleJSONBodyPermission = "delete"
+	Read   UpdateRoleJSONBodyPermission = "read"
+	Update UpdateRoleJSONBodyPermission = "update"
 )
 
 // Defines values for InitializeSecretsManagerJSONBodyType.
@@ -1620,12 +1613,6 @@ type CreateRoleJSONBody struct {
 // CreateRoleJSONBodyPermission defines parameters for CreateRole.
 type CreateRoleJSONBodyPermission string
 
-// GetRoleParamsRoleId0 defines parameters for GetRole.
-type GetRoleParamsRoleId0 string
-
-// GetRoleParamsRoleId1 defines parameters for GetRole.
-type GetRoleParamsRoleId1 = string
-
 // UpdateRoleJSONBody defines parameters for UpdateRole.
 type UpdateRoleJSONBody struct {
 	Name       *string                                    `json:"name,omitempty"`
@@ -2687,9 +2674,7 @@ type ClientInterface interface {
 	DeleteRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetRole request
-	GetRole(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateRoleWithBody request with any body
 	UpdateRoleWithBody(ctx context.Context, roleId struct {
@@ -4630,9 +4615,7 @@ func (c *Client) DeleteRole(ctx context.Context, roleId string, reqEditors ...Re
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetRole(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) GetRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetRoleRequest(c.Server, roleId)
 	if err != nil {
 		return nil, err
@@ -9841,9 +9824,7 @@ func NewDeleteRoleRequest(server string, roleId string) (*http.Request, error) {
 }
 
 // NewGetRoleRequest generates requests for GetRole
-func NewGetRoleRequest(server string, roleId struct {
-	union json.RawMessage
-}) (*http.Request, error) {
+func NewGetRoleRequest(server string, roleId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -12342,9 +12323,7 @@ type ClientWithResponsesInterface interface {
 	DeleteRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*DeleteRoleResponse, error)
 
 	// GetRoleWithResponse request
-	GetRoleWithResponse(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, reqEditors ...RequestEditorFn) (*GetRoleResponse, error)
+	GetRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*GetRoleResponse, error)
 
 	// UpdateRoleWithBodyWithResponse request with any body
 	UpdateRoleWithBodyWithResponse(ctx context.Context, roleId struct {
@@ -27027,9 +27006,7 @@ func (c *ClientWithResponses) DeleteRoleWithResponse(ctx context.Context, roleId
 }
 
 // GetRoleWithResponse request returning *GetRoleResponse
-func (c *ClientWithResponses) GetRoleWithResponse(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, reqEditors ...RequestEditorFn) (*GetRoleResponse, error) {
+func (c *ClientWithResponses) GetRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*GetRoleResponse, error) {
 	rsp, err := c.GetRole(ctx, roleId, reqEditors...)
 	if err != nil {
 		return nil, err
