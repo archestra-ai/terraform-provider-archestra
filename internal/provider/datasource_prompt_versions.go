@@ -139,14 +139,38 @@ func (d *PromptVersionsDataSource) Read(ctx context.Context, req datasource.Read
 		return
 	}
 
-	versions := make([]PromptVersionModel, 0, len(*apiResp.JSON200))
-	for _, item := range *apiResp.JSON200 {
+	// Build versions list from Current + History
+	versions := make([]PromptVersionModel, 0, 1+len(apiResp.JSON200.History))
+
+	// Add current version
+	current := apiResp.JSON200.Current
+	currentVersion := PromptVersionModel{
+		ID:        types.StringValue(current.Id.String()),
+		Name:      types.StringValue(current.Name),
+		IsActive:  types.BoolValue(true), // Current version is always active
+		Version:   types.Int64Value(int64(current.Version)),
+		UpdatedAt: types.StringValue(current.UpdatedAt.Format(time.RFC3339)),
+	}
+	if current.SystemPrompt != nil {
+		currentVersion.SystemPrompt = types.StringValue(*current.SystemPrompt)
+	} else {
+		currentVersion.SystemPrompt = types.StringNull()
+	}
+	if current.UserPrompt != nil {
+		currentVersion.UserPrompt = types.StringValue(*current.UserPrompt)
+	} else {
+		currentVersion.UserPrompt = types.StringNull()
+	}
+	versions = append(versions, currentVersion)
+
+	// Add historical versions
+	for _, item := range apiResp.JSON200.History {
 		v := PromptVersionModel{
-			ID:        types.StringValue(item.Id.String()),
-			Name:      types.StringValue(item.Name),
-			IsActive:  types.BoolValue(item.IsActive),
+			ID:        types.StringNull(), // History items don't have ID
+			Name:      types.StringNull(), // History items don't have Name
+			IsActive:  types.BoolValue(false),
 			Version:   types.Int64Value(int64(item.Version)),
-			UpdatedAt: types.StringValue(item.UpdatedAt.Format(time.RFC3339)),
+			UpdatedAt: types.StringValue(item.CreatedAt),
 		}
 
 		if item.SystemPrompt != nil {
