@@ -459,20 +459,6 @@ const (
 	CreateRoleJSONBodyPermissionUpdate CreateRoleJSONBodyPermission = "update"
 )
 
-// Defines values for GetRoleParamsRoleId0.
-const (
-	GetRoleParamsRoleId0Admin  GetRoleParamsRoleId0 = "admin"
-	GetRoleParamsRoleId0Editor GetRoleParamsRoleId0 = "editor"
-	GetRoleParamsRoleId0Member GetRoleParamsRoleId0 = "member"
-)
-
-// Defines values for UpdateRoleParamsRoleId0.
-const (
-	UpdateRoleParamsRoleId0Admin  UpdateRoleParamsRoleId0 = "admin"
-	UpdateRoleParamsRoleId0Editor UpdateRoleParamsRoleId0 = "editor"
-	UpdateRoleParamsRoleId0Member UpdateRoleParamsRoleId0 = "member"
-)
-
 // Defines values for UpdateRoleJSONBodyPermission.
 const (
 	UpdateRoleJSONBodyPermissionAdmin  UpdateRoleJSONBodyPermission = "admin"
@@ -1688,23 +1674,11 @@ type CreateRoleJSONBody struct {
 // CreateRoleJSONBodyPermission defines parameters for CreateRole.
 type CreateRoleJSONBodyPermission string
 
-// GetRoleParamsRoleId0 defines parameters for GetRole.
-type GetRoleParamsRoleId0 string
-
-// GetRoleParamsRoleId1 defines parameters for GetRole.
-type GetRoleParamsRoleId1 = string
-
 // UpdateRoleJSONBody defines parameters for UpdateRole.
 type UpdateRoleJSONBody struct {
 	Name       *string                                    `json:"name,omitempty"`
 	Permission *map[string][]UpdateRoleJSONBodyPermission `json:"permission,omitempty"`
 }
-
-// UpdateRoleParamsRoleId0 defines parameters for UpdateRole.
-type UpdateRoleParamsRoleId0 string
-
-// UpdateRoleParamsRoleId1 defines parameters for UpdateRole.
-type UpdateRoleParamsRoleId1 = string
 
 // UpdateRoleJSONBodyPermission defines parameters for UpdateRole.
 type UpdateRoleJSONBodyPermission string
@@ -2831,18 +2805,12 @@ type ClientInterface interface {
 	DeleteRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetRole request
-	GetRole(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateRoleWithBody request with any body
-	UpdateRoleWithBody(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateRoleWithBody(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateRole(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateRole(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CheckSecretsConnectivity request
 	CheckSecretsConnectivity(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4879,9 +4847,7 @@ func (c *Client) DeleteRole(ctx context.Context, roleId string, reqEditors ...Re
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetRole(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) GetRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetRoleRequest(c.Server, roleId)
 	if err != nil {
 		return nil, err
@@ -4893,9 +4859,7 @@ func (c *Client) GetRole(ctx context.Context, roleId struct {
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateRoleWithBody(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) UpdateRoleWithBody(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateRoleRequestWithBody(c.Server, roleId, contentType, body)
 	if err != nil {
 		return nil, err
@@ -4907,9 +4871,7 @@ func (c *Client) UpdateRoleWithBody(ctx context.Context, roleId struct {
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateRole(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) UpdateRole(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateRoleRequest(c.Server, roleId, body)
 	if err != nil {
 		return nil, err
@@ -10459,9 +10421,7 @@ func NewDeleteRoleRequest(server string, roleId string) (*http.Request, error) {
 }
 
 // NewGetRoleRequest generates requests for GetRole
-func NewGetRoleRequest(server string, roleId struct {
-	union json.RawMessage
-}) (*http.Request, error) {
+func NewGetRoleRequest(server string, roleId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -10495,9 +10455,7 @@ func NewGetRoleRequest(server string, roleId struct {
 }
 
 // NewUpdateRoleRequest calls the generic UpdateRole builder with application/json body
-func NewUpdateRoleRequest(server string, roleId struct {
-	union json.RawMessage
-}, body UpdateRoleJSONRequestBody) (*http.Request, error) {
+func NewUpdateRoleRequest(server string, roleId string, body UpdateRoleJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
@@ -10508,9 +10466,7 @@ func NewUpdateRoleRequest(server string, roleId struct {
 }
 
 // NewUpdateRoleRequestWithBody generates requests for UpdateRole with any type of body
-func NewUpdateRoleRequestWithBody(server string, roleId struct {
-	union json.RawMessage
-}, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdateRoleRequestWithBody(server string, roleId string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -13280,18 +13236,12 @@ type ClientWithResponsesInterface interface {
 	DeleteRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*DeleteRoleResponse, error)
 
 	// GetRoleWithResponse request
-	GetRoleWithResponse(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, reqEditors ...RequestEditorFn) (*GetRoleResponse, error)
+	GetRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*GetRoleResponse, error)
 
 	// UpdateRoleWithBodyWithResponse request with any body
-	UpdateRoleWithBodyWithResponse(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
+	UpdateRoleWithBodyWithResponse(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
 
-	UpdateRoleWithResponse(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
+	UpdateRoleWithResponse(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
 
 	// CheckSecretsConnectivityWithResponse request
 	CheckSecretsConnectivityWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CheckSecretsConnectivityResponse, error)
@@ -29022,9 +28972,7 @@ func (c *ClientWithResponses) DeleteRoleWithResponse(ctx context.Context, roleId
 }
 
 // GetRoleWithResponse request returning *GetRoleResponse
-func (c *ClientWithResponses) GetRoleWithResponse(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, reqEditors ...RequestEditorFn) (*GetRoleResponse, error) {
+func (c *ClientWithResponses) GetRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*GetRoleResponse, error) {
 	rsp, err := c.GetRole(ctx, roleId, reqEditors...)
 	if err != nil {
 		return nil, err
@@ -29033,9 +28981,7 @@ func (c *ClientWithResponses) GetRoleWithResponse(ctx context.Context, roleId st
 }
 
 // UpdateRoleWithBodyWithResponse request with arbitrary body returning *UpdateRoleResponse
-func (c *ClientWithResponses) UpdateRoleWithBodyWithResponse(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
+func (c *ClientWithResponses) UpdateRoleWithBodyWithResponse(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
 	rsp, err := c.UpdateRoleWithBody(ctx, roleId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
@@ -29043,9 +28989,7 @@ func (c *ClientWithResponses) UpdateRoleWithBodyWithResponse(ctx context.Context
 	return ParseUpdateRoleResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateRoleWithResponse(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
+func (c *ClientWithResponses) UpdateRoleWithResponse(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
 	rsp, err := c.UpdateRole(ctx, roleId, body, reqEditors...)
 	if err != nil {
 		return nil, err
