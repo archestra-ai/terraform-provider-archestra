@@ -22,13 +22,11 @@ type ProfileToolDataSource struct {
 }
 
 type ProfileToolDataSourceModel struct {
-	ID                                   types.String `tfsdk:"id"`
-	ProfileID                            types.String `tfsdk:"profile_id"`
-	ToolID                               types.String `tfsdk:"tool_id"`
-	ToolName                             types.String `tfsdk:"tool_name"`
-	AllowUsageWhenUntrustedDataIsPresent types.Bool   `tfsdk:"allow_usage_when_untrusted_data_is_present"`
-	ToolResultTreatment                  types.String `tfsdk:"tool_result_treatment"`
-	ResponseModifierTemplate             types.String `tfsdk:"response_modifier_template"`
+	ID                       types.String `tfsdk:"id"`
+	ProfileID                types.String `tfsdk:"profile_id"`
+	ToolID                   types.String `tfsdk:"tool_id"`
+	ToolName                 types.String `tfsdk:"tool_name"`
+	ResponseModifierTemplate types.String `tfsdk:"response_modifier_template"`
 }
 
 func (d *ProfileToolDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -55,14 +53,6 @@ func (d *ProfileToolDataSource) Schema(ctx context.Context, req datasource.Schem
 			},
 			"tool_id": schema.StringAttribute{
 				MarkdownDescription: "The tool ID",
-				Computed:            true,
-			},
-			"allow_usage_when_untrusted_data_is_present": schema.BoolAttribute{
-				MarkdownDescription: "Whether to allow tool usage when untrusted data is present",
-				Computed:            true,
-			},
-			"tool_result_treatment": schema.StringAttribute{
-				MarkdownDescription: "How to treat tool results (trusted/untrusted)",
 				Computed:            true,
 			},
 			"response_modifier_template": schema.StringAttribute{
@@ -107,11 +97,9 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 
 	// profileToolResult holds the extracted data we need from the API response
 	type profileToolResult struct {
-		ID                                   string
-		ToolID                               string
-		AllowUsageWhenUntrustedDataIsPresent bool
-		ToolResultTreatment                  string
-		ResponseModifierTemplate             *string
+		ID                       string
+		ToolID                   string
+		ResponseModifierTemplate *string
 	}
 
 	// Parse profile ID as UUID for the API filter
@@ -144,11 +132,9 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 			profileTool := &toolsResp.JSON200.Data[i]
 			if profileTool.Tool.Name == targetToolName {
 				return profileToolResult{
-					ID:                                   profileTool.Id.String(),
-					ToolID:                               profileTool.Tool.Id,
-					AllowUsageWhenUntrustedDataIsPresent: profileTool.AllowUsageWhenUntrustedDataIsPresent,
-					ToolResultTreatment:                  string(profileTool.ToolResultTreatment),
-					ResponseModifierTemplate:             profileTool.ResponseModifierTemplate,
+					ID:                       profileTool.Id.String(),
+					ToolID:                   profileTool.Tool.Id,
+					ResponseModifierTemplate: profileTool.ResponseModifierTemplate,
 				}, true, nil
 			}
 		}
@@ -169,8 +155,6 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 	// Map to state
 	data.ID = types.StringValue(result.ID)
 	data.ToolID = types.StringValue(result.ToolID)
-	data.AllowUsageWhenUntrustedDataIsPresent = types.BoolValue(result.AllowUsageWhenUntrustedDataIsPresent)
-	data.ToolResultTreatment = types.StringValue(result.ToolResultTreatment)
 
 	if result.ResponseModifierTemplate != nil {
 		data.ResponseModifierTemplate = types.StringValue(*result.ResponseModifierTemplate)
