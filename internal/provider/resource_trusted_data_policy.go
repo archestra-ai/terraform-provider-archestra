@@ -115,13 +115,22 @@ func (r *TrustedDataPolicyResource) Create(ctx context.Context, req resource.Cre
 	profileToolID := parsedProfileToolID
 
 	// Create request body using generated type
+	description := data.Description.ValueString()
 	requestBody := client.CreateTrustedDataPolicyJSONRequestBody{
-		AgentToolId:   profileToolID,
-		Description:   data.Description.ValueString(),
-		AttributePath: data.AttributePath.ValueString(),
-		Operator:      client.CreateTrustedDataPolicyJSONBodyOperator(data.Operator.ValueString()),
-		Value:         data.Value.ValueString(),
-		Action:        client.CreateTrustedDataPolicyJSONBodyAction(data.Action.ValueString()),
+		ToolId:      profileToolID,
+		Action:      client.CreateTrustedDataPolicyJSONBodyAction(data.Action.ValueString()),
+		Description: &description,
+		Conditions: []struct {
+			Key      string                                                   `json:"key"`
+			Operator client.CreateTrustedDataPolicyJSONBodyConditionsOperator `json:"operator"`
+			Value    string                                                   `json:"value"`
+		}{
+			{
+				Key:      data.AttributePath.ValueString(),
+				Operator: client.CreateTrustedDataPolicyJSONBodyConditionsOperator(data.Operator.ValueString()),
+				Value:    data.Value.ValueString(),
+			},
+		},
 	}
 
 	// Call API
@@ -142,11 +151,15 @@ func (r *TrustedDataPolicyResource) Create(ctx context.Context, req resource.Cre
 
 	// Map response to Terraform state
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
-	data.Description = types.StringValue(apiResp.JSON200.Description)
-	data.AttributePath = types.StringValue(apiResp.JSON200.AttributePath)
-	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
-	data.Value = types.StringValue(apiResp.JSON200.Value)
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	if apiResp.JSON200.Description != nil {
+		data.Description = types.StringValue(*apiResp.JSON200.Description)
+	}
+	if len(apiResp.JSON200.Conditions) > 0 {
+		data.AttributePath = types.StringValue(apiResp.JSON200.Conditions[0].Key)
+		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))
+		data.Value = types.StringValue(apiResp.JSON200.Conditions[0].Value)
+	}
 	data.Action = types.StringValue(string(apiResp.JSON200.Action))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -190,11 +203,15 @@ func (r *TrustedDataPolicyResource) Read(ctx context.Context, req resource.ReadR
 	}
 
 	// Map response to Terraform state
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
-	data.Description = types.StringValue(apiResp.JSON200.Description)
-	data.AttributePath = types.StringValue(apiResp.JSON200.AttributePath)
-	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
-	data.Value = types.StringValue(apiResp.JSON200.Value)
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	if apiResp.JSON200.Description != nil {
+		data.Description = types.StringValue(*apiResp.JSON200.Description)
+	}
+	if len(apiResp.JSON200.Conditions) > 0 {
+		data.AttributePath = types.StringValue(apiResp.JSON200.Conditions[0].Key)
+		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))
+		data.Value = types.StringValue(apiResp.JSON200.Conditions[0].Value)
+	}
 	data.Action = types.StringValue(string(apiResp.JSON200.Action))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -224,18 +241,24 @@ func (r *TrustedDataPolicyResource) Update(ctx context.Context, req resource.Upd
 
 	// Create request body using generated type
 	description := data.Description.ValueString()
-	attributePath := data.AttributePath.ValueString()
-	operator := client.UpdateTrustedDataPolicyJSONBodyOperator(data.Operator.ValueString())
-	value := data.Value.ValueString()
 	action := client.UpdateTrustedDataPolicyJSONBodyAction(data.Action.ValueString())
+	conditions := []struct {
+		Key      string                                                   `json:"key"`
+		Operator client.UpdateTrustedDataPolicyJSONBodyConditionsOperator `json:"operator"`
+		Value    string                                                   `json:"value"`
+	}{
+		{
+			Key:      data.AttributePath.ValueString(),
+			Operator: client.UpdateTrustedDataPolicyJSONBodyConditionsOperator(data.Operator.ValueString()),
+			Value:    data.Value.ValueString(),
+		},
+	}
 
 	requestBody := client.UpdateTrustedDataPolicyJSONRequestBody{
-		AgentToolId:   &profileToolID,
-		Description:   &description,
-		AttributePath: &attributePath,
-		Operator:      &operator,
-		Value:         &value,
-		Action:        &action,
+		ToolId:      &profileToolID,
+		Action:      &action,
+		Description: &description,
+		Conditions:  &conditions,
 	}
 
 	// Call API
@@ -255,11 +278,15 @@ func (r *TrustedDataPolicyResource) Update(ctx context.Context, req resource.Upd
 	}
 
 	// Map response to Terraform state
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
-	data.Description = types.StringValue(apiResp.JSON200.Description)
-	data.AttributePath = types.StringValue(apiResp.JSON200.AttributePath)
-	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
-	data.Value = types.StringValue(apiResp.JSON200.Value)
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	if apiResp.JSON200.Description != nil {
+		data.Description = types.StringValue(*apiResp.JSON200.Description)
+	}
+	if len(apiResp.JSON200.Conditions) > 0 {
+		data.AttributePath = types.StringValue(apiResp.JSON200.Conditions[0].Key)
+		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))
+		data.Value = types.StringValue(apiResp.JSON200.Conditions[0].Value)
+	}
 	data.Action = types.StringValue(string(apiResp.JSON200.Action))
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
