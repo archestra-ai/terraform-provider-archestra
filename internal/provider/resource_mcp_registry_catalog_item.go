@@ -469,6 +469,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 				Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
 				Description          *string                                                                      `json:"description,omitempty"`
 				Key                  string                                                                       `json:"key"`
+				Mounted              *bool                                                                        `json:"mounted,omitempty"`
 				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
 				Required             *bool                                                                        `json:"required,omitempty"`
 				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
@@ -507,6 +508,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 				Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
 				Description          *string                                                                      `json:"description,omitempty"`
 				Key                  string                                                                       `json:"key"`
+				Mounted              *bool                                                                        `json:"mounted,omitempty"`
 				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
 				Required             *bool                                                                        `json:"required,omitempty"`
 				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
@@ -518,6 +520,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 					Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
 					Description          *string                                                                      `json:"description,omitempty"`
 					Key                  string                                                                       `json:"key"`
+					Mounted              *bool                                                                        `json:"mounted,omitempty"`
 					PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
 					Required             *bool                                                                        `json:"required,omitempty"`
 					Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
@@ -967,6 +970,7 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 				Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
 				Description          *string                                                                      `json:"description,omitempty"`
 				Key                  string                                                                       `json:"key"`
+				Mounted              *bool                                                                        `json:"mounted,omitempty"`
 				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
 				Required             *bool                                                                        `json:"required,omitempty"`
 				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
@@ -1005,6 +1009,7 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 				Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
 				Description          *string                                                                      `json:"description,omitempty"`
 				Key                  string                                                                       `json:"key"`
+				Mounted              *bool                                                                        `json:"mounted,omitempty"`
 				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
 				Required             *bool                                                                        `json:"required,omitempty"`
 				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
@@ -1016,6 +1021,7 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 					Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
 					Description          *string                                                                      `json:"description,omitempty"`
 					Key                  string                                                                       `json:"key"`
+					Mounted              *bool                                                                        `json:"mounted,omitempty"`
 					PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
 					Required             *bool                                                                        `json:"required,omitempty"`
 					Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
