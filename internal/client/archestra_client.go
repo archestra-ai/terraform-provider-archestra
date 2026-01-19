@@ -779,9 +779,10 @@ type GetUserParams struct {
 // CreateUserJSONBody defines parameters for CreateUser.
 type CreateUserJSONBody struct {
 	Email    string  `json:"email"`
+	Id       *string `json:"id,omitempty"`
+	Image    *string `json:"image,omitempty"`
 	Name     string  `json:"name"`
 	Password string  `json:"password"`
-	Role     *string `json:"role,omitempty"`
 }
 
 // UpdateUserJSONBody defines parameters for UpdateUser.

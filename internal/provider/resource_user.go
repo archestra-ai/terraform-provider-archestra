@@ -11,10 +11,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 var _ resource.Resource = &UserResource{}
@@ -25,18 +25,15 @@ func NewUserResource() resource.Resource {
 }
 
 type UserResource struct {
-	client *client.Client
+	client *client.ClientWithResponses
 }
 
 type UserResourceModel struct {
-	ID            types.String `tfsdk:"id"`
-	Name          types.String `tfsdk:"name"`
-	Email         types.String `tfsdk:"email"`
-	EmailVerified types.Bool   `tfsdk:"email_verified"`
-	Image         types.String `tfsdk:"image"`
-	Role          types.String `tfsdk:"role"`
-	Banned        types.Bool   `tfsdk:"banned"`
-	BanReason     types.String `tfsdk:"ban_reason"`
+	Id       types.String `tfsdk:"id"`
+	Name     types.String `tfsdk:"name"`
+	Email    types.String `tfsdk:"email"`
+	Image    types.String `tfsdk:"image"`
+	Password types.String `tfsdk:"password"`
 }
 
 func (r *UserResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,28 +60,12 @@ func (r *UserResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				MarkdownDescription: "The email address of the user",
 				Required:            true,
 			},
-			"email_verified": schema.BoolAttribute{
-				MarkdownDescription: "Whether the email is verified",
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(false),
+			"password": schema.StringAttribute{
+				MarkdownDescription: "The password of the user",
+				Required:            true,
 			},
 			"image": schema.StringAttribute{
 				MarkdownDescription: "Profile image URL",
-				Optional:            true,
-			},
-			"role": schema.StringAttribute{
-				MarkdownDescription: "User role",
-				Optional:            true,
-			},
-			"banned": schema.BoolAttribute{
-				MarkdownDescription: "Whether the user is banned",
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(false),
-			},
-			"ban_reason": schema.StringAttribute{
-				MarkdownDescription: "Reason for ban (if banned)",
 				Optional:            true,
 			},
 		},
@@ -96,11 +77,11 @@ func (r *UserResource) Configure(ctx context.Context, req resource.ConfigureRequ
 		return
 	}
 
-	client, ok := req.ProviderData.(*client.Client)
+	client, ok := req.ProviderData.(*client.ClientWithResponses)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *client.Client, got: %T", req.ProviderData),
+			fmt.Sprintf("Expected *client.ClientWithResponses, got: %T", req.ProviderData),
 		)
 		return
 	}
@@ -115,11 +96,15 @@ func (r *UserResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
-	user := &client.User{
-		Name:          data.Name.ValueString(),
-		Email:         data.Email.ValueString(),
-		EmailVerified: data.EmailVerified.ValueBool(),
-		Banned:        data.Banned.ValueBool(),
+	user := client.CreateUserJSONRequestBody{
+		Name:     data.Name.ValueString(),
+		Email:    data.Email.ValueString(),
+		Password: data.Password.ValueString(),
+	}
+
+	if !data.Id.IsNull() {
+		id := data.Id.ValueString()
+		user.Id = &id
 	}
 
 	if !data.Image.IsNull() {
@@ -127,36 +112,27 @@ func (r *UserResource) Create(ctx context.Context, req resource.CreateRequest, r
 		user.Image = &img
 	}
 
-	if !data.Role.IsNull() {
-		role := data.Role.ValueString()
-		user.Role = &role
-	}
-
-	if !data.BanReason.IsNull() {
-		reason := data.BanReason.ValueString()
-		user.BanReason = &reason
-	}
-
-	created, err := r.client.CreateUser(ctx, user)
+	apiResponse, err := r.client.CreateUserWithResponse(ctx, user)
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to create user, got error: %s", err))
 		return
 	}
 
-	data.ID = types.StringValue(created.ID)
+	if apiResponse.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d", apiResponse.StatusCode()),
+		)
+		return
+	}
+	created := apiResponse.JSON200
+
+	data.Id = types.StringValue(created.Id)
 	data.Name = types.StringValue(created.Name)
 	data.Email = types.StringValue(created.Email)
-	data.EmailVerified = types.BoolValue(created.EmailVerified)
-	data.Banned = types.BoolValue(created.Banned)
 
 	if created.Image != nil {
 		data.Image = types.StringValue(*created.Image)
-	}
-	if created.Role != nil {
-		data.Role = types.StringValue(*created.Role)
-	}
-	if created.BanReason != nil {
-		data.BanReason = types.StringValue(*created.BanReason)
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -169,31 +145,30 @@ func (r *UserResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		return
 	}
 
-	user, err := r.client.GetUser(ctx, data.ID.ValueString())
+	params := &client.GetUserParams{
+		Id: data.Id.ValueString(),
+	}
+	apiResponse, err := r.client.GetUserWithResponse(ctx, params)
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read user, got error: %s", err))
 		return
 	}
 
+	if apiResponse.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d", apiResponse.StatusCode()),
+		)
+		return
+	}
+	user := apiResponse.JSON200
+
 	data.Name = types.StringValue(user.Name)
 	data.Email = types.StringValue(user.Email)
-	data.EmailVerified = types.BoolValue(user.EmailVerified)
-	data.Banned = types.BoolValue(user.Banned)
-
 	if user.Image != nil {
 		data.Image = types.StringValue(*user.Image)
 	} else {
 		data.Image = types.StringNull()
-	}
-	if user.Role != nil {
-		data.Role = types.StringValue(*user.Role)
-	} else {
-		data.Role = types.StringNull()
-	}
-	if user.BanReason != nil {
-		data.BanReason = types.StringValue(*user.BanReason)
-	} else {
-		data.BanReason = types.StringNull()
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -206,47 +181,38 @@ func (r *UserResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		return
 	}
 
-	user := &client.User{
-		Name:          data.Name.ValueString(),
-		Email:         data.Email.ValueString(),
-		EmailVerified: data.EmailVerified.ValueBool(),
-		Banned:        data.Banned.ValueBool(),
+	name := data.Name.ValueString()
+	email := openapi_types.Email(data.Email.ValueString())
+
+	body := client.UpdateUserJSONRequestBody{
+		Name:  &name,
+		Email: &email,
 	}
 
 	if !data.Image.IsNull() {
 		img := data.Image.ValueString()
-		user.Image = &img
+		body.Image = &img
 	}
 
-	if !data.Role.IsNull() {
-		role := data.Role.ValueString()
-		user.Role = &role
-	}
-
-	if !data.BanReason.IsNull() {
-		reason := data.BanReason.ValueString()
-		user.BanReason = &reason
-	}
-
-	updated, err := r.client.UpdateUser(ctx, data.ID.ValueString(), user)
+	apiResponse, err := r.client.UpdateUserWithResponse(ctx, data.Id.ValueString(), body)
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to update user, got error: %s", err))
 		return
 	}
 
+	if apiResponse.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d", apiResponse.StatusCode()),
+		)
+		return
+	}
+	updated := apiResponse.JSON200
+
 	data.Name = types.StringValue(updated.Name)
 	data.Email = types.StringValue(updated.Email)
-	data.EmailVerified = types.BoolValue(updated.EmailVerified)
-	data.Banned = types.BoolValue(updated.Banned)
-
 	if updated.Image != nil {
 		data.Image = types.StringValue(*updated.Image)
-	}
-	if updated.Role != nil {
-		data.Role = types.StringValue(*updated.Role)
-	}
-	if updated.BanReason != nil {
-		data.BanReason = types.StringValue(*updated.BanReason)
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -259,9 +225,17 @@ func (r *UserResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 		return
 	}
 
-	err := r.client.DeleteUser(ctx, data.ID.ValueString())
+	apiResponse, err := r.client.DeleteUserWithResponse(ctx, data.Id.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to delete user, got error: %s", err))
+		return
+	}
+
+	if apiResponse.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d", apiResponse.StatusCode()),
+		)
 		return
 	}
 }

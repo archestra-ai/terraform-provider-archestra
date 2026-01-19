@@ -158,7 +158,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewLimitResource,
 		NewOptimizationRuleResource,
 		NewOrganizationSettingsResource,
-		// NewUserResource, // TODO: Enable when user API endpoints are implemented
+		NewUserResource,
 		NewTeamExternalGroupResource,
 		NewChatLLMProviderApiKeyResource,
 		NewDualLlmConfigResource,
@@ -166,6 +166,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewSsoProviderResource,
 		NewPromptResource,
 		NewRoleResource,
+		// NewUserRoleAssignmentResource,
 	}
 }
 
