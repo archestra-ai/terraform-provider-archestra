@@ -15,20 +15,19 @@ func TestAccRoleResource(t *testing.T) {
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create and Read testing
 			{
-				Config: testAccRoleResourceConfig("test-role", "Test Description"),
+				Config: testAccRoleResourceConfig("test-role1", "Test Description"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_role.test",
 						tfjsonpath.New("name"),
-						knownvalue.StringExact("test-role"),
+						knownvalue.StringExact("test-role1"),
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_role.test",
 						tfjsonpath.New("permissions"),
 						knownvalue.MapExact(map[string]knownvalue.Check{
-							"agents": knownvalue.ListExact([]knownvalue.Check{
+							"user": knownvalue.ListExact([]knownvalue.Check{
 								knownvalue.StringExact("read"),
 								knownvalue.StringExact("create"),
 							}),
@@ -42,7 +41,7 @@ func TestAccRoleResource(t *testing.T) {
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Update and Read testing
+			// // Update and Read testing
 			{
 				Config: testAccRoleResourceConfig("test-role-updated", "Updated Description"),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -53,7 +52,6 @@ func TestAccRoleResource(t *testing.T) {
 					),
 				},
 			},
-			// Delete testing automatically occurs in TestCase
 		},
 	})
 }
@@ -62,9 +60,8 @@ func testAccRoleResourceConfig(name, description string) string {
 	return fmt.Sprintf(`
 resource "archestra_role" "test" {
   name        = %[1]q
-  description = %[2]q
   permissions = {
-    agents = ["read", "create"]
+    user = ["read", "create"]
   }
 }
 `, name, description)
