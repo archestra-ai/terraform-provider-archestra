@@ -1,6 +1,3 @@
-// TODO: User API endpoints are not exposed by the backend, in a way that they can be easily codegen'd
-// (right now they are exposed as a single "catch-all" route, /api/auth/*, which makes codegen impossible)
-// so this datasource is not yet available.
 package provider
 
 import (
@@ -63,6 +60,7 @@ func (r *UserResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			"password": schema.StringAttribute{
 				MarkdownDescription: "The password of the user",
 				Required:            true,
+				Sensitive:           true,
 			},
 			"image": schema.StringAttribute{
 				MarkdownDescription: "Profile image URL",
@@ -102,11 +100,6 @@ func (r *UserResource) Create(ctx context.Context, req resource.CreateRequest, r
 		Password: data.Password.ValueString(),
 	}
 
-	if !data.Id.IsNull() {
-		id := data.Id.ValueString()
-		user.Id = &id
-	}
-
 	if !data.Image.IsNull() {
 		img := data.Image.ValueString()
 		user.Image = &img
@@ -121,10 +114,11 @@ func (r *UserResource) Create(ctx context.Context, req resource.CreateRequest, r
 	if apiResponse.JSON200 == nil {
 		resp.Diagnostics.AddError(
 			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResponse.StatusCode()),
+			fmt.Sprintf("Expected 200 OK, got status %d: %s", apiResponse.StatusCode(), string(apiResponse.Body)),
 		)
 		return
 	}
+
 	created := apiResponse.JSON200
 
 	data.Id = types.StringValue(created.Id)
@@ -145,30 +139,22 @@ func (r *UserResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		return
 	}
 
-	params := &client.GetUserParams{
-		Id: data.Id.ValueString(),
-	}
-	apiResponse, err := r.client.GetUserWithResponse(ctx, params)
+	user, err := getUser(ctx, r.client, data.Id.ValueString(), "")
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to read user, got error: %s", err))
 		return
 	}
 
-	if apiResponse.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResponse.StatusCode()),
-		)
+	if user == nil {
+		resp.State.RemoveResource(ctx)
 		return
 	}
-	user := apiResponse.JSON200
 
+	data.Id = types.StringValue(user.Id)
 	data.Name = types.StringValue(user.Name)
 	data.Email = types.StringValue(user.Email)
 	if user.Image != nil {
 		data.Image = types.StringValue(*user.Image)
-	} else {
-		data.Image = types.StringNull()
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -209,6 +195,7 @@ func (r *UserResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	}
 	updated := apiResponse.JSON200
 
+	// Update state with values from API response
 	data.Name = types.StringValue(updated.Name)
 	data.Email = types.StringValue(updated.Email)
 	if updated.Image != nil {
