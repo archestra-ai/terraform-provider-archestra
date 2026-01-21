@@ -5,8 +5,11 @@ import (
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -37,31 +40,39 @@ func (d *UserDataSource) Metadata(ctx context.Context, req datasource.MetadataRe
 
 func (d *UserDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Fetches an Archestra user by ID.",
+		MarkdownDescription: "Fetches an Archestra user by ID or email.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				MarkdownDescription: "User identifier",
-				Required:            true,
+				Optional:            true,
+				Computed:            true,
+				Validators: []validator.String{
+					stringvalidator.ExactlyOneOf(path.MatchRoot("email")),
+				},
+			},
+			"email": schema.StringAttribute{
+				MarkdownDescription: "The email address of the user",
+				Optional:            true,
+				Computed:            true,
+				Validators: []validator.String{
+					stringvalidator.ExactlyOneOf(path.MatchRoot("id")),
+				},
 			},
 			"name": schema.StringAttribute{
 				MarkdownDescription: "The name of the user",
 				Computed:            true,
 			},
-			"email": schema.StringAttribute{
-				MarkdownDescription: "The email address of the user",
-				Computed:            true,
-			},
 			"email_verified": schema.BoolAttribute{
-				MarkdownDescription: "Whether the email is verified",
+				MarkdownDescription: "Whether the user's email is verified",
 				Computed:            true,
 			},
 			"image": schema.StringAttribute{
-				MarkdownDescription: "Profile image URL",
+				MarkdownDescription: "The URL of the user's profile image",
 				Computed:            true,
 			},
 			"role": schema.StringAttribute{
-				MarkdownDescription: "User role",
+				MarkdownDescription: "The role of the user",
 				Computed:            true,
 			},
 			"banned": schema.BoolAttribute{
@@ -69,7 +80,7 @@ func (d *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Computed:            true,
 			},
 			"ban_reason": schema.StringAttribute{
-				MarkdownDescription: "Reason for ban (if banned)",
+				MarkdownDescription: "The reason for the user's ban",
 				Computed:            true,
 			},
 		},
@@ -101,36 +112,38 @@ func (d *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	// Get user data
-	userId := data.ID.ValueString()
-	userResp, err := d.client.GetUserWithResponse(ctx, &client.GetUserParams{Id: userId})
+	var user *UserSharedModel
+	var err error
+
+	if !data.ID.IsNull() {
+		userId := data.ID.ValueString()
+		user, err = getUser(ctx, d.client, userId, "")
+	} else if !data.Email.IsNull() {
+		email := data.Email.ValueString()
+		user, err = getUser(ctx, d.client, "", email)
+	} else {
+		resp.Diagnostics.AddError("Missing Configuration", "One of 'id' or 'email' must be configured.")
+		return
+	}
+
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read user, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", err.Error())
 		return
 	}
 
-	if userResp.JSON404 != nil {
-		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("User with ID %s not found", data.ID.ValueString()))
+	if user == nil {
+		resp.Diagnostics.AddError("Not Found", "User not found")
 		return
 	}
 
-	if userResp.JSON400 != nil {
-		resp.Diagnostics.AddError("Bad Request.", "Usually due to missing parameters, or invalid parameters")
-		return
+	safeString := func(s *string) types.String {
+		if s != nil {
+			return types.StringValue(*s)
+		}
+		return types.StringNull()
 	}
 
-	if userResp.JSON403 != nil {
-		resp.Diagnostics.AddError("Forbidden", "Invalid API key")
-		return
-	}
-
-	if userResp.JSON200 == nil {
-		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", userResp.StatusCode()))
-		return
-	}
-
-	user := userResp.JSON200
-
+	data.ID = types.StringValue(user.Id)
 	data.Name = types.StringValue(user.Name)
 	data.Email = types.StringValue(user.Email)
 
@@ -142,23 +155,9 @@ func (d *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		data.Banned = types.BoolNull()
 	}
 
-	if user.Image != nil {
-		data.Image = types.StringValue(*user.Image)
-	} else {
-		data.Image = types.StringNull()
-	}
-
-	if user.Role != nil {
-		data.Role = types.StringValue(*user.Role)
-	} else {
-		data.Role = types.StringNull()
-	}
-
-	if user.BanReason != nil {
-		data.BanReason = types.StringValue(*user.BanReason)
-	} else {
-		data.BanReason = types.StringNull()
-	}
+	data.Image = safeString(user.Image)
+	data.Role = safeString(user.Role)
+	data.BanReason = safeString(user.BanReason)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

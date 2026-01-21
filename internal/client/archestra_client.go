@@ -771,11 +771,6 @@ type UpdateAgentJSONBody struct {
 	Teams *[]string `json:"teams,omitempty"`
 }
 
-// GetUserParams defines parameters for GetUser.
-type GetUserParams struct {
-	Id string `form:"id" json:"id"`
-}
-
 // CreateUserJSONBody defines parameters for CreateUser.
 type CreateUserJSONBody struct {
 	Email    string  `json:"email"`
@@ -1256,7 +1251,10 @@ type GetMcpToolCallsParams struct {
 	StartDate *time.Time `form:"startDate,omitempty" json:"startDate,omitempty"`
 
 	// EndDate Filter by end date (ISO 8601 format)
-	EndDate       *time.Time                          `form:"endDate,omitempty" json:"endDate,omitempty"`
+	EndDate *time.Time `form:"endDate,omitempty" json:"endDate,omitempty"`
+
+	// Search Free-text search across MCP server name, tool name, and arguments (case-insensitive)
+	Search        *string                             `form:"search,omitempty" json:"search,omitempty"`
 	Limit         *int                                `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset        *int                                `form:"offset,omitempty" json:"offset,omitempty"`
 	SortBy        *GetMcpToolCallsParamsSortBy        `form:"sortBy,omitempty" json:"sortBy,omitempty"`
@@ -2469,16 +2467,19 @@ type ClientInterface interface {
 
 	UpdateAgent(ctx context.Context, id openapi_types.UUID, body UpdateAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetUser request
-	GetUser(ctx context.Context, params *GetUserParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// CreateUserWithBody request with any body
 	CreateUserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateUser(ctx context.Context, body CreateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetUserByEmail request
+	GetUserByEmail(ctx context.Context, email string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteUser request
 	DeleteUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetUserById request
+	GetUserById(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateUserWithBody request with any body
 	UpdateUserWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3049,6 +3050,9 @@ type ClientInterface interface {
 	// GetHealth request
 	GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetReady request
+	GetReady(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// PostV1A2aPromptIdWithBody request with any body
 	PostV1A2aPromptIdWithBody(ctx context.Context, promptId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3322,18 +3326,6 @@ func (c *Client) UpdateAgent(ctx context.Context, id openapi_types.UUID, body Up
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetUser(ctx context.Context, params *GetUserParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetUserRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 func (c *Client) CreateUserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateUserRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -3358,8 +3350,32 @@ func (c *Client) CreateUser(ctx context.Context, body CreateUserJSONRequestBody,
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetUserByEmail(ctx context.Context, email string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUserByEmailRequest(c.Server, email)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) DeleteUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteUserRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetUserById(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUserByIdRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -5854,6 +5870,18 @@ func (c *Client) GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetReady(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetReadyRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) PostV1A2aPromptIdWithBody(ctx context.Context, promptId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostV1A2aPromptIdRequestWithBody(c.Server, promptId, contentType, body)
 	if err != nil {
@@ -6759,51 +6787,6 @@ func NewUpdateAgentRequestWithBody(server string, id openapi_types.UUID, content
 	return req, nil
 }
 
-// NewGetUserRequest generates requests for GetUser
-func NewGetUserRequest(server string, params *GetUserParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/auth/admin/user")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if params != nil {
-		queryValues := queryURL.Query()
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "id", runtime.ParamLocationQuery, params.Id); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-		queryURL.RawQuery = queryValues.Encode()
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
 // NewCreateUserRequest calls the generic CreateUser builder with application/json body
 func NewCreateUserRequest(server string, body CreateUserJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -6844,6 +6827,40 @@ func NewCreateUserRequestWithBody(server string, contentType string, body io.Rea
 	return req, nil
 }
 
+// NewGetUserByEmailRequest generates requests for GetUserByEmail
+func NewGetUserByEmailRequest(server string, email string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "email", runtime.ParamLocationPath, email)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/auth/admin/users/email/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewDeleteUserRequest generates requests for DeleteUser
 func NewDeleteUserRequest(server string, id string) (*http.Request, error) {
 	var err error
@@ -6871,6 +6888,40 @@ func NewDeleteUserRequest(server string, id string) (*http.Request, error) {
 	}
 
 	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetUserByIdRequest generates requests for GetUserById
+func NewGetUserByIdRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/auth/admin/users/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -8847,6 +8898,22 @@ func NewGetMcpToolCallsRequest(server string, params *GetMcpToolCallsParams) (*h
 		if params.EndDate != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "endDate", runtime.ParamLocationQuery, *params.EndDate); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
 				return nil, err
 			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 				return nil, err
@@ -12910,6 +12977,33 @@ func NewGetHealthRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewGetReadyRequest generates requests for GetReady
+func NewGetReadyRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ready")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewPostV1A2aPromptIdRequest calls the generic PostV1A2aPromptId builder with application/json body
 func NewPostV1A2aPromptIdRequest(server string, promptId openapi_types.UUID, body PostV1A2aPromptIdJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -13094,16 +13188,19 @@ type ClientWithResponsesInterface interface {
 
 	UpdateAgentWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAgentResponse, error)
 
-	// GetUserWithResponse request
-	GetUserWithResponse(ctx context.Context, params *GetUserParams, reqEditors ...RequestEditorFn) (*GetUserResponse, error)
-
 	// CreateUserWithBodyWithResponse request with any body
 	CreateUserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateUserResponse, error)
 
 	CreateUserWithResponse(ctx context.Context, body CreateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateUserResponse, error)
 
+	// GetUserByEmailWithResponse request
+	GetUserByEmailWithResponse(ctx context.Context, email string, reqEditors ...RequestEditorFn) (*GetUserByEmailResponse, error)
+
 	// DeleteUserWithResponse request
 	DeleteUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteUserResponse, error)
+
+	// GetUserByIdWithResponse request
+	GetUserByIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserByIdResponse, error)
 
 	// UpdateUserWithBodyWithResponse request with any body
 	UpdateUserWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error)
@@ -13673,6 +13770,9 @@ type ClientWithResponsesInterface interface {
 
 	// GetHealthWithResponse request
 	GetHealthWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetHealthResponse, error)
+
+	// GetReadyWithResponse request
+	GetReadyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetReadyResponse, error)
 
 	// PostV1A2aPromptIdWithBodyWithResponse request with any body
 	PostV1A2aPromptIdWithBodyWithResponse(ctx context.Context, promptId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostV1A2aPromptIdResponse, error)
@@ -15037,83 +15137,6 @@ func (r UpdateAgentResponse) StatusCode() int {
 	return 0
 }
 
-type GetUserResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		BanExpires       *time.Time `json:"banExpires"`
-		BanReason        *string    `json:"banReason"`
-		Banned           *bool      `json:"banned"`
-		CreatedAt        time.Time  `json:"createdAt"`
-		Email            string     `json:"email"`
-		EmailVerified    bool       `json:"emailVerified"`
-		Id               string     `json:"id"`
-		Image            *string    `json:"image"`
-		Name             string     `json:"name"`
-		Role             *string    `json:"role"`
-		TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
-		UpdatedAt        time.Time  `json:"updatedAt"`
-	}
-	JSON400 *struct {
-		Error struct {
-			Message string              `json:"message"`
-			Type    GetUser400ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON401 *struct {
-		Error struct {
-			Message string              `json:"message"`
-			Type    GetUser401ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON403 *struct {
-		Error struct {
-			Message string              `json:"message"`
-			Type    GetUser403ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON404 *struct {
-		Error struct {
-			Message string              `json:"message"`
-			Type    GetUser404ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON409 *struct {
-		Error struct {
-			Message string              `json:"message"`
-			Type    GetUser409ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON500 *struct {
-		Error struct {
-			Message string              `json:"message"`
-			Type    GetUser500ErrorType `json:"type"`
-		} `json:"error"`
-	}
-}
-type GetUser400ErrorType string
-type GetUser401ErrorType string
-type GetUser403ErrorType string
-type GetUser404ErrorType string
-type GetUser409ErrorType string
-type GetUser500ErrorType string
-
-// Status returns HTTPResponse.Status
-func (r GetUserResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetUserResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
 type CreateUserResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -15191,6 +15214,83 @@ func (r CreateUserResponse) StatusCode() int {
 	return 0
 }
 
+type GetUserByEmailResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		BanExpires       *time.Time `json:"banExpires"`
+		BanReason        *string    `json:"banReason"`
+		Banned           *bool      `json:"banned"`
+		CreatedAt        time.Time  `json:"createdAt"`
+		Email            string     `json:"email"`
+		EmailVerified    bool       `json:"emailVerified"`
+		Id               string     `json:"id"`
+		Image            *string    `json:"image"`
+		Name             string     `json:"name"`
+		Role             *string    `json:"role"`
+		TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+		UpdatedAt        time.Time  `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetUserByEmail400ErrorType string
+type GetUserByEmail401ErrorType string
+type GetUserByEmail403ErrorType string
+type GetUserByEmail404ErrorType string
+type GetUserByEmail409ErrorType string
+type GetUserByEmail500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetUserByEmailResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetUserByEmailResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeleteUserResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -15211,6 +15311,83 @@ func (r DeleteUserResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r DeleteUserResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetUserByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		BanExpires       *time.Time `json:"banExpires"`
+		BanReason        *string    `json:"banReason"`
+		Banned           *bool      `json:"banned"`
+		CreatedAt        time.Time  `json:"createdAt"`
+		Email            string     `json:"email"`
+		EmailVerified    bool       `json:"emailVerified"`
+		Id               string     `json:"id"`
+		Image            *string    `json:"image"`
+		Name             string     `json:"name"`
+		Role             *string    `json:"role"`
+		TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+		UpdatedAt        time.Time  `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetUserById400ErrorType string
+type GetUserById401ErrorType string
+type GetUserById403ErrorType string
+type GetUserById404ErrorType string
+type GetUserById409ErrorType string
+type GetUserById500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetUserByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetUserByIdResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -17864,6 +18041,11 @@ type GetFeaturesResponse struct {
 			Enabled     bool                                 `json:"enabled"`
 			Provider    *GetFeatures200IncomingEmailProvider `json:"provider,omitempty"`
 		} `json:"incomingEmail"`
+		KnowledgeGraph struct {
+			DisplayName *string                               `json:"displayName,omitempty"`
+			Enabled     bool                                  `json:"enabled"`
+			Provider    *GetFeatures200KnowledgeGraphProvider `json:"provider,omitempty"`
+		} `json:"knowledgeGraph"`
 		OllamaEnabled          bool `json:"ollamaEnabled"`
 		OrchestratorK8sRuntime bool `json:"orchestrator-k8s-runtime"`
 		VllmEnabled            bool `json:"vllmEnabled"`
@@ -17872,6 +18054,7 @@ type GetFeaturesResponse struct {
 type GetFeatures200ByosVaultKvVersion string
 type GetFeatures200GlobalToolPolicy string
 type GetFeatures200IncomingEmailProvider string
+type GetFeatures200KnowledgeGraphProvider string
 
 // Status returns HTTPResponse.Status
 func (r GetFeaturesResponse) Status() string {
@@ -27961,6 +28144,39 @@ func (r GetHealthResponse) StatusCode() int {
 	return 0
 }
 
+type GetReadyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Database string `json:"database"`
+		Name     string `json:"name"`
+		Status   string `json:"status"`
+		Version  string `json:"version"`
+	}
+	JSON503 *struct {
+		Database string `json:"database"`
+		Name     string `json:"name"`
+		Status   string `json:"status"`
+		Version  string `json:"version"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetReadyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetReadyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type PostV1A2aPromptIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -28243,15 +28459,6 @@ func (c *ClientWithResponses) UpdateAgentWithResponse(ctx context.Context, id op
 	return ParseUpdateAgentResponse(rsp)
 }
 
-// GetUserWithResponse request returning *GetUserResponse
-func (c *ClientWithResponses) GetUserWithResponse(ctx context.Context, params *GetUserParams, reqEditors ...RequestEditorFn) (*GetUserResponse, error) {
-	rsp, err := c.GetUser(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetUserResponse(rsp)
-}
-
 // CreateUserWithBodyWithResponse request with arbitrary body returning *CreateUserResponse
 func (c *ClientWithResponses) CreateUserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateUserResponse, error) {
 	rsp, err := c.CreateUserWithBody(ctx, contentType, body, reqEditors...)
@@ -28269,6 +28476,15 @@ func (c *ClientWithResponses) CreateUserWithResponse(ctx context.Context, body C
 	return ParseCreateUserResponse(rsp)
 }
 
+// GetUserByEmailWithResponse request returning *GetUserByEmailResponse
+func (c *ClientWithResponses) GetUserByEmailWithResponse(ctx context.Context, email string, reqEditors ...RequestEditorFn) (*GetUserByEmailResponse, error) {
+	rsp, err := c.GetUserByEmail(ctx, email, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetUserByEmailResponse(rsp)
+}
+
 // DeleteUserWithResponse request returning *DeleteUserResponse
 func (c *ClientWithResponses) DeleteUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteUserResponse, error) {
 	rsp, err := c.DeleteUser(ctx, id, reqEditors...)
@@ -28276,6 +28492,15 @@ func (c *ClientWithResponses) DeleteUserWithResponse(ctx context.Context, id str
 		return nil, err
 	}
 	return ParseDeleteUserResponse(rsp)
+}
+
+// GetUserByIdWithResponse request returning *GetUserByIdResponse
+func (c *ClientWithResponses) GetUserByIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserByIdResponse, error) {
+	rsp, err := c.GetUserById(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetUserByIdResponse(rsp)
 }
 
 // UpdateUserWithBodyWithResponse request with arbitrary body returning *UpdateUserResponse
@@ -30087,6 +30312,15 @@ func (c *ClientWithResponses) GetHealthWithResponse(ctx context.Context, reqEdit
 		return nil, err
 	}
 	return ParseGetHealthResponse(rsp)
+}
+
+// GetReadyWithResponse request returning *GetReadyResponse
+func (c *ClientWithResponses) GetReadyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetReadyResponse, error) {
+	rsp, err := c.GetReady(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetReadyResponse(rsp)
 }
 
 // PostV1A2aPromptIdWithBodyWithResponse request with arbitrary body returning *PostV1A2aPromptIdResponse
@@ -31980,117 +32214,6 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 	return response, nil
 }
 
-// ParseGetUserResponse parses an HTTP response from a GetUserWithResponse call
-func ParseGetUserResponse(rsp *http.Response) (*GetUserResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetUserResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			BanExpires       *time.Time `json:"banExpires"`
-			BanReason        *string    `json:"banReason"`
-			Banned           *bool      `json:"banned"`
-			CreatedAt        time.Time  `json:"createdAt"`
-			Email            string     `json:"email"`
-			EmailVerified    bool       `json:"emailVerified"`
-			Id               string     `json:"id"`
-			Image            *string    `json:"image"`
-			Name             string     `json:"name"`
-			Role             *string    `json:"role"`
-			TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
-			UpdatedAt        time.Time  `json:"updatedAt"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest struct {
-			Error struct {
-				Message string              `json:"message"`
-				Type    GetUser400ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest struct {
-			Error struct {
-				Message string              `json:"message"`
-				Type    GetUser401ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest struct {
-			Error struct {
-				Message string              `json:"message"`
-				Type    GetUser403ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest struct {
-			Error struct {
-				Message string              `json:"message"`
-				Type    GetUser404ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest struct {
-			Error struct {
-				Message string              `json:"message"`
-				Type    GetUser409ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest struct {
-			Error struct {
-				Message string              `json:"message"`
-				Type    GetUser500ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
 // ParseCreateUserResponse parses an HTTP response from a CreateUserWithResponse call
 func ParseCreateUserResponse(rsp *http.Response) (*CreateUserResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -32202,6 +32325,117 @@ func ParseCreateUserResponse(rsp *http.Response) (*CreateUserResponse, error) {
 	return response, nil
 }
 
+// ParseGetUserByEmailResponse parses an HTTP response from a GetUserByEmailWithResponse call
+func ParseGetUserByEmailResponse(rsp *http.Response) (*GetUserByEmailResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetUserByEmailResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			BanExpires       *time.Time `json:"banExpires"`
+			BanReason        *string    `json:"banReason"`
+			Banned           *bool      `json:"banned"`
+			CreatedAt        time.Time  `json:"createdAt"`
+			Email            string     `json:"email"`
+			EmailVerified    bool       `json:"emailVerified"`
+			Id               string     `json:"id"`
+			Image            *string    `json:"image"`
+			Name             string     `json:"name"`
+			Role             *string    `json:"role"`
+			TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+			UpdatedAt        time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseDeleteUserResponse parses an HTTP response from a DeleteUserWithResponse call
 func ParseDeleteUserResponse(rsp *http.Response) (*DeleteUserResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -32234,6 +32468,117 @@ func ParseDeleteUserResponse(rsp *http.Response) (*DeleteUserResponse, error) {
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest map[string]interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetUserByIdResponse parses an HTTP response from a GetUserByIdWithResponse call
+func ParseGetUserByIdResponse(rsp *http.Response) (*GetUserByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetUserByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			BanExpires       *time.Time `json:"banExpires"`
+			BanReason        *string    `json:"banReason"`
+			Banned           *bool      `json:"banned"`
+			CreatedAt        time.Time  `json:"createdAt"`
+			Email            string     `json:"email"`
+			EmailVerified    bool       `json:"emailVerified"`
+			Id               string     `json:"id"`
+			Image            *string    `json:"image"`
+			Name             string     `json:"name"`
+			Role             *string    `json:"role"`
+			TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+			UpdatedAt        time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById500ErrorType `json:"type"`
+			} `json:"error"`
+		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -35934,6 +36279,11 @@ func ParseGetFeaturesResponse(rsp *http.Response) (*GetFeaturesResponse, error) 
 				Enabled     bool                                 `json:"enabled"`
 				Provider    *GetFeatures200IncomingEmailProvider `json:"provider,omitempty"`
 			} `json:"incomingEmail"`
+			KnowledgeGraph struct {
+				DisplayName *string                               `json:"displayName,omitempty"`
+				Enabled     bool                                  `json:"enabled"`
+				Provider    *GetFeatures200KnowledgeGraphProvider `json:"provider,omitempty"`
+			} `json:"knowledgeGraph"`
 			OllamaEnabled          bool `json:"ollamaEnabled"`
 			OrchestratorK8sRuntime bool `json:"orchestrator-k8s-runtime"`
 			VllmEnabled            bool `json:"vllmEnabled"`
@@ -49304,6 +49654,49 @@ func ParseGetHealthResponse(rsp *http.Response) (*GetHealthResponse, error) {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetReadyResponse parses an HTTP response from a GetReadyWithResponse call
+func ParseGetReadyResponse(rsp *http.Response) (*GetReadyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetReadyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Database string `json:"database"`
+			Name     string `json:"name"`
+			Status   string `json:"status"`
+			Version  string `json:"version"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest struct {
+			Database string `json:"database"`
+			Name     string `json:"name"`
+			Status   string `json:"status"`
+			Version  string `json:"version"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
 
 	}
 
