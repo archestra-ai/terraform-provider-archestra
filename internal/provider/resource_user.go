@@ -150,11 +150,11 @@ func (r *UserResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		return
 	}
 
-	data.Id = types.StringValue(user.Id)
-	data.Name = types.StringValue(user.Name)
-	data.Email = types.StringValue(user.Email)
-	if user.Image != nil {
-		data.Image = types.StringValue(*user.Image)
+	data.Id = user.Id
+	data.Name = user.Name
+	data.Email = user.Email
+	if !user.Image.IsNull() {
+		data.Image = user.Image
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

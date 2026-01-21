@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// UserSharedModel maps to the API response for user details
-type UserSharedModel struct {
+type APIUser struct {
 	BanExpires       *time.Time `json:"banExpires"`
 	BanReason        *string    `json:"banReason"`
 	Banned           *bool      `json:"banned"`
@@ -24,85 +24,86 @@ type UserSharedModel struct {
 	UpdatedAt        time.Time  `json:"updatedAt"`
 }
 
-func getUser(ctx context.Context, c *client.ClientWithResponses, id string, email string) (*UserSharedModel, error) {
+type UserTerraformModel struct {
+	Id               types.String `tfsdk:"id"`
+	Name             types.String `tfsdk:"name"`
+	Email            types.String `tfsdk:"email"`
+	EmailVerified    types.Bool   `tfsdk:"email_verified"`
+	Image            types.String `tfsdk:"image"`
+	Role             types.String `tfsdk:"role"`
+	Banned           types.Bool   `tfsdk:"banned"`
+	BanReason        types.String `tfsdk:"ban_reason"`
+	BanExpires       types.String `tfsdk:"ban_expires"`
+	TwoFactorEnabled types.Bool   `tfsdk:"two_factor_enabled"`
+	CreatedAt        types.String `tfsdk:"created_at"`
+	UpdatedAt        types.String `tfsdk:"updated_at"`
+}
+
+func timeToString(t time.Time) types.String {
+	return types.StringValue(t.Format(time.RFC3339))
+}
+
+func timePointerToString(t *time.Time) types.String {
+	if t == nil {
+		return types.StringNull()
+	}
+	return types.StringValue(t.Format(time.RFC3339))
+}
+
+func mapUserToModel(u *APIUser) *UserTerraformModel {
+	return &UserTerraformModel{
+		Id:               types.StringValue(u.Id),
+		Name:             types.StringValue(u.Name),
+		Email:            types.StringValue(u.Email),
+		EmailVerified:    types.BoolValue(u.EmailVerified),
+		Image:            types.StringPointerValue(u.Image),
+		Role:             types.StringPointerValue(u.Role),
+		Banned:           types.BoolPointerValue(u.Banned),
+		BanReason:        types.StringPointerValue(u.BanReason),
+		BanExpires:       timePointerToString(u.BanExpires),
+		TwoFactorEnabled: types.BoolPointerValue(u.TwoFactorEnabled),
+		CreatedAt:        timeToString(u.CreatedAt),
+		UpdatedAt:        timeToString(u.UpdatedAt),
+	}
+}
+
+func getUser(ctx context.Context, c *client.ClientWithResponses, id string, email string) (*UserTerraformModel, error) {
 	if id != "" {
-		// Lookup by ID
-		userResp, err := c.GetUserByIdWithResponse(ctx, id)
+		resp, err := c.GetUserByIdWithResponse(ctx, id)
 		if err != nil {
 			return nil, fmt.Errorf("unable to read user by ID, got error: %s", err)
 		}
 
-		if userResp.JSON404 != nil {
-			return nil, nil // Not found
+		if resp.JSON404 != nil {
+			return nil, nil
 		}
-
-		if userResp.JSON400 != nil {
+		if resp.JSON400 != nil {
 			return nil, fmt.Errorf("bad request: usually due to missing parameters, or invalid parameters")
 		}
-
-		if userResp.JSON200 == nil {
-			return nil, fmt.Errorf("expected 200 OK, got status %d", userResp.StatusCode())
+		if resp.JSON200 != nil {
+			u := APIUser(*resp.JSON200)
+			return mapUserToModel(&u), nil
 		}
-
-		// The API client returns an anonymous struct that matches UserSharedModel
-		// We need to manually map it or type assert if possible.
-		// Since we can't easily cast anonymous structs from different packages if they are not identical in the eyes of Go compiler (field tags etc),
-		// and the generated code likely returns *struct{...}, we might need to rely on field-by-field copy or just assume it matches exactly.
-		// However, based on datasource_user.go, it was assigning directly.
-		// Let's assume the generated type is structuraly identical to what we defined.
-		// To be safe and clean, let's map it field by field to avoid type mismatch issues if the generated type is named or slightly different/anonymous.
-
-		u := userResp.JSON200
-		return &UserSharedModel{
-			BanExpires:       u.BanExpires,
-			BanReason:        u.BanReason,
-			Banned:           u.Banned,
-			CreatedAt:        u.CreatedAt,
-			Email:            u.Email,
-			EmailVerified:    u.EmailVerified,
-			Id:               u.Id,
-			Image:            u.Image,
-			Name:             u.Name,
-			Role:             u.Role,
-			TwoFactorEnabled: u.TwoFactorEnabled,
-			UpdatedAt:        u.UpdatedAt,
-		}, nil
+		return nil, fmt.Errorf("expected 200 OK, got status %d", resp.StatusCode())
 	}
 
 	if email != "" {
-		// Lookup by Email
-		userResp, err := c.GetUserByEmailWithResponse(ctx, email)
+		resp, err := c.GetUserByEmailWithResponse(ctx, email)
 		if err != nil {
 			return nil, fmt.Errorf("unable to read user by Email, got error: %s", err)
 		}
 
-		if userResp.JSON404 != nil {
-			return nil, nil // Not found
+		if resp.JSON404 != nil {
+			return nil, nil
 		}
-
-		if userResp.JSON400 != nil {
+		if resp.JSON400 != nil {
 			return nil, fmt.Errorf("bad request: usually due to missing parameters, or invalid parameters")
 		}
-
-		if userResp.JSON200 == nil {
-			return nil, fmt.Errorf("expected 200 OK, got status %d", userResp.StatusCode())
+		if resp.JSON200 != nil {
+			u := APIUser(*resp.JSON200)
+			return mapUserToModel(&u), nil
 		}
-
-		u := userResp.JSON200
-		return &UserSharedModel{
-			BanExpires:       u.BanExpires,
-			BanReason:        u.BanReason,
-			Banned:           u.Banned,
-			CreatedAt:        u.CreatedAt,
-			Email:            u.Email,
-			EmailVerified:    u.EmailVerified,
-			Id:               u.Id,
-			Image:            u.Image,
-			Name:             u.Name,
-			Role:             u.Role,
-			TwoFactorEnabled: u.TwoFactorEnabled,
-			UpdatedAt:        u.UpdatedAt,
-		}, nil
+		return nil, fmt.Errorf("expected 200 OK, got status %d", resp.StatusCode())
 	}
 
 	return nil, fmt.Errorf("one of 'id' or 'email' must be provided")

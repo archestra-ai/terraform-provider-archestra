@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var _ datasource.DataSource = &UserDataSource{}
@@ -21,17 +20,6 @@ func NewUserDataSource() datasource.DataSource {
 
 type UserDataSource struct {
 	client *client.ClientWithResponses
-}
-
-type UserDataSourceModel struct {
-	ID            types.String `tfsdk:"id"`
-	Name          types.String `tfsdk:"name"`
-	Email         types.String `tfsdk:"email"`
-	EmailVerified types.Bool   `tfsdk:"email_verified"`
-	Image         types.String `tfsdk:"image"`
-	Role          types.String `tfsdk:"role"`
-	Banned        types.Bool   `tfsdk:"banned"`
-	BanReason     types.String `tfsdk:"ban_reason"`
 }
 
 func (d *UserDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -51,6 +39,10 @@ func (d *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 					stringvalidator.ExactlyOneOf(path.MatchRoot("email")),
 				},
 			},
+			"name": schema.StringAttribute{
+				MarkdownDescription: "The name of the user",
+				Computed:            true,
+			},
 			"email": schema.StringAttribute{
 				MarkdownDescription: "The email address of the user",
 				Optional:            true,
@@ -58,10 +50,6 @@ func (d *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Validators: []validator.String{
 					stringvalidator.ExactlyOneOf(path.MatchRoot("id")),
 				},
-			},
-			"name": schema.StringAttribute{
-				MarkdownDescription: "The name of the user",
-				Computed:            true,
 			},
 			"email_verified": schema.BoolAttribute{
 				MarkdownDescription: "Whether the user's email is verified",
@@ -81,6 +69,22 @@ func (d *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 			},
 			"ban_reason": schema.StringAttribute{
 				MarkdownDescription: "The reason for the user's ban",
+				Computed:            true,
+			},
+			"ban_expires": schema.StringAttribute{
+				MarkdownDescription: "The expiration time of the user's ban",
+				Computed:            true,
+			},
+			"two_factor_enabled": schema.BoolAttribute{
+				MarkdownDescription: "Whether the user has two-factor authentication enabled",
+				Computed:            true,
+			},
+			"created_at": schema.StringAttribute{
+				MarkdownDescription: "The time the user was created",
+				Computed:            true,
+			},
+			"updated_at": schema.StringAttribute{
+				MarkdownDescription: "The time the user was last updated",
 				Computed:            true,
 			},
 		},
@@ -105,27 +109,14 @@ func (d *UserDataSource) Configure(ctx context.Context, req datasource.Configure
 }
 
 func (d *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data UserDataSourceModel
+	var data UserTerraformModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	var user *UserSharedModel
-	var err error
-
-	if !data.ID.IsNull() {
-		userId := data.ID.ValueString()
-		user, err = getUser(ctx, d.client, userId, "")
-	} else if !data.Email.IsNull() {
-		email := data.Email.ValueString()
-		user, err = getUser(ctx, d.client, "", email)
-	} else {
-		resp.Diagnostics.AddError("Missing Configuration", "One of 'id' or 'email' must be configured.")
-		return
-	}
-
+	user, err := getUser(ctx, d.client, data.Id.ValueString(), data.Email.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", err.Error())
 		return
@@ -136,28 +127,5 @@ func (d *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	safeString := func(s *string) types.String {
-		if s != nil {
-			return types.StringValue(*s)
-		}
-		return types.StringNull()
-	}
-
-	data.ID = types.StringValue(user.Id)
-	data.Name = types.StringValue(user.Name)
-	data.Email = types.StringValue(user.Email)
-
-	data.EmailVerified = types.BoolValue(user.EmailVerified)
-
-	if user.Banned != nil {
-		data.Banned = types.BoolValue(*user.Banned)
-	} else {
-		data.Banned = types.BoolNull()
-	}
-
-	data.Image = safeString(user.Image)
-	data.Role = safeString(user.Role)
-	data.BanReason = safeString(user.BanReason)
-
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &user)...)
 }
