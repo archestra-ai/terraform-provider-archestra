@@ -133,10 +133,7 @@ func (d *PromptDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 			)
 			return
 		}
-		// Need to manually copy fields because the generated client struct differs from our inline struct (due to History field)
-		// But wait, actually now we match the client struct exactly (except for omitempty differences maybe?)
-		// Let's just use the client struct directly if possible, or mapping manualy.
-		// Actually, foundItem matches GetPromptResponse.JSON200 exactly now that we added History.
+
 		respItem := apiResp.JSON200
 		mapPromptResponseToModel(&struct {
 			AgentId        openapi_types.UUID `json:"agentId"`
