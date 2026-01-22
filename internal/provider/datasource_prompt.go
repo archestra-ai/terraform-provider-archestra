@@ -177,16 +177,20 @@ func (d *PromptDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 
 		targetName := data.Name.ValueString()
 		var foundItem *struct {
-			AgentId        openapi_types.UUID            `json:"agentId"`
-			CreatedAt      time.Time                     `json:"createdAt"`
-			History        client.GetPrompts_200_History `json:"history"`
-			Id             openapi_types.UUID            `json:"id"`
-			Name           string                        `json:"name"`
-			OrganizationId string                        `json:"organizationId"`
-			SystemPrompt   *string                       `json:"systemPrompt"`
-			UpdatedAt      time.Time                     `json:"updatedAt"`
-			UserPrompt     *string                       `json:"userPrompt"`
-			Version        int                           `json:"version"`
+			AgentId                    openapi_types.UUID                            `json:"agentId"`
+			AllowedChatops             client.GetPrompts_200_AllowedChatops          `json:"allowedChatops"`
+			CreatedAt                  time.Time                                     `json:"createdAt"`
+			History                    client.GetPrompts_200_History                 `json:"history"`
+			Id                         openapi_types.UUID                            `json:"id"`
+			IncomingEmailAllowedDomain *string                                       `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                          `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  client.GetPrompts200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                        `json:"name"`
+			OrganizationId             string                                        `json:"organizationId"`
+			SystemPrompt               *string                                       `json:"systemPrompt"`
+			UpdatedAt                  time.Time                                     `json:"updatedAt"`
+			UserPrompt                 *string                                       `json:"userPrompt"`
+			Version                    int                                           `json:"version"`
 		}
 
 		for _, item := range *apiResp.JSON200 {
