@@ -166,7 +166,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewSsoProviderResource,
 		NewPromptResource,
 		NewRoleResource,
-		// NewUserRoleAssignmentResource,
+		NewUserRoleAssignmentResource,
 	}
 }
 

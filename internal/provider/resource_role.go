@@ -51,7 +51,7 @@ func (r *RoleResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "The name of the role",
+				MarkdownDescription: "The name of the role. Will be used to create the roleNonUUIDIdentifier.",
 				Required:            true,
 			},
 			"permissions": schema.MapAttribute{
