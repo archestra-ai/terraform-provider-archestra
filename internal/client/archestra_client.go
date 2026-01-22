@@ -282,6 +282,12 @@ const (
 	InstallMcpServerJSONBodyLocalInstallationStatusSuccess          InstallMcpServerJSONBodyLocalInstallationStatus = "success"
 )
 
+// Defines values for InstallMcpServerJSONBodyOauthRefreshError.
+const (
+	NoRefreshToken InstallMcpServerJSONBodyOauthRefreshError = "no_refresh_token"
+	RefreshFailed  InstallMcpServerJSONBodyOauthRefreshError = "refresh_failed"
+)
+
 // Defines values for GetMcpServerInstallationRequestsParamsStatus.
 const (
 	GetMcpServerInstallationRequestsParamsStatusApproved GetMcpServerInstallationRequestsParamsStatus = "approved"
@@ -447,6 +453,30 @@ const (
 	Twitter          UpdateOrganizationJSONBodyTheme = "twitter"
 	Vercel           UpdateOrganizationJSONBodyTheme = "vercel"
 	VintagePaper     UpdateOrganizationJSONBodyTheme = "vintage-paper"
+)
+
+// Defines values for CreatePromptJSONBodyAllowedChatops03.
+const (
+	CreatePromptJSONBodyAllowedChatops03LessThannil CreatePromptJSONBodyAllowedChatops03 = "<nil>"
+)
+
+// Defines values for CreatePromptJSONBodyIncomingEmailSecurityMode.
+const (
+	CreatePromptJSONBodyIncomingEmailSecurityModeInternal CreatePromptJSONBodyIncomingEmailSecurityMode = "internal"
+	CreatePromptJSONBodyIncomingEmailSecurityModePrivate  CreatePromptJSONBodyIncomingEmailSecurityMode = "private"
+	CreatePromptJSONBodyIncomingEmailSecurityModePublic   CreatePromptJSONBodyIncomingEmailSecurityMode = "public"
+)
+
+// Defines values for UpdatePromptJSONBodyAllowedChatops03.
+const (
+	UpdatePromptJSONBodyAllowedChatops03LessThannil UpdatePromptJSONBodyAllowedChatops03 = "<nil>"
+)
+
+// Defines values for UpdatePromptJSONBodyIncomingEmailSecurityMode.
+const (
+	UpdatePromptJSONBodyIncomingEmailSecurityModeInternal UpdatePromptJSONBodyIncomingEmailSecurityMode = "internal"
+	UpdatePromptJSONBodyIncomingEmailSecurityModePrivate  UpdatePromptJSONBodyIncomingEmailSecurityMode = "private"
+	UpdatePromptJSONBodyIncomingEmailSecurityModePublic   UpdatePromptJSONBodyIncomingEmailSecurityMode = "public"
 )
 
 // Defines values for CreateRoleJSONBodyPermission.
@@ -854,6 +884,11 @@ type UpdateChatApiKeyJSONBody struct {
 
 // UpdateChatApiKeyJSONBodyScope defines parameters for UpdateChatApiKey.
 type UpdateChatApiKeyJSONBodyScope string
+
+// GetChatConversationsParams defines parameters for GetChatConversations.
+type GetChatConversationsParams struct {
+	Search *string `form:"search,omitempty" json:"search,omitempty"`
+}
 
 // CreateChatConversationJSONBody defines parameters for CreateChatConversation.
 type CreateChatConversationJSONBody struct {
@@ -1266,6 +1301,8 @@ type InstallMcpServerJSONBody struct {
 	LocalInstallationError  *string                                          `json:"localInstallationError"`
 	LocalInstallationStatus *InstallMcpServerJSONBodyLocalInstallationStatus `json:"localInstallationStatus,omitempty"`
 	Name                    string                                           `json:"name"`
+	OauthRefreshError       *InstallMcpServerJSONBodyOauthRefreshError       `json:"oauthRefreshError"`
+	OauthRefreshFailedAt    interface{}                                      `json:"oauthRefreshFailedAt"`
 	OwnerId                 *string                                          `json:"ownerId"`
 	ReinstallRequired       *bool                                            `json:"reinstallRequired,omitempty"`
 	SecretId                *openapi_types.UUID                              `json:"secretId,omitempty"`
@@ -1278,10 +1315,18 @@ type InstallMcpServerJSONBody struct {
 // InstallMcpServerJSONBodyLocalInstallationStatus defines parameters for InstallMcpServer.
 type InstallMcpServerJSONBodyLocalInstallationStatus string
 
+// InstallMcpServerJSONBodyOauthRefreshError defines parameters for InstallMcpServer.
+type InstallMcpServerJSONBodyOauthRefreshError string
+
 // GetMcpServerLogsParams defines parameters for GetMcpServerLogs.
 type GetMcpServerLogsParams struct {
 	Lines  *float32 `form:"lines,omitempty" json:"lines,omitempty"`
 	Follow *bool    `form:"follow,omitempty" json:"follow,omitempty"`
+}
+
+// ReauthenticateMcpServerJSONBody defines parameters for ReauthenticateMcpServer.
+type ReauthenticateMcpServerJSONBody struct {
+	SecretId openapi_types.UUID `json:"secretId"`
 }
 
 // GetMcpServerInstallationRequestsParams defines parameters for GetMcpServerInstallationRequests.
@@ -1638,20 +1683,90 @@ type UpdateOrganizationJSONBodyTheme string
 
 // CreatePromptJSONBody defines parameters for CreatePrompt.
 type CreatePromptJSONBody struct {
-	AgentId      openapi_types.UUID `json:"agentId"`
-	Name         string             `json:"name"`
-	SystemPrompt *string            `json:"systemPrompt"`
-	UserPrompt   *string            `json:"userPrompt"`
-	Version      *int               `json:"version,omitempty"`
+	AgentId                    openapi_types.UUID                             `json:"agentId"`
+	AllowedChatops             *CreatePromptJSONBody_AllowedChatops           `json:"allowedChatops,omitempty"`
+	IncomingEmailAllowedDomain *string                                        `json:"incomingEmailAllowedDomain"`
+	IncomingEmailEnabled       *bool                                          `json:"incomingEmailEnabled,omitempty"`
+	IncomingEmailSecurityMode  *CreatePromptJSONBodyIncomingEmailSecurityMode `json:"incomingEmailSecurityMode,omitempty"`
+	Name                       string                                         `json:"name"`
+	SystemPrompt               *string                                        `json:"systemPrompt"`
+	UserPrompt                 *string                                        `json:"userPrompt"`
+	Version                    *int                                           `json:"version,omitempty"`
 }
+
+// CreatePromptJSONBodyAllowedChatops0 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops0 struct {
+	union json.RawMessage
+}
+
+// CreatePromptJSONBodyAllowedChatops00 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops00 = string
+
+// CreatePromptJSONBodyAllowedChatops01 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops01 = float32
+
+// CreatePromptJSONBodyAllowedChatops02 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops02 = bool
+
+// CreatePromptJSONBodyAllowedChatops03 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops03 string
+
+// CreatePromptJSONBodyAllowedChatops1 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops1 map[string]interface{}
+
+// CreatePromptJSONBodyAllowedChatops2 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops2 = []interface{}
+
+// CreatePromptJSONBody_AllowedChatops defines parameters for CreatePrompt.
+type CreatePromptJSONBody_AllowedChatops struct {
+	union json.RawMessage
+}
+
+// CreatePromptJSONBodyIncomingEmailSecurityMode defines parameters for CreatePrompt.
+type CreatePromptJSONBodyIncomingEmailSecurityMode string
 
 // UpdatePromptJSONBody defines parameters for UpdatePrompt.
 type UpdatePromptJSONBody struct {
-	AgentId      *openapi_types.UUID `json:"agentId,omitempty"`
-	Name         *string             `json:"name,omitempty"`
-	SystemPrompt *string             `json:"systemPrompt"`
-	UserPrompt   *string             `json:"userPrompt"`
+	AgentId                    *openapi_types.UUID                            `json:"agentId,omitempty"`
+	AllowedChatops             *UpdatePromptJSONBody_AllowedChatops           `json:"allowedChatops,omitempty"`
+	IncomingEmailAllowedDomain *string                                        `json:"incomingEmailAllowedDomain"`
+	IncomingEmailEnabled       *bool                                          `json:"incomingEmailEnabled,omitempty"`
+	IncomingEmailSecurityMode  *UpdatePromptJSONBodyIncomingEmailSecurityMode `json:"incomingEmailSecurityMode,omitempty"`
+	Name                       *string                                        `json:"name,omitempty"`
+	SystemPrompt               *string                                        `json:"systemPrompt"`
+	UserPrompt                 *string                                        `json:"userPrompt"`
 }
+
+// UpdatePromptJSONBodyAllowedChatops0 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops0 struct {
+	union json.RawMessage
+}
+
+// UpdatePromptJSONBodyAllowedChatops00 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops00 = string
+
+// UpdatePromptJSONBodyAllowedChatops01 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops01 = float32
+
+// UpdatePromptJSONBodyAllowedChatops02 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops02 = bool
+
+// UpdatePromptJSONBodyAllowedChatops03 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops03 string
+
+// UpdatePromptJSONBodyAllowedChatops1 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops1 map[string]interface{}
+
+// UpdatePromptJSONBodyAllowedChatops2 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops2 = []interface{}
+
+// UpdatePromptJSONBody_AllowedChatops defines parameters for UpdatePrompt.
+type UpdatePromptJSONBody_AllowedChatops struct {
+	union json.RawMessage
+}
+
+// UpdatePromptJSONBodyIncomingEmailSecurityMode defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyIncomingEmailSecurityMode string
 
 // RollbackPromptJSONBody defines parameters for RollbackPrompt.
 type RollbackPromptJSONBody struct {
@@ -2119,6 +2234,9 @@ type UpdateUserJSONBody struct {
 	Name  *string              `json:"name,omitempty"`
 }
 
+// PostApiWebhooksChatopsMsTeamsJSONBody defines parameters for PostApiWebhooksChatopsMsTeams.
+type PostApiWebhooksChatopsMsTeamsJSONBody = interface{}
+
 // PostApiWebhooksIncomingEmailJSONBody defines parameters for PostApiWebhooksIncomingEmail.
 type PostApiWebhooksIncomingEmailJSONBody = interface{}
 
@@ -2226,6 +2344,9 @@ type UpdateLimitJSONRequestBody UpdateLimitJSONBody
 // InstallMcpServerJSONRequestBody defines body for InstallMcpServer for application/json ContentType.
 type InstallMcpServerJSONRequestBody InstallMcpServerJSONBody
 
+// ReauthenticateMcpServerJSONRequestBody defines body for ReauthenticateMcpServer for application/json ContentType.
+type ReauthenticateMcpServerJSONRequestBody ReauthenticateMcpServerJSONBody
+
 // CreateMcpServerInstallationRequestJSONRequestBody defines body for CreateMcpServerInstallationRequest for application/json ContentType.
 type CreateMcpServerInstallationRequestJSONRequestBody CreateMcpServerInstallationRequestJSONBody
 
@@ -2327,6 +2448,9 @@ type CreateUserJSONRequestBody CreateUserJSONBody
 
 // UpdateUserJSONRequestBody defines body for UpdateUser for application/json ContentType.
 type UpdateUserJSONRequestBody UpdateUserJSONBody
+
+// PostApiWebhooksChatopsMsTeamsJSONRequestBody defines body for PostApiWebhooksChatopsMsTeams for application/json ContentType.
+type PostApiWebhooksChatopsMsTeamsJSONRequestBody = PostApiWebhooksChatopsMsTeamsJSONBody
 
 // PostApiWebhooksIncomingEmailJSONRequestBody defines body for PostApiWebhooksIncomingEmail for application/json ContentType.
 type PostApiWebhooksIncomingEmailJSONRequestBody = PostApiWebhooksIncomingEmailJSONBody
@@ -2520,7 +2644,7 @@ type ClientInterface interface {
 	GetChatAgentMcpTools(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetChatConversations request
-	GetChatConversations(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetChatConversations(ctx context.Context, params *GetChatConversationsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateChatConversationWithBody request with any body
 	CreateChatConversationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2561,6 +2685,18 @@ type ClientInterface interface {
 
 	// GetChatModels request
 	GetChatModels(ctx context.Context, params *GetChatModelsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// InvalidateChatModelsCache request
+	InvalidateChatModelsCache(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListChatOpsBindings request
+	ListChatOpsBindings(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteChatOpsBinding request
+	DeleteChatOpsBinding(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetChatOpsStatus request
+	GetChatOpsStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetDualLlmConfigs request
 	GetDualLlmConfigs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2679,6 +2815,11 @@ type ClientInterface interface {
 
 	// GetMcpServerLogs request
 	GetMcpServerLogs(ctx context.Context, id openapi_types.UUID, params *GetMcpServerLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReauthenticateMcpServerWithBody request with any body
+	ReauthenticateMcpServerWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ReauthenticateMcpServer(ctx context.Context, id openapi_types.UUID, body ReauthenticateMcpServerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RestartMcpServer request
 	RestartMcpServer(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3050,6 +3191,11 @@ type ClientInterface interface {
 
 	// GetUserById request
 	GetUserById(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiWebhooksChatopsMsTeamsWithBody request with any body
+	PostApiWebhooksChatopsMsTeamsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiWebhooksChatopsMsTeams(ctx context.Context, body PostApiWebhooksChatopsMsTeamsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostApiWebhooksIncomingEmailWithBody request with any body
 	PostApiWebhooksIncomingEmailWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3563,8 +3709,8 @@ func (c *Client) GetChatAgentMcpTools(ctx context.Context, agentId openapi_types
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetChatConversations(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetChatConversationsRequest(c.Server)
+func (c *Client) GetChatConversations(ctx context.Context, params *GetChatConversationsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetChatConversationsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -3745,6 +3891,54 @@ func (c *Client) UpdateChatMessage(ctx context.Context, id openapi_types.UUID, b
 
 func (c *Client) GetChatModels(ctx context.Context, params *GetChatModelsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetChatModelsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) InvalidateChatModelsCache(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewInvalidateChatModelsCacheRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListChatOpsBindings(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListChatOpsBindingsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteChatOpsBinding(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteChatOpsBindingRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetChatOpsStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetChatOpsStatusRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -4249,6 +4443,30 @@ func (c *Client) GetMcpServerInstallationStatus(ctx context.Context, id openapi_
 
 func (c *Client) GetMcpServerLogs(ctx context.Context, id openapi_types.UUID, params *GetMcpServerLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetMcpServerLogsRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ReauthenticateMcpServerWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReauthenticateMcpServerRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ReauthenticateMcpServer(ctx context.Context, id openapi_types.UUID, body ReauthenticateMcpServerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReauthenticateMcpServerRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -5879,6 +6097,30 @@ func (c *Client) GetUserById(ctx context.Context, id string, reqEditors ...Reque
 	return c.Client.Do(req)
 }
 
+func (c *Client) PostApiWebhooksChatopsMsTeamsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiWebhooksChatopsMsTeamsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiWebhooksChatopsMsTeams(ctx context.Context, body PostApiWebhooksChatopsMsTeamsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiWebhooksChatopsMsTeamsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) PostApiWebhooksIncomingEmailWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostApiWebhooksIncomingEmailRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -7347,7 +7589,7 @@ func NewGetChatAgentMcpToolsRequest(server string, agentId openapi_types.UUID) (
 }
 
 // NewGetChatConversationsRequest generates requests for GetChatConversations
-func NewGetChatConversationsRequest(server string) (*http.Request, error) {
+func NewGetChatConversationsRequest(server string, params *GetChatConversationsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -7363,6 +7605,28 @@ func NewGetChatConversationsRequest(server string) (*http.Request, error) {
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -7776,6 +8040,121 @@ func NewGetChatModelsRequest(server string, params *GetChatModelsParams) (*http.
 		}
 
 		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewInvalidateChatModelsCacheRequest generates requests for InvalidateChatModelsCache
+func NewInvalidateChatModelsCacheRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chat/models/invalidate-cache")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListChatOpsBindingsRequest generates requests for ListChatOpsBindings
+func NewListChatOpsBindingsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/bindings")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteChatOpsBindingRequest generates requests for DeleteChatOpsBinding
+func NewDeleteChatOpsBindingRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/bindings/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetChatOpsStatusRequest generates requests for GetChatOpsStatus
+func NewGetChatOpsStatusRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/status")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -9185,6 +9564,53 @@ func NewGetMcpServerLogsRequest(server string, id openapi_types.UUID, params *Ge
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewReauthenticateMcpServerRequest calls the generic ReauthenticateMcpServer builder with application/json body
+func NewReauthenticateMcpServerRequest(server string, id openapi_types.UUID, body ReauthenticateMcpServerJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewReauthenticateMcpServerRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewReauthenticateMcpServerRequestWithBody generates requests for ReauthenticateMcpServer with any type of body
+func NewReauthenticateMcpServerRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server/%s/reauthenticate", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -13071,6 +13497,46 @@ func NewGetUserByIdRequest(server string, id string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewPostApiWebhooksChatopsMsTeamsRequest calls the generic PostApiWebhooksChatopsMsTeams builder with application/json body
+func NewPostApiWebhooksChatopsMsTeamsRequest(server string, body PostApiWebhooksChatopsMsTeamsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiWebhooksChatopsMsTeamsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiWebhooksChatopsMsTeamsRequestWithBody generates requests for PostApiWebhooksChatopsMsTeams with any type of body
+func NewPostApiWebhooksChatopsMsTeamsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/webhooks/chatops/ms-teams")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewPostApiWebhooksIncomingEmailRequest calls the generic PostApiWebhooksIncomingEmail builder with application/json body
 func NewPostApiWebhooksIncomingEmailRequest(server string, body PostApiWebhooksIncomingEmailJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -13402,7 +13868,7 @@ type ClientWithResponsesInterface interface {
 	GetChatAgentMcpToolsWithResponse(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetChatAgentMcpToolsResponse, error)
 
 	// GetChatConversationsWithResponse request
-	GetChatConversationsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetChatConversationsResponse, error)
+	GetChatConversationsWithResponse(ctx context.Context, params *GetChatConversationsParams, reqEditors ...RequestEditorFn) (*GetChatConversationsResponse, error)
 
 	// CreateChatConversationWithBodyWithResponse request with any body
 	CreateChatConversationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateChatConversationResponse, error)
@@ -13443,6 +13909,18 @@ type ClientWithResponsesInterface interface {
 
 	// GetChatModelsWithResponse request
 	GetChatModelsWithResponse(ctx context.Context, params *GetChatModelsParams, reqEditors ...RequestEditorFn) (*GetChatModelsResponse, error)
+
+	// InvalidateChatModelsCacheWithResponse request
+	InvalidateChatModelsCacheWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*InvalidateChatModelsCacheResponse, error)
+
+	// ListChatOpsBindingsWithResponse request
+	ListChatOpsBindingsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListChatOpsBindingsResponse, error)
+
+	// DeleteChatOpsBindingWithResponse request
+	DeleteChatOpsBindingWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteChatOpsBindingResponse, error)
+
+	// GetChatOpsStatusWithResponse request
+	GetChatOpsStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetChatOpsStatusResponse, error)
 
 	// GetDualLlmConfigsWithResponse request
 	GetDualLlmConfigsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDualLlmConfigsResponse, error)
@@ -13561,6 +14039,11 @@ type ClientWithResponsesInterface interface {
 
 	// GetMcpServerLogsWithResponse request
 	GetMcpServerLogsWithResponse(ctx context.Context, id openapi_types.UUID, params *GetMcpServerLogsParams, reqEditors ...RequestEditorFn) (*GetMcpServerLogsResponse, error)
+
+	// ReauthenticateMcpServerWithBodyWithResponse request with any body
+	ReauthenticateMcpServerWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReauthenticateMcpServerResponse, error)
+
+	ReauthenticateMcpServerWithResponse(ctx context.Context, id openapi_types.UUID, body ReauthenticateMcpServerJSONRequestBody, reqEditors ...RequestEditorFn) (*ReauthenticateMcpServerResponse, error)
 
 	// RestartMcpServerWithResponse request
 	RestartMcpServerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*RestartMcpServerResponse, error)
@@ -13932,6 +14415,11 @@ type ClientWithResponsesInterface interface {
 
 	// GetUserByIdWithResponse request
 	GetUserByIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserByIdResponse, error)
+
+	// PostApiWebhooksChatopsMsTeamsWithBodyWithResponse request with any body
+	PostApiWebhooksChatopsMsTeamsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiWebhooksChatopsMsTeamsResponse, error)
+
+	PostApiWebhooksChatopsMsTeamsWithResponse(ctx context.Context, body PostApiWebhooksChatopsMsTeamsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiWebhooksChatopsMsTeamsResponse, error)
 
 	// PostApiWebhooksIncomingEmailWithBodyWithResponse request with any body
 	PostApiWebhooksIncomingEmailWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiWebhooksIncomingEmailResponse, error)
@@ -17265,6 +17753,282 @@ func (r GetChatModelsResponse) StatusCode() int {
 	return 0
 }
 
+type InvalidateChatModelsCacheResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type InvalidateChatModelsCache400ErrorType string
+type InvalidateChatModelsCache401ErrorType string
+type InvalidateChatModelsCache403ErrorType string
+type InvalidateChatModelsCache404ErrorType string
+type InvalidateChatModelsCache409ErrorType string
+type InvalidateChatModelsCache500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r InvalidateChatModelsCacheResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r InvalidateChatModelsCacheResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListChatOpsBindingsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		ChannelId      string                         `json:"channelId"`
+		CreatedAt      time.Time                      `json:"createdAt"`
+		Id             openapi_types.UUID             `json:"id"`
+		OrganizationId string                         `json:"organizationId"`
+		PromptId       openapi_types.UUID             `json:"promptId"`
+		Provider       ListChatOpsBindings200Provider `json:"provider"`
+		UpdatedAt      time.Time                      `json:"updatedAt"`
+		WorkspaceId    *string                        `json:"workspaceId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type ListChatOpsBindings200Provider string
+type ListChatOpsBindings400ErrorType string
+type ListChatOpsBindings401ErrorType string
+type ListChatOpsBindings403ErrorType string
+type ListChatOpsBindings404ErrorType string
+type ListChatOpsBindings409ErrorType string
+type ListChatOpsBindings500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r ListChatOpsBindingsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListChatOpsBindingsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteChatOpsBindingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteChatOpsBinding400ErrorType string
+type DeleteChatOpsBinding401ErrorType string
+type DeleteChatOpsBinding403ErrorType string
+type DeleteChatOpsBinding404ErrorType string
+type DeleteChatOpsBinding409ErrorType string
+type DeleteChatOpsBinding500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteChatOpsBindingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteChatOpsBindingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetChatOpsStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Providers []struct {
+			Configured  bool   `json:"configured"`
+			DisplayName string `json:"displayName"`
+			Id          string `json:"id"`
+		} `json:"providers"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetChatOpsStatus400ErrorType string
+type GetChatOpsStatus401ErrorType string
+type GetChatOpsStatus403ErrorType string
+type GetChatOpsStatus404ErrorType string
+type GetChatOpsStatus409ErrorType string
+type GetChatOpsStatus500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetChatOpsStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetChatOpsStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetDualLlmConfigsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -19659,6 +20423,8 @@ type GetMcpServersResponse struct {
 		LocalInstallationError  *string                                 `json:"localInstallationError"`
 		LocalInstallationStatus GetMcpServers200LocalInstallationStatus `json:"localInstallationStatus"`
 		Name                    string                                  `json:"name"`
+		OauthRefreshError       *GetMcpServers200OauthRefreshError      `json:"oauthRefreshError"`
+		OauthRefreshFailedAt    *time.Time                              `json:"oauthRefreshFailedAt"`
 		OwnerEmail              *string                                 `json:"ownerEmail"`
 		OwnerId                 *string                                 `json:"ownerId"`
 		ReinstallRequired       bool                                    `json:"reinstallRequired"`
@@ -19717,6 +20483,7 @@ type GetMcpServersResponse struct {
 	}
 }
 type GetMcpServers200LocalInstallationStatus string
+type GetMcpServers200OauthRefreshError string
 type GetMcpServers200SecretStorageType string
 type GetMcpServers200ServerType string
 type GetMcpServers400ErrorType string
@@ -19753,6 +20520,8 @@ type InstallMcpServerResponse struct {
 		LocalInstallationError  *string                                    `json:"localInstallationError"`
 		LocalInstallationStatus InstallMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
 		Name                    string                                     `json:"name"`
+		OauthRefreshError       *InstallMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+		OauthRefreshFailedAt    *time.Time                                 `json:"oauthRefreshFailedAt"`
 		OwnerEmail              *string                                    `json:"ownerEmail"`
 		OwnerId                 *string                                    `json:"ownerId"`
 		ReinstallRequired       bool                                       `json:"reinstallRequired"`
@@ -19811,6 +20580,7 @@ type InstallMcpServerResponse struct {
 	}
 }
 type InstallMcpServer200LocalInstallationStatus string
+type InstallMcpServer200OauthRefreshError string
 type InstallMcpServer200SecretStorageType string
 type InstallMcpServer200ServerType string
 type InstallMcpServer400ErrorType string
@@ -19913,6 +20683,8 @@ type GetMcpServerResponse struct {
 		LocalInstallationError  *string                                `json:"localInstallationError"`
 		LocalInstallationStatus GetMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
 		Name                    string                                 `json:"name"`
+		OauthRefreshError       *GetMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+		OauthRefreshFailedAt    *time.Time                             `json:"oauthRefreshFailedAt"`
 		OwnerEmail              *string                                `json:"ownerEmail"`
 		OwnerId                 *string                                `json:"ownerId"`
 		ReinstallRequired       bool                                   `json:"reinstallRequired"`
@@ -19971,6 +20743,7 @@ type GetMcpServerResponse struct {
 	}
 }
 type GetMcpServer200LocalInstallationStatus string
+type GetMcpServer200OauthRefreshError string
 type GetMcpServer200SecretStorageType string
 type GetMcpServer200ServerType string
 type GetMcpServer400ErrorType string
@@ -20127,6 +20900,103 @@ func (r GetMcpServerLogsResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetMcpServerLogsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ReauthenticateMcpServerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CatalogId               openapi_types.UUID                                `json:"catalogId"`
+		CatalogName             *string                                           `json:"catalogName"`
+		CreatedAt               time.Time                                         `json:"createdAt"`
+		Id                      openapi_types.UUID                                `json:"id"`
+		LocalInstallationError  *string                                           `json:"localInstallationError"`
+		LocalInstallationStatus ReauthenticateMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
+		Name                    string                                            `json:"name"`
+		OauthRefreshError       *ReauthenticateMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+		OauthRefreshFailedAt    *time.Time                                        `json:"oauthRefreshFailedAt"`
+		OwnerEmail              *string                                           `json:"ownerEmail"`
+		OwnerId                 *string                                           `json:"ownerId"`
+		ReinstallRequired       bool                                              `json:"reinstallRequired"`
+		SecretId                *openapi_types.UUID                               `json:"secretId"`
+		SecretStorageType       *ReauthenticateMcpServer200SecretStorageType      `json:"secretStorageType,omitempty"`
+		ServerType              ReauthenticateMcpServer200ServerType              `json:"serverType"`
+		TeamDetails             *struct {
+			CreatedAt time.Time `json:"createdAt"`
+			Name      string    `json:"name"`
+			TeamId    string    `json:"teamId"`
+		} `json:"teamDetails"`
+		TeamId      *string   `json:"teamId"`
+		UpdatedAt   time.Time `json:"updatedAt"`
+		UserDetails *[]struct {
+			CreatedAt time.Time `json:"createdAt"`
+			Email     string    `json:"email"`
+			UserId    string    `json:"userId"`
+		} `json:"userDetails,omitempty"`
+		Users *[]string `json:"users,omitempty"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type ReauthenticateMcpServer200LocalInstallationStatus string
+type ReauthenticateMcpServer200OauthRefreshError string
+type ReauthenticateMcpServer200SecretStorageType string
+type ReauthenticateMcpServer200ServerType string
+type ReauthenticateMcpServer400ErrorType string
+type ReauthenticateMcpServer401ErrorType string
+type ReauthenticateMcpServer403ErrorType string
+type ReauthenticateMcpServer404ErrorType string
+type ReauthenticateMcpServer409ErrorType string
+type ReauthenticateMcpServer500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r ReauthenticateMcpServerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReauthenticateMcpServerResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -22331,16 +23201,20 @@ type GetPromptsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		AgentId        openapi_types.UUID     `json:"agentId"`
-		CreatedAt      time.Time              `json:"createdAt"`
-		History        GetPrompts_200_History `json:"history"`
-		Id             openapi_types.UUID     `json:"id"`
-		Name           string                 `json:"name"`
-		OrganizationId string                 `json:"organizationId"`
-		SystemPrompt   *string                `json:"systemPrompt"`
-		UpdatedAt      time.Time              `json:"updatedAt"`
-		UserPrompt     *string                `json:"userPrompt"`
-		Version        int                    `json:"version"`
+		AgentId                    openapi_types.UUID                     `json:"agentId"`
+		AllowedChatops             GetPrompts_200_AllowedChatops          `json:"allowedChatops"`
+		CreatedAt                  time.Time                              `json:"createdAt"`
+		History                    GetPrompts_200_History                 `json:"history"`
+		Id                         openapi_types.UUID                     `json:"id"`
+		IncomingEmailAllowedDomain *string                                `json:"incomingEmailAllowedDomain"`
+		IncomingEmailEnabled       bool                                   `json:"incomingEmailEnabled"`
+		IncomingEmailSecurityMode  GetPrompts200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+		Name                       string                                 `json:"name"`
+		OrganizationId             string                                 `json:"organizationId"`
+		SystemPrompt               *string                                `json:"systemPrompt"`
+		UpdatedAt                  time.Time                              `json:"updatedAt"`
+		UserPrompt                 *string                                `json:"userPrompt"`
+		Version                    int                                    `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -22379,6 +23253,18 @@ type GetPromptsResponse struct {
 		} `json:"error"`
 	}
 }
+type GetPrompts200AllowedChatops0 struct {
+	union json.RawMessage
+}
+type GetPrompts200AllowedChatops00 = string
+type GetPrompts200AllowedChatops01 = float32
+type GetPrompts200AllowedChatops02 = bool
+type GetPrompts200AllowedChatops03 string
+type GetPrompts200AllowedChatops1 map[string]interface{}
+type GetPrompts200AllowedChatops2 = []interface{}
+type GetPrompts_200_AllowedChatops struct {
+	union json.RawMessage
+}
 type GetPrompts200History0 struct {
 	union json.RawMessage
 }
@@ -22391,6 +23277,7 @@ type GetPrompts200History2 = []interface{}
 type GetPrompts_200_History struct {
 	union json.RawMessage
 }
+type GetPrompts200IncomingEmailSecurityMode string
 type GetPrompts400ErrorType string
 type GetPrompts401ErrorType string
 type GetPrompts403ErrorType string
@@ -22418,16 +23305,20 @@ type CreatePromptResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AgentId        openapi_types.UUID       `json:"agentId"`
-		CreatedAt      time.Time                `json:"createdAt"`
-		History        CreatePrompt_200_History `json:"history"`
-		Id             openapi_types.UUID       `json:"id"`
-		Name           string                   `json:"name"`
-		OrganizationId string                   `json:"organizationId"`
-		SystemPrompt   *string                  `json:"systemPrompt"`
-		UpdatedAt      time.Time                `json:"updatedAt"`
-		UserPrompt     *string                  `json:"userPrompt"`
-		Version        int                      `json:"version"`
+		AgentId                    openapi_types.UUID                       `json:"agentId"`
+		AllowedChatops             CreatePrompt_200_AllowedChatops          `json:"allowedChatops"`
+		CreatedAt                  time.Time                                `json:"createdAt"`
+		History                    CreatePrompt_200_History                 `json:"history"`
+		Id                         openapi_types.UUID                       `json:"id"`
+		IncomingEmailAllowedDomain *string                                  `json:"incomingEmailAllowedDomain"`
+		IncomingEmailEnabled       bool                                     `json:"incomingEmailEnabled"`
+		IncomingEmailSecurityMode  CreatePrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+		Name                       string                                   `json:"name"`
+		OrganizationId             string                                   `json:"organizationId"`
+		SystemPrompt               *string                                  `json:"systemPrompt"`
+		UpdatedAt                  time.Time                                `json:"updatedAt"`
+		UserPrompt                 *string                                  `json:"userPrompt"`
+		Version                    int                                      `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -22466,6 +23357,18 @@ type CreatePromptResponse struct {
 		} `json:"error"`
 	}
 }
+type CreatePrompt200AllowedChatops0 struct {
+	union json.RawMessage
+}
+type CreatePrompt200AllowedChatops00 = string
+type CreatePrompt200AllowedChatops01 = float32
+type CreatePrompt200AllowedChatops02 = bool
+type CreatePrompt200AllowedChatops03 string
+type CreatePrompt200AllowedChatops1 map[string]interface{}
+type CreatePrompt200AllowedChatops2 = []interface{}
+type CreatePrompt_200_AllowedChatops struct {
+	union json.RawMessage
+}
 type CreatePrompt200History0 struct {
 	union json.RawMessage
 }
@@ -22478,6 +23381,7 @@ type CreatePrompt200History2 = []interface{}
 type CreatePrompt_200_History struct {
 	union json.RawMessage
 }
+type CreatePrompt200IncomingEmailSecurityMode string
 type CreatePrompt400ErrorType string
 type CreatePrompt401ErrorType string
 type CreatePrompt403ErrorType string
@@ -22571,16 +23475,20 @@ type GetPromptResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AgentId        openapi_types.UUID    `json:"agentId"`
-		CreatedAt      time.Time             `json:"createdAt"`
-		History        GetPrompt_200_History `json:"history"`
-		Id             openapi_types.UUID    `json:"id"`
-		Name           string                `json:"name"`
-		OrganizationId string                `json:"organizationId"`
-		SystemPrompt   *string               `json:"systemPrompt"`
-		UpdatedAt      time.Time             `json:"updatedAt"`
-		UserPrompt     *string               `json:"userPrompt"`
-		Version        int                   `json:"version"`
+		AgentId                    openapi_types.UUID                    `json:"agentId"`
+		AllowedChatops             GetPrompt_200_AllowedChatops          `json:"allowedChatops"`
+		CreatedAt                  time.Time                             `json:"createdAt"`
+		History                    GetPrompt_200_History                 `json:"history"`
+		Id                         openapi_types.UUID                    `json:"id"`
+		IncomingEmailAllowedDomain *string                               `json:"incomingEmailAllowedDomain"`
+		IncomingEmailEnabled       bool                                  `json:"incomingEmailEnabled"`
+		IncomingEmailSecurityMode  GetPrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+		Name                       string                                `json:"name"`
+		OrganizationId             string                                `json:"organizationId"`
+		SystemPrompt               *string                               `json:"systemPrompt"`
+		UpdatedAt                  time.Time                             `json:"updatedAt"`
+		UserPrompt                 *string                               `json:"userPrompt"`
+		Version                    int                                   `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -22619,6 +23527,18 @@ type GetPromptResponse struct {
 		} `json:"error"`
 	}
 }
+type GetPrompt200AllowedChatops0 struct {
+	union json.RawMessage
+}
+type GetPrompt200AllowedChatops00 = string
+type GetPrompt200AllowedChatops01 = float32
+type GetPrompt200AllowedChatops02 = bool
+type GetPrompt200AllowedChatops03 string
+type GetPrompt200AllowedChatops1 map[string]interface{}
+type GetPrompt200AllowedChatops2 = []interface{}
+type GetPrompt_200_AllowedChatops struct {
+	union json.RawMessage
+}
 type GetPrompt200History0 struct {
 	union json.RawMessage
 }
@@ -22631,6 +23551,7 @@ type GetPrompt200History2 = []interface{}
 type GetPrompt_200_History struct {
 	union json.RawMessage
 }
+type GetPrompt200IncomingEmailSecurityMode string
 type GetPrompt400ErrorType string
 type GetPrompt401ErrorType string
 type GetPrompt403ErrorType string
@@ -22658,16 +23579,20 @@ type UpdatePromptResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AgentId        openapi_types.UUID       `json:"agentId"`
-		CreatedAt      time.Time                `json:"createdAt"`
-		History        UpdatePrompt_200_History `json:"history"`
-		Id             openapi_types.UUID       `json:"id"`
-		Name           string                   `json:"name"`
-		OrganizationId string                   `json:"organizationId"`
-		SystemPrompt   *string                  `json:"systemPrompt"`
-		UpdatedAt      time.Time                `json:"updatedAt"`
-		UserPrompt     *string                  `json:"userPrompt"`
-		Version        int                      `json:"version"`
+		AgentId                    openapi_types.UUID                       `json:"agentId"`
+		AllowedChatops             UpdatePrompt_200_AllowedChatops          `json:"allowedChatops"`
+		CreatedAt                  time.Time                                `json:"createdAt"`
+		History                    UpdatePrompt_200_History                 `json:"history"`
+		Id                         openapi_types.UUID                       `json:"id"`
+		IncomingEmailAllowedDomain *string                                  `json:"incomingEmailAllowedDomain"`
+		IncomingEmailEnabled       bool                                     `json:"incomingEmailEnabled"`
+		IncomingEmailSecurityMode  UpdatePrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+		Name                       string                                   `json:"name"`
+		OrganizationId             string                                   `json:"organizationId"`
+		SystemPrompt               *string                                  `json:"systemPrompt"`
+		UpdatedAt                  time.Time                                `json:"updatedAt"`
+		UserPrompt                 *string                                  `json:"userPrompt"`
+		Version                    int                                      `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -22706,6 +23631,18 @@ type UpdatePromptResponse struct {
 		} `json:"error"`
 	}
 }
+type UpdatePrompt200AllowedChatops0 struct {
+	union json.RawMessage
+}
+type UpdatePrompt200AllowedChatops00 = string
+type UpdatePrompt200AllowedChatops01 = float32
+type UpdatePrompt200AllowedChatops02 = bool
+type UpdatePrompt200AllowedChatops03 string
+type UpdatePrompt200AllowedChatops1 map[string]interface{}
+type UpdatePrompt200AllowedChatops2 = []interface{}
+type UpdatePrompt_200_AllowedChatops struct {
+	union json.RawMessage
+}
 type UpdatePrompt200History0 struct {
 	union json.RawMessage
 }
@@ -22718,6 +23655,7 @@ type UpdatePrompt200History2 = []interface{}
 type UpdatePrompt_200_History struct {
 	union json.RawMessage
 }
+type UpdatePrompt200IncomingEmailSecurityMode string
 type UpdatePrompt400ErrorType string
 type UpdatePrompt401ErrorType string
 type UpdatePrompt403ErrorType string
@@ -22745,16 +23683,20 @@ type RollbackPromptResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AgentId        openapi_types.UUID         `json:"agentId"`
-		CreatedAt      time.Time                  `json:"createdAt"`
-		History        RollbackPrompt_200_History `json:"history"`
-		Id             openapi_types.UUID         `json:"id"`
-		Name           string                     `json:"name"`
-		OrganizationId string                     `json:"organizationId"`
-		SystemPrompt   *string                    `json:"systemPrompt"`
-		UpdatedAt      time.Time                  `json:"updatedAt"`
-		UserPrompt     *string                    `json:"userPrompt"`
-		Version        int                        `json:"version"`
+		AgentId                    openapi_types.UUID                         `json:"agentId"`
+		AllowedChatops             RollbackPrompt_200_AllowedChatops          `json:"allowedChatops"`
+		CreatedAt                  time.Time                                  `json:"createdAt"`
+		History                    RollbackPrompt_200_History                 `json:"history"`
+		Id                         openapi_types.UUID                         `json:"id"`
+		IncomingEmailAllowedDomain *string                                    `json:"incomingEmailAllowedDomain"`
+		IncomingEmailEnabled       bool                                       `json:"incomingEmailEnabled"`
+		IncomingEmailSecurityMode  RollbackPrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+		Name                       string                                     `json:"name"`
+		OrganizationId             string                                     `json:"organizationId"`
+		SystemPrompt               *string                                    `json:"systemPrompt"`
+		UpdatedAt                  time.Time                                  `json:"updatedAt"`
+		UserPrompt                 *string                                    `json:"userPrompt"`
+		Version                    int                                        `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -22793,6 +23735,18 @@ type RollbackPromptResponse struct {
 		} `json:"error"`
 	}
 }
+type RollbackPrompt200AllowedChatops0 struct {
+	union json.RawMessage
+}
+type RollbackPrompt200AllowedChatops00 = string
+type RollbackPrompt200AllowedChatops01 = float32
+type RollbackPrompt200AllowedChatops02 = bool
+type RollbackPrompt200AllowedChatops03 string
+type RollbackPrompt200AllowedChatops1 map[string]interface{}
+type RollbackPrompt200AllowedChatops2 = []interface{}
+type RollbackPrompt_200_AllowedChatops struct {
+	union json.RawMessage
+}
 type RollbackPrompt200History0 struct {
 	union json.RawMessage
 }
@@ -22805,6 +23759,7 @@ type RollbackPrompt200History2 = []interface{}
 type RollbackPrompt_200_History struct {
 	union json.RawMessage
 }
+type RollbackPrompt200IncomingEmailSecurityMode string
 type RollbackPrompt400ErrorType string
 type RollbackPrompt401ErrorType string
 type RollbackPrompt403ErrorType string
@@ -22916,16 +23871,20 @@ type GetPromptVersionsResponse struct {
 	HTTPResponse *http.Response
 	JSON200      *struct {
 		Current struct {
-			AgentId        openapi_types.UUID                    `json:"agentId"`
-			CreatedAt      time.Time                             `json:"createdAt"`
-			History        GetPromptVersions_200_Current_History `json:"history"`
-			Id             openapi_types.UUID                    `json:"id"`
-			Name           string                                `json:"name"`
-			OrganizationId string                                `json:"organizationId"`
-			SystemPrompt   *string                               `json:"systemPrompt"`
-			UpdatedAt      time.Time                             `json:"updatedAt"`
-			UserPrompt     *string                               `json:"userPrompt"`
-			Version        int                                   `json:"version"`
+			AgentId                    openapi_types.UUID                                   `json:"agentId"`
+			AllowedChatops             GetPromptVersions_200_Current_AllowedChatops         `json:"allowedChatops"`
+			CreatedAt                  time.Time                                            `json:"createdAt"`
+			History                    GetPromptVersions_200_Current_History                `json:"history"`
+			Id                         openapi_types.UUID                                   `json:"id"`
+			IncomingEmailAllowedDomain *string                                              `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                                 `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  GetPromptVersions200CurrentIncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                               `json:"name"`
+			OrganizationId             string                                               `json:"organizationId"`
+			SystemPrompt               *string                                              `json:"systemPrompt"`
+			UpdatedAt                  time.Time                                            `json:"updatedAt"`
+			UserPrompt                 *string                                              `json:"userPrompt"`
+			Version                    int                                                  `json:"version"`
 		} `json:"current"`
 		History []struct {
 			CreatedAt    string  `json:"createdAt"`
@@ -22971,6 +23930,18 @@ type GetPromptVersionsResponse struct {
 		} `json:"error"`
 	}
 }
+type GetPromptVersions200CurrentAllowedChatops0 struct {
+	union json.RawMessage
+}
+type GetPromptVersions200CurrentAllowedChatops00 = string
+type GetPromptVersions200CurrentAllowedChatops01 = float32
+type GetPromptVersions200CurrentAllowedChatops02 = bool
+type GetPromptVersions200CurrentAllowedChatops03 string
+type GetPromptVersions200CurrentAllowedChatops1 map[string]interface{}
+type GetPromptVersions200CurrentAllowedChatops2 = []interface{}
+type GetPromptVersions_200_Current_AllowedChatops struct {
+	union json.RawMessage
+}
 type GetPromptVersions200CurrentHistory0 struct {
 	union json.RawMessage
 }
@@ -22983,6 +23954,7 @@ type GetPromptVersions200CurrentHistory2 = []interface{}
 type GetPromptVersions_200_Current_History struct {
 	union json.RawMessage
 }
+type GetPromptVersions200CurrentIncomingEmailSecurityMode string
 type GetPromptVersions400ErrorType string
 type GetPromptVersions401ErrorType string
 type GetPromptVersions403ErrorType string
@@ -23216,8 +24188,11 @@ type GetPromptEmailAddressResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		EmailAddress *string `json:"emailAddress"`
-		Enabled      bool    `json:"enabled"`
+		AgentAllowedDomain        *string                                   `json:"agentAllowedDomain"`
+		AgentIncomingEmailEnabled bool                                      `json:"agentIncomingEmailEnabled"`
+		AgentSecurityMode         GetPromptEmailAddress200AgentSecurityMode `json:"agentSecurityMode"`
+		EmailAddress              *string                                   `json:"emailAddress"`
+		ProviderEnabled           bool                                      `json:"providerEnabled"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -23256,6 +24231,7 @@ type GetPromptEmailAddressResponse struct {
 		} `json:"error"`
 	}
 }
+type GetPromptEmailAddress200AgentSecurityMode string
 type GetPromptEmailAddress400ErrorType string
 type GetPromptEmailAddress401ErrorType string
 type GetPromptEmailAddress403ErrorType string
@@ -28459,6 +29435,45 @@ func (r GetUserByIdResponse) StatusCode() int {
 	return 0
 }
 
+type PostApiWebhooksChatopsMsTeamsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		union json.RawMessage
+	}
+	JSON400 *struct {
+		Error string `json:"error"`
+	}
+	JSON429 *struct {
+		Error string `json:"error"`
+	}
+	JSON500 *struct {
+		Error string `json:"error"`
+	}
+}
+type PostApiWebhooksChatopsMsTeams2000 struct {
+	Status string `json:"status"`
+}
+type PostApiWebhooksChatopsMsTeams2001 struct {
+	Success bool `json:"success"`
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiWebhooksChatopsMsTeamsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiWebhooksChatopsMsTeamsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type PostApiWebhooksIncomingEmailResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -29006,8 +30021,8 @@ func (c *ClientWithResponses) GetChatAgentMcpToolsWithResponse(ctx context.Conte
 }
 
 // GetChatConversationsWithResponse request returning *GetChatConversationsResponse
-func (c *ClientWithResponses) GetChatConversationsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetChatConversationsResponse, error) {
-	rsp, err := c.GetChatConversations(ctx, reqEditors...)
+func (c *ClientWithResponses) GetChatConversationsWithResponse(ctx context.Context, params *GetChatConversationsParams, reqEditors ...RequestEditorFn) (*GetChatConversationsResponse, error) {
+	rsp, err := c.GetChatConversations(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -29142,6 +30157,42 @@ func (c *ClientWithResponses) GetChatModelsWithResponse(ctx context.Context, par
 		return nil, err
 	}
 	return ParseGetChatModelsResponse(rsp)
+}
+
+// InvalidateChatModelsCacheWithResponse request returning *InvalidateChatModelsCacheResponse
+func (c *ClientWithResponses) InvalidateChatModelsCacheWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*InvalidateChatModelsCacheResponse, error) {
+	rsp, err := c.InvalidateChatModelsCache(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseInvalidateChatModelsCacheResponse(rsp)
+}
+
+// ListChatOpsBindingsWithResponse request returning *ListChatOpsBindingsResponse
+func (c *ClientWithResponses) ListChatOpsBindingsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListChatOpsBindingsResponse, error) {
+	rsp, err := c.ListChatOpsBindings(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListChatOpsBindingsResponse(rsp)
+}
+
+// DeleteChatOpsBindingWithResponse request returning *DeleteChatOpsBindingResponse
+func (c *ClientWithResponses) DeleteChatOpsBindingWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteChatOpsBindingResponse, error) {
+	rsp, err := c.DeleteChatOpsBinding(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteChatOpsBindingResponse(rsp)
+}
+
+// GetChatOpsStatusWithResponse request returning *GetChatOpsStatusResponse
+func (c *ClientWithResponses) GetChatOpsStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetChatOpsStatusResponse, error) {
+	rsp, err := c.GetChatOpsStatus(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetChatOpsStatusResponse(rsp)
 }
 
 // GetDualLlmConfigsWithResponse request returning *GetDualLlmConfigsResponse
@@ -29512,6 +30563,23 @@ func (c *ClientWithResponses) GetMcpServerLogsWithResponse(ctx context.Context, 
 		return nil, err
 	}
 	return ParseGetMcpServerLogsResponse(rsp)
+}
+
+// ReauthenticateMcpServerWithBodyWithResponse request with arbitrary body returning *ReauthenticateMcpServerResponse
+func (c *ClientWithResponses) ReauthenticateMcpServerWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReauthenticateMcpServerResponse, error) {
+	rsp, err := c.ReauthenticateMcpServerWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReauthenticateMcpServerResponse(rsp)
+}
+
+func (c *ClientWithResponses) ReauthenticateMcpServerWithResponse(ctx context.Context, id openapi_types.UUID, body ReauthenticateMcpServerJSONRequestBody, reqEditors ...RequestEditorFn) (*ReauthenticateMcpServerResponse, error) {
+	rsp, err := c.ReauthenticateMcpServer(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReauthenticateMcpServerResponse(rsp)
 }
 
 // RestartMcpServerWithResponse request returning *RestartMcpServerResponse
@@ -30693,6 +31761,23 @@ func (c *ClientWithResponses) GetUserByIdWithResponse(ctx context.Context, id st
 		return nil, err
 	}
 	return ParseGetUserByIdResponse(rsp)
+}
+
+// PostApiWebhooksChatopsMsTeamsWithBodyWithResponse request with arbitrary body returning *PostApiWebhooksChatopsMsTeamsResponse
+func (c *ClientWithResponses) PostApiWebhooksChatopsMsTeamsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiWebhooksChatopsMsTeamsResponse, error) {
+	rsp, err := c.PostApiWebhooksChatopsMsTeamsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiWebhooksChatopsMsTeamsResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiWebhooksChatopsMsTeamsWithResponse(ctx context.Context, body PostApiWebhooksChatopsMsTeamsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiWebhooksChatopsMsTeamsResponse, error) {
+	rsp, err := c.PostApiWebhooksChatopsMsTeams(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiWebhooksChatopsMsTeamsResponse(rsp)
 }
 
 // PostApiWebhooksIncomingEmailWithBodyWithResponse request with arbitrary body returning *PostApiWebhooksIncomingEmailResponse
@@ -35328,6 +36413,417 @@ func ParseGetChatModelsResponse(rsp *http.Response) (*GetChatModelsResponse, err
 	return response, nil
 }
 
+// ParseInvalidateChatModelsCacheResponse parses an HTTP response from a InvalidateChatModelsCacheWithResponse call
+func ParseInvalidateChatModelsCacheResponse(rsp *http.Response) (*InvalidateChatModelsCacheResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &InvalidateChatModelsCacheResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListChatOpsBindingsResponse parses an HTTP response from a ListChatOpsBindingsWithResponse call
+func ParseListChatOpsBindingsResponse(rsp *http.Response) (*ListChatOpsBindingsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListChatOpsBindingsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			ChannelId      string                         `json:"channelId"`
+			CreatedAt      time.Time                      `json:"createdAt"`
+			Id             openapi_types.UUID             `json:"id"`
+			OrganizationId string                         `json:"organizationId"`
+			PromptId       openapi_types.UUID             `json:"promptId"`
+			Provider       ListChatOpsBindings200Provider `json:"provider"`
+			UpdatedAt      time.Time                      `json:"updatedAt"`
+			WorkspaceId    *string                        `json:"workspaceId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteChatOpsBindingResponse parses an HTTP response from a DeleteChatOpsBindingWithResponse call
+func ParseDeleteChatOpsBindingResponse(rsp *http.Response) (*DeleteChatOpsBindingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteChatOpsBindingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetChatOpsStatusResponse parses an HTTP response from a GetChatOpsStatusWithResponse call
+func ParseGetChatOpsStatusResponse(rsp *http.Response) (*GetChatOpsStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetChatOpsStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Providers []struct {
+				Configured  bool   `json:"configured"`
+				DisplayName string `json:"displayName"`
+				Id          string `json:"id"`
+			} `json:"providers"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetDualLlmConfigsResponse parses an HTTP response from a GetDualLlmConfigsWithResponse call
 func ParseGetDualLlmConfigsResponse(rsp *http.Response) (*GetDualLlmConfigsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -38552,6 +40048,8 @@ func ParseGetMcpServersResponse(rsp *http.Response) (*GetMcpServersResponse, err
 			LocalInstallationError  *string                                 `json:"localInstallationError"`
 			LocalInstallationStatus GetMcpServers200LocalInstallationStatus `json:"localInstallationStatus"`
 			Name                    string                                  `json:"name"`
+			OauthRefreshError       *GetMcpServers200OauthRefreshError      `json:"oauthRefreshError"`
+			OauthRefreshFailedAt    *time.Time                              `json:"oauthRefreshFailedAt"`
 			OwnerEmail              *string                                 `json:"ownerEmail"`
 			OwnerId                 *string                                 `json:"ownerId"`
 			ReinstallRequired       bool                                    `json:"reinstallRequired"`
@@ -38677,6 +40175,8 @@ func ParseInstallMcpServerResponse(rsp *http.Response) (*InstallMcpServerRespons
 			LocalInstallationError  *string                                    `json:"localInstallationError"`
 			LocalInstallationStatus InstallMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
 			Name                    string                                     `json:"name"`
+			OauthRefreshError       *InstallMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+			OauthRefreshFailedAt    *time.Time                                 `json:"oauthRefreshFailedAt"`
 			OwnerEmail              *string                                    `json:"ownerEmail"`
 			OwnerId                 *string                                    `json:"ownerId"`
 			ReinstallRequired       bool                                       `json:"reinstallRequired"`
@@ -38902,6 +40402,8 @@ func ParseGetMcpServerResponse(rsp *http.Response) (*GetMcpServerResponse, error
 			LocalInstallationError  *string                                `json:"localInstallationError"`
 			LocalInstallationStatus GetMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
 			Name                    string                                 `json:"name"`
+			OauthRefreshError       *GetMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+			OauthRefreshFailedAt    *time.Time                             `json:"oauthRefreshFailedAt"`
 			OwnerEmail              *string                                `json:"ownerEmail"`
 			OwnerId                 *string                                `json:"ownerId"`
 			ReinstallRequired       bool                                   `json:"reinstallRequired"`
@@ -39196,6 +40698,133 @@ func ParseGetMcpServerLogsResponse(rsp *http.Response) (*GetMcpServerLogsRespons
 			Error struct {
 				Message string                       `json:"message"`
 				Type    GetMcpServerLogs500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseReauthenticateMcpServerResponse parses an HTTP response from a ReauthenticateMcpServerWithResponse call
+func ParseReauthenticateMcpServerResponse(rsp *http.Response) (*ReauthenticateMcpServerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReauthenticateMcpServerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CatalogId               openapi_types.UUID                                `json:"catalogId"`
+			CatalogName             *string                                           `json:"catalogName"`
+			CreatedAt               time.Time                                         `json:"createdAt"`
+			Id                      openapi_types.UUID                                `json:"id"`
+			LocalInstallationError  *string                                           `json:"localInstallationError"`
+			LocalInstallationStatus ReauthenticateMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
+			Name                    string                                            `json:"name"`
+			OauthRefreshError       *ReauthenticateMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+			OauthRefreshFailedAt    *time.Time                                        `json:"oauthRefreshFailedAt"`
+			OwnerEmail              *string                                           `json:"ownerEmail"`
+			OwnerId                 *string                                           `json:"ownerId"`
+			ReinstallRequired       bool                                              `json:"reinstallRequired"`
+			SecretId                *openapi_types.UUID                               `json:"secretId"`
+			SecretStorageType       *ReauthenticateMcpServer200SecretStorageType      `json:"secretStorageType,omitempty"`
+			ServerType              ReauthenticateMcpServer200ServerType              `json:"serverType"`
+			TeamDetails             *struct {
+				CreatedAt time.Time `json:"createdAt"`
+				Name      string    `json:"name"`
+				TeamId    string    `json:"teamId"`
+			} `json:"teamDetails"`
+			TeamId      *string   `json:"teamId"`
+			UpdatedAt   time.Time `json:"updatedAt"`
+			UserDetails *[]struct {
+				CreatedAt time.Time `json:"createdAt"`
+				Email     string    `json:"email"`
+				UserId    string    `json:"userId"`
+			} `json:"userDetails,omitempty"`
+			Users *[]string `json:"users,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -41617,16 +43246,20 @@ func ParseGetPromptsResponse(rsp *http.Response) (*GetPromptsResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			AgentId        openapi_types.UUID     `json:"agentId"`
-			CreatedAt      time.Time              `json:"createdAt"`
-			History        GetPrompts_200_History `json:"history"`
-			Id             openapi_types.UUID     `json:"id"`
-			Name           string                 `json:"name"`
-			OrganizationId string                 `json:"organizationId"`
-			SystemPrompt   *string                `json:"systemPrompt"`
-			UpdatedAt      time.Time              `json:"updatedAt"`
-			UserPrompt     *string                `json:"userPrompt"`
-			Version        int                    `json:"version"`
+			AgentId                    openapi_types.UUID                     `json:"agentId"`
+			AllowedChatops             GetPrompts_200_AllowedChatops          `json:"allowedChatops"`
+			CreatedAt                  time.Time                              `json:"createdAt"`
+			History                    GetPrompts_200_History                 `json:"history"`
+			Id                         openapi_types.UUID                     `json:"id"`
+			IncomingEmailAllowedDomain *string                                `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                   `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  GetPrompts200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                 `json:"name"`
+			OrganizationId             string                                 `json:"organizationId"`
+			SystemPrompt               *string                                `json:"systemPrompt"`
+			UpdatedAt                  time.Time                              `json:"updatedAt"`
+			UserPrompt                 *string                                `json:"userPrompt"`
+			Version                    int                                    `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -41726,16 +43359,20 @@ func ParseCreatePromptResponse(rsp *http.Response) (*CreatePromptResponse, error
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AgentId        openapi_types.UUID       `json:"agentId"`
-			CreatedAt      time.Time                `json:"createdAt"`
-			History        CreatePrompt_200_History `json:"history"`
-			Id             openapi_types.UUID       `json:"id"`
-			Name           string                   `json:"name"`
-			OrganizationId string                   `json:"organizationId"`
-			SystemPrompt   *string                  `json:"systemPrompt"`
-			UpdatedAt      time.Time                `json:"updatedAt"`
-			UserPrompt     *string                  `json:"userPrompt"`
-			Version        int                      `json:"version"`
+			AgentId                    openapi_types.UUID                       `json:"agentId"`
+			AllowedChatops             CreatePrompt_200_AllowedChatops          `json:"allowedChatops"`
+			CreatedAt                  time.Time                                `json:"createdAt"`
+			History                    CreatePrompt_200_History                 `json:"history"`
+			Id                         openapi_types.UUID                       `json:"id"`
+			IncomingEmailAllowedDomain *string                                  `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                     `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  CreatePrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                   `json:"name"`
+			OrganizationId             string                                   `json:"organizationId"`
+			SystemPrompt               *string                                  `json:"systemPrompt"`
+			UpdatedAt                  time.Time                                `json:"updatedAt"`
+			UserPrompt                 *string                                  `json:"userPrompt"`
+			Version                    int                                      `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -41935,16 +43572,20 @@ func ParseGetPromptResponse(rsp *http.Response) (*GetPromptResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AgentId        openapi_types.UUID    `json:"agentId"`
-			CreatedAt      time.Time             `json:"createdAt"`
-			History        GetPrompt_200_History `json:"history"`
-			Id             openapi_types.UUID    `json:"id"`
-			Name           string                `json:"name"`
-			OrganizationId string                `json:"organizationId"`
-			SystemPrompt   *string               `json:"systemPrompt"`
-			UpdatedAt      time.Time             `json:"updatedAt"`
-			UserPrompt     *string               `json:"userPrompt"`
-			Version        int                   `json:"version"`
+			AgentId                    openapi_types.UUID                    `json:"agentId"`
+			AllowedChatops             GetPrompt_200_AllowedChatops          `json:"allowedChatops"`
+			CreatedAt                  time.Time                             `json:"createdAt"`
+			History                    GetPrompt_200_History                 `json:"history"`
+			Id                         openapi_types.UUID                    `json:"id"`
+			IncomingEmailAllowedDomain *string                               `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                  `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  GetPrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                `json:"name"`
+			OrganizationId             string                                `json:"organizationId"`
+			SystemPrompt               *string                               `json:"systemPrompt"`
+			UpdatedAt                  time.Time                             `json:"updatedAt"`
+			UserPrompt                 *string                               `json:"userPrompt"`
+			Version                    int                                   `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -42044,16 +43685,20 @@ func ParseUpdatePromptResponse(rsp *http.Response) (*UpdatePromptResponse, error
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AgentId        openapi_types.UUID       `json:"agentId"`
-			CreatedAt      time.Time                `json:"createdAt"`
-			History        UpdatePrompt_200_History `json:"history"`
-			Id             openapi_types.UUID       `json:"id"`
-			Name           string                   `json:"name"`
-			OrganizationId string                   `json:"organizationId"`
-			SystemPrompt   *string                  `json:"systemPrompt"`
-			UpdatedAt      time.Time                `json:"updatedAt"`
-			UserPrompt     *string                  `json:"userPrompt"`
-			Version        int                      `json:"version"`
+			AgentId                    openapi_types.UUID                       `json:"agentId"`
+			AllowedChatops             UpdatePrompt_200_AllowedChatops          `json:"allowedChatops"`
+			CreatedAt                  time.Time                                `json:"createdAt"`
+			History                    UpdatePrompt_200_History                 `json:"history"`
+			Id                         openapi_types.UUID                       `json:"id"`
+			IncomingEmailAllowedDomain *string                                  `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                     `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  UpdatePrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                   `json:"name"`
+			OrganizationId             string                                   `json:"organizationId"`
+			SystemPrompt               *string                                  `json:"systemPrompt"`
+			UpdatedAt                  time.Time                                `json:"updatedAt"`
+			UserPrompt                 *string                                  `json:"userPrompt"`
+			Version                    int                                      `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -42153,16 +43798,20 @@ func ParseRollbackPromptResponse(rsp *http.Response) (*RollbackPromptResponse, e
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AgentId        openapi_types.UUID         `json:"agentId"`
-			CreatedAt      time.Time                  `json:"createdAt"`
-			History        RollbackPrompt_200_History `json:"history"`
-			Id             openapi_types.UUID         `json:"id"`
-			Name           string                     `json:"name"`
-			OrganizationId string                     `json:"organizationId"`
-			SystemPrompt   *string                    `json:"systemPrompt"`
-			UpdatedAt      time.Time                  `json:"updatedAt"`
-			UserPrompt     *string                    `json:"userPrompt"`
-			Version        int                        `json:"version"`
+			AgentId                    openapi_types.UUID                         `json:"agentId"`
+			AllowedChatops             RollbackPrompt_200_AllowedChatops          `json:"allowedChatops"`
+			CreatedAt                  time.Time                                  `json:"createdAt"`
+			History                    RollbackPrompt_200_History                 `json:"history"`
+			Id                         openapi_types.UUID                         `json:"id"`
+			IncomingEmailAllowedDomain *string                                    `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                       `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  RollbackPrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                     `json:"name"`
+			OrganizationId             string                                     `json:"organizationId"`
+			SystemPrompt               *string                                    `json:"systemPrompt"`
+			UpdatedAt                  time.Time                                  `json:"updatedAt"`
+			UserPrompt                 *string                                    `json:"userPrompt"`
+			Version                    int                                        `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -42376,16 +44025,20 @@ func ParseGetPromptVersionsResponse(rsp *http.Response) (*GetPromptVersionsRespo
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			Current struct {
-				AgentId        openapi_types.UUID                    `json:"agentId"`
-				CreatedAt      time.Time                             `json:"createdAt"`
-				History        GetPromptVersions_200_Current_History `json:"history"`
-				Id             openapi_types.UUID                    `json:"id"`
-				Name           string                                `json:"name"`
-				OrganizationId string                                `json:"organizationId"`
-				SystemPrompt   *string                               `json:"systemPrompt"`
-				UpdatedAt      time.Time                             `json:"updatedAt"`
-				UserPrompt     *string                               `json:"userPrompt"`
-				Version        int                                   `json:"version"`
+				AgentId                    openapi_types.UUID                                   `json:"agentId"`
+				AllowedChatops             GetPromptVersions_200_Current_AllowedChatops         `json:"allowedChatops"`
+				CreatedAt                  time.Time                                            `json:"createdAt"`
+				History                    GetPromptVersions_200_Current_History                `json:"history"`
+				Id                         openapi_types.UUID                                   `json:"id"`
+				IncomingEmailAllowedDomain *string                                              `json:"incomingEmailAllowedDomain"`
+				IncomingEmailEnabled       bool                                                 `json:"incomingEmailEnabled"`
+				IncomingEmailSecurityMode  GetPromptVersions200CurrentIncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+				Name                       string                                               `json:"name"`
+				OrganizationId             string                                               `json:"organizationId"`
+				SystemPrompt               *string                                              `json:"systemPrompt"`
+				UpdatedAt                  time.Time                                            `json:"updatedAt"`
+				UserPrompt                 *string                                              `json:"userPrompt"`
+				Version                    int                                                  `json:"version"`
 			} `json:"current"`
 			History []struct {
 				CreatedAt    string  `json:"createdAt"`
@@ -42800,8 +44453,11 @@ func ParseGetPromptEmailAddressResponse(rsp *http.Response) (*GetPromptEmailAddr
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			EmailAddress *string `json:"emailAddress"`
-			Enabled      bool    `json:"enabled"`
+			AgentAllowedDomain        *string                                   `json:"agentAllowedDomain"`
+			AgentIncomingEmailEnabled bool                                      `json:"agentIncomingEmailEnabled"`
+			AgentSecurityMode         GetPromptEmailAddress200AgentSecurityMode `json:"agentSecurityMode"`
+			EmailAddress              *string                                   `json:"emailAddress"`
+			ProviderEnabled           bool                                      `json:"providerEnabled"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -50283,6 +51939,61 @@ func ParseGetUserByIdResponse(rsp *http.Response) (*GetUserByIdResponse, error) 
 				Message string                  `json:"message"`
 				Type    GetUserById500ErrorType `json:"type"`
 			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiWebhooksChatopsMsTeamsResponse parses an HTTP response from a PostApiWebhooksChatopsMsTeamsWithResponse call
+func ParsePostApiWebhooksChatopsMsTeamsResponse(rsp *http.Response) (*PostApiWebhooksChatopsMsTeamsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiWebhooksChatopsMsTeamsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			union json.RawMessage
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error string `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest struct {
+			Error string `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error string `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
