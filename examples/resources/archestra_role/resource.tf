@@ -7,18 +7,14 @@ terraform {
 }
 
 provider "archestra" {
-  # Configure via environment variables:
-  # ARCHESTRA_BASE_URL - defaults to http://localhost:9000
-  # ARCHESTRA_API_KEY  - required
-  #   base_url = "http://localhost:8081"
+  base_url = "http://localhost:8080"
 }
 
 # =============================================================================
 # CREATE: Define a new role with specific permissions
 # =============================================================================
 resource "archestra_role" "developer" {
-  name        = "Developer"
-  description = "Can manage agents and view MCP servers"
+  name = "test"
 
   permissions = {
     # Read-only access to MCP servers
@@ -69,20 +65,18 @@ output "existing_permissions" {
 #   terraform plan   - to see what will change
 #   terraform apply  - to apply the changes
 
-resource "archestra_role" "updatable" {
-  id          = archestra_role.developer.id
-  name        = archestra_role.developer.name
-  description = archestra_role.developer.description
+# resource "archestra_role" "developer" {
+#   name = "test"
 
-  permissions = {
-    team = ["update"]
-  }
-}
+#   permissions = {
+#     team = ["update"]
+#   }
+# }
 
-output "updatable_role_permissions" {
-  description = "Permissions assigned to updatable role"
-  value       = archestra_role.updatable.permissions
-}
+# output "updatable_role_permissions" {
+#   description = "Permissions assigned to updatable role"
+#   value       = archestra_role.developer.permissions
+# }
 
 # =============================================================================
 # IMPORT: Import an existing role into Terraform state

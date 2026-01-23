@@ -195,8 +195,9 @@ func (r *UserRoleAssignmentResource) Delete(ctx context.Context, req resource.De
 	}
 
 	userID := data.UserID.ValueString()
+	roleIdentifier := data.RoleIdentifier.ValueString()
 
-	apiResp, err := r.client.DeleteRoleWithResponse(ctx, userID)
+	apiResp, err := r.client.DeleteUserRoleWithResponse(ctx, userID, roleIdentifier)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to remove role assignment, got error: %s", err))
 		return
