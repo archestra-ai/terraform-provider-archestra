@@ -108,11 +108,9 @@ resource "archestra_profile_tool" "read_text_file" {
 
 ### Optional
 
-- `allow_usage_when_untrusted_data_is_present` (Boolean) Whether to allow tool usage when untrusted data is present
 - `credential_source_mcp_server_id` (String) The ID of the MCP Server instance to use for credentials/authentication
 - `execution_source_mcp_server_id` (String) The ID of the MCP Server instance to use for execution
 - `response_modifier_template` (String) Template string to modify the tool response before it reaches the model
-- `tool_result_treatment` (String) How to treat tool results (trusted, sanitize_with_dual_llm, untrusted)
 - `use_dynamic_team_credential` (Boolean) If true, dynamically resolves credentials based on the team context at runtime
 
 ### Read-Only

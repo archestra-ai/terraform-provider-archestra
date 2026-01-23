@@ -33,8 +33,6 @@ data "archestra_prompt" "example_by_name" {
 ### Read-Only
 
 - `created_at` (String) Timestamp when the prompt was created
-- `is_active` (Boolean) Whether the prompt is active
-- `parent_prompt_id` (String) The identifier of the parent prompt if this is a version
 - `profile_id` (String) The profile identifier this prompt belongs to
 - `system_prompt` (String) The system prompt template
 - `updated_at` (String) Timestamp when the prompt was last updated

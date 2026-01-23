@@ -38,8 +38,6 @@ output "tool_result_treatment" {
 
 ### Read-Only
 
-- `allow_usage_when_untrusted_data_is_present` (Boolean) Whether to allow tool usage when untrusted data is present
 - `id` (String) Profile tool identifier (use this for policy profile_tool_id)
 - `response_modifier_template` (String) Optional response modifier template
 - `tool_id` (String) The tool ID
-- `tool_result_treatment` (String) How to treat tool results (trusted/untrusted)

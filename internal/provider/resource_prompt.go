@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -70,19 +69,8 @@ func (r *PromptResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: "The user prompt template",
 				Optional:            true,
 			},
-			"is_active": schema.BoolAttribute{
-				MarkdownDescription: "Whether the prompt is active",
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
-			},
 			"version": schema.Int64Attribute{
 				MarkdownDescription: "The version of the prompt",
-				Computed:            true,
-			},
-			"parent_prompt_id": schema.StringAttribute{
-				MarkdownDescription: "The identifier of the parent prompt if this is a version",
-				Optional:            true,
 				Computed:            true,
 			},
 			"created_at": schema.StringAttribute{
@@ -128,11 +116,9 @@ func (r *PromptResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	isActive := data.IsActive.ValueBool()
 	requestBody := client.CreatePromptJSONRequestBody{
-		AgentId:  agentID,
-		Name:     data.Name.ValueString(),
-		IsActive: &isActive,
+		AgentId: agentID,
+		Name:    data.Name.ValueString(),
 	}
 
 	if !data.SystemPrompt.IsNull() && !data.SystemPrompt.IsUnknown() {
@@ -142,14 +128,6 @@ func (r *PromptResource) Create(ctx context.Context, req resource.CreateRequest,
 	if !data.UserPrompt.IsNull() && !data.UserPrompt.IsUnknown() {
 		val := data.UserPrompt.ValueString()
 		requestBody.UserPrompt = &val
-	}
-	if !data.ParentPromptID.IsNull() && !data.ParentPromptID.IsUnknown() {
-		parentID, err := uuid.Parse(data.ParentPromptID.ValueString())
-		if err != nil {
-			resp.Diagnostics.AddError("Invalid Parent Prompt ID", fmt.Sprintf("Unable to parse parent prompt UUID: %s", err))
-			return
-		}
-		requestBody.ParentPromptId = &parentID
 	}
 
 	apiResp, err := r.client.CreatePromptWithResponse(ctx, requestBody)
@@ -166,7 +144,28 @@ func (r *PromptResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
-	r.mapResponseToModel(apiResp.JSON200, &data)
+	respItem := apiResp.JSON200
+	mapPromptResponseToModel(&struct {
+		AgentId        openapi_types.UUID `json:"agentId"`
+		CreatedAt      time.Time          `json:"createdAt"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		SystemPrompt   *string            `json:"systemPrompt"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+		UserPrompt     *string            `json:"userPrompt"`
+		Version        int                `json:"version"`
+	}{
+		AgentId:        respItem.AgentId,
+		CreatedAt:      respItem.CreatedAt,
+		Id:             respItem.Id,
+		Name:           respItem.Name,
+		OrganizationId: respItem.OrganizationId,
+		SystemPrompt:   respItem.SystemPrompt,
+		UpdatedAt:      respItem.UpdatedAt,
+		UserPrompt:     respItem.UserPrompt,
+		Version:        respItem.Version,
+	}, &data)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -204,7 +203,28 @@ func (r *PromptResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 
-	r.mapResponseToModel(apiResp.JSON200, &data)
+	respItem := apiResp.JSON200
+	mapPromptResponseToModel(&struct {
+		AgentId        openapi_types.UUID `json:"agentId"`
+		CreatedAt      time.Time          `json:"createdAt"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		SystemPrompt   *string            `json:"systemPrompt"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+		UserPrompt     *string            `json:"userPrompt"`
+		Version        int                `json:"version"`
+	}{
+		AgentId:        respItem.AgentId,
+		CreatedAt:      respItem.CreatedAt,
+		Id:             respItem.Id,
+		Name:           respItem.Name,
+		OrganizationId: respItem.OrganizationId,
+		SystemPrompt:   respItem.SystemPrompt,
+		UpdatedAt:      respItem.UpdatedAt,
+		UserPrompt:     respItem.UserPrompt,
+		Version:        respItem.Version,
+	}, &data)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -259,7 +279,28 @@ func (r *PromptResource) Update(ctx context.Context, req resource.UpdateRequest,
 		return
 	}
 
-	r.mapResponseToModel(apiResp.JSON200, &data)
+	respItem := apiResp.JSON200
+	mapPromptResponseToModel(&struct {
+		AgentId        openapi_types.UUID `json:"agentId"`
+		CreatedAt      time.Time          `json:"createdAt"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		SystemPrompt   *string            `json:"systemPrompt"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+		UserPrompt     *string            `json:"userPrompt"`
+		Version        int                `json:"version"`
+	}{
+		AgentId:        respItem.AgentId,
+		CreatedAt:      respItem.CreatedAt,
+		Id:             respItem.Id,
+		Name:           respItem.Name,
+		OrganizationId: respItem.OrganizationId,
+		SystemPrompt:   respItem.SystemPrompt,
+		UpdatedAt:      respItem.UpdatedAt,
+		UserPrompt:     respItem.UserPrompt,
+		Version:        respItem.Version,
+	}, &data)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -323,20 +364,4 @@ func (r *PromptResource) ModifyPlan(ctx context.Context, req resource.ModifyPlan
 		plan.ID = types.StringUnknown()
 		resp.Diagnostics.Append(resp.Plan.Set(ctx, &plan)...)
 	}
-}
-
-func (r *PromptResource) mapResponseToModel(item *struct {
-	AgentId        openapi_types.UUID  `json:"agentId"`
-	CreatedAt      time.Time           `json:"createdAt"`
-	Id             openapi_types.UUID  `json:"id"`
-	IsActive       bool                `json:"isActive"`
-	Name           string              `json:"name"`
-	OrganizationId string              `json:"organizationId"`
-	ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-	SystemPrompt   *string             `json:"systemPrompt"`
-	UpdatedAt      time.Time           `json:"updatedAt"`
-	UserPrompt     *string             `json:"userPrompt"`
-	Version        int                 `json:"version"`
-}, data *PromptModel) {
-	mapPromptResponseToModel(item, data)
 }

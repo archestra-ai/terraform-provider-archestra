@@ -20,37 +20,16 @@ import (
 
 // Defines values for GetAllAgentToolsParamsSortBy.
 const (
-	GetAllAgentToolsParamsSortByAgent                                GetAllAgentToolsParamsSortBy = "agent"
-	GetAllAgentToolsParamsSortByAllowUsageWhenUntrustedDataIsPresent GetAllAgentToolsParamsSortBy = "allowUsageWhenUntrustedDataIsPresent"
-	GetAllAgentToolsParamsSortByCreatedAt                            GetAllAgentToolsParamsSortBy = "createdAt"
-	GetAllAgentToolsParamsSortByName                                 GetAllAgentToolsParamsSortBy = "name"
-	GetAllAgentToolsParamsSortByOrigin                               GetAllAgentToolsParamsSortBy = "origin"
+	GetAllAgentToolsParamsSortByAgent     GetAllAgentToolsParamsSortBy = "agent"
+	GetAllAgentToolsParamsSortByCreatedAt GetAllAgentToolsParamsSortBy = "createdAt"
+	GetAllAgentToolsParamsSortByName      GetAllAgentToolsParamsSortBy = "name"
+	GetAllAgentToolsParamsSortByOrigin    GetAllAgentToolsParamsSortBy = "origin"
 )
 
 // Defines values for GetAllAgentToolsParamsSortDirection.
 const (
 	GetAllAgentToolsParamsSortDirectionAsc  GetAllAgentToolsParamsSortDirection = "asc"
 	GetAllAgentToolsParamsSortDirectionDesc GetAllAgentToolsParamsSortDirection = "desc"
-)
-
-// Defines values for BulkUpdateAgentToolsJSONBodyField.
-const (
-	BulkUpdateAgentToolsJSONBodyFieldAllowUsageWhenUntrustedDataIsPresent BulkUpdateAgentToolsJSONBodyField = "allowUsageWhenUntrustedDataIsPresent"
-	BulkUpdateAgentToolsJSONBodyFieldToolResultTreatment                  BulkUpdateAgentToolsJSONBodyField = "toolResultTreatment"
-)
-
-// Defines values for BulkUpdateAgentToolsJSONBodyValue1.
-const (
-	BulkUpdateAgentToolsJSONBodyValue1SanitizeWithDualLlm BulkUpdateAgentToolsJSONBodyValue1 = "sanitize_with_dual_llm"
-	BulkUpdateAgentToolsJSONBodyValue1Trusted             BulkUpdateAgentToolsJSONBodyValue1 = "trusted"
-	BulkUpdateAgentToolsJSONBodyValue1Untrusted           BulkUpdateAgentToolsJSONBodyValue1 = "untrusted"
-)
-
-// Defines values for UpdateAgentToolJSONBodyToolResultTreatment.
-const (
-	UpdateAgentToolJSONBodyToolResultTreatmentSanitizeWithDualLlm UpdateAgentToolJSONBodyToolResultTreatment = "sanitize_with_dual_llm"
-	UpdateAgentToolJSONBodyToolResultTreatmentTrusted             UpdateAgentToolJSONBodyToolResultTreatment = "trusted"
-	UpdateAgentToolJSONBodyToolResultTreatmentUntrusted           UpdateAgentToolJSONBodyToolResultTreatment = "untrusted"
 )
 
 // Defines values for GetAgentsParamsSortBy.
@@ -71,34 +50,36 @@ const (
 const (
 	CreateToolInvocationPolicyJSONBodyActionAllowWhenContextIsUntrusted CreateToolInvocationPolicyJSONBodyAction = "allow_when_context_is_untrusted"
 	CreateToolInvocationPolicyJSONBodyActionBlockAlways                 CreateToolInvocationPolicyJSONBodyAction = "block_always"
+	CreateToolInvocationPolicyJSONBodyActionBlockWhenContextIsUntrusted CreateToolInvocationPolicyJSONBodyAction = "block_when_context_is_untrusted"
 )
 
-// Defines values for CreateToolInvocationPolicyJSONBodyOperator.
+// Defines values for CreateToolInvocationPolicyJSONBodyConditionsOperator.
 const (
-	CreateToolInvocationPolicyJSONBodyOperatorContains    CreateToolInvocationPolicyJSONBodyOperator = "contains"
-	CreateToolInvocationPolicyJSONBodyOperatorEndsWith    CreateToolInvocationPolicyJSONBodyOperator = "endsWith"
-	CreateToolInvocationPolicyJSONBodyOperatorEqual       CreateToolInvocationPolicyJSONBodyOperator = "equal"
-	CreateToolInvocationPolicyJSONBodyOperatorNotContains CreateToolInvocationPolicyJSONBodyOperator = "notContains"
-	CreateToolInvocationPolicyJSONBodyOperatorNotEqual    CreateToolInvocationPolicyJSONBodyOperator = "notEqual"
-	CreateToolInvocationPolicyJSONBodyOperatorRegex       CreateToolInvocationPolicyJSONBodyOperator = "regex"
-	CreateToolInvocationPolicyJSONBodyOperatorStartsWith  CreateToolInvocationPolicyJSONBodyOperator = "startsWith"
+	CreateToolInvocationPolicyJSONBodyConditionsOperatorContains    CreateToolInvocationPolicyJSONBodyConditionsOperator = "contains"
+	CreateToolInvocationPolicyJSONBodyConditionsOperatorEndsWith    CreateToolInvocationPolicyJSONBodyConditionsOperator = "endsWith"
+	CreateToolInvocationPolicyJSONBodyConditionsOperatorEqual       CreateToolInvocationPolicyJSONBodyConditionsOperator = "equal"
+	CreateToolInvocationPolicyJSONBodyConditionsOperatorNotContains CreateToolInvocationPolicyJSONBodyConditionsOperator = "notContains"
+	CreateToolInvocationPolicyJSONBodyConditionsOperatorNotEqual    CreateToolInvocationPolicyJSONBodyConditionsOperator = "notEqual"
+	CreateToolInvocationPolicyJSONBodyConditionsOperatorRegex       CreateToolInvocationPolicyJSONBodyConditionsOperator = "regex"
+	CreateToolInvocationPolicyJSONBodyConditionsOperatorStartsWith  CreateToolInvocationPolicyJSONBodyConditionsOperator = "startsWith"
 )
 
 // Defines values for UpdateToolInvocationPolicyJSONBodyAction.
 const (
 	UpdateToolInvocationPolicyJSONBodyActionAllowWhenContextIsUntrusted UpdateToolInvocationPolicyJSONBodyAction = "allow_when_context_is_untrusted"
 	UpdateToolInvocationPolicyJSONBodyActionBlockAlways                 UpdateToolInvocationPolicyJSONBodyAction = "block_always"
+	UpdateToolInvocationPolicyJSONBodyActionBlockWhenContextIsUntrusted UpdateToolInvocationPolicyJSONBodyAction = "block_when_context_is_untrusted"
 )
 
-// Defines values for UpdateToolInvocationPolicyJSONBodyOperator.
+// Defines values for UpdateToolInvocationPolicyJSONBodyConditionsOperator.
 const (
-	UpdateToolInvocationPolicyJSONBodyOperatorContains    UpdateToolInvocationPolicyJSONBodyOperator = "contains"
-	UpdateToolInvocationPolicyJSONBodyOperatorEndsWith    UpdateToolInvocationPolicyJSONBodyOperator = "endsWith"
-	UpdateToolInvocationPolicyJSONBodyOperatorEqual       UpdateToolInvocationPolicyJSONBodyOperator = "equal"
-	UpdateToolInvocationPolicyJSONBodyOperatorNotContains UpdateToolInvocationPolicyJSONBodyOperator = "notContains"
-	UpdateToolInvocationPolicyJSONBodyOperatorNotEqual    UpdateToolInvocationPolicyJSONBodyOperator = "notEqual"
-	UpdateToolInvocationPolicyJSONBodyOperatorRegex       UpdateToolInvocationPolicyJSONBodyOperator = "regex"
-	UpdateToolInvocationPolicyJSONBodyOperatorStartsWith  UpdateToolInvocationPolicyJSONBodyOperator = "startsWith"
+	UpdateToolInvocationPolicyJSONBodyConditionsOperatorContains    UpdateToolInvocationPolicyJSONBodyConditionsOperator = "contains"
+	UpdateToolInvocationPolicyJSONBodyConditionsOperatorEndsWith    UpdateToolInvocationPolicyJSONBodyConditionsOperator = "endsWith"
+	UpdateToolInvocationPolicyJSONBodyConditionsOperatorEqual       UpdateToolInvocationPolicyJSONBodyConditionsOperator = "equal"
+	UpdateToolInvocationPolicyJSONBodyConditionsOperatorNotContains UpdateToolInvocationPolicyJSONBodyConditionsOperator = "notContains"
+	UpdateToolInvocationPolicyJSONBodyConditionsOperatorNotEqual    UpdateToolInvocationPolicyJSONBodyConditionsOperator = "notEqual"
+	UpdateToolInvocationPolicyJSONBodyConditionsOperatorRegex       UpdateToolInvocationPolicyJSONBodyConditionsOperator = "regex"
+	UpdateToolInvocationPolicyJSONBodyConditionsOperatorStartsWith  UpdateToolInvocationPolicyJSONBodyConditionsOperator = "startsWith"
 )
 
 // Defines values for StreamChatJSONBodyTrigger.
@@ -110,15 +91,70 @@ const (
 // Defines values for CreateChatApiKeyJSONBodyProvider.
 const (
 	CreateChatApiKeyJSONBodyProviderAnthropic CreateChatApiKeyJSONBodyProvider = "anthropic"
+	CreateChatApiKeyJSONBodyProviderCerebras  CreateChatApiKeyJSONBodyProvider = "cerebras"
 	CreateChatApiKeyJSONBodyProviderGemini    CreateChatApiKeyJSONBodyProvider = "gemini"
+	CreateChatApiKeyJSONBodyProviderOllama    CreateChatApiKeyJSONBodyProvider = "ollama"
 	CreateChatApiKeyJSONBodyProviderOpenai    CreateChatApiKeyJSONBodyProvider = "openai"
+	CreateChatApiKeyJSONBodyProviderVllm      CreateChatApiKeyJSONBodyProvider = "vllm"
+	CreateChatApiKeyJSONBodyProviderZhipuai   CreateChatApiKeyJSONBodyProvider = "zhipuai"
+)
+
+// Defines values for CreateChatApiKeyJSONBodyScope.
+const (
+	CreateChatApiKeyJSONBodyScopeOrgWide  CreateChatApiKeyJSONBodyScope = "org_wide"
+	CreateChatApiKeyJSONBodyScopePersonal CreateChatApiKeyJSONBodyScope = "personal"
+	CreateChatApiKeyJSONBodyScopeTeam     CreateChatApiKeyJSONBodyScope = "team"
+)
+
+// Defines values for GetAvailableChatApiKeysParamsProvider.
+const (
+	GetAvailableChatApiKeysParamsProviderAnthropic GetAvailableChatApiKeysParamsProvider = "anthropic"
+	GetAvailableChatApiKeysParamsProviderCerebras  GetAvailableChatApiKeysParamsProvider = "cerebras"
+	GetAvailableChatApiKeysParamsProviderGemini    GetAvailableChatApiKeysParamsProvider = "gemini"
+	GetAvailableChatApiKeysParamsProviderOllama    GetAvailableChatApiKeysParamsProvider = "ollama"
+	GetAvailableChatApiKeysParamsProviderOpenai    GetAvailableChatApiKeysParamsProvider = "openai"
+	GetAvailableChatApiKeysParamsProviderVllm      GetAvailableChatApiKeysParamsProvider = "vllm"
+	GetAvailableChatApiKeysParamsProviderZhipuai   GetAvailableChatApiKeysParamsProvider = "zhipuai"
+)
+
+// Defines values for UpdateChatApiKeyJSONBodyScope.
+const (
+	UpdateChatApiKeyJSONBodyScopeOrgWide  UpdateChatApiKeyJSONBodyScope = "org_wide"
+	UpdateChatApiKeyJSONBodyScopePersonal UpdateChatApiKeyJSONBodyScope = "personal"
+	UpdateChatApiKeyJSONBodyScopeTeam     UpdateChatApiKeyJSONBodyScope = "team"
+)
+
+// Defines values for CreateChatConversationJSONBodySelectedProvider.
+const (
+	CreateChatConversationJSONBodySelectedProviderAnthropic CreateChatConversationJSONBodySelectedProvider = "anthropic"
+	CreateChatConversationJSONBodySelectedProviderCerebras  CreateChatConversationJSONBodySelectedProvider = "cerebras"
+	CreateChatConversationJSONBodySelectedProviderGemini    CreateChatConversationJSONBodySelectedProvider = "gemini"
+	CreateChatConversationJSONBodySelectedProviderOllama    CreateChatConversationJSONBodySelectedProvider = "ollama"
+	CreateChatConversationJSONBodySelectedProviderOpenai    CreateChatConversationJSONBodySelectedProvider = "openai"
+	CreateChatConversationJSONBodySelectedProviderVllm      CreateChatConversationJSONBodySelectedProvider = "vllm"
+	CreateChatConversationJSONBodySelectedProviderZhipuai   CreateChatConversationJSONBodySelectedProvider = "zhipuai"
+)
+
+// Defines values for UpdateChatConversationJSONBodySelectedProvider.
+const (
+	UpdateChatConversationJSONBodySelectedProviderAnthropic UpdateChatConversationJSONBodySelectedProvider = "anthropic"
+	UpdateChatConversationJSONBodySelectedProviderCerebras  UpdateChatConversationJSONBodySelectedProvider = "cerebras"
+	UpdateChatConversationJSONBodySelectedProviderGemini    UpdateChatConversationJSONBodySelectedProvider = "gemini"
+	UpdateChatConversationJSONBodySelectedProviderOllama    UpdateChatConversationJSONBodySelectedProvider = "ollama"
+	UpdateChatConversationJSONBodySelectedProviderOpenai    UpdateChatConversationJSONBodySelectedProvider = "openai"
+	UpdateChatConversationJSONBodySelectedProviderVllm      UpdateChatConversationJSONBodySelectedProvider = "vllm"
+	UpdateChatConversationJSONBodySelectedProviderZhipuai   UpdateChatConversationJSONBodySelectedProvider = "zhipuai"
 )
 
 // Defines values for GetChatModelsParamsProvider.
 const (
 	GetChatModelsParamsProviderAnthropic GetChatModelsParamsProvider = "anthropic"
+	GetChatModelsParamsProviderCerebras  GetChatModelsParamsProvider = "cerebras"
 	GetChatModelsParamsProviderGemini    GetChatModelsParamsProvider = "gemini"
+	GetChatModelsParamsProviderOllama    GetChatModelsParamsProvider = "ollama"
 	GetChatModelsParamsProviderOpenai    GetChatModelsParamsProvider = "openai"
+	GetChatModelsParamsProviderVllm      GetChatModelsParamsProvider = "vllm"
+	GetChatModelsParamsProviderZhipuai   GetChatModelsParamsProvider = "zhipuai"
 )
 
 // Defines values for CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType.
@@ -137,8 +173,9 @@ const (
 
 // Defines values for CreateInternalMcpCatalogItemJSONBodyServerType.
 const (
-	CreateInternalMcpCatalogItemJSONBodyServerTypeLocal  CreateInternalMcpCatalogItemJSONBodyServerType = "local"
-	CreateInternalMcpCatalogItemJSONBodyServerTypeRemote CreateInternalMcpCatalogItemJSONBodyServerType = "remote"
+	CreateInternalMcpCatalogItemJSONBodyServerTypeBuiltin CreateInternalMcpCatalogItemJSONBodyServerType = "builtin"
+	CreateInternalMcpCatalogItemJSONBodyServerTypeLocal   CreateInternalMcpCatalogItemJSONBodyServerType = "local"
+	CreateInternalMcpCatalogItemJSONBodyServerTypeRemote  CreateInternalMcpCatalogItemJSONBodyServerType = "remote"
 )
 
 // Defines values for CreateInternalMcpCatalogItemJSONBodyUserConfigType.
@@ -166,8 +203,9 @@ const (
 
 // Defines values for UpdateInternalMcpCatalogItemJSONBodyServerType.
 const (
-	UpdateInternalMcpCatalogItemJSONBodyServerTypeLocal  UpdateInternalMcpCatalogItemJSONBodyServerType = "local"
-	UpdateInternalMcpCatalogItemJSONBodyServerTypeRemote UpdateInternalMcpCatalogItemJSONBodyServerType = "remote"
+	UpdateInternalMcpCatalogItemJSONBodyServerTypeBuiltin UpdateInternalMcpCatalogItemJSONBodyServerType = "builtin"
+	UpdateInternalMcpCatalogItemJSONBodyServerTypeLocal   UpdateInternalMcpCatalogItemJSONBodyServerType = "local"
+	UpdateInternalMcpCatalogItemJSONBodyServerTypeRemote  UpdateInternalMcpCatalogItemJSONBodyServerType = "remote"
 )
 
 // Defines values for UpdateInternalMcpCatalogItemJSONBodyUserConfigType.
@@ -223,16 +261,16 @@ const (
 
 // Defines values for GetMcpToolCallsParamsSortBy.
 const (
-	AgentId       GetMcpToolCallsParamsSortBy = "agentId"
-	CreatedAt     GetMcpToolCallsParamsSortBy = "createdAt"
-	McpServerName GetMcpToolCallsParamsSortBy = "mcpServerName"
-	Method        GetMcpToolCallsParamsSortBy = "method"
+	GetMcpToolCallsParamsSortByAgentId       GetMcpToolCallsParamsSortBy = "agentId"
+	GetMcpToolCallsParamsSortByCreatedAt     GetMcpToolCallsParamsSortBy = "createdAt"
+	GetMcpToolCallsParamsSortByMcpServerName GetMcpToolCallsParamsSortBy = "mcpServerName"
+	GetMcpToolCallsParamsSortByMethod        GetMcpToolCallsParamsSortBy = "method"
 )
 
 // Defines values for GetMcpToolCallsParamsSortDirection.
 const (
-	Asc  GetMcpToolCallsParamsSortDirection = "asc"
-	Desc GetMcpToolCallsParamsSortDirection = "desc"
+	GetMcpToolCallsParamsSortDirectionAsc  GetMcpToolCallsParamsSortDirection = "asc"
+	GetMcpToolCallsParamsSortDirectionDesc GetMcpToolCallsParamsSortDirection = "desc"
 )
 
 // Defines values for InstallMcpServerJSONBodyLocalInstallationStatus.
@@ -242,6 +280,12 @@ const (
 	InstallMcpServerJSONBodyLocalInstallationStatusIdle             InstallMcpServerJSONBodyLocalInstallationStatus = "idle"
 	InstallMcpServerJSONBodyLocalInstallationStatusPending          InstallMcpServerJSONBodyLocalInstallationStatus = "pending"
 	InstallMcpServerJSONBodyLocalInstallationStatusSuccess          InstallMcpServerJSONBodyLocalInstallationStatus = "success"
+)
+
+// Defines values for InstallMcpServerJSONBodyOauthRefreshError.
+const (
+	NoRefreshToken InstallMcpServerJSONBodyOauthRefreshError = "no_refresh_token"
+	RefreshFailed  InstallMcpServerJSONBodyOauthRefreshError = "refresh_failed"
 )
 
 // Defines values for GetMcpServerInstallationRequestsParamsStatus.
@@ -326,8 +370,12 @@ const (
 // Defines values for CreateOptimizationRuleJSONBodyProvider.
 const (
 	CreateOptimizationRuleJSONBodyProviderAnthropic CreateOptimizationRuleJSONBodyProvider = "anthropic"
+	CreateOptimizationRuleJSONBodyProviderCerebras  CreateOptimizationRuleJSONBodyProvider = "cerebras"
 	CreateOptimizationRuleJSONBodyProviderGemini    CreateOptimizationRuleJSONBodyProvider = "gemini"
+	CreateOptimizationRuleJSONBodyProviderOllama    CreateOptimizationRuleJSONBodyProvider = "ollama"
 	CreateOptimizationRuleJSONBodyProviderOpenai    CreateOptimizationRuleJSONBodyProvider = "openai"
+	CreateOptimizationRuleJSONBodyProviderVllm      CreateOptimizationRuleJSONBodyProvider = "vllm"
+	CreateOptimizationRuleJSONBodyProviderZhipuai   CreateOptimizationRuleJSONBodyProvider = "zhipuai"
 )
 
 // Defines values for UpdateOptimizationRuleJSONBodyEntityType.
@@ -340,23 +388,34 @@ const (
 // Defines values for UpdateOptimizationRuleJSONBodyProvider.
 const (
 	UpdateOptimizationRuleJSONBodyProviderAnthropic UpdateOptimizationRuleJSONBodyProvider = "anthropic"
+	UpdateOptimizationRuleJSONBodyProviderCerebras  UpdateOptimizationRuleJSONBodyProvider = "cerebras"
 	UpdateOptimizationRuleJSONBodyProviderGemini    UpdateOptimizationRuleJSONBodyProvider = "gemini"
+	UpdateOptimizationRuleJSONBodyProviderOllama    UpdateOptimizationRuleJSONBodyProvider = "ollama"
 	UpdateOptimizationRuleJSONBodyProviderOpenai    UpdateOptimizationRuleJSONBodyProvider = "openai"
+	UpdateOptimizationRuleJSONBodyProviderVllm      UpdateOptimizationRuleJSONBodyProvider = "vllm"
+	UpdateOptimizationRuleJSONBodyProviderZhipuai   UpdateOptimizationRuleJSONBodyProvider = "zhipuai"
 )
 
 // Defines values for UpdateOrganizationJSONBodyCompressionScope.
 const (
-	Organization UpdateOrganizationJSONBodyCompressionScope = "organization"
-	Team         UpdateOrganizationJSONBodyCompressionScope = "team"
+	UpdateOrganizationJSONBodyCompressionScopeOrganization UpdateOrganizationJSONBodyCompressionScope = "organization"
+	UpdateOrganizationJSONBodyCompressionScopeTeam         UpdateOrganizationJSONBodyCompressionScope = "team"
 )
 
 // Defines values for UpdateOrganizationJSONBodyCustomFont.
 const (
 	Inter         UpdateOrganizationJSONBodyCustomFont = "inter"
+	JetbrainsMono UpdateOrganizationJSONBodyCustomFont = "jetbrains-mono"
 	Lato          UpdateOrganizationJSONBodyCustomFont = "lato"
 	OpenSans      UpdateOrganizationJSONBodyCustomFont = "open-sans"
 	Roboto        UpdateOrganizationJSONBodyCustomFont = "roboto"
 	SourceSansPro UpdateOrganizationJSONBodyCustomFont = "source-sans-pro"
+)
+
+// Defines values for UpdateOrganizationJSONBodyGlobalToolPolicy.
+const (
+	Permissive  UpdateOrganizationJSONBodyGlobalToolPolicy = "permissive"
+	Restrictive UpdateOrganizationJSONBodyGlobalToolPolicy = "restrictive"
 )
 
 // Defines values for UpdateOrganizationJSONBodyLimitCleanupInterval.
@@ -370,42 +429,54 @@ const (
 
 // Defines values for UpdateOrganizationJSONBodyTheme.
 const (
-	AmberMinimal   UpdateOrganizationJSONBodyTheme = "amber-minimal"
-	BoldTech       UpdateOrganizationJSONBodyTheme = "bold-tech"
-	Bubblegum      UpdateOrganizationJSONBodyTheme = "bubblegum"
-	Caffeine       UpdateOrganizationJSONBodyTheme = "caffeine"
-	Candyland      UpdateOrganizationJSONBodyTheme = "candyland"
-	Catppuccin     UpdateOrganizationJSONBodyTheme = "catppuccin"
-	Claude         UpdateOrganizationJSONBodyTheme = "claude"
-	Claymorphism   UpdateOrganizationJSONBodyTheme = "claymorphism"
-	CleanSlate     UpdateOrganizationJSONBodyTheme = "clean-slate"
-	CosmicNight    UpdateOrganizationJSONBodyTheme = "cosmic-night"
-	Cyberpunk      UpdateOrganizationJSONBodyTheme = "cyberpunk"
-	Doom64         UpdateOrganizationJSONBodyTheme = "doom-64"
-	ElegantLuxury  UpdateOrganizationJSONBodyTheme = "elegant-luxury"
-	Graphite       UpdateOrganizationJSONBodyTheme = "graphite"
-	KodamaGrove    UpdateOrganizationJSONBodyTheme = "kodama-grove"
-	MidnightBloom  UpdateOrganizationJSONBodyTheme = "midnight-bloom"
-	MochaMousse    UpdateOrganizationJSONBodyTheme = "mocha-mousse"
-	ModernMinimal  UpdateOrganizationJSONBodyTheme = "modern-minimal"
-	Mono           UpdateOrganizationJSONBodyTheme = "mono"
-	Nature         UpdateOrganizationJSONBodyTheme = "nature"
-	NeoBrutalism   UpdateOrganizationJSONBodyTheme = "neo-brutalism"
-	NorthernLights UpdateOrganizationJSONBodyTheme = "northern-lights"
-	OceanBreeze    UpdateOrganizationJSONBodyTheme = "ocean-breeze"
-	PastelDreams   UpdateOrganizationJSONBodyTheme = "pastel-dreams"
-	Perpetuity     UpdateOrganizationJSONBodyTheme = "perpetuity"
-	QuantumRose    UpdateOrganizationJSONBodyTheme = "quantum-rose"
-	RetroArcade    UpdateOrganizationJSONBodyTheme = "retro-arcade"
-	SolarDusk      UpdateOrganizationJSONBodyTheme = "solar-dusk"
-	StarryNight    UpdateOrganizationJSONBodyTheme = "starry-night"
-	SunsetHorizon  UpdateOrganizationJSONBodyTheme = "sunset-horizon"
-	Supabase       UpdateOrganizationJSONBodyTheme = "supabase"
-	T3Chat         UpdateOrganizationJSONBodyTheme = "t3-chat"
-	Tangerine      UpdateOrganizationJSONBodyTheme = "tangerine"
-	Twitter        UpdateOrganizationJSONBodyTheme = "twitter"
-	Vercel         UpdateOrganizationJSONBodyTheme = "vercel"
-	VintagePaper   UpdateOrganizationJSONBodyTheme = "vintage-paper"
+	AmberMinimal     UpdateOrganizationJSONBodyTheme = "amber-minimal"
+	BoxyMinimalistic UpdateOrganizationJSONBodyTheme = "boxy-minimalistic"
+	Bubblegum        UpdateOrganizationJSONBodyTheme = "bubblegum"
+	Caffeine         UpdateOrganizationJSONBodyTheme = "caffeine"
+	Catppuccin       UpdateOrganizationJSONBodyTheme = "catppuccin"
+	Claude           UpdateOrganizationJSONBodyTheme = "claude"
+	CleanSlate       UpdateOrganizationJSONBodyTheme = "clean-slate"
+	CosmicNight      UpdateOrganizationJSONBodyTheme = "cosmic-night"
+	Doom64           UpdateOrganizationJSONBodyTheme = "doom-64"
+	DraculaDark      UpdateOrganizationJSONBodyTheme = "dracula-dark"
+	GruvboxDark      UpdateOrganizationJSONBodyTheme = "gruvbox-dark"
+	MochaMousse      UpdateOrganizationJSONBodyTheme = "mocha-mousse"
+	ModernMinimal    UpdateOrganizationJSONBodyTheme = "modern-minimal"
+	Mono             UpdateOrganizationJSONBodyTheme = "mono"
+	MonokaiDark      UpdateOrganizationJSONBodyTheme = "monokai-dark"
+	MoonlightDark    UpdateOrganizationJSONBodyTheme = "moonlight-dark"
+	Nature           UpdateOrganizationJSONBodyTheme = "nature"
+	NeoBrutalism     UpdateOrganizationJSONBodyTheme = "neo-brutalism"
+	SolarizedDark    UpdateOrganizationJSONBodyTheme = "solarized-dark"
+	SunsetHorizon    UpdateOrganizationJSONBodyTheme = "sunset-horizon"
+	Tangerine        UpdateOrganizationJSONBodyTheme = "tangerine"
+	Twitter          UpdateOrganizationJSONBodyTheme = "twitter"
+	Vercel           UpdateOrganizationJSONBodyTheme = "vercel"
+	VintagePaper     UpdateOrganizationJSONBodyTheme = "vintage-paper"
+)
+
+// Defines values for CreatePromptJSONBodyAllowedChatops03.
+const (
+	CreatePromptJSONBodyAllowedChatops03LessThannil CreatePromptJSONBodyAllowedChatops03 = "<nil>"
+)
+
+// Defines values for CreatePromptJSONBodyIncomingEmailSecurityMode.
+const (
+	CreatePromptJSONBodyIncomingEmailSecurityModeInternal CreatePromptJSONBodyIncomingEmailSecurityMode = "internal"
+	CreatePromptJSONBodyIncomingEmailSecurityModePrivate  CreatePromptJSONBodyIncomingEmailSecurityMode = "private"
+	CreatePromptJSONBodyIncomingEmailSecurityModePublic   CreatePromptJSONBodyIncomingEmailSecurityMode = "public"
+)
+
+// Defines values for UpdatePromptJSONBodyAllowedChatops03.
+const (
+	UpdatePromptJSONBodyAllowedChatops03LessThannil UpdatePromptJSONBodyAllowedChatops03 = "<nil>"
+)
+
+// Defines values for UpdatePromptJSONBodyIncomingEmailSecurityMode.
+const (
+	UpdatePromptJSONBodyIncomingEmailSecurityModeInternal UpdatePromptJSONBodyIncomingEmailSecurityMode = "internal"
+	UpdatePromptJSONBodyIncomingEmailSecurityModePrivate  UpdatePromptJSONBodyIncomingEmailSecurityMode = "private"
+	UpdatePromptJSONBodyIncomingEmailSecurityModePublic   UpdatePromptJSONBodyIncomingEmailSecurityMode = "public"
 )
 
 // Defines values for CreateRoleJSONBodyPermission.
@@ -416,20 +487,6 @@ const (
 	CreateRoleJSONBodyPermissionDelete CreateRoleJSONBodyPermission = "delete"
 	CreateRoleJSONBodyPermissionRead   CreateRoleJSONBodyPermission = "read"
 	CreateRoleJSONBodyPermissionUpdate CreateRoleJSONBodyPermission = "update"
-)
-
-// Defines values for GetRoleParamsRoleId0.
-const (
-	GetRoleParamsRoleId0Admin  GetRoleParamsRoleId0 = "admin"
-	GetRoleParamsRoleId0Editor GetRoleParamsRoleId0 = "editor"
-	GetRoleParamsRoleId0Member GetRoleParamsRoleId0 = "member"
-)
-
-// Defines values for UpdateRoleParamsRoleId0.
-const (
-	UpdateRoleParamsRoleId0Admin  UpdateRoleParamsRoleId0 = "admin"
-	UpdateRoleParamsRoleId0Editor UpdateRoleParamsRoleId0 = "editor"
-	UpdateRoleParamsRoleId0Member UpdateRoleParamsRoleId0 = "member"
 )
 
 // Defines values for UpdateRoleJSONBodyPermission.
@@ -534,51 +591,100 @@ const (
 // Defines values for CreateTokenPriceJSONBodyProvider.
 const (
 	CreateTokenPriceJSONBodyProviderAnthropic CreateTokenPriceJSONBodyProvider = "anthropic"
+	CreateTokenPriceJSONBodyProviderCerebras  CreateTokenPriceJSONBodyProvider = "cerebras"
 	CreateTokenPriceJSONBodyProviderGemini    CreateTokenPriceJSONBodyProvider = "gemini"
+	CreateTokenPriceJSONBodyProviderOllama    CreateTokenPriceJSONBodyProvider = "ollama"
 	CreateTokenPriceJSONBodyProviderOpenai    CreateTokenPriceJSONBodyProvider = "openai"
+	CreateTokenPriceJSONBodyProviderVllm      CreateTokenPriceJSONBodyProvider = "vllm"
+	CreateTokenPriceJSONBodyProviderZhipuai   CreateTokenPriceJSONBodyProvider = "zhipuai"
 )
 
 // Defines values for UpdateTokenPriceJSONBodyProvider.
 const (
-	UpdateTokenPriceJSONBodyProviderAnthropic UpdateTokenPriceJSONBodyProvider = "anthropic"
-	UpdateTokenPriceJSONBodyProviderGemini    UpdateTokenPriceJSONBodyProvider = "gemini"
-	UpdateTokenPriceJSONBodyProviderOpenai    UpdateTokenPriceJSONBodyProvider = "openai"
+	Anthropic UpdateTokenPriceJSONBodyProvider = "anthropic"
+	Cerebras  UpdateTokenPriceJSONBodyProvider = "cerebras"
+	Gemini    UpdateTokenPriceJSONBodyProvider = "gemini"
+	Ollama    UpdateTokenPriceJSONBodyProvider = "ollama"
+	Openai    UpdateTokenPriceJSONBodyProvider = "openai"
+	Vllm      UpdateTokenPriceJSONBodyProvider = "vllm"
+	Zhipuai   UpdateTokenPriceJSONBodyProvider = "zhipuai"
+)
+
+// Defines values for BulkUpsertDefaultCallPolicyJSONBodyAction.
+const (
+	BulkUpsertDefaultCallPolicyJSONBodyActionAllowWhenContextIsUntrusted BulkUpsertDefaultCallPolicyJSONBodyAction = "allow_when_context_is_untrusted"
+	BulkUpsertDefaultCallPolicyJSONBodyActionBlockAlways                 BulkUpsertDefaultCallPolicyJSONBodyAction = "block_always"
+	BulkUpsertDefaultCallPolicyJSONBodyActionBlockWhenContextIsUntrusted BulkUpsertDefaultCallPolicyJSONBodyAction = "block_when_context_is_untrusted"
+)
+
+// Defines values for GetToolsWithAssignmentsParamsSortBy.
+const (
+	GetToolsWithAssignmentsParamsSortByAssignmentCount GetToolsWithAssignmentsParamsSortBy = "assignmentCount"
+	GetToolsWithAssignmentsParamsSortByCreatedAt       GetToolsWithAssignmentsParamsSortBy = "createdAt"
+	GetToolsWithAssignmentsParamsSortByName            GetToolsWithAssignmentsParamsSortBy = "name"
+	GetToolsWithAssignmentsParamsSortByOrigin          GetToolsWithAssignmentsParamsSortBy = "origin"
+)
+
+// Defines values for GetToolsWithAssignmentsParamsSortDirection.
+const (
+	GetToolsWithAssignmentsParamsSortDirectionAsc  GetToolsWithAssignmentsParamsSortDirection = "asc"
+	GetToolsWithAssignmentsParamsSortDirectionDesc GetToolsWithAssignmentsParamsSortDirection = "desc"
 )
 
 // Defines values for CreateTrustedDataPolicyJSONBodyAction.
 const (
 	CreateTrustedDataPolicyJSONBodyActionBlockAlways         CreateTrustedDataPolicyJSONBodyAction = "block_always"
 	CreateTrustedDataPolicyJSONBodyActionMarkAsTrusted       CreateTrustedDataPolicyJSONBodyAction = "mark_as_trusted"
+	CreateTrustedDataPolicyJSONBodyActionMarkAsUntrusted     CreateTrustedDataPolicyJSONBodyAction = "mark_as_untrusted"
 	CreateTrustedDataPolicyJSONBodyActionSanitizeWithDualLlm CreateTrustedDataPolicyJSONBodyAction = "sanitize_with_dual_llm"
 )
 
-// Defines values for CreateTrustedDataPolicyJSONBodyOperator.
+// Defines values for CreateTrustedDataPolicyJSONBodyConditionsOperator.
 const (
-	CreateTrustedDataPolicyJSONBodyOperatorContains    CreateTrustedDataPolicyJSONBodyOperator = "contains"
-	CreateTrustedDataPolicyJSONBodyOperatorEndsWith    CreateTrustedDataPolicyJSONBodyOperator = "endsWith"
-	CreateTrustedDataPolicyJSONBodyOperatorEqual       CreateTrustedDataPolicyJSONBodyOperator = "equal"
-	CreateTrustedDataPolicyJSONBodyOperatorNotContains CreateTrustedDataPolicyJSONBodyOperator = "notContains"
-	CreateTrustedDataPolicyJSONBodyOperatorNotEqual    CreateTrustedDataPolicyJSONBodyOperator = "notEqual"
-	CreateTrustedDataPolicyJSONBodyOperatorRegex       CreateTrustedDataPolicyJSONBodyOperator = "regex"
-	CreateTrustedDataPolicyJSONBodyOperatorStartsWith  CreateTrustedDataPolicyJSONBodyOperator = "startsWith"
+	CreateTrustedDataPolicyJSONBodyConditionsOperatorContains    CreateTrustedDataPolicyJSONBodyConditionsOperator = "contains"
+	CreateTrustedDataPolicyJSONBodyConditionsOperatorEndsWith    CreateTrustedDataPolicyJSONBodyConditionsOperator = "endsWith"
+	CreateTrustedDataPolicyJSONBodyConditionsOperatorEqual       CreateTrustedDataPolicyJSONBodyConditionsOperator = "equal"
+	CreateTrustedDataPolicyJSONBodyConditionsOperatorNotContains CreateTrustedDataPolicyJSONBodyConditionsOperator = "notContains"
+	CreateTrustedDataPolicyJSONBodyConditionsOperatorNotEqual    CreateTrustedDataPolicyJSONBodyConditionsOperator = "notEqual"
+	CreateTrustedDataPolicyJSONBodyConditionsOperatorRegex       CreateTrustedDataPolicyJSONBodyConditionsOperator = "regex"
+	CreateTrustedDataPolicyJSONBodyConditionsOperatorStartsWith  CreateTrustedDataPolicyJSONBodyConditionsOperator = "startsWith"
+)
+
+// Defines values for BulkUpsertDefaultResultPolicyJSONBodyAction.
+const (
+	BulkUpsertDefaultResultPolicyJSONBodyActionBlockAlways         BulkUpsertDefaultResultPolicyJSONBodyAction = "block_always"
+	BulkUpsertDefaultResultPolicyJSONBodyActionMarkAsTrusted       BulkUpsertDefaultResultPolicyJSONBodyAction = "mark_as_trusted"
+	BulkUpsertDefaultResultPolicyJSONBodyActionMarkAsUntrusted     BulkUpsertDefaultResultPolicyJSONBodyAction = "mark_as_untrusted"
+	BulkUpsertDefaultResultPolicyJSONBodyActionSanitizeWithDualLlm BulkUpsertDefaultResultPolicyJSONBodyAction = "sanitize_with_dual_llm"
 )
 
 // Defines values for UpdateTrustedDataPolicyJSONBodyAction.
 const (
 	UpdateTrustedDataPolicyJSONBodyActionBlockAlways         UpdateTrustedDataPolicyJSONBodyAction = "block_always"
 	UpdateTrustedDataPolicyJSONBodyActionMarkAsTrusted       UpdateTrustedDataPolicyJSONBodyAction = "mark_as_trusted"
+	UpdateTrustedDataPolicyJSONBodyActionMarkAsUntrusted     UpdateTrustedDataPolicyJSONBodyAction = "mark_as_untrusted"
 	UpdateTrustedDataPolicyJSONBodyActionSanitizeWithDualLlm UpdateTrustedDataPolicyJSONBodyAction = "sanitize_with_dual_llm"
 )
 
-// Defines values for UpdateTrustedDataPolicyJSONBodyOperator.
+// Defines values for UpdateTrustedDataPolicyJSONBodyConditionsOperator.
 const (
-	UpdateTrustedDataPolicyJSONBodyOperatorContains    UpdateTrustedDataPolicyJSONBodyOperator = "contains"
-	UpdateTrustedDataPolicyJSONBodyOperatorEndsWith    UpdateTrustedDataPolicyJSONBodyOperator = "endsWith"
-	UpdateTrustedDataPolicyJSONBodyOperatorEqual       UpdateTrustedDataPolicyJSONBodyOperator = "equal"
-	UpdateTrustedDataPolicyJSONBodyOperatorNotContains UpdateTrustedDataPolicyJSONBodyOperator = "notContains"
-	UpdateTrustedDataPolicyJSONBodyOperatorNotEqual    UpdateTrustedDataPolicyJSONBodyOperator = "notEqual"
-	UpdateTrustedDataPolicyJSONBodyOperatorRegex       UpdateTrustedDataPolicyJSONBodyOperator = "regex"
-	UpdateTrustedDataPolicyJSONBodyOperatorStartsWith  UpdateTrustedDataPolicyJSONBodyOperator = "startsWith"
+	UpdateTrustedDataPolicyJSONBodyConditionsOperatorContains    UpdateTrustedDataPolicyJSONBodyConditionsOperator = "contains"
+	UpdateTrustedDataPolicyJSONBodyConditionsOperatorEndsWith    UpdateTrustedDataPolicyJSONBodyConditionsOperator = "endsWith"
+	UpdateTrustedDataPolicyJSONBodyConditionsOperatorEqual       UpdateTrustedDataPolicyJSONBodyConditionsOperator = "equal"
+	UpdateTrustedDataPolicyJSONBodyConditionsOperatorNotContains UpdateTrustedDataPolicyJSONBodyConditionsOperator = "notContains"
+	UpdateTrustedDataPolicyJSONBodyConditionsOperatorNotEqual    UpdateTrustedDataPolicyJSONBodyConditionsOperator = "notEqual"
+	UpdateTrustedDataPolicyJSONBodyConditionsOperatorRegex       UpdateTrustedDataPolicyJSONBodyConditionsOperator = "regex"
+	UpdateTrustedDataPolicyJSONBodyConditionsOperatorStartsWith  UpdateTrustedDataPolicyJSONBodyConditionsOperator = "startsWith"
+)
+
+// Defines values for PostV1A2aPromptIdJSONBodyJsonrpc.
+const (
+	N20 PostV1A2aPromptIdJSONBodyJsonrpc = "2.0"
+)
+
+// Defines values for PostV1A2aPromptIdJSONBodyParamsMessagePartsKind.
+const (
+	Text PostV1A2aPromptIdJSONBodyParamsMessagePartsKind = "text"
 )
 
 // GetAllAgentToolsParams defines parameters for GetAllAgentTools.
@@ -596,6 +702,7 @@ type GetAllAgentToolsParams struct {
 	ExcludeArchestraTools *bool                                `form:"excludeArchestraTools,omitempty" json:"excludeArchestraTools,omitempty"`
 	SortBy                *GetAllAgentToolsParamsSortBy        `form:"sortBy,omitempty" json:"sortBy,omitempty"`
 	SortDirection         *GetAllAgentToolsParamsSortDirection `form:"sortDirection,omitempty" json:"sortDirection,omitempty"`
+	SkipPagination        *bool                                `form:"skipPagination,omitempty" json:"skipPagination,omitempty"`
 	Limit                 *int                                 `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset                *int                                 `form:"offset,omitempty" json:"offset,omitempty"`
 }
@@ -608,44 +715,16 @@ type GetAllAgentToolsParamsSortDirection string
 
 // AutoConfigureAgentToolPoliciesJSONBody defines parameters for AutoConfigureAgentToolPolicies.
 type AutoConfigureAgentToolPoliciesJSONBody struct {
-	AgentToolIds []openapi_types.UUID `json:"agentToolIds"`
-}
-
-// BulkUpdateAgentToolsJSONBody defines parameters for BulkUpdateAgentTools.
-type BulkUpdateAgentToolsJSONBody struct {
-	ClearAutoConfigured *bool                              `json:"clearAutoConfigured,omitempty"`
-	Field               BulkUpdateAgentToolsJSONBodyField  `json:"field"`
-	Ids                 []openapi_types.UUID               `json:"ids"`
-	Value               BulkUpdateAgentToolsJSONBody_Value `json:"value"`
-}
-
-// BulkUpdateAgentToolsJSONBodyField defines parameters for BulkUpdateAgentTools.
-type BulkUpdateAgentToolsJSONBodyField string
-
-// BulkUpdateAgentToolsJSONBodyValue0 defines parameters for BulkUpdateAgentTools.
-type BulkUpdateAgentToolsJSONBodyValue0 = bool
-
-// BulkUpdateAgentToolsJSONBodyValue1 defines parameters for BulkUpdateAgentTools.
-type BulkUpdateAgentToolsJSONBodyValue1 string
-
-// BulkUpdateAgentToolsJSONBody_Value defines parameters for BulkUpdateAgentTools.
-type BulkUpdateAgentToolsJSONBody_Value struct {
-	union json.RawMessage
+	ToolIds []openapi_types.UUID `json:"toolIds"`
 }
 
 // UpdateAgentToolJSONBody defines parameters for UpdateAgentTool.
 type UpdateAgentToolJSONBody struct {
-	AllowUsageWhenUntrustedDataIsPresent *bool                                       `json:"allowUsageWhenUntrustedDataIsPresent,omitempty"`
-	CredentialSourceMcpServerId          *openapi_types.UUID                         `json:"credentialSourceMcpServerId"`
-	ExecutionSourceMcpServerId           *openapi_types.UUID                         `json:"executionSourceMcpServerId"`
-	PoliciesAutoConfiguredAt             interface{}                                 `json:"policiesAutoConfiguredAt"`
-	ResponseModifierTemplate             *string                                     `json:"responseModifierTemplate"`
-	ToolResultTreatment                  *UpdateAgentToolJSONBodyToolResultTreatment `json:"toolResultTreatment,omitempty"`
-	UseDynamicTeamCredential             *bool                                       `json:"useDynamicTeamCredential,omitempty"`
+	CredentialSourceMcpServerId *openapi_types.UUID `json:"credentialSourceMcpServerId"`
+	ExecutionSourceMcpServerId  *openapi_types.UUID `json:"executionSourceMcpServerId"`
+	ResponseModifierTemplate    *string             `json:"responseModifierTemplate"`
+	UseDynamicTeamCredential    *bool               `json:"useDynamicTeamCredential,omitempty"`
 }
-
-// UpdateAgentToolJSONBodyToolResultTreatment defines parameters for UpdateAgentTool.
-type UpdateAgentToolJSONBodyToolResultTreatment string
 
 // GetAgentsParams defines parameters for GetAgents.
 type GetAgentsParams struct {
@@ -695,6 +774,11 @@ type BulkAssignToolsJSONBody struct {
 	} `json:"assignments"`
 }
 
+// GetAgentToolsParams defines parameters for GetAgentTools.
+type GetAgentToolsParams struct {
+	ExcludeLlmProxyOrigin *bool `form:"excludeLlmProxyOrigin,omitempty" json:"excludeLlmProxyOrigin,omitempty"`
+}
+
 // AssignToolToAgentJSONBody defines parameters for AssignToolToAgent.
 type AssignToolToAgentJSONBody struct {
 	CredentialSourceMcpServerId *openapi_types.UUID `json:"credentialSourceMcpServerId"`
@@ -719,35 +803,39 @@ type UpdateAgentJSONBody struct {
 
 // CreateToolInvocationPolicyJSONBody defines parameters for CreateToolInvocationPolicy.
 type CreateToolInvocationPolicyJSONBody struct {
-	Action       CreateToolInvocationPolicyJSONBodyAction   `json:"action"`
-	AgentToolId  openapi_types.UUID                         `json:"agentToolId"`
-	ArgumentName string                                     `json:"argumentName"`
-	Operator     CreateToolInvocationPolicyJSONBodyOperator `json:"operator"`
-	Reason       *string                                    `json:"reason"`
-	Value        string                                     `json:"value"`
+	Action     CreateToolInvocationPolicyJSONBodyAction `json:"action"`
+	Conditions []struct {
+		Key      string                                               `json:"key"`
+		Operator CreateToolInvocationPolicyJSONBodyConditionsOperator `json:"operator"`
+		Value    string                                               `json:"value"`
+	} `json:"conditions"`
+	Reason *string            `json:"reason"`
+	ToolId openapi_types.UUID `json:"toolId"`
 }
 
 // CreateToolInvocationPolicyJSONBodyAction defines parameters for CreateToolInvocationPolicy.
 type CreateToolInvocationPolicyJSONBodyAction string
 
-// CreateToolInvocationPolicyJSONBodyOperator defines parameters for CreateToolInvocationPolicy.
-type CreateToolInvocationPolicyJSONBodyOperator string
+// CreateToolInvocationPolicyJSONBodyConditionsOperator defines parameters for CreateToolInvocationPolicy.
+type CreateToolInvocationPolicyJSONBodyConditionsOperator string
 
 // UpdateToolInvocationPolicyJSONBody defines parameters for UpdateToolInvocationPolicy.
 type UpdateToolInvocationPolicyJSONBody struct {
-	Action       *UpdateToolInvocationPolicyJSONBodyAction   `json:"action,omitempty"`
-	AgentToolId  *openapi_types.UUID                         `json:"agentToolId,omitempty"`
-	ArgumentName *string                                     `json:"argumentName,omitempty"`
-	Operator     *UpdateToolInvocationPolicyJSONBodyOperator `json:"operator,omitempty"`
-	Reason       *string                                     `json:"reason"`
-	Value        *string                                     `json:"value,omitempty"`
+	Action     *UpdateToolInvocationPolicyJSONBodyAction `json:"action,omitempty"`
+	Conditions *[]struct {
+		Key      string                                               `json:"key"`
+		Operator UpdateToolInvocationPolicyJSONBodyConditionsOperator `json:"operator"`
+		Value    string                                               `json:"value"`
+	} `json:"conditions,omitempty"`
+	Reason *string             `json:"reason"`
+	ToolId *openapi_types.UUID `json:"toolId,omitempty"`
 }
 
 // UpdateToolInvocationPolicyJSONBodyAction defines parameters for UpdateToolInvocationPolicy.
 type UpdateToolInvocationPolicyJSONBodyAction string
 
-// UpdateToolInvocationPolicyJSONBodyOperator defines parameters for UpdateToolInvocationPolicy.
-type UpdateToolInvocationPolicyJSONBodyOperator string
+// UpdateToolInvocationPolicyJSONBodyConditionsOperator defines parameters for UpdateToolInvocationPolicy.
+type UpdateToolInvocationPolicyJSONBodyConditionsOperator string
 
 // StreamChatJSONBody defines parameters for StreamChat.
 type StreamChatJSONBody struct {
@@ -761,45 +849,72 @@ type StreamChatJSONBodyTrigger string
 
 // CreateChatApiKeyJSONBody defines parameters for CreateChatApiKey.
 type CreateChatApiKeyJSONBody struct {
-	ApiKey                string                           `json:"apiKey"`
-	IsOrganizationDefault *bool                            `json:"isOrganizationDefault,omitempty"`
-	Name                  string                           `json:"name"`
-	Provider              CreateChatApiKeyJSONBodyProvider `json:"provider"`
+	ApiKey          *string                          `json:"apiKey,omitempty"`
+	Name            string                           `json:"name"`
+	Provider        CreateChatApiKeyJSONBodyProvider `json:"provider"`
+	Scope           *CreateChatApiKeyJSONBodyScope   `json:"scope,omitempty"`
+	TeamId          *string                          `json:"teamId,omitempty"`
+	VaultSecretKey  *string                          `json:"vaultSecretKey,omitempty"`
+	VaultSecretPath *string                          `json:"vaultSecretPath,omitempty"`
 }
 
 // CreateChatApiKeyJSONBodyProvider defines parameters for CreateChatApiKey.
 type CreateChatApiKeyJSONBodyProvider string
 
-// BulkAssignChatApiKeysToProfilesJSONBody defines parameters for BulkAssignChatApiKeysToProfiles.
-type BulkAssignChatApiKeysToProfilesJSONBody struct {
-	ChatApiKeyIds []openapi_types.UUID `json:"chatApiKeyIds"`
-	ProfileIds    []openapi_types.UUID `json:"profileIds"`
+// CreateChatApiKeyJSONBodyScope defines parameters for CreateChatApiKey.
+type CreateChatApiKeyJSONBodyScope string
+
+// GetAvailableChatApiKeysParams defines parameters for GetAvailableChatApiKeys.
+type GetAvailableChatApiKeysParams struct {
+	Provider *GetAvailableChatApiKeysParamsProvider `form:"provider,omitempty" json:"provider,omitempty"`
 }
+
+// GetAvailableChatApiKeysParamsProvider defines parameters for GetAvailableChatApiKeys.
+type GetAvailableChatApiKeysParamsProvider string
 
 // UpdateChatApiKeyJSONBody defines parameters for UpdateChatApiKey.
 type UpdateChatApiKeyJSONBody struct {
-	ApiKey *string `json:"apiKey,omitempty"`
-	Name   *string `json:"name,omitempty"`
+	ApiKey          *string                        `json:"apiKey,omitempty"`
+	Name            *string                        `json:"name,omitempty"`
+	Scope           *UpdateChatApiKeyJSONBodyScope `json:"scope,omitempty"`
+	TeamId          *openapi_types.UUID            `json:"teamId"`
+	VaultSecretKey  *string                        `json:"vaultSecretKey,omitempty"`
+	VaultSecretPath *string                        `json:"vaultSecretPath,omitempty"`
 }
 
-// UpdateChatApiKeyProfilesJSONBody defines parameters for UpdateChatApiKeyProfiles.
-type UpdateChatApiKeyProfilesJSONBody struct {
-	ProfileIds []openapi_types.UUID `json:"profileIds"`
+// UpdateChatApiKeyJSONBodyScope defines parameters for UpdateChatApiKey.
+type UpdateChatApiKeyJSONBodyScope string
+
+// GetChatConversationsParams defines parameters for GetChatConversations.
+type GetChatConversationsParams struct {
+	Search *string `form:"search,omitempty" json:"search,omitempty"`
 }
 
 // CreateChatConversationJSONBody defines parameters for CreateChatConversation.
 type CreateChatConversationJSONBody struct {
-	AgentId       openapi_types.UUID  `json:"agentId"`
-	PromptId      *openapi_types.UUID `json:"promptId"`
-	SelectedModel *string             `json:"selectedModel,omitempty"`
-	Title         *string             `json:"title"`
+	AgentId          openapi_types.UUID                              `json:"agentId"`
+	ChatApiKeyId     *openapi_types.UUID                             `json:"chatApiKeyId"`
+	PromptId         *openapi_types.UUID                             `json:"promptId"`
+	SelectedModel    *string                                         `json:"selectedModel,omitempty"`
+	SelectedProvider *CreateChatConversationJSONBodySelectedProvider `json:"selectedProvider"`
+	Title            *string                                         `json:"title"`
 }
+
+// CreateChatConversationJSONBodySelectedProvider defines parameters for CreateChatConversation.
+type CreateChatConversationJSONBodySelectedProvider string
 
 // UpdateChatConversationJSONBody defines parameters for UpdateChatConversation.
 type UpdateChatConversationJSONBody struct {
-	SelectedModel *string `json:"selectedModel,omitempty"`
-	Title         *string `json:"title"`
+	AgentId          *openapi_types.UUID                             `json:"agentId,omitempty"`
+	Artifact         *string                                         `json:"artifact"`
+	ChatApiKeyId     *openapi_types.UUID                             `json:"chatApiKeyId"`
+	SelectedModel    *string                                         `json:"selectedModel,omitempty"`
+	SelectedProvider *UpdateChatConversationJSONBodySelectedProvider `json:"selectedProvider"`
+	Title            *string                                         `json:"title"`
 }
+
+// UpdateChatConversationJSONBodySelectedProvider defines parameters for UpdateChatConversation.
+type UpdateChatConversationJSONBodySelectedProvider string
 
 // UpdateConversationEnabledToolsJSONBody defines parameters for UpdateConversationEnabledTools.
 type UpdateConversationEnabledToolsJSONBody struct {
@@ -810,6 +925,13 @@ type UpdateConversationEnabledToolsJSONBody struct {
 type GenerateChatConversationTitleJSONBody struct {
 	// Regenerate Force regeneration even if title already exists (for manual regeneration)
 	Regenerate *bool `json:"regenerate,omitempty"`
+}
+
+// UpdateChatMessageJSONBody defines parameters for UpdateChatMessage.
+type UpdateChatMessageJSONBody struct {
+	DeleteSubsequentMessages *bool  `json:"deleteSubsequentMessages,omitempty"`
+	PartIndex                int    `json:"partIndex"`
+	Text                     string `json:"text"`
 }
 
 // GetChatModelsParams defines parameters for GetChatModels.
@@ -838,6 +960,11 @@ type UpdateDualLlmConfigJSONBody struct {
 	SummaryPrompt          *string `json:"summaryPrompt,omitempty"`
 }
 
+// SetupIncomingEmailWebhookJSONBody defines parameters for SetupIncomingEmailWebhook.
+type SetupIncomingEmailWebhookJSONBody struct {
+	WebhookUrl string `json:"webhookUrl"`
+}
+
 // CreateInternalMcpCatalogItemJSONBody defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBody struct {
 	AuthDescription *string `json:"authDescription"`
@@ -851,6 +978,7 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 	ClientSecretId      *openapi_types.UUID `json:"clientSecretId"`
 	Description         *string             `json:"description"`
 	DocsUrl             *string             `json:"docsUrl"`
+	Id                  *openapi_types.UUID `json:"id,omitempty"`
 	InstallationCommand *string             `json:"installationCommand"`
 	Instructions        *string             `json:"instructions"`
 	LocalConfig         *struct {
@@ -861,6 +989,7 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 			Default              *CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
 			Description          *string                                                               `json:"description,omitempty"`
 			Key                  string                                                                `json:"key"`
+			Mounted              *bool                                                                 `json:"mounted,omitempty"`
 			PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
 			Required             *bool                                                                 `json:"required,omitempty"`
 			Type                 CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
@@ -983,6 +1112,7 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 			Default              *UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
 			Description          *string                                                               `json:"description,omitempty"`
 			Key                  string                                                                `json:"key"`
+			Mounted              *bool                                                                 `json:"mounted,omitempty"`
 			PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
 			Required             *bool                                                                 `json:"required,omitempty"`
 			Type                 UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
@@ -1134,7 +1264,16 @@ type UpdateLimitJSONBodyLimitType string
 // GetMcpToolCallsParams defines parameters for GetMcpToolCalls.
 type GetMcpToolCallsParams struct {
 	// AgentId Filter by agent ID
-	AgentId       *openapi_types.UUID                 `form:"agentId,omitempty" json:"agentId,omitempty"`
+	AgentId *openapi_types.UUID `form:"agentId,omitempty" json:"agentId,omitempty"`
+
+	// StartDate Filter by start date (ISO 8601 format)
+	StartDate *time.Time `form:"startDate,omitempty" json:"startDate,omitempty"`
+
+	// EndDate Filter by end date (ISO 8601 format)
+	EndDate *time.Time `form:"endDate,omitempty" json:"endDate,omitempty"`
+
+	// Search Free-text search across MCP server name, tool name, and arguments (case-insensitive)
+	Search        *string                             `form:"search,omitempty" json:"search,omitempty"`
 	Limit         *int                                `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset        *int                                `form:"offset,omitempty" json:"offset,omitempty"`
 	SortBy        *GetMcpToolCallsParamsSortBy        `form:"sortBy,omitempty" json:"sortBy,omitempty"`
@@ -1162,9 +1301,12 @@ type InstallMcpServerJSONBody struct {
 	LocalInstallationError  *string                                          `json:"localInstallationError"`
 	LocalInstallationStatus *InstallMcpServerJSONBodyLocalInstallationStatus `json:"localInstallationStatus,omitempty"`
 	Name                    string                                           `json:"name"`
+	OauthRefreshError       *InstallMcpServerJSONBodyOauthRefreshError       `json:"oauthRefreshError"`
+	OauthRefreshFailedAt    interface{}                                      `json:"oauthRefreshFailedAt"`
 	OwnerId                 *string                                          `json:"ownerId"`
 	ReinstallRequired       *bool                                            `json:"reinstallRequired,omitempty"`
 	SecretId                *openapi_types.UUID                              `json:"secretId,omitempty"`
+	ServiceAccount          *string                                          `json:"serviceAccount,omitempty"`
 	TeamId                  *string                                          `json:"teamId"`
 	UserConfigValues        *map[string]string                               `json:"userConfigValues,omitempty"`
 	UserId                  *string                                          `json:"userId,omitempty"`
@@ -1173,10 +1315,18 @@ type InstallMcpServerJSONBody struct {
 // InstallMcpServerJSONBodyLocalInstallationStatus defines parameters for InstallMcpServer.
 type InstallMcpServerJSONBodyLocalInstallationStatus string
 
+// InstallMcpServerJSONBodyOauthRefreshError defines parameters for InstallMcpServer.
+type InstallMcpServerJSONBodyOauthRefreshError string
+
 // GetMcpServerLogsParams defines parameters for GetMcpServerLogs.
 type GetMcpServerLogsParams struct {
 	Lines  *float32 `form:"lines,omitempty" json:"lines,omitempty"`
 	Follow *bool    `form:"follow,omitempty" json:"follow,omitempty"`
+}
+
+// ReauthenticateMcpServerJSONBody defines parameters for ReauthenticateMcpServer.
+type ReauthenticateMcpServerJSONBody struct {
+	SecretId openapi_types.UUID `json:"secretId"`
 }
 
 // GetMcpServerInstallationRequestsParams defines parameters for GetMcpServerInstallationRequests.
@@ -1243,6 +1393,7 @@ type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
 			Default              *CreateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
 			Description          *string                                                                                          `json:"description,omitempty"`
 			Key                  string                                                                                           `json:"key"`
+			Mounted              *bool                                                                                            `json:"mounted,omitempty"`
 			PromptOnInstallation bool                                                                                             `json:"promptOnInstallation"`
 			Required             *bool                                                                                            `json:"required,omitempty"`
 			Type                 CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType          `json:"type"`
@@ -1355,6 +1506,7 @@ type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
 			Default              *UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
 			Description          *string                                                                                          `json:"description,omitempty"`
 			Key                  string                                                                                           `json:"key"`
+			Mounted              *bool                                                                                            `json:"mounted,omitempty"`
 			PromptOnInstallation bool                                                                                             `json:"promptOnInstallation"`
 			Required             *bool                                                                                            `json:"required,omitempty"`
 			Type                 UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType          `json:"type"`
@@ -1502,10 +1654,12 @@ type UpdateOptimizationRuleJSONBodyProvider string
 
 // UpdateOrganizationJSONBody defines parameters for UpdateOrganization.
 type UpdateOrganizationJSONBody struct {
+	AllowChatFileUploads     *bool                                           `json:"allowChatFileUploads,omitempty"`
 	AutoConfigureNewTools    *bool                                           `json:"autoConfigureNewTools,omitempty"`
 	CompressionScope         *UpdateOrganizationJSONBodyCompressionScope     `json:"compressionScope,omitempty"`
 	ConvertToolResultsToToon *bool                                           `json:"convertToolResultsToToon,omitempty"`
 	CustomFont               *UpdateOrganizationJSONBodyCustomFont           `json:"customFont,omitempty"`
+	GlobalToolPolicy         *UpdateOrganizationJSONBodyGlobalToolPolicy     `json:"globalToolPolicy,omitempty"`
 	LimitCleanupInterval     *UpdateOrganizationJSONBodyLimitCleanupInterval `json:"limitCleanupInterval"`
 	Logo                     *string                                         `json:"logo"`
 	OnboardingComplete       *bool                                           `json:"onboardingComplete,omitempty"`
@@ -1518,6 +1672,9 @@ type UpdateOrganizationJSONBodyCompressionScope string
 // UpdateOrganizationJSONBodyCustomFont defines parameters for UpdateOrganization.
 type UpdateOrganizationJSONBodyCustomFont string
 
+// UpdateOrganizationJSONBodyGlobalToolPolicy defines parameters for UpdateOrganization.
+type UpdateOrganizationJSONBodyGlobalToolPolicy string
+
 // UpdateOrganizationJSONBodyLimitCleanupInterval defines parameters for UpdateOrganization.
 type UpdateOrganizationJSONBodyLimitCleanupInterval string
 
@@ -1526,26 +1683,99 @@ type UpdateOrganizationJSONBodyTheme string
 
 // CreatePromptJSONBody defines parameters for CreatePrompt.
 type CreatePromptJSONBody struct {
-	AgentId        openapi_types.UUID  `json:"agentId"`
-	IsActive       *bool               `json:"isActive,omitempty"`
-	Name           string              `json:"name"`
-	ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-	SystemPrompt   *string             `json:"systemPrompt"`
-	UserPrompt     *string             `json:"userPrompt"`
-	Version        *int                `json:"version,omitempty"`
+	AgentId                    openapi_types.UUID                             `json:"agentId"`
+	AllowedChatops             *CreatePromptJSONBody_AllowedChatops           `json:"allowedChatops,omitempty"`
+	IncomingEmailAllowedDomain *string                                        `json:"incomingEmailAllowedDomain"`
+	IncomingEmailEnabled       *bool                                          `json:"incomingEmailEnabled,omitempty"`
+	IncomingEmailSecurityMode  *CreatePromptJSONBodyIncomingEmailSecurityMode `json:"incomingEmailSecurityMode,omitempty"`
+	Name                       string                                         `json:"name"`
+	SystemPrompt               *string                                        `json:"systemPrompt"`
+	UserPrompt                 *string                                        `json:"userPrompt"`
+	Version                    *int                                           `json:"version,omitempty"`
 }
+
+// CreatePromptJSONBodyAllowedChatops0 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops0 struct {
+	union json.RawMessage
+}
+
+// CreatePromptJSONBodyAllowedChatops00 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops00 = string
+
+// CreatePromptJSONBodyAllowedChatops01 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops01 = float32
+
+// CreatePromptJSONBodyAllowedChatops02 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops02 = bool
+
+// CreatePromptJSONBodyAllowedChatops03 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops03 string
+
+// CreatePromptJSONBodyAllowedChatops1 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops1 map[string]interface{}
+
+// CreatePromptJSONBodyAllowedChatops2 defines parameters for CreatePrompt.
+type CreatePromptJSONBodyAllowedChatops2 = []interface{}
+
+// CreatePromptJSONBody_AllowedChatops defines parameters for CreatePrompt.
+type CreatePromptJSONBody_AllowedChatops struct {
+	union json.RawMessage
+}
+
+// CreatePromptJSONBodyIncomingEmailSecurityMode defines parameters for CreatePrompt.
+type CreatePromptJSONBodyIncomingEmailSecurityMode string
 
 // UpdatePromptJSONBody defines parameters for UpdatePrompt.
 type UpdatePromptJSONBody struct {
-	AgentId      *openapi_types.UUID `json:"agentId,omitempty"`
-	Name         *string             `json:"name,omitempty"`
-	SystemPrompt *string             `json:"systemPrompt"`
-	UserPrompt   *string             `json:"userPrompt"`
+	AgentId                    *openapi_types.UUID                            `json:"agentId,omitempty"`
+	AllowedChatops             *UpdatePromptJSONBody_AllowedChatops           `json:"allowedChatops,omitempty"`
+	IncomingEmailAllowedDomain *string                                        `json:"incomingEmailAllowedDomain"`
+	IncomingEmailEnabled       *bool                                          `json:"incomingEmailEnabled,omitempty"`
+	IncomingEmailSecurityMode  *UpdatePromptJSONBodyIncomingEmailSecurityMode `json:"incomingEmailSecurityMode,omitempty"`
+	Name                       *string                                        `json:"name,omitempty"`
+	SystemPrompt               *string                                        `json:"systemPrompt"`
+	UserPrompt                 *string                                        `json:"userPrompt"`
 }
+
+// UpdatePromptJSONBodyAllowedChatops0 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops0 struct {
+	union json.RawMessage
+}
+
+// UpdatePromptJSONBodyAllowedChatops00 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops00 = string
+
+// UpdatePromptJSONBodyAllowedChatops01 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops01 = float32
+
+// UpdatePromptJSONBodyAllowedChatops02 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops02 = bool
+
+// UpdatePromptJSONBodyAllowedChatops03 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops03 string
+
+// UpdatePromptJSONBodyAllowedChatops1 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops1 map[string]interface{}
+
+// UpdatePromptJSONBodyAllowedChatops2 defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyAllowedChatops2 = []interface{}
+
+// UpdatePromptJSONBody_AllowedChatops defines parameters for UpdatePrompt.
+type UpdatePromptJSONBody_AllowedChatops struct {
+	union json.RawMessage
+}
+
+// UpdatePromptJSONBodyIncomingEmailSecurityMode defines parameters for UpdatePrompt.
+type UpdatePromptJSONBodyIncomingEmailSecurityMode string
 
 // RollbackPromptJSONBody defines parameters for RollbackPrompt.
 type RollbackPromptJSONBody struct {
-	VersionId openapi_types.UUID `json:"versionId"`
+	Version int `json:"version"`
+}
+
+// SyncPromptAgentsJSONBody defines parameters for SyncPromptAgents.
+type SyncPromptAgentsJSONBody struct {
+	AgentPromptIds []openapi_types.UUID `json:"agentPromptIds"`
 }
 
 // CreateRoleJSONBody defines parameters for CreateRole.
@@ -1557,23 +1787,11 @@ type CreateRoleJSONBody struct {
 // CreateRoleJSONBodyPermission defines parameters for CreateRole.
 type CreateRoleJSONBodyPermission string
 
-// GetRoleParamsRoleId0 defines parameters for GetRole.
-type GetRoleParamsRoleId0 string
-
-// GetRoleParamsRoleId1 defines parameters for GetRole.
-type GetRoleParamsRoleId1 = string
-
 // UpdateRoleJSONBody defines parameters for UpdateRole.
 type UpdateRoleJSONBody struct {
 	Name       *string                                    `json:"name,omitempty"`
 	Permission *map[string][]UpdateRoleJSONBodyPermission `json:"permission,omitempty"`
 }
-
-// UpdateRoleParamsRoleId0 defines parameters for UpdateRole.
-type UpdateRoleParamsRoleId0 string
-
-// UpdateRoleParamsRoleId1 defines parameters for UpdateRole.
-type UpdateRoleParamsRoleId1 = string
 
 // UpdateRoleJSONBodyPermission defines parameters for UpdateRole.
 type UpdateRoleJSONBodyPermission string
@@ -1919,43 +2137,143 @@ type UpdateTokenPriceJSONBody struct {
 // UpdateTokenPriceJSONBodyProvider defines parameters for UpdateTokenPrice.
 type UpdateTokenPriceJSONBodyProvider string
 
+// GetTokensParams defines parameters for GetTokens.
+type GetTokensParams struct {
+	// ProfileId Filter team tokens to only show tokens for teams the profile is assigned to
+	ProfileId *openapi_types.UUID `form:"profileId,omitempty" json:"profileId,omitempty"`
+}
+
+// BulkUpsertDefaultCallPolicyJSONBody defines parameters for BulkUpsertDefaultCallPolicy.
+type BulkUpsertDefaultCallPolicyJSONBody struct {
+	Action  BulkUpsertDefaultCallPolicyJSONBodyAction `json:"action"`
+	ToolIds []openapi_types.UUID                      `json:"toolIds"`
+}
+
+// BulkUpsertDefaultCallPolicyJSONBodyAction defines parameters for BulkUpsertDefaultCallPolicy.
+type BulkUpsertDefaultCallPolicyJSONBodyAction string
+
+// GetToolsWithAssignmentsParams defines parameters for GetToolsWithAssignments.
+type GetToolsWithAssignmentsParams struct {
+	Search *string `form:"search,omitempty" json:"search,omitempty"`
+
+	// Origin Can be 'llm-proxy' or a catalogId
+	Origin *string `form:"origin,omitempty" json:"origin,omitempty"`
+
+	// ExcludeArchestraTools Hide built-in Archestra tools
+	ExcludeArchestraTools *bool                                       `form:"excludeArchestraTools,omitempty" json:"excludeArchestraTools,omitempty"`
+	SortBy                *GetToolsWithAssignmentsParamsSortBy        `form:"sortBy,omitempty" json:"sortBy,omitempty"`
+	SortDirection         *GetToolsWithAssignmentsParamsSortDirection `form:"sortDirection,omitempty" json:"sortDirection,omitempty"`
+	Limit                 *int                                        `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset                *int                                        `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// GetToolsWithAssignmentsParamsSortBy defines parameters for GetToolsWithAssignments.
+type GetToolsWithAssignmentsParamsSortBy string
+
+// GetToolsWithAssignmentsParamsSortDirection defines parameters for GetToolsWithAssignments.
+type GetToolsWithAssignmentsParamsSortDirection string
+
 // CreateTrustedDataPolicyJSONBody defines parameters for CreateTrustedDataPolicy.
 type CreateTrustedDataPolicyJSONBody struct {
-	Action        CreateTrustedDataPolicyJSONBodyAction   `json:"action"`
-	AgentToolId   openapi_types.UUID                      `json:"agentToolId"`
-	AttributePath string                                  `json:"attributePath"`
-	Description   string                                  `json:"description"`
-	Operator      CreateTrustedDataPolicyJSONBodyOperator `json:"operator"`
-	Value         string                                  `json:"value"`
+	Action     CreateTrustedDataPolicyJSONBodyAction `json:"action"`
+	Conditions []struct {
+		Key      string                                            `json:"key"`
+		Operator CreateTrustedDataPolicyJSONBodyConditionsOperator `json:"operator"`
+		Value    string                                            `json:"value"`
+	} `json:"conditions"`
+	Description *string            `json:"description"`
+	ToolId      openapi_types.UUID `json:"toolId"`
 }
 
 // CreateTrustedDataPolicyJSONBodyAction defines parameters for CreateTrustedDataPolicy.
 type CreateTrustedDataPolicyJSONBodyAction string
 
-// CreateTrustedDataPolicyJSONBodyOperator defines parameters for CreateTrustedDataPolicy.
-type CreateTrustedDataPolicyJSONBodyOperator string
+// CreateTrustedDataPolicyJSONBodyConditionsOperator defines parameters for CreateTrustedDataPolicy.
+type CreateTrustedDataPolicyJSONBodyConditionsOperator string
+
+// BulkUpsertDefaultResultPolicyJSONBody defines parameters for BulkUpsertDefaultResultPolicy.
+type BulkUpsertDefaultResultPolicyJSONBody struct {
+	Action  BulkUpsertDefaultResultPolicyJSONBodyAction `json:"action"`
+	ToolIds []openapi_types.UUID                        `json:"toolIds"`
+}
+
+// BulkUpsertDefaultResultPolicyJSONBodyAction defines parameters for BulkUpsertDefaultResultPolicy.
+type BulkUpsertDefaultResultPolicyJSONBodyAction string
 
 // UpdateTrustedDataPolicyJSONBody defines parameters for UpdateTrustedDataPolicy.
 type UpdateTrustedDataPolicyJSONBody struct {
-	Action        *UpdateTrustedDataPolicyJSONBodyAction   `json:"action,omitempty"`
-	AgentToolId   *openapi_types.UUID                      `json:"agentToolId,omitempty"`
-	AttributePath *string                                  `json:"attributePath,omitempty"`
-	Description   *string                                  `json:"description,omitempty"`
-	Operator      *UpdateTrustedDataPolicyJSONBodyOperator `json:"operator,omitempty"`
-	Value         *string                                  `json:"value,omitempty"`
+	Action     *UpdateTrustedDataPolicyJSONBodyAction `json:"action,omitempty"`
+	Conditions *[]struct {
+		Key      string                                            `json:"key"`
+		Operator UpdateTrustedDataPolicyJSONBodyConditionsOperator `json:"operator"`
+		Value    string                                            `json:"value"`
+	} `json:"conditions,omitempty"`
+	Description *string             `json:"description"`
+	ToolId      *openapi_types.UUID `json:"toolId,omitempty"`
 }
 
 // UpdateTrustedDataPolicyJSONBodyAction defines parameters for UpdateTrustedDataPolicy.
 type UpdateTrustedDataPolicyJSONBodyAction string
 
-// UpdateTrustedDataPolicyJSONBodyOperator defines parameters for UpdateTrustedDataPolicy.
-type UpdateTrustedDataPolicyJSONBodyOperator string
+// UpdateTrustedDataPolicyJSONBodyConditionsOperator defines parameters for UpdateTrustedDataPolicy.
+type UpdateTrustedDataPolicyJSONBodyConditionsOperator string
+
+// CreateUserJSONBody defines parameters for CreateUser.
+type CreateUserJSONBody struct {
+	Email    string  `json:"email"`
+	Id       *string `json:"id,omitempty"`
+	Image    *string `json:"image,omitempty"`
+	Name     string  `json:"name"`
+	Password string  `json:"password"`
+}
+
+// UpdateUserJSONBody defines parameters for UpdateUser.
+type UpdateUserJSONBody struct {
+	Email *openapi_types.Email `json:"email,omitempty"`
+	Image *string              `json:"image,omitempty"`
+	Name  *string              `json:"name,omitempty"`
+}
+
+// PostApiWebhooksChatopsMsTeamsJSONBody defines parameters for PostApiWebhooksChatopsMsTeams.
+type PostApiWebhooksChatopsMsTeamsJSONBody = interface{}
+
+// PostApiWebhooksIncomingEmailJSONBody defines parameters for PostApiWebhooksIncomingEmail.
+type PostApiWebhooksIncomingEmailJSONBody = interface{}
+
+// PostV1A2aPromptIdJSONBody defines parameters for PostV1A2aPromptId.
+type PostV1A2aPromptIdJSONBody struct {
+	Id      PostV1A2aPromptIdJSONBody_Id     `json:"id"`
+	Jsonrpc PostV1A2aPromptIdJSONBodyJsonrpc `json:"jsonrpc"`
+	Method  string                           `json:"method"`
+	Params  *struct {
+		Message *struct {
+			Parts *[]struct {
+				Kind PostV1A2aPromptIdJSONBodyParamsMessagePartsKind `json:"kind"`
+				Text string                                          `json:"text"`
+			} `json:"parts,omitempty"`
+		} `json:"message,omitempty"`
+	} `json:"params,omitempty"`
+}
+
+// PostV1A2aPromptIdJSONBodyId0 defines parameters for PostV1A2aPromptId.
+type PostV1A2aPromptIdJSONBodyId0 = string
+
+// PostV1A2aPromptIdJSONBodyId1 defines parameters for PostV1A2aPromptId.
+type PostV1A2aPromptIdJSONBodyId1 = float32
+
+// PostV1A2aPromptIdJSONBody_Id defines parameters for PostV1A2aPromptId.
+type PostV1A2aPromptIdJSONBody_Id struct {
+	union json.RawMessage
+}
+
+// PostV1A2aPromptIdJSONBodyJsonrpc defines parameters for PostV1A2aPromptId.
+type PostV1A2aPromptIdJSONBodyJsonrpc string
+
+// PostV1A2aPromptIdJSONBodyParamsMessagePartsKind defines parameters for PostV1A2aPromptId.
+type PostV1A2aPromptIdJSONBodyParamsMessagePartsKind string
 
 // AutoConfigureAgentToolPoliciesJSONRequestBody defines body for AutoConfigureAgentToolPolicies for application/json ContentType.
 type AutoConfigureAgentToolPoliciesJSONRequestBody AutoConfigureAgentToolPoliciesJSONBody
-
-// BulkUpdateAgentToolsJSONRequestBody defines body for BulkUpdateAgentTools for application/json ContentType.
-type BulkUpdateAgentToolsJSONRequestBody BulkUpdateAgentToolsJSONBody
 
 // UpdateAgentToolJSONRequestBody defines body for UpdateAgentTool for application/json ContentType.
 type UpdateAgentToolJSONRequestBody UpdateAgentToolJSONBody
@@ -1984,14 +2302,8 @@ type StreamChatJSONRequestBody StreamChatJSONBody
 // CreateChatApiKeyJSONRequestBody defines body for CreateChatApiKey for application/json ContentType.
 type CreateChatApiKeyJSONRequestBody CreateChatApiKeyJSONBody
 
-// BulkAssignChatApiKeysToProfilesJSONRequestBody defines body for BulkAssignChatApiKeysToProfiles for application/json ContentType.
-type BulkAssignChatApiKeysToProfilesJSONRequestBody BulkAssignChatApiKeysToProfilesJSONBody
-
 // UpdateChatApiKeyJSONRequestBody defines body for UpdateChatApiKey for application/json ContentType.
 type UpdateChatApiKeyJSONRequestBody UpdateChatApiKeyJSONBody
-
-// UpdateChatApiKeyProfilesJSONRequestBody defines body for UpdateChatApiKeyProfiles for application/json ContentType.
-type UpdateChatApiKeyProfilesJSONRequestBody UpdateChatApiKeyProfilesJSONBody
 
 // CreateChatConversationJSONRequestBody defines body for CreateChatConversation for application/json ContentType.
 type CreateChatConversationJSONRequestBody CreateChatConversationJSONBody
@@ -2005,11 +2317,17 @@ type UpdateConversationEnabledToolsJSONRequestBody UpdateConversationEnabledTool
 // GenerateChatConversationTitleJSONRequestBody defines body for GenerateChatConversationTitle for application/json ContentType.
 type GenerateChatConversationTitleJSONRequestBody GenerateChatConversationTitleJSONBody
 
+// UpdateChatMessageJSONRequestBody defines body for UpdateChatMessage for application/json ContentType.
+type UpdateChatMessageJSONRequestBody UpdateChatMessageJSONBody
+
 // CreateDualLlmConfigJSONRequestBody defines body for CreateDualLlmConfig for application/json ContentType.
 type CreateDualLlmConfigJSONRequestBody CreateDualLlmConfigJSONBody
 
 // UpdateDualLlmConfigJSONRequestBody defines body for UpdateDualLlmConfig for application/json ContentType.
 type UpdateDualLlmConfigJSONRequestBody UpdateDualLlmConfigJSONBody
+
+// SetupIncomingEmailWebhookJSONRequestBody defines body for SetupIncomingEmailWebhook for application/json ContentType.
+type SetupIncomingEmailWebhookJSONRequestBody SetupIncomingEmailWebhookJSONBody
 
 // CreateInternalMcpCatalogItemJSONRequestBody defines body for CreateInternalMcpCatalogItem for application/json ContentType.
 type CreateInternalMcpCatalogItemJSONRequestBody CreateInternalMcpCatalogItemJSONBody
@@ -2025,6 +2343,9 @@ type UpdateLimitJSONRequestBody UpdateLimitJSONBody
 
 // InstallMcpServerJSONRequestBody defines body for InstallMcpServer for application/json ContentType.
 type InstallMcpServerJSONRequestBody InstallMcpServerJSONBody
+
+// ReauthenticateMcpServerJSONRequestBody defines body for ReauthenticateMcpServer for application/json ContentType.
+type ReauthenticateMcpServerJSONRequestBody ReauthenticateMcpServerJSONBody
 
 // CreateMcpServerInstallationRequestJSONRequestBody defines body for CreateMcpServerInstallationRequest for application/json ContentType.
 type CreateMcpServerInstallationRequestJSONRequestBody CreateMcpServerInstallationRequestJSONBody
@@ -2064,6 +2385,9 @@ type UpdatePromptJSONRequestBody UpdatePromptJSONBody
 
 // RollbackPromptJSONRequestBody defines body for RollbackPrompt for application/json ContentType.
 type RollbackPromptJSONRequestBody RollbackPromptJSONBody
+
+// SyncPromptAgentsJSONRequestBody defines body for SyncPromptAgents for application/json ContentType.
+type SyncPromptAgentsJSONRequestBody SyncPromptAgentsJSONBody
 
 // CreateRoleJSONRequestBody defines body for CreateRole for application/json ContentType.
 type CreateRoleJSONRequestBody CreateRoleJSONBody
@@ -2107,11 +2431,32 @@ type CreateTokenPriceJSONRequestBody CreateTokenPriceJSONBody
 // UpdateTokenPriceJSONRequestBody defines body for UpdateTokenPrice for application/json ContentType.
 type UpdateTokenPriceJSONRequestBody UpdateTokenPriceJSONBody
 
+// BulkUpsertDefaultCallPolicyJSONRequestBody defines body for BulkUpsertDefaultCallPolicy for application/json ContentType.
+type BulkUpsertDefaultCallPolicyJSONRequestBody BulkUpsertDefaultCallPolicyJSONBody
+
 // CreateTrustedDataPolicyJSONRequestBody defines body for CreateTrustedDataPolicy for application/json ContentType.
 type CreateTrustedDataPolicyJSONRequestBody CreateTrustedDataPolicyJSONBody
 
+// BulkUpsertDefaultResultPolicyJSONRequestBody defines body for BulkUpsertDefaultResultPolicy for application/json ContentType.
+type BulkUpsertDefaultResultPolicyJSONRequestBody BulkUpsertDefaultResultPolicyJSONBody
+
 // UpdateTrustedDataPolicyJSONRequestBody defines body for UpdateTrustedDataPolicy for application/json ContentType.
 type UpdateTrustedDataPolicyJSONRequestBody UpdateTrustedDataPolicyJSONBody
+
+// CreateUserJSONRequestBody defines body for CreateUser for application/json ContentType.
+type CreateUserJSONRequestBody CreateUserJSONBody
+
+// UpdateUserJSONRequestBody defines body for UpdateUser for application/json ContentType.
+type UpdateUserJSONRequestBody UpdateUserJSONBody
+
+// PostApiWebhooksChatopsMsTeamsJSONRequestBody defines body for PostApiWebhooksChatopsMsTeams for application/json ContentType.
+type PostApiWebhooksChatopsMsTeamsJSONRequestBody = PostApiWebhooksChatopsMsTeamsJSONBody
+
+// PostApiWebhooksIncomingEmailJSONRequestBody defines body for PostApiWebhooksIncomingEmail for application/json ContentType.
+type PostApiWebhooksIncomingEmailJSONRequestBody = PostApiWebhooksIncomingEmailJSONBody
+
+// PostV1A2aPromptIdJSONRequestBody defines body for PostV1A2aPromptId for application/json ContentType.
+type PostV1A2aPromptIdJSONRequestBody PostV1A2aPromptIdJSONBody
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -2194,11 +2539,6 @@ type ClientInterface interface {
 
 	AutoConfigureAgentToolPolicies(ctx context.Context, body AutoConfigureAgentToolPoliciesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// BulkUpdateAgentToolsWithBody request with any body
-	BulkUpdateAgentToolsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	BulkUpdateAgentTools(ctx context.Context, body BulkUpdateAgentToolsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// UpdateAgentToolWithBody request with any body
 	UpdateAgentToolWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -2230,7 +2570,7 @@ type ClientInterface interface {
 	BulkAssignTools(ctx context.Context, body BulkAssignToolsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetAgentTools request
-	GetAgentTools(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetAgentTools(ctx context.Context, agentId openapi_types.UUID, params *GetAgentToolsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UnassignToolFromAgent request
 	UnassignToolFromAgent(ctx context.Context, agentId openapi_types.UUID, toolId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2286,10 +2626,8 @@ type ClientInterface interface {
 
 	CreateChatApiKey(ctx context.Context, body CreateChatApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// BulkAssignChatApiKeysToProfilesWithBody request with any body
-	BulkAssignChatApiKeysToProfilesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	BulkAssignChatApiKeysToProfiles(ctx context.Context, body BulkAssignChatApiKeysToProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetAvailableChatApiKeys request
+	GetAvailableChatApiKeys(ctx context.Context, params *GetAvailableChatApiKeysParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteChatApiKey request
 	DeleteChatApiKey(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2302,22 +2640,11 @@ type ClientInterface interface {
 
 	UpdateChatApiKey(ctx context.Context, id openapi_types.UUID, body UpdateChatApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateChatApiKeyProfilesWithBody request with any body
-	UpdateChatApiKeyProfilesWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	UpdateChatApiKeyProfiles(ctx context.Context, id openapi_types.UUID, body UpdateChatApiKeyProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// SetChatApiKeyDefault request
-	SetChatApiKeyDefault(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UnsetChatApiKeyDefault request
-	UnsetChatApiKeyDefault(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// GetChatAgentMcpTools request
 	GetChatAgentMcpTools(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetChatConversations request
-	GetChatConversations(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetChatConversations(ctx context.Context, params *GetChatConversationsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateChatConversationWithBody request with any body
 	CreateChatConversationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2351,8 +2678,25 @@ type ClientInterface interface {
 
 	GenerateChatConversationTitle(ctx context.Context, id openapi_types.UUID, body GenerateChatConversationTitleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// UpdateChatMessageWithBody request with any body
+	UpdateChatMessageWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateChatMessage(ctx context.Context, id openapi_types.UUID, body UpdateChatMessageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetChatModels request
 	GetChatModels(ctx context.Context, params *GetChatModelsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// InvalidateChatModelsCache request
+	InvalidateChatModelsCache(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListChatOpsBindings request
+	ListChatOpsBindings(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteChatOpsBinding request
+	DeleteChatOpsBinding(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetChatOpsStatus request
+	GetChatOpsStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetDualLlmConfigs request
 	GetDualLlmConfigs(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2385,6 +2729,20 @@ type ClientInterface interface {
 	// GetFeatures request
 	GetFeatures(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// RenewIncomingEmailSubscription request
+	RenewIncomingEmailSubscription(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetupIncomingEmailWebhookWithBody request with any body
+	SetupIncomingEmailWebhookWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SetupIncomingEmailWebhook(ctx context.Context, body SetupIncomingEmailWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetIncomingEmailStatus request
+	GetIncomingEmailStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteIncomingEmailSubscription request
+	DeleteIncomingEmailSubscription(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetInternalMcpCatalog request
 	GetInternalMcpCatalog(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -2406,6 +2764,9 @@ type ClientInterface interface {
 	UpdateInternalMcpCatalogItemWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateInternalMcpCatalogItem(ctx context.Context, id openapi_types.UUID, body UpdateInternalMcpCatalogItemJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetInternalMcpCatalogTools request
+	GetInternalMcpCatalogTools(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetLimits request
 	GetLimits(ctx context.Context, params *GetLimitsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2432,6 +2793,9 @@ type ClientInterface interface {
 	// GetMcpToolCall request
 	GetMcpToolCall(ctx context.Context, mcpToolCallId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// RestartAllMcpServerInstallations request
+	RestartAllMcpServerInstallations(ctx context.Context, catalogId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetMcpServers request
 	GetMcpServers(ctx context.Context, params *GetMcpServersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -2451,6 +2815,11 @@ type ClientInterface interface {
 
 	// GetMcpServerLogs request
 	GetMcpServerLogs(ctx context.Context, id openapi_types.UUID, params *GetMcpServerLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ReauthenticateMcpServerWithBody request with any body
+	ReauthenticateMcpServerWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ReauthenticateMcpServer(ctx context.Context, id openapi_types.UUID, body ReauthenticateMcpServerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RestartMcpServer request
 	RestartMcpServer(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2526,11 +2895,17 @@ type ClientInterface interface {
 
 	UpdateOrganization(ctx context.Context, body UpdateOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetPublicAppearance request
+	GetPublicAppearance(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetOnboardingStatus request
 	GetOnboardingStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetPolicyConfigSubagentPrompt request
 	GetPolicyConfigSubagentPrompt(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAllPromptAgentConnections request
+	GetAllPromptAgentConnections(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetPrompts request
 	GetPrompts(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2556,8 +2931,25 @@ type ClientInterface interface {
 
 	RollbackPrompt(ctx context.Context, id openapi_types.UUID, body RollbackPromptJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetPromptTools request
+	GetPromptTools(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetPromptVersions request
 	GetPromptVersions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetPromptAgents request
+	GetPromptAgents(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SyncPromptAgentsWithBody request with any body
+	SyncPromptAgentsWithBody(ctx context.Context, promptId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SyncPromptAgents(ctx context.Context, promptId openapi_types.UUID, body SyncPromptAgentsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeletePromptAgent request
+	DeletePromptAgent(ctx context.Context, promptId openapi_types.UUID, agentPromptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetPromptEmailAddress request
+	GetPromptEmailAddress(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetRoles request
 	GetRoles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2571,18 +2963,12 @@ type ClientInterface interface {
 	DeleteRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetRole request
-	GetRole(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateRoleWithBody request with any body
-	UpdateRoleWithBody(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateRoleWithBody(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateRole(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateRole(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CheckSecretsConnectivity request
 	CheckSecretsConnectivity(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2720,7 +3106,7 @@ type ClientInterface interface {
 	UpdateTokenPrice(ctx context.Context, id openapi_types.UUID, body UpdateTokenPriceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetTokens request
-	GetTokens(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetTokens(ctx context.Context, params *GetTokensParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RotateToken request
 	RotateToken(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2728,8 +3114,19 @@ type ClientInterface interface {
 	// GetTokenValue request
 	GetTokenValue(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// BulkUpsertDefaultCallPolicyWithBody request with any body
+	BulkUpsertDefaultCallPolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	BulkUpsertDefaultCallPolicy(ctx context.Context, body BulkUpsertDefaultCallPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetTools request
 	GetTools(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetToolsWithAssignments request
+	GetToolsWithAssignments(ctx context.Context, params *GetToolsWithAssignmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteTool request
+	DeleteTool(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetTrustedDataPolicies request
 	GetTrustedDataPolicies(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2738,6 +3135,11 @@ type ClientInterface interface {
 	CreateTrustedDataPolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateTrustedDataPolicy(ctx context.Context, body CreateTrustedDataPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// BulkUpsertDefaultResultPolicyWithBody request with any body
+	BulkUpsertDefaultResultPolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	BulkUpsertDefaultResultPolicy(ctx context.Context, body BulkUpsertDefaultResultPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteTrustedDataPolicy request
 	DeleteTrustedDataPolicy(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -2750,6 +3152,11 @@ type ClientInterface interface {
 
 	UpdateTrustedDataPolicy(ctx context.Context, id openapi_types.UUID, body UpdateTrustedDataPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateUserWithBody request with any body
+	CreateUserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateUser(ctx context.Context, body CreateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetUserToken request
 	GetUserToken(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -2759,11 +3166,55 @@ type ClientInterface interface {
 	// GetUserTokenValue request
 	GetUserTokenValue(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetUserByEmail request
+	GetUserByEmail(ctx context.Context, email string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetUserPermissions request
 	GetUserPermissions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteUser request
+	DeleteUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateUserWithBody request with any body
+	UpdateUserWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateUser(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetUserRole request
+	GetUserRole(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateUserRole request
+	UpdateUserRole(ctx context.Context, id string, roleNonUUIDIdentifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteUserRole request
+	DeleteUserRole(ctx context.Context, userId string, roleNonUUIDIdentifier string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetUserById request
+	GetUserById(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiWebhooksChatopsMsTeamsWithBody request with any body
+	PostApiWebhooksChatopsMsTeamsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiWebhooksChatopsMsTeams(ctx context.Context, body PostApiWebhooksChatopsMsTeamsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiWebhooksIncomingEmailWithBody request with any body
+	PostApiWebhooksIncomingEmailWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiWebhooksIncomingEmail(ctx context.Context, body PostApiWebhooksIncomingEmailJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetHealth request
 	GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetReady request
+	GetReady(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostV1A2aPromptIdWithBody request with any body
+	PostV1A2aPromptIdWithBody(ctx context.Context, promptId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostV1A2aPromptId(ctx context.Context, promptId openapi_types.UUID, body PostV1A2aPromptIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetV1A2aPromptIdWellKnownAgentJson request
+	GetV1A2aPromptIdWellKnownAgentJson(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) GetAllAgentTools(ctx context.Context, params *GetAllAgentToolsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -2792,30 +3243,6 @@ func (c *Client) AutoConfigureAgentToolPoliciesWithBody(ctx context.Context, con
 
 func (c *Client) AutoConfigureAgentToolPolicies(ctx context.Context, body AutoConfigureAgentToolPoliciesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAutoConfigureAgentToolPoliciesRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) BulkUpdateAgentToolsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewBulkUpdateAgentToolsRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) BulkUpdateAgentTools(ctx context.Context, body BulkUpdateAgentToolsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewBulkUpdateAgentToolsRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -2958,8 +3385,8 @@ func (c *Client) BulkAssignTools(ctx context.Context, body BulkAssignToolsJSONRe
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetAgentTools(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetAgentToolsRequest(c.Server, agentId)
+func (c *Client) GetAgentTools(ctx context.Context, agentId openapi_types.UUID, params *GetAgentToolsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAgentToolsRequest(c.Server, agentId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -3210,20 +3637,8 @@ func (c *Client) CreateChatApiKey(ctx context.Context, body CreateChatApiKeyJSON
 	return c.Client.Do(req)
 }
 
-func (c *Client) BulkAssignChatApiKeysToProfilesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewBulkAssignChatApiKeysToProfilesRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) BulkAssignChatApiKeysToProfiles(ctx context.Context, body BulkAssignChatApiKeysToProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewBulkAssignChatApiKeysToProfilesRequest(c.Server, body)
+func (c *Client) GetAvailableChatApiKeys(ctx context.Context, params *GetAvailableChatApiKeysParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAvailableChatApiKeysRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -3282,54 +3697,6 @@ func (c *Client) UpdateChatApiKey(ctx context.Context, id openapi_types.UUID, bo
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateChatApiKeyProfilesWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateChatApiKeyProfilesRequestWithBody(c.Server, id, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateChatApiKeyProfiles(ctx context.Context, id openapi_types.UUID, body UpdateChatApiKeyProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateChatApiKeyProfilesRequest(c.Server, id, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) SetChatApiKeyDefault(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSetChatApiKeyDefaultRequest(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UnsetChatApiKeyDefault(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUnsetChatApiKeyDefaultRequest(c.Server, id)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
 func (c *Client) GetChatAgentMcpTools(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetChatAgentMcpToolsRequest(c.Server, agentId)
 	if err != nil {
@@ -3342,8 +3709,8 @@ func (c *Client) GetChatAgentMcpTools(ctx context.Context, agentId openapi_types
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetChatConversations(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetChatConversationsRequest(c.Server)
+func (c *Client) GetChatConversations(ctx context.Context, params *GetChatConversationsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetChatConversationsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -3498,8 +3865,80 @@ func (c *Client) GenerateChatConversationTitle(ctx context.Context, id openapi_t
 	return c.Client.Do(req)
 }
 
+func (c *Client) UpdateChatMessageWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateChatMessageRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateChatMessage(ctx context.Context, id openapi_types.UUID, body UpdateChatMessageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateChatMessageRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetChatModels(ctx context.Context, params *GetChatModelsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetChatModelsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) InvalidateChatModelsCache(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewInvalidateChatModelsCacheRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListChatOpsBindings(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListChatOpsBindingsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteChatOpsBinding(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteChatOpsBindingRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetChatOpsStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetChatOpsStatusRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -3642,6 +4081,66 @@ func (c *Client) GetFeatures(ctx context.Context, reqEditors ...RequestEditorFn)
 	return c.Client.Do(req)
 }
 
+func (c *Client) RenewIncomingEmailSubscription(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRenewIncomingEmailSubscriptionRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetupIncomingEmailWebhookWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetupIncomingEmailWebhookRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetupIncomingEmailWebhook(ctx context.Context, body SetupIncomingEmailWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetupIncomingEmailWebhookRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetIncomingEmailStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetIncomingEmailStatusRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteIncomingEmailSubscription(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteIncomingEmailSubscriptionRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetInternalMcpCatalog(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetInternalMcpCatalogRequest(c.Server)
 	if err != nil {
@@ -3728,6 +4227,18 @@ func (c *Client) UpdateInternalMcpCatalogItemWithBody(ctx context.Context, id op
 
 func (c *Client) UpdateInternalMcpCatalogItem(ctx context.Context, id openapi_types.UUID, body UpdateInternalMcpCatalogItemJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateInternalMcpCatalogItemRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetInternalMcpCatalogTools(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetInternalMcpCatalogToolsRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -3846,6 +4357,18 @@ func (c *Client) GetMcpToolCall(ctx context.Context, mcpToolCallId openapi_types
 	return c.Client.Do(req)
 }
 
+func (c *Client) RestartAllMcpServerInstallations(ctx context.Context, catalogId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRestartAllMcpServerInstallationsRequest(c.Server, catalogId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetMcpServers(ctx context.Context, params *GetMcpServersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetMcpServersRequest(c.Server, params)
 	if err != nil {
@@ -3920,6 +4443,30 @@ func (c *Client) GetMcpServerInstallationStatus(ctx context.Context, id openapi_
 
 func (c *Client) GetMcpServerLogs(ctx context.Context, id openapi_types.UUID, params *GetMcpServerLogsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetMcpServerLogsRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ReauthenticateMcpServerWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReauthenticateMcpServerRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ReauthenticateMcpServer(ctx context.Context, id openapi_types.UUID, body ReauthenticateMcpServerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReauthenticateMcpServerRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -4266,6 +4813,18 @@ func (c *Client) UpdateOrganization(ctx context.Context, body UpdateOrganization
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetPublicAppearance(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPublicAppearanceRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetOnboardingStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetOnboardingStatusRequest(c.Server)
 	if err != nil {
@@ -4280,6 +4839,18 @@ func (c *Client) GetOnboardingStatus(ctx context.Context, reqEditors ...RequestE
 
 func (c *Client) GetPolicyConfigSubagentPrompt(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetPolicyConfigSubagentPromptRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAllPromptAgentConnections(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAllPromptAgentConnectionsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -4398,8 +4969,80 @@ func (c *Client) RollbackPrompt(ctx context.Context, id openapi_types.UUID, body
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetPromptTools(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPromptToolsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetPromptVersions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetPromptVersionsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetPromptAgents(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPromptAgentsRequest(c.Server, promptId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SyncPromptAgentsWithBody(ctx context.Context, promptId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSyncPromptAgentsRequestWithBody(c.Server, promptId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SyncPromptAgents(ctx context.Context, promptId openapi_types.UUID, body SyncPromptAgentsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSyncPromptAgentsRequest(c.Server, promptId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeletePromptAgent(ctx context.Context, promptId openapi_types.UUID, agentPromptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeletePromptAgentRequest(c.Server, promptId, agentPromptId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetPromptEmailAddress(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPromptEmailAddressRequest(c.Server, promptId)
 	if err != nil {
 		return nil, err
 	}
@@ -4458,9 +5101,7 @@ func (c *Client) DeleteRole(ctx context.Context, roleId string, reqEditors ...Re
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetRole(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) GetRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetRoleRequest(c.Server, roleId)
 	if err != nil {
 		return nil, err
@@ -4472,9 +5113,7 @@ func (c *Client) GetRole(ctx context.Context, roleId struct {
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateRoleWithBody(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) UpdateRoleWithBody(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateRoleRequestWithBody(c.Server, roleId, contentType, body)
 	if err != nil {
 		return nil, err
@@ -4486,9 +5125,7 @@ func (c *Client) UpdateRoleWithBody(ctx context.Context, roleId struct {
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateRole(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+func (c *Client) UpdateRole(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateRoleRequest(c.Server, roleId, body)
 	if err != nil {
 		return nil, err
@@ -5088,8 +5725,8 @@ func (c *Client) UpdateTokenPrice(ctx context.Context, id openapi_types.UUID, bo
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetTokens(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetTokensRequest(c.Server)
+func (c *Client) GetTokens(ctx context.Context, params *GetTokensParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTokensRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -5124,8 +5761,56 @@ func (c *Client) GetTokenValue(ctx context.Context, tokenId openapi_types.UUID, 
 	return c.Client.Do(req)
 }
 
+func (c *Client) BulkUpsertDefaultCallPolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBulkUpsertDefaultCallPolicyRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) BulkUpsertDefaultCallPolicy(ctx context.Context, body BulkUpsertDefaultCallPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBulkUpsertDefaultCallPolicyRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetTools(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetToolsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetToolsWithAssignments(ctx context.Context, params *GetToolsWithAssignmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetToolsWithAssignmentsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteTool(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteToolRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -5162,6 +5847,30 @@ func (c *Client) CreateTrustedDataPolicyWithBody(ctx context.Context, contentTyp
 
 func (c *Client) CreateTrustedDataPolicy(ctx context.Context, body CreateTrustedDataPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateTrustedDataPolicyRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) BulkUpsertDefaultResultPolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBulkUpsertDefaultResultPolicyRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) BulkUpsertDefaultResultPolicy(ctx context.Context, body BulkUpsertDefaultResultPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewBulkUpsertDefaultResultPolicyRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -5220,6 +5929,30 @@ func (c *Client) UpdateTrustedDataPolicy(ctx context.Context, id openapi_types.U
 	return c.Client.Do(req)
 }
 
+func (c *Client) CreateUserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateUserRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateUser(ctx context.Context, body CreateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateUserRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetUserToken(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetUserTokenRequest(c.Server)
 	if err != nil {
@@ -5256,6 +5989,18 @@ func (c *Client) GetUserTokenValue(ctx context.Context, reqEditors ...RequestEdi
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetUserByEmail(ctx context.Context, email string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUserByEmailRequest(c.Server, email)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetUserPermissions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetUserPermissionsRequest(c.Server)
 	if err != nil {
@@ -5268,8 +6013,188 @@ func (c *Client) GetUserPermissions(ctx context.Context, reqEditors ...RequestEd
 	return c.Client.Do(req)
 }
 
+func (c *Client) DeleteUser(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteUserRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateUserWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateUserRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateUser(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateUserRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetUserRole(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUserRoleRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateUserRole(ctx context.Context, id string, roleNonUUIDIdentifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateUserRoleRequest(c.Server, id, roleNonUUIDIdentifier)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteUserRole(ctx context.Context, userId string, roleNonUUIDIdentifier string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteUserRoleRequest(c.Server, userId, roleNonUUIDIdentifier)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetUserById(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetUserByIdRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiWebhooksChatopsMsTeamsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiWebhooksChatopsMsTeamsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiWebhooksChatopsMsTeams(ctx context.Context, body PostApiWebhooksChatopsMsTeamsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiWebhooksChatopsMsTeamsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiWebhooksIncomingEmailWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiWebhooksIncomingEmailRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiWebhooksIncomingEmail(ctx context.Context, body PostApiWebhooksIncomingEmailJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiWebhooksIncomingEmailRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetHealth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetHealthRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetReady(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetReadyRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostV1A2aPromptIdWithBody(ctx context.Context, promptId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostV1A2aPromptIdRequestWithBody(c.Server, promptId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostV1A2aPromptId(ctx context.Context, promptId openapi_types.UUID, body PostV1A2aPromptIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostV1A2aPromptIdRequest(c.Server, promptId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetV1A2aPromptIdWellKnownAgentJson(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetV1A2aPromptIdWellKnownAgentJsonRequest(c.Server, promptId)
 	if err != nil {
 		return nil, err
 	}
@@ -5414,6 +6339,22 @@ func NewGetAllAgentToolsRequest(server string, params *GetAllAgentToolsParams) (
 
 		}
 
+		if params.SkipPagination != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "skipPagination", runtime.ParamLocationQuery, *params.SkipPagination); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
@@ -5478,46 +6419,6 @@ func NewAutoConfigureAgentToolPoliciesRequestWithBody(server string, contentType
 	}
 
 	operationPath := fmt.Sprintf("/api/agent-tools/auto-configure-policies")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewBulkUpdateAgentToolsRequest calls the generic BulkUpdateAgentTools builder with application/json body
-func NewBulkUpdateAgentToolsRequest(server string, body BulkUpdateAgentToolsJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewBulkUpdateAgentToolsRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewBulkUpdateAgentToolsRequestWithBody generates requests for BulkUpdateAgentTools with any type of body
-func NewBulkUpdateAgentToolsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/agent-tools/bulk-update")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -5908,7 +6809,7 @@ func NewBulkAssignToolsRequestWithBody(server string, contentType string, body i
 }
 
 // NewGetAgentToolsRequest generates requests for GetAgentTools
-func NewGetAgentToolsRequest(server string, agentId openapi_types.UUID) (*http.Request, error) {
+func NewGetAgentToolsRequest(server string, agentId openapi_types.UUID, params *GetAgentToolsParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -5931,6 +6832,28 @@ func NewGetAgentToolsRequest(server string, agentId openapi_types.UUID) (*http.R
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.ExcludeLlmProxyOrigin != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "excludeLlmProxyOrigin", runtime.ParamLocationQuery, *params.ExcludeLlmProxyOrigin); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -6467,19 +7390,8 @@ func NewCreateChatApiKeyRequestWithBody(server string, contentType string, body 
 	return req, nil
 }
 
-// NewBulkAssignChatApiKeysToProfilesRequest calls the generic BulkAssignChatApiKeysToProfiles builder with application/json body
-func NewBulkAssignChatApiKeysToProfilesRequest(server string, body BulkAssignChatApiKeysToProfilesJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewBulkAssignChatApiKeysToProfilesRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewBulkAssignChatApiKeysToProfilesRequestWithBody generates requests for BulkAssignChatApiKeysToProfiles with any type of body
-func NewBulkAssignChatApiKeysToProfilesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewGetAvailableChatApiKeysRequest generates requests for GetAvailableChatApiKeys
+func NewGetAvailableChatApiKeysRequest(server string, params *GetAvailableChatApiKeysParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -6487,7 +7399,7 @@ func NewBulkAssignChatApiKeysToProfilesRequestWithBody(server string, contentTyp
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/api/chat-api-keys/bulk-assign")
+	operationPath := fmt.Sprintf("/api/chat-api-keys/available")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -6497,12 +7409,32 @@ func NewBulkAssignChatApiKeysToProfilesRequestWithBody(server string, contentTyp
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Provider != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "provider", runtime.ParamLocationQuery, *params.Provider); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
-
-	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -6622,121 +7554,6 @@ func NewUpdateChatApiKeyRequestWithBody(server string, id openapi_types.UUID, co
 	return req, nil
 }
 
-// NewUpdateChatApiKeyProfilesRequest calls the generic UpdateChatApiKeyProfiles builder with application/json body
-func NewUpdateChatApiKeyProfilesRequest(server string, id openapi_types.UUID, body UpdateChatApiKeyProfilesJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdateChatApiKeyProfilesRequestWithBody(server, id, "application/json", bodyReader)
-}
-
-// NewUpdateChatApiKeyProfilesRequestWithBody generates requests for UpdateChatApiKeyProfiles with any type of body
-func NewUpdateChatApiKeyProfilesRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/chat-api-keys/%s/profiles", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewSetChatApiKeyDefaultRequest generates requests for SetChatApiKeyDefault
-func NewSetChatApiKeyDefaultRequest(server string, id openapi_types.UUID) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/chat-api-keys/%s/set-default", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewUnsetChatApiKeyDefaultRequest generates requests for UnsetChatApiKeyDefault
-func NewUnsetChatApiKeyDefaultRequest(server string, id openapi_types.UUID) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/chat-api-keys/%s/unset-default", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
 // NewGetChatAgentMcpToolsRequest generates requests for GetChatAgentMcpTools
 func NewGetChatAgentMcpToolsRequest(server string, agentId openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -6772,7 +7589,7 @@ func NewGetChatAgentMcpToolsRequest(server string, agentId openapi_types.UUID) (
 }
 
 // NewGetChatConversationsRequest generates requests for GetChatConversations
-func NewGetChatConversationsRequest(server string) (*http.Request, error) {
+func NewGetChatConversationsRequest(server string, params *GetChatConversationsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -6788,6 +7605,28 @@ func NewGetChatConversationsRequest(server string) (*http.Request, error) {
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -7115,6 +7954,53 @@ func NewGenerateChatConversationTitleRequestWithBody(server string, id openapi_t
 	return req, nil
 }
 
+// NewUpdateChatMessageRequest calls the generic UpdateChatMessage builder with application/json body
+func NewUpdateChatMessageRequest(server string, id openapi_types.UUID, body UpdateChatMessageJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateChatMessageRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateChatMessageRequestWithBody generates requests for UpdateChatMessage with any type of body
+func NewUpdateChatMessageRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chat/messages/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetChatModelsRequest generates requests for GetChatModels
 func NewGetChatModelsRequest(server string, params *GetChatModelsParams) (*http.Request, error) {
 	var err error
@@ -7154,6 +8040,121 @@ func NewGetChatModelsRequest(server string, params *GetChatModelsParams) (*http.
 		}
 
 		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewInvalidateChatModelsCacheRequest generates requests for InvalidateChatModelsCache
+func NewInvalidateChatModelsCacheRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chat/models/invalidate-cache")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListChatOpsBindingsRequest generates requests for ListChatOpsBindings
+func NewListChatOpsBindingsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/bindings")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteChatOpsBindingRequest generates requests for DeleteChatOpsBinding
+func NewDeleteChatOpsBindingRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/bindings/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetChatOpsStatusRequest generates requests for GetChatOpsStatus
+func NewGetChatOpsStatusRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/chatops/status")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -7468,6 +8469,127 @@ func NewGetFeaturesRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewRenewIncomingEmailSubscriptionRequest generates requests for RenewIncomingEmailSubscription
+func NewRenewIncomingEmailSubscriptionRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/incoming-email/renew")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSetupIncomingEmailWebhookRequest calls the generic SetupIncomingEmailWebhook builder with application/json body
+func NewSetupIncomingEmailWebhookRequest(server string, body SetupIncomingEmailWebhookJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSetupIncomingEmailWebhookRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewSetupIncomingEmailWebhookRequestWithBody generates requests for SetupIncomingEmailWebhook with any type of body
+func NewSetupIncomingEmailWebhookRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/incoming-email/setup")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetIncomingEmailStatusRequest generates requests for GetIncomingEmailStatus
+func NewGetIncomingEmailStatusRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/incoming-email/status")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteIncomingEmailSubscriptionRequest generates requests for DeleteIncomingEmailSubscription
+func NewDeleteIncomingEmailSubscriptionRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/incoming-email/subscription")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetInternalMcpCatalogRequest generates requests for GetInternalMcpCatalog
 func NewGetInternalMcpCatalogRequest(server string) (*http.Request, error) {
 	var err error
@@ -7680,6 +8802,40 @@ func NewUpdateInternalMcpCatalogItemRequestWithBody(server string, id openapi_ty
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetInternalMcpCatalogToolsRequest generates requests for GetInternalMcpCatalogTools
+func NewGetInternalMcpCatalogToolsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/internal_mcp_catalog/%s/tools", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -7958,6 +9114,54 @@ func NewGetMcpToolCallsRequest(server string, params *GetMcpToolCallsParams) (*h
 
 		}
 
+		if params.StartDate != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "startDate", runtime.ParamLocationQuery, *params.StartDate); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.EndDate != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "endDate", runtime.ParamLocationQuery, *params.EndDate); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
@@ -8060,6 +9264,40 @@ func NewGetMcpToolCallRequest(server string, mcpToolCallId openapi_types.UUID) (
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewRestartAllMcpServerInstallationsRequest generates requests for RestartAllMcpServerInstallations
+func NewRestartAllMcpServerInstallationsRequest(server string, catalogId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "catalogId", runtime.ParamLocationPath, catalogId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_catalog/%s/restart-all-installations", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -8326,6 +9564,53 @@ func NewGetMcpServerLogsRequest(server string, id openapi_types.UUID, params *Ge
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewReauthenticateMcpServerRequest calls the generic ReauthenticateMcpServer builder with application/json body
+func NewReauthenticateMcpServerRequest(server string, id openapi_types.UUID, body ReauthenticateMcpServerJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewReauthenticateMcpServerRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewReauthenticateMcpServerRequestWithBody generates requests for ReauthenticateMcpServer with any type of body
+func NewReauthenticateMcpServerRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp_server/%s/reauthenticate", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -9038,6 +10323,33 @@ func NewUpdateOrganizationRequestWithBody(server string, contentType string, bod
 	return req, nil
 }
 
+// NewGetPublicAppearanceRequest generates requests for GetPublicAppearance
+func NewGetPublicAppearanceRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/organization/appearance")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetOnboardingStatusRequest generates requests for GetOnboardingStatus
 func NewGetOnboardingStatusRequest(server string) (*http.Request, error) {
 	var err error
@@ -9075,6 +10387,33 @@ func NewGetPolicyConfigSubagentPromptRequest(server string) (*http.Request, erro
 	}
 
 	operationPath := fmt.Sprintf("/api/policy-config-subagent/prompt")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetAllPromptAgentConnectionsRequest generates requests for GetAllPromptAgentConnections
+func NewGetAllPromptAgentConnectionsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/prompt-agents")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -9321,6 +10660,40 @@ func NewRollbackPromptRequestWithBody(server string, id openapi_types.UUID, cont
 	return req, nil
 }
 
+// NewGetPromptToolsRequest generates requests for GetPromptTools
+func NewGetPromptToolsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/prompts/%s/tools", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetPromptVersionsRequest generates requests for GetPromptVersions
 func NewGetPromptVersionsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -9338,6 +10711,162 @@ func NewGetPromptVersionsRequest(server string, id openapi_types.UUID) (*http.Re
 	}
 
 	operationPath := fmt.Sprintf("/api/prompts/%s/versions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetPromptAgentsRequest generates requests for GetPromptAgents
+func NewGetPromptAgentsRequest(server string, promptId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "promptId", runtime.ParamLocationPath, promptId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/prompts/%s/agents", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSyncPromptAgentsRequest calls the generic SyncPromptAgents builder with application/json body
+func NewSyncPromptAgentsRequest(server string, promptId openapi_types.UUID, body SyncPromptAgentsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSyncPromptAgentsRequestWithBody(server, promptId, "application/json", bodyReader)
+}
+
+// NewSyncPromptAgentsRequestWithBody generates requests for SyncPromptAgents with any type of body
+func NewSyncPromptAgentsRequestWithBody(server string, promptId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "promptId", runtime.ParamLocationPath, promptId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/prompts/%s/agents", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeletePromptAgentRequest generates requests for DeletePromptAgent
+func NewDeletePromptAgentRequest(server string, promptId openapi_types.UUID, agentPromptId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "promptId", runtime.ParamLocationPath, promptId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "agentPromptId", runtime.ParamLocationPath, agentPromptId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/prompts/%s/agents/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetPromptEmailAddressRequest generates requests for GetPromptEmailAddress
+func NewGetPromptEmailAddressRequest(server string, promptId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "promptId", runtime.ParamLocationPath, promptId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/prompts/%s/email-address", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -9457,9 +10986,7 @@ func NewDeleteRoleRequest(server string, roleId string) (*http.Request, error) {
 }
 
 // NewGetRoleRequest generates requests for GetRole
-func NewGetRoleRequest(server string, roleId struct {
-	union json.RawMessage
-}) (*http.Request, error) {
+func NewGetRoleRequest(server string, roleId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -9493,9 +11020,7 @@ func NewGetRoleRequest(server string, roleId struct {
 }
 
 // NewUpdateRoleRequest calls the generic UpdateRole builder with application/json body
-func NewUpdateRoleRequest(server string, roleId struct {
-	union json.RawMessage
-}, body UpdateRoleJSONRequestBody) (*http.Request, error) {
+func NewUpdateRoleRequest(server string, roleId string, body UpdateRoleJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
@@ -9506,9 +11031,7 @@ func NewUpdateRoleRequest(server string, roleId struct {
 }
 
 // NewUpdateRoleRequestWithBody generates requests for UpdateRole with any type of body
-func NewUpdateRoleRequestWithBody(server string, roleId struct {
-	union json.RawMessage
-}, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdateRoleRequestWithBody(server string, roleId string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -10977,7 +12500,7 @@ func NewUpdateTokenPriceRequestWithBody(server string, id openapi_types.UUID, co
 }
 
 // NewGetTokensRequest generates requests for GetTokens
-func NewGetTokensRequest(server string) (*http.Request, error) {
+func NewGetTokensRequest(server string, params *GetTokensParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -10993,6 +12516,28 @@ func NewGetTokensRequest(server string) (*http.Request, error) {
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.ProfileId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "profileId", runtime.ParamLocationQuery, *params.ProfileId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -11071,6 +12616,46 @@ func NewGetTokenValueRequest(server string, tokenId openapi_types.UUID) (*http.R
 	return req, nil
 }
 
+// NewBulkUpsertDefaultCallPolicyRequest calls the generic BulkUpsertDefaultCallPolicy builder with application/json body
+func NewBulkUpsertDefaultCallPolicyRequest(server string, body BulkUpsertDefaultCallPolicyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewBulkUpsertDefaultCallPolicyRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewBulkUpsertDefaultCallPolicyRequestWithBody generates requests for BulkUpsertDefaultCallPolicy with any type of body
+func NewBulkUpsertDefaultCallPolicyRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/tool-invocation/bulk-default")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetToolsRequest generates requests for GetTools
 func NewGetToolsRequest(server string) (*http.Request, error) {
 	var err error
@@ -11091,6 +12676,185 @@ func NewGetToolsRequest(server string) (*http.Request, error) {
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetToolsWithAssignmentsRequest generates requests for GetToolsWithAssignments
+func NewGetToolsWithAssignmentsRequest(server string, params *GetToolsWithAssignmentsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/tools/with-assignments")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Origin != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "origin", runtime.ParamLocationQuery, *params.Origin); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ExcludeArchestraTools != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "excludeArchestraTools", runtime.ParamLocationQuery, *params.ExcludeArchestraTools); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SortBy != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sortBy", runtime.ParamLocationQuery, *params.SortBy); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SortDirection != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sortDirection", runtime.ParamLocationQuery, *params.SortDirection); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteToolRequest generates requests for DeleteTool
+func NewDeleteToolRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/tools/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -11146,6 +12910,46 @@ func NewCreateTrustedDataPolicyRequestWithBody(server string, contentType string
 	}
 
 	operationPath := fmt.Sprintf("/api/trusted-data-policies")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewBulkUpsertDefaultResultPolicyRequest calls the generic BulkUpsertDefaultResultPolicy builder with application/json body
+func NewBulkUpsertDefaultResultPolicyRequest(server string, body BulkUpsertDefaultResultPolicyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewBulkUpsertDefaultResultPolicyRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewBulkUpsertDefaultResultPolicyRequestWithBody generates requests for BulkUpsertDefaultResultPolicy with any type of body
+func NewBulkUpsertDefaultResultPolicyRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/trusted-data-policies/bulk-default")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -11280,6 +13084,46 @@ func NewUpdateTrustedDataPolicyRequestWithBody(server string, id openapi_types.U
 	return req, nil
 }
 
+// NewCreateUserRequest calls the generic CreateUser builder with application/json body
+func NewCreateUserRequest(server string, body CreateUserJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateUserRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateUserRequestWithBody generates requests for CreateUser with any type of body
+func NewCreateUserRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/user")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetUserTokenRequest generates requests for GetUserToken
 func NewGetUserTokenRequest(server string) (*http.Request, error) {
 	var err error
@@ -11361,6 +13205,40 @@ func NewGetUserTokenValueRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewGetUserByEmailRequest generates requests for GetUserByEmail
+func NewGetUserByEmailRequest(server string, email string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "email", runtime.ParamLocationPath, email)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/user/email/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetUserPermissionsRequest generates requests for GetUserPermissions
 func NewGetUserPermissionsRequest(server string) (*http.Request, error) {
 	var err error
@@ -11388,6 +13266,317 @@ func NewGetUserPermissionsRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewDeleteUserRequest generates requests for DeleteUser
+func NewDeleteUserRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/user/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateUserRequest calls the generic UpdateUser builder with application/json body
+func NewUpdateUserRequest(server string, id string, body UpdateUserJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateUserRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateUserRequestWithBody generates requests for UpdateUser with any type of body
+func NewUpdateUserRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/user/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetUserRoleRequest generates requests for GetUserRole
+func NewGetUserRoleRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/user/%s/role", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateUserRoleRequest generates requests for UpdateUserRole
+func NewUpdateUserRoleRequest(server string, id string, roleNonUUIDIdentifier string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "roleNonUUIDIdentifier", runtime.ParamLocationPath, roleNonUUIDIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/user/%s/role/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteUserRoleRequest generates requests for DeleteUserRole
+func NewDeleteUserRoleRequest(server string, userId string, roleNonUUIDIdentifier string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "userId", runtime.ParamLocationPath, userId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "roleNonUUIDIdentifier", runtime.ParamLocationPath, roleNonUUIDIdentifier)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/user/%s/role/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetUserByIdRequest generates requests for GetUserById
+func NewGetUserByIdRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/users/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiWebhooksChatopsMsTeamsRequest calls the generic PostApiWebhooksChatopsMsTeams builder with application/json body
+func NewPostApiWebhooksChatopsMsTeamsRequest(server string, body PostApiWebhooksChatopsMsTeamsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiWebhooksChatopsMsTeamsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiWebhooksChatopsMsTeamsRequestWithBody generates requests for PostApiWebhooksChatopsMsTeams with any type of body
+func NewPostApiWebhooksChatopsMsTeamsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/webhooks/chatops/ms-teams")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiWebhooksIncomingEmailRequest calls the generic PostApiWebhooksIncomingEmail builder with application/json body
+func NewPostApiWebhooksIncomingEmailRequest(server string, body PostApiWebhooksIncomingEmailJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiWebhooksIncomingEmailRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiWebhooksIncomingEmailRequestWithBody generates requests for PostApiWebhooksIncomingEmail with any type of body
+func NewPostApiWebhooksIncomingEmailRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/webhooks/incoming-email")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetHealthRequest generates requests for GetHealth
 func NewGetHealthRequest(server string) (*http.Request, error) {
 	var err error
@@ -11398,6 +13587,114 @@ func NewGetHealthRequest(server string) (*http.Request, error) {
 	}
 
 	operationPath := fmt.Sprintf("/health")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetReadyRequest generates requests for GetReady
+func NewGetReadyRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/ready")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostV1A2aPromptIdRequest calls the generic PostV1A2aPromptId builder with application/json body
+func NewPostV1A2aPromptIdRequest(server string, promptId openapi_types.UUID, body PostV1A2aPromptIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostV1A2aPromptIdRequestWithBody(server, promptId, "application/json", bodyReader)
+}
+
+// NewPostV1A2aPromptIdRequestWithBody generates requests for PostV1A2aPromptId with any type of body
+func NewPostV1A2aPromptIdRequestWithBody(server string, promptId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "promptId", runtime.ParamLocationPath, promptId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/a2a/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetV1A2aPromptIdWellKnownAgentJsonRequest generates requests for GetV1A2aPromptIdWellKnownAgentJson
+func NewGetV1A2aPromptIdWellKnownAgentJsonRequest(server string, promptId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "promptId", runtime.ParamLocationPath, promptId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/a2a/%s/.well-known/agent.json", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -11466,11 +13763,6 @@ type ClientWithResponsesInterface interface {
 
 	AutoConfigureAgentToolPoliciesWithResponse(ctx context.Context, body AutoConfigureAgentToolPoliciesJSONRequestBody, reqEditors ...RequestEditorFn) (*AutoConfigureAgentToolPoliciesResponse, error)
 
-	// BulkUpdateAgentToolsWithBodyWithResponse request with any body
-	BulkUpdateAgentToolsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkUpdateAgentToolsResponse, error)
-
-	BulkUpdateAgentToolsWithResponse(ctx context.Context, body BulkUpdateAgentToolsJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkUpdateAgentToolsResponse, error)
-
 	// UpdateAgentToolWithBodyWithResponse request with any body
 	UpdateAgentToolWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAgentToolResponse, error)
 
@@ -11502,7 +13794,7 @@ type ClientWithResponsesInterface interface {
 	BulkAssignToolsWithResponse(ctx context.Context, body BulkAssignToolsJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkAssignToolsResponse, error)
 
 	// GetAgentToolsWithResponse request
-	GetAgentToolsWithResponse(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentToolsResponse, error)
+	GetAgentToolsWithResponse(ctx context.Context, agentId openapi_types.UUID, params *GetAgentToolsParams, reqEditors ...RequestEditorFn) (*GetAgentToolsResponse, error)
 
 	// UnassignToolFromAgentWithResponse request
 	UnassignToolFromAgentWithResponse(ctx context.Context, agentId openapi_types.UUID, toolId openapi_types.UUID, reqEditors ...RequestEditorFn) (*UnassignToolFromAgentResponse, error)
@@ -11558,10 +13850,8 @@ type ClientWithResponsesInterface interface {
 
 	CreateChatApiKeyWithResponse(ctx context.Context, body CreateChatApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateChatApiKeyResponse, error)
 
-	// BulkAssignChatApiKeysToProfilesWithBodyWithResponse request with any body
-	BulkAssignChatApiKeysToProfilesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkAssignChatApiKeysToProfilesResponse, error)
-
-	BulkAssignChatApiKeysToProfilesWithResponse(ctx context.Context, body BulkAssignChatApiKeysToProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkAssignChatApiKeysToProfilesResponse, error)
+	// GetAvailableChatApiKeysWithResponse request
+	GetAvailableChatApiKeysWithResponse(ctx context.Context, params *GetAvailableChatApiKeysParams, reqEditors ...RequestEditorFn) (*GetAvailableChatApiKeysResponse, error)
 
 	// DeleteChatApiKeyWithResponse request
 	DeleteChatApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteChatApiKeyResponse, error)
@@ -11574,22 +13864,11 @@ type ClientWithResponsesInterface interface {
 
 	UpdateChatApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateChatApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChatApiKeyResponse, error)
 
-	// UpdateChatApiKeyProfilesWithBodyWithResponse request with any body
-	UpdateChatApiKeyProfilesWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateChatApiKeyProfilesResponse, error)
-
-	UpdateChatApiKeyProfilesWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateChatApiKeyProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChatApiKeyProfilesResponse, error)
-
-	// SetChatApiKeyDefaultWithResponse request
-	SetChatApiKeyDefaultWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*SetChatApiKeyDefaultResponse, error)
-
-	// UnsetChatApiKeyDefaultWithResponse request
-	UnsetChatApiKeyDefaultWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*UnsetChatApiKeyDefaultResponse, error)
-
 	// GetChatAgentMcpToolsWithResponse request
 	GetChatAgentMcpToolsWithResponse(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetChatAgentMcpToolsResponse, error)
 
 	// GetChatConversationsWithResponse request
-	GetChatConversationsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetChatConversationsResponse, error)
+	GetChatConversationsWithResponse(ctx context.Context, params *GetChatConversationsParams, reqEditors ...RequestEditorFn) (*GetChatConversationsResponse, error)
 
 	// CreateChatConversationWithBodyWithResponse request with any body
 	CreateChatConversationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateChatConversationResponse, error)
@@ -11623,8 +13902,25 @@ type ClientWithResponsesInterface interface {
 
 	GenerateChatConversationTitleWithResponse(ctx context.Context, id openapi_types.UUID, body GenerateChatConversationTitleJSONRequestBody, reqEditors ...RequestEditorFn) (*GenerateChatConversationTitleResponse, error)
 
+	// UpdateChatMessageWithBodyWithResponse request with any body
+	UpdateChatMessageWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateChatMessageResponse, error)
+
+	UpdateChatMessageWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateChatMessageJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChatMessageResponse, error)
+
 	// GetChatModelsWithResponse request
 	GetChatModelsWithResponse(ctx context.Context, params *GetChatModelsParams, reqEditors ...RequestEditorFn) (*GetChatModelsResponse, error)
+
+	// InvalidateChatModelsCacheWithResponse request
+	InvalidateChatModelsCacheWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*InvalidateChatModelsCacheResponse, error)
+
+	// ListChatOpsBindingsWithResponse request
+	ListChatOpsBindingsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListChatOpsBindingsResponse, error)
+
+	// DeleteChatOpsBindingWithResponse request
+	DeleteChatOpsBindingWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteChatOpsBindingResponse, error)
+
+	// GetChatOpsStatusWithResponse request
+	GetChatOpsStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetChatOpsStatusResponse, error)
 
 	// GetDualLlmConfigsWithResponse request
 	GetDualLlmConfigsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetDualLlmConfigsResponse, error)
@@ -11657,6 +13953,20 @@ type ClientWithResponsesInterface interface {
 	// GetFeaturesWithResponse request
 	GetFeaturesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetFeaturesResponse, error)
 
+	// RenewIncomingEmailSubscriptionWithResponse request
+	RenewIncomingEmailSubscriptionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RenewIncomingEmailSubscriptionResponse, error)
+
+	// SetupIncomingEmailWebhookWithBodyWithResponse request with any body
+	SetupIncomingEmailWebhookWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetupIncomingEmailWebhookResponse, error)
+
+	SetupIncomingEmailWebhookWithResponse(ctx context.Context, body SetupIncomingEmailWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*SetupIncomingEmailWebhookResponse, error)
+
+	// GetIncomingEmailStatusWithResponse request
+	GetIncomingEmailStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetIncomingEmailStatusResponse, error)
+
+	// DeleteIncomingEmailSubscriptionWithResponse request
+	DeleteIncomingEmailSubscriptionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteIncomingEmailSubscriptionResponse, error)
+
 	// GetInternalMcpCatalogWithResponse request
 	GetInternalMcpCatalogWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogResponse, error)
 
@@ -11678,6 +13988,9 @@ type ClientWithResponsesInterface interface {
 	UpdateInternalMcpCatalogItemWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateInternalMcpCatalogItemResponse, error)
 
 	UpdateInternalMcpCatalogItemWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateInternalMcpCatalogItemJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateInternalMcpCatalogItemResponse, error)
+
+	// GetInternalMcpCatalogToolsWithResponse request
+	GetInternalMcpCatalogToolsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogToolsResponse, error)
 
 	// GetLimitsWithResponse request
 	GetLimitsWithResponse(ctx context.Context, params *GetLimitsParams, reqEditors ...RequestEditorFn) (*GetLimitsResponse, error)
@@ -11704,6 +14017,9 @@ type ClientWithResponsesInterface interface {
 	// GetMcpToolCallWithResponse request
 	GetMcpToolCallWithResponse(ctx context.Context, mcpToolCallId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpToolCallResponse, error)
 
+	// RestartAllMcpServerInstallationsWithResponse request
+	RestartAllMcpServerInstallationsWithResponse(ctx context.Context, catalogId openapi_types.UUID, reqEditors ...RequestEditorFn) (*RestartAllMcpServerInstallationsResponse, error)
+
 	// GetMcpServersWithResponse request
 	GetMcpServersWithResponse(ctx context.Context, params *GetMcpServersParams, reqEditors ...RequestEditorFn) (*GetMcpServersResponse, error)
 
@@ -11723,6 +14039,11 @@ type ClientWithResponsesInterface interface {
 
 	// GetMcpServerLogsWithResponse request
 	GetMcpServerLogsWithResponse(ctx context.Context, id openapi_types.UUID, params *GetMcpServerLogsParams, reqEditors ...RequestEditorFn) (*GetMcpServerLogsResponse, error)
+
+	// ReauthenticateMcpServerWithBodyWithResponse request with any body
+	ReauthenticateMcpServerWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReauthenticateMcpServerResponse, error)
+
+	ReauthenticateMcpServerWithResponse(ctx context.Context, id openapi_types.UUID, body ReauthenticateMcpServerJSONRequestBody, reqEditors ...RequestEditorFn) (*ReauthenticateMcpServerResponse, error)
 
 	// RestartMcpServerWithResponse request
 	RestartMcpServerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*RestartMcpServerResponse, error)
@@ -11798,11 +14119,17 @@ type ClientWithResponsesInterface interface {
 
 	UpdateOrganizationWithResponse(ctx context.Context, body UpdateOrganizationJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOrganizationResponse, error)
 
+	// GetPublicAppearanceWithResponse request
+	GetPublicAppearanceWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetPublicAppearanceResponse, error)
+
 	// GetOnboardingStatusWithResponse request
 	GetOnboardingStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOnboardingStatusResponse, error)
 
 	// GetPolicyConfigSubagentPromptWithResponse request
 	GetPolicyConfigSubagentPromptWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetPolicyConfigSubagentPromptResponse, error)
+
+	// GetAllPromptAgentConnectionsWithResponse request
+	GetAllPromptAgentConnectionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAllPromptAgentConnectionsResponse, error)
 
 	// GetPromptsWithResponse request
 	GetPromptsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetPromptsResponse, error)
@@ -11828,8 +14155,25 @@ type ClientWithResponsesInterface interface {
 
 	RollbackPromptWithResponse(ctx context.Context, id openapi_types.UUID, body RollbackPromptJSONRequestBody, reqEditors ...RequestEditorFn) (*RollbackPromptResponse, error)
 
+	// GetPromptToolsWithResponse request
+	GetPromptToolsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetPromptToolsResponse, error)
+
 	// GetPromptVersionsWithResponse request
 	GetPromptVersionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetPromptVersionsResponse, error)
+
+	// GetPromptAgentsWithResponse request
+	GetPromptAgentsWithResponse(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetPromptAgentsResponse, error)
+
+	// SyncPromptAgentsWithBodyWithResponse request with any body
+	SyncPromptAgentsWithBodyWithResponse(ctx context.Context, promptId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SyncPromptAgentsResponse, error)
+
+	SyncPromptAgentsWithResponse(ctx context.Context, promptId openapi_types.UUID, body SyncPromptAgentsJSONRequestBody, reqEditors ...RequestEditorFn) (*SyncPromptAgentsResponse, error)
+
+	// DeletePromptAgentWithResponse request
+	DeletePromptAgentWithResponse(ctx context.Context, promptId openapi_types.UUID, agentPromptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeletePromptAgentResponse, error)
+
+	// GetPromptEmailAddressWithResponse request
+	GetPromptEmailAddressWithResponse(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetPromptEmailAddressResponse, error)
 
 	// GetRolesWithResponse request
 	GetRolesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetRolesResponse, error)
@@ -11843,18 +14187,12 @@ type ClientWithResponsesInterface interface {
 	DeleteRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*DeleteRoleResponse, error)
 
 	// GetRoleWithResponse request
-	GetRoleWithResponse(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, reqEditors ...RequestEditorFn) (*GetRoleResponse, error)
+	GetRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*GetRoleResponse, error)
 
 	// UpdateRoleWithBodyWithResponse request with any body
-	UpdateRoleWithBodyWithResponse(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
+	UpdateRoleWithBodyWithResponse(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
 
-	UpdateRoleWithResponse(ctx context.Context, roleId struct {
-		union json.RawMessage
-	}, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
+	UpdateRoleWithResponse(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
 
 	// CheckSecretsConnectivityWithResponse request
 	CheckSecretsConnectivityWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CheckSecretsConnectivityResponse, error)
@@ -11992,7 +14330,7 @@ type ClientWithResponsesInterface interface {
 	UpdateTokenPriceWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateTokenPriceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTokenPriceResponse, error)
 
 	// GetTokensWithResponse request
-	GetTokensWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTokensResponse, error)
+	GetTokensWithResponse(ctx context.Context, params *GetTokensParams, reqEditors ...RequestEditorFn) (*GetTokensResponse, error)
 
 	// RotateTokenWithResponse request
 	RotateTokenWithResponse(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*RotateTokenResponse, error)
@@ -12000,8 +14338,19 @@ type ClientWithResponsesInterface interface {
 	// GetTokenValueWithResponse request
 	GetTokenValueWithResponse(ctx context.Context, tokenId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetTokenValueResponse, error)
 
+	// BulkUpsertDefaultCallPolicyWithBodyWithResponse request with any body
+	BulkUpsertDefaultCallPolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkUpsertDefaultCallPolicyResponse, error)
+
+	BulkUpsertDefaultCallPolicyWithResponse(ctx context.Context, body BulkUpsertDefaultCallPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkUpsertDefaultCallPolicyResponse, error)
+
 	// GetToolsWithResponse request
 	GetToolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetToolsResponse, error)
+
+	// GetToolsWithAssignmentsWithResponse request
+	GetToolsWithAssignmentsWithResponse(ctx context.Context, params *GetToolsWithAssignmentsParams, reqEditors ...RequestEditorFn) (*GetToolsWithAssignmentsResponse, error)
+
+	// DeleteToolWithResponse request
+	DeleteToolWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteToolResponse, error)
 
 	// GetTrustedDataPoliciesWithResponse request
 	GetTrustedDataPoliciesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTrustedDataPoliciesResponse, error)
@@ -12010,6 +14359,11 @@ type ClientWithResponsesInterface interface {
 	CreateTrustedDataPolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTrustedDataPolicyResponse, error)
 
 	CreateTrustedDataPolicyWithResponse(ctx context.Context, body CreateTrustedDataPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateTrustedDataPolicyResponse, error)
+
+	// BulkUpsertDefaultResultPolicyWithBodyWithResponse request with any body
+	BulkUpsertDefaultResultPolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkUpsertDefaultResultPolicyResponse, error)
+
+	BulkUpsertDefaultResultPolicyWithResponse(ctx context.Context, body BulkUpsertDefaultResultPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkUpsertDefaultResultPolicyResponse, error)
 
 	// DeleteTrustedDataPolicyWithResponse request
 	DeleteTrustedDataPolicyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteTrustedDataPolicyResponse, error)
@@ -12022,6 +14376,11 @@ type ClientWithResponsesInterface interface {
 
 	UpdateTrustedDataPolicyWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateTrustedDataPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTrustedDataPolicyResponse, error)
 
+	// CreateUserWithBodyWithResponse request with any body
+	CreateUserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateUserResponse, error)
+
+	CreateUserWithResponse(ctx context.Context, body CreateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateUserResponse, error)
+
 	// GetUserTokenWithResponse request
 	GetUserTokenWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUserTokenResponse, error)
 
@@ -12031,11 +14390,55 @@ type ClientWithResponsesInterface interface {
 	// GetUserTokenValueWithResponse request
 	GetUserTokenValueWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUserTokenValueResponse, error)
 
+	// GetUserByEmailWithResponse request
+	GetUserByEmailWithResponse(ctx context.Context, email string, reqEditors ...RequestEditorFn) (*GetUserByEmailResponse, error)
+
 	// GetUserPermissionsWithResponse request
 	GetUserPermissionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUserPermissionsResponse, error)
 
+	// DeleteUserWithResponse request
+	DeleteUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteUserResponse, error)
+
+	// UpdateUserWithBodyWithResponse request with any body
+	UpdateUserWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error)
+
+	UpdateUserWithResponse(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error)
+
+	// GetUserRoleWithResponse request
+	GetUserRoleWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserRoleResponse, error)
+
+	// UpdateUserRoleWithResponse request
+	UpdateUserRoleWithResponse(ctx context.Context, id string, roleNonUUIDIdentifier string, reqEditors ...RequestEditorFn) (*UpdateUserRoleResponse, error)
+
+	// DeleteUserRoleWithResponse request
+	DeleteUserRoleWithResponse(ctx context.Context, userId string, roleNonUUIDIdentifier string, reqEditors ...RequestEditorFn) (*DeleteUserRoleResponse, error)
+
+	// GetUserByIdWithResponse request
+	GetUserByIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserByIdResponse, error)
+
+	// PostApiWebhooksChatopsMsTeamsWithBodyWithResponse request with any body
+	PostApiWebhooksChatopsMsTeamsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiWebhooksChatopsMsTeamsResponse, error)
+
+	PostApiWebhooksChatopsMsTeamsWithResponse(ctx context.Context, body PostApiWebhooksChatopsMsTeamsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiWebhooksChatopsMsTeamsResponse, error)
+
+	// PostApiWebhooksIncomingEmailWithBodyWithResponse request with any body
+	PostApiWebhooksIncomingEmailWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiWebhooksIncomingEmailResponse, error)
+
+	PostApiWebhooksIncomingEmailWithResponse(ctx context.Context, body PostApiWebhooksIncomingEmailJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiWebhooksIncomingEmailResponse, error)
+
 	// GetHealthWithResponse request
 	GetHealthWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetHealthResponse, error)
+
+	// GetReadyWithResponse request
+	GetReadyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetReadyResponse, error)
+
+	// PostV1A2aPromptIdWithBodyWithResponse request with any body
+	PostV1A2aPromptIdWithBodyWithResponse(ctx context.Context, promptId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostV1A2aPromptIdResponse, error)
+
+	PostV1A2aPromptIdWithResponse(ctx context.Context, promptId openapi_types.UUID, body PostV1A2aPromptIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostV1A2aPromptIdResponse, error)
+
+	// GetV1A2aPromptIdWellKnownAgentJsonWithResponse request
+	GetV1A2aPromptIdWellKnownAgentJsonWithResponse(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetV1A2aPromptIdWellKnownAgentJsonResponse, error)
 }
 
 type GetAllAgentToolsResponse struct {
@@ -12047,16 +14450,12 @@ type GetAllAgentToolsResponse struct {
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"agent"`
-			AllowUsageWhenUntrustedDataIsPresent bool                `json:"allowUsageWhenUntrustedDataIsPresent"`
-			CreatedAt                            time.Time           `json:"createdAt"`
-			CredentialSourceMcpServerId          *openapi_types.UUID `json:"credentialSourceMcpServerId"`
-			ExecutionSourceMcpServerId           *openapi_types.UUID `json:"executionSourceMcpServerId"`
-			Id                                   openapi_types.UUID  `json:"id"`
-			PoliciesAutoConfiguredAt             *time.Time          `json:"policiesAutoConfiguredAt"`
-			PoliciesAutoConfiguredReasoning      *string             `json:"policiesAutoConfiguredReasoning"`
-			PoliciesAutoConfiguringStartedAt     *time.Time          `json:"policiesAutoConfiguringStartedAt"`
-			ResponseModifierTemplate             *string             `json:"responseModifierTemplate"`
-			Tool                                 struct {
+			CreatedAt                   time.Time           `json:"createdAt"`
+			CredentialSourceMcpServerId *openapi_types.UUID `json:"credentialSourceMcpServerId"`
+			ExecutionSourceMcpServerId  *openapi_types.UUID `json:"executionSourceMcpServerId"`
+			Id                          openapi_types.UUID  `json:"id"`
+			ResponseModifierTemplate    *string             `json:"responseModifierTemplate"`
+			Tool                        struct {
 				CatalogId          *string                                    `json:"catalogId"`
 				CreatedAt          time.Time                                  `json:"createdAt"`
 				Description        *string                                    `json:"description"`
@@ -12068,9 +14467,8 @@ type GetAllAgentToolsResponse struct {
 				Parameters         *GetAllAgentTools_200_Data_Tool_Parameters `json:"parameters,omitempty"`
 				UpdatedAt          time.Time                                  `json:"updatedAt"`
 			} `json:"tool"`
-			ToolResultTreatment      GetAllAgentTools200DataToolResultTreatment `json:"toolResultTreatment"`
-			UpdatedAt                time.Time                                  `json:"updatedAt"`
-			UseDynamicTeamCredential bool                                       `json:"useDynamicTeamCredential"`
+			UpdatedAt                time.Time `json:"updatedAt"`
+			UseDynamicTeamCredential bool      `json:"useDynamicTeamCredential"`
 		} `json:"data"`
 		Pagination struct {
 			CurrentPage int  `json:"currentPage"`
@@ -12122,7 +14520,6 @@ type GetAllAgentTools200DataToolParameters0 map[string]interface{}
 type GetAllAgentTools_200_Data_Tool_Parameters struct {
 	union json.RawMessage
 }
-type GetAllAgentTools200DataToolResultTreatment string
 type GetAllAgentTools400ErrorType string
 type GetAllAgentTools401ErrorType string
 type GetAllAgentTools403ErrorType string
@@ -12151,14 +14548,13 @@ type AutoConfigureAgentToolPoliciesResponse struct {
 	HTTPResponse *http.Response
 	JSON200      *struct {
 		Results []struct {
-			AgentToolId openapi_types.UUID `json:"agentToolId"`
-			Config      *struct {
-				AllowUsageWhenUntrustedDataIsPresent bool                                                              `json:"allowUsageWhenUntrustedDataIsPresent"`
-				Reasoning                            string                                                            `json:"reasoning"`
-				ToolResultTreatment                  AutoConfigureAgentToolPolicies200ResultsConfigToolResultTreatment `json:"toolResultTreatment"`
+			Config *struct {
+				Reasoning           string                                                            `json:"reasoning"`
+				ToolResultTreatment AutoConfigureAgentToolPolicies200ResultsConfigToolResultTreatment `json:"toolResultTreatment"`
 			} `json:"config,omitempty"`
-			Error   *string `json:"error,omitempty"`
-			Success bool    `json:"success"`
+			Error   *string            `json:"error,omitempty"`
+			Success bool               `json:"success"`
+			ToolId  openapi_types.UUID `json:"toolId"`
 		} `json:"results"`
 		Success bool `json:"success"`
 	}
@@ -12223,90 +14619,19 @@ func (r AutoConfigureAgentToolPoliciesResponse) StatusCode() int {
 	return 0
 }
 
-type BulkUpdateAgentToolsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		UpdatedCount float32 `json:"updatedCount"`
-	}
-	JSON400 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    BulkUpdateAgentTools400ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON401 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    BulkUpdateAgentTools401ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON403 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    BulkUpdateAgentTools403ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON404 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    BulkUpdateAgentTools404ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON409 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    BulkUpdateAgentTools409ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON500 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    BulkUpdateAgentTools500ErrorType `json:"type"`
-		} `json:"error"`
-	}
-}
-type BulkUpdateAgentTools400ErrorType string
-type BulkUpdateAgentTools401ErrorType string
-type BulkUpdateAgentTools403ErrorType string
-type BulkUpdateAgentTools404ErrorType string
-type BulkUpdateAgentTools409ErrorType string
-type BulkUpdateAgentTools500ErrorType string
-
-// Status returns HTTPResponse.Status
-func (r BulkUpdateAgentToolsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r BulkUpdateAgentToolsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
 type UpdateAgentToolResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AgentId                              *openapi_types.UUID                   `json:"agentId,omitempty"`
-		AllowUsageWhenUntrustedDataIsPresent *bool                                 `json:"allowUsageWhenUntrustedDataIsPresent,omitempty"`
-		CreatedAt                            *time.Time                            `json:"createdAt,omitempty"`
-		CredentialSourceMcpServerId          *openapi_types.UUID                   `json:"credentialSourceMcpServerId"`
-		ExecutionSourceMcpServerId           *openapi_types.UUID                   `json:"executionSourceMcpServerId"`
-		Id                                   *openapi_types.UUID                   `json:"id,omitempty"`
-		PoliciesAutoConfiguredAt             *time.Time                            `json:"policiesAutoConfiguredAt"`
-		PoliciesAutoConfiguredReasoning      *string                               `json:"policiesAutoConfiguredReasoning"`
-		PoliciesAutoConfiguringStartedAt     *time.Time                            `json:"policiesAutoConfiguringStartedAt"`
-		ResponseModifierTemplate             *string                               `json:"responseModifierTemplate"`
-		ToolId                               *openapi_types.UUID                   `json:"toolId,omitempty"`
-		ToolResultTreatment                  UpdateAgentTool200ToolResultTreatment `json:"toolResultTreatment"`
-		UpdatedAt                            *time.Time                            `json:"updatedAt,omitempty"`
-		UseDynamicTeamCredential             *bool                                 `json:"useDynamicTeamCredential,omitempty"`
+		AgentId                     *openapi_types.UUID `json:"agentId,omitempty"`
+		CreatedAt                   *time.Time          `json:"createdAt,omitempty"`
+		CredentialSourceMcpServerId *openapi_types.UUID `json:"credentialSourceMcpServerId"`
+		ExecutionSourceMcpServerId  *openapi_types.UUID `json:"executionSourceMcpServerId"`
+		Id                          *openapi_types.UUID `json:"id,omitempty"`
+		ResponseModifierTemplate    *string             `json:"responseModifierTemplate"`
+		ToolId                      *openapi_types.UUID `json:"toolId,omitempty"`
+		UpdatedAt                   *time.Time          `json:"updatedAt,omitempty"`
+		UseDynamicTeamCredential    *bool               `json:"useDynamicTeamCredential,omitempty"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -12345,7 +14670,6 @@ type UpdateAgentToolResponse struct {
 		} `json:"error"`
 	}
 }
-type UpdateAgentTool200ToolResultTreatment string
 type UpdateAgentTool400ErrorType string
 type UpdateAgentTool401ErrorType string
 type UpdateAgentTool403ErrorType string
@@ -12391,15 +14715,19 @@ type GetAgentsResponse struct {
 				Name string `json:"name"`
 			} `json:"teams"`
 			Tools []struct {
-				AgentId     *openapi_types.UUID                  `json:"agentId"`
-				CatalogId   *openapi_types.UUID                  `json:"catalogId"`
-				CreatedAt   time.Time                            `json:"createdAt"`
-				Description *string                              `json:"description"`
-				Id          openapi_types.UUID                   `json:"id"`
-				McpServerId *openapi_types.UUID                  `json:"mcpServerId"`
-				Name        string                               `json:"name"`
-				Parameters  *GetAgents_200_Data_Tools_Parameters `json:"parameters,omitempty"`
-				UpdatedAt   time.Time                            `json:"updatedAt"`
+				AgentId                          *openapi_types.UUID                  `json:"agentId"`
+				CatalogId                        *openapi_types.UUID                  `json:"catalogId"`
+				CreatedAt                        time.Time                            `json:"createdAt"`
+				Description                      *string                              `json:"description"`
+				Id                               openapi_types.UUID                   `json:"id"`
+				McpServerId                      *openapi_types.UUID                  `json:"mcpServerId"`
+				Name                             string                               `json:"name"`
+				Parameters                       *GetAgents_200_Data_Tools_Parameters `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt         *time.Time                           `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredReasoning  *string                              `json:"policiesAutoConfiguredReasoning"`
+				PoliciesAutoConfiguringStartedAt *time.Time                           `json:"policiesAutoConfiguringStartedAt"`
+				PromptAgentId                    *openapi_types.UUID                  `json:"promptAgentId"`
+				UpdatedAt                        time.Time                            `json:"updatedAt"`
 			} `json:"tools"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		} `json:"data"`
@@ -12497,15 +14825,19 @@ type CreateAgentResponse struct {
 			Name string `json:"name"`
 		} `json:"teams"`
 		Tools []struct {
-			AgentId     *openapi_types.UUID               `json:"agentId"`
-			CatalogId   *openapi_types.UUID               `json:"catalogId"`
-			CreatedAt   time.Time                         `json:"createdAt"`
-			Description *string                           `json:"description"`
-			Id          openapi_types.UUID                `json:"id"`
-			McpServerId *openapi_types.UUID               `json:"mcpServerId"`
-			Name        string                            `json:"name"`
-			Parameters  *CreateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-			UpdatedAt   time.Time                         `json:"updatedAt"`
+			AgentId                          *openapi_types.UUID               `json:"agentId"`
+			CatalogId                        *openapi_types.UUID               `json:"catalogId"`
+			CreatedAt                        time.Time                         `json:"createdAt"`
+			Description                      *string                           `json:"description"`
+			Id                               openapi_types.UUID                `json:"id"`
+			McpServerId                      *openapi_types.UUID               `json:"mcpServerId"`
+			Name                             string                            `json:"name"`
+			Parameters                       *CreateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time                        `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredReasoning  *string                           `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time                        `json:"policiesAutoConfiguringStartedAt"`
+			PromptAgentId                    *openapi_types.UUID               `json:"promptAgentId"`
+			UpdatedAt                        time.Time                         `json:"updatedAt"`
 		} `json:"tools"`
 		UpdatedAt time.Time `json:"updatedAt"`
 	}
@@ -12594,15 +14926,19 @@ type GetAllAgentsResponse struct {
 			Name string `json:"name"`
 		} `json:"teams"`
 		Tools []struct {
-			AgentId     *openapi_types.UUID                `json:"agentId"`
-			CatalogId   *openapi_types.UUID                `json:"catalogId"`
-			CreatedAt   time.Time                          `json:"createdAt"`
-			Description *string                            `json:"description"`
-			Id          openapi_types.UUID                 `json:"id"`
-			McpServerId *openapi_types.UUID                `json:"mcpServerId"`
-			Name        string                             `json:"name"`
-			Parameters  *GetAllAgents_200_Tools_Parameters `json:"parameters,omitempty"`
-			UpdatedAt   time.Time                          `json:"updatedAt"`
+			AgentId                          *openapi_types.UUID                `json:"agentId"`
+			CatalogId                        *openapi_types.UUID                `json:"catalogId"`
+			CreatedAt                        time.Time                          `json:"createdAt"`
+			Description                      *string                            `json:"description"`
+			Id                               openapi_types.UUID                 `json:"id"`
+			McpServerId                      *openapi_types.UUID                `json:"mcpServerId"`
+			Name                             string                             `json:"name"`
+			Parameters                       *GetAllAgents_200_Tools_Parameters `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time                         `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredReasoning  *string                            `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time                         `json:"policiesAutoConfiguringStartedAt"`
+			PromptAgentId                    *openapi_types.UUID                `json:"promptAgentId"`
+			UpdatedAt                        time.Time                          `json:"updatedAt"`
 		} `json:"tools"`
 		UpdatedAt time.Time `json:"updatedAt"`
 	}
@@ -12691,15 +15027,19 @@ type GetDefaultAgentResponse struct {
 			Name string `json:"name"`
 		} `json:"teams"`
 		Tools []struct {
-			AgentId     *openapi_types.UUID                   `json:"agentId"`
-			CatalogId   *openapi_types.UUID                   `json:"catalogId"`
-			CreatedAt   time.Time                             `json:"createdAt"`
-			Description *string                               `json:"description"`
-			Id          openapi_types.UUID                    `json:"id"`
-			McpServerId *openapi_types.UUID                   `json:"mcpServerId"`
-			Name        string                                `json:"name"`
-			Parameters  *GetDefaultAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-			UpdatedAt   time.Time                             `json:"updatedAt"`
+			AgentId                          *openapi_types.UUID                   `json:"agentId"`
+			CatalogId                        *openapi_types.UUID                   `json:"catalogId"`
+			CreatedAt                        time.Time                             `json:"createdAt"`
+			Description                      *string                               `json:"description"`
+			Id                               openapi_types.UUID                    `json:"id"`
+			McpServerId                      *openapi_types.UUID                   `json:"mcpServerId"`
+			Name                             string                                `json:"name"`
+			Parameters                       *GetDefaultAgent_200_Tools_Parameters `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time                            `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredReasoning  *string                               `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time                            `json:"policiesAutoConfiguringStartedAt"`
+			PromptAgentId                    *openapi_types.UUID                   `json:"promptAgentId"`
+			UpdatedAt                        time.Time                             `json:"updatedAt"`
 		} `json:"tools"`
 		UpdatedAt time.Time `json:"updatedAt"`
 	}
@@ -12977,15 +15317,19 @@ type GetAgentToolsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		AgentId     *openapi_types.UUID           `json:"agentId"`
-		CatalogId   *openapi_types.UUID           `json:"catalogId"`
-		CreatedAt   time.Time                     `json:"createdAt"`
-		Description *string                       `json:"description"`
-		Id          openapi_types.UUID            `json:"id"`
-		McpServerId *openapi_types.UUID           `json:"mcpServerId"`
-		Name        string                        `json:"name"`
-		Parameters  *GetAgentTools_200_Parameters `json:"parameters,omitempty"`
-		UpdatedAt   time.Time                     `json:"updatedAt"`
+		AgentId                          *openapi_types.UUID           `json:"agentId"`
+		CatalogId                        *openapi_types.UUID           `json:"catalogId"`
+		CreatedAt                        time.Time                     `json:"createdAt"`
+		Description                      *string                       `json:"description"`
+		Id                               openapi_types.UUID            `json:"id"`
+		McpServerId                      *openapi_types.UUID           `json:"mcpServerId"`
+		Name                             string                        `json:"name"`
+		Parameters                       *GetAgentTools_200_Parameters `json:"parameters,omitempty"`
+		PoliciesAutoConfiguredAt         *time.Time                    `json:"policiesAutoConfiguredAt"`
+		PoliciesAutoConfiguredReasoning  *string                       `json:"policiesAutoConfiguredReasoning"`
+		PoliciesAutoConfiguringStartedAt *time.Time                    `json:"policiesAutoConfiguringStartedAt"`
+		PromptAgentId                    *openapi_types.UUID           `json:"promptAgentId"`
+		UpdatedAt                        time.Time                     `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -13270,15 +15614,19 @@ type GetAgentResponse struct {
 			Name string `json:"name"`
 		} `json:"teams"`
 		Tools []struct {
-			AgentId     *openapi_types.UUID            `json:"agentId"`
-			CatalogId   *openapi_types.UUID            `json:"catalogId"`
-			CreatedAt   time.Time                      `json:"createdAt"`
-			Description *string                        `json:"description"`
-			Id          openapi_types.UUID             `json:"id"`
-			McpServerId *openapi_types.UUID            `json:"mcpServerId"`
-			Name        string                         `json:"name"`
-			Parameters  *GetAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-			UpdatedAt   time.Time                      `json:"updatedAt"`
+			AgentId                          *openapi_types.UUID            `json:"agentId"`
+			CatalogId                        *openapi_types.UUID            `json:"catalogId"`
+			CreatedAt                        time.Time                      `json:"createdAt"`
+			Description                      *string                        `json:"description"`
+			Id                               openapi_types.UUID             `json:"id"`
+			McpServerId                      *openapi_types.UUID            `json:"mcpServerId"`
+			Name                             string                         `json:"name"`
+			Parameters                       *GetAgent_200_Tools_Parameters `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time                     `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredReasoning  *string                        `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time                     `json:"policiesAutoConfiguringStartedAt"`
+			PromptAgentId                    *openapi_types.UUID            `json:"promptAgentId"`
+			UpdatedAt                        time.Time                      `json:"updatedAt"`
 		} `json:"tools"`
 		UpdatedAt time.Time `json:"updatedAt"`
 	}
@@ -13367,15 +15715,19 @@ type UpdateAgentResponse struct {
 			Name string `json:"name"`
 		} `json:"teams"`
 		Tools []struct {
-			AgentId     *openapi_types.UUID               `json:"agentId"`
-			CatalogId   *openapi_types.UUID               `json:"catalogId"`
-			CreatedAt   time.Time                         `json:"createdAt"`
-			Description *string                           `json:"description"`
-			Id          openapi_types.UUID                `json:"id"`
-			McpServerId *openapi_types.UUID               `json:"mcpServerId"`
-			Name        string                            `json:"name"`
-			Parameters  *UpdateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-			UpdatedAt   time.Time                         `json:"updatedAt"`
+			AgentId                          *openapi_types.UUID               `json:"agentId"`
+			CatalogId                        *openapi_types.UUID               `json:"catalogId"`
+			CreatedAt                        time.Time                         `json:"createdAt"`
+			Description                      *string                           `json:"description"`
+			Id                               openapi_types.UUID                `json:"id"`
+			McpServerId                      *openapi_types.UUID               `json:"mcpServerId"`
+			Name                             string                            `json:"name"`
+			Parameters                       *UpdateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time                        `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredReasoning  *string                           `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time                        `json:"policiesAutoConfiguringStartedAt"`
+			PromptAgentId                    *openapi_types.UUID               `json:"promptAgentId"`
+			UpdatedAt                        time.Time                         `json:"updatedAt"`
 		} `json:"tools"`
 		UpdatedAt time.Time `json:"updatedAt"`
 	}
@@ -13515,15 +15867,17 @@ type GetToolInvocationPoliciesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		Action       GetToolInvocationPolicies200Action   `json:"action"`
-		AgentToolId  openapi_types.UUID                   `json:"agentToolId"`
-		ArgumentName string                               `json:"argumentName"`
-		CreatedAt    time.Time                            `json:"createdAt"`
-		Id           openapi_types.UUID                   `json:"id"`
-		Operator     GetToolInvocationPolicies200Operator `json:"operator"`
-		Reason       *string                              `json:"reason"`
-		UpdatedAt    time.Time                            `json:"updatedAt"`
-		Value        string                               `json:"value"`
+		Action     GetToolInvocationPolicies200Action `json:"action"`
+		Conditions []struct {
+			Key      string                                         `json:"key"`
+			Operator GetToolInvocationPolicies200ConditionsOperator `json:"operator"`
+			Value    string                                         `json:"value"`
+		} `json:"conditions"`
+		CreatedAt time.Time          `json:"createdAt"`
+		Id        openapi_types.UUID `json:"id"`
+		Reason    *string            `json:"reason"`
+		ToolId    openapi_types.UUID `json:"toolId"`
+		UpdatedAt time.Time          `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -13563,7 +15917,7 @@ type GetToolInvocationPoliciesResponse struct {
 	}
 }
 type GetToolInvocationPolicies200Action string
-type GetToolInvocationPolicies200Operator string
+type GetToolInvocationPolicies200ConditionsOperator string
 type GetToolInvocationPolicies400ErrorType string
 type GetToolInvocationPolicies401ErrorType string
 type GetToolInvocationPolicies403ErrorType string
@@ -13591,15 +15945,17 @@ type CreateToolInvocationPolicyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Action       CreateToolInvocationPolicy200Action   `json:"action"`
-		AgentToolId  openapi_types.UUID                    `json:"agentToolId"`
-		ArgumentName string                                `json:"argumentName"`
-		CreatedAt    time.Time                             `json:"createdAt"`
-		Id           openapi_types.UUID                    `json:"id"`
-		Operator     CreateToolInvocationPolicy200Operator `json:"operator"`
-		Reason       *string                               `json:"reason"`
-		UpdatedAt    time.Time                             `json:"updatedAt"`
-		Value        string                                `json:"value"`
+		Action     CreateToolInvocationPolicy200Action `json:"action"`
+		Conditions []struct {
+			Key      string                                          `json:"key"`
+			Operator CreateToolInvocationPolicy200ConditionsOperator `json:"operator"`
+			Value    string                                          `json:"value"`
+		} `json:"conditions"`
+		CreatedAt time.Time          `json:"createdAt"`
+		Id        openapi_types.UUID `json:"id"`
+		Reason    *string            `json:"reason"`
+		ToolId    openapi_types.UUID `json:"toolId"`
+		UpdatedAt time.Time          `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -13639,7 +15995,7 @@ type CreateToolInvocationPolicyResponse struct {
 	}
 }
 type CreateToolInvocationPolicy200Action string
-type CreateToolInvocationPolicy200Operator string
+type CreateToolInvocationPolicy200ConditionsOperator string
 type CreateToolInvocationPolicy400ErrorType string
 type CreateToolInvocationPolicy401ErrorType string
 type CreateToolInvocationPolicy403ErrorType string
@@ -13733,15 +16089,17 @@ type GetToolInvocationPolicyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Action       GetToolInvocationPolicy200Action   `json:"action"`
-		AgentToolId  openapi_types.UUID                 `json:"agentToolId"`
-		ArgumentName string                             `json:"argumentName"`
-		CreatedAt    time.Time                          `json:"createdAt"`
-		Id           openapi_types.UUID                 `json:"id"`
-		Operator     GetToolInvocationPolicy200Operator `json:"operator"`
-		Reason       *string                            `json:"reason"`
-		UpdatedAt    time.Time                          `json:"updatedAt"`
-		Value        string                             `json:"value"`
+		Action     GetToolInvocationPolicy200Action `json:"action"`
+		Conditions []struct {
+			Key      string                                       `json:"key"`
+			Operator GetToolInvocationPolicy200ConditionsOperator `json:"operator"`
+			Value    string                                       `json:"value"`
+		} `json:"conditions"`
+		CreatedAt time.Time          `json:"createdAt"`
+		Id        openapi_types.UUID `json:"id"`
+		Reason    *string            `json:"reason"`
+		ToolId    openapi_types.UUID `json:"toolId"`
+		UpdatedAt time.Time          `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -13781,7 +16139,7 @@ type GetToolInvocationPolicyResponse struct {
 	}
 }
 type GetToolInvocationPolicy200Action string
-type GetToolInvocationPolicy200Operator string
+type GetToolInvocationPolicy200ConditionsOperator string
 type GetToolInvocationPolicy400ErrorType string
 type GetToolInvocationPolicy401ErrorType string
 type GetToolInvocationPolicy403ErrorType string
@@ -13809,15 +16167,17 @@ type UpdateToolInvocationPolicyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Action       UpdateToolInvocationPolicy200Action   `json:"action"`
-		AgentToolId  openapi_types.UUID                    `json:"agentToolId"`
-		ArgumentName string                                `json:"argumentName"`
-		CreatedAt    time.Time                             `json:"createdAt"`
-		Id           openapi_types.UUID                    `json:"id"`
-		Operator     UpdateToolInvocationPolicy200Operator `json:"operator"`
-		Reason       *string                               `json:"reason"`
-		UpdatedAt    time.Time                             `json:"updatedAt"`
-		Value        string                                `json:"value"`
+		Action     UpdateToolInvocationPolicy200Action `json:"action"`
+		Conditions []struct {
+			Key      string                                          `json:"key"`
+			Operator UpdateToolInvocationPolicy200ConditionsOperator `json:"operator"`
+			Value    string                                          `json:"value"`
+		} `json:"conditions"`
+		CreatedAt time.Time          `json:"createdAt"`
+		Id        openapi_types.UUID `json:"id"`
+		Reason    *string            `json:"reason"`
+		ToolId    openapi_types.UUID `json:"toolId"`
+		UpdatedAt time.Time          `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -13857,7 +16217,7 @@ type UpdateToolInvocationPolicyResponse struct {
 	}
 }
 type UpdateToolInvocationPolicy200Action string
-type UpdateToolInvocationPolicy200Operator string
+type UpdateToolInvocationPolicy200ConditionsOperator string
 type UpdateToolInvocationPolicy400ErrorType string
 type UpdateToolInvocationPolicy401ErrorType string
 type UpdateToolInvocationPolicy403ErrorType string
@@ -13948,18 +16308,21 @@ type GetChatApiKeysResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		CreatedAt             time.Time          `json:"createdAt"`
-		Id                    openapi_types.UUID `json:"id"`
-		IsOrganizationDefault bool               `json:"isOrganizationDefault"`
-		Name                  string             `json:"name"`
-		OrganizationId        string             `json:"organizationId"`
-		Profiles              []struct {
-			Id   openapi_types.UUID `json:"id"`
-			Name string             `json:"name"`
-		} `json:"profiles"`
-		Provider  GetChatApiKeys200Provider `json:"provider"`
-		SecretId  *openapi_types.UUID       `json:"secretId"`
-		UpdatedAt time.Time                 `json:"updatedAt"`
+		CreatedAt         time.Time                           `json:"createdAt"`
+		Id                openapi_types.UUID                  `json:"id"`
+		Name              string                              `json:"name"`
+		OrganizationId    string                              `json:"organizationId"`
+		Provider          GetChatApiKeys200Provider           `json:"provider"`
+		Scope             GetChatApiKeys200Scope              `json:"scope"`
+		SecretId          *openapi_types.UUID                 `json:"secretId"`
+		SecretStorageType *GetChatApiKeys200SecretStorageType `json:"secretStorageType,omitempty"`
+		TeamId            *string                             `json:"teamId"`
+		TeamName          *string                             `json:"teamName"`
+		UpdatedAt         time.Time                           `json:"updatedAt"`
+		UserId            *string                             `json:"userId"`
+		UserName          *string                             `json:"userName"`
+		VaultSecretKey    *string                             `json:"vaultSecretKey"`
+		VaultSecretPath   *string                             `json:"vaultSecretPath"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -13999,6 +16362,8 @@ type GetChatApiKeysResponse struct {
 	}
 }
 type GetChatApiKeys200Provider string
+type GetChatApiKeys200Scope string
+type GetChatApiKeys200SecretStorageType string
 type GetChatApiKeys400ErrorType string
 type GetChatApiKeys401ErrorType string
 type GetChatApiKeys403ErrorType string
@@ -14026,14 +16391,16 @@ type CreateChatApiKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CreatedAt             time.Time                   `json:"createdAt"`
-		Id                    openapi_types.UUID          `json:"id"`
-		IsOrganizationDefault bool                        `json:"isOrganizationDefault"`
-		Name                  string                      `json:"name"`
-		OrganizationId        string                      `json:"organizationId"`
-		Provider              CreateChatApiKey200Provider `json:"provider"`
-		SecretId              *openapi_types.UUID         `json:"secretId"`
-		UpdatedAt             time.Time                   `json:"updatedAt"`
+		CreatedAt      time.Time                   `json:"createdAt"`
+		Id             openapi_types.UUID          `json:"id"`
+		Name           string                      `json:"name"`
+		OrganizationId string                      `json:"organizationId"`
+		Provider       CreateChatApiKey200Provider `json:"provider"`
+		Scope          CreateChatApiKey200Scope    `json:"scope"`
+		SecretId       *openapi_types.UUID         `json:"secretId"`
+		TeamId         *string                     `json:"teamId"`
+		UpdatedAt      time.Time                   `json:"updatedAt"`
+		UserId         *string                     `json:"userId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -14073,6 +16440,7 @@ type CreateChatApiKeyResponse struct {
 	}
 }
 type CreateChatApiKey200Provider string
+type CreateChatApiKey200Scope string
 type CreateChatApiKey400ErrorType string
 type CreateChatApiKey401ErrorType string
 type CreateChatApiKey403ErrorType string
@@ -14096,59 +16464,75 @@ func (r CreateChatApiKeyResponse) StatusCode() int {
 	return 0
 }
 
-type BulkAssignChatApiKeysToProfilesResponse struct {
+type GetAvailableChatApiKeysResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		AssignedCount float32 `json:"assignedCount"`
-		Success       bool    `json:"success"`
+	JSON200      *[]struct {
+		CreatedAt         time.Time                                    `json:"createdAt"`
+		Id                openapi_types.UUID                           `json:"id"`
+		Name              string                                       `json:"name"`
+		OrganizationId    string                                       `json:"organizationId"`
+		Provider          GetAvailableChatApiKeys200Provider           `json:"provider"`
+		Scope             GetAvailableChatApiKeys200Scope              `json:"scope"`
+		SecretId          *openapi_types.UUID                          `json:"secretId"`
+		SecretStorageType *GetAvailableChatApiKeys200SecretStorageType `json:"secretStorageType,omitempty"`
+		TeamId            *string                                      `json:"teamId"`
+		TeamName          *string                                      `json:"teamName"`
+		UpdatedAt         time.Time                                    `json:"updatedAt"`
+		UserId            *string                                      `json:"userId"`
+		UserName          *string                                      `json:"userName"`
+		VaultSecretKey    *string                                      `json:"vaultSecretKey"`
+		VaultSecretPath   *string                                      `json:"vaultSecretPath"`
 	}
 	JSON400 *struct {
 		Error struct {
-			Message string                                      `json:"message"`
-			Type    BulkAssignChatApiKeysToProfiles400ErrorType `json:"type"`
+			Message string                              `json:"message"`
+			Type    GetAvailableChatApiKeys400ErrorType `json:"type"`
 		} `json:"error"`
 	}
 	JSON401 *struct {
 		Error struct {
-			Message string                                      `json:"message"`
-			Type    BulkAssignChatApiKeysToProfiles401ErrorType `json:"type"`
+			Message string                              `json:"message"`
+			Type    GetAvailableChatApiKeys401ErrorType `json:"type"`
 		} `json:"error"`
 	}
 	JSON403 *struct {
 		Error struct {
-			Message string                                      `json:"message"`
-			Type    BulkAssignChatApiKeysToProfiles403ErrorType `json:"type"`
+			Message string                              `json:"message"`
+			Type    GetAvailableChatApiKeys403ErrorType `json:"type"`
 		} `json:"error"`
 	}
 	JSON404 *struct {
 		Error struct {
-			Message string                                      `json:"message"`
-			Type    BulkAssignChatApiKeysToProfiles404ErrorType `json:"type"`
+			Message string                              `json:"message"`
+			Type    GetAvailableChatApiKeys404ErrorType `json:"type"`
 		} `json:"error"`
 	}
 	JSON409 *struct {
 		Error struct {
-			Message string                                      `json:"message"`
-			Type    BulkAssignChatApiKeysToProfiles409ErrorType `json:"type"`
+			Message string                              `json:"message"`
+			Type    GetAvailableChatApiKeys409ErrorType `json:"type"`
 		} `json:"error"`
 	}
 	JSON500 *struct {
 		Error struct {
-			Message string                                      `json:"message"`
-			Type    BulkAssignChatApiKeysToProfiles500ErrorType `json:"type"`
+			Message string                              `json:"message"`
+			Type    GetAvailableChatApiKeys500ErrorType `json:"type"`
 		} `json:"error"`
 	}
 }
-type BulkAssignChatApiKeysToProfiles400ErrorType string
-type BulkAssignChatApiKeysToProfiles401ErrorType string
-type BulkAssignChatApiKeysToProfiles403ErrorType string
-type BulkAssignChatApiKeysToProfiles404ErrorType string
-type BulkAssignChatApiKeysToProfiles409ErrorType string
-type BulkAssignChatApiKeysToProfiles500ErrorType string
+type GetAvailableChatApiKeys200Provider string
+type GetAvailableChatApiKeys200Scope string
+type GetAvailableChatApiKeys200SecretStorageType string
+type GetAvailableChatApiKeys400ErrorType string
+type GetAvailableChatApiKeys401ErrorType string
+type GetAvailableChatApiKeys403ErrorType string
+type GetAvailableChatApiKeys404ErrorType string
+type GetAvailableChatApiKeys409ErrorType string
+type GetAvailableChatApiKeys500ErrorType string
 
 // Status returns HTTPResponse.Status
-func (r BulkAssignChatApiKeysToProfilesResponse) Status() string {
+func (r GetAvailableChatApiKeysResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -14156,7 +16540,7 @@ func (r BulkAssignChatApiKeysToProfilesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r BulkAssignChatApiKeysToProfilesResponse) StatusCode() int {
+func (r GetAvailableChatApiKeysResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -14233,18 +16617,21 @@ type GetChatApiKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CreatedAt             time.Time          `json:"createdAt"`
-		Id                    openapi_types.UUID `json:"id"`
-		IsOrganizationDefault bool               `json:"isOrganizationDefault"`
-		Name                  string             `json:"name"`
-		OrganizationId        string             `json:"organizationId"`
-		Profiles              []struct {
-			Id   openapi_types.UUID `json:"id"`
-			Name string             `json:"name"`
-		} `json:"profiles"`
-		Provider  GetChatApiKey200Provider `json:"provider"`
-		SecretId  *openapi_types.UUID      `json:"secretId"`
-		UpdatedAt time.Time                `json:"updatedAt"`
+		CreatedAt         time.Time                          `json:"createdAt"`
+		Id                openapi_types.UUID                 `json:"id"`
+		Name              string                             `json:"name"`
+		OrganizationId    string                             `json:"organizationId"`
+		Provider          GetChatApiKey200Provider           `json:"provider"`
+		Scope             GetChatApiKey200Scope              `json:"scope"`
+		SecretId          *openapi_types.UUID                `json:"secretId"`
+		SecretStorageType *GetChatApiKey200SecretStorageType `json:"secretStorageType,omitempty"`
+		TeamId            *string                            `json:"teamId"`
+		TeamName          *string                            `json:"teamName"`
+		UpdatedAt         time.Time                          `json:"updatedAt"`
+		UserId            *string                            `json:"userId"`
+		UserName          *string                            `json:"userName"`
+		VaultSecretKey    *string                            `json:"vaultSecretKey"`
+		VaultSecretPath   *string                            `json:"vaultSecretPath"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -14284,6 +16671,8 @@ type GetChatApiKeyResponse struct {
 	}
 }
 type GetChatApiKey200Provider string
+type GetChatApiKey200Scope string
+type GetChatApiKey200SecretStorageType string
 type GetChatApiKey400ErrorType string
 type GetChatApiKey401ErrorType string
 type GetChatApiKey403ErrorType string
@@ -14311,14 +16700,16 @@ type UpdateChatApiKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CreatedAt             time.Time                   `json:"createdAt"`
-		Id                    openapi_types.UUID          `json:"id"`
-		IsOrganizationDefault bool                        `json:"isOrganizationDefault"`
-		Name                  string                      `json:"name"`
-		OrganizationId        string                      `json:"organizationId"`
-		Provider              UpdateChatApiKey200Provider `json:"provider"`
-		SecretId              *openapi_types.UUID         `json:"secretId"`
-		UpdatedAt             time.Time                   `json:"updatedAt"`
+		CreatedAt      time.Time                   `json:"createdAt"`
+		Id             openapi_types.UUID          `json:"id"`
+		Name           string                      `json:"name"`
+		OrganizationId string                      `json:"organizationId"`
+		Provider       UpdateChatApiKey200Provider `json:"provider"`
+		Scope          UpdateChatApiKey200Scope    `json:"scope"`
+		SecretId       *openapi_types.UUID         `json:"secretId"`
+		TeamId         *string                     `json:"teamId"`
+		UpdatedAt      time.Time                   `json:"updatedAt"`
+		UserId         *string                     `json:"userId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -14358,6 +16749,7 @@ type UpdateChatApiKeyResponse struct {
 	}
 }
 type UpdateChatApiKey200Provider string
+type UpdateChatApiKey200Scope string
 type UpdateChatApiKey400ErrorType string
 type UpdateChatApiKey401ErrorType string
 type UpdateChatApiKey403ErrorType string
@@ -14375,232 +16767,6 @@ func (r UpdateChatApiKeyResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateChatApiKeyResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UpdateChatApiKeyProfilesResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		CreatedAt             time.Time          `json:"createdAt"`
-		Id                    openapi_types.UUID `json:"id"`
-		IsOrganizationDefault bool               `json:"isOrganizationDefault"`
-		Name                  string             `json:"name"`
-		OrganizationId        string             `json:"organizationId"`
-		Profiles              []struct {
-			Id   openapi_types.UUID `json:"id"`
-			Name string             `json:"name"`
-		} `json:"profiles"`
-		Provider  UpdateChatApiKeyProfiles200Provider `json:"provider"`
-		SecretId  *openapi_types.UUID                 `json:"secretId"`
-		UpdatedAt time.Time                           `json:"updatedAt"`
-	}
-	JSON400 *struct {
-		Error struct {
-			Message string                               `json:"message"`
-			Type    UpdateChatApiKeyProfiles400ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON401 *struct {
-		Error struct {
-			Message string                               `json:"message"`
-			Type    UpdateChatApiKeyProfiles401ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON403 *struct {
-		Error struct {
-			Message string                               `json:"message"`
-			Type    UpdateChatApiKeyProfiles403ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON404 *struct {
-		Error struct {
-			Message string                               `json:"message"`
-			Type    UpdateChatApiKeyProfiles404ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON409 *struct {
-		Error struct {
-			Message string                               `json:"message"`
-			Type    UpdateChatApiKeyProfiles409ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON500 *struct {
-		Error struct {
-			Message string                               `json:"message"`
-			Type    UpdateChatApiKeyProfiles500ErrorType `json:"type"`
-		} `json:"error"`
-	}
-}
-type UpdateChatApiKeyProfiles200Provider string
-type UpdateChatApiKeyProfiles400ErrorType string
-type UpdateChatApiKeyProfiles401ErrorType string
-type UpdateChatApiKeyProfiles403ErrorType string
-type UpdateChatApiKeyProfiles404ErrorType string
-type UpdateChatApiKeyProfiles409ErrorType string
-type UpdateChatApiKeyProfiles500ErrorType string
-
-// Status returns HTTPResponse.Status
-func (r UpdateChatApiKeyProfilesResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UpdateChatApiKeyProfilesResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type SetChatApiKeyDefaultResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		CreatedAt             time.Time                       `json:"createdAt"`
-		Id                    openapi_types.UUID              `json:"id"`
-		IsOrganizationDefault bool                            `json:"isOrganizationDefault"`
-		Name                  string                          `json:"name"`
-		OrganizationId        string                          `json:"organizationId"`
-		Provider              SetChatApiKeyDefault200Provider `json:"provider"`
-		SecretId              *openapi_types.UUID             `json:"secretId"`
-		UpdatedAt             time.Time                       `json:"updatedAt"`
-	}
-	JSON400 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    SetChatApiKeyDefault400ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON401 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    SetChatApiKeyDefault401ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON403 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    SetChatApiKeyDefault403ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON404 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    SetChatApiKeyDefault404ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON409 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    SetChatApiKeyDefault409ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON500 *struct {
-		Error struct {
-			Message string                           `json:"message"`
-			Type    SetChatApiKeyDefault500ErrorType `json:"type"`
-		} `json:"error"`
-	}
-}
-type SetChatApiKeyDefault200Provider string
-type SetChatApiKeyDefault400ErrorType string
-type SetChatApiKeyDefault401ErrorType string
-type SetChatApiKeyDefault403ErrorType string
-type SetChatApiKeyDefault404ErrorType string
-type SetChatApiKeyDefault409ErrorType string
-type SetChatApiKeyDefault500ErrorType string
-
-// Status returns HTTPResponse.Status
-func (r SetChatApiKeyDefaultResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r SetChatApiKeyDefaultResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UnsetChatApiKeyDefaultResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		CreatedAt             time.Time                         `json:"createdAt"`
-		Id                    openapi_types.UUID                `json:"id"`
-		IsOrganizationDefault bool                              `json:"isOrganizationDefault"`
-		Name                  string                            `json:"name"`
-		OrganizationId        string                            `json:"organizationId"`
-		Provider              UnsetChatApiKeyDefault200Provider `json:"provider"`
-		SecretId              *openapi_types.UUID               `json:"secretId"`
-		UpdatedAt             time.Time                         `json:"updatedAt"`
-	}
-	JSON400 *struct {
-		Error struct {
-			Message string                             `json:"message"`
-			Type    UnsetChatApiKeyDefault400ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON401 *struct {
-		Error struct {
-			Message string                             `json:"message"`
-			Type    UnsetChatApiKeyDefault401ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON403 *struct {
-		Error struct {
-			Message string                             `json:"message"`
-			Type    UnsetChatApiKeyDefault403ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON404 *struct {
-		Error struct {
-			Message string                             `json:"message"`
-			Type    UnsetChatApiKeyDefault404ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON409 *struct {
-		Error struct {
-			Message string                             `json:"message"`
-			Type    UnsetChatApiKeyDefault409ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON500 *struct {
-		Error struct {
-			Message string                             `json:"message"`
-			Type    UnsetChatApiKeyDefault500ErrorType `json:"type"`
-		} `json:"error"`
-	}
-}
-type UnsetChatApiKeyDefault200Provider string
-type UnsetChatApiKeyDefault400ErrorType string
-type UnsetChatApiKeyDefault401ErrorType string
-type UnsetChatApiKeyDefault403ErrorType string
-type UnsetChatApiKeyDefault404ErrorType string
-type UnsetChatApiKeyDefault409ErrorType string
-type UnsetChatApiKeyDefault500ErrorType string
-
-// Status returns HTTPResponse.Status
-func (r UnsetChatApiKeyDefaultResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UnsetChatApiKeyDefaultResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -14683,16 +16849,21 @@ type GetChatConversationsResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"agent"`
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		Messages       []interface{}       `json:"messages"`
-		OrganizationId string              `json:"organizationId"`
-		PromptId       *openapi_types.UUID `json:"promptId"`
-		SelectedModel  string              `json:"selectedModel"`
-		Title          *string             `json:"title"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserId         string              `json:"userId"`
+		AgentId                openapi_types.UUID                 `json:"agentId"`
+		Artifact               *string                            `json:"artifact"`
+		ChatApiKeyId           *openapi_types.UUID                `json:"chatApiKeyId"`
+		CreatedAt              time.Time                          `json:"createdAt"`
+		HasCustomToolSelection bool                               `json:"hasCustomToolSelection"`
+		Id                     openapi_types.UUID                 `json:"id"`
+		Messages               []interface{}                      `json:"messages"`
+		OrganizationId         string                             `json:"organizationId"`
+		PromptId               *openapi_types.UUID                `json:"promptId"`
+		SelectedModel          string                             `json:"selectedModel"`
+		SelectedProvider       *string                            `json:"selectedProvider"`
+		Title                  *string                            `json:"title"`
+		TodoList               *GetChatConversations_200_TodoList `json:"todoList"`
+		UpdatedAt              time.Time                          `json:"updatedAt"`
+		UserId                 string                             `json:"userId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -14731,6 +16902,18 @@ type GetChatConversationsResponse struct {
 		} `json:"error"`
 	}
 }
+type GetChatConversations200TodoList0 struct {
+	union json.RawMessage
+}
+type GetChatConversations200TodoList00 = string
+type GetChatConversations200TodoList01 = float32
+type GetChatConversations200TodoList02 = bool
+type GetChatConversations200TodoList03 string
+type GetChatConversations200TodoList1 map[string]interface{}
+type GetChatConversations200TodoList2 = []interface{}
+type GetChatConversations_200_TodoList struct {
+	union json.RawMessage
+}
 type GetChatConversations400ErrorType string
 type GetChatConversations401ErrorType string
 type GetChatConversations403ErrorType string
@@ -14762,16 +16945,21 @@ type CreateChatConversationResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"agent"`
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		Messages       []interface{}       `json:"messages"`
-		OrganizationId string              `json:"organizationId"`
-		PromptId       *openapi_types.UUID `json:"promptId"`
-		SelectedModel  string              `json:"selectedModel"`
-		Title          *string             `json:"title"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserId         string              `json:"userId"`
+		AgentId                openapi_types.UUID                   `json:"agentId"`
+		Artifact               *string                              `json:"artifact"`
+		ChatApiKeyId           *openapi_types.UUID                  `json:"chatApiKeyId"`
+		CreatedAt              time.Time                            `json:"createdAt"`
+		HasCustomToolSelection bool                                 `json:"hasCustomToolSelection"`
+		Id                     openapi_types.UUID                   `json:"id"`
+		Messages               []interface{}                        `json:"messages"`
+		OrganizationId         string                               `json:"organizationId"`
+		PromptId               *openapi_types.UUID                  `json:"promptId"`
+		SelectedModel          string                               `json:"selectedModel"`
+		SelectedProvider       *string                              `json:"selectedProvider"`
+		Title                  *string                              `json:"title"`
+		TodoList               *CreateChatConversation_200_TodoList `json:"todoList"`
+		UpdatedAt              time.Time                            `json:"updatedAt"`
+		UserId                 string                               `json:"userId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -14809,6 +16997,18 @@ type CreateChatConversationResponse struct {
 			Type    CreateChatConversation500ErrorType `json:"type"`
 		} `json:"error"`
 	}
+}
+type CreateChatConversation200TodoList0 struct {
+	union json.RawMessage
+}
+type CreateChatConversation200TodoList00 = string
+type CreateChatConversation200TodoList01 = float32
+type CreateChatConversation200TodoList02 = bool
+type CreateChatConversation200TodoList03 string
+type CreateChatConversation200TodoList1 map[string]interface{}
+type CreateChatConversation200TodoList2 = []interface{}
+type CreateChatConversation_200_TodoList struct {
+	union json.RawMessage
 }
 type CreateChatConversation400ErrorType string
 type CreateChatConversation401ErrorType string
@@ -14907,16 +17107,21 @@ type GetChatConversationResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"agent"`
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		Messages       []interface{}       `json:"messages"`
-		OrganizationId string              `json:"organizationId"`
-		PromptId       *openapi_types.UUID `json:"promptId"`
-		SelectedModel  string              `json:"selectedModel"`
-		Title          *string             `json:"title"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserId         string              `json:"userId"`
+		AgentId                openapi_types.UUID                `json:"agentId"`
+		Artifact               *string                           `json:"artifact"`
+		ChatApiKeyId           *openapi_types.UUID               `json:"chatApiKeyId"`
+		CreatedAt              time.Time                         `json:"createdAt"`
+		HasCustomToolSelection bool                              `json:"hasCustomToolSelection"`
+		Id                     openapi_types.UUID                `json:"id"`
+		Messages               []interface{}                     `json:"messages"`
+		OrganizationId         string                            `json:"organizationId"`
+		PromptId               *openapi_types.UUID               `json:"promptId"`
+		SelectedModel          string                            `json:"selectedModel"`
+		SelectedProvider       *string                           `json:"selectedProvider"`
+		Title                  *string                           `json:"title"`
+		TodoList               *GetChatConversation_200_TodoList `json:"todoList"`
+		UpdatedAt              time.Time                         `json:"updatedAt"`
+		UserId                 string                            `json:"userId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -14955,6 +17160,18 @@ type GetChatConversationResponse struct {
 		} `json:"error"`
 	}
 }
+type GetChatConversation200TodoList0 struct {
+	union json.RawMessage
+}
+type GetChatConversation200TodoList00 = string
+type GetChatConversation200TodoList01 = float32
+type GetChatConversation200TodoList02 = bool
+type GetChatConversation200TodoList03 string
+type GetChatConversation200TodoList1 map[string]interface{}
+type GetChatConversation200TodoList2 = []interface{}
+type GetChatConversation_200_TodoList struct {
+	union json.RawMessage
+}
 type GetChatConversation400ErrorType string
 type GetChatConversation401ErrorType string
 type GetChatConversation403ErrorType string
@@ -14986,16 +17203,21 @@ type UpdateChatConversationResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"agent"`
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		Messages       []interface{}       `json:"messages"`
-		OrganizationId string              `json:"organizationId"`
-		PromptId       *openapi_types.UUID `json:"promptId"`
-		SelectedModel  string              `json:"selectedModel"`
-		Title          *string             `json:"title"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserId         string              `json:"userId"`
+		AgentId                openapi_types.UUID                   `json:"agentId"`
+		Artifact               *string                              `json:"artifact"`
+		ChatApiKeyId           *openapi_types.UUID                  `json:"chatApiKeyId"`
+		CreatedAt              time.Time                            `json:"createdAt"`
+		HasCustomToolSelection bool                                 `json:"hasCustomToolSelection"`
+		Id                     openapi_types.UUID                   `json:"id"`
+		Messages               []interface{}                        `json:"messages"`
+		OrganizationId         string                               `json:"organizationId"`
+		PromptId               *openapi_types.UUID                  `json:"promptId"`
+		SelectedModel          string                               `json:"selectedModel"`
+		SelectedProvider       *string                              `json:"selectedProvider"`
+		Title                  *string                              `json:"title"`
+		TodoList               *UpdateChatConversation_200_TodoList `json:"todoList"`
+		UpdatedAt              time.Time                            `json:"updatedAt"`
+		UserId                 string                               `json:"userId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -15033,6 +17255,18 @@ type UpdateChatConversationResponse struct {
 			Type    UpdateChatConversation500ErrorType `json:"type"`
 		} `json:"error"`
 	}
+}
+type UpdateChatConversation200TodoList0 struct {
+	union json.RawMessage
+}
+type UpdateChatConversation200TodoList00 = string
+type UpdateChatConversation200TodoList01 = float32
+type UpdateChatConversation200TodoList02 = bool
+type UpdateChatConversation200TodoList03 string
+type UpdateChatConversation200TodoList1 map[string]interface{}
+type UpdateChatConversation200TodoList2 = []interface{}
+type UpdateChatConversation_200_TodoList struct {
+	union json.RawMessage
 }
 type UpdateChatConversation400ErrorType string
 type UpdateChatConversation401ErrorType string
@@ -15265,16 +17499,21 @@ type GenerateChatConversationTitleResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"agent"`
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		Messages       []interface{}       `json:"messages"`
-		OrganizationId string              `json:"organizationId"`
-		PromptId       *openapi_types.UUID `json:"promptId"`
-		SelectedModel  string              `json:"selectedModel"`
-		Title          *string             `json:"title"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserId         string              `json:"userId"`
+		AgentId                openapi_types.UUID                          `json:"agentId"`
+		Artifact               *string                                     `json:"artifact"`
+		ChatApiKeyId           *openapi_types.UUID                         `json:"chatApiKeyId"`
+		CreatedAt              time.Time                                   `json:"createdAt"`
+		HasCustomToolSelection bool                                        `json:"hasCustomToolSelection"`
+		Id                     openapi_types.UUID                          `json:"id"`
+		Messages               []interface{}                               `json:"messages"`
+		OrganizationId         string                                      `json:"organizationId"`
+		PromptId               *openapi_types.UUID                         `json:"promptId"`
+		SelectedModel          string                                      `json:"selectedModel"`
+		SelectedProvider       *string                                     `json:"selectedProvider"`
+		Title                  *string                                     `json:"title"`
+		TodoList               *GenerateChatConversationTitle_200_TodoList `json:"todoList"`
+		UpdatedAt              time.Time                                   `json:"updatedAt"`
+		UserId                 string                                      `json:"userId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -15313,6 +17552,18 @@ type GenerateChatConversationTitleResponse struct {
 		} `json:"error"`
 	}
 }
+type GenerateChatConversationTitle200TodoList0 struct {
+	union json.RawMessage
+}
+type GenerateChatConversationTitle200TodoList00 = string
+type GenerateChatConversationTitle200TodoList01 = float32
+type GenerateChatConversationTitle200TodoList02 = bool
+type GenerateChatConversationTitle200TodoList03 string
+type GenerateChatConversationTitle200TodoList1 map[string]interface{}
+type GenerateChatConversationTitle200TodoList2 = []interface{}
+type GenerateChatConversationTitle_200_TodoList struct {
+	union json.RawMessage
+}
 type GenerateChatConversationTitle400ErrorType string
 type GenerateChatConversationTitle401ErrorType string
 type GenerateChatConversationTitle403ErrorType string
@@ -15330,6 +17581,102 @@ func (r GenerateChatConversationTitleResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GenerateChatConversationTitleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateChatMessageResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Agent struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"agent"`
+		AgentId                openapi_types.UUID              `json:"agentId"`
+		Artifact               *string                         `json:"artifact"`
+		ChatApiKeyId           *openapi_types.UUID             `json:"chatApiKeyId"`
+		CreatedAt              time.Time                       `json:"createdAt"`
+		HasCustomToolSelection bool                            `json:"hasCustomToolSelection"`
+		Id                     openapi_types.UUID              `json:"id"`
+		Messages               []interface{}                   `json:"messages"`
+		OrganizationId         string                          `json:"organizationId"`
+		PromptId               *openapi_types.UUID             `json:"promptId"`
+		SelectedModel          string                          `json:"selectedModel"`
+		SelectedProvider       *string                         `json:"selectedProvider"`
+		Title                  *string                         `json:"title"`
+		TodoList               *UpdateChatMessage_200_TodoList `json:"todoList"`
+		UpdatedAt              time.Time                       `json:"updatedAt"`
+		UserId                 string                          `json:"userId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    UpdateChatMessage400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    UpdateChatMessage401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    UpdateChatMessage403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    UpdateChatMessage404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    UpdateChatMessage409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    UpdateChatMessage500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateChatMessage200TodoList0 struct {
+	union json.RawMessage
+}
+type UpdateChatMessage200TodoList00 = string
+type UpdateChatMessage200TodoList01 = float32
+type UpdateChatMessage200TodoList02 = bool
+type UpdateChatMessage200TodoList03 string
+type UpdateChatMessage200TodoList1 map[string]interface{}
+type UpdateChatMessage200TodoList2 = []interface{}
+type UpdateChatMessage_200_TodoList struct {
+	union json.RawMessage
+}
+type UpdateChatMessage400ErrorType string
+type UpdateChatMessage401ErrorType string
+type UpdateChatMessage403ErrorType string
+type UpdateChatMessage404ErrorType string
+type UpdateChatMessage409ErrorType string
+type UpdateChatMessage500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateChatMessageResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateChatMessageResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -15400,6 +17747,282 @@ func (r GetChatModelsResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetChatModelsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type InvalidateChatModelsCacheResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    InvalidateChatModelsCache500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type InvalidateChatModelsCache400ErrorType string
+type InvalidateChatModelsCache401ErrorType string
+type InvalidateChatModelsCache403ErrorType string
+type InvalidateChatModelsCache404ErrorType string
+type InvalidateChatModelsCache409ErrorType string
+type InvalidateChatModelsCache500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r InvalidateChatModelsCacheResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r InvalidateChatModelsCacheResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListChatOpsBindingsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		ChannelId      string                         `json:"channelId"`
+		CreatedAt      time.Time                      `json:"createdAt"`
+		Id             openapi_types.UUID             `json:"id"`
+		OrganizationId string                         `json:"organizationId"`
+		PromptId       openapi_types.UUID             `json:"promptId"`
+		Provider       ListChatOpsBindings200Provider `json:"provider"`
+		UpdatedAt      time.Time                      `json:"updatedAt"`
+		WorkspaceId    *string                        `json:"workspaceId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    ListChatOpsBindings500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type ListChatOpsBindings200Provider string
+type ListChatOpsBindings400ErrorType string
+type ListChatOpsBindings401ErrorType string
+type ListChatOpsBindings403ErrorType string
+type ListChatOpsBindings404ErrorType string
+type ListChatOpsBindings409ErrorType string
+type ListChatOpsBindings500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r ListChatOpsBindingsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListChatOpsBindingsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteChatOpsBindingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    DeleteChatOpsBinding500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteChatOpsBinding400ErrorType string
+type DeleteChatOpsBinding401ErrorType string
+type DeleteChatOpsBinding403ErrorType string
+type DeleteChatOpsBinding404ErrorType string
+type DeleteChatOpsBinding409ErrorType string
+type DeleteChatOpsBinding500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteChatOpsBindingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteChatOpsBindingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetChatOpsStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Providers []struct {
+			Configured  bool   `json:"configured"`
+			DisplayName string `json:"displayName"`
+			Id          string `json:"id"`
+		} `json:"providers"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetChatOpsStatus500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetChatOpsStatus400ErrorType string
+type GetChatOpsStatus401ErrorType string
+type GetChatOpsStatus403ErrorType string
+type GetChatOpsStatus404ErrorType string
+type GetChatOpsStatus409ErrorType string
+type GetChatOpsStatus500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetChatOpsStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetChatOpsStatusResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -16007,13 +18630,31 @@ type GetFeaturesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		ByosEnabled            bool                              `json:"byosEnabled"`
-		ByosVaultKvVersion     *GetFeatures200ByosVaultKvVersion `json:"byosVaultKvVersion"`
-		GeminiVertexAiEnabled  bool                              `json:"geminiVertexAiEnabled"`
-		OrchestratorK8sRuntime bool                              `json:"orchestrator-k8s-runtime"`
+		BrowserStreamingEnabled bool                              `json:"browserStreamingEnabled"`
+		ByosEnabled             bool                              `json:"byosEnabled"`
+		ByosVaultKvVersion      *GetFeatures200ByosVaultKvVersion `json:"byosVaultKvVersion"`
+		GeminiVertexAiEnabled   bool                              `json:"geminiVertexAiEnabled"`
+		GlobalToolPolicy        GetFeatures200GlobalToolPolicy    `json:"globalToolPolicy"`
+		IncomingEmail           struct {
+			DisplayName *string                              `json:"displayName,omitempty"`
+			EmailDomain *string                              `json:"emailDomain,omitempty"`
+			Enabled     bool                                 `json:"enabled"`
+			Provider    *GetFeatures200IncomingEmailProvider `json:"provider,omitempty"`
+		} `json:"incomingEmail"`
+		KnowledgeGraph struct {
+			DisplayName *string                               `json:"displayName,omitempty"`
+			Enabled     bool                                  `json:"enabled"`
+			Provider    *GetFeatures200KnowledgeGraphProvider `json:"provider,omitempty"`
+		} `json:"knowledgeGraph"`
+		OllamaEnabled          bool `json:"ollamaEnabled"`
+		OrchestratorK8sRuntime bool `json:"orchestrator-k8s-runtime"`
+		VllmEnabled            bool `json:"vllmEnabled"`
 	}
 }
 type GetFeatures200ByosVaultKvVersion string
+type GetFeatures200GlobalToolPolicy string
+type GetFeatures200IncomingEmailProvider string
+type GetFeatures200KnowledgeGraphProvider string
 
 // Status returns HTTPResponse.Status
 func (r GetFeaturesResponse) Status() string {
@@ -16025,6 +18666,283 @@ func (r GetFeaturesResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetFeaturesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RenewIncomingEmailSubscriptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		ExpiresAt      *time.Time `json:"expiresAt,omitempty"`
+		Message        *string    `json:"message,omitempty"`
+		SubscriptionId *string    `json:"subscriptionId,omitempty"`
+		Success        bool       `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type RenewIncomingEmailSubscription400ErrorType string
+type RenewIncomingEmailSubscription401ErrorType string
+type RenewIncomingEmailSubscription403ErrorType string
+type RenewIncomingEmailSubscription404ErrorType string
+type RenewIncomingEmailSubscription409ErrorType string
+type RenewIncomingEmailSubscription500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r RenewIncomingEmailSubscriptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RenewIncomingEmailSubscriptionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SetupIncomingEmailWebhookResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		ExpiresAt      *time.Time `json:"expiresAt,omitempty"`
+		Message        *string    `json:"message,omitempty"`
+		SubscriptionId *string    `json:"subscriptionId,omitempty"`
+		Success        bool       `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type SetupIncomingEmailWebhook400ErrorType string
+type SetupIncomingEmailWebhook401ErrorType string
+type SetupIncomingEmailWebhook403ErrorType string
+type SetupIncomingEmailWebhook404ErrorType string
+type SetupIncomingEmailWebhook409ErrorType string
+type SetupIncomingEmailWebhook500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r SetupIncomingEmailWebhookResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetupIncomingEmailWebhookResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetIncomingEmailStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		IsActive     bool `json:"isActive"`
+		Subscription *struct {
+			ExpiresAt      time.Time `json:"expiresAt"`
+			Id             string    `json:"id"`
+			Provider       string    `json:"provider"`
+			SubscriptionId string    `json:"subscriptionId"`
+			WebhookUrl     string    `json:"webhookUrl"`
+		} `json:"subscription"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetIncomingEmailStatus400ErrorType string
+type GetIncomingEmailStatus401ErrorType string
+type GetIncomingEmailStatus403ErrorType string
+type GetIncomingEmailStatus404ErrorType string
+type GetIncomingEmailStatus409ErrorType string
+type GetIncomingEmailStatus500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetIncomingEmailStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetIncomingEmailStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteIncomingEmailSubscriptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteIncomingEmailSubscription400ErrorType string
+type DeleteIncomingEmailSubscription401ErrorType string
+type DeleteIncomingEmailSubscription403ErrorType string
+type DeleteIncomingEmailSubscription404ErrorType string
+type DeleteIncomingEmailSubscription409ErrorType string
+type DeleteIncomingEmailSubscription500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteIncomingEmailSubscriptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteIncomingEmailSubscriptionResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -16058,14 +18976,16 @@ type GetInternalMcpCatalogResponse struct {
 				Default              *GetInternalMcpCatalog_200_LocalConfig_Environment_Default `json:"default,omitempty"`
 				Description          *string                                                    `json:"description,omitempty"`
 				Key                  string                                                     `json:"key"`
+				Mounted              *bool                                                      `json:"mounted,omitempty"`
 				PromptOnInstallation bool                                                       `json:"promptOnInstallation"`
 				Required             *bool                                                      `json:"required,omitempty"`
 				Type                 GetInternalMcpCatalog200LocalConfigEnvironmentType         `json:"type"`
 				Value                *string                                                    `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
-			HttpPath      *string                                           `json:"httpPath,omitempty"`
-			HttpPort      *float32                                          `json:"httpPort,omitempty"`
-			TransportType *GetInternalMcpCatalog200LocalConfigTransportType `json:"transportType,omitempty"`
+			HttpPath       *string                                           `json:"httpPath,omitempty"`
+			HttpPort       *float32                                          `json:"httpPort,omitempty"`
+			ServiceAccount *string                                           `json:"serviceAccount,omitempty"`
+			TransportType  *GetInternalMcpCatalog200LocalConfigTransportType `json:"transportType,omitempty"`
 		} `json:"localConfig"`
 		LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 		Name                string              `json:"name"`
@@ -16213,14 +19133,16 @@ type CreateInternalMcpCatalogItemResponse struct {
 				Default              *CreateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
 				Description          *string                                                           `json:"description,omitempty"`
 				Key                  string                                                            `json:"key"`
+				Mounted              *bool                                                             `json:"mounted,omitempty"`
 				PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
 				Required             *bool                                                             `json:"required,omitempty"`
 				Type                 CreateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
 				Value                *string                                                           `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
-			HttpPath      *string                                                  `json:"httpPath,omitempty"`
-			HttpPort      *float32                                                 `json:"httpPort,omitempty"`
-			TransportType *CreateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+			HttpPath       *string                                                  `json:"httpPath,omitempty"`
+			HttpPort       *float32                                                 `json:"httpPort,omitempty"`
+			ServiceAccount *string                                                  `json:"serviceAccount,omitempty"`
+			TransportType  *CreateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
 		} `json:"localConfig"`
 		LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 		Name                string              `json:"name"`
@@ -16500,14 +19422,16 @@ type GetInternalMcpCatalogItemResponse struct {
 				Default              *GetInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
 				Description          *string                                                        `json:"description,omitempty"`
 				Key                  string                                                         `json:"key"`
+				Mounted              *bool                                                          `json:"mounted,omitempty"`
 				PromptOnInstallation bool                                                           `json:"promptOnInstallation"`
 				Required             *bool                                                          `json:"required,omitempty"`
 				Type                 GetInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
 				Value                *string                                                        `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
-			HttpPath      *string                                               `json:"httpPath,omitempty"`
-			HttpPort      *float32                                              `json:"httpPort,omitempty"`
-			TransportType *GetInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+			HttpPath       *string                                               `json:"httpPath,omitempty"`
+			HttpPort       *float32                                              `json:"httpPort,omitempty"`
+			ServiceAccount *string                                               `json:"serviceAccount,omitempty"`
+			TransportType  *GetInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
 		} `json:"localConfig"`
 		LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 		Name                string              `json:"name"`
@@ -16655,14 +19579,16 @@ type UpdateInternalMcpCatalogItemResponse struct {
 				Default              *UpdateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
 				Description          *string                                                           `json:"description,omitempty"`
 				Key                  string                                                            `json:"key"`
+				Mounted              *bool                                                             `json:"mounted,omitempty"`
 				PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
 				Required             *bool                                                             `json:"required,omitempty"`
 				Type                 UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
 				Value                *string                                                           `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
-			HttpPath      *string                                                  `json:"httpPath,omitempty"`
-			HttpPort      *float32                                                 `json:"httpPort,omitempty"`
-			TransportType *UpdateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+			HttpPath       *string                                                  `json:"httpPath,omitempty"`
+			HttpPort       *float32                                                 `json:"httpPort,omitempty"`
+			ServiceAccount *string                                                  `json:"serviceAccount,omitempty"`
+			TransportType  *UpdateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
 		} `json:"localConfig"`
 		LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 		Name                string              `json:"name"`
@@ -16777,6 +19703,81 @@ func (r UpdateInternalMcpCatalogItemResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateInternalMcpCatalogItemResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetInternalMcpCatalogToolsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		AssignedAgentCount float32 `json:"assignedAgentCount"`
+		AssignedAgents     []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"assignedAgents"`
+		CreatedAt   time.Time              `json:"createdAt"`
+		Description *string                `json:"description"`
+		Id          string                 `json:"id"`
+		Name        string                 `json:"name"`
+		Parameters  map[string]interface{} `json:"parameters"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetInternalMcpCatalogTools400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetInternalMcpCatalogTools401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetInternalMcpCatalogTools403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetInternalMcpCatalogTools404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetInternalMcpCatalogTools409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetInternalMcpCatalogTools500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetInternalMcpCatalogTools400ErrorType string
+type GetInternalMcpCatalogTools401ErrorType string
+type GetInternalMcpCatalogTools403ErrorType string
+type GetInternalMcpCatalogTools404ErrorType string
+type GetInternalMcpCatalogTools409ErrorType string
+type GetInternalMcpCatalogTools500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetInternalMcpCatalogToolsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetInternalMcpCatalogToolsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -17333,6 +20334,84 @@ func (r GetMcpToolCallResponse) StatusCode() int {
 	return 0
 }
 
+type RestartAllMcpServerInstallationsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Message string `json:"message"`
+		Results []struct {
+			Error      *string `json:"error,omitempty"`
+			ServerId   string  `json:"serverId"`
+			ServerName string  `json:"serverName"`
+			Success    bool    `json:"success"`
+		} `json:"results"`
+		Success bool `json:"success"`
+		Summary struct {
+			Failed    float32 `json:"failed"`
+			Succeeded float32 `json:"succeeded"`
+			Total     float32 `json:"total"`
+		} `json:"summary"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    RestartAllMcpServerInstallations400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    RestartAllMcpServerInstallations401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    RestartAllMcpServerInstallations403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    RestartAllMcpServerInstallations404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    RestartAllMcpServerInstallations409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    RestartAllMcpServerInstallations500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type RestartAllMcpServerInstallations400ErrorType string
+type RestartAllMcpServerInstallations401ErrorType string
+type RestartAllMcpServerInstallations403ErrorType string
+type RestartAllMcpServerInstallations404ErrorType string
+type RestartAllMcpServerInstallations409ErrorType string
+type RestartAllMcpServerInstallations500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r RestartAllMcpServerInstallationsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RestartAllMcpServerInstallationsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetMcpServersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -17344,6 +20423,8 @@ type GetMcpServersResponse struct {
 		LocalInstallationError  *string                                 `json:"localInstallationError"`
 		LocalInstallationStatus GetMcpServers200LocalInstallationStatus `json:"localInstallationStatus"`
 		Name                    string                                  `json:"name"`
+		OauthRefreshError       *GetMcpServers200OauthRefreshError      `json:"oauthRefreshError"`
+		OauthRefreshFailedAt    *time.Time                              `json:"oauthRefreshFailedAt"`
 		OwnerEmail              *string                                 `json:"ownerEmail"`
 		OwnerId                 *string                                 `json:"ownerId"`
 		ReinstallRequired       bool                                    `json:"reinstallRequired"`
@@ -17402,6 +20483,7 @@ type GetMcpServersResponse struct {
 	}
 }
 type GetMcpServers200LocalInstallationStatus string
+type GetMcpServers200OauthRefreshError string
 type GetMcpServers200SecretStorageType string
 type GetMcpServers200ServerType string
 type GetMcpServers400ErrorType string
@@ -17438,6 +20520,8 @@ type InstallMcpServerResponse struct {
 		LocalInstallationError  *string                                    `json:"localInstallationError"`
 		LocalInstallationStatus InstallMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
 		Name                    string                                     `json:"name"`
+		OauthRefreshError       *InstallMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+		OauthRefreshFailedAt    *time.Time                                 `json:"oauthRefreshFailedAt"`
 		OwnerEmail              *string                                    `json:"ownerEmail"`
 		OwnerId                 *string                                    `json:"ownerId"`
 		ReinstallRequired       bool                                       `json:"reinstallRequired"`
@@ -17496,6 +20580,7 @@ type InstallMcpServerResponse struct {
 	}
 }
 type InstallMcpServer200LocalInstallationStatus string
+type InstallMcpServer200OauthRefreshError string
 type InstallMcpServer200SecretStorageType string
 type InstallMcpServer200ServerType string
 type InstallMcpServer400ErrorType string
@@ -17598,6 +20683,8 @@ type GetMcpServerResponse struct {
 		LocalInstallationError  *string                                `json:"localInstallationError"`
 		LocalInstallationStatus GetMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
 		Name                    string                                 `json:"name"`
+		OauthRefreshError       *GetMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+		OauthRefreshFailedAt    *time.Time                             `json:"oauthRefreshFailedAt"`
 		OwnerEmail              *string                                `json:"ownerEmail"`
 		OwnerId                 *string                                `json:"ownerId"`
 		ReinstallRequired       bool                                   `json:"reinstallRequired"`
@@ -17656,6 +20743,7 @@ type GetMcpServerResponse struct {
 	}
 }
 type GetMcpServer200LocalInstallationStatus string
+type GetMcpServer200OauthRefreshError string
 type GetMcpServer200SecretStorageType string
 type GetMcpServer200ServerType string
 type GetMcpServer400ErrorType string
@@ -17812,6 +20900,103 @@ func (r GetMcpServerLogsResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetMcpServerLogsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ReauthenticateMcpServerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CatalogId               openapi_types.UUID                                `json:"catalogId"`
+		CatalogName             *string                                           `json:"catalogName"`
+		CreatedAt               time.Time                                         `json:"createdAt"`
+		Id                      openapi_types.UUID                                `json:"id"`
+		LocalInstallationError  *string                                           `json:"localInstallationError"`
+		LocalInstallationStatus ReauthenticateMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
+		Name                    string                                            `json:"name"`
+		OauthRefreshError       *ReauthenticateMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+		OauthRefreshFailedAt    *time.Time                                        `json:"oauthRefreshFailedAt"`
+		OwnerEmail              *string                                           `json:"ownerEmail"`
+		OwnerId                 *string                                           `json:"ownerId"`
+		ReinstallRequired       bool                                              `json:"reinstallRequired"`
+		SecretId                *openapi_types.UUID                               `json:"secretId"`
+		SecretStorageType       *ReauthenticateMcpServer200SecretStorageType      `json:"secretStorageType,omitempty"`
+		ServerType              ReauthenticateMcpServer200ServerType              `json:"serverType"`
+		TeamDetails             *struct {
+			CreatedAt time.Time `json:"createdAt"`
+			Name      string    `json:"name"`
+			TeamId    string    `json:"teamId"`
+		} `json:"teamDetails"`
+		TeamId      *string   `json:"teamId"`
+		UpdatedAt   time.Time `json:"updatedAt"`
+		UserDetails *[]struct {
+			CreatedAt time.Time `json:"createdAt"`
+			Email     string    `json:"email"`
+			UserId    string    `json:"userId"`
+		} `json:"userDetails,omitempty"`
+		Users *[]string `json:"users,omitempty"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    ReauthenticateMcpServer500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type ReauthenticateMcpServer200LocalInstallationStatus string
+type ReauthenticateMcpServer200OauthRefreshError string
+type ReauthenticateMcpServer200SecretStorageType string
+type ReauthenticateMcpServer200ServerType string
+type ReauthenticateMcpServer400ErrorType string
+type ReauthenticateMcpServer401ErrorType string
+type ReauthenticateMcpServer403ErrorType string
+type ReauthenticateMcpServer404ErrorType string
+type ReauthenticateMcpServer409ErrorType string
+type ReauthenticateMcpServer500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r ReauthenticateMcpServerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReauthenticateMcpServerResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -18063,6 +21248,7 @@ type GetMcpServerInstallationRequests200CustomServerConfig1 struct {
 			Default              *GetMcpServerInstallationRequests_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
 			Description          *string                                                                                    `json:"description,omitempty"`
 			Key                  string                                                                                     `json:"key"`
+			Mounted              *bool                                                                                      `json:"mounted,omitempty"`
 			PromptOnInstallation bool                                                                                       `json:"promptOnInstallation"`
 			Required             *bool                                                                                      `json:"required,omitempty"`
 			Type                 GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
@@ -18217,6 +21403,7 @@ type CreateMcpServerInstallationRequest200CustomServerConfig1 struct {
 			Default              *CreateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
 			Description          *string                                                                                      `json:"description,omitempty"`
 			Key                  string                                                                                       `json:"key"`
+			Mounted              *bool                                                                                        `json:"mounted,omitempty"`
 			PromptOnInstallation bool                                                                                         `json:"promptOnInstallation"`
 			Required             *bool                                                                                        `json:"required,omitempty"`
 			Type                 CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
@@ -18437,6 +21624,7 @@ type GetMcpServerInstallationRequest200CustomServerConfig1 struct {
 			Default              *GetMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
 			Description          *string                                                                                   `json:"description,omitempty"`
 			Key                  string                                                                                    `json:"key"`
+			Mounted              *bool                                                                                     `json:"mounted,omitempty"`
 			PromptOnInstallation bool                                                                                      `json:"promptOnInstallation"`
 			Required             *bool                                                                                     `json:"required,omitempty"`
 			Type                 GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
@@ -18591,6 +21779,7 @@ type UpdateMcpServerInstallationRequest200CustomServerConfig1 struct {
 			Default              *UpdateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
 			Description          *string                                                                                      `json:"description,omitempty"`
 			Key                  string                                                                                       `json:"key"`
+			Mounted              *bool                                                                                        `json:"mounted,omitempty"`
 			PromptOnInstallation bool                                                                                         `json:"promptOnInstallation"`
 			Required             *bool                                                                                        `json:"required,omitempty"`
 			Type                 UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
@@ -18745,6 +21934,7 @@ type ApproveMcpServerInstallationRequest200CustomServerConfig1 struct {
 			Default              *ApproveMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
 			Description          *string                                                                                       `json:"description,omitempty"`
 			Key                  string                                                                                        `json:"key"`
+			Mounted              *bool                                                                                         `json:"mounted,omitempty"`
 			PromptOnInstallation bool                                                                                          `json:"promptOnInstallation"`
 			Required             *bool                                                                                         `json:"required,omitempty"`
 			Type                 ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
@@ -18899,6 +22089,7 @@ type DeclineMcpServerInstallationRequest200CustomServerConfig1 struct {
 			Default              *DeclineMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
 			Description          *string                                                                                       `json:"description,omitempty"`
 			Key                  string                                                                                        `json:"key"`
+			Mounted              *bool                                                                                         `json:"mounted,omitempty"`
 			PromptOnInstallation bool                                                                                          `json:"promptOnInstallation"`
 			Required             *bool                                                                                         `json:"required,omitempty"`
 			Type                 DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
@@ -19053,6 +22244,7 @@ type AddMcpServerInstallationRequestNote200CustomServerConfig1 struct {
 			Default              *AddMcpServerInstallationRequestNote_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
 			Description          *string                                                                                       `json:"description,omitempty"`
 			Key                  string                                                                                        `json:"key"`
+			Mounted              *bool                                                                                         `json:"mounted,omitempty"`
 			PromptOnInstallation bool                                                                                          `json:"promptOnInstallation"`
 			Required             *bool                                                                                         `json:"required,omitempty"`
 			Type                 AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
@@ -19568,11 +22760,13 @@ type GetOrganizationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
+		AllowChatFileUploads     bool                                    `json:"allowChatFileUploads"`
 		AutoConfigureNewTools    bool                                    `json:"autoConfigureNewTools"`
 		CompressionScope         GetOrganization200CompressionScope      `json:"compressionScope"`
 		ConvertToolResultsToToon bool                                    `json:"convertToolResultsToToon"`
 		CreatedAt                time.Time                               `json:"createdAt"`
 		CustomFont               GetOrganization200CustomFont            `json:"customFont"`
+		GlobalToolPolicy         GetOrganization200GlobalToolPolicy      `json:"globalToolPolicy"`
 		Id                       string                                  `json:"id"`
 		LimitCleanupInterval     *GetOrganization200LimitCleanupInterval `json:"limitCleanupInterval"`
 		Logo                     *string                                 `json:"logo"`
@@ -19621,6 +22815,7 @@ type GetOrganizationResponse struct {
 }
 type GetOrganization200CompressionScope string
 type GetOrganization200CustomFont string
+type GetOrganization200GlobalToolPolicy string
 type GetOrganization200LimitCleanupInterval string
 type GetOrganization200Theme string
 type GetOrganization400ErrorType string
@@ -19650,11 +22845,13 @@ type UpdateOrganizationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
+		AllowChatFileUploads     bool                                       `json:"allowChatFileUploads"`
 		AutoConfigureNewTools    bool                                       `json:"autoConfigureNewTools"`
 		CompressionScope         UpdateOrganization200CompressionScope      `json:"compressionScope"`
 		ConvertToolResultsToToon bool                                       `json:"convertToolResultsToToon"`
 		CreatedAt                time.Time                                  `json:"createdAt"`
 		CustomFont               UpdateOrganization200CustomFont            `json:"customFont"`
+		GlobalToolPolicy         UpdateOrganization200GlobalToolPolicy      `json:"globalToolPolicy"`
 		Id                       string                                     `json:"id"`
 		LimitCleanupInterval     *UpdateOrganization200LimitCleanupInterval `json:"limitCleanupInterval"`
 		Logo                     *string                                    `json:"logo"`
@@ -19703,6 +22900,7 @@ type UpdateOrganizationResponse struct {
 }
 type UpdateOrganization200CompressionScope string
 type UpdateOrganization200CustomFont string
+type UpdateOrganization200GlobalToolPolicy string
 type UpdateOrganization200LimitCleanupInterval string
 type UpdateOrganization200Theme string
 type UpdateOrganization400ErrorType string
@@ -19722,6 +22920,76 @@ func (r UpdateOrganizationResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateOrganizationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetPublicAppearanceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CustomFont GetPublicAppearance200CustomFont `json:"customFont"`
+		Logo       *string                          `json:"logo"`
+		Theme      GetPublicAppearance200Theme      `json:"theme"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetPublicAppearance400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetPublicAppearance401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetPublicAppearance403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetPublicAppearance404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetPublicAppearance409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetPublicAppearance500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetPublicAppearance200CustomFont string
+type GetPublicAppearance200Theme string
+type GetPublicAppearance400ErrorType string
+type GetPublicAppearance401ErrorType string
+type GetPublicAppearance403ErrorType string
+type GetPublicAppearance404ErrorType string
+type GetPublicAppearance409ErrorType string
+type GetPublicAppearance500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetPublicAppearanceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetPublicAppearanceResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -19861,21 +23129,92 @@ func (r GetPolicyConfigSubagentPromptResponse) StatusCode() int {
 	return 0
 }
 
+type GetAllPromptAgentConnectionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		AgentPromptId openapi_types.UUID `json:"agentPromptId"`
+		Id            openapi_types.UUID `json:"id"`
+		PromptId      openapi_types.UUID `json:"promptId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                   `json:"message"`
+			Type    GetAllPromptAgentConnections400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                   `json:"message"`
+			Type    GetAllPromptAgentConnections401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                   `json:"message"`
+			Type    GetAllPromptAgentConnections403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                   `json:"message"`
+			Type    GetAllPromptAgentConnections404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                   `json:"message"`
+			Type    GetAllPromptAgentConnections409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                   `json:"message"`
+			Type    GetAllPromptAgentConnections500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAllPromptAgentConnections400ErrorType string
+type GetAllPromptAgentConnections401ErrorType string
+type GetAllPromptAgentConnections403ErrorType string
+type GetAllPromptAgentConnections404ErrorType string
+type GetAllPromptAgentConnections409ErrorType string
+type GetAllPromptAgentConnections500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAllPromptAgentConnectionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAllPromptAgentConnectionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetPromptsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		IsActive       bool                `json:"isActive"`
-		Name           string              `json:"name"`
-		OrganizationId string              `json:"organizationId"`
-		ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-		SystemPrompt   *string             `json:"systemPrompt"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserPrompt     *string             `json:"userPrompt"`
-		Version        int                 `json:"version"`
+		AgentId                    openapi_types.UUID                     `json:"agentId"`
+		AllowedChatops             GetPrompts_200_AllowedChatops          `json:"allowedChatops"`
+		CreatedAt                  time.Time                              `json:"createdAt"`
+		History                    GetPrompts_200_History                 `json:"history"`
+		Id                         openapi_types.UUID                     `json:"id"`
+		IncomingEmailAllowedDomain *string                                `json:"incomingEmailAllowedDomain"`
+		IncomingEmailEnabled       bool                                   `json:"incomingEmailEnabled"`
+		IncomingEmailSecurityMode  GetPrompts200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+		Name                       string                                 `json:"name"`
+		OrganizationId             string                                 `json:"organizationId"`
+		SystemPrompt               *string                                `json:"systemPrompt"`
+		UpdatedAt                  time.Time                              `json:"updatedAt"`
+		UserPrompt                 *string                                `json:"userPrompt"`
+		Version                    int                                    `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -19914,6 +23253,31 @@ type GetPromptsResponse struct {
 		} `json:"error"`
 	}
 }
+type GetPrompts200AllowedChatops0 struct {
+	union json.RawMessage
+}
+type GetPrompts200AllowedChatops00 = string
+type GetPrompts200AllowedChatops01 = float32
+type GetPrompts200AllowedChatops02 = bool
+type GetPrompts200AllowedChatops03 string
+type GetPrompts200AllowedChatops1 map[string]interface{}
+type GetPrompts200AllowedChatops2 = []interface{}
+type GetPrompts_200_AllowedChatops struct {
+	union json.RawMessage
+}
+type GetPrompts200History0 struct {
+	union json.RawMessage
+}
+type GetPrompts200History00 = string
+type GetPrompts200History01 = float32
+type GetPrompts200History02 = bool
+type GetPrompts200History03 string
+type GetPrompts200History1 map[string]interface{}
+type GetPrompts200History2 = []interface{}
+type GetPrompts_200_History struct {
+	union json.RawMessage
+}
+type GetPrompts200IncomingEmailSecurityMode string
 type GetPrompts400ErrorType string
 type GetPrompts401ErrorType string
 type GetPrompts403ErrorType string
@@ -19941,17 +23305,20 @@ type CreatePromptResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		IsActive       bool                `json:"isActive"`
-		Name           string              `json:"name"`
-		OrganizationId string              `json:"organizationId"`
-		ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-		SystemPrompt   *string             `json:"systemPrompt"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserPrompt     *string             `json:"userPrompt"`
-		Version        int                 `json:"version"`
+		AgentId                    openapi_types.UUID                       `json:"agentId"`
+		AllowedChatops             CreatePrompt_200_AllowedChatops          `json:"allowedChatops"`
+		CreatedAt                  time.Time                                `json:"createdAt"`
+		History                    CreatePrompt_200_History                 `json:"history"`
+		Id                         openapi_types.UUID                       `json:"id"`
+		IncomingEmailAllowedDomain *string                                  `json:"incomingEmailAllowedDomain"`
+		IncomingEmailEnabled       bool                                     `json:"incomingEmailEnabled"`
+		IncomingEmailSecurityMode  CreatePrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+		Name                       string                                   `json:"name"`
+		OrganizationId             string                                   `json:"organizationId"`
+		SystemPrompt               *string                                  `json:"systemPrompt"`
+		UpdatedAt                  time.Time                                `json:"updatedAt"`
+		UserPrompt                 *string                                  `json:"userPrompt"`
+		Version                    int                                      `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -19990,6 +23357,31 @@ type CreatePromptResponse struct {
 		} `json:"error"`
 	}
 }
+type CreatePrompt200AllowedChatops0 struct {
+	union json.RawMessage
+}
+type CreatePrompt200AllowedChatops00 = string
+type CreatePrompt200AllowedChatops01 = float32
+type CreatePrompt200AllowedChatops02 = bool
+type CreatePrompt200AllowedChatops03 string
+type CreatePrompt200AllowedChatops1 map[string]interface{}
+type CreatePrompt200AllowedChatops2 = []interface{}
+type CreatePrompt_200_AllowedChatops struct {
+	union json.RawMessage
+}
+type CreatePrompt200History0 struct {
+	union json.RawMessage
+}
+type CreatePrompt200History00 = string
+type CreatePrompt200History01 = float32
+type CreatePrompt200History02 = bool
+type CreatePrompt200History03 string
+type CreatePrompt200History1 map[string]interface{}
+type CreatePrompt200History2 = []interface{}
+type CreatePrompt_200_History struct {
+	union json.RawMessage
+}
+type CreatePrompt200IncomingEmailSecurityMode string
 type CreatePrompt400ErrorType string
 type CreatePrompt401ErrorType string
 type CreatePrompt403ErrorType string
@@ -20083,17 +23475,20 @@ type GetPromptResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		IsActive       bool                `json:"isActive"`
-		Name           string              `json:"name"`
-		OrganizationId string              `json:"organizationId"`
-		ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-		SystemPrompt   *string             `json:"systemPrompt"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserPrompt     *string             `json:"userPrompt"`
-		Version        int                 `json:"version"`
+		AgentId                    openapi_types.UUID                    `json:"agentId"`
+		AllowedChatops             GetPrompt_200_AllowedChatops          `json:"allowedChatops"`
+		CreatedAt                  time.Time                             `json:"createdAt"`
+		History                    GetPrompt_200_History                 `json:"history"`
+		Id                         openapi_types.UUID                    `json:"id"`
+		IncomingEmailAllowedDomain *string                               `json:"incomingEmailAllowedDomain"`
+		IncomingEmailEnabled       bool                                  `json:"incomingEmailEnabled"`
+		IncomingEmailSecurityMode  GetPrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+		Name                       string                                `json:"name"`
+		OrganizationId             string                                `json:"organizationId"`
+		SystemPrompt               *string                               `json:"systemPrompt"`
+		UpdatedAt                  time.Time                             `json:"updatedAt"`
+		UserPrompt                 *string                               `json:"userPrompt"`
+		Version                    int                                   `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -20132,6 +23527,31 @@ type GetPromptResponse struct {
 		} `json:"error"`
 	}
 }
+type GetPrompt200AllowedChatops0 struct {
+	union json.RawMessage
+}
+type GetPrompt200AllowedChatops00 = string
+type GetPrompt200AllowedChatops01 = float32
+type GetPrompt200AllowedChatops02 = bool
+type GetPrompt200AllowedChatops03 string
+type GetPrompt200AllowedChatops1 map[string]interface{}
+type GetPrompt200AllowedChatops2 = []interface{}
+type GetPrompt_200_AllowedChatops struct {
+	union json.RawMessage
+}
+type GetPrompt200History0 struct {
+	union json.RawMessage
+}
+type GetPrompt200History00 = string
+type GetPrompt200History01 = float32
+type GetPrompt200History02 = bool
+type GetPrompt200History03 string
+type GetPrompt200History1 map[string]interface{}
+type GetPrompt200History2 = []interface{}
+type GetPrompt_200_History struct {
+	union json.RawMessage
+}
+type GetPrompt200IncomingEmailSecurityMode string
 type GetPrompt400ErrorType string
 type GetPrompt401ErrorType string
 type GetPrompt403ErrorType string
@@ -20159,17 +23579,20 @@ type UpdatePromptResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		IsActive       bool                `json:"isActive"`
-		Name           string              `json:"name"`
-		OrganizationId string              `json:"organizationId"`
-		ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-		SystemPrompt   *string             `json:"systemPrompt"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserPrompt     *string             `json:"userPrompt"`
-		Version        int                 `json:"version"`
+		AgentId                    openapi_types.UUID                       `json:"agentId"`
+		AllowedChatops             UpdatePrompt_200_AllowedChatops          `json:"allowedChatops"`
+		CreatedAt                  time.Time                                `json:"createdAt"`
+		History                    UpdatePrompt_200_History                 `json:"history"`
+		Id                         openapi_types.UUID                       `json:"id"`
+		IncomingEmailAllowedDomain *string                                  `json:"incomingEmailAllowedDomain"`
+		IncomingEmailEnabled       bool                                     `json:"incomingEmailEnabled"`
+		IncomingEmailSecurityMode  UpdatePrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+		Name                       string                                   `json:"name"`
+		OrganizationId             string                                   `json:"organizationId"`
+		SystemPrompt               *string                                  `json:"systemPrompt"`
+		UpdatedAt                  time.Time                                `json:"updatedAt"`
+		UserPrompt                 *string                                  `json:"userPrompt"`
+		Version                    int                                      `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -20208,6 +23631,31 @@ type UpdatePromptResponse struct {
 		} `json:"error"`
 	}
 }
+type UpdatePrompt200AllowedChatops0 struct {
+	union json.RawMessage
+}
+type UpdatePrompt200AllowedChatops00 = string
+type UpdatePrompt200AllowedChatops01 = float32
+type UpdatePrompt200AllowedChatops02 = bool
+type UpdatePrompt200AllowedChatops03 string
+type UpdatePrompt200AllowedChatops1 map[string]interface{}
+type UpdatePrompt200AllowedChatops2 = []interface{}
+type UpdatePrompt_200_AllowedChatops struct {
+	union json.RawMessage
+}
+type UpdatePrompt200History0 struct {
+	union json.RawMessage
+}
+type UpdatePrompt200History00 = string
+type UpdatePrompt200History01 = float32
+type UpdatePrompt200History02 = bool
+type UpdatePrompt200History03 string
+type UpdatePrompt200History1 map[string]interface{}
+type UpdatePrompt200History2 = []interface{}
+type UpdatePrompt_200_History struct {
+	union json.RawMessage
+}
+type UpdatePrompt200IncomingEmailSecurityMode string
 type UpdatePrompt400ErrorType string
 type UpdatePrompt401ErrorType string
 type UpdatePrompt403ErrorType string
@@ -20235,17 +23683,20 @@ type RollbackPromptResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		IsActive       bool                `json:"isActive"`
-		Name           string              `json:"name"`
-		OrganizationId string              `json:"organizationId"`
-		ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-		SystemPrompt   *string             `json:"systemPrompt"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserPrompt     *string             `json:"userPrompt"`
-		Version        int                 `json:"version"`
+		AgentId                    openapi_types.UUID                         `json:"agentId"`
+		AllowedChatops             RollbackPrompt_200_AllowedChatops          `json:"allowedChatops"`
+		CreatedAt                  time.Time                                  `json:"createdAt"`
+		History                    RollbackPrompt_200_History                 `json:"history"`
+		Id                         openapi_types.UUID                         `json:"id"`
+		IncomingEmailAllowedDomain *string                                    `json:"incomingEmailAllowedDomain"`
+		IncomingEmailEnabled       bool                                       `json:"incomingEmailEnabled"`
+		IncomingEmailSecurityMode  RollbackPrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+		Name                       string                                     `json:"name"`
+		OrganizationId             string                                     `json:"organizationId"`
+		SystemPrompt               *string                                    `json:"systemPrompt"`
+		UpdatedAt                  time.Time                                  `json:"updatedAt"`
+		UserPrompt                 *string                                    `json:"userPrompt"`
+		Version                    int                                        `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -20284,6 +23735,31 @@ type RollbackPromptResponse struct {
 		} `json:"error"`
 	}
 }
+type RollbackPrompt200AllowedChatops0 struct {
+	union json.RawMessage
+}
+type RollbackPrompt200AllowedChatops00 = string
+type RollbackPrompt200AllowedChatops01 = float32
+type RollbackPrompt200AllowedChatops02 = bool
+type RollbackPrompt200AllowedChatops03 string
+type RollbackPrompt200AllowedChatops1 map[string]interface{}
+type RollbackPrompt200AllowedChatops2 = []interface{}
+type RollbackPrompt_200_AllowedChatops struct {
+	union json.RawMessage
+}
+type RollbackPrompt200History0 struct {
+	union json.RawMessage
+}
+type RollbackPrompt200History00 = string
+type RollbackPrompt200History01 = float32
+type RollbackPrompt200History02 = bool
+type RollbackPrompt200History03 string
+type RollbackPrompt200History1 map[string]interface{}
+type RollbackPrompt200History2 = []interface{}
+type RollbackPrompt_200_History struct {
+	union json.RawMessage
+}
+type RollbackPrompt200IncomingEmailSecurityMode string
 type RollbackPrompt400ErrorType string
 type RollbackPrompt401ErrorType string
 type RollbackPrompt403ErrorType string
@@ -20307,21 +23783,115 @@ func (r RollbackPromptResponse) StatusCode() int {
 	return 0
 }
 
-type GetPromptVersionsResponse struct {
+type GetPromptToolsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		AgentId        openapi_types.UUID  `json:"agentId"`
-		CreatedAt      time.Time           `json:"createdAt"`
-		Id             openapi_types.UUID  `json:"id"`
-		IsActive       bool                `json:"isActive"`
-		Name           string              `json:"name"`
-		OrganizationId string              `json:"organizationId"`
-		ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-		SystemPrompt   *string             `json:"systemPrompt"`
-		UpdatedAt      time.Time           `json:"updatedAt"`
-		UserPrompt     *string             `json:"userPrompt"`
-		Version        int                 `json:"version"`
+		AgentId                          *openapi_types.UUID            `json:"agentId"`
+		AgentPromptId                    openapi_types.UUID             `json:"agentPromptId"`
+		CatalogId                        *openapi_types.UUID            `json:"catalogId"`
+		CreatedAt                        time.Time                      `json:"createdAt"`
+		Description                      *string                        `json:"description"`
+		Id                               openapi_types.UUID             `json:"id"`
+		McpServerId                      *openapi_types.UUID            `json:"mcpServerId"`
+		Name                             string                         `json:"name"`
+		Parameters                       *GetPromptTools_200_Parameters `json:"parameters,omitempty"`
+		PoliciesAutoConfiguredAt         *time.Time                     `json:"policiesAutoConfiguredAt"`
+		PoliciesAutoConfiguredReasoning  *string                        `json:"policiesAutoConfiguredReasoning"`
+		PoliciesAutoConfiguringStartedAt *time.Time                     `json:"policiesAutoConfiguringStartedAt"`
+		PromptAgentId                    *openapi_types.UUID            `json:"promptAgentId"`
+		UpdatedAt                        time.Time                      `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetPromptTools400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetPromptTools401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetPromptTools403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetPromptTools404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetPromptTools409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetPromptTools500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetPromptTools200Parameters0 map[string]interface{}
+type GetPromptTools_200_Parameters struct {
+	union json.RawMessage
+}
+type GetPromptTools400ErrorType string
+type GetPromptTools401ErrorType string
+type GetPromptTools403ErrorType string
+type GetPromptTools404ErrorType string
+type GetPromptTools409ErrorType string
+type GetPromptTools500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetPromptToolsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetPromptToolsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetPromptVersionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Current struct {
+			AgentId                    openapi_types.UUID                                   `json:"agentId"`
+			AllowedChatops             GetPromptVersions_200_Current_AllowedChatops         `json:"allowedChatops"`
+			CreatedAt                  time.Time                                            `json:"createdAt"`
+			History                    GetPromptVersions_200_Current_History                `json:"history"`
+			Id                         openapi_types.UUID                                   `json:"id"`
+			IncomingEmailAllowedDomain *string                                              `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                                 `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  GetPromptVersions200CurrentIncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                               `json:"name"`
+			OrganizationId             string                                               `json:"organizationId"`
+			SystemPrompt               *string                                              `json:"systemPrompt"`
+			UpdatedAt                  time.Time                                            `json:"updatedAt"`
+			UserPrompt                 *string                                              `json:"userPrompt"`
+			Version                    int                                                  `json:"version"`
+		} `json:"current"`
+		History []struct {
+			CreatedAt    string  `json:"createdAt"`
+			SystemPrompt *string `json:"systemPrompt"`
+			UserPrompt   *string `json:"userPrompt"`
+			Version      float32 `json:"version"`
+		} `json:"history"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -20360,6 +23930,31 @@ type GetPromptVersionsResponse struct {
 		} `json:"error"`
 	}
 }
+type GetPromptVersions200CurrentAllowedChatops0 struct {
+	union json.RawMessage
+}
+type GetPromptVersions200CurrentAllowedChatops00 = string
+type GetPromptVersions200CurrentAllowedChatops01 = float32
+type GetPromptVersions200CurrentAllowedChatops02 = bool
+type GetPromptVersions200CurrentAllowedChatops03 string
+type GetPromptVersions200CurrentAllowedChatops1 map[string]interface{}
+type GetPromptVersions200CurrentAllowedChatops2 = []interface{}
+type GetPromptVersions_200_Current_AllowedChatops struct {
+	union json.RawMessage
+}
+type GetPromptVersions200CurrentHistory0 struct {
+	union json.RawMessage
+}
+type GetPromptVersions200CurrentHistory00 = string
+type GetPromptVersions200CurrentHistory01 = float32
+type GetPromptVersions200CurrentHistory02 = bool
+type GetPromptVersions200CurrentHistory03 string
+type GetPromptVersions200CurrentHistory1 map[string]interface{}
+type GetPromptVersions200CurrentHistory2 = []interface{}
+type GetPromptVersions_200_Current_History struct {
+	union json.RawMessage
+}
+type GetPromptVersions200CurrentIncomingEmailSecurityMode string
 type GetPromptVersions400ErrorType string
 type GetPromptVersions401ErrorType string
 type GetPromptVersions403ErrorType string
@@ -20377,6 +23972,283 @@ func (r GetPromptVersionsResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetPromptVersionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetPromptAgentsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		AgentPromptId openapi_types.UUID `json:"agentPromptId"`
+		CreatedAt     time.Time          `json:"createdAt"`
+		Id            openapi_types.UUID `json:"id"`
+		Name          string             `json:"name"`
+		ProfileId     openapi_types.UUID `json:"profileId"`
+		ProfileName   string             `json:"profileName"`
+		PromptId      openapi_types.UUID `json:"promptId"`
+		SystemPrompt  *string            `json:"systemPrompt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetPromptAgents400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetPromptAgents401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetPromptAgents403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetPromptAgents404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetPromptAgents409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetPromptAgents500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetPromptAgents400ErrorType string
+type GetPromptAgents401ErrorType string
+type GetPromptAgents403ErrorType string
+type GetPromptAgents404ErrorType string
+type GetPromptAgents409ErrorType string
+type GetPromptAgents500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetPromptAgentsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetPromptAgentsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SyncPromptAgentsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Added   []openapi_types.UUID `json:"added"`
+		Removed []openapi_types.UUID `json:"removed"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    SyncPromptAgents400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    SyncPromptAgents401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    SyncPromptAgents403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    SyncPromptAgents404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    SyncPromptAgents409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    SyncPromptAgents500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type SyncPromptAgents400ErrorType string
+type SyncPromptAgents401ErrorType string
+type SyncPromptAgents403ErrorType string
+type SyncPromptAgents404ErrorType string
+type SyncPromptAgents409ErrorType string
+type SyncPromptAgents500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r SyncPromptAgentsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SyncPromptAgentsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeletePromptAgentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    DeletePromptAgent400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    DeletePromptAgent401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    DeletePromptAgent403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    DeletePromptAgent404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    DeletePromptAgent409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    DeletePromptAgent500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeletePromptAgent400ErrorType string
+type DeletePromptAgent401ErrorType string
+type DeletePromptAgent403ErrorType string
+type DeletePromptAgent404ErrorType string
+type DeletePromptAgent409ErrorType string
+type DeletePromptAgent500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeletePromptAgentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeletePromptAgentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetPromptEmailAddressResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AgentAllowedDomain        *string                                   `json:"agentAllowedDomain"`
+		AgentIncomingEmailEnabled bool                                      `json:"agentIncomingEmailEnabled"`
+		AgentSecurityMode         GetPromptEmailAddress200AgentSecurityMode `json:"agentSecurityMode"`
+		EmailAddress              *string                                   `json:"emailAddress"`
+		ProviderEnabled           bool                                      `json:"providerEnabled"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetPromptEmailAddress400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetPromptEmailAddress401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetPromptEmailAddress403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetPromptEmailAddress404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetPromptEmailAddress409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetPromptEmailAddress500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetPromptEmailAddress200AgentSecurityMode string
+type GetPromptEmailAddress400ErrorType string
+type GetPromptEmailAddress401ErrorType string
+type GetPromptEmailAddress403ErrorType string
+type GetPromptEmailAddress404ErrorType string
+type GetPromptEmailAddress409ErrorType string
+type GetPromptEmailAddress500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetPromptEmailAddressResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetPromptEmailAddressResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -23758,17 +27630,23 @@ func (r UpdateTokenPriceResponse) StatusCode() int {
 type GetTokensResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]struct {
-		CreatedAt           time.Time          `json:"createdAt"`
-		Id                  openapi_types.UUID `json:"id"`
-		IsOrganizationToken bool               `json:"isOrganizationToken"`
-		LastUsedAt          *time.Time         `json:"lastUsedAt"`
-		Name                string             `json:"name"`
-		Team                *struct {
-			Id   string `json:"id"`
-			Name string `json:"name"`
-		} `json:"team"`
-		TokenStart string `json:"tokenStart"`
+	JSON200      *struct {
+		Permissions struct {
+			CanAccessOrgToken   bool `json:"canAccessOrgToken"`
+			CanAccessTeamTokens bool `json:"canAccessTeamTokens"`
+		} `json:"permissions"`
+		Tokens []struct {
+			CreatedAt           time.Time          `json:"createdAt"`
+			Id                  openapi_types.UUID `json:"id"`
+			IsOrganizationToken bool               `json:"isOrganizationToken"`
+			LastUsedAt          *time.Time         `json:"lastUsedAt"`
+			Name                string             `json:"name"`
+			Team                *struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"team"`
+			TokenStart string `json:"tokenStart"`
+		} `json:"tokens"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -23972,6 +27850,73 @@ func (r GetTokenValueResponse) StatusCode() int {
 	return 0
 }
 
+type BulkUpsertDefaultCallPolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Created float32 `json:"created"`
+		Updated float32 `json:"updated"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                  `json:"message"`
+			Type    BulkUpsertDefaultCallPolicy400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                  `json:"message"`
+			Type    BulkUpsertDefaultCallPolicy401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                  `json:"message"`
+			Type    BulkUpsertDefaultCallPolicy403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                  `json:"message"`
+			Type    BulkUpsertDefaultCallPolicy404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                  `json:"message"`
+			Type    BulkUpsertDefaultCallPolicy409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                  `json:"message"`
+			Type    BulkUpsertDefaultCallPolicy500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type BulkUpsertDefaultCallPolicy400ErrorType string
+type BulkUpsertDefaultCallPolicy401ErrorType string
+type BulkUpsertDefaultCallPolicy403ErrorType string
+type BulkUpsertDefaultCallPolicy404ErrorType string
+type BulkUpsertDefaultCallPolicy409ErrorType string
+type BulkUpsertDefaultCallPolicy500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r BulkUpsertDefaultCallPolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BulkUpsertDefaultCallPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetToolsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -23988,9 +27933,13 @@ type GetToolsResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"mcpServer"`
-		Name       string                   `json:"name"`
-		Parameters *GetTools_200_Parameters `json:"parameters,omitempty"`
-		UpdatedAt  time.Time                `json:"updatedAt"`
+		Name                             string                   `json:"name"`
+		Parameters                       *GetTools_200_Parameters `json:"parameters,omitempty"`
+		PoliciesAutoConfiguredAt         *time.Time               `json:"policiesAutoConfiguredAt"`
+		PoliciesAutoConfiguredReasoning  *string                  `json:"policiesAutoConfiguredReasoning"`
+		PoliciesAutoConfiguringStartedAt *time.Time               `json:"policiesAutoConfiguringStartedAt"`
+		PromptAgentId                    *openapi_types.UUID      `json:"promptAgentId"`
+		UpdatedAt                        time.Time                `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -24056,19 +28005,190 @@ func (r GetToolsResponse) StatusCode() int {
 	return 0
 }
 
+type GetToolsWithAssignmentsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			AssignmentCount float32 `json:"assignmentCount"`
+			Assignments     []struct {
+				Agent struct {
+					Id   string `json:"id"`
+					Name string `json:"name"`
+				} `json:"agent"`
+				AgentToolId                 string  `json:"agentToolId"`
+				CredentialOwnerEmail        *string `json:"credentialOwnerEmail"`
+				CredentialSourceMcpServerId *string `json:"credentialSourceMcpServerId"`
+				ExecutionOwnerEmail         *string `json:"executionOwnerEmail"`
+				ExecutionSourceMcpServerId  *string `json:"executionSourceMcpServerId"`
+				ResponseModifierTemplate    *string `json:"responseModifierTemplate"`
+				UseDynamicTeamCredential    bool    `json:"useDynamicTeamCredential"`
+			} `json:"assignments"`
+			CatalogId          *string                                      `json:"catalogId"`
+			CreatedAt          time.Time                                    `json:"createdAt"`
+			Description        *string                                      `json:"description"`
+			Id                 string                                       `json:"id"`
+			McpServerCatalogId *string                                      `json:"mcpServerCatalogId"`
+			McpServerId        *string                                      `json:"mcpServerId"`
+			McpServerName      *string                                      `json:"mcpServerName"`
+			Name               string                                       `json:"name"`
+			Parameters         *GetToolsWithAssignments_200_Data_Parameters `json:"parameters,omitempty"`
+			UpdatedAt          time.Time                                    `json:"updatedAt"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    GetToolsWithAssignments400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    GetToolsWithAssignments401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    GetToolsWithAssignments403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    GetToolsWithAssignments404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    GetToolsWithAssignments409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    GetToolsWithAssignments500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetToolsWithAssignments200DataParameters0 map[string]interface{}
+type GetToolsWithAssignments_200_Data_Parameters struct {
+	union json.RawMessage
+}
+type GetToolsWithAssignments400ErrorType string
+type GetToolsWithAssignments401ErrorType string
+type GetToolsWithAssignments403ErrorType string
+type GetToolsWithAssignments404ErrorType string
+type GetToolsWithAssignments409ErrorType string
+type GetToolsWithAssignments500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetToolsWithAssignmentsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetToolsWithAssignmentsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteToolResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteTool400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteTool401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteTool403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteTool404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteTool409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteTool500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteTool400ErrorType string
+type DeleteTool401ErrorType string
+type DeleteTool403ErrorType string
+type DeleteTool404ErrorType string
+type DeleteTool409ErrorType string
+type DeleteTool500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteToolResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteToolResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetTrustedDataPoliciesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		Action        GetTrustedDataPolicies200Action   `json:"action"`
-		AgentToolId   openapi_types.UUID                `json:"agentToolId"`
-		AttributePath string                            `json:"attributePath"`
-		CreatedAt     time.Time                         `json:"createdAt"`
-		Description   string                            `json:"description"`
-		Id            openapi_types.UUID                `json:"id"`
-		Operator      GetTrustedDataPolicies200Operator `json:"operator"`
-		UpdatedAt     time.Time                         `json:"updatedAt"`
-		Value         string                            `json:"value"`
+		Action     GetTrustedDataPolicies200Action `json:"action"`
+		Conditions []struct {
+			Key      string                                      `json:"key"`
+			Operator GetTrustedDataPolicies200ConditionsOperator `json:"operator"`
+			Value    string                                      `json:"value"`
+		} `json:"conditions"`
+		CreatedAt   time.Time          `json:"createdAt"`
+		Description *string            `json:"description"`
+		Id          openapi_types.UUID `json:"id"`
+		ToolId      openapi_types.UUID `json:"toolId"`
+		UpdatedAt   time.Time          `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -24108,7 +28228,7 @@ type GetTrustedDataPoliciesResponse struct {
 	}
 }
 type GetTrustedDataPolicies200Action string
-type GetTrustedDataPolicies200Operator string
+type GetTrustedDataPolicies200ConditionsOperator string
 type GetTrustedDataPolicies400ErrorType string
 type GetTrustedDataPolicies401ErrorType string
 type GetTrustedDataPolicies403ErrorType string
@@ -24136,15 +28256,17 @@ type CreateTrustedDataPolicyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Action        CreateTrustedDataPolicy200Action   `json:"action"`
-		AgentToolId   openapi_types.UUID                 `json:"agentToolId"`
-		AttributePath string                             `json:"attributePath"`
-		CreatedAt     time.Time                          `json:"createdAt"`
-		Description   string                             `json:"description"`
-		Id            openapi_types.UUID                 `json:"id"`
-		Operator      CreateTrustedDataPolicy200Operator `json:"operator"`
-		UpdatedAt     time.Time                          `json:"updatedAt"`
-		Value         string                             `json:"value"`
+		Action     CreateTrustedDataPolicy200Action `json:"action"`
+		Conditions []struct {
+			Key      string                                       `json:"key"`
+			Operator CreateTrustedDataPolicy200ConditionsOperator `json:"operator"`
+			Value    string                                       `json:"value"`
+		} `json:"conditions"`
+		CreatedAt   time.Time          `json:"createdAt"`
+		Description *string            `json:"description"`
+		Id          openapi_types.UUID `json:"id"`
+		ToolId      openapi_types.UUID `json:"toolId"`
+		UpdatedAt   time.Time          `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -24184,7 +28306,7 @@ type CreateTrustedDataPolicyResponse struct {
 	}
 }
 type CreateTrustedDataPolicy200Action string
-type CreateTrustedDataPolicy200Operator string
+type CreateTrustedDataPolicy200ConditionsOperator string
 type CreateTrustedDataPolicy400ErrorType string
 type CreateTrustedDataPolicy401ErrorType string
 type CreateTrustedDataPolicy403ErrorType string
@@ -24202,6 +28324,73 @@ func (r CreateTrustedDataPolicyResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CreateTrustedDataPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type BulkUpsertDefaultResultPolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Created float32 `json:"created"`
+		Updated float32 `json:"updated"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                    `json:"message"`
+			Type    BulkUpsertDefaultResultPolicy400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                    `json:"message"`
+			Type    BulkUpsertDefaultResultPolicy401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                    `json:"message"`
+			Type    BulkUpsertDefaultResultPolicy403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                    `json:"message"`
+			Type    BulkUpsertDefaultResultPolicy404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                    `json:"message"`
+			Type    BulkUpsertDefaultResultPolicy409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                    `json:"message"`
+			Type    BulkUpsertDefaultResultPolicy500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type BulkUpsertDefaultResultPolicy400ErrorType string
+type BulkUpsertDefaultResultPolicy401ErrorType string
+type BulkUpsertDefaultResultPolicy403ErrorType string
+type BulkUpsertDefaultResultPolicy404ErrorType string
+type BulkUpsertDefaultResultPolicy409ErrorType string
+type BulkUpsertDefaultResultPolicy500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r BulkUpsertDefaultResultPolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r BulkUpsertDefaultResultPolicyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -24278,15 +28467,17 @@ type GetTrustedDataPolicyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Action        GetTrustedDataPolicy200Action   `json:"action"`
-		AgentToolId   openapi_types.UUID              `json:"agentToolId"`
-		AttributePath string                          `json:"attributePath"`
-		CreatedAt     time.Time                       `json:"createdAt"`
-		Description   string                          `json:"description"`
-		Id            openapi_types.UUID              `json:"id"`
-		Operator      GetTrustedDataPolicy200Operator `json:"operator"`
-		UpdatedAt     time.Time                       `json:"updatedAt"`
-		Value         string                          `json:"value"`
+		Action     GetTrustedDataPolicy200Action `json:"action"`
+		Conditions []struct {
+			Key      string                                    `json:"key"`
+			Operator GetTrustedDataPolicy200ConditionsOperator `json:"operator"`
+			Value    string                                    `json:"value"`
+		} `json:"conditions"`
+		CreatedAt   time.Time          `json:"createdAt"`
+		Description *string            `json:"description"`
+		Id          openapi_types.UUID `json:"id"`
+		ToolId      openapi_types.UUID `json:"toolId"`
+		UpdatedAt   time.Time          `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -24326,7 +28517,7 @@ type GetTrustedDataPolicyResponse struct {
 	}
 }
 type GetTrustedDataPolicy200Action string
-type GetTrustedDataPolicy200Operator string
+type GetTrustedDataPolicy200ConditionsOperator string
 type GetTrustedDataPolicy400ErrorType string
 type GetTrustedDataPolicy401ErrorType string
 type GetTrustedDataPolicy403ErrorType string
@@ -24354,15 +28545,17 @@ type UpdateTrustedDataPolicyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Action        UpdateTrustedDataPolicy200Action   `json:"action"`
-		AgentToolId   openapi_types.UUID                 `json:"agentToolId"`
-		AttributePath string                             `json:"attributePath"`
-		CreatedAt     time.Time                          `json:"createdAt"`
-		Description   string                             `json:"description"`
-		Id            openapi_types.UUID                 `json:"id"`
-		Operator      UpdateTrustedDataPolicy200Operator `json:"operator"`
-		UpdatedAt     time.Time                          `json:"updatedAt"`
-		Value         string                             `json:"value"`
+		Action     UpdateTrustedDataPolicy200Action `json:"action"`
+		Conditions []struct {
+			Key      string                                       `json:"key"`
+			Operator UpdateTrustedDataPolicy200ConditionsOperator `json:"operator"`
+			Value    string                                       `json:"value"`
+		} `json:"conditions"`
+		CreatedAt   time.Time          `json:"createdAt"`
+		Description *string            `json:"description"`
+		Id          openapi_types.UUID `json:"id"`
+		ToolId      openapi_types.UUID `json:"toolId"`
+		UpdatedAt   time.Time          `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -24402,7 +28595,7 @@ type UpdateTrustedDataPolicyResponse struct {
 	}
 }
 type UpdateTrustedDataPolicy200Action string
-type UpdateTrustedDataPolicy200Operator string
+type UpdateTrustedDataPolicy200ConditionsOperator string
 type UpdateTrustedDataPolicy400ErrorType string
 type UpdateTrustedDataPolicy401ErrorType string
 type UpdateTrustedDataPolicy403ErrorType string
@@ -24420,6 +28613,83 @@ func (r UpdateTrustedDataPolicyResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateTrustedDataPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateUserResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		BanExpires       *time.Time `json:"banExpires"`
+		BanReason        *string    `json:"banReason"`
+		Banned           *bool      `json:"banned"`
+		CreatedAt        time.Time  `json:"createdAt"`
+		Email            string     `json:"email"`
+		EmailVerified    bool       `json:"emailVerified"`
+		Id               string     `json:"id"`
+		Image            *string    `json:"image"`
+		Name             string     `json:"name"`
+		Role             *string    `json:"role"`
+		TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+		UpdatedAt        time.Time  `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateUser400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateUser401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateUser403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateUser404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateUser409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateUser500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateUser400ErrorType string
+type CreateUser401ErrorType string
+type CreateUser403ErrorType string
+type CreateUser404ErrorType string
+type CreateUser409ErrorType string
+type CreateUser500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateUserResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateUserResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -24633,6 +28903,83 @@ func (r GetUserTokenValueResponse) StatusCode() int {
 	return 0
 }
 
+type GetUserByEmailResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		BanExpires       *time.Time `json:"banExpires"`
+		BanReason        *string    `json:"banReason"`
+		Banned           *bool      `json:"banned"`
+		CreatedAt        time.Time  `json:"createdAt"`
+		Email            string     `json:"email"`
+		EmailVerified    bool       `json:"emailVerified"`
+		Id               string     `json:"id"`
+		Image            *string    `json:"image"`
+		Name             string     `json:"name"`
+		Role             *string    `json:"role"`
+		TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+		UpdatedAt        time.Time  `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetUserByEmail500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetUserByEmail400ErrorType string
+type GetUserByEmail401ErrorType string
+type GetUserByEmail403ErrorType string
+type GetUserByEmail404ErrorType string
+type GetUserByEmail409ErrorType string
+type GetUserByEmail500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetUserByEmailResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetUserByEmailResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetUserPermissionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -24698,6 +29045,474 @@ func (r GetUserPermissionsResponse) StatusCode() int {
 	return 0
 }
 
+type DeleteUserResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON404 *map[string]interface{}
+	JSON500 *map[string]interface{}
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteUserResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteUserResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateUserResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		BanExpires       *time.Time `json:"banExpires"`
+		BanReason        *string    `json:"banReason"`
+		Banned           *bool      `json:"banned"`
+		CreatedAt        time.Time  `json:"createdAt"`
+		Email            string     `json:"email"`
+		EmailVerified    bool       `json:"emailVerified"`
+		Id               string     `json:"id"`
+		Image            *string    `json:"image"`
+		Name             string     `json:"name"`
+		Role             *string    `json:"role"`
+		TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+		UpdatedAt        time.Time  `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateUser400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateUser401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateUser403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateUser404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateUser409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateUser500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateUser400ErrorType string
+type UpdateUser401ErrorType string
+type UpdateUser403ErrorType string
+type UpdateUser404ErrorType string
+type UpdateUser409ErrorType string
+type UpdateUser500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateUserResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateUserResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetUserRoleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time `json:"createdAt"`
+		Id             string    `json:"id"`
+		OrganizationId string    `json:"organizationId"`
+		Role           string    `json:"role"`
+		UserId         string    `json:"userId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserRole400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserRole401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserRole403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserRole404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserRole409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserRole500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetUserRole400ErrorType string
+type GetUserRole401ErrorType string
+type GetUserRole403ErrorType string
+type GetUserRole404ErrorType string
+type GetUserRole409ErrorType string
+type GetUserRole500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetUserRoleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetUserRoleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateUserRoleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time `json:"createdAt"`
+		Id             string    `json:"id"`
+		OrganizationId string    `json:"organizationId"`
+		Role           string    `json:"role"`
+		UserId         string    `json:"userId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    UpdateUserRole400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    UpdateUserRole401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    UpdateUserRole403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    UpdateUserRole404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    UpdateUserRole409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    UpdateUserRole500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateUserRole400ErrorType string
+type UpdateUserRole401ErrorType string
+type UpdateUserRole403ErrorType string
+type UpdateUserRole404ErrorType string
+type UpdateUserRole409ErrorType string
+type UpdateUserRole500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateUserRoleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateUserRoleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteUserRoleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time `json:"createdAt"`
+		Id             string    `json:"id"`
+		OrganizationId string    `json:"organizationId"`
+		Role           string    `json:"role"`
+		UserId         string    `json:"userId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    DeleteUserRole400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    DeleteUserRole401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    DeleteUserRole403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    DeleteUserRole404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    DeleteUserRole409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    DeleteUserRole500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteUserRole400ErrorType string
+type DeleteUserRole401ErrorType string
+type DeleteUserRole403ErrorType string
+type DeleteUserRole404ErrorType string
+type DeleteUserRole409ErrorType string
+type DeleteUserRole500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteUserRoleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteUserRoleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetUserByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		BanExpires       *time.Time `json:"banExpires"`
+		BanReason        *string    `json:"banReason"`
+		Banned           *bool      `json:"banned"`
+		CreatedAt        time.Time  `json:"createdAt"`
+		Email            string     `json:"email"`
+		EmailVerified    bool       `json:"emailVerified"`
+		Id               string     `json:"id"`
+		Image            *string    `json:"image"`
+		Name             string     `json:"name"`
+		Role             *string    `json:"role"`
+		TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+		UpdatedAt        time.Time  `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    GetUserById500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetUserById400ErrorType string
+type GetUserById401ErrorType string
+type GetUserById403ErrorType string
+type GetUserById404ErrorType string
+type GetUserById409ErrorType string
+type GetUserById500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetUserByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetUserByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiWebhooksChatopsMsTeamsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		union json.RawMessage
+	}
+	JSON400 *struct {
+		Error string `json:"error"`
+	}
+	JSON429 *struct {
+		Error string `json:"error"`
+	}
+	JSON500 *struct {
+		Error string `json:"error"`
+	}
+}
+type PostApiWebhooksChatopsMsTeams2000 struct {
+	Status string `json:"status"`
+}
+type PostApiWebhooksChatopsMsTeams2001 struct {
+	Success bool `json:"success"`
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiWebhooksChatopsMsTeamsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiWebhooksChatopsMsTeamsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiWebhooksIncomingEmailResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		union json.RawMessage
+	}
+	JSON400 *struct {
+		Error string `json:"error"`
+	}
+	JSON429 *struct {
+		Error string `json:"error"`
+	}
+	JSON500 *struct {
+		Error string `json:"error"`
+	}
+}
+type PostApiWebhooksIncomingEmail2000 = string
+type PostApiWebhooksIncomingEmail2001 struct {
+	Errors    *float32 `json:"errors,omitempty"`
+	Processed *float32 `json:"processed,omitempty"`
+	Success   bool     `json:"success"`
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiWebhooksIncomingEmailResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiWebhooksIncomingEmailResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetHealthResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -24718,6 +29533,129 @@ func (r GetHealthResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetHealthResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetReadyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Database string `json:"database"`
+		Name     string `json:"name"`
+		Status   string `json:"status"`
+		Version  string `json:"version"`
+	}
+	JSON503 *struct {
+		Database string `json:"database"`
+		Name     string `json:"name"`
+		Status   string `json:"status"`
+		Version  string `json:"version"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetReadyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetReadyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostV1A2aPromptIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Error *struct {
+			Code    float32 `json:"code"`
+			Message string  `json:"message"`
+		} `json:"error,omitempty"`
+		Id      PostV1A2aPromptId_200_Id    `json:"id"`
+		Jsonrpc PostV1A2aPromptId200Jsonrpc `json:"jsonrpc"`
+		Result  *struct {
+			ContextId *string                 `json:"contextId,omitempty"`
+			MessageId string                  `json:"messageId"`
+			Metadata  *map[string]interface{} `json:"metadata,omitempty"`
+			Parts     []struct {
+				Kind PostV1A2aPromptId200ResultPartsKind `json:"kind"`
+				Text string                              `json:"text"`
+			} `json:"parts"`
+			Role   PostV1A2aPromptId200ResultRole `json:"role"`
+			TaskId *string                        `json:"taskId,omitempty"`
+		} `json:"result,omitempty"`
+	}
+}
+type PostV1A2aPromptId200Id0 = string
+type PostV1A2aPromptId200Id1 = float32
+type PostV1A2aPromptId_200_Id struct {
+	union json.RawMessage
+}
+type PostV1A2aPromptId200Jsonrpc string
+type PostV1A2aPromptId200ResultPartsKind string
+type PostV1A2aPromptId200ResultRole string
+
+// Status returns HTTPResponse.Status
+func (r PostV1A2aPromptIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostV1A2aPromptIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetV1A2aPromptIdWellKnownAgentJsonResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Capabilities struct {
+			PushNotifications      bool `json:"pushNotifications"`
+			StateTransitionHistory bool `json:"stateTransitionHistory"`
+			Streaming              bool `json:"streaming"`
+		} `json:"capabilities"`
+		DefaultInputModes  []string `json:"defaultInputModes"`
+		DefaultOutputModes []string `json:"defaultOutputModes"`
+		Description        string   `json:"description"`
+		Name               string   `json:"name"`
+		Skills             []struct {
+			Description string   `json:"description"`
+			Id          string   `json:"id"`
+			InputModes  []string `json:"inputModes"`
+			Name        string   `json:"name"`
+			OutputModes []string `json:"outputModes"`
+			Tags        []string `json:"tags"`
+		} `json:"skills"`
+		Url     string `json:"url"`
+		Version string `json:"version"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetV1A2aPromptIdWellKnownAgentJsonResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetV1A2aPromptIdWellKnownAgentJsonResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -24748,23 +29686,6 @@ func (c *ClientWithResponses) AutoConfigureAgentToolPoliciesWithResponse(ctx con
 		return nil, err
 	}
 	return ParseAutoConfigureAgentToolPoliciesResponse(rsp)
-}
-
-// BulkUpdateAgentToolsWithBodyWithResponse request with arbitrary body returning *BulkUpdateAgentToolsResponse
-func (c *ClientWithResponses) BulkUpdateAgentToolsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkUpdateAgentToolsResponse, error) {
-	rsp, err := c.BulkUpdateAgentToolsWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseBulkUpdateAgentToolsResponse(rsp)
-}
-
-func (c *ClientWithResponses) BulkUpdateAgentToolsWithResponse(ctx context.Context, body BulkUpdateAgentToolsJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkUpdateAgentToolsResponse, error) {
-	rsp, err := c.BulkUpdateAgentTools(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseBulkUpdateAgentToolsResponse(rsp)
 }
 
 // UpdateAgentToolWithBodyWithResponse request with arbitrary body returning *UpdateAgentToolResponse
@@ -24864,8 +29785,8 @@ func (c *ClientWithResponses) BulkAssignToolsWithResponse(ctx context.Context, b
 }
 
 // GetAgentToolsWithResponse request returning *GetAgentToolsResponse
-func (c *ClientWithResponses) GetAgentToolsWithResponse(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentToolsResponse, error) {
-	rsp, err := c.GetAgentTools(ctx, agentId, reqEditors...)
+func (c *ClientWithResponses) GetAgentToolsWithResponse(ctx context.Context, agentId openapi_types.UUID, params *GetAgentToolsParams, reqEditors ...RequestEditorFn) (*GetAgentToolsResponse, error) {
+	rsp, err := c.GetAgentTools(ctx, agentId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -25046,21 +29967,13 @@ func (c *ClientWithResponses) CreateChatApiKeyWithResponse(ctx context.Context, 
 	return ParseCreateChatApiKeyResponse(rsp)
 }
 
-// BulkAssignChatApiKeysToProfilesWithBodyWithResponse request with arbitrary body returning *BulkAssignChatApiKeysToProfilesResponse
-func (c *ClientWithResponses) BulkAssignChatApiKeysToProfilesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkAssignChatApiKeysToProfilesResponse, error) {
-	rsp, err := c.BulkAssignChatApiKeysToProfilesWithBody(ctx, contentType, body, reqEditors...)
+// GetAvailableChatApiKeysWithResponse request returning *GetAvailableChatApiKeysResponse
+func (c *ClientWithResponses) GetAvailableChatApiKeysWithResponse(ctx context.Context, params *GetAvailableChatApiKeysParams, reqEditors ...RequestEditorFn) (*GetAvailableChatApiKeysResponse, error) {
+	rsp, err := c.GetAvailableChatApiKeys(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseBulkAssignChatApiKeysToProfilesResponse(rsp)
-}
-
-func (c *ClientWithResponses) BulkAssignChatApiKeysToProfilesWithResponse(ctx context.Context, body BulkAssignChatApiKeysToProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkAssignChatApiKeysToProfilesResponse, error) {
-	rsp, err := c.BulkAssignChatApiKeysToProfiles(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseBulkAssignChatApiKeysToProfilesResponse(rsp)
+	return ParseGetAvailableChatApiKeysResponse(rsp)
 }
 
 // DeleteChatApiKeyWithResponse request returning *DeleteChatApiKeyResponse
@@ -25098,41 +30011,6 @@ func (c *ClientWithResponses) UpdateChatApiKeyWithResponse(ctx context.Context, 
 	return ParseUpdateChatApiKeyResponse(rsp)
 }
 
-// UpdateChatApiKeyProfilesWithBodyWithResponse request with arbitrary body returning *UpdateChatApiKeyProfilesResponse
-func (c *ClientWithResponses) UpdateChatApiKeyProfilesWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateChatApiKeyProfilesResponse, error) {
-	rsp, err := c.UpdateChatApiKeyProfilesWithBody(ctx, id, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateChatApiKeyProfilesResponse(rsp)
-}
-
-func (c *ClientWithResponses) UpdateChatApiKeyProfilesWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateChatApiKeyProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChatApiKeyProfilesResponse, error) {
-	rsp, err := c.UpdateChatApiKeyProfiles(ctx, id, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateChatApiKeyProfilesResponse(rsp)
-}
-
-// SetChatApiKeyDefaultWithResponse request returning *SetChatApiKeyDefaultResponse
-func (c *ClientWithResponses) SetChatApiKeyDefaultWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*SetChatApiKeyDefaultResponse, error) {
-	rsp, err := c.SetChatApiKeyDefault(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseSetChatApiKeyDefaultResponse(rsp)
-}
-
-// UnsetChatApiKeyDefaultWithResponse request returning *UnsetChatApiKeyDefaultResponse
-func (c *ClientWithResponses) UnsetChatApiKeyDefaultWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*UnsetChatApiKeyDefaultResponse, error) {
-	rsp, err := c.UnsetChatApiKeyDefault(ctx, id, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUnsetChatApiKeyDefaultResponse(rsp)
-}
-
 // GetChatAgentMcpToolsWithResponse request returning *GetChatAgentMcpToolsResponse
 func (c *ClientWithResponses) GetChatAgentMcpToolsWithResponse(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetChatAgentMcpToolsResponse, error) {
 	rsp, err := c.GetChatAgentMcpTools(ctx, agentId, reqEditors...)
@@ -25143,8 +30021,8 @@ func (c *ClientWithResponses) GetChatAgentMcpToolsWithResponse(ctx context.Conte
 }
 
 // GetChatConversationsWithResponse request returning *GetChatConversationsResponse
-func (c *ClientWithResponses) GetChatConversationsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetChatConversationsResponse, error) {
-	rsp, err := c.GetChatConversations(ctx, reqEditors...)
+func (c *ClientWithResponses) GetChatConversationsWithResponse(ctx context.Context, params *GetChatConversationsParams, reqEditors ...RequestEditorFn) (*GetChatConversationsResponse, error) {
+	rsp, err := c.GetChatConversations(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -25255,6 +30133,23 @@ func (c *ClientWithResponses) GenerateChatConversationTitleWithResponse(ctx cont
 	return ParseGenerateChatConversationTitleResponse(rsp)
 }
 
+// UpdateChatMessageWithBodyWithResponse request with arbitrary body returning *UpdateChatMessageResponse
+func (c *ClientWithResponses) UpdateChatMessageWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateChatMessageResponse, error) {
+	rsp, err := c.UpdateChatMessageWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateChatMessageResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateChatMessageWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateChatMessageJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChatMessageResponse, error) {
+	rsp, err := c.UpdateChatMessage(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateChatMessageResponse(rsp)
+}
+
 // GetChatModelsWithResponse request returning *GetChatModelsResponse
 func (c *ClientWithResponses) GetChatModelsWithResponse(ctx context.Context, params *GetChatModelsParams, reqEditors ...RequestEditorFn) (*GetChatModelsResponse, error) {
 	rsp, err := c.GetChatModels(ctx, params, reqEditors...)
@@ -25262,6 +30157,42 @@ func (c *ClientWithResponses) GetChatModelsWithResponse(ctx context.Context, par
 		return nil, err
 	}
 	return ParseGetChatModelsResponse(rsp)
+}
+
+// InvalidateChatModelsCacheWithResponse request returning *InvalidateChatModelsCacheResponse
+func (c *ClientWithResponses) InvalidateChatModelsCacheWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*InvalidateChatModelsCacheResponse, error) {
+	rsp, err := c.InvalidateChatModelsCache(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseInvalidateChatModelsCacheResponse(rsp)
+}
+
+// ListChatOpsBindingsWithResponse request returning *ListChatOpsBindingsResponse
+func (c *ClientWithResponses) ListChatOpsBindingsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListChatOpsBindingsResponse, error) {
+	rsp, err := c.ListChatOpsBindings(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListChatOpsBindingsResponse(rsp)
+}
+
+// DeleteChatOpsBindingWithResponse request returning *DeleteChatOpsBindingResponse
+func (c *ClientWithResponses) DeleteChatOpsBindingWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteChatOpsBindingResponse, error) {
+	rsp, err := c.DeleteChatOpsBinding(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteChatOpsBindingResponse(rsp)
+}
+
+// GetChatOpsStatusWithResponse request returning *GetChatOpsStatusResponse
+func (c *ClientWithResponses) GetChatOpsStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetChatOpsStatusResponse, error) {
+	rsp, err := c.GetChatOpsStatus(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetChatOpsStatusResponse(rsp)
 }
 
 // GetDualLlmConfigsWithResponse request returning *GetDualLlmConfigsResponse
@@ -25361,6 +30292,50 @@ func (c *ClientWithResponses) GetFeaturesWithResponse(ctx context.Context, reqEd
 	return ParseGetFeaturesResponse(rsp)
 }
 
+// RenewIncomingEmailSubscriptionWithResponse request returning *RenewIncomingEmailSubscriptionResponse
+func (c *ClientWithResponses) RenewIncomingEmailSubscriptionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RenewIncomingEmailSubscriptionResponse, error) {
+	rsp, err := c.RenewIncomingEmailSubscription(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRenewIncomingEmailSubscriptionResponse(rsp)
+}
+
+// SetupIncomingEmailWebhookWithBodyWithResponse request with arbitrary body returning *SetupIncomingEmailWebhookResponse
+func (c *ClientWithResponses) SetupIncomingEmailWebhookWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetupIncomingEmailWebhookResponse, error) {
+	rsp, err := c.SetupIncomingEmailWebhookWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetupIncomingEmailWebhookResponse(rsp)
+}
+
+func (c *ClientWithResponses) SetupIncomingEmailWebhookWithResponse(ctx context.Context, body SetupIncomingEmailWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*SetupIncomingEmailWebhookResponse, error) {
+	rsp, err := c.SetupIncomingEmailWebhook(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetupIncomingEmailWebhookResponse(rsp)
+}
+
+// GetIncomingEmailStatusWithResponse request returning *GetIncomingEmailStatusResponse
+func (c *ClientWithResponses) GetIncomingEmailStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetIncomingEmailStatusResponse, error) {
+	rsp, err := c.GetIncomingEmailStatus(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetIncomingEmailStatusResponse(rsp)
+}
+
+// DeleteIncomingEmailSubscriptionWithResponse request returning *DeleteIncomingEmailSubscriptionResponse
+func (c *ClientWithResponses) DeleteIncomingEmailSubscriptionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteIncomingEmailSubscriptionResponse, error) {
+	rsp, err := c.DeleteIncomingEmailSubscription(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteIncomingEmailSubscriptionResponse(rsp)
+}
+
 // GetInternalMcpCatalogWithResponse request returning *GetInternalMcpCatalogResponse
 func (c *ClientWithResponses) GetInternalMcpCatalogWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogResponse, error) {
 	rsp, err := c.GetInternalMcpCatalog(ctx, reqEditors...)
@@ -25429,6 +30404,15 @@ func (c *ClientWithResponses) UpdateInternalMcpCatalogItemWithResponse(ctx conte
 		return nil, err
 	}
 	return ParseUpdateInternalMcpCatalogItemResponse(rsp)
+}
+
+// GetInternalMcpCatalogToolsWithResponse request returning *GetInternalMcpCatalogToolsResponse
+func (c *ClientWithResponses) GetInternalMcpCatalogToolsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogToolsResponse, error) {
+	rsp, err := c.GetInternalMcpCatalogTools(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetInternalMcpCatalogToolsResponse(rsp)
 }
 
 // GetLimitsWithResponse request returning *GetLimitsResponse
@@ -25510,6 +30494,15 @@ func (c *ClientWithResponses) GetMcpToolCallWithResponse(ctx context.Context, mc
 	return ParseGetMcpToolCallResponse(rsp)
 }
 
+// RestartAllMcpServerInstallationsWithResponse request returning *RestartAllMcpServerInstallationsResponse
+func (c *ClientWithResponses) RestartAllMcpServerInstallationsWithResponse(ctx context.Context, catalogId openapi_types.UUID, reqEditors ...RequestEditorFn) (*RestartAllMcpServerInstallationsResponse, error) {
+	rsp, err := c.RestartAllMcpServerInstallations(ctx, catalogId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRestartAllMcpServerInstallationsResponse(rsp)
+}
+
 // GetMcpServersWithResponse request returning *GetMcpServersResponse
 func (c *ClientWithResponses) GetMcpServersWithResponse(ctx context.Context, params *GetMcpServersParams, reqEditors ...RequestEditorFn) (*GetMcpServersResponse, error) {
 	rsp, err := c.GetMcpServers(ctx, params, reqEditors...)
@@ -25570,6 +30563,23 @@ func (c *ClientWithResponses) GetMcpServerLogsWithResponse(ctx context.Context, 
 		return nil, err
 	}
 	return ParseGetMcpServerLogsResponse(rsp)
+}
+
+// ReauthenticateMcpServerWithBodyWithResponse request with arbitrary body returning *ReauthenticateMcpServerResponse
+func (c *ClientWithResponses) ReauthenticateMcpServerWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ReauthenticateMcpServerResponse, error) {
+	rsp, err := c.ReauthenticateMcpServerWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReauthenticateMcpServerResponse(rsp)
+}
+
+func (c *ClientWithResponses) ReauthenticateMcpServerWithResponse(ctx context.Context, id openapi_types.UUID, body ReauthenticateMcpServerJSONRequestBody, reqEditors ...RequestEditorFn) (*ReauthenticateMcpServerResponse, error) {
+	rsp, err := c.ReauthenticateMcpServer(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseReauthenticateMcpServerResponse(rsp)
 }
 
 // RestartMcpServerWithResponse request returning *RestartMcpServerResponse
@@ -25814,6 +30824,15 @@ func (c *ClientWithResponses) UpdateOrganizationWithResponse(ctx context.Context
 	return ParseUpdateOrganizationResponse(rsp)
 }
 
+// GetPublicAppearanceWithResponse request returning *GetPublicAppearanceResponse
+func (c *ClientWithResponses) GetPublicAppearanceWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetPublicAppearanceResponse, error) {
+	rsp, err := c.GetPublicAppearance(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetPublicAppearanceResponse(rsp)
+}
+
 // GetOnboardingStatusWithResponse request returning *GetOnboardingStatusResponse
 func (c *ClientWithResponses) GetOnboardingStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOnboardingStatusResponse, error) {
 	rsp, err := c.GetOnboardingStatus(ctx, reqEditors...)
@@ -25830,6 +30849,15 @@ func (c *ClientWithResponses) GetPolicyConfigSubagentPromptWithResponse(ctx cont
 		return nil, err
 	}
 	return ParseGetPolicyConfigSubagentPromptResponse(rsp)
+}
+
+// GetAllPromptAgentConnectionsWithResponse request returning *GetAllPromptAgentConnectionsResponse
+func (c *ClientWithResponses) GetAllPromptAgentConnectionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAllPromptAgentConnectionsResponse, error) {
+	rsp, err := c.GetAllPromptAgentConnections(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAllPromptAgentConnectionsResponse(rsp)
 }
 
 // GetPromptsWithResponse request returning *GetPromptsResponse
@@ -25910,6 +30938,15 @@ func (c *ClientWithResponses) RollbackPromptWithResponse(ctx context.Context, id
 	return ParseRollbackPromptResponse(rsp)
 }
 
+// GetPromptToolsWithResponse request returning *GetPromptToolsResponse
+func (c *ClientWithResponses) GetPromptToolsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetPromptToolsResponse, error) {
+	rsp, err := c.GetPromptTools(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetPromptToolsResponse(rsp)
+}
+
 // GetPromptVersionsWithResponse request returning *GetPromptVersionsResponse
 func (c *ClientWithResponses) GetPromptVersionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetPromptVersionsResponse, error) {
 	rsp, err := c.GetPromptVersions(ctx, id, reqEditors...)
@@ -25917,6 +30954,50 @@ func (c *ClientWithResponses) GetPromptVersionsWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseGetPromptVersionsResponse(rsp)
+}
+
+// GetPromptAgentsWithResponse request returning *GetPromptAgentsResponse
+func (c *ClientWithResponses) GetPromptAgentsWithResponse(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetPromptAgentsResponse, error) {
+	rsp, err := c.GetPromptAgents(ctx, promptId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetPromptAgentsResponse(rsp)
+}
+
+// SyncPromptAgentsWithBodyWithResponse request with arbitrary body returning *SyncPromptAgentsResponse
+func (c *ClientWithResponses) SyncPromptAgentsWithBodyWithResponse(ctx context.Context, promptId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SyncPromptAgentsResponse, error) {
+	rsp, err := c.SyncPromptAgentsWithBody(ctx, promptId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSyncPromptAgentsResponse(rsp)
+}
+
+func (c *ClientWithResponses) SyncPromptAgentsWithResponse(ctx context.Context, promptId openapi_types.UUID, body SyncPromptAgentsJSONRequestBody, reqEditors ...RequestEditorFn) (*SyncPromptAgentsResponse, error) {
+	rsp, err := c.SyncPromptAgents(ctx, promptId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSyncPromptAgentsResponse(rsp)
+}
+
+// DeletePromptAgentWithResponse request returning *DeletePromptAgentResponse
+func (c *ClientWithResponses) DeletePromptAgentWithResponse(ctx context.Context, promptId openapi_types.UUID, agentPromptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeletePromptAgentResponse, error) {
+	rsp, err := c.DeletePromptAgent(ctx, promptId, agentPromptId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeletePromptAgentResponse(rsp)
+}
+
+// GetPromptEmailAddressWithResponse request returning *GetPromptEmailAddressResponse
+func (c *ClientWithResponses) GetPromptEmailAddressWithResponse(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetPromptEmailAddressResponse, error) {
+	rsp, err := c.GetPromptEmailAddress(ctx, promptId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetPromptEmailAddressResponse(rsp)
 }
 
 // GetRolesWithResponse request returning *GetRolesResponse
@@ -25955,9 +31036,7 @@ func (c *ClientWithResponses) DeleteRoleWithResponse(ctx context.Context, roleId
 }
 
 // GetRoleWithResponse request returning *GetRoleResponse
-func (c *ClientWithResponses) GetRoleWithResponse(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, reqEditors ...RequestEditorFn) (*GetRoleResponse, error) {
+func (c *ClientWithResponses) GetRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*GetRoleResponse, error) {
 	rsp, err := c.GetRole(ctx, roleId, reqEditors...)
 	if err != nil {
 		return nil, err
@@ -25966,9 +31045,7 @@ func (c *ClientWithResponses) GetRoleWithResponse(ctx context.Context, roleId st
 }
 
 // UpdateRoleWithBodyWithResponse request with arbitrary body returning *UpdateRoleResponse
-func (c *ClientWithResponses) UpdateRoleWithBodyWithResponse(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
+func (c *ClientWithResponses) UpdateRoleWithBodyWithResponse(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
 	rsp, err := c.UpdateRoleWithBody(ctx, roleId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
@@ -25976,9 +31053,7 @@ func (c *ClientWithResponses) UpdateRoleWithBodyWithResponse(ctx context.Context
 	return ParseUpdateRoleResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateRoleWithResponse(ctx context.Context, roleId struct {
-	union json.RawMessage
-}, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
+func (c *ClientWithResponses) UpdateRoleWithResponse(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
 	rsp, err := c.UpdateRole(ctx, roleId, body, reqEditors...)
 	if err != nil {
 		return nil, err
@@ -26416,8 +31491,8 @@ func (c *ClientWithResponses) UpdateTokenPriceWithResponse(ctx context.Context, 
 }
 
 // GetTokensWithResponse request returning *GetTokensResponse
-func (c *ClientWithResponses) GetTokensWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetTokensResponse, error) {
-	rsp, err := c.GetTokens(ctx, reqEditors...)
+func (c *ClientWithResponses) GetTokensWithResponse(ctx context.Context, params *GetTokensParams, reqEditors ...RequestEditorFn) (*GetTokensResponse, error) {
+	rsp, err := c.GetTokens(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -26442,6 +31517,23 @@ func (c *ClientWithResponses) GetTokenValueWithResponse(ctx context.Context, tok
 	return ParseGetTokenValueResponse(rsp)
 }
 
+// BulkUpsertDefaultCallPolicyWithBodyWithResponse request with arbitrary body returning *BulkUpsertDefaultCallPolicyResponse
+func (c *ClientWithResponses) BulkUpsertDefaultCallPolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkUpsertDefaultCallPolicyResponse, error) {
+	rsp, err := c.BulkUpsertDefaultCallPolicyWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBulkUpsertDefaultCallPolicyResponse(rsp)
+}
+
+func (c *ClientWithResponses) BulkUpsertDefaultCallPolicyWithResponse(ctx context.Context, body BulkUpsertDefaultCallPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkUpsertDefaultCallPolicyResponse, error) {
+	rsp, err := c.BulkUpsertDefaultCallPolicy(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBulkUpsertDefaultCallPolicyResponse(rsp)
+}
+
 // GetToolsWithResponse request returning *GetToolsResponse
 func (c *ClientWithResponses) GetToolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetToolsResponse, error) {
 	rsp, err := c.GetTools(ctx, reqEditors...)
@@ -26449,6 +31541,24 @@ func (c *ClientWithResponses) GetToolsWithResponse(ctx context.Context, reqEdito
 		return nil, err
 	}
 	return ParseGetToolsResponse(rsp)
+}
+
+// GetToolsWithAssignmentsWithResponse request returning *GetToolsWithAssignmentsResponse
+func (c *ClientWithResponses) GetToolsWithAssignmentsWithResponse(ctx context.Context, params *GetToolsWithAssignmentsParams, reqEditors ...RequestEditorFn) (*GetToolsWithAssignmentsResponse, error) {
+	rsp, err := c.GetToolsWithAssignments(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetToolsWithAssignmentsResponse(rsp)
+}
+
+// DeleteToolWithResponse request returning *DeleteToolResponse
+func (c *ClientWithResponses) DeleteToolWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteToolResponse, error) {
+	rsp, err := c.DeleteTool(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteToolResponse(rsp)
 }
 
 // GetTrustedDataPoliciesWithResponse request returning *GetTrustedDataPoliciesResponse
@@ -26475,6 +31585,23 @@ func (c *ClientWithResponses) CreateTrustedDataPolicyWithResponse(ctx context.Co
 		return nil, err
 	}
 	return ParseCreateTrustedDataPolicyResponse(rsp)
+}
+
+// BulkUpsertDefaultResultPolicyWithBodyWithResponse request with arbitrary body returning *BulkUpsertDefaultResultPolicyResponse
+func (c *ClientWithResponses) BulkUpsertDefaultResultPolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkUpsertDefaultResultPolicyResponse, error) {
+	rsp, err := c.BulkUpsertDefaultResultPolicyWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBulkUpsertDefaultResultPolicyResponse(rsp)
+}
+
+func (c *ClientWithResponses) BulkUpsertDefaultResultPolicyWithResponse(ctx context.Context, body BulkUpsertDefaultResultPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkUpsertDefaultResultPolicyResponse, error) {
+	rsp, err := c.BulkUpsertDefaultResultPolicy(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseBulkUpsertDefaultResultPolicyResponse(rsp)
 }
 
 // DeleteTrustedDataPolicyWithResponse request returning *DeleteTrustedDataPolicyResponse
@@ -26512,6 +31639,23 @@ func (c *ClientWithResponses) UpdateTrustedDataPolicyWithResponse(ctx context.Co
 	return ParseUpdateTrustedDataPolicyResponse(rsp)
 }
 
+// CreateUserWithBodyWithResponse request with arbitrary body returning *CreateUserResponse
+func (c *ClientWithResponses) CreateUserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateUserResponse, error) {
+	rsp, err := c.CreateUserWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateUserResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateUserWithResponse(ctx context.Context, body CreateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateUserResponse, error) {
+	rsp, err := c.CreateUser(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateUserResponse(rsp)
+}
+
 // GetUserTokenWithResponse request returning *GetUserTokenResponse
 func (c *ClientWithResponses) GetUserTokenWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUserTokenResponse, error) {
 	rsp, err := c.GetUserToken(ctx, reqEditors...)
@@ -26539,6 +31683,15 @@ func (c *ClientWithResponses) GetUserTokenValueWithResponse(ctx context.Context,
 	return ParseGetUserTokenValueResponse(rsp)
 }
 
+// GetUserByEmailWithResponse request returning *GetUserByEmailResponse
+func (c *ClientWithResponses) GetUserByEmailWithResponse(ctx context.Context, email string, reqEditors ...RequestEditorFn) (*GetUserByEmailResponse, error) {
+	rsp, err := c.GetUserByEmail(ctx, email, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetUserByEmailResponse(rsp)
+}
+
 // GetUserPermissionsWithResponse request returning *GetUserPermissionsResponse
 func (c *ClientWithResponses) GetUserPermissionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetUserPermissionsResponse, error) {
 	rsp, err := c.GetUserPermissions(ctx, reqEditors...)
@@ -26548,6 +31701,102 @@ func (c *ClientWithResponses) GetUserPermissionsWithResponse(ctx context.Context
 	return ParseGetUserPermissionsResponse(rsp)
 }
 
+// DeleteUserWithResponse request returning *DeleteUserResponse
+func (c *ClientWithResponses) DeleteUserWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteUserResponse, error) {
+	rsp, err := c.DeleteUser(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteUserResponse(rsp)
+}
+
+// UpdateUserWithBodyWithResponse request with arbitrary body returning *UpdateUserResponse
+func (c *ClientWithResponses) UpdateUserWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error) {
+	rsp, err := c.UpdateUserWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateUserResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateUserWithResponse(ctx context.Context, id string, body UpdateUserJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateUserResponse, error) {
+	rsp, err := c.UpdateUser(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateUserResponse(rsp)
+}
+
+// GetUserRoleWithResponse request returning *GetUserRoleResponse
+func (c *ClientWithResponses) GetUserRoleWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserRoleResponse, error) {
+	rsp, err := c.GetUserRole(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetUserRoleResponse(rsp)
+}
+
+// UpdateUserRoleWithResponse request returning *UpdateUserRoleResponse
+func (c *ClientWithResponses) UpdateUserRoleWithResponse(ctx context.Context, id string, roleNonUUIDIdentifier string, reqEditors ...RequestEditorFn) (*UpdateUserRoleResponse, error) {
+	rsp, err := c.UpdateUserRole(ctx, id, roleNonUUIDIdentifier, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateUserRoleResponse(rsp)
+}
+
+// DeleteUserRoleWithResponse request returning *DeleteUserRoleResponse
+func (c *ClientWithResponses) DeleteUserRoleWithResponse(ctx context.Context, userId string, roleNonUUIDIdentifier string, reqEditors ...RequestEditorFn) (*DeleteUserRoleResponse, error) {
+	rsp, err := c.DeleteUserRole(ctx, userId, roleNonUUIDIdentifier, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteUserRoleResponse(rsp)
+}
+
+// GetUserByIdWithResponse request returning *GetUserByIdResponse
+func (c *ClientWithResponses) GetUserByIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetUserByIdResponse, error) {
+	rsp, err := c.GetUserById(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetUserByIdResponse(rsp)
+}
+
+// PostApiWebhooksChatopsMsTeamsWithBodyWithResponse request with arbitrary body returning *PostApiWebhooksChatopsMsTeamsResponse
+func (c *ClientWithResponses) PostApiWebhooksChatopsMsTeamsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiWebhooksChatopsMsTeamsResponse, error) {
+	rsp, err := c.PostApiWebhooksChatopsMsTeamsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiWebhooksChatopsMsTeamsResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiWebhooksChatopsMsTeamsWithResponse(ctx context.Context, body PostApiWebhooksChatopsMsTeamsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiWebhooksChatopsMsTeamsResponse, error) {
+	rsp, err := c.PostApiWebhooksChatopsMsTeams(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiWebhooksChatopsMsTeamsResponse(rsp)
+}
+
+// PostApiWebhooksIncomingEmailWithBodyWithResponse request with arbitrary body returning *PostApiWebhooksIncomingEmailResponse
+func (c *ClientWithResponses) PostApiWebhooksIncomingEmailWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiWebhooksIncomingEmailResponse, error) {
+	rsp, err := c.PostApiWebhooksIncomingEmailWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiWebhooksIncomingEmailResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiWebhooksIncomingEmailWithResponse(ctx context.Context, body PostApiWebhooksIncomingEmailJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiWebhooksIncomingEmailResponse, error) {
+	rsp, err := c.PostApiWebhooksIncomingEmail(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiWebhooksIncomingEmailResponse(rsp)
+}
+
 // GetHealthWithResponse request returning *GetHealthResponse
 func (c *ClientWithResponses) GetHealthWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetHealthResponse, error) {
 	rsp, err := c.GetHealth(ctx, reqEditors...)
@@ -26555,6 +31804,41 @@ func (c *ClientWithResponses) GetHealthWithResponse(ctx context.Context, reqEdit
 		return nil, err
 	}
 	return ParseGetHealthResponse(rsp)
+}
+
+// GetReadyWithResponse request returning *GetReadyResponse
+func (c *ClientWithResponses) GetReadyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetReadyResponse, error) {
+	rsp, err := c.GetReady(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetReadyResponse(rsp)
+}
+
+// PostV1A2aPromptIdWithBodyWithResponse request with arbitrary body returning *PostV1A2aPromptIdResponse
+func (c *ClientWithResponses) PostV1A2aPromptIdWithBodyWithResponse(ctx context.Context, promptId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostV1A2aPromptIdResponse, error) {
+	rsp, err := c.PostV1A2aPromptIdWithBody(ctx, promptId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostV1A2aPromptIdResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostV1A2aPromptIdWithResponse(ctx context.Context, promptId openapi_types.UUID, body PostV1A2aPromptIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostV1A2aPromptIdResponse, error) {
+	rsp, err := c.PostV1A2aPromptId(ctx, promptId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostV1A2aPromptIdResponse(rsp)
+}
+
+// GetV1A2aPromptIdWellKnownAgentJsonWithResponse request returning *GetV1A2aPromptIdWellKnownAgentJsonResponse
+func (c *ClientWithResponses) GetV1A2aPromptIdWellKnownAgentJsonWithResponse(ctx context.Context, promptId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetV1A2aPromptIdWellKnownAgentJsonResponse, error) {
+	rsp, err := c.GetV1A2aPromptIdWellKnownAgentJson(ctx, promptId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetV1A2aPromptIdWellKnownAgentJsonResponse(rsp)
 }
 
 // ParseGetAllAgentToolsResponse parses an HTTP response from a GetAllAgentToolsWithResponse call
@@ -26578,16 +31862,12 @@ func ParseGetAllAgentToolsResponse(rsp *http.Response) (*GetAllAgentToolsRespons
 					Id   string `json:"id"`
 					Name string `json:"name"`
 				} `json:"agent"`
-				AllowUsageWhenUntrustedDataIsPresent bool                `json:"allowUsageWhenUntrustedDataIsPresent"`
-				CreatedAt                            time.Time           `json:"createdAt"`
-				CredentialSourceMcpServerId          *openapi_types.UUID `json:"credentialSourceMcpServerId"`
-				ExecutionSourceMcpServerId           *openapi_types.UUID `json:"executionSourceMcpServerId"`
-				Id                                   openapi_types.UUID  `json:"id"`
-				PoliciesAutoConfiguredAt             *time.Time          `json:"policiesAutoConfiguredAt"`
-				PoliciesAutoConfiguredReasoning      *string             `json:"policiesAutoConfiguredReasoning"`
-				PoliciesAutoConfiguringStartedAt     *time.Time          `json:"policiesAutoConfiguringStartedAt"`
-				ResponseModifierTemplate             *string             `json:"responseModifierTemplate"`
-				Tool                                 struct {
+				CreatedAt                   time.Time           `json:"createdAt"`
+				CredentialSourceMcpServerId *openapi_types.UUID `json:"credentialSourceMcpServerId"`
+				ExecutionSourceMcpServerId  *openapi_types.UUID `json:"executionSourceMcpServerId"`
+				Id                          openapi_types.UUID  `json:"id"`
+				ResponseModifierTemplate    *string             `json:"responseModifierTemplate"`
+				Tool                        struct {
 					CatalogId          *string                                    `json:"catalogId"`
 					CreatedAt          time.Time                                  `json:"createdAt"`
 					Description        *string                                    `json:"description"`
@@ -26599,9 +31879,8 @@ func ParseGetAllAgentToolsResponse(rsp *http.Response) (*GetAllAgentToolsRespons
 					Parameters         *GetAllAgentTools_200_Data_Tool_Parameters `json:"parameters,omitempty"`
 					UpdatedAt          time.Time                                  `json:"updatedAt"`
 				} `json:"tool"`
-				ToolResultTreatment      GetAllAgentTools200DataToolResultTreatment `json:"toolResultTreatment"`
-				UpdatedAt                time.Time                                  `json:"updatedAt"`
-				UseDynamicTeamCredential bool                                       `json:"useDynamicTeamCredential"`
+				UpdatedAt                time.Time `json:"updatedAt"`
+				UseDynamicTeamCredential bool      `json:"useDynamicTeamCredential"`
 			} `json:"data"`
 			Pagination struct {
 				CurrentPage int  `json:"currentPage"`
@@ -26711,14 +31990,13 @@ func ParseAutoConfigureAgentToolPoliciesResponse(rsp *http.Response) (*AutoConfi
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
 			Results []struct {
-				AgentToolId openapi_types.UUID `json:"agentToolId"`
-				Config      *struct {
-					AllowUsageWhenUntrustedDataIsPresent bool                                                              `json:"allowUsageWhenUntrustedDataIsPresent"`
-					Reasoning                            string                                                            `json:"reasoning"`
-					ToolResultTreatment                  AutoConfigureAgentToolPolicies200ResultsConfigToolResultTreatment `json:"toolResultTreatment"`
+				Config *struct {
+					Reasoning           string                                                            `json:"reasoning"`
+					ToolResultTreatment AutoConfigureAgentToolPolicies200ResultsConfigToolResultTreatment `json:"toolResultTreatment"`
 				} `json:"config,omitempty"`
-				Error   *string `json:"error,omitempty"`
-				Success bool    `json:"success"`
+				Error   *string            `json:"error,omitempty"`
+				Success bool               `json:"success"`
+				ToolId  openapi_types.UUID `json:"toolId"`
 			} `json:"results"`
 			Success bool `json:"success"`
 		}
@@ -26804,106 +32082,6 @@ func ParseAutoConfigureAgentToolPoliciesResponse(rsp *http.Response) (*AutoConfi
 	return response, nil
 }
 
-// ParseBulkUpdateAgentToolsResponse parses an HTTP response from a BulkUpdateAgentToolsWithResponse call
-func ParseBulkUpdateAgentToolsResponse(rsp *http.Response) (*BulkUpdateAgentToolsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &BulkUpdateAgentToolsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			UpdatedCount float32 `json:"updatedCount"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    BulkUpdateAgentTools400ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    BulkUpdateAgentTools401ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    BulkUpdateAgentTools403ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    BulkUpdateAgentTools404ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    BulkUpdateAgentTools409ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    BulkUpdateAgentTools500ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
 // ParseUpdateAgentToolResponse parses an HTTP response from a UpdateAgentToolWithResponse call
 func ParseUpdateAgentToolResponse(rsp *http.Response) (*UpdateAgentToolResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -26920,20 +32098,15 @@ func ParseUpdateAgentToolResponse(rsp *http.Response) (*UpdateAgentToolResponse,
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AgentId                              *openapi_types.UUID                   `json:"agentId,omitempty"`
-			AllowUsageWhenUntrustedDataIsPresent *bool                                 `json:"allowUsageWhenUntrustedDataIsPresent,omitempty"`
-			CreatedAt                            *time.Time                            `json:"createdAt,omitempty"`
-			CredentialSourceMcpServerId          *openapi_types.UUID                   `json:"credentialSourceMcpServerId"`
-			ExecutionSourceMcpServerId           *openapi_types.UUID                   `json:"executionSourceMcpServerId"`
-			Id                                   *openapi_types.UUID                   `json:"id,omitempty"`
-			PoliciesAutoConfiguredAt             *time.Time                            `json:"policiesAutoConfiguredAt"`
-			PoliciesAutoConfiguredReasoning      *string                               `json:"policiesAutoConfiguredReasoning"`
-			PoliciesAutoConfiguringStartedAt     *time.Time                            `json:"policiesAutoConfiguringStartedAt"`
-			ResponseModifierTemplate             *string                               `json:"responseModifierTemplate"`
-			ToolId                               *openapi_types.UUID                   `json:"toolId,omitempty"`
-			ToolResultTreatment                  UpdateAgentTool200ToolResultTreatment `json:"toolResultTreatment"`
-			UpdatedAt                            *time.Time                            `json:"updatedAt,omitempty"`
-			UseDynamicTeamCredential             *bool                                 `json:"useDynamicTeamCredential,omitempty"`
+			AgentId                     *openapi_types.UUID `json:"agentId,omitempty"`
+			CreatedAt                   *time.Time          `json:"createdAt,omitempty"`
+			CredentialSourceMcpServerId *openapi_types.UUID `json:"credentialSourceMcpServerId"`
+			ExecutionSourceMcpServerId  *openapi_types.UUID `json:"executionSourceMcpServerId"`
+			Id                          *openapi_types.UUID `json:"id,omitempty"`
+			ResponseModifierTemplate    *string             `json:"responseModifierTemplate"`
+			ToolId                      *openapi_types.UUID `json:"toolId,omitempty"`
+			UpdatedAt                   *time.Time          `json:"updatedAt,omitempty"`
+			UseDynamicTeamCredential    *bool               `json:"useDynamicTeamCredential,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -27051,15 +32224,19 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 					Name string `json:"name"`
 				} `json:"teams"`
 				Tools []struct {
-					AgentId     *openapi_types.UUID                  `json:"agentId"`
-					CatalogId   *openapi_types.UUID                  `json:"catalogId"`
-					CreatedAt   time.Time                            `json:"createdAt"`
-					Description *string                              `json:"description"`
-					Id          openapi_types.UUID                   `json:"id"`
-					McpServerId *openapi_types.UUID                  `json:"mcpServerId"`
-					Name        string                               `json:"name"`
-					Parameters  *GetAgents_200_Data_Tools_Parameters `json:"parameters,omitempty"`
-					UpdatedAt   time.Time                            `json:"updatedAt"`
+					AgentId                          *openapi_types.UUID                  `json:"agentId"`
+					CatalogId                        *openapi_types.UUID                  `json:"catalogId"`
+					CreatedAt                        time.Time                            `json:"createdAt"`
+					Description                      *string                              `json:"description"`
+					Id                               openapi_types.UUID                   `json:"id"`
+					McpServerId                      *openapi_types.UUID                  `json:"mcpServerId"`
+					Name                             string                               `json:"name"`
+					Parameters                       *GetAgents_200_Data_Tools_Parameters `json:"parameters,omitempty"`
+					PoliciesAutoConfiguredAt         *time.Time                           `json:"policiesAutoConfiguredAt"`
+					PoliciesAutoConfiguredReasoning  *string                              `json:"policiesAutoConfiguredReasoning"`
+					PoliciesAutoConfiguringStartedAt *time.Time                           `json:"policiesAutoConfiguringStartedAt"`
+					PromptAgentId                    *openapi_types.UUID                  `json:"promptAgentId"`
+					UpdatedAt                        time.Time                            `json:"updatedAt"`
 				} `json:"tools"`
 				UpdatedAt time.Time `json:"updatedAt"`
 			} `json:"data"`
@@ -27187,15 +32364,19 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 				Name string `json:"name"`
 			} `json:"teams"`
 			Tools []struct {
-				AgentId     *openapi_types.UUID               `json:"agentId"`
-				CatalogId   *openapi_types.UUID               `json:"catalogId"`
-				CreatedAt   time.Time                         `json:"createdAt"`
-				Description *string                           `json:"description"`
-				Id          openapi_types.UUID                `json:"id"`
-				McpServerId *openapi_types.UUID               `json:"mcpServerId"`
-				Name        string                            `json:"name"`
-				Parameters  *CreateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-				UpdatedAt   time.Time                         `json:"updatedAt"`
+				AgentId                          *openapi_types.UUID               `json:"agentId"`
+				CatalogId                        *openapi_types.UUID               `json:"catalogId"`
+				CreatedAt                        time.Time                         `json:"createdAt"`
+				Description                      *string                           `json:"description"`
+				Id                               openapi_types.UUID                `json:"id"`
+				McpServerId                      *openapi_types.UUID               `json:"mcpServerId"`
+				Name                             string                            `json:"name"`
+				Parameters                       *CreateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt         *time.Time                        `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredReasoning  *string                           `json:"policiesAutoConfiguredReasoning"`
+				PoliciesAutoConfiguringStartedAt *time.Time                        `json:"policiesAutoConfiguringStartedAt"`
+				PromptAgentId                    *openapi_types.UUID               `json:"promptAgentId"`
+				UpdatedAt                        time.Time                         `json:"updatedAt"`
 			} `json:"tools"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		}
@@ -27314,15 +32495,19 @@ func ParseGetAllAgentsResponse(rsp *http.Response) (*GetAllAgentsResponse, error
 				Name string `json:"name"`
 			} `json:"teams"`
 			Tools []struct {
-				AgentId     *openapi_types.UUID                `json:"agentId"`
-				CatalogId   *openapi_types.UUID                `json:"catalogId"`
-				CreatedAt   time.Time                          `json:"createdAt"`
-				Description *string                            `json:"description"`
-				Id          openapi_types.UUID                 `json:"id"`
-				McpServerId *openapi_types.UUID                `json:"mcpServerId"`
-				Name        string                             `json:"name"`
-				Parameters  *GetAllAgents_200_Tools_Parameters `json:"parameters,omitempty"`
-				UpdatedAt   time.Time                          `json:"updatedAt"`
+				AgentId                          *openapi_types.UUID                `json:"agentId"`
+				CatalogId                        *openapi_types.UUID                `json:"catalogId"`
+				CreatedAt                        time.Time                          `json:"createdAt"`
+				Description                      *string                            `json:"description"`
+				Id                               openapi_types.UUID                 `json:"id"`
+				McpServerId                      *openapi_types.UUID                `json:"mcpServerId"`
+				Name                             string                             `json:"name"`
+				Parameters                       *GetAllAgents_200_Tools_Parameters `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt         *time.Time                         `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredReasoning  *string                            `json:"policiesAutoConfiguredReasoning"`
+				PoliciesAutoConfiguringStartedAt *time.Time                         `json:"policiesAutoConfiguringStartedAt"`
+				PromptAgentId                    *openapi_types.UUID                `json:"promptAgentId"`
+				UpdatedAt                        time.Time                          `json:"updatedAt"`
 			} `json:"tools"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		}
@@ -27441,15 +32626,19 @@ func ParseGetDefaultAgentResponse(rsp *http.Response) (*GetDefaultAgentResponse,
 				Name string `json:"name"`
 			} `json:"teams"`
 			Tools []struct {
-				AgentId     *openapi_types.UUID                   `json:"agentId"`
-				CatalogId   *openapi_types.UUID                   `json:"catalogId"`
-				CreatedAt   time.Time                             `json:"createdAt"`
-				Description *string                               `json:"description"`
-				Id          openapi_types.UUID                    `json:"id"`
-				McpServerId *openapi_types.UUID                   `json:"mcpServerId"`
-				Name        string                                `json:"name"`
-				Parameters  *GetDefaultAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-				UpdatedAt   time.Time                             `json:"updatedAt"`
+				AgentId                          *openapi_types.UUID                   `json:"agentId"`
+				CatalogId                        *openapi_types.UUID                   `json:"catalogId"`
+				CreatedAt                        time.Time                             `json:"createdAt"`
+				Description                      *string                               `json:"description"`
+				Id                               openapi_types.UUID                    `json:"id"`
+				McpServerId                      *openapi_types.UUID                   `json:"mcpServerId"`
+				Name                             string                                `json:"name"`
+				Parameters                       *GetDefaultAgent_200_Tools_Parameters `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt         *time.Time                            `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredReasoning  *string                               `json:"policiesAutoConfiguredReasoning"`
+				PoliciesAutoConfiguringStartedAt *time.Time                            `json:"policiesAutoConfiguringStartedAt"`
+				PromptAgentId                    *openapi_types.UUID                   `json:"promptAgentId"`
+				UpdatedAt                        time.Time                             `json:"updatedAt"`
 			} `json:"tools"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		}
@@ -27859,15 +33048,19 @@ func ParseGetAgentToolsResponse(rsp *http.Response) (*GetAgentToolsResponse, err
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			AgentId     *openapi_types.UUID           `json:"agentId"`
-			CatalogId   *openapi_types.UUID           `json:"catalogId"`
-			CreatedAt   time.Time                     `json:"createdAt"`
-			Description *string                       `json:"description"`
-			Id          openapi_types.UUID            `json:"id"`
-			McpServerId *openapi_types.UUID           `json:"mcpServerId"`
-			Name        string                        `json:"name"`
-			Parameters  *GetAgentTools_200_Parameters `json:"parameters,omitempty"`
-			UpdatedAt   time.Time                     `json:"updatedAt"`
+			AgentId                          *openapi_types.UUID           `json:"agentId"`
+			CatalogId                        *openapi_types.UUID           `json:"catalogId"`
+			CreatedAt                        time.Time                     `json:"createdAt"`
+			Description                      *string                       `json:"description"`
+			Id                               openapi_types.UUID            `json:"id"`
+			McpServerId                      *openapi_types.UUID           `json:"mcpServerId"`
+			Name                             string                        `json:"name"`
+			Parameters                       *GetAgentTools_200_Parameters `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time                    `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredReasoning  *string                       `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time                    `json:"policiesAutoConfiguringStartedAt"`
+			PromptAgentId                    *openapi_types.UUID           `json:"promptAgentId"`
+			UpdatedAt                        time.Time                     `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -28284,15 +33477,19 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 				Name string `json:"name"`
 			} `json:"teams"`
 			Tools []struct {
-				AgentId     *openapi_types.UUID            `json:"agentId"`
-				CatalogId   *openapi_types.UUID            `json:"catalogId"`
-				CreatedAt   time.Time                      `json:"createdAt"`
-				Description *string                        `json:"description"`
-				Id          openapi_types.UUID             `json:"id"`
-				McpServerId *openapi_types.UUID            `json:"mcpServerId"`
-				Name        string                         `json:"name"`
-				Parameters  *GetAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-				UpdatedAt   time.Time                      `json:"updatedAt"`
+				AgentId                          *openapi_types.UUID            `json:"agentId"`
+				CatalogId                        *openapi_types.UUID            `json:"catalogId"`
+				CreatedAt                        time.Time                      `json:"createdAt"`
+				Description                      *string                        `json:"description"`
+				Id                               openapi_types.UUID             `json:"id"`
+				McpServerId                      *openapi_types.UUID            `json:"mcpServerId"`
+				Name                             string                         `json:"name"`
+				Parameters                       *GetAgent_200_Tools_Parameters `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt         *time.Time                     `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredReasoning  *string                        `json:"policiesAutoConfiguredReasoning"`
+				PoliciesAutoConfiguringStartedAt *time.Time                     `json:"policiesAutoConfiguringStartedAt"`
+				PromptAgentId                    *openapi_types.UUID            `json:"promptAgentId"`
+				UpdatedAt                        time.Time                      `json:"updatedAt"`
 			} `json:"tools"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		}
@@ -28411,15 +33608,19 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 				Name string `json:"name"`
 			} `json:"teams"`
 			Tools []struct {
-				AgentId     *openapi_types.UUID               `json:"agentId"`
-				CatalogId   *openapi_types.UUID               `json:"catalogId"`
-				CreatedAt   time.Time                         `json:"createdAt"`
-				Description *string                           `json:"description"`
-				Id          openapi_types.UUID                `json:"id"`
-				McpServerId *openapi_types.UUID               `json:"mcpServerId"`
-				Name        string                            `json:"name"`
-				Parameters  *UpdateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-				UpdatedAt   time.Time                         `json:"updatedAt"`
+				AgentId                          *openapi_types.UUID               `json:"agentId"`
+				CatalogId                        *openapi_types.UUID               `json:"catalogId"`
+				CreatedAt                        time.Time                         `json:"createdAt"`
+				Description                      *string                           `json:"description"`
+				Id                               openapi_types.UUID                `json:"id"`
+				McpServerId                      *openapi_types.UUID               `json:"mcpServerId"`
+				Name                             string                            `json:"name"`
+				Parameters                       *UpdateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt         *time.Time                        `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredReasoning  *string                           `json:"policiesAutoConfiguredReasoning"`
+				PoliciesAutoConfiguringStartedAt *time.Time                        `json:"policiesAutoConfiguringStartedAt"`
+				PromptAgentId                    *openapi_types.UUID               `json:"promptAgentId"`
+				UpdatedAt                        time.Time                         `json:"updatedAt"`
 			} `json:"tools"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		}
@@ -28622,15 +33823,17 @@ func ParseGetToolInvocationPoliciesResponse(rsp *http.Response) (*GetToolInvocat
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			Action       GetToolInvocationPolicies200Action   `json:"action"`
-			AgentToolId  openapi_types.UUID                   `json:"agentToolId"`
-			ArgumentName string                               `json:"argumentName"`
-			CreatedAt    time.Time                            `json:"createdAt"`
-			Id           openapi_types.UUID                   `json:"id"`
-			Operator     GetToolInvocationPolicies200Operator `json:"operator"`
-			Reason       *string                              `json:"reason"`
-			UpdatedAt    time.Time                            `json:"updatedAt"`
-			Value        string                               `json:"value"`
+			Action     GetToolInvocationPolicies200Action `json:"action"`
+			Conditions []struct {
+				Key      string                                         `json:"key"`
+				Operator GetToolInvocationPolicies200ConditionsOperator `json:"operator"`
+				Value    string                                         `json:"value"`
+			} `json:"conditions"`
+			CreatedAt time.Time          `json:"createdAt"`
+			Id        openapi_types.UUID `json:"id"`
+			Reason    *string            `json:"reason"`
+			ToolId    openapi_types.UUID `json:"toolId"`
+			UpdatedAt time.Time          `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -28730,15 +33933,17 @@ func ParseCreateToolInvocationPolicyResponse(rsp *http.Response) (*CreateToolInv
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Action       CreateToolInvocationPolicy200Action   `json:"action"`
-			AgentToolId  openapi_types.UUID                    `json:"agentToolId"`
-			ArgumentName string                                `json:"argumentName"`
-			CreatedAt    time.Time                             `json:"createdAt"`
-			Id           openapi_types.UUID                    `json:"id"`
-			Operator     CreateToolInvocationPolicy200Operator `json:"operator"`
-			Reason       *string                               `json:"reason"`
-			UpdatedAt    time.Time                             `json:"updatedAt"`
-			Value        string                                `json:"value"`
+			Action     CreateToolInvocationPolicy200Action `json:"action"`
+			Conditions []struct {
+				Key      string                                          `json:"key"`
+				Operator CreateToolInvocationPolicy200ConditionsOperator `json:"operator"`
+				Value    string                                          `json:"value"`
+			} `json:"conditions"`
+			CreatedAt time.Time          `json:"createdAt"`
+			Id        openapi_types.UUID `json:"id"`
+			Reason    *string            `json:"reason"`
+			ToolId    openapi_types.UUID `json:"toolId"`
+			UpdatedAt time.Time          `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -28938,15 +34143,17 @@ func ParseGetToolInvocationPolicyResponse(rsp *http.Response) (*GetToolInvocatio
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Action       GetToolInvocationPolicy200Action   `json:"action"`
-			AgentToolId  openapi_types.UUID                 `json:"agentToolId"`
-			ArgumentName string                             `json:"argumentName"`
-			CreatedAt    time.Time                          `json:"createdAt"`
-			Id           openapi_types.UUID                 `json:"id"`
-			Operator     GetToolInvocationPolicy200Operator `json:"operator"`
-			Reason       *string                            `json:"reason"`
-			UpdatedAt    time.Time                          `json:"updatedAt"`
-			Value        string                             `json:"value"`
+			Action     GetToolInvocationPolicy200Action `json:"action"`
+			Conditions []struct {
+				Key      string                                       `json:"key"`
+				Operator GetToolInvocationPolicy200ConditionsOperator `json:"operator"`
+				Value    string                                       `json:"value"`
+			} `json:"conditions"`
+			CreatedAt time.Time          `json:"createdAt"`
+			Id        openapi_types.UUID `json:"id"`
+			Reason    *string            `json:"reason"`
+			ToolId    openapi_types.UUID `json:"toolId"`
+			UpdatedAt time.Time          `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -29046,15 +34253,17 @@ func ParseUpdateToolInvocationPolicyResponse(rsp *http.Response) (*UpdateToolInv
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Action       UpdateToolInvocationPolicy200Action   `json:"action"`
-			AgentToolId  openapi_types.UUID                    `json:"agentToolId"`
-			ArgumentName string                                `json:"argumentName"`
-			CreatedAt    time.Time                             `json:"createdAt"`
-			Id           openapi_types.UUID                    `json:"id"`
-			Operator     UpdateToolInvocationPolicy200Operator `json:"operator"`
-			Reason       *string                               `json:"reason"`
-			UpdatedAt    time.Time                             `json:"updatedAt"`
-			Value        string                                `json:"value"`
+			Action     UpdateToolInvocationPolicy200Action `json:"action"`
+			Conditions []struct {
+				Key      string                                          `json:"key"`
+				Operator UpdateToolInvocationPolicy200ConditionsOperator `json:"operator"`
+				Value    string                                          `json:"value"`
+			} `json:"conditions"`
+			CreatedAt time.Time          `json:"createdAt"`
+			Id        openapi_types.UUID `json:"id"`
+			Reason    *string            `json:"reason"`
+			ToolId    openapi_types.UUID `json:"toolId"`
+			UpdatedAt time.Time          `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -29245,18 +34454,21 @@ func ParseGetChatApiKeysResponse(rsp *http.Response) (*GetChatApiKeysResponse, e
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			CreatedAt             time.Time          `json:"createdAt"`
-			Id                    openapi_types.UUID `json:"id"`
-			IsOrganizationDefault bool               `json:"isOrganizationDefault"`
-			Name                  string             `json:"name"`
-			OrganizationId        string             `json:"organizationId"`
-			Profiles              []struct {
-				Id   openapi_types.UUID `json:"id"`
-				Name string             `json:"name"`
-			} `json:"profiles"`
-			Provider  GetChatApiKeys200Provider `json:"provider"`
-			SecretId  *openapi_types.UUID       `json:"secretId"`
-			UpdatedAt time.Time                 `json:"updatedAt"`
+			CreatedAt         time.Time                           `json:"createdAt"`
+			Id                openapi_types.UUID                  `json:"id"`
+			Name              string                              `json:"name"`
+			OrganizationId    string                              `json:"organizationId"`
+			Provider          GetChatApiKeys200Provider           `json:"provider"`
+			Scope             GetChatApiKeys200Scope              `json:"scope"`
+			SecretId          *openapi_types.UUID                 `json:"secretId"`
+			SecretStorageType *GetChatApiKeys200SecretStorageType `json:"secretStorageType,omitempty"`
+			TeamId            *string                             `json:"teamId"`
+			TeamName          *string                             `json:"teamName"`
+			UpdatedAt         time.Time                           `json:"updatedAt"`
+			UserId            *string                             `json:"userId"`
+			UserName          *string                             `json:"userName"`
+			VaultSecretKey    *string                             `json:"vaultSecretKey"`
+			VaultSecretPath   *string                             `json:"vaultSecretPath"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -29356,14 +34568,16 @@ func ParseCreateChatApiKeyResponse(rsp *http.Response) (*CreateChatApiKeyRespons
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CreatedAt             time.Time                   `json:"createdAt"`
-			Id                    openapi_types.UUID          `json:"id"`
-			IsOrganizationDefault bool                        `json:"isOrganizationDefault"`
-			Name                  string                      `json:"name"`
-			OrganizationId        string                      `json:"organizationId"`
-			Provider              CreateChatApiKey200Provider `json:"provider"`
-			SecretId              *openapi_types.UUID         `json:"secretId"`
-			UpdatedAt             time.Time                   `json:"updatedAt"`
+			CreatedAt      time.Time                   `json:"createdAt"`
+			Id             openapi_types.UUID          `json:"id"`
+			Name           string                      `json:"name"`
+			OrganizationId string                      `json:"organizationId"`
+			Provider       CreateChatApiKey200Provider `json:"provider"`
+			Scope          CreateChatApiKey200Scope    `json:"scope"`
+			SecretId       *openapi_types.UUID         `json:"secretId"`
+			TeamId         *string                     `json:"teamId"`
+			UpdatedAt      time.Time                   `json:"updatedAt"`
+			UserId         *string                     `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -29447,24 +34661,37 @@ func ParseCreateChatApiKeyResponse(rsp *http.Response) (*CreateChatApiKeyRespons
 	return response, nil
 }
 
-// ParseBulkAssignChatApiKeysToProfilesResponse parses an HTTP response from a BulkAssignChatApiKeysToProfilesWithResponse call
-func ParseBulkAssignChatApiKeysToProfilesResponse(rsp *http.Response) (*BulkAssignChatApiKeysToProfilesResponse, error) {
+// ParseGetAvailableChatApiKeysResponse parses an HTTP response from a GetAvailableChatApiKeysWithResponse call
+func ParseGetAvailableChatApiKeysResponse(rsp *http.Response) (*GetAvailableChatApiKeysResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &BulkAssignChatApiKeysToProfilesResponse{
+	response := &GetAvailableChatApiKeysResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			AssignedCount float32 `json:"assignedCount"`
-			Success       bool    `json:"success"`
+		var dest []struct {
+			CreatedAt         time.Time                                    `json:"createdAt"`
+			Id                openapi_types.UUID                           `json:"id"`
+			Name              string                                       `json:"name"`
+			OrganizationId    string                                       `json:"organizationId"`
+			Provider          GetAvailableChatApiKeys200Provider           `json:"provider"`
+			Scope             GetAvailableChatApiKeys200Scope              `json:"scope"`
+			SecretId          *openapi_types.UUID                          `json:"secretId"`
+			SecretStorageType *GetAvailableChatApiKeys200SecretStorageType `json:"secretStorageType,omitempty"`
+			TeamId            *string                                      `json:"teamId"`
+			TeamName          *string                                      `json:"teamName"`
+			UpdatedAt         time.Time                                    `json:"updatedAt"`
+			UserId            *string                                      `json:"userId"`
+			UserName          *string                                      `json:"userName"`
+			VaultSecretKey    *string                                      `json:"vaultSecretKey"`
+			VaultSecretPath   *string                                      `json:"vaultSecretPath"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -29474,8 +34701,8 @@ func ParseBulkAssignChatApiKeysToProfilesResponse(rsp *http.Response) (*BulkAssi
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
 		var dest struct {
 			Error struct {
-				Message string                                      `json:"message"`
-				Type    BulkAssignChatApiKeysToProfiles400ErrorType `json:"type"`
+				Message string                              `json:"message"`
+				Type    GetAvailableChatApiKeys400ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -29486,8 +34713,8 @@ func ParseBulkAssignChatApiKeysToProfilesResponse(rsp *http.Response) (*BulkAssi
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
 		var dest struct {
 			Error struct {
-				Message string                                      `json:"message"`
-				Type    BulkAssignChatApiKeysToProfiles401ErrorType `json:"type"`
+				Message string                              `json:"message"`
+				Type    GetAvailableChatApiKeys401ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -29498,8 +34725,8 @@ func ParseBulkAssignChatApiKeysToProfilesResponse(rsp *http.Response) (*BulkAssi
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
 		var dest struct {
 			Error struct {
-				Message string                                      `json:"message"`
-				Type    BulkAssignChatApiKeysToProfiles403ErrorType `json:"type"`
+				Message string                              `json:"message"`
+				Type    GetAvailableChatApiKeys403ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -29510,8 +34737,8 @@ func ParseBulkAssignChatApiKeysToProfilesResponse(rsp *http.Response) (*BulkAssi
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
 		var dest struct {
 			Error struct {
-				Message string                                      `json:"message"`
-				Type    BulkAssignChatApiKeysToProfiles404ErrorType `json:"type"`
+				Message string                              `json:"message"`
+				Type    GetAvailableChatApiKeys404ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -29522,8 +34749,8 @@ func ParseBulkAssignChatApiKeysToProfilesResponse(rsp *http.Response) (*BulkAssi
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
 		var dest struct {
 			Error struct {
-				Message string                                      `json:"message"`
-				Type    BulkAssignChatApiKeysToProfiles409ErrorType `json:"type"`
+				Message string                              `json:"message"`
+				Type    GetAvailableChatApiKeys409ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -29534,8 +34761,8 @@ func ParseBulkAssignChatApiKeysToProfilesResponse(rsp *http.Response) (*BulkAssi
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest struct {
 			Error struct {
-				Message string                                      `json:"message"`
-				Type    BulkAssignChatApiKeysToProfiles500ErrorType `json:"type"`
+				Message string                              `json:"message"`
+				Type    GetAvailableChatApiKeys500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -29664,18 +34891,21 @@ func ParseGetChatApiKeyResponse(rsp *http.Response) (*GetChatApiKeyResponse, err
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CreatedAt             time.Time          `json:"createdAt"`
-			Id                    openapi_types.UUID `json:"id"`
-			IsOrganizationDefault bool               `json:"isOrganizationDefault"`
-			Name                  string             `json:"name"`
-			OrganizationId        string             `json:"organizationId"`
-			Profiles              []struct {
-				Id   openapi_types.UUID `json:"id"`
-				Name string             `json:"name"`
-			} `json:"profiles"`
-			Provider  GetChatApiKey200Provider `json:"provider"`
-			SecretId  *openapi_types.UUID      `json:"secretId"`
-			UpdatedAt time.Time                `json:"updatedAt"`
+			CreatedAt         time.Time                          `json:"createdAt"`
+			Id                openapi_types.UUID                 `json:"id"`
+			Name              string                             `json:"name"`
+			OrganizationId    string                             `json:"organizationId"`
+			Provider          GetChatApiKey200Provider           `json:"provider"`
+			Scope             GetChatApiKey200Scope              `json:"scope"`
+			SecretId          *openapi_types.UUID                `json:"secretId"`
+			SecretStorageType *GetChatApiKey200SecretStorageType `json:"secretStorageType,omitempty"`
+			TeamId            *string                            `json:"teamId"`
+			TeamName          *string                            `json:"teamName"`
+			UpdatedAt         time.Time                          `json:"updatedAt"`
+			UserId            *string                            `json:"userId"`
+			UserName          *string                            `json:"userName"`
+			VaultSecretKey    *string                            `json:"vaultSecretKey"`
+			VaultSecretPath   *string                            `json:"vaultSecretPath"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -29775,14 +35005,16 @@ func ParseUpdateChatApiKeyResponse(rsp *http.Response) (*UpdateChatApiKeyRespons
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CreatedAt             time.Time                   `json:"createdAt"`
-			Id                    openapi_types.UUID          `json:"id"`
-			IsOrganizationDefault bool                        `json:"isOrganizationDefault"`
-			Name                  string                      `json:"name"`
-			OrganizationId        string                      `json:"organizationId"`
-			Provider              UpdateChatApiKey200Provider `json:"provider"`
-			SecretId              *openapi_types.UUID         `json:"secretId"`
-			UpdatedAt             time.Time                   `json:"updatedAt"`
+			CreatedAt      time.Time                   `json:"createdAt"`
+			Id             openapi_types.UUID          `json:"id"`
+			Name           string                      `json:"name"`
+			OrganizationId string                      `json:"organizationId"`
+			Provider       UpdateChatApiKey200Provider `json:"provider"`
+			Scope          UpdateChatApiKey200Scope    `json:"scope"`
+			SecretId       *openapi_types.UUID         `json:"secretId"`
+			TeamId         *string                     `json:"teamId"`
+			UpdatedAt      time.Time                   `json:"updatedAt"`
+			UserId         *string                     `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -29854,331 +35086,6 @@ func ParseUpdateChatApiKeyResponse(rsp *http.Response) (*UpdateChatApiKeyRespons
 			Error struct {
 				Message string                       `json:"message"`
 				Type    UpdateChatApiKey500ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUpdateChatApiKeyProfilesResponse parses an HTTP response from a UpdateChatApiKeyProfilesWithResponse call
-func ParseUpdateChatApiKeyProfilesResponse(rsp *http.Response) (*UpdateChatApiKeyProfilesResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UpdateChatApiKeyProfilesResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			CreatedAt             time.Time          `json:"createdAt"`
-			Id                    openapi_types.UUID `json:"id"`
-			IsOrganizationDefault bool               `json:"isOrganizationDefault"`
-			Name                  string             `json:"name"`
-			OrganizationId        string             `json:"organizationId"`
-			Profiles              []struct {
-				Id   openapi_types.UUID `json:"id"`
-				Name string             `json:"name"`
-			} `json:"profiles"`
-			Provider  UpdateChatApiKeyProfiles200Provider `json:"provider"`
-			SecretId  *openapi_types.UUID                 `json:"secretId"`
-			UpdatedAt time.Time                           `json:"updatedAt"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest struct {
-			Error struct {
-				Message string                               `json:"message"`
-				Type    UpdateChatApiKeyProfiles400ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest struct {
-			Error struct {
-				Message string                               `json:"message"`
-				Type    UpdateChatApiKeyProfiles401ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest struct {
-			Error struct {
-				Message string                               `json:"message"`
-				Type    UpdateChatApiKeyProfiles403ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest struct {
-			Error struct {
-				Message string                               `json:"message"`
-				Type    UpdateChatApiKeyProfiles404ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest struct {
-			Error struct {
-				Message string                               `json:"message"`
-				Type    UpdateChatApiKeyProfiles409ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest struct {
-			Error struct {
-				Message string                               `json:"message"`
-				Type    UpdateChatApiKeyProfiles500ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseSetChatApiKeyDefaultResponse parses an HTTP response from a SetChatApiKeyDefaultWithResponse call
-func ParseSetChatApiKeyDefaultResponse(rsp *http.Response) (*SetChatApiKeyDefaultResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &SetChatApiKeyDefaultResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			CreatedAt             time.Time                       `json:"createdAt"`
-			Id                    openapi_types.UUID              `json:"id"`
-			IsOrganizationDefault bool                            `json:"isOrganizationDefault"`
-			Name                  string                          `json:"name"`
-			OrganizationId        string                          `json:"organizationId"`
-			Provider              SetChatApiKeyDefault200Provider `json:"provider"`
-			SecretId              *openapi_types.UUID             `json:"secretId"`
-			UpdatedAt             time.Time                       `json:"updatedAt"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    SetChatApiKeyDefault400ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    SetChatApiKeyDefault401ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    SetChatApiKeyDefault403ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    SetChatApiKeyDefault404ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    SetChatApiKeyDefault409ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest struct {
-			Error struct {
-				Message string                           `json:"message"`
-				Type    SetChatApiKeyDefault500ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUnsetChatApiKeyDefaultResponse parses an HTTP response from a UnsetChatApiKeyDefaultWithResponse call
-func ParseUnsetChatApiKeyDefaultResponse(rsp *http.Response) (*UnsetChatApiKeyDefaultResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UnsetChatApiKeyDefaultResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			CreatedAt             time.Time                         `json:"createdAt"`
-			Id                    openapi_types.UUID                `json:"id"`
-			IsOrganizationDefault bool                              `json:"isOrganizationDefault"`
-			Name                  string                            `json:"name"`
-			OrganizationId        string                            `json:"organizationId"`
-			Provider              UnsetChatApiKeyDefault200Provider `json:"provider"`
-			SecretId              *openapi_types.UUID               `json:"secretId"`
-			UpdatedAt             time.Time                         `json:"updatedAt"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest struct {
-			Error struct {
-				Message string                             `json:"message"`
-				Type    UnsetChatApiKeyDefault400ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest struct {
-			Error struct {
-				Message string                             `json:"message"`
-				Type    UnsetChatApiKeyDefault401ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest struct {
-			Error struct {
-				Message string                             `json:"message"`
-				Type    UnsetChatApiKeyDefault403ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest struct {
-			Error struct {
-				Message string                             `json:"message"`
-				Type    UnsetChatApiKeyDefault404ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest struct {
-			Error struct {
-				Message string                             `json:"message"`
-				Type    UnsetChatApiKeyDefault409ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest struct {
-			Error struct {
-				Message string                             `json:"message"`
-				Type    UnsetChatApiKeyDefault500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -30313,16 +35220,21 @@ func ParseGetChatConversationsResponse(rsp *http.Response) (*GetChatConversation
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"agent"`
-			AgentId        openapi_types.UUID  `json:"agentId"`
-			CreatedAt      time.Time           `json:"createdAt"`
-			Id             openapi_types.UUID  `json:"id"`
-			Messages       []interface{}       `json:"messages"`
-			OrganizationId string              `json:"organizationId"`
-			PromptId       *openapi_types.UUID `json:"promptId"`
-			SelectedModel  string              `json:"selectedModel"`
-			Title          *string             `json:"title"`
-			UpdatedAt      time.Time           `json:"updatedAt"`
-			UserId         string              `json:"userId"`
+			AgentId                openapi_types.UUID                 `json:"agentId"`
+			Artifact               *string                            `json:"artifact"`
+			ChatApiKeyId           *openapi_types.UUID                `json:"chatApiKeyId"`
+			CreatedAt              time.Time                          `json:"createdAt"`
+			HasCustomToolSelection bool                               `json:"hasCustomToolSelection"`
+			Id                     openapi_types.UUID                 `json:"id"`
+			Messages               []interface{}                      `json:"messages"`
+			OrganizationId         string                             `json:"organizationId"`
+			PromptId               *openapi_types.UUID                `json:"promptId"`
+			SelectedModel          string                             `json:"selectedModel"`
+			SelectedProvider       *string                            `json:"selectedProvider"`
+			Title                  *string                            `json:"title"`
+			TodoList               *GetChatConversations_200_TodoList `json:"todoList"`
+			UpdatedAt              time.Time                          `json:"updatedAt"`
+			UserId                 string                             `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -30426,16 +35338,21 @@ func ParseCreateChatConversationResponse(rsp *http.Response) (*CreateChatConvers
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"agent"`
-			AgentId        openapi_types.UUID  `json:"agentId"`
-			CreatedAt      time.Time           `json:"createdAt"`
-			Id             openapi_types.UUID  `json:"id"`
-			Messages       []interface{}       `json:"messages"`
-			OrganizationId string              `json:"organizationId"`
-			PromptId       *openapi_types.UUID `json:"promptId"`
-			SelectedModel  string              `json:"selectedModel"`
-			Title          *string             `json:"title"`
-			UpdatedAt      time.Time           `json:"updatedAt"`
-			UserId         string              `json:"userId"`
+			AgentId                openapi_types.UUID                   `json:"agentId"`
+			Artifact               *string                              `json:"artifact"`
+			ChatApiKeyId           *openapi_types.UUID                  `json:"chatApiKeyId"`
+			CreatedAt              time.Time                            `json:"createdAt"`
+			HasCustomToolSelection bool                                 `json:"hasCustomToolSelection"`
+			Id                     openapi_types.UUID                   `json:"id"`
+			Messages               []interface{}                        `json:"messages"`
+			OrganizationId         string                               `json:"organizationId"`
+			PromptId               *openapi_types.UUID                  `json:"promptId"`
+			SelectedModel          string                               `json:"selectedModel"`
+			SelectedProvider       *string                              `json:"selectedProvider"`
+			Title                  *string                              `json:"title"`
+			TodoList               *CreateChatConversation_200_TodoList `json:"todoList"`
+			UpdatedAt              time.Time                            `json:"updatedAt"`
+			UserId                 string                               `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -30639,16 +35556,21 @@ func ParseGetChatConversationResponse(rsp *http.Response) (*GetChatConversationR
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"agent"`
-			AgentId        openapi_types.UUID  `json:"agentId"`
-			CreatedAt      time.Time           `json:"createdAt"`
-			Id             openapi_types.UUID  `json:"id"`
-			Messages       []interface{}       `json:"messages"`
-			OrganizationId string              `json:"organizationId"`
-			PromptId       *openapi_types.UUID `json:"promptId"`
-			SelectedModel  string              `json:"selectedModel"`
-			Title          *string             `json:"title"`
-			UpdatedAt      time.Time           `json:"updatedAt"`
-			UserId         string              `json:"userId"`
+			AgentId                openapi_types.UUID                `json:"agentId"`
+			Artifact               *string                           `json:"artifact"`
+			ChatApiKeyId           *openapi_types.UUID               `json:"chatApiKeyId"`
+			CreatedAt              time.Time                         `json:"createdAt"`
+			HasCustomToolSelection bool                              `json:"hasCustomToolSelection"`
+			Id                     openapi_types.UUID                `json:"id"`
+			Messages               []interface{}                     `json:"messages"`
+			OrganizationId         string                            `json:"organizationId"`
+			PromptId               *openapi_types.UUID               `json:"promptId"`
+			SelectedModel          string                            `json:"selectedModel"`
+			SelectedProvider       *string                           `json:"selectedProvider"`
+			Title                  *string                           `json:"title"`
+			TodoList               *GetChatConversation_200_TodoList `json:"todoList"`
+			UpdatedAt              time.Time                         `json:"updatedAt"`
+			UserId                 string                            `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -30752,16 +35674,21 @@ func ParseUpdateChatConversationResponse(rsp *http.Response) (*UpdateChatConvers
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"agent"`
-			AgentId        openapi_types.UUID  `json:"agentId"`
-			CreatedAt      time.Time           `json:"createdAt"`
-			Id             openapi_types.UUID  `json:"id"`
-			Messages       []interface{}       `json:"messages"`
-			OrganizationId string              `json:"organizationId"`
-			PromptId       *openapi_types.UUID `json:"promptId"`
-			SelectedModel  string              `json:"selectedModel"`
-			Title          *string             `json:"title"`
-			UpdatedAt      time.Time           `json:"updatedAt"`
-			UserId         string              `json:"userId"`
+			AgentId                openapi_types.UUID                   `json:"agentId"`
+			Artifact               *string                              `json:"artifact"`
+			ChatApiKeyId           *openapi_types.UUID                  `json:"chatApiKeyId"`
+			CreatedAt              time.Time                            `json:"createdAt"`
+			HasCustomToolSelection bool                                 `json:"hasCustomToolSelection"`
+			Id                     openapi_types.UUID                   `json:"id"`
+			Messages               []interface{}                        `json:"messages"`
+			OrganizationId         string                               `json:"organizationId"`
+			PromptId               *openapi_types.UUID                  `json:"promptId"`
+			SelectedModel          string                               `json:"selectedModel"`
+			SelectedProvider       *string                              `json:"selectedProvider"`
+			Title                  *string                              `json:"title"`
+			TodoList               *UpdateChatConversation_200_TodoList `json:"todoList"`
+			UpdatedAt              time.Time                            `json:"updatedAt"`
+			UserId                 string                               `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -31167,16 +36094,21 @@ func ParseGenerateChatConversationTitleResponse(rsp *http.Response) (*GenerateCh
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"agent"`
-			AgentId        openapi_types.UUID  `json:"agentId"`
-			CreatedAt      time.Time           `json:"createdAt"`
-			Id             openapi_types.UUID  `json:"id"`
-			Messages       []interface{}       `json:"messages"`
-			OrganizationId string              `json:"organizationId"`
-			PromptId       *openapi_types.UUID `json:"promptId"`
-			SelectedModel  string              `json:"selectedModel"`
-			Title          *string             `json:"title"`
-			UpdatedAt      time.Time           `json:"updatedAt"`
-			UserId         string              `json:"userId"`
+			AgentId                openapi_types.UUID                          `json:"agentId"`
+			Artifact               *string                                     `json:"artifact"`
+			ChatApiKeyId           *openapi_types.UUID                         `json:"chatApiKeyId"`
+			CreatedAt              time.Time                                   `json:"createdAt"`
+			HasCustomToolSelection bool                                        `json:"hasCustomToolSelection"`
+			Id                     openapi_types.UUID                          `json:"id"`
+			Messages               []interface{}                               `json:"messages"`
+			OrganizationId         string                                      `json:"organizationId"`
+			PromptId               *openapi_types.UUID                         `json:"promptId"`
+			SelectedModel          string                                      `json:"selectedModel"`
+			SelectedProvider       *string                                     `json:"selectedProvider"`
+			Title                  *string                                     `json:"title"`
+			TodoList               *GenerateChatConversationTitle_200_TodoList `json:"todoList"`
+			UpdatedAt              time.Time                                   `json:"updatedAt"`
+			UserId                 string                                      `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -31248,6 +36180,124 @@ func ParseGenerateChatConversationTitleResponse(rsp *http.Response) (*GenerateCh
 			Error struct {
 				Message string                                    `json:"message"`
 				Type    GenerateChatConversationTitle500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateChatMessageResponse parses an HTTP response from a UpdateChatMessageWithResponse call
+func ParseUpdateChatMessageResponse(rsp *http.Response) (*UpdateChatMessageResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateChatMessageResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Agent struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"agent"`
+			AgentId                openapi_types.UUID              `json:"agentId"`
+			Artifact               *string                         `json:"artifact"`
+			ChatApiKeyId           *openapi_types.UUID             `json:"chatApiKeyId"`
+			CreatedAt              time.Time                       `json:"createdAt"`
+			HasCustomToolSelection bool                            `json:"hasCustomToolSelection"`
+			Id                     openapi_types.UUID              `json:"id"`
+			Messages               []interface{}                   `json:"messages"`
+			OrganizationId         string                          `json:"organizationId"`
+			PromptId               *openapi_types.UUID             `json:"promptId"`
+			SelectedModel          string                          `json:"selectedModel"`
+			SelectedProvider       *string                         `json:"selectedProvider"`
+			Title                  *string                         `json:"title"`
+			TodoList               *UpdateChatMessage_200_TodoList `json:"todoList"`
+			UpdatedAt              time.Time                       `json:"updatedAt"`
+			UserId                 string                          `json:"userId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    UpdateChatMessage400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    UpdateChatMessage401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    UpdateChatMessage403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    UpdateChatMessage404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    UpdateChatMessage409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    UpdateChatMessage500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -31351,6 +36401,417 @@ func ParseGetChatModelsResponse(rsp *http.Response) (*GetChatModelsResponse, err
 			Error struct {
 				Message string                    `json:"message"`
 				Type    GetChatModels500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseInvalidateChatModelsCacheResponse parses an HTTP response from a InvalidateChatModelsCacheWithResponse call
+func ParseInvalidateChatModelsCacheResponse(rsp *http.Response) (*InvalidateChatModelsCacheResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &InvalidateChatModelsCacheResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    InvalidateChatModelsCache500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListChatOpsBindingsResponse parses an HTTP response from a ListChatOpsBindingsWithResponse call
+func ParseListChatOpsBindingsResponse(rsp *http.Response) (*ListChatOpsBindingsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListChatOpsBindingsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			ChannelId      string                         `json:"channelId"`
+			CreatedAt      time.Time                      `json:"createdAt"`
+			Id             openapi_types.UUID             `json:"id"`
+			OrganizationId string                         `json:"organizationId"`
+			PromptId       openapi_types.UUID             `json:"promptId"`
+			Provider       ListChatOpsBindings200Provider `json:"provider"`
+			UpdatedAt      time.Time                      `json:"updatedAt"`
+			WorkspaceId    *string                        `json:"workspaceId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    ListChatOpsBindings500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteChatOpsBindingResponse parses an HTTP response from a DeleteChatOpsBindingWithResponse call
+func ParseDeleteChatOpsBindingResponse(rsp *http.Response) (*DeleteChatOpsBindingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteChatOpsBindingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    DeleteChatOpsBinding500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetChatOpsStatusResponse parses an HTTP response from a GetChatOpsStatusWithResponse call
+func ParseGetChatOpsStatusResponse(rsp *http.Response) (*GetChatOpsStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetChatOpsStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Providers []struct {
+				Configured  bool   `json:"configured"`
+				DisplayName string `json:"displayName"`
+				Id          string `json:"id"`
+			} `json:"providers"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetChatOpsStatus500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -32224,15 +37685,443 @@ func ParseGetFeaturesResponse(rsp *http.Response) (*GetFeaturesResponse, error) 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			ByosEnabled            bool                              `json:"byosEnabled"`
-			ByosVaultKvVersion     *GetFeatures200ByosVaultKvVersion `json:"byosVaultKvVersion"`
-			GeminiVertexAiEnabled  bool                              `json:"geminiVertexAiEnabled"`
-			OrchestratorK8sRuntime bool                              `json:"orchestrator-k8s-runtime"`
+			BrowserStreamingEnabled bool                              `json:"browserStreamingEnabled"`
+			ByosEnabled             bool                              `json:"byosEnabled"`
+			ByosVaultKvVersion      *GetFeatures200ByosVaultKvVersion `json:"byosVaultKvVersion"`
+			GeminiVertexAiEnabled   bool                              `json:"geminiVertexAiEnabled"`
+			GlobalToolPolicy        GetFeatures200GlobalToolPolicy    `json:"globalToolPolicy"`
+			IncomingEmail           struct {
+				DisplayName *string                              `json:"displayName,omitempty"`
+				EmailDomain *string                              `json:"emailDomain,omitempty"`
+				Enabled     bool                                 `json:"enabled"`
+				Provider    *GetFeatures200IncomingEmailProvider `json:"provider,omitempty"`
+			} `json:"incomingEmail"`
+			KnowledgeGraph struct {
+				DisplayName *string                               `json:"displayName,omitempty"`
+				Enabled     bool                                  `json:"enabled"`
+				Provider    *GetFeatures200KnowledgeGraphProvider `json:"provider,omitempty"`
+			} `json:"knowledgeGraph"`
+			OllamaEnabled          bool `json:"ollamaEnabled"`
+			OrchestratorK8sRuntime bool `json:"orchestrator-k8s-runtime"`
+			VllmEnabled            bool `json:"vllmEnabled"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRenewIncomingEmailSubscriptionResponse parses an HTTP response from a RenewIncomingEmailSubscriptionWithResponse call
+func ParseRenewIncomingEmailSubscriptionResponse(rsp *http.Response) (*RenewIncomingEmailSubscriptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RenewIncomingEmailSubscriptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			ExpiresAt      *time.Time `json:"expiresAt,omitempty"`
+			Message        *string    `json:"message,omitempty"`
+			SubscriptionId *string    `json:"subscriptionId,omitempty"`
+			Success        bool       `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSetupIncomingEmailWebhookResponse parses an HTTP response from a SetupIncomingEmailWebhookWithResponse call
+func ParseSetupIncomingEmailWebhookResponse(rsp *http.Response) (*SetupIncomingEmailWebhookResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetupIncomingEmailWebhookResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			ExpiresAt      *time.Time `json:"expiresAt,omitempty"`
+			Message        *string    `json:"message,omitempty"`
+			SubscriptionId *string    `json:"subscriptionId,omitempty"`
+			Success        bool       `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetIncomingEmailStatusResponse parses an HTTP response from a GetIncomingEmailStatusWithResponse call
+func ParseGetIncomingEmailStatusResponse(rsp *http.Response) (*GetIncomingEmailStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetIncomingEmailStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			IsActive     bool `json:"isActive"`
+			Subscription *struct {
+				ExpiresAt      time.Time `json:"expiresAt"`
+				Id             string    `json:"id"`
+				Provider       string    `json:"provider"`
+				SubscriptionId string    `json:"subscriptionId"`
+				WebhookUrl     string    `json:"webhookUrl"`
+			} `json:"subscription"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteIncomingEmailSubscriptionResponse parses an HTTP response from a DeleteIncomingEmailSubscriptionWithResponse call
+func ParseDeleteIncomingEmailSubscriptionResponse(rsp *http.Response) (*DeleteIncomingEmailSubscriptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteIncomingEmailSubscriptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -32278,14 +38167,16 @@ func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCata
 					Default              *GetInternalMcpCatalog_200_LocalConfig_Environment_Default `json:"default,omitempty"`
 					Description          *string                                                    `json:"description,omitempty"`
 					Key                  string                                                     `json:"key"`
+					Mounted              *bool                                                      `json:"mounted,omitempty"`
 					PromptOnInstallation bool                                                       `json:"promptOnInstallation"`
 					Required             *bool                                                      `json:"required,omitempty"`
 					Type                 GetInternalMcpCatalog200LocalConfigEnvironmentType         `json:"type"`
 					Value                *string                                                    `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
-				HttpPath      *string                                           `json:"httpPath,omitempty"`
-				HttpPort      *float32                                          `json:"httpPort,omitempty"`
-				TransportType *GetInternalMcpCatalog200LocalConfigTransportType `json:"transportType,omitempty"`
+				HttpPath       *string                                           `json:"httpPath,omitempty"`
+				HttpPort       *float32                                          `json:"httpPort,omitempty"`
+				ServiceAccount *string                                           `json:"serviceAccount,omitempty"`
+				TransportType  *GetInternalMcpCatalog200LocalConfigTransportType `json:"transportType,omitempty"`
 			} `json:"localConfig"`
 			LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 			Name                string              `json:"name"`
@@ -32450,14 +38341,16 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 					Default              *CreateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
 					Description          *string                                                           `json:"description,omitempty"`
 					Key                  string                                                            `json:"key"`
+					Mounted              *bool                                                             `json:"mounted,omitempty"`
 					PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
 					Required             *bool                                                             `json:"required,omitempty"`
 					Type                 CreateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
 					Value                *string                                                           `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
-				HttpPath      *string                                                  `json:"httpPath,omitempty"`
-				HttpPort      *float32                                                 `json:"httpPort,omitempty"`
-				TransportType *CreateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+				HttpPath       *string                                                  `json:"httpPath,omitempty"`
+				HttpPort       *float32                                                 `json:"httpPort,omitempty"`
+				ServiceAccount *string                                                  `json:"serviceAccount,omitempty"`
+				TransportType  *CreateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
 			} `json:"localConfig"`
 			LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 			Name                string              `json:"name"`
@@ -32822,14 +38715,16 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 					Default              *GetInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
 					Description          *string                                                        `json:"description,omitempty"`
 					Key                  string                                                         `json:"key"`
+					Mounted              *bool                                                          `json:"mounted,omitempty"`
 					PromptOnInstallation bool                                                           `json:"promptOnInstallation"`
 					Required             *bool                                                          `json:"required,omitempty"`
 					Type                 GetInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
 					Value                *string                                                        `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
-				HttpPath      *string                                               `json:"httpPath,omitempty"`
-				HttpPort      *float32                                              `json:"httpPort,omitempty"`
-				TransportType *GetInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+				HttpPath       *string                                               `json:"httpPath,omitempty"`
+				HttpPort       *float32                                              `json:"httpPort,omitempty"`
+				ServiceAccount *string                                               `json:"serviceAccount,omitempty"`
+				TransportType  *GetInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
 			} `json:"localConfig"`
 			LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 			Name                string              `json:"name"`
@@ -32994,14 +38889,16 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 					Default              *UpdateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
 					Description          *string                                                           `json:"description,omitempty"`
 					Key                  string                                                            `json:"key"`
+					Mounted              *bool                                                             `json:"mounted,omitempty"`
 					PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
 					Required             *bool                                                             `json:"required,omitempty"`
 					Type                 UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
 					Value                *string                                                           `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
-				HttpPath      *string                                                  `json:"httpPath,omitempty"`
-				HttpPort      *float32                                                 `json:"httpPort,omitempty"`
-				TransportType *UpdateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
+				HttpPath       *string                                                  `json:"httpPath,omitempty"`
+				HttpPort       *float32                                                 `json:"httpPort,omitempty"`
+				ServiceAccount *string                                                  `json:"serviceAccount,omitempty"`
+				TransportType  *UpdateInternalMcpCatalogItem200LocalConfigTransportType `json:"transportType,omitempty"`
 			} `json:"localConfig"`
 			LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 			Name                string              `json:"name"`
@@ -33115,6 +39012,115 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 			Error struct {
 				Message string                                   `json:"message"`
 				Type    UpdateInternalMcpCatalogItem500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetInternalMcpCatalogToolsResponse parses an HTTP response from a GetInternalMcpCatalogToolsWithResponse call
+func ParseGetInternalMcpCatalogToolsResponse(rsp *http.Response) (*GetInternalMcpCatalogToolsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetInternalMcpCatalogToolsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			AssignedAgentCount float32 `json:"assignedAgentCount"`
+			AssignedAgents     []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"assignedAgents"`
+			CreatedAt   time.Time              `json:"createdAt"`
+			Description *string                `json:"description"`
+			Id          string                 `json:"id"`
+			Name        string                 `json:"name"`
+			Parameters  map[string]interface{} `json:"parameters"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetInternalMcpCatalogTools400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetInternalMcpCatalogTools401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetInternalMcpCatalogTools403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetInternalMcpCatalogTools404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetInternalMcpCatalogTools409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetInternalMcpCatalogTools500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -33907,6 +39913,118 @@ func ParseGetMcpToolCallResponse(rsp *http.Response) (*GetMcpToolCallResponse, e
 	return response, nil
 }
 
+// ParseRestartAllMcpServerInstallationsResponse parses an HTTP response from a RestartAllMcpServerInstallationsWithResponse call
+func ParseRestartAllMcpServerInstallationsResponse(rsp *http.Response) (*RestartAllMcpServerInstallationsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RestartAllMcpServerInstallationsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Message string `json:"message"`
+			Results []struct {
+				Error      *string `json:"error,omitempty"`
+				ServerId   string  `json:"serverId"`
+				ServerName string  `json:"serverName"`
+				Success    bool    `json:"success"`
+			} `json:"results"`
+			Success bool `json:"success"`
+			Summary struct {
+				Failed    float32 `json:"failed"`
+				Succeeded float32 `json:"succeeded"`
+				Total     float32 `json:"total"`
+			} `json:"summary"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    RestartAllMcpServerInstallations400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    RestartAllMcpServerInstallations401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    RestartAllMcpServerInstallations403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    RestartAllMcpServerInstallations404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    RestartAllMcpServerInstallations409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    RestartAllMcpServerInstallations500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetMcpServersResponse parses an HTTP response from a GetMcpServersWithResponse call
 func ParseGetMcpServersResponse(rsp *http.Response) (*GetMcpServersResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -33930,6 +40048,8 @@ func ParseGetMcpServersResponse(rsp *http.Response) (*GetMcpServersResponse, err
 			LocalInstallationError  *string                                 `json:"localInstallationError"`
 			LocalInstallationStatus GetMcpServers200LocalInstallationStatus `json:"localInstallationStatus"`
 			Name                    string                                  `json:"name"`
+			OauthRefreshError       *GetMcpServers200OauthRefreshError      `json:"oauthRefreshError"`
+			OauthRefreshFailedAt    *time.Time                              `json:"oauthRefreshFailedAt"`
 			OwnerEmail              *string                                 `json:"ownerEmail"`
 			OwnerId                 *string                                 `json:"ownerId"`
 			ReinstallRequired       bool                                    `json:"reinstallRequired"`
@@ -34055,6 +40175,8 @@ func ParseInstallMcpServerResponse(rsp *http.Response) (*InstallMcpServerRespons
 			LocalInstallationError  *string                                    `json:"localInstallationError"`
 			LocalInstallationStatus InstallMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
 			Name                    string                                     `json:"name"`
+			OauthRefreshError       *InstallMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+			OauthRefreshFailedAt    *time.Time                                 `json:"oauthRefreshFailedAt"`
 			OwnerEmail              *string                                    `json:"ownerEmail"`
 			OwnerId                 *string                                    `json:"ownerId"`
 			ReinstallRequired       bool                                       `json:"reinstallRequired"`
@@ -34280,6 +40402,8 @@ func ParseGetMcpServerResponse(rsp *http.Response) (*GetMcpServerResponse, error
 			LocalInstallationError  *string                                `json:"localInstallationError"`
 			LocalInstallationStatus GetMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
 			Name                    string                                 `json:"name"`
+			OauthRefreshError       *GetMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+			OauthRefreshFailedAt    *time.Time                             `json:"oauthRefreshFailedAt"`
 			OwnerEmail              *string                                `json:"ownerEmail"`
 			OwnerId                 *string                                `json:"ownerId"`
 			ReinstallRequired       bool                                   `json:"reinstallRequired"`
@@ -34574,6 +40698,133 @@ func ParseGetMcpServerLogsResponse(rsp *http.Response) (*GetMcpServerLogsRespons
 			Error struct {
 				Message string                       `json:"message"`
 				Type    GetMcpServerLogs500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseReauthenticateMcpServerResponse parses an HTTP response from a ReauthenticateMcpServerWithResponse call
+func ParseReauthenticateMcpServerResponse(rsp *http.Response) (*ReauthenticateMcpServerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReauthenticateMcpServerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CatalogId               openapi_types.UUID                                `json:"catalogId"`
+			CatalogName             *string                                           `json:"catalogName"`
+			CreatedAt               time.Time                                         `json:"createdAt"`
+			Id                      openapi_types.UUID                                `json:"id"`
+			LocalInstallationError  *string                                           `json:"localInstallationError"`
+			LocalInstallationStatus ReauthenticateMcpServer200LocalInstallationStatus `json:"localInstallationStatus"`
+			Name                    string                                            `json:"name"`
+			OauthRefreshError       *ReauthenticateMcpServer200OauthRefreshError      `json:"oauthRefreshError"`
+			OauthRefreshFailedAt    *time.Time                                        `json:"oauthRefreshFailedAt"`
+			OwnerEmail              *string                                           `json:"ownerEmail"`
+			OwnerId                 *string                                           `json:"ownerId"`
+			ReinstallRequired       bool                                              `json:"reinstallRequired"`
+			SecretId                *openapi_types.UUID                               `json:"secretId"`
+			SecretStorageType       *ReauthenticateMcpServer200SecretStorageType      `json:"secretStorageType,omitempty"`
+			ServerType              ReauthenticateMcpServer200ServerType              `json:"serverType"`
+			TeamDetails             *struct {
+				CreatedAt time.Time `json:"createdAt"`
+				Name      string    `json:"name"`
+				TeamId    string    `json:"teamId"`
+			} `json:"teamDetails"`
+			TeamId      *string   `json:"teamId"`
+			UpdatedAt   time.Time `json:"updatedAt"`
+			UserDetails *[]struct {
+				CreatedAt time.Time `json:"createdAt"`
+				Email     string    `json:"email"`
+				UserId    string    `json:"userId"`
+			} `json:"userDetails,omitempty"`
+			Users *[]string `json:"users,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    ReauthenticateMcpServer500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -36362,11 +42613,13 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
+			AllowChatFileUploads     bool                                    `json:"allowChatFileUploads"`
 			AutoConfigureNewTools    bool                                    `json:"autoConfigureNewTools"`
 			CompressionScope         GetOrganization200CompressionScope      `json:"compressionScope"`
 			ConvertToolResultsToToon bool                                    `json:"convertToolResultsToToon"`
 			CreatedAt                time.Time                               `json:"createdAt"`
 			CustomFont               GetOrganization200CustomFont            `json:"customFont"`
+			GlobalToolPolicy         GetOrganization200GlobalToolPolicy      `json:"globalToolPolicy"`
 			Id                       string                                  `json:"id"`
 			LimitCleanupInterval     *GetOrganization200LimitCleanupInterval `json:"limitCleanupInterval"`
 			Logo                     *string                                 `json:"logo"`
@@ -36474,11 +42727,13 @@ func ParseUpdateOrganizationResponse(rsp *http.Response) (*UpdateOrganizationRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
+			AllowChatFileUploads     bool                                       `json:"allowChatFileUploads"`
 			AutoConfigureNewTools    bool                                       `json:"autoConfigureNewTools"`
 			CompressionScope         UpdateOrganization200CompressionScope      `json:"compressionScope"`
 			ConvertToolResultsToToon bool                                       `json:"convertToolResultsToToon"`
 			CreatedAt                time.Time                                  `json:"createdAt"`
 			CustomFont               UpdateOrganization200CustomFont            `json:"customFont"`
+			GlobalToolPolicy         UpdateOrganization200GlobalToolPolicy      `json:"globalToolPolicy"`
 			Id                       string                                     `json:"id"`
 			LimitCleanupInterval     *UpdateOrganization200LimitCleanupInterval `json:"limitCleanupInterval"`
 			Logo                     *string                                    `json:"logo"`
@@ -36558,6 +42813,108 @@ func ParseUpdateOrganizationResponse(rsp *http.Response) (*UpdateOrganizationRes
 			Error struct {
 				Message string                         `json:"message"`
 				Type    UpdateOrganization500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetPublicAppearanceResponse parses an HTTP response from a GetPublicAppearanceWithResponse call
+func ParseGetPublicAppearanceResponse(rsp *http.Response) (*GetPublicAppearanceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetPublicAppearanceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CustomFont GetPublicAppearance200CustomFont `json:"customFont"`
+			Logo       *string                          `json:"logo"`
+			Theme      GetPublicAppearance200Theme      `json:"theme"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetPublicAppearance400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetPublicAppearance401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetPublicAppearance403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetPublicAppearance404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetPublicAppearance409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetPublicAppearance500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -36771,6 +43128,108 @@ func ParseGetPolicyConfigSubagentPromptResponse(rsp *http.Response) (*GetPolicyC
 	return response, nil
 }
 
+// ParseGetAllPromptAgentConnectionsResponse parses an HTTP response from a GetAllPromptAgentConnectionsWithResponse call
+func ParseGetAllPromptAgentConnectionsResponse(rsp *http.Response) (*GetAllPromptAgentConnectionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAllPromptAgentConnectionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			AgentPromptId openapi_types.UUID `json:"agentPromptId"`
+			Id            openapi_types.UUID `json:"id"`
+			PromptId      openapi_types.UUID `json:"promptId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                   `json:"message"`
+				Type    GetAllPromptAgentConnections400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                   `json:"message"`
+				Type    GetAllPromptAgentConnections401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                   `json:"message"`
+				Type    GetAllPromptAgentConnections403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                   `json:"message"`
+				Type    GetAllPromptAgentConnections404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                   `json:"message"`
+				Type    GetAllPromptAgentConnections409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                   `json:"message"`
+				Type    GetAllPromptAgentConnections500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetPromptsResponse parses an HTTP response from a GetPromptsWithResponse call
 func ParseGetPromptsResponse(rsp *http.Response) (*GetPromptsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -36787,17 +43246,20 @@ func ParseGetPromptsResponse(rsp *http.Response) (*GetPromptsResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			AgentId        openapi_types.UUID  `json:"agentId"`
-			CreatedAt      time.Time           `json:"createdAt"`
-			Id             openapi_types.UUID  `json:"id"`
-			IsActive       bool                `json:"isActive"`
-			Name           string              `json:"name"`
-			OrganizationId string              `json:"organizationId"`
-			ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-			SystemPrompt   *string             `json:"systemPrompt"`
-			UpdatedAt      time.Time           `json:"updatedAt"`
-			UserPrompt     *string             `json:"userPrompt"`
-			Version        int                 `json:"version"`
+			AgentId                    openapi_types.UUID                     `json:"agentId"`
+			AllowedChatops             GetPrompts_200_AllowedChatops          `json:"allowedChatops"`
+			CreatedAt                  time.Time                              `json:"createdAt"`
+			History                    GetPrompts_200_History                 `json:"history"`
+			Id                         openapi_types.UUID                     `json:"id"`
+			IncomingEmailAllowedDomain *string                                `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                   `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  GetPrompts200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                 `json:"name"`
+			OrganizationId             string                                 `json:"organizationId"`
+			SystemPrompt               *string                                `json:"systemPrompt"`
+			UpdatedAt                  time.Time                              `json:"updatedAt"`
+			UserPrompt                 *string                                `json:"userPrompt"`
+			Version                    int                                    `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -36897,17 +43359,20 @@ func ParseCreatePromptResponse(rsp *http.Response) (*CreatePromptResponse, error
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AgentId        openapi_types.UUID  `json:"agentId"`
-			CreatedAt      time.Time           `json:"createdAt"`
-			Id             openapi_types.UUID  `json:"id"`
-			IsActive       bool                `json:"isActive"`
-			Name           string              `json:"name"`
-			OrganizationId string              `json:"organizationId"`
-			ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-			SystemPrompt   *string             `json:"systemPrompt"`
-			UpdatedAt      time.Time           `json:"updatedAt"`
-			UserPrompt     *string             `json:"userPrompt"`
-			Version        int                 `json:"version"`
+			AgentId                    openapi_types.UUID                       `json:"agentId"`
+			AllowedChatops             CreatePrompt_200_AllowedChatops          `json:"allowedChatops"`
+			CreatedAt                  time.Time                                `json:"createdAt"`
+			History                    CreatePrompt_200_History                 `json:"history"`
+			Id                         openapi_types.UUID                       `json:"id"`
+			IncomingEmailAllowedDomain *string                                  `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                     `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  CreatePrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                   `json:"name"`
+			OrganizationId             string                                   `json:"organizationId"`
+			SystemPrompt               *string                                  `json:"systemPrompt"`
+			UpdatedAt                  time.Time                                `json:"updatedAt"`
+			UserPrompt                 *string                                  `json:"userPrompt"`
+			Version                    int                                      `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -37107,17 +43572,20 @@ func ParseGetPromptResponse(rsp *http.Response) (*GetPromptResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AgentId        openapi_types.UUID  `json:"agentId"`
-			CreatedAt      time.Time           `json:"createdAt"`
-			Id             openapi_types.UUID  `json:"id"`
-			IsActive       bool                `json:"isActive"`
-			Name           string              `json:"name"`
-			OrganizationId string              `json:"organizationId"`
-			ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-			SystemPrompt   *string             `json:"systemPrompt"`
-			UpdatedAt      time.Time           `json:"updatedAt"`
-			UserPrompt     *string             `json:"userPrompt"`
-			Version        int                 `json:"version"`
+			AgentId                    openapi_types.UUID                    `json:"agentId"`
+			AllowedChatops             GetPrompt_200_AllowedChatops          `json:"allowedChatops"`
+			CreatedAt                  time.Time                             `json:"createdAt"`
+			History                    GetPrompt_200_History                 `json:"history"`
+			Id                         openapi_types.UUID                    `json:"id"`
+			IncomingEmailAllowedDomain *string                               `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                  `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  GetPrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                `json:"name"`
+			OrganizationId             string                                `json:"organizationId"`
+			SystemPrompt               *string                               `json:"systemPrompt"`
+			UpdatedAt                  time.Time                             `json:"updatedAt"`
+			UserPrompt                 *string                               `json:"userPrompt"`
+			Version                    int                                   `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -37217,17 +43685,20 @@ func ParseUpdatePromptResponse(rsp *http.Response) (*UpdatePromptResponse, error
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AgentId        openapi_types.UUID  `json:"agentId"`
-			CreatedAt      time.Time           `json:"createdAt"`
-			Id             openapi_types.UUID  `json:"id"`
-			IsActive       bool                `json:"isActive"`
-			Name           string              `json:"name"`
-			OrganizationId string              `json:"organizationId"`
-			ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-			SystemPrompt   *string             `json:"systemPrompt"`
-			UpdatedAt      time.Time           `json:"updatedAt"`
-			UserPrompt     *string             `json:"userPrompt"`
-			Version        int                 `json:"version"`
+			AgentId                    openapi_types.UUID                       `json:"agentId"`
+			AllowedChatops             UpdatePrompt_200_AllowedChatops          `json:"allowedChatops"`
+			CreatedAt                  time.Time                                `json:"createdAt"`
+			History                    UpdatePrompt_200_History                 `json:"history"`
+			Id                         openapi_types.UUID                       `json:"id"`
+			IncomingEmailAllowedDomain *string                                  `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                     `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  UpdatePrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                   `json:"name"`
+			OrganizationId             string                                   `json:"organizationId"`
+			SystemPrompt               *string                                  `json:"systemPrompt"`
+			UpdatedAt                  time.Time                                `json:"updatedAt"`
+			UserPrompt                 *string                                  `json:"userPrompt"`
+			Version                    int                                      `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -37327,17 +43798,20 @@ func ParseRollbackPromptResponse(rsp *http.Response) (*RollbackPromptResponse, e
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AgentId        openapi_types.UUID  `json:"agentId"`
-			CreatedAt      time.Time           `json:"createdAt"`
-			Id             openapi_types.UUID  `json:"id"`
-			IsActive       bool                `json:"isActive"`
-			Name           string              `json:"name"`
-			OrganizationId string              `json:"organizationId"`
-			ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-			SystemPrompt   *string             `json:"systemPrompt"`
-			UpdatedAt      time.Time           `json:"updatedAt"`
-			UserPrompt     *string             `json:"userPrompt"`
-			Version        int                 `json:"version"`
+			AgentId                    openapi_types.UUID                         `json:"agentId"`
+			AllowedChatops             RollbackPrompt_200_AllowedChatops          `json:"allowedChatops"`
+			CreatedAt                  time.Time                                  `json:"createdAt"`
+			History                    RollbackPrompt_200_History                 `json:"history"`
+			Id                         openapi_types.UUID                         `json:"id"`
+			IncomingEmailAllowedDomain *string                                    `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                       `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  RollbackPrompt200IncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			Name                       string                                     `json:"name"`
+			OrganizationId             string                                     `json:"organizationId"`
+			SystemPrompt               *string                                    `json:"systemPrompt"`
+			UpdatedAt                  time.Time                                  `json:"updatedAt"`
+			UserPrompt                 *string                                    `json:"userPrompt"`
+			Version                    int                                        `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -37421,6 +43895,119 @@ func ParseRollbackPromptResponse(rsp *http.Response) (*RollbackPromptResponse, e
 	return response, nil
 }
 
+// ParseGetPromptToolsResponse parses an HTTP response from a GetPromptToolsWithResponse call
+func ParseGetPromptToolsResponse(rsp *http.Response) (*GetPromptToolsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetPromptToolsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			AgentId                          *openapi_types.UUID            `json:"agentId"`
+			AgentPromptId                    openapi_types.UUID             `json:"agentPromptId"`
+			CatalogId                        *openapi_types.UUID            `json:"catalogId"`
+			CreatedAt                        time.Time                      `json:"createdAt"`
+			Description                      *string                        `json:"description"`
+			Id                               openapi_types.UUID             `json:"id"`
+			McpServerId                      *openapi_types.UUID            `json:"mcpServerId"`
+			Name                             string                         `json:"name"`
+			Parameters                       *GetPromptTools_200_Parameters `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time                     `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredReasoning  *string                        `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time                     `json:"policiesAutoConfiguringStartedAt"`
+			PromptAgentId                    *openapi_types.UUID            `json:"promptAgentId"`
+			UpdatedAt                        time.Time                      `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetPromptTools400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetPromptTools401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetPromptTools403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetPromptTools404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetPromptTools409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetPromptTools500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetPromptVersionsResponse parses an HTTP response from a GetPromptVersionsWithResponse call
 func ParseGetPromptVersionsResponse(rsp *http.Response) (*GetPromptVersionsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -37436,18 +44023,29 @@ func ParseGetPromptVersionsResponse(rsp *http.Response) (*GetPromptVersionsRespo
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []struct {
-			AgentId        openapi_types.UUID  `json:"agentId"`
-			CreatedAt      time.Time           `json:"createdAt"`
-			Id             openapi_types.UUID  `json:"id"`
-			IsActive       bool                `json:"isActive"`
-			Name           string              `json:"name"`
-			OrganizationId string              `json:"organizationId"`
-			ParentPromptId *openapi_types.UUID `json:"parentPromptId"`
-			SystemPrompt   *string             `json:"systemPrompt"`
-			UpdatedAt      time.Time           `json:"updatedAt"`
-			UserPrompt     *string             `json:"userPrompt"`
-			Version        int                 `json:"version"`
+		var dest struct {
+			Current struct {
+				AgentId                    openapi_types.UUID                                   `json:"agentId"`
+				AllowedChatops             GetPromptVersions_200_Current_AllowedChatops         `json:"allowedChatops"`
+				CreatedAt                  time.Time                                            `json:"createdAt"`
+				History                    GetPromptVersions_200_Current_History                `json:"history"`
+				Id                         openapi_types.UUID                                   `json:"id"`
+				IncomingEmailAllowedDomain *string                                              `json:"incomingEmailAllowedDomain"`
+				IncomingEmailEnabled       bool                                                 `json:"incomingEmailEnabled"`
+				IncomingEmailSecurityMode  GetPromptVersions200CurrentIncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+				Name                       string                                               `json:"name"`
+				OrganizationId             string                                               `json:"organizationId"`
+				SystemPrompt               *string                                              `json:"systemPrompt"`
+				UpdatedAt                  time.Time                                            `json:"updatedAt"`
+				UserPrompt                 *string                                              `json:"userPrompt"`
+				Version                    int                                                  `json:"version"`
+			} `json:"current"`
+			History []struct {
+				CreatedAt    string  `json:"createdAt"`
+				SystemPrompt *string `json:"systemPrompt"`
+				UserPrompt   *string `json:"userPrompt"`
+				Version      float32 `json:"version"`
+			} `json:"history"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -37519,6 +44117,418 @@ func ParseGetPromptVersionsResponse(rsp *http.Response) (*GetPromptVersionsRespo
 			Error struct {
 				Message string                        `json:"message"`
 				Type    GetPromptVersions500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetPromptAgentsResponse parses an HTTP response from a GetPromptAgentsWithResponse call
+func ParseGetPromptAgentsResponse(rsp *http.Response) (*GetPromptAgentsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetPromptAgentsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			AgentPromptId openapi_types.UUID `json:"agentPromptId"`
+			CreatedAt     time.Time          `json:"createdAt"`
+			Id            openapi_types.UUID `json:"id"`
+			Name          string             `json:"name"`
+			ProfileId     openapi_types.UUID `json:"profileId"`
+			ProfileName   string             `json:"profileName"`
+			PromptId      openapi_types.UUID `json:"promptId"`
+			SystemPrompt  *string            `json:"systemPrompt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetPromptAgents400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetPromptAgents401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetPromptAgents403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetPromptAgents404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetPromptAgents409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetPromptAgents500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSyncPromptAgentsResponse parses an HTTP response from a SyncPromptAgentsWithResponse call
+func ParseSyncPromptAgentsResponse(rsp *http.Response) (*SyncPromptAgentsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SyncPromptAgentsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Added   []openapi_types.UUID `json:"added"`
+			Removed []openapi_types.UUID `json:"removed"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    SyncPromptAgents400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    SyncPromptAgents401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    SyncPromptAgents403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    SyncPromptAgents404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    SyncPromptAgents409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    SyncPromptAgents500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeletePromptAgentResponse parses an HTTP response from a DeletePromptAgentWithResponse call
+func ParseDeletePromptAgentResponse(rsp *http.Response) (*DeletePromptAgentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeletePromptAgentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    DeletePromptAgent400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    DeletePromptAgent401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    DeletePromptAgent403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    DeletePromptAgent404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    DeletePromptAgent409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    DeletePromptAgent500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetPromptEmailAddressResponse parses an HTTP response from a GetPromptEmailAddressWithResponse call
+func ParseGetPromptEmailAddressResponse(rsp *http.Response) (*GetPromptEmailAddressResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetPromptEmailAddressResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AgentAllowedDomain        *string                                   `json:"agentAllowedDomain"`
+			AgentIncomingEmailEnabled bool                                      `json:"agentIncomingEmailEnabled"`
+			AgentSecurityMode         GetPromptEmailAddress200AgentSecurityMode `json:"agentSecurityMode"`
+			EmailAddress              *string                                   `json:"emailAddress"`
+			ProviderEnabled           bool                                      `json:"providerEnabled"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetPromptEmailAddress400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetPromptEmailAddress401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetPromptEmailAddress403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetPromptEmailAddress404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetPromptEmailAddress409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetPromptEmailAddress500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -42332,17 +49342,23 @@ func ParseGetTokensResponse(rsp *http.Response) (*GetTokensResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []struct {
-			CreatedAt           time.Time          `json:"createdAt"`
-			Id                  openapi_types.UUID `json:"id"`
-			IsOrganizationToken bool               `json:"isOrganizationToken"`
-			LastUsedAt          *time.Time         `json:"lastUsedAt"`
-			Name                string             `json:"name"`
-			Team                *struct {
-				Id   string `json:"id"`
-				Name string `json:"name"`
-			} `json:"team"`
-			TokenStart string `json:"tokenStart"`
+		var dest struct {
+			Permissions struct {
+				CanAccessOrgToken   bool `json:"canAccessOrgToken"`
+				CanAccessTeamTokens bool `json:"canAccessTeamTokens"`
+			} `json:"permissions"`
+			Tokens []struct {
+				CreatedAt           time.Time          `json:"createdAt"`
+				Id                  openapi_types.UUID `json:"id"`
+				IsOrganizationToken bool               `json:"isOrganizationToken"`
+				LastUsedAt          *time.Time         `json:"lastUsedAt"`
+				Name                string             `json:"name"`
+				Team                *struct {
+					Id   string `json:"id"`
+					Name string `json:"name"`
+				} `json:"team"`
+				TokenStart string `json:"tokenStart"`
+			} `json:"tokens"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -42636,6 +49652,107 @@ func ParseGetTokenValueResponse(rsp *http.Response) (*GetTokenValueResponse, err
 	return response, nil
 }
 
+// ParseBulkUpsertDefaultCallPolicyResponse parses an HTTP response from a BulkUpsertDefaultCallPolicyWithResponse call
+func ParseBulkUpsertDefaultCallPolicyResponse(rsp *http.Response) (*BulkUpsertDefaultCallPolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BulkUpsertDefaultCallPolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Created float32 `json:"created"`
+			Updated float32 `json:"updated"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                  `json:"message"`
+				Type    BulkUpsertDefaultCallPolicy400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                  `json:"message"`
+				Type    BulkUpsertDefaultCallPolicy401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                  `json:"message"`
+				Type    BulkUpsertDefaultCallPolicy403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                  `json:"message"`
+				Type    BulkUpsertDefaultCallPolicy404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                  `json:"message"`
+				Type    BulkUpsertDefaultCallPolicy409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                  `json:"message"`
+				Type    BulkUpsertDefaultCallPolicy500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetToolsResponse parses an HTTP response from a GetToolsWithResponse call
 func ParseGetToolsResponse(rsp *http.Response) (*GetToolsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -42664,9 +49781,13 @@ func ParseGetToolsResponse(rsp *http.Response) (*GetToolsResponse, error) {
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"mcpServer"`
-			Name       string                   `json:"name"`
-			Parameters *GetTools_200_Parameters `json:"parameters,omitempty"`
-			UpdatedAt  time.Time                `json:"updatedAt"`
+			Name                             string                   `json:"name"`
+			Parameters                       *GetTools_200_Parameters `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time               `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredReasoning  *string                  `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time               `json:"policiesAutoConfiguringStartedAt"`
+			PromptAgentId                    *openapi_types.UUID      `json:"promptAgentId"`
+			UpdatedAt                        time.Time                `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -42750,6 +49871,239 @@ func ParseGetToolsResponse(rsp *http.Response) (*GetToolsResponse, error) {
 	return response, nil
 }
 
+// ParseGetToolsWithAssignmentsResponse parses an HTTP response from a GetToolsWithAssignmentsWithResponse call
+func ParseGetToolsWithAssignmentsResponse(rsp *http.Response) (*GetToolsWithAssignmentsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetToolsWithAssignmentsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				AssignmentCount float32 `json:"assignmentCount"`
+				Assignments     []struct {
+					Agent struct {
+						Id   string `json:"id"`
+						Name string `json:"name"`
+					} `json:"agent"`
+					AgentToolId                 string  `json:"agentToolId"`
+					CredentialOwnerEmail        *string `json:"credentialOwnerEmail"`
+					CredentialSourceMcpServerId *string `json:"credentialSourceMcpServerId"`
+					ExecutionOwnerEmail         *string `json:"executionOwnerEmail"`
+					ExecutionSourceMcpServerId  *string `json:"executionSourceMcpServerId"`
+					ResponseModifierTemplate    *string `json:"responseModifierTemplate"`
+					UseDynamicTeamCredential    bool    `json:"useDynamicTeamCredential"`
+				} `json:"assignments"`
+				CatalogId          *string                                      `json:"catalogId"`
+				CreatedAt          time.Time                                    `json:"createdAt"`
+				Description        *string                                      `json:"description"`
+				Id                 string                                       `json:"id"`
+				McpServerCatalogId *string                                      `json:"mcpServerCatalogId"`
+				McpServerId        *string                                      `json:"mcpServerId"`
+				McpServerName      *string                                      `json:"mcpServerName"`
+				Name               string                                       `json:"name"`
+				Parameters         *GetToolsWithAssignments_200_Data_Parameters `json:"parameters,omitempty"`
+				UpdatedAt          time.Time                                    `json:"updatedAt"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    GetToolsWithAssignments400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    GetToolsWithAssignments401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    GetToolsWithAssignments403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    GetToolsWithAssignments404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    GetToolsWithAssignments409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    GetToolsWithAssignments500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteToolResponse parses an HTTP response from a DeleteToolWithResponse call
+func ParseDeleteToolResponse(rsp *http.Response) (*DeleteToolResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteToolResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteTool400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteTool401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteTool403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteTool404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteTool409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteTool500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetTrustedDataPoliciesResponse parses an HTTP response from a GetTrustedDataPoliciesWithResponse call
 func ParseGetTrustedDataPoliciesResponse(rsp *http.Response) (*GetTrustedDataPoliciesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -42766,15 +50120,17 @@ func ParseGetTrustedDataPoliciesResponse(rsp *http.Response) (*GetTrustedDataPol
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			Action        GetTrustedDataPolicies200Action   `json:"action"`
-			AgentToolId   openapi_types.UUID                `json:"agentToolId"`
-			AttributePath string                            `json:"attributePath"`
-			CreatedAt     time.Time                         `json:"createdAt"`
-			Description   string                            `json:"description"`
-			Id            openapi_types.UUID                `json:"id"`
-			Operator      GetTrustedDataPolicies200Operator `json:"operator"`
-			UpdatedAt     time.Time                         `json:"updatedAt"`
-			Value         string                            `json:"value"`
+			Action     GetTrustedDataPolicies200Action `json:"action"`
+			Conditions []struct {
+				Key      string                                      `json:"key"`
+				Operator GetTrustedDataPolicies200ConditionsOperator `json:"operator"`
+				Value    string                                      `json:"value"`
+			} `json:"conditions"`
+			CreatedAt   time.Time          `json:"createdAt"`
+			Description *string            `json:"description"`
+			Id          openapi_types.UUID `json:"id"`
+			ToolId      openapi_types.UUID `json:"toolId"`
+			UpdatedAt   time.Time          `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -42874,15 +50230,17 @@ func ParseCreateTrustedDataPolicyResponse(rsp *http.Response) (*CreateTrustedDat
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Action        CreateTrustedDataPolicy200Action   `json:"action"`
-			AgentToolId   openapi_types.UUID                 `json:"agentToolId"`
-			AttributePath string                             `json:"attributePath"`
-			CreatedAt     time.Time                          `json:"createdAt"`
-			Description   string                             `json:"description"`
-			Id            openapi_types.UUID                 `json:"id"`
-			Operator      CreateTrustedDataPolicy200Operator `json:"operator"`
-			UpdatedAt     time.Time                          `json:"updatedAt"`
-			Value         string                             `json:"value"`
+			Action     CreateTrustedDataPolicy200Action `json:"action"`
+			Conditions []struct {
+				Key      string                                       `json:"key"`
+				Operator CreateTrustedDataPolicy200ConditionsOperator `json:"operator"`
+				Value    string                                       `json:"value"`
+			} `json:"conditions"`
+			CreatedAt   time.Time          `json:"createdAt"`
+			Description *string            `json:"description"`
+			Id          openapi_types.UUID `json:"id"`
+			ToolId      openapi_types.UUID `json:"toolId"`
+			UpdatedAt   time.Time          `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -42954,6 +50312,107 @@ func ParseCreateTrustedDataPolicyResponse(rsp *http.Response) (*CreateTrustedDat
 			Error struct {
 				Message string                              `json:"message"`
 				Type    CreateTrustedDataPolicy500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseBulkUpsertDefaultResultPolicyResponse parses an HTTP response from a BulkUpsertDefaultResultPolicyWithResponse call
+func ParseBulkUpsertDefaultResultPolicyResponse(rsp *http.Response) (*BulkUpsertDefaultResultPolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &BulkUpsertDefaultResultPolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Created float32 `json:"created"`
+			Updated float32 `json:"updated"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                    `json:"message"`
+				Type    BulkUpsertDefaultResultPolicy400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                    `json:"message"`
+				Type    BulkUpsertDefaultResultPolicy401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                    `json:"message"`
+				Type    BulkUpsertDefaultResultPolicy403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                    `json:"message"`
+				Type    BulkUpsertDefaultResultPolicy404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                    `json:"message"`
+				Type    BulkUpsertDefaultResultPolicy409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                    `json:"message"`
+				Type    BulkUpsertDefaultResultPolicy500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -43082,15 +50541,17 @@ func ParseGetTrustedDataPolicyResponse(rsp *http.Response) (*GetTrustedDataPolic
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Action        GetTrustedDataPolicy200Action   `json:"action"`
-			AgentToolId   openapi_types.UUID              `json:"agentToolId"`
-			AttributePath string                          `json:"attributePath"`
-			CreatedAt     time.Time                       `json:"createdAt"`
-			Description   string                          `json:"description"`
-			Id            openapi_types.UUID              `json:"id"`
-			Operator      GetTrustedDataPolicy200Operator `json:"operator"`
-			UpdatedAt     time.Time                       `json:"updatedAt"`
-			Value         string                          `json:"value"`
+			Action     GetTrustedDataPolicy200Action `json:"action"`
+			Conditions []struct {
+				Key      string                                    `json:"key"`
+				Operator GetTrustedDataPolicy200ConditionsOperator `json:"operator"`
+				Value    string                                    `json:"value"`
+			} `json:"conditions"`
+			CreatedAt   time.Time          `json:"createdAt"`
+			Description *string            `json:"description"`
+			Id          openapi_types.UUID `json:"id"`
+			ToolId      openapi_types.UUID `json:"toolId"`
+			UpdatedAt   time.Time          `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -43190,15 +50651,17 @@ func ParseUpdateTrustedDataPolicyResponse(rsp *http.Response) (*UpdateTrustedDat
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Action        UpdateTrustedDataPolicy200Action   `json:"action"`
-			AgentToolId   openapi_types.UUID                 `json:"agentToolId"`
-			AttributePath string                             `json:"attributePath"`
-			CreatedAt     time.Time                          `json:"createdAt"`
-			Description   string                             `json:"description"`
-			Id            openapi_types.UUID                 `json:"id"`
-			Operator      UpdateTrustedDataPolicy200Operator `json:"operator"`
-			UpdatedAt     time.Time                          `json:"updatedAt"`
-			Value         string                             `json:"value"`
+			Action     UpdateTrustedDataPolicy200Action `json:"action"`
+			Conditions []struct {
+				Key      string                                       `json:"key"`
+				Operator UpdateTrustedDataPolicy200ConditionsOperator `json:"operator"`
+				Value    string                                       `json:"value"`
+			} `json:"conditions"`
+			CreatedAt   time.Time          `json:"createdAt"`
+			Description *string            `json:"description"`
+			Id          openapi_types.UUID `json:"id"`
+			ToolId      openapi_types.UUID `json:"toolId"`
+			UpdatedAt   time.Time          `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -43270,6 +50733,117 @@ func ParseUpdateTrustedDataPolicyResponse(rsp *http.Response) (*UpdateTrustedDat
 			Error struct {
 				Message string                              `json:"message"`
 				Type    UpdateTrustedDataPolicy500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateUserResponse parses an HTTP response from a CreateUserWithResponse call
+func ParseCreateUserResponse(rsp *http.Response) (*CreateUserResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateUserResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			BanExpires       *time.Time `json:"banExpires"`
+			BanReason        *string    `json:"banReason"`
+			Banned           *bool      `json:"banned"`
+			CreatedAt        time.Time  `json:"createdAt"`
+			Email            string     `json:"email"`
+			EmailVerified    bool       `json:"emailVerified"`
+			Id               string     `json:"id"`
+			Image            *string    `json:"image"`
+			Name             string     `json:"name"`
+			Role             *string    `json:"role"`
+			TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+			UpdatedAt        time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateUser400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateUser401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateUser403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateUser404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateUser409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateUser500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -43591,6 +51165,117 @@ func ParseGetUserTokenValueResponse(rsp *http.Response) (*GetUserTokenValueRespo
 	return response, nil
 }
 
+// ParseGetUserByEmailResponse parses an HTTP response from a GetUserByEmailWithResponse call
+func ParseGetUserByEmailResponse(rsp *http.Response) (*GetUserByEmailResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetUserByEmailResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			BanExpires       *time.Time `json:"banExpires"`
+			BanReason        *string    `json:"banReason"`
+			Banned           *bool      `json:"banned"`
+			CreatedAt        time.Time  `json:"createdAt"`
+			Email            string     `json:"email"`
+			EmailVerified    bool       `json:"emailVerified"`
+			Id               string     `json:"id"`
+			Image            *string    `json:"image"`
+			Name             string     `json:"name"`
+			Role             *string    `json:"role"`
+			TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+			UpdatedAt        time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetUserByEmail500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetUserPermissionsResponse parses an HTTP response from a GetUserPermissionsWithResponse call
 func ParseGetUserPermissionsResponse(rsp *http.Response) (*GetUserPermissionsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -43689,6 +51374,692 @@ func ParseGetUserPermissionsResponse(rsp *http.Response) (*GetUserPermissionsRes
 	return response, nil
 }
 
+// ParseDeleteUserResponse parses an HTTP response from a DeleteUserWithResponse call
+func ParseDeleteUserResponse(rsp *http.Response) (*DeleteUserResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteUserResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest map[string]interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest map[string]interface{}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateUserResponse parses an HTTP response from a UpdateUserWithResponse call
+func ParseUpdateUserResponse(rsp *http.Response) (*UpdateUserResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateUserResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			BanExpires       *time.Time `json:"banExpires"`
+			BanReason        *string    `json:"banReason"`
+			Banned           *bool      `json:"banned"`
+			CreatedAt        time.Time  `json:"createdAt"`
+			Email            string     `json:"email"`
+			EmailVerified    bool       `json:"emailVerified"`
+			Id               string     `json:"id"`
+			Image            *string    `json:"image"`
+			Name             string     `json:"name"`
+			Role             *string    `json:"role"`
+			TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+			UpdatedAt        time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateUser400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateUser401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateUser403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateUser404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateUser409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateUser500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetUserRoleResponse parses an HTTP response from a GetUserRoleWithResponse call
+func ParseGetUserRoleResponse(rsp *http.Response) (*GetUserRoleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetUserRoleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time `json:"createdAt"`
+			Id             string    `json:"id"`
+			OrganizationId string    `json:"organizationId"`
+			Role           string    `json:"role"`
+			UserId         string    `json:"userId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserRole400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserRole401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserRole403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserRole404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserRole409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserRole500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateUserRoleResponse parses an HTTP response from a UpdateUserRoleWithResponse call
+func ParseUpdateUserRoleResponse(rsp *http.Response) (*UpdateUserRoleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateUserRoleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time `json:"createdAt"`
+			Id             string    `json:"id"`
+			OrganizationId string    `json:"organizationId"`
+			Role           string    `json:"role"`
+			UserId         string    `json:"userId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    UpdateUserRole400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    UpdateUserRole401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    UpdateUserRole403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    UpdateUserRole404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    UpdateUserRole409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    UpdateUserRole500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteUserRoleResponse parses an HTTP response from a DeleteUserRoleWithResponse call
+func ParseDeleteUserRoleResponse(rsp *http.Response) (*DeleteUserRoleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteUserRoleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time `json:"createdAt"`
+			Id             string    `json:"id"`
+			OrganizationId string    `json:"organizationId"`
+			Role           string    `json:"role"`
+			UserId         string    `json:"userId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    DeleteUserRole400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    DeleteUserRole401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    DeleteUserRole403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    DeleteUserRole404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    DeleteUserRole409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    DeleteUserRole500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetUserByIdResponse parses an HTTP response from a GetUserByIdWithResponse call
+func ParseGetUserByIdResponse(rsp *http.Response) (*GetUserByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetUserByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			BanExpires       *time.Time `json:"banExpires"`
+			BanReason        *string    `json:"banReason"`
+			Banned           *bool      `json:"banned"`
+			CreatedAt        time.Time  `json:"createdAt"`
+			Email            string     `json:"email"`
+			EmailVerified    bool       `json:"emailVerified"`
+			Id               string     `json:"id"`
+			Image            *string    `json:"image"`
+			Name             string     `json:"name"`
+			Role             *string    `json:"role"`
+			TwoFactorEnabled *bool      `json:"twoFactorEnabled"`
+			UpdatedAt        time.Time  `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    GetUserById500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiWebhooksChatopsMsTeamsResponse parses an HTTP response from a PostApiWebhooksChatopsMsTeamsWithResponse call
+func ParsePostApiWebhooksChatopsMsTeamsResponse(rsp *http.Response) (*PostApiWebhooksChatopsMsTeamsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiWebhooksChatopsMsTeamsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			union json.RawMessage
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error string `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest struct {
+			Error string `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error string `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiWebhooksIncomingEmailResponse parses an HTTP response from a PostApiWebhooksIncomingEmailWithResponse call
+func ParsePostApiWebhooksIncomingEmailResponse(rsp *http.Response) (*PostApiWebhooksIncomingEmailResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiWebhooksIncomingEmailResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			union json.RawMessage
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error string `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 429:
+		var dest struct {
+			Error string `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON429 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error string `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetHealthResponse parses an HTTP response from a GetHealthWithResponse call
 func ParseGetHealthResponse(rsp *http.Response) (*GetHealthResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -43707,6 +52078,139 @@ func ParseGetHealthResponse(rsp *http.Response) (*GetHealthResponse, error) {
 		var dest struct {
 			Name    string `json:"name"`
 			Status  string `json:"status"`
+			Version string `json:"version"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetReadyResponse parses an HTTP response from a GetReadyWithResponse call
+func ParseGetReadyResponse(rsp *http.Response) (*GetReadyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetReadyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Database string `json:"database"`
+			Name     string `json:"name"`
+			Status   string `json:"status"`
+			Version  string `json:"version"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 503:
+		var dest struct {
+			Database string `json:"database"`
+			Name     string `json:"name"`
+			Status   string `json:"status"`
+			Version  string `json:"version"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON503 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostV1A2aPromptIdResponse parses an HTTP response from a PostV1A2aPromptIdWithResponse call
+func ParsePostV1A2aPromptIdResponse(rsp *http.Response) (*PostV1A2aPromptIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostV1A2aPromptIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Error *struct {
+				Code    float32 `json:"code"`
+				Message string  `json:"message"`
+			} `json:"error,omitempty"`
+			Id      PostV1A2aPromptId_200_Id    `json:"id"`
+			Jsonrpc PostV1A2aPromptId200Jsonrpc `json:"jsonrpc"`
+			Result  *struct {
+				ContextId *string                 `json:"contextId,omitempty"`
+				MessageId string                  `json:"messageId"`
+				Metadata  *map[string]interface{} `json:"metadata,omitempty"`
+				Parts     []struct {
+					Kind PostV1A2aPromptId200ResultPartsKind `json:"kind"`
+					Text string                              `json:"text"`
+				} `json:"parts"`
+				Role   PostV1A2aPromptId200ResultRole `json:"role"`
+				TaskId *string                        `json:"taskId,omitempty"`
+			} `json:"result,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetV1A2aPromptIdWellKnownAgentJsonResponse parses an HTTP response from a GetV1A2aPromptIdWellKnownAgentJsonWithResponse call
+func ParseGetV1A2aPromptIdWellKnownAgentJsonResponse(rsp *http.Response) (*GetV1A2aPromptIdWellKnownAgentJsonResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetV1A2aPromptIdWellKnownAgentJsonResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Capabilities struct {
+				PushNotifications      bool `json:"pushNotifications"`
+				StateTransitionHistory bool `json:"stateTransitionHistory"`
+				Streaming              bool `json:"streaming"`
+			} `json:"capabilities"`
+			DefaultInputModes  []string `json:"defaultInputModes"`
+			DefaultOutputModes []string `json:"defaultOutputModes"`
+			Description        string   `json:"description"`
+			Name               string   `json:"name"`
+			Skills             []struct {
+				Description string   `json:"description"`
+				Id          string   `json:"id"`
+				InputModes  []string `json:"inputModes"`
+				Name        string   `json:"name"`
+				OutputModes []string `json:"outputModes"`
+				Tags        []string `json:"tags"`
+			} `json:"skills"`
+			Url     string `json:"url"`
 			Version string `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

@@ -35,8 +35,6 @@ resource "archestra_prompt" "example" {
 
 ### Optional
 
-- `is_active` (Boolean) Whether the prompt is active
-- `parent_prompt_id` (String) The identifier of the parent prompt if this is a version
 - `system_prompt` (String) The system prompt template
 - `user_prompt` (String) The user prompt template
 

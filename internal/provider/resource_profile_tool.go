@@ -33,15 +33,13 @@ type ProfileToolResource struct {
 
 // ProfileToolResourceModel describes the resource data model.
 type ProfileToolResourceModel struct {
-	ID                                   types.String `tfsdk:"id"`
-	ProfileID                            types.String `tfsdk:"profile_id"`
-	ToolID                               types.String `tfsdk:"tool_id"`
-	CredentialSourceMCPServerID          types.String `tfsdk:"credential_source_mcp_server_id"`
-	ExecutionSourceMCPServerID           types.String `tfsdk:"execution_source_mcp_server_id"`
-	UseDynamicTeamCredential             types.Bool   `tfsdk:"use_dynamic_team_credential"`
-	AllowUsageWhenUntrustedDataIsPresent types.Bool   `tfsdk:"allow_usage_when_untrusted_data_is_present"`
-	ToolResultTreatment                  types.String `tfsdk:"tool_result_treatment"`
-	ResponseModifierTemplate             types.String `tfsdk:"response_modifier_template"`
+	ID                          types.String `tfsdk:"id"`
+	ProfileID                   types.String `tfsdk:"profile_id"`
+	ToolID                      types.String `tfsdk:"tool_id"`
+	CredentialSourceMCPServerID types.String `tfsdk:"credential_source_mcp_server_id"`
+	ExecutionSourceMCPServerID  types.String `tfsdk:"execution_source_mcp_server_id"`
+	UseDynamicTeamCredential    types.Bool   `tfsdk:"use_dynamic_team_credential"`
+	ResponseModifierTemplate    types.String `tfsdk:"response_modifier_template"`
 }
 
 func (r *ProfileToolResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -90,22 +88,7 @@ func (r *ProfileToolResource) Schema(ctx context.Context, req resource.SchemaReq
 					boolplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"allow_usage_when_untrusted_data_is_present": schema.BoolAttribute{
-				MarkdownDescription: "Whether to allow tool usage when untrusted data is present",
-				Optional:            true,
-				Computed:            true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.UseStateForUnknown(),
-				},
-			},
-			"tool_result_treatment": schema.StringAttribute{
-				MarkdownDescription: "How to treat tool results (trusted, sanitize_with_dual_llm, untrusted)",
-				Optional:            true,
-				Computed:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-			},
+
 			"response_modifier_template": schema.StringAttribute{
 				MarkdownDescription: "Template string to modify the tool response before it reaches the model",
 				Optional:            true,
@@ -203,18 +186,6 @@ func (r *ProfileToolResource) Create(ctx context.Context, req resource.CreateReq
 
 	needsUpdate := false
 	updateBody := client.UpdateAgentToolJSONRequestBody{}
-
-	if !data.AllowUsageWhenUntrustedDataIsPresent.IsNull() {
-		val := data.AllowUsageWhenUntrustedDataIsPresent.ValueBool()
-		updateBody.AllowUsageWhenUntrustedDataIsPresent = &val
-		needsUpdate = true
-	}
-
-	if !data.ToolResultTreatment.IsNull() {
-		val := client.UpdateAgentToolJSONBodyToolResultTreatment(data.ToolResultTreatment.ValueString())
-		updateBody.ToolResultTreatment = &val
-		needsUpdate = true
-	}
 
 	if !data.ResponseModifierTemplate.IsNull() {
 		val := data.ResponseModifierTemplate.ValueString()
@@ -376,16 +347,6 @@ func (r *ProfileToolResource) Update(ctx context.Context, req resource.UpdateReq
 		updateBody.UseDynamicTeamCredential = &val
 	}
 
-	if !data.AllowUsageWhenUntrustedDataIsPresent.IsNull() {
-		val := data.AllowUsageWhenUntrustedDataIsPresent.ValueBool()
-		updateBody.AllowUsageWhenUntrustedDataIsPresent = &val
-	}
-
-	if !data.ToolResultTreatment.IsNull() {
-		val := client.UpdateAgentToolJSONBodyToolResultTreatment(data.ToolResultTreatment.ValueString())
-		updateBody.ToolResultTreatment = &val
-	}
-
 	if !data.ResponseModifierTemplate.IsNull() {
 		val := data.ResponseModifierTemplate.ValueString()
 		updateBody.ResponseModifierTemplate = &val
@@ -517,8 +478,6 @@ func (r *ProfileToolResource) readState(
 			// Map to model directly
 			data.ProfileID = types.StringValue(at.Agent.Id)
 			data.ToolID = types.StringValue(at.Tool.Id)
-			data.AllowUsageWhenUntrustedDataIsPresent = types.BoolValue(at.AllowUsageWhenUntrustedDataIsPresent)
-			data.ToolResultTreatment = types.StringValue(string(at.ToolResultTreatment))
 			data.UseDynamicTeamCredential = types.BoolValue(at.UseDynamicTeamCredential)
 
 			if at.CredentialSourceMcpServerId != nil {

@@ -158,26 +158,29 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewLimitResource,
 		NewOptimizationRuleResource,
 		NewOrganizationSettingsResource,
-		// NewUserResource, // TODO: Enable when user API endpoints are implemented
+		NewUserResource,
 		NewTeamExternalGroupResource,
 		NewChatLLMProviderApiKeyResource,
 		NewDualLlmConfigResource,
 		NewProfileToolResource,
 		NewSsoProviderResource,
 		NewPromptResource,
+		NewRoleResource,
+		NewUserRoleAssignmentResource,
 	}
 }
 
 func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewTeamDataSource,
-		// NewUserDataSource, // TODO: Enable when user API endpoints are implemented
+		NewUserDataSource, // TODO: Enable when user API endpoints are implemented
 		NewProfileToolDataSource,
 		NewMCPServerToolDataSource,
 		NewTokenPricesDataSource,
 		NewTeamExternalGroupsDataSource,
 		NewPromptDataSource,
 		NewPromptVersionsDataSource,
+		NewRoleDataSource,
 	}
 }
 
