@@ -165,13 +165,16 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewProfileToolResource,
 		NewSsoProviderResource,
 		NewPromptResource,
+		NewRoleResource,
+		NewUserRoleAssignmentResource,
 	}
 }
 
 func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewTeamDataSource,
-		// NewUserDataSource, // TODO: Enable when user API endpoints are implemented
+		NewUserDataSource,
+		NewRoleDataSource,
 		NewProfileToolDataSource,
 		NewMCPServerToolDataSource,
 		NewTokenPricesDataSource,
