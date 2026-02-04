@@ -165,6 +165,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewProfileToolResource,
 		NewSsoProviderResource,
 		NewPromptResource,
+		NewRoleResource, // Custom RBAC roles
 	}
 }
 
@@ -178,6 +179,7 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewTeamExternalGroupsDataSource,
 		NewPromptDataSource,
 		NewPromptVersionsDataSource,
+		NewRoleDataSource, // Custom RBAC role lookup
 	}
 }
 
