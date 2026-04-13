@@ -125,15 +125,34 @@ Optional:
 - `client_id` (String) OIDC client ID.
 - `client_secret` (String, Sensitive) OIDC client secret.
 - `discovery_endpoint` (String) Discovery endpoint (.well-known).
+- `enable_rp_initiated_logout` (Boolean) Enable RP-initiated logout.
+- `enterprise_managed_credentials` (Block, Optional) Enterprise-managed credentials for token exchange flows. (see [below for nested schema](#nestedblock--oidc_config--enterprise_managed_credentials))
 - `issuer` (String) OIDC issuer URL.
 - `jwks_endpoint` (String) Override JWKS endpoint.
 - `mapping` (Block, Optional) Attribute mapping for user fields. (see [below for nested schema](#nestedblock--oidc_config--mapping))
 - `override_user_info` (Boolean) Use token claims instead of userinfo when true.
 - `pkce` (Boolean) Enable PKCE.
 - `scopes` (List of String) OAuth scopes to request.
+- `skip_discovery` (Boolean) Skip OIDC discovery endpoint validation.
 - `token_endpoint` (String) Override token endpoint.
 - `token_endpoint_authentication` (String) Token endpoint auth method (client_secret_basic or client_secret_post).
 - `user_info_endpoint` (String) Override user info endpoint.
+
+<a id="nestedblock--oidc_config--enterprise_managed_credentials"></a>
+### Nested Schema for `oidc_config.enterprise_managed_credentials`
+
+Optional:
+
+- `client_assertion_audience` (String) Audience for client assertion JWT.
+- `client_id` (String) Client ID for enterprise-managed credentials.
+- `client_secret` (String, Sensitive) Client secret for enterprise-managed credentials.
+- `private_key_id` (String) Key ID for the private key.
+- `private_key_pem` (String, Sensitive) PEM-encoded private key for private_key_jwt authentication.
+- `provider_type` (String) Provider type: generic_oidc, okta, or keycloak.
+- `subject_token_type` (String) Subject token type for token exchange.
+- `token_endpoint` (String) Token endpoint URL.
+- `token_endpoint_authentication` (String) Token endpoint auth method: client_secret_post, client_secret_basic, or private_key_jwt.
+
 
 <a id="nestedblock--oidc_config--mapping"></a>
 ### Nested Schema for `oidc_config.mapping`

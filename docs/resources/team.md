@@ -28,6 +28,7 @@ resource "archestra_team" "example" {
 
 ### Optional
 
+- `convert_tool_results_to_toon` (Boolean) Team-level TOON compression setting
 - `description` (String) Description of the team
 - `members` (Attributes List) List of team members (see [below for nested schema](#nestedatt--members))
 

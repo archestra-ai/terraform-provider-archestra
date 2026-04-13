@@ -42,7 +42,23 @@ resource "archestra_profile" "example" {
 
 ### Optional
 
+- `agent_type` (String) The type of the agent. Valid values: profile, mcp_gateway, llm_proxy, agent
+- `connector_ids` (List of String) List of connector IDs to associate with the profile
+- `consider_context_untrusted` (Boolean) Whether the agent context is treated as untrusted
+- `description` (String) Description of the profile
+- `icon` (String) Emoji or base64 image for the profile icon
+- `identity_provider_id` (String) Identity provider ID for SSO
+- `incoming_email_allowed_domain` (String) Domain for internal email security mode
+- `incoming_email_enabled` (Boolean) Enable email trigger
+- `incoming_email_security_mode` (String) Email security mode: private, internal, or public
+- `is_default` (Boolean) Whether this is the default agent
+- `knowledge_base_ids` (List of String) List of knowledge base IDs to associate with the profile
 - `labels` (Attributes List) Labels to organize and identify the profile (see [below for nested schema](#nestedatt--labels))
+- `llm_api_key_id` (String) LLM API key UUID
+- `llm_model` (String) LLM model ID
+- `passthrough_headers` (List of String) HTTP headers to forward
+- `suggested_prompts` (Attributes List) Suggested prompts for the profile (see [below for nested schema](#nestedatt--suggested_prompts))
+- `system_prompt` (String) System prompt for agent-type agents
 
 ### Read-Only
 
@@ -55,3 +71,12 @@ Required:
 
 - `key` (String) Label key
 - `value` (String) Label value
+
+
+<a id="nestedatt--suggested_prompts"></a>
+### Nested Schema for `suggested_prompts`
+
+Required:
+
+- `prompt` (String) The prompt text
+- `summary_title` (String) The summary title for the prompt

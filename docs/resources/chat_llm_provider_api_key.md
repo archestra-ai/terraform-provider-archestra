@@ -32,7 +32,12 @@ resource "archestra_chat_llm_provider_api_key" "example" {
 
 ### Optional
 
-- `is_organization_default` (Boolean) Whether this API key is the organization default for the provider
+- `base_url` (String) Custom base URL for the LLM provider endpoint
+- `is_organization_default` (Boolean) Whether this API key is the primary key for the provider
+- `scope` (String) Visibility scope for the API key: `personal`, `team`, or `org`
+- `team_id` (String) Team ID for team-scoped keys
+- `vault_secret_key` (String) Key within the vault secret
+- `vault_secret_path` (String) Path to the secret in the vault
 
 ### Read-Only
 

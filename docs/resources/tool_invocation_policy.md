@@ -37,10 +37,10 @@ resource "archestra_tool_invocation_policy" "block_system_paths" {
 
 ### Required
 
-- `action` (String) The action to take when the policy matches. Valid values: `allow_when_context_is_untrusted`, `block_always`
+- `action` (String) The action to take when the policy matches. Valid values: `allow_when_context_is_untrusted`, `block_when_context_is_untrusted`, `block_always`, `require_approval`
 - `argument_name` (String) The argument name to match
 - `operator` (String) The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`
-- `profile_tool_id` (String) The profile tool ID this policy applies to
+- `profile_tool_id` (String) The tool ID this policy applies to
 - `value` (String) The value to compare against
 
 ### Optional

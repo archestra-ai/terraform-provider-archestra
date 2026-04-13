@@ -45,7 +45,15 @@ resource "archestra_mcp_server_installation" "example" {
 
 ### Optional
 
+- `access_token` (String, Sensitive) Personal access token for the MCP server
+- `agent_ids` (List of String) Agent IDs to auto-assign tools to on install
+- `environment_values` (Map of String) Environment variable values for the MCP server installation
+- `is_byos_vault` (Boolean) When true, environment_values and user_config_values are treated as vault references
 - `mcp_server_id` (String) The MCP server ID from the private MCP registry (archestra_mcp_registry_catalog_item resource)
+- `secret_id` (String) Pre-created secret UUID for the MCP server installation
+- `service_account` (String) Kubernetes service account override for the MCP server pod
+- `team_id` (String) Team ID for team-scoped installations
+- `user_config_values` (Map of String) User configuration field values for the MCP server installation
 
 ### Read-Only
 

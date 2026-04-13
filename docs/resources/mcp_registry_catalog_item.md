@@ -161,11 +161,20 @@ resource "archestra_mcp_registry_catalog_item" "remote_oauth" {
 
 - `auth_description` (String) Description of the authentication requirements
 - `auth_fields` (Attributes List) Custom authentication fields required by the MCP server (see [below for nested schema](#nestedatt--auth_fields))
+- `deployment_spec_yaml` (String) Custom Kubernetes deployment YAML for the MCP server
 - `description` (String) Description of the MCP server
 - `docs_url` (String) URL to the MCP server documentation
+- `icon` (String) Icon string for the MCP server
 - `installation_command` (String) Installation command for the MCP server (e.g., npm install -g @example/mcp-server)
+- `instructions` (String) Installation instructions text for the MCP server
+- `labels` (Attributes List) Labels for the MCP server catalog item (see [below for nested schema](#nestedatt--labels))
 - `local_config` (Attributes) Configuration for MCP servers run in the Archestra orchestrator MCP runtime (see [below for nested schema](#nestedatt--local_config))
 - `remote_config` (Attributes) Configuration for remote/hosted MCP servers accessed via HTTP (see [below for nested schema](#nestedatt--remote_config))
+- `repository` (String) Repository URL for the MCP server
+- `requires_auth` (Boolean) Whether the MCP server requires authentication
+- `scope` (String) Visibility scope for the MCP server catalog item (e.g., 'personal', 'team', 'org')
+- `teams` (List of String) Team IDs that have access to this MCP server
+- `version` (String) Version string for the MCP server
 
 ### Read-Only
 
@@ -186,6 +195,15 @@ Optional:
 - `description` (String) Description of the field
 
 
+<a id="nestedatt--labels"></a>
+### Nested Schema for `labels`
+
+Required:
+
+- `key` (String) Label key
+- `value` (String) Label value
+
+
 <a id="nestedatt--local_config"></a>
 ### Nested Schema for `local_config`
 
@@ -194,10 +212,36 @@ Optional:
 - `arguments` (List of String) Arguments to pass to the command
 - `command` (String) The executable command to run (e.g., 'node', 'python', 'npx'). Optional if Docker Image is set (will use image's default CMD).
 - `docker_image` (String) Custom Docker image URL. If not specified, Archestra's default base image will be used.
+- `env_from` (Attributes List) List of sources to populate environment variables from (Kubernetes secrets or configMaps) (see [below for nested schema](#nestedatt--local_config--env_from))
 - `environment` (Map of String) Environment variables for the MCP server (KEY=value format)
 - `http_path` (String) HTTP path for streamable-http transport (e.g., '/sse')
 - `http_port` (Number) HTTP port for streamable-http transport
+- `image_pull_secrets` (Attributes List) List of existing Kubernetes image pull secrets to use for pulling the Docker image (see [below for nested schema](#nestedatt--local_config--image_pull_secrets))
+- `mounted_env_keys` (Set of String) Set of environment variable keys that should be mounted as files at /secrets/<key>
+- `node_port` (Number) Node port for the MCP server service
+- `service_account` (String) Kubernetes service account for the MCP server pod
 - `transport_type` (String) Transport type: 'stdio' or 'streamable-http'. Defaults to 'stdio'
+
+<a id="nestedatt--local_config--env_from"></a>
+### Nested Schema for `local_config.env_from`
+
+Required:
+
+- `name` (String) Name of the secret or configMap
+- `type` (String) Source type: 'secret' or 'configMap'
+
+Optional:
+
+- `prefix` (String) Optional prefix for environment variable names
+
+
+<a id="nestedatt--local_config--image_pull_secrets"></a>
+### Nested Schema for `local_config.image_pull_secrets`
+
+Required:
+
+- `name` (String) Name of the existing Kubernetes secret
+
 
 
 <a id="nestedatt--remote_config"></a>
@@ -220,6 +264,7 @@ Required:
 
 Optional:
 
+- `authorization_endpoint` (String) Custom OAuth authorization endpoint URL
 - `client_id` (String) OAuth Client ID. Leave empty if the server supports dynamic client registration.
 - `client_secret` (String, Sensitive) OAuth Client Secret (optional)
 - `scopes` (List of String) List of OAuth scopes to request (e.g., ['read', 'write'])
