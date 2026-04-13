@@ -8,18 +8,88 @@ generate:
 output: internal/client/archestra_client.go
 
 output-options:
-  # Exclude routes with wildcard paths incompatible with oapi-codegen
-  # These routes use fastify wildcards (*) or HTTP proxy patterns
   exclude-tags:
-    - llm-proxy # LLM proxy routes
-    - auth # auth wildcard routes (see TODOs for user resources.. basically we need to expand this out and not use a wildcard)
-    - mcp-gateway # MCP gateway routes
-    - Interaction # Interaction routes
-    - Health # Health routes
+    - LLM Proxy
+    - Auth
+    - MCP Gateway
+    - Interaction
+    - Health
+    - A2A
+    - Chat
+    - ChatOps
+    - ChatOps Webhooks
+    - Config
+    - Connectors
+    - Incoming Email
+    - Invitation
+    - Knowledge Bases
+    - LLM Models
+    - MCP Tool Call
+    - Member
+    - Members
+    - OAuth
+    - Roles
+    - Secrets
+    - Statistics
+    - User Tokens
+    - Vault
+    - Virtual API Keys
+    - Webhooks
+    - mcp-proxy
   exclude-schemas:
     - OpenAiChatCompletionRequest
+    - OpenAiChatCompletionRequestInput
     - OpenAiChatCompletionResponse
+    - OpenAiChatCompletionResponseInput
     - GeminiGenerateContentRequest
+    - GeminiGenerateContentRequestInput
     - GeminiGenerateContentResponse
+    - GeminiGenerateContentResponseInput
     - AnthropicMessagesRequest
+    - AnthropicMessagesRequestInput
     - AnthropicMessagesResponse
+    - AnthropicMessagesResponseInput
+    - CerebrasChatCompletionRequest
+    - CerebrasChatCompletionRequestInput
+    - CerebrasChatCompletionResponse
+    - CerebrasChatCompletionResponseInput
+    - CohereChatRequest
+    - CohereChatRequestInput
+    - CohereChatResponse
+    - CohereChatResponseInput
+    - DeepSeekChatCompletionRequest
+    - DeepSeekChatCompletionRequestInput
+    - DeepSeekChatCompletionResponse
+    - DeepSeekChatCompletionResponseInput
+    - GroqChatCompletionRequest
+    - GroqChatCompletionRequestInput
+    - GroqChatCompletionResponse
+    - GroqChatCompletionResponseInput
+    - MinimaxChatCompletionRequest
+    - MinimaxChatCompletionRequestInput
+    - MinimaxChatCompletionResponse
+    - MinimaxChatCompletionResponseInput
+    - MistralChatCompletionRequest
+    - MistralChatCompletionRequestInput
+    - MistralChatCompletionResponse
+    - MistralChatCompletionResponseInput
+    - OllamaChatCompletionRequest
+    - OllamaChatCompletionRequestInput
+    - OllamaChatCompletionResponse
+    - OllamaChatCompletionResponseInput
+    - PerplexityChatCompletionRequest
+    - PerplexityChatCompletionRequestInput
+    - PerplexityChatCompletionResponse
+    - PerplexityChatCompletionResponseInput
+    - VllmChatCompletionRequest
+    - VllmChatCompletionRequestInput
+    - VllmChatCompletionResponse
+    - VllmChatCompletionResponseInput
+    - XaiChatCompletionRequest
+    - XaiChatCompletionRequestInput
+    - XaiChatCompletionResponse
+    - XaiChatCompletionResponseInput
+    - ZhipuaiChatCompletionRequest
+    - ZhipuaiChatCompletionRequestInput
+    - ZhipuaiChatCompletionResponse
+    - ZhipuaiChatCompletionResponseInput
