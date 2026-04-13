@@ -648,7 +648,10 @@ func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest
 	r.mapStringListToState(ctx, &data.ConnectorIds, apiResp.JSON200.ConnectorIds, resp.Diagnostics)
 
 	// Map labels from API response, preserving configuration order
-	data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	// If labels were not specified in config (nil), keep them nil in state
+	if data.Labels != nil {
+		data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

@@ -615,7 +615,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		dsy := data.DeploymentSpecYaml.ValueString()
 		requestBody.DeploymentSpecYaml = &dsy
 	}
-	if !data.Scope.IsNull() {
+	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
 		scope := client.CreateInternalMcpCatalogItemJSONBodyScope(data.Scope.ValueString())
 		requestBody.Scope = &scope
 	}
@@ -940,49 +940,29 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	// Map response to Terraform state
+	// Set ID from Create response, then read back the full resource
+	// to populate Computed fields (scope, requires_auth, etc.)
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
-	data.Name = types.StringValue(apiResp.JSON200.Name)
 
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-}
+	readResp, err := r.client.GetInternalMcpCatalogItemWithResponse(ctx, apiResp.JSON200.Id)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read catalog item after creation: %s", err))
+		return
+	}
+	if readResp.JSON200 == nil {
+		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK on read after create, got status %d", readResp.StatusCode()))
+		return
+	}
 
-func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data MCPServerRegistryResourceModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+	r.mapGetResponseToState(ctx, &data, readResp, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Parse UUID from state
-	serverID, err := uuid.Parse(data.ID.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
-		return
-	}
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
 
-	// Call API
-	apiResp, err := r.client.GetInternalMcpCatalogItemWithResponse(ctx, serverID)
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read MCP server, got error: %s", err))
-		return
-	}
-
-	// Handle not found
-	if apiResp.JSON404 != nil {
-		resp.State.RemoveResource(ctx)
-		return
-	}
-
-	// Check response
-	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
-		)
-		return
-	}
-
+func (r *MCPServerRegistryResource) mapGetResponseToState(_ context.Context, data *MCPServerRegistryResourceModel, apiResp *client.GetInternalMcpCatalogItemResponse, _ *diag.Diagnostics) {
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
@@ -1334,6 +1314,48 @@ func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadR
 			"description": types.StringType,
 		}})
 	}
+}
+
+func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data MCPServerRegistryResourceModel
+	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Parse UUID from state
+	serverID, err := uuid.Parse(data.ID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
+		return
+	}
+
+	// Call API
+	apiResp, err := r.client.GetInternalMcpCatalogItemWithResponse(ctx, serverID)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read MCP server, got error: %s", err))
+		return
+	}
+
+	// Handle not found
+	if apiResp.JSON404 != nil {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
+	// Check response
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
+		)
+		return
+	}
+
+	r.mapGetResponseToState(ctx, &data, apiResp, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -1428,7 +1450,7 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		dsy := data.DeploymentSpecYaml.ValueString()
 		requestBody.DeploymentSpecYaml = &dsy
 	}
-	if !data.Scope.IsNull() {
+	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
 		scope := client.UpdateInternalMcpCatalogItemJSONBodyScope(data.Scope.ValueString())
 		requestBody.Scope = &scope
 	}
