@@ -144,6 +144,78 @@ resource "archestra_sso_provider" "test" {
 `, providerID, domain)
 }
 
+func TestAccSsoProviderResource_oidcWithEnterpriseCredentials(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccSsoProviderOIDCWithEnterpriseCredentialsConfig("test-enterprise", "enterprise.example.com"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_sso_provider.test",
+						tfjsonpath.New("provider_id"),
+						knownvalue.StringExact("test-enterprise"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_sso_provider.test",
+						tfjsonpath.New("domain"),
+						knownvalue.StringExact("enterprise.example.com"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_sso_provider.test",
+						tfjsonpath.New("oidc_config").AtMapKey("enterprise_managed_credentials").AtMapKey("provider_type"),
+						knownvalue.StringExact("generic_oidc"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_sso_provider.test",
+						tfjsonpath.New("oidc_config").AtMapKey("enterprise_managed_credentials").AtMapKey("client_id"),
+						knownvalue.StringExact("downstream-client"),
+					),
+				},
+			},
+			{
+				ResourceName:            "archestra_sso_provider.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: ssoImportStateVerifyIgnore,
+			},
+		},
+	})
+}
+
+func testAccSsoProviderOIDCWithEnterpriseCredentialsConfig(providerID, domain string) string {
+	return fmt.Sprintf(`
+resource "archestra_sso_provider" "test" {
+  provider_id = %q
+  domain      = %q
+  issuer      = "https://enterprise.example.com"
+
+  oidc_config {
+    issuer             = "https://enterprise.example.com"
+    discovery_endpoint = "https://enterprise.example.com/.well-known/openid-configuration"
+    client_id          = "enterprise-client"
+    client_secret      = "enterprise-secret"
+    pkce               = true
+    skip_discovery     = true
+    token_endpoint_authentication = "client_secret_post"
+
+    enterprise_managed_credentials {
+      provider_type                = "generic_oidc"
+      client_id                    = "downstream-client"
+      client_secret                = "downstream-secret"
+      token_endpoint               = "https://enterprise.example.com/oauth/token"
+      token_endpoint_authentication = "client_secret_post"
+    }
+  }
+
+  role_mapping {
+    default_role = "member"
+  }
+}
+`, providerID, domain)
+}
+
 func TestAccSsoProviderResource_saml(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },

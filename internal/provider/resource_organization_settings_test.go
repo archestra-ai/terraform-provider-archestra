@@ -167,6 +167,48 @@ func TestAccOrganizationSettingsResourceWithLogo(t *testing.T) {
 	})
 }
 
+func TestAccOrganizationSettingsResourceWithAppearance(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccOrganizationSettingsResourceConfigWithAppearance("Test App", "restrictive", false),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("archestra_organization_settings.test", "app_name", "Test App"),
+					resource.TestCheckResourceAttr("archestra_organization_settings.test", "global_tool_policy", "restrictive"),
+					resource.TestCheckResourceAttr("archestra_organization_settings.test", "allow_chat_file_uploads", "false"),
+					resource.TestCheckResourceAttrSet("archestra_organization_settings.test", "id"),
+				),
+			},
+			{
+				Config: testAccOrganizationSettingsResourceConfigWithAppearance("Updated App", "permissive", true),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("archestra_organization_settings.test", "app_name", "Updated App"),
+					resource.TestCheckResourceAttr("archestra_organization_settings.test", "global_tool_policy", "permissive"),
+					resource.TestCheckResourceAttr("archestra_organization_settings.test", "allow_chat_file_uploads", "true"),
+				),
+			},
+		},
+	})
+}
+
+func testAccOrganizationSettingsResourceConfigWithAppearance(appName, globalToolPolicy string, allowUploads bool) string {
+	allowUploadsStr := "false"
+	if allowUploads {
+		allowUploadsStr = "true"
+	}
+
+	return `
+resource "archestra_organization_settings" "test" {
+  onboarding_complete      = true
+  app_name                 = "` + appName + `"
+  global_tool_policy       = "` + globalToolPolicy + `"
+  allow_chat_file_uploads  = ` + allowUploadsStr + `
+}
+`
+}
+
 func testAccOrganizationSettingsResourceConfigInvalidFont() string {
 	return `
 resource "archestra_organization_settings" "test" {

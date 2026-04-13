@@ -90,6 +90,42 @@ func TestAccChatLLMProviderApiKeyResourceInvalidProvider(t *testing.T) {
 	})
 }
 
+func TestAccChatLLMProviderApiKeyResourceWithScope(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccChatLLMProviderApiKeyResourceConfigWithScope("Scoped Ollama Key", "ollama", "org"),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "name", "Scoped Ollama Key"),
+					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "llm_provider", "ollama"),
+					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "scope", "org"),
+					resource.TestCheckResourceAttrSet("archestra_chat_llm_provider_api_key.test", "id"),
+				),
+			},
+			{
+				ResourceName:            "archestra_chat_llm_provider_api_key.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"api_key"},
+			},
+		},
+	})
+}
+
+func testAccChatLLMProviderApiKeyResourceConfigWithScope(name string, llmProvider string, scope string) string {
+	return fmt.Sprintf(`
+resource "archestra_chat_llm_provider_api_key" "test" {
+  name                    = %[1]q
+  api_key                 = "test-api-key-value"
+  llm_provider            = %[2]q
+  is_organization_default = false
+  scope                   = %[3]q
+}
+`, name, llmProvider, scope)
+}
+
 func testAccChatLLMProviderApiKeyResourceConfig(name string, llmProvider string, isDefault bool) string {
 	return fmt.Sprintf(`
 resource "archestra_chat_llm_provider_api_key" "test" {

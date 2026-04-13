@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -70,6 +71,69 @@ resource "archestra_mcp_registry_catalog_item" "test" {
   }
 }
 `, name, description)
+}
+
+func TestAccMcpRegistryCatalogItemResourceWithMetadata(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithMetadata("test-metadata-item"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_metadata",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-metadata-item"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_metadata",
+						tfjsonpath.New("version"),
+						knownvalue.StringExact("1.0.0"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_metadata",
+						tfjsonpath.New("repository"),
+						knownvalue.StringExact("https://github.com/example/mcp-server"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_metadata",
+						tfjsonpath.New("instructions"),
+						knownvalue.StringExact("Run npm install"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_metadata",
+						tfjsonpath.New("icon"),
+						knownvalue.StringExact("\U0001f527"),
+					),
+				},
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_mcp_registry_catalog_item.test_metadata",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigWithMetadata(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "test_metadata" {
+  name         = %[1]q
+  description  = "Test MCP server with metadata fields"
+  version      = "1.0.0"
+  repository   = "https://github.com/example/mcp-server"
+  instructions = "Run npm install"
+  icon         = "\U0001f527"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+}
+`, name)
 }
 
 func TestAccMcpRegistryCatalogItemResourceRemote(t *testing.T) {
@@ -340,6 +404,76 @@ resource "archestra_mcp_registry_catalog_item" "test_docker_env" {
   ]
 }
 `, name)
+}
+
+func TestAccMcpRegistryCatalogItemResourceWithLabelsAndEnvFrom(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithLabelsAndEnvFrom(rName),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_labels_envfrom",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact(fmt.Sprintf("labels-envfrom-test-%s", rName)),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_labels_envfrom",
+						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
+						knownvalue.StringExact("env"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_labels_envfrom",
+						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("value"),
+						knownvalue.StringExact("test"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_labels_envfrom",
+						tfjsonpath.New("local_config").AtMapKey("env_from"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"type":   knownvalue.StringExact("configMap"),
+								"name":   knownvalue.StringExact("test-config"),
+								"prefix": knownvalue.Null(),
+							}),
+						}),
+					),
+				},
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_mcp_registry_catalog_item.test_labels_envfrom",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigWithLabelsAndEnvFrom(rName string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "test_labels_envfrom" {
+  name        = "labels-envfrom-test-%[1]s"
+  description = "Test MCP server with labels and env_from"
+
+  labels = [{
+    key   = "env"
+    value = "test"
+  }]
+
+  local_config = {
+    docker_image = "alpine:latest"
+    env_from = [{
+      type = "configMap"
+      name = "test-config"
+    }]
+  }
+}
+`, rName)
 }
 
 func TestAccMcpRegistryCatalogItemResourceRemoteWithPAT(t *testing.T) {

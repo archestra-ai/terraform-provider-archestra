@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -188,4 +189,171 @@ resource "archestra_profile" "nolabels" {
   ]
 }
 `, name)
+}
+
+func TestAccProfileResource_WithAllFields(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+	profileName := fmt.Sprintf("tf-acc-allfields-%s", rName)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create with all fields
+			{
+				Config: testAccProfileResourceConfigAllFields(profileName, "Test profile description", true),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact(profileName),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("description"),
+						knownvalue.StringExact("Test profile description"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("icon"),
+						knownvalue.StringExact("🤖"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("system_prompt"),
+						knownvalue.StringExact("You are a helpful assistant"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("consider_context_untrusted"),
+						knownvalue.Bool(true),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("agent_type"),
+						knownvalue.StringExact("agent"),
+					),
+				},
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_profile.allfields",
+				ImportState:       true,
+				ImportStateVerify: true,
+				// Labels order may differ on import; suggested_prompts not set so no issue
+				ImportStateVerifyIgnore: []string{"labels"},
+			},
+			// Update: change description and consider_context_untrusted
+			{
+				Config: testAccProfileResourceConfigAllFields(profileName, "Updated description", false),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("description"),
+						knownvalue.StringExact("Updated description"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("consider_context_untrusted"),
+						knownvalue.Bool(false),
+					),
+					// Verify unchanged fields persist
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("icon"),
+						knownvalue.StringExact("🤖"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("system_prompt"),
+						knownvalue.StringExact("You are a helpful assistant"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("agent_type"),
+						knownvalue.StringExact("agent"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func TestAccProfileResource_WithEmailConfig(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+	profileName := fmt.Sprintf("tf-acc-email-%s", rName)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create with incoming_email_enabled = true and security_mode = "public"
+			{
+				Config: testAccProfileResourceConfigWithEmail(profileName, true, "public"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.email_test",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact(profileName),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.email_test",
+						tfjsonpath.New("incoming_email_enabled"),
+						knownvalue.Bool(true),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.email_test",
+						tfjsonpath.New("incoming_email_security_mode"),
+						knownvalue.StringExact("public"),
+					),
+				},
+			},
+			// Update: change security_mode to "private"
+			{
+				Config: testAccProfileResourceConfigWithEmail(profileName, true, "private"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.email_test",
+						tfjsonpath.New("incoming_email_enabled"),
+						knownvalue.Bool(true),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.email_test",
+						tfjsonpath.New("incoming_email_security_mode"),
+						knownvalue.StringExact("private"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccProfileResourceConfigWithEmail(name string, emailEnabled bool, securityMode string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "email_test" {
+  name                        = %[1]q
+  incoming_email_enabled       = %[2]t
+  incoming_email_security_mode = %[3]q
+}
+`, name, emailEnabled, securityMode)
+}
+
+func testAccProfileResourceConfigAllFields(name string, description string, considerContextUntrusted bool) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "allfields" {
+  name                       = %[1]q
+  description                = %[2]q
+  icon                       = "🤖"
+  system_prompt              = "You are a helpful assistant"
+  consider_context_untrusted = %[3]t
+  agent_type                 = "agent"
+
+  labels = [
+    {
+      key   = "env"
+      value = "test"
+    }
+  ]
+}
+`, name, description, considerContextUntrusted)
 }
