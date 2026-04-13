@@ -116,24 +116,44 @@ func TestAccToolInvocationPolicyResource_WithoutReason(t *testing.T) {
 	})
 }
 
-// testAccToolInvocationPolicyResourceConfigNoReason creates a minimal config
-// using only the built-in archestra__whoami tool which is immediately available
-// after profile creation (no MCP server needed).
 func testAccToolInvocationPolicyResourceConfigNoReason(rName string) string {
 	return fmt.Sprintf(`
 resource "archestra_profile" "noreason" {
   name = "tip-noreason-profile-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
-# No MCP server or installation needed - the tool is immediately available.
+resource "archestra_mcp_registry_catalog_item" "noreason" {
+  name = "tip-noreason-server-%[1]s"
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+}
+
+resource "archestra_mcp_server_installation" "noreason" {
+  name          = "tip-noreason-inst-%[1]s"
+  mcp_server_id = archestra_mcp_registry_catalog_item.noreason.id
+}
+
+data "archestra_mcp_server_tool" "noreason" {
+  mcp_server_id = archestra_mcp_server_installation.noreason.id
+  name          = "${archestra_mcp_registry_catalog_item.noreason.name}__list_directory"
+}
+
+resource "archestra_profile_tool" "noreason" {
+  profile_id    = archestra_profile.noreason.id
+  tool_id       = data.archestra_mcp_server_tool.noreason.id
+  mcp_server_id = archestra_mcp_server_installation.noreason.id
+}
+
 data "archestra_profile_tool" "noreason" {
   profile_id = archestra_profile.noreason.id
-  tool_name  = "archestra__whoami"
+  tool_name  = "${archestra_mcp_registry_catalog_item.noreason.name}__list_directory"
+  depends_on = [archestra_profile_tool.noreason]
 }
 
 resource "archestra_tool_invocation_policy" "noreason" {
-  profile_tool_id = data.archestra_profile_tool.noreason.id
+  profile_tool_id = data.archestra_mcp_server_tool.noreason.id
   argument_name = "command"
   operator      = "equal"
   value         = "rm -rf"
@@ -168,23 +188,44 @@ func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
 	})
 }
 
-// testAccToolInvocationPolicyResourceConfig creates a config using only the built-in
-// archestra__whoami tool which is immediately available after profile creation.
 func testAccToolInvocationPolicyResourceConfig(rName string) string {
 	return fmt.Sprintf(`
 resource "archestra_profile" "test" {
   name = "tip-test-profile-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
-# No MCP server or installation needed - the tool is immediately available.
+resource "archestra_mcp_registry_catalog_item" "test" {
+  name = "tip-test-server-%[1]s"
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+}
+
+resource "archestra_mcp_server_installation" "test" {
+  name          = "tip-test-inst-%[1]s"
+  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
+}
+
+data "archestra_mcp_server_tool" "test" {
+  mcp_server_id = archestra_mcp_server_installation.test.id
+  name          = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
+}
+
+resource "archestra_profile_tool" "test" {
+  profile_id    = archestra_profile.test.id
+  tool_id       = data.archestra_mcp_server_tool.test.id
+  mcp_server_id = archestra_mcp_server_installation.test.id
+}
+
 data "archestra_profile_tool" "test" {
   profile_id = archestra_profile.test.id
-  tool_name  = "archestra__whoami"
+  tool_name  = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
+  depends_on = [archestra_profile_tool.test]
 }
 
 resource "archestra_tool_invocation_policy" "test" {
-  profile_tool_id = data.archestra_profile_tool.test.id
+  profile_tool_id = data.archestra_mcp_server_tool.test.id
   argument_name   = "path"
   operator        = "contains"
   value           = "/etc/"
@@ -200,15 +241,38 @@ resource "archestra_profile" "test" {
   name = "tip-test-profile-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
-# No MCP server or installation needed - the tool is immediately available.
+resource "archestra_mcp_registry_catalog_item" "test" {
+  name = "tip-test-server-%[1]s"
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+}
+
+resource "archestra_mcp_server_installation" "test" {
+  name          = "tip-test-inst-%[1]s"
+  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
+}
+
+data "archestra_mcp_server_tool" "test" {
+  mcp_server_id = archestra_mcp_server_installation.test.id
+  name          = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
+}
+
+resource "archestra_profile_tool" "test" {
+  profile_id    = archestra_profile.test.id
+  tool_id       = data.archestra_mcp_server_tool.test.id
+  mcp_server_id = archestra_mcp_server_installation.test.id
+}
+
 data "archestra_profile_tool" "test" {
   profile_id = archestra_profile.test.id
-  tool_name  = "archestra__whoami"
+  tool_name  = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
+  depends_on = [archestra_profile_tool.test]
 }
 
 resource "archestra_tool_invocation_policy" "test" {
-  profile_tool_id = data.archestra_profile_tool.test.id
+  profile_tool_id = data.archestra_mcp_server_tool.test.id
   argument_name   = "path"
   operator        = "startsWith"
   value           = "/var/log/"
@@ -224,15 +288,38 @@ resource "archestra_profile" "regex" {
   name = "tip-regex-profile-%[1]s"
 }
 
-# archestra__whoami is a built-in tool assigned synchronously when the profile is created.
-# No MCP server or installation needed - the tool is immediately available.
+resource "archestra_mcp_registry_catalog_item" "regex" {
+  name = "tip-regex-server-%[1]s"
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+}
+
+resource "archestra_mcp_server_installation" "regex" {
+  name          = "tip-regex-inst-%[1]s"
+  mcp_server_id = archestra_mcp_registry_catalog_item.regex.id
+}
+
+data "archestra_mcp_server_tool" "regex" {
+  mcp_server_id = archestra_mcp_server_installation.regex.id
+  name          = "${archestra_mcp_registry_catalog_item.regex.name}__list_directory"
+}
+
+resource "archestra_profile_tool" "regex" {
+  profile_id    = archestra_profile.regex.id
+  tool_id       = data.archestra_mcp_server_tool.regex.id
+  mcp_server_id = archestra_mcp_server_installation.regex.id
+}
+
 data "archestra_profile_tool" "regex" {
   profile_id = archestra_profile.regex.id
-  tool_name  = "archestra__whoami"
+  tool_name  = "${archestra_mcp_registry_catalog_item.regex.name}__list_directory"
+  depends_on = [archestra_profile_tool.regex]
 }
 
 resource "archestra_tool_invocation_policy" "regex" {
-  profile_tool_id = data.archestra_profile_tool.regex.id
+  profile_tool_id = data.archestra_mcp_server_tool.regex.id
   argument_name   = "path"
   operator      = "regex"
   value         = "^/home/[a-z]+/.ssh/.*"

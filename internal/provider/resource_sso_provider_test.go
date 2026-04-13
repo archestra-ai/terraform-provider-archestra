@@ -94,6 +94,7 @@ resource "archestra_sso_provider" "test" {
     scopes              = ["openid", "email", "profile"]
     pkce                = true
     override_user_info  = false
+    skip_discovery      = true
     token_endpoint_authentication = "client_secret_post"
 
     mapping {
@@ -132,6 +133,7 @@ resource "archestra_sso_provider" "test" {
     client_secret       = "terraform-secret"
     scopes              = ["openid", "email"]
     pkce                = false
+    skip_discovery      = true
     token_endpoint_authentication = "client_secret_basic"
   }
 

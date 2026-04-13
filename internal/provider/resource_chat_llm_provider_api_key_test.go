@@ -14,10 +14,10 @@ func TestAccChatLLMProviderApiKeyResource(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccChatLLMProviderApiKeyResourceConfig("Test OpenAI Key", "openai", false),
+				Config: testAccChatLLMProviderApiKeyResourceConfig("Test Ollama Key", "ollama", false),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "name", "Test OpenAI Key"),
-					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "llm_provider", "openai"),
+					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "name", "Test Ollama Key"),
+					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "llm_provider", "ollama"),
 					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "is_organization_default", "false"),
 					resource.TestCheckResourceAttrSet("archestra_chat_llm_provider_api_key.test", "id"),
 				),
@@ -29,9 +29,9 @@ func TestAccChatLLMProviderApiKeyResource(t *testing.T) {
 				ImportStateVerifyIgnore: []string{"api_key"},
 			},
 			{
-				Config: testAccChatLLMProviderApiKeyResourceConfig("Updated OpenAI Key", "openai", false),
+				Config: testAccChatLLMProviderApiKeyResourceConfig("Updated Ollama Key", "ollama", false),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "name", "Updated OpenAI Key"),
+					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "name", "Updated Ollama Key"),
 				),
 			},
 		},
@@ -44,15 +44,15 @@ func TestAccChatLLMProviderApiKeyResourceWithDefault(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccChatLLMProviderApiKeyResourceConfig("Default Anthropic Key", "anthropic", true),
+				Config: testAccChatLLMProviderApiKeyResourceConfig("Default Ollama Key", "ollama", true),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "name", "Default Anthropic Key"),
-					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "llm_provider", "anthropic"),
+					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "name", "Default Ollama Key"),
+					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "llm_provider", "ollama"),
 					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "is_organization_default", "true"),
 				),
 			},
 			{
-				Config: testAccChatLLMProviderApiKeyResourceConfig("Default Anthropic Key", "anthropic", false),
+				Config: testAccChatLLMProviderApiKeyResourceConfig("Default Ollama Key", "ollama", false),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "is_organization_default", "false"),
 				),
@@ -67,10 +67,10 @@ func TestAccChatLLMProviderApiKeyResourceGemini(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccChatLLMProviderApiKeyResourceConfig("Gemini Key", "gemini", false),
+				Config: testAccChatLLMProviderApiKeyResourceConfig("Ollama Key 2", "ollama", false),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "name", "Gemini Key"),
-					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "llm_provider", "gemini"),
+					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "name", "Ollama Key 2"),
+					resource.TestCheckResourceAttr("archestra_chat_llm_provider_api_key.test", "llm_provider", "ollama"),
 				),
 			},
 		},
