@@ -41,8 +41,8 @@ resource "archestra_organization_settings" "example" {
 - `default_llm_api_key_id` (String) Default LLM API key ID for the organization
 - `default_llm_model` (String) Default LLM model for the organization
 - `default_llm_provider` (String) Default LLM provider for the organization
-- `embedding_chat_api_key_id` (String) API key ID for the embedding model
-- `embedding_model` (String) Embedding model for knowledge base
+- `embedding_chat_api_key_id` (String) API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
+- `embedding_model` (String) Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `favicon` (String) Base64 encoded favicon image for the organization
 - `font` (String) Custom font for the organization UI
 - `footer_text` (String) Custom footer text displayed in the UI
