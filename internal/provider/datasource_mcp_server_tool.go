@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -82,44 +83,56 @@ func (d *MCPServerToolDataSource) Read(ctx context.Context, req datasource.ReadR
 		return
 	}
 
-	// Get all tools
-	toolsResp, err := d.client.GetToolsWithResponse(ctx)
+	mcpServerID, err := uuid.Parse(data.MCPServerID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read tools, got error: %s", err))
+		resp.Diagnostics.AddError("Invalid MCP Server ID", fmt.Sprintf("Unable to parse MCP server ID as UUID: %s", err))
 		return
 	}
 
-	if toolsResp.JSON200 == nil {
-		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", toolsResp.StatusCode()))
-		return
-	}
-
-	// Filter by MCP server ID and tool name
-	targetMCPServerID := data.MCPServerID.ValueString()
 	targetToolName := data.Name.ValueString()
+	retryConfig := DefaultRetryConfig(fmt.Sprintf("Tool '%s' for MCP server %s", targetToolName, data.MCPServerID.ValueString()))
 
-	var foundIndex = -1
-	for i := range *toolsResp.JSON200 {
-		tool := &(*toolsResp.JSON200)[i]
-
-		// Check if tool has mcpServer and matches our criteria
-		if tool.McpServer != nil && tool.McpServer.Id == targetMCPServerID && tool.Name == targetToolName {
-			foundIndex = i
-			break
-		}
+	type mcpToolResult struct {
+		ID          string
+		Description *string
 	}
 
-	if foundIndex == -1 {
-		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Tool '%s' not found for MCP server %s", targetToolName, targetMCPServerID))
+	result, found, err := RetryUntilFound(ctx, retryConfig, func() (mcpToolResult, bool, error) {
+		toolsResp, err := d.client.GetMcpServerToolsWithResponse(ctx, mcpServerID)
+		if err != nil {
+			return mcpToolResult{}, false, fmt.Errorf("unable to read MCP server tools: %w", err)
+		}
+
+		if toolsResp.JSON200 == nil {
+			return mcpToolResult{}, false, fmt.Errorf("expected 200 OK, got status %d", toolsResp.StatusCode())
+		}
+
+		for i := range *toolsResp.JSON200 {
+			tool := &(*toolsResp.JSON200)[i]
+			if tool.Name == targetToolName {
+				return mcpToolResult{
+					ID:          tool.Id,
+					Description: tool.Description,
+				}, true, nil
+			}
+		}
+
+		return mcpToolResult{}, false, nil
+	})
+
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", err.Error())
 		return
 	}
 
-	foundTool := (*toolsResp.JSON200)[foundIndex]
+	if !found {
+		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Tool '%s' not found for MCP server %s", targetToolName, data.MCPServerID.ValueString()))
+		return
+	}
 
-	// Map to state
-	data.ID = types.StringValue(foundTool.Id.String())
-	if foundTool.Description != nil {
-		data.Description = types.StringValue(*foundTool.Description)
+	data.ID = types.StringValue(result.ID)
+	if result.Description != nil {
+		data.Description = types.StringValue(*result.Description)
 	} else {
 		data.Description = types.StringNull()
 	}

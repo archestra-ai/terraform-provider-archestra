@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -34,6 +35,11 @@ type ChatLLMProviderApiKeyResourceModel struct {
 	ApiKey                types.String `tfsdk:"api_key"`
 	LLMProvider           types.String `tfsdk:"llm_provider"`
 	IsOrganizationDefault types.Bool   `tfsdk:"is_organization_default"`
+	BaseUrl               types.String `tfsdk:"base_url"`
+	Scope                 types.String `tfsdk:"scope"`
+	TeamID                types.String `tfsdk:"team_id"`
+	VaultSecretPath       types.String `tfsdk:"vault_secret_path"`
+	VaultSecretKey        types.String `tfsdk:"vault_secret_key"`
 }
 
 func (r *ChatLLMProviderApiKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -69,17 +75,60 @@ func (r *ChatLLMProviderApiKeyResource) Schema(ctx context.Context, req resource
 				},
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						string(client.CreateChatApiKeyJSONBodyProviderAnthropic),
-						string(client.CreateChatApiKeyJSONBodyProviderGemini),
-						string(client.CreateChatApiKeyJSONBodyProviderOpenai),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderAnthropic),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderAzure),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderBedrock),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderCerebras),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderCohere),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderDeepseek),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderGemini),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderGroq),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderMinimax),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderMistral),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderOllama),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderOpenai),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderOpenrouter),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderPerplexity),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderVllm),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderXai),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderZhipuai),
 					),
 				},
 			},
 			"is_organization_default": schema.BoolAttribute{
-				MarkdownDescription: "Whether this API key is the organization default for the provider",
+				MarkdownDescription: "Whether this API key is the primary key for the provider",
 				Optional:            true,
 				Computed:            true,
 				Default:             booldefault.StaticBool(false),
+			},
+			"base_url": schema.StringAttribute{
+				MarkdownDescription: "Custom base URL for the LLM provider endpoint",
+				Optional:            true,
+			},
+			"scope": schema.StringAttribute{
+				MarkdownDescription: "Visibility scope for the API key: `personal`, `team`, or `org`",
+				Optional:            true,
+				Computed:            true,
+				Default:             stringdefault.StaticString("personal"),
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						string(client.CreateLlmProviderApiKeyJSONBodyScopePersonal),
+						string(client.CreateLlmProviderApiKeyJSONBodyScopeTeam),
+						string(client.CreateLlmProviderApiKeyJSONBodyScopeOrg),
+					),
+				},
+			},
+			"team_id": schema.StringAttribute{
+				MarkdownDescription: "Team ID for team-scoped keys",
+				Optional:            true,
+			},
+			"vault_secret_path": schema.StringAttribute{
+				MarkdownDescription: "Path to the secret in the vault",
+				Optional:            true,
+			},
+			"vault_secret_key": schema.StringAttribute{
+				MarkdownDescription: "Key within the vault secret",
+				Optional:            true,
 			},
 		},
 	}
@@ -111,17 +160,43 @@ func (r *ChatLLMProviderApiKeyResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	isDefault := data.IsOrganizationDefault.ValueBool()
-	requestBody := client.CreateChatApiKeyJSONRequestBody{
-		Name:                  data.Name.ValueString(),
-		ApiKey:                data.ApiKey.ValueString(),
-		Provider:              client.CreateChatApiKeyJSONBodyProvider(data.LLMProvider.ValueString()),
-		IsOrganizationDefault: &isDefault,
+	isPrimary := data.IsOrganizationDefault.ValueBool()
+	apiKey := data.ApiKey.ValueString()
+	requestBody := client.CreateLlmProviderApiKeyJSONRequestBody{
+		Name:      data.Name.ValueString(),
+		ApiKey:    &apiKey,
+		Provider:  client.CreateLlmProviderApiKeyJSONBodyProvider(data.LLMProvider.ValueString()),
+		IsPrimary: &isPrimary,
 	}
 
-	apiResp, err := r.client.CreateChatApiKeyWithResponse(ctx, requestBody)
+	if !data.BaseUrl.IsNull() && !data.BaseUrl.IsUnknown() {
+		baseUrl := data.BaseUrl.ValueString()
+		requestBody.BaseUrl = &baseUrl
+	}
+
+	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
+		scope := client.CreateLlmProviderApiKeyJSONBodyScope(data.Scope.ValueString())
+		requestBody.Scope = &scope
+	}
+
+	if !data.TeamID.IsNull() && !data.TeamID.IsUnknown() {
+		teamId := data.TeamID.ValueString()
+		requestBody.TeamId = &teamId
+	}
+
+	if !data.VaultSecretPath.IsNull() && !data.VaultSecretPath.IsUnknown() {
+		v := data.VaultSecretPath.ValueString()
+		requestBody.VaultSecretPath = &v
+	}
+
+	if !data.VaultSecretKey.IsNull() && !data.VaultSecretKey.IsUnknown() {
+		v := data.VaultSecretKey.ValueString()
+		requestBody.VaultSecretKey = &v
+	}
+
+	apiResp, err := r.client.CreateLlmProviderApiKeyWithResponse(ctx, requestBody)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create chat LLM provider API key, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create LLM provider API key, got error: %s", err))
 		return
 	}
 
@@ -136,7 +211,19 @@ func (r *ChatLLMProviderApiKeyResource) Create(ctx context.Context, req resource
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsOrganizationDefault)
+	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
+
+	if apiResp.JSON200.BaseUrl != nil {
+		data.BaseUrl = types.StringValue(*apiResp.JSON200.BaseUrl)
+	}
+
+	if apiResp.JSON200.TeamId != nil {
+		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
+	}
+
+	// VaultSecretPath and VaultSecretKey are not in the Create response;
+	// they are preserved from plan and will be read back via Read.
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -152,13 +239,13 @@ func (r *ChatLLMProviderApiKeyResource) Read(ctx context.Context, req resource.R
 
 	id, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse chat LLM provider API key ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse LLM provider API key ID: %s", err))
 		return
 	}
 
-	apiResp, err := r.client.GetChatApiKeyWithResponse(ctx, id)
+	apiResp, err := r.client.GetLlmProviderApiKeyWithResponse(ctx, id)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read chat LLM provider API key, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read LLM provider API key, got error: %s", err))
 		return
 	}
 
@@ -177,17 +264,40 @@ func (r *ChatLLMProviderApiKeyResource) Read(ctx context.Context, req resource.R
 
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsOrganizationDefault)
+	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
+
+	if apiResp.JSON200.BaseUrl != nil {
+		data.BaseUrl = types.StringValue(*apiResp.JSON200.BaseUrl)
+	} else {
+		data.BaseUrl = types.StringNull()
+	}
+
+	if apiResp.JSON200.TeamId != nil {
+		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
+	} else {
+		data.TeamID = types.StringNull()
+	}
+
+	if apiResp.JSON200.VaultSecretPath != nil {
+		data.VaultSecretPath = types.StringValue(*apiResp.JSON200.VaultSecretPath)
+	} else {
+		data.VaultSecretPath = types.StringNull()
+	}
+
+	if apiResp.JSON200.VaultSecretKey != nil {
+		data.VaultSecretKey = types.StringValue(*apiResp.JSON200.VaultSecretKey)
+	} else {
+		data.VaultSecretKey = types.StringNull()
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *ChatLLMProviderApiKeyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data ChatLLMProviderApiKeyResourceModel
-	var state ChatLLMProviderApiKeyResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -195,20 +305,51 @@ func (r *ChatLLMProviderApiKeyResource) Update(ctx context.Context, req resource
 
 	id, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse chat LLM provider API key ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse LLM provider API key ID: %s", err))
 		return
 	}
 
 	name := data.Name.ValueString()
 	apiKey := data.ApiKey.ValueString()
-	requestBody := client.UpdateChatApiKeyJSONRequestBody{
-		Name:   &name,
-		ApiKey: &apiKey,
+	isPrimary := data.IsOrganizationDefault.ValueBool()
+	requestBody := client.UpdateLlmProviderApiKeyJSONRequestBody{
+		Name:      &name,
+		ApiKey:    &apiKey,
+		IsPrimary: &isPrimary,
 	}
 
-	apiResp, err := r.client.UpdateChatApiKeyWithResponse(ctx, id, requestBody)
+	if !data.BaseUrl.IsNull() && !data.BaseUrl.IsUnknown() {
+		baseUrl := data.BaseUrl.ValueString()
+		requestBody.BaseUrl = &baseUrl
+	}
+
+	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
+		scope := client.UpdateLlmProviderApiKeyJSONBodyScope(data.Scope.ValueString())
+		requestBody.Scope = &scope
+	}
+
+	if !data.TeamID.IsNull() && !data.TeamID.IsUnknown() {
+		teamUUID, parseErr := uuid.Parse(data.TeamID.ValueString())
+		if parseErr != nil {
+			resp.Diagnostics.AddError("Invalid Team ID", fmt.Sprintf("Unable to parse team ID: %s", parseErr))
+			return
+		}
+		requestBody.TeamId = &teamUUID
+	}
+
+	if !data.VaultSecretPath.IsNull() && !data.VaultSecretPath.IsUnknown() {
+		v := data.VaultSecretPath.ValueString()
+		requestBody.VaultSecretPath = &v
+	}
+
+	if !data.VaultSecretKey.IsNull() && !data.VaultSecretKey.IsUnknown() {
+		v := data.VaultSecretKey.ValueString()
+		requestBody.VaultSecretKey = &v
+	}
+
+	apiResp, err := r.client.UpdateLlmProviderApiKeyWithResponse(ctx, id, requestBody)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update chat LLM provider API key, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update LLM provider API key, got error: %s", err))
 		return
 	}
 
@@ -220,53 +361,21 @@ func (r *ChatLLMProviderApiKeyResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	if data.IsOrganizationDefault.ValueBool() != state.IsOrganizationDefault.ValueBool() {
-		if data.IsOrganizationDefault.ValueBool() {
-			defaultResp, err := r.client.SetChatApiKeyDefaultWithResponse(ctx, id)
-			if err != nil {
-				resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to set chat LLM provider API key as default, got error: %s", err))
-				return
-			}
-			if defaultResp.JSON200 == nil {
-				resp.Diagnostics.AddError(
-					"Unexpected API Response",
-					fmt.Sprintf("Expected 200 OK when setting default, got status %d: %s", defaultResp.StatusCode(), string(defaultResp.Body)),
-				)
-				return
-			}
-		} else {
-			defaultResp, err := r.client.UnsetChatApiKeyDefaultWithResponse(ctx, id)
-			if err != nil {
-				resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to unset chat LLM provider API key as default, got error: %s", err))
-				return
-			}
-			if defaultResp.JSON200 == nil {
-				resp.Diagnostics.AddError(
-					"Unexpected API Response",
-					fmt.Sprintf("Expected 200 OK when unsetting default, got status %d: %s", defaultResp.StatusCode(), string(defaultResp.Body)),
-				)
-				return
-			}
-		}
+	data.Name = types.StringValue(apiResp.JSON200.Name)
+	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
+	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
+
+	if apiResp.JSON200.BaseUrl != nil {
+		data.BaseUrl = types.StringValue(*apiResp.JSON200.BaseUrl)
 	}
 
-	readResp, err := r.client.GetChatApiKeyWithResponse(ctx, id)
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read chat LLM provider API key after update, got error: %s", err))
-		return
+	if apiResp.JSON200.TeamId != nil {
+		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
 	}
 
-	if readResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK on read after update, got status %d", readResp.StatusCode()),
-		)
-		return
-	}
-
-	data.Name = types.StringValue(readResp.JSON200.Name)
-	data.LLMProvider = types.StringValue(string(readResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(readResp.JSON200.IsOrganizationDefault)
+	// VaultSecretPath and VaultSecretKey are not in the Update response;
+	// they are preserved from plan and will be read back via Read.
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -282,13 +391,13 @@ func (r *ChatLLMProviderApiKeyResource) Delete(ctx context.Context, req resource
 
 	id, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse chat LLM provider API key ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse LLM provider API key ID: %s", err))
 		return
 	}
 
-	apiResp, err := r.client.DeleteChatApiKeyWithResponse(ctx, id)
+	apiResp, err := r.client.DeleteLlmProviderApiKeyWithResponse(ctx, id)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete chat LLM provider API key, got error: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete LLM provider API key, got error: %s", err))
 		return
 	}
 

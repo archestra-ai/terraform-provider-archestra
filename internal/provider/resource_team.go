@@ -31,12 +31,13 @@ type TeamMemberModel struct {
 }
 
 type TeamResourceModel struct {
-	ID             types.String      `tfsdk:"id"`
-	Name           types.String      `tfsdk:"name"`
-	Description    types.String      `tfsdk:"description"`
-	OrganizationID types.String      `tfsdk:"organization_id"`
-	CreatedBy      types.String      `tfsdk:"created_by"`
-	Members        []TeamMemberModel `tfsdk:"members"`
+	ID                       types.String      `tfsdk:"id"`
+	Name                     types.String      `tfsdk:"name"`
+	Description              types.String      `tfsdk:"description"`
+	OrganizationID           types.String      `tfsdk:"organization_id"`
+	CreatedBy                types.String      `tfsdk:"created_by"`
+	ConvertToolResultsToToon types.Bool        `tfsdk:"convert_tool_results_to_toon"`
+	Members                  []TeamMemberModel `tfsdk:"members"`
 }
 
 func (r *TeamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -76,6 +77,11 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
+			},
+			"convert_tool_results_to_toon": schema.BoolAttribute{
+				MarkdownDescription: "Team-level TOON compression setting",
+				Optional:            true,
+				Computed:            true,
 			},
 			"members": schema.ListNestedAttribute{
 				MarkdownDescription: "List of team members",
@@ -157,6 +163,7 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 	if apiResp.JSON200.Description != nil {
 		data.Description = types.StringValue(*apiResp.JSON200.Description)
 	}
+	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
 
 	// Add team members
 	if len(data.Members) > 0 {
@@ -229,6 +236,7 @@ func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	} else {
 		data.Description = types.StringNull()
 	}
+	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
 
 	// Only manage members if they were explicitly configured in the plan
 	// If members was null/unset in config, keep it that way to avoid drift
@@ -280,6 +288,10 @@ func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		desc := data.Description.ValueString()
 		requestBody.Description = &desc
 	}
+	if !data.ConvertToolResultsToToon.IsNull() && !data.ConvertToolResultsToToon.IsUnknown() {
+		v := data.ConvertToolResultsToToon.ValueBool()
+		requestBody.ConvertToolResultsToToon = &v
+	}
 
 	// Call API
 	apiResp, err := r.client.UpdateTeamWithResponse(ctx, data.ID.ValueString(), requestBody)
@@ -304,6 +316,7 @@ func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	if apiResp.JSON200.Description != nil {
 		data.Description = types.StringValue(*apiResp.JSON200.Description)
 	}
+	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
 
 	// Handle team member changes
 	// Get current members

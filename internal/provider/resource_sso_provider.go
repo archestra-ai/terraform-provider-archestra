@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
@@ -43,19 +44,34 @@ type SsoProviderResourceModel struct {
 }
 
 type OidcConfigModel struct {
-	Issuer                      types.String      `tfsdk:"issuer"`
-	DiscoveryEndpoint           types.String      `tfsdk:"discovery_endpoint"`
-	ClientID                    types.String      `tfsdk:"client_id"`
-	ClientSecret                types.String      `tfsdk:"client_secret"`
-	AuthorizationEndpoint       types.String      `tfsdk:"authorization_endpoint"`
-	TokenEndpoint               types.String      `tfsdk:"token_endpoint"`
-	UserInfoEndpoint            types.String      `tfsdk:"user_info_endpoint"`
-	JwksEndpoint                types.String      `tfsdk:"jwks_endpoint"`
-	Scopes                      []types.String    `tfsdk:"scopes"`
-	Pkce                        types.Bool        `tfsdk:"pkce"`
-	OverrideUserInfo            types.Bool        `tfsdk:"override_user_info"`
-	TokenEndpointAuthentication types.String      `tfsdk:"token_endpoint_authentication"`
-	Mapping                     *OidcMappingModel `tfsdk:"mapping"`
+	Issuer                       types.String                       `tfsdk:"issuer"`
+	DiscoveryEndpoint            types.String                       `tfsdk:"discovery_endpoint"`
+	ClientID                     types.String                       `tfsdk:"client_id"`
+	ClientSecret                 types.String                       `tfsdk:"client_secret"`
+	AuthorizationEndpoint        types.String                       `tfsdk:"authorization_endpoint"`
+	TokenEndpoint                types.String                       `tfsdk:"token_endpoint"`
+	UserInfoEndpoint             types.String                       `tfsdk:"user_info_endpoint"`
+	JwksEndpoint                 types.String                       `tfsdk:"jwks_endpoint"`
+	Scopes                       []types.String                     `tfsdk:"scopes"`
+	Pkce                         types.Bool                         `tfsdk:"pkce"`
+	OverrideUserInfo             types.Bool                         `tfsdk:"override_user_info"`
+	SkipDiscovery                types.Bool                         `tfsdk:"skip_discovery"`
+	EnableRpInitiatedLogout      types.Bool                         `tfsdk:"enable_rp_initiated_logout"`
+	TokenEndpointAuthentication  types.String                       `tfsdk:"token_endpoint_authentication"`
+	Mapping                      *OidcMappingModel                  `tfsdk:"mapping"`
+	EnterpriseManagedCredentials *EnterpriseManagedCredentialsModel `tfsdk:"enterprise_managed_credentials"`
+}
+
+type EnterpriseManagedCredentialsModel struct {
+	ProviderType                types.String `tfsdk:"provider_type"`
+	ClientID                    types.String `tfsdk:"client_id"`
+	ClientSecret                types.String `tfsdk:"client_secret"`
+	TokenEndpoint               types.String `tfsdk:"token_endpoint"`
+	TokenEndpointAuthentication types.String `tfsdk:"token_endpoint_authentication"`
+	PrivateKeyPem               types.String `tfsdk:"private_key_pem"`
+	PrivateKeyID                types.String `tfsdk:"private_key_id"`
+	ClientAssertionAudience     types.String `tfsdk:"client_assertion_audience"`
+	SubjectTokenType            types.String `tfsdk:"subject_token_type"`
 }
 
 type OidcMappingModel struct {
@@ -197,6 +213,8 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 					"scopes":                        schema.ListAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "OAuth scopes to request."},
 					"pkce":                          schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Enable PKCE."},
 					"override_user_info":            schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Use token claims instead of userinfo when true."},
+					"skip_discovery":                schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Skip OIDC discovery endpoint validation."},
+					"enable_rp_initiated_logout":    schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Enable RP-initiated logout."},
 					"token_endpoint_authentication": schema.StringAttribute{Optional: true, MarkdownDescription: "Token endpoint auth method (client_secret_basic or client_secret_post)."},
 				},
 				Blocks: map[string]schema.Block{
@@ -209,6 +227,20 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 							"id":             schema.StringAttribute{Optional: true},
 							"image":          schema.StringAttribute{Optional: true},
 							"name":           schema.StringAttribute{Optional: true},
+						},
+					},
+					"enterprise_managed_credentials": schema.SingleNestedBlock{
+						MarkdownDescription: "Enterprise-managed credentials for token exchange flows.",
+						Attributes: map[string]schema.Attribute{
+							"provider_type":                 schema.StringAttribute{Optional: true, MarkdownDescription: "Provider type: generic_oidc, okta, or keycloak."},
+							"client_id":                     schema.StringAttribute{Optional: true, MarkdownDescription: "Client ID for enterprise-managed credentials."},
+							"client_secret":                 schema.StringAttribute{Optional: true, Sensitive: true, MarkdownDescription: "Client secret for enterprise-managed credentials."},
+							"token_endpoint":                schema.StringAttribute{Optional: true, MarkdownDescription: "Token endpoint URL."},
+							"token_endpoint_authentication": schema.StringAttribute{Optional: true, MarkdownDescription: "Token endpoint auth method: client_secret_post, client_secret_basic, or private_key_jwt."},
+							"private_key_pem":               schema.StringAttribute{Optional: true, Sensitive: true, MarkdownDescription: "PEM-encoded private key for private_key_jwt authentication."},
+							"private_key_id":                schema.StringAttribute{Optional: true, MarkdownDescription: "Key ID for the private key."},
+							"client_assertion_audience":     schema.StringAttribute{Optional: true, MarkdownDescription: "Audience for client assertion JWT."},
+							"subject_token_type":            schema.StringAttribute{Optional: true, MarkdownDescription: "Subject token type for token exchange."},
 						},
 					},
 				},
@@ -336,7 +368,7 @@ func (r *SsoProviderResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	body := client.CreateSsoProviderJSONRequestBody{
+	body := client.CreateIdentityProviderJSONRequestBody{
 		Domain:     data.Domain.ValueString(),
 		Issuer:     data.Issuer.ValueString(),
 		ProviderId: data.ProviderID.ValueString(),
@@ -358,7 +390,7 @@ func (r *SsoProviderResource) Create(ctx context.Context, req resource.CreateReq
 		body.TeamSyncConfig = expandTeamSyncConfig(data.TeamSyncConfig)
 	}
 
-	apiResp, err := r.client.CreateSsoProviderWithResponse(ctx, body)
+	apiResp, err := r.client.CreateIdentityProviderWithResponse(ctx, body)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create SSO provider: %s", err))
 		return
@@ -395,7 +427,7 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	apiResp, err := r.client.GetSsoProviderWithResponse(ctx, state.ID.ValueString())
+	apiResp, err := r.client.GetIdentityProviderWithResponse(ctx, state.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read SSO provider: %s", err))
 		return
@@ -453,6 +485,16 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 			} else if oidcCfg.OverrideUserInfo != nil {
 				newState.OidcConfig.OverrideUserInfo = types.BoolValue(*oidcCfg.OverrideUserInfo)
 			}
+			if !state.OidcConfig.SkipDiscovery.IsNull() {
+				newState.OidcConfig.SkipDiscovery = state.OidcConfig.SkipDiscovery
+			} else if oidcCfg.SkipDiscovery != nil {
+				newState.OidcConfig.SkipDiscovery = types.BoolValue(*oidcCfg.SkipDiscovery)
+			}
+			if !state.OidcConfig.EnableRpInitiatedLogout.IsNull() {
+				newState.OidcConfig.EnableRpInitiatedLogout = state.OidcConfig.EnableRpInitiatedLogout
+			} else if oidcCfg.EnableRpInitiatedLogout != nil {
+				newState.OidcConfig.EnableRpInitiatedLogout = types.BoolValue(*oidcCfg.EnableRpInitiatedLogout)
+			}
 			// Preserve other optional fields from prior state
 			if !state.OidcConfig.AuthorizationEndpoint.IsNull() {
 				newState.OidcConfig.AuthorizationEndpoint = state.OidcConfig.AuthorizationEndpoint
@@ -502,6 +544,12 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 					Name:          stringValueOrNull(mapping.Name),
 				}
 			}
+			// Preserve enterprise_managed_credentials from prior state
+			if state.OidcConfig.EnterpriseManagedCredentials != nil {
+				newState.OidcConfig.EnterpriseManagedCredentials = state.OidcConfig.EnterpriseManagedCredentials
+			} else if oidcCfg.EnterpriseManagedCredentials != nil {
+				newState.OidcConfig.EnterpriseManagedCredentials = flattenEnterpriseManagedCredentials(oidcCfg.EnterpriseManagedCredentials)
+			}
 		} else {
 			// If there was no prior OIDC config, populate from API response
 			if oidcCfg.AuthorizationEndpoint != nil {
@@ -525,6 +573,18 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 			}
 			if oidcCfg.OverrideUserInfo != nil {
 				newState.OidcConfig.OverrideUserInfo = types.BoolValue(*oidcCfg.OverrideUserInfo)
+			} else {
+				newState.OidcConfig.OverrideUserInfo = types.BoolValue(false)
+			}
+			if oidcCfg.SkipDiscovery != nil {
+				newState.OidcConfig.SkipDiscovery = types.BoolValue(*oidcCfg.SkipDiscovery)
+			} else {
+				newState.OidcConfig.SkipDiscovery = types.BoolValue(false)
+			}
+			if oidcCfg.EnableRpInitiatedLogout != nil {
+				newState.OidcConfig.EnableRpInitiatedLogout = types.BoolValue(*oidcCfg.EnableRpInitiatedLogout)
+			} else {
+				newState.OidcConfig.EnableRpInitiatedLogout = types.BoolValue(false)
 			}
 			if oidcCfg.TokenEndpointAuthentication != nil {
 				newState.OidcConfig.TokenEndpointAuthentication = types.StringValue(string(*oidcCfg.TokenEndpointAuthentication))
@@ -539,6 +599,9 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 					Image:         stringValueOrNull(mapping.Image),
 					Name:          stringValueOrNull(mapping.Name),
 				}
+			}
+			if oidcCfg.EnterpriseManagedCredentials != nil {
+				newState.OidcConfig.EnterpriseManagedCredentials = flattenEnterpriseManagedCredentials(oidcCfg.EnterpriseManagedCredentials)
 			}
 		}
 	}
@@ -666,7 +729,7 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	body := client.UpdateSsoProviderJSONRequestBody{}
+	body := client.UpdateIdentityProviderJSONRequestBody{}
 
 	if !plan.Domain.IsNull() {
 		domain := plan.Domain.ValueString()
@@ -699,7 +762,7 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 		body.TeamSyncConfig = expandTeamSyncConfig(plan.TeamSyncConfig)
 	}
 
-	apiResp, err := r.client.UpdateSsoProviderWithResponse(ctx, state.ID.ValueString(), body)
+	apiResp, err := r.client.UpdateIdentityProviderWithResponse(ctx, state.ID.ValueString(), body)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update SSO provider: %s", err))
 		return
@@ -748,8 +811,10 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 				}
 				return types.StringNull()
 			}),
-			Pkce:             types.BoolValue(oidcCfg.Pkce),
-			OverrideUserInfo: boolValueOrNull(oidcCfg.OverrideUserInfo),
+			Pkce:                    types.BoolValue(oidcCfg.Pkce),
+			OverrideUserInfo:        boolValueOrNull(oidcCfg.OverrideUserInfo),
+			SkipDiscovery:           boolValueOrNull(oidcCfg.SkipDiscovery),
+			EnableRpInitiatedLogout: boolValueOrNull(oidcCfg.EnableRpInitiatedLogout),
 		}
 
 		if oidcCfg.AuthorizationEndpoint != nil {
@@ -773,6 +838,11 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 		}
 		if oidcCfg.TokenEndpointAuthentication != nil {
 			newState.OidcConfig.TokenEndpointAuthentication = types.StringValue(string(*oidcCfg.TokenEndpointAuthentication))
+		}
+		if oidcCfg.EnterpriseManagedCredentials != nil {
+			newState.OidcConfig.EnterpriseManagedCredentials = flattenEnterpriseManagedCredentials(oidcCfg.EnterpriseManagedCredentials)
+		} else if plan.OidcConfig != nil {
+			newState.OidcConfig.EnterpriseManagedCredentials = plan.OidcConfig.EnterpriseManagedCredentials
 		}
 	}
 
@@ -862,7 +932,7 @@ func (r *SsoProviderResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
-	apiResp, err := r.client.DeleteSsoProviderWithResponse(ctx, state.ID.ValueString())
+	apiResp, err := r.client.DeleteIdentityProviderWithResponse(ctx, state.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete SSO provider: %s", err))
 		return
@@ -912,13 +982,14 @@ func validateSsoConfigChoice(oidc *OidcConfigModel, saml *SamlConfigModel) error
 }
 
 func buildOidcConfig(cfg OidcConfigModel) *struct {
-	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
-	ClientId              string  `json:"clientId"`
-	ClientSecret          string  `json:"clientSecret"`
-	DiscoveryEndpoint     string  `json:"discoveryEndpoint"`
-	Issuer                string  `json:"issuer"`
-	JwksEndpoint          *string `json:"jwksEndpoint,omitempty"`
-	Mapping               *struct {
+	AuthorizationEndpoint   *string `json:"authorizationEndpoint,omitempty"`
+	ClientId                string  `json:"clientId"`
+	ClientSecret            string  `json:"clientSecret"`
+	DiscoveryEndpoint       string  `json:"discoveryEndpoint"`
+	EnableRpInitiatedLogout *bool   `json:"enableRpInitiatedLogout,omitempty"`
+	Issuer                  string  `json:"issuer"`
+	JwksEndpoint            *string `json:"jwksEndpoint,omitempty"`
+	Mapping                 *struct {
 		Email         *string            `json:"email,omitempty"`
 		EmailVerified *string            `json:"emailVerified,omitempty"`
 		ExtraFields   *map[string]string `json:"extraFields,omitempty"`
@@ -929,17 +1000,19 @@ func buildOidcConfig(cfg OidcConfigModel) *struct {
 	OverrideUserInfo *bool     `json:"overrideUserInfo,omitempty"`
 	Pkce             bool      `json:"pkce"`
 	Scopes           *[]string `json:"scopes,omitempty"`
+	SkipDiscovery    *bool     `json:"skipDiscovery,omitempty"`
 	TokenEndpoint    *string   `json:"tokenEndpoint,omitempty"`
 	UserInfoEndpoint *string   `json:"userInfoEndpoint,omitempty"`
 } {
 	out := &struct {
-		AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
-		ClientId              string  `json:"clientId"`
-		ClientSecret          string  `json:"clientSecret"`
-		DiscoveryEndpoint     string  `json:"discoveryEndpoint"`
-		Issuer                string  `json:"issuer"`
-		JwksEndpoint          *string `json:"jwksEndpoint,omitempty"`
-		Mapping               *struct {
+		AuthorizationEndpoint   *string `json:"authorizationEndpoint,omitempty"`
+		ClientId                string  `json:"clientId"`
+		ClientSecret            string  `json:"clientSecret"`
+		DiscoveryEndpoint       string  `json:"discoveryEndpoint"`
+		EnableRpInitiatedLogout *bool   `json:"enableRpInitiatedLogout,omitempty"`
+		Issuer                  string  `json:"issuer"`
+		JwksEndpoint            *string `json:"jwksEndpoint,omitempty"`
+		Mapping                 *struct {
 			Email         *string            `json:"email,omitempty"`
 			EmailVerified *string            `json:"emailVerified,omitempty"`
 			ExtraFields   *map[string]string `json:"extraFields,omitempty"`
@@ -950,6 +1023,7 @@ func buildOidcConfig(cfg OidcConfigModel) *struct {
 		OverrideUserInfo *bool     `json:"overrideUserInfo,omitempty"`
 		Pkce             bool      `json:"pkce"`
 		Scopes           *[]string `json:"scopes,omitempty"`
+		SkipDiscovery    *bool     `json:"skipDiscovery,omitempty"`
 		TokenEndpoint    *string   `json:"tokenEndpoint,omitempty"`
 		UserInfoEndpoint *string   `json:"userInfoEndpoint,omitempty"`
 	}{
@@ -989,6 +1063,14 @@ func buildOidcConfig(cfg OidcConfigModel) *struct {
 		v := cfg.OverrideUserInfo.ValueBool()
 		out.OverrideUserInfo = &v
 	}
+	if !cfg.SkipDiscovery.IsNull() {
+		v := cfg.SkipDiscovery.ValueBool()
+		out.SkipDiscovery = &v
+	}
+	if !cfg.EnableRpInitiatedLogout.IsNull() {
+		v := cfg.EnableRpInitiatedLogout.ValueBool()
+		out.EnableRpInitiatedLogout = &v
+	}
 	if cfg.Mapping != nil {
 		out.Mapping = expandOidcMapping(cfg.Mapping)
 	}
@@ -997,13 +1079,25 @@ func buildOidcConfig(cfg OidcConfigModel) *struct {
 }
 
 func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
-	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
-	ClientId              string  `json:"clientId"`
-	ClientSecret          string  `json:"clientSecret"`
-	DiscoveryEndpoint     string  `json:"discoveryEndpoint"`
-	Issuer                string  `json:"issuer"`
-	JwksEndpoint          *string `json:"jwksEndpoint,omitempty"`
-	Mapping               *struct {
+	AuthorizationEndpoint        *string `json:"authorizationEndpoint,omitempty"`
+	ClientId                     string  `json:"clientId"`
+	ClientSecret                 string  `json:"clientSecret"`
+	DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
+	EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
+	EnterpriseManagedCredentials *struct {
+		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
+		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
+		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
+		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
+		ProviderType                *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
+		SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
+		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
+		TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+	} `json:"enterpriseManagedCredentials,omitempty"`
+	Issuer       string  `json:"issuer"`
+	JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
+	Mapping      *struct {
 		Email         *string            `json:"email,omitempty"`
 		EmailVerified *string            `json:"emailVerified,omitempty"`
 		ExtraFields   *map[string]string `json:"extraFields,omitempty"`
@@ -1011,22 +1105,35 @@ func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
 		Image         *string            `json:"image,omitempty"`
 		Name          *string            `json:"name,omitempty"`
 	} `json:"mapping,omitempty"`
-	OverrideUserInfo            *bool                                                                  `json:"overrideUserInfo,omitempty"`
-	Pkce                        bool                                                                   `json:"pkce"`
-	Scopes                      *[]string                                                              `json:"scopes,omitempty"`
-	TokenEndpoint               *string                                                                `json:"tokenEndpoint,omitempty"`
-	TokenEndpointAuthentication *client.CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-	UserInfoEndpoint            *string                                                                `json:"userInfoEndpoint,omitempty"`
+	OverrideUserInfo            *bool                                                                       `json:"overrideUserInfo,omitempty"`
+	Pkce                        bool                                                                        `json:"pkce"`
+	Scopes                      *[]string                                                                   `json:"scopes,omitempty"`
+	SkipDiscovery               *bool                                                                       `json:"skipDiscovery,omitempty"`
+	TokenEndpoint               *string                                                                     `json:"tokenEndpoint,omitempty"`
+	TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+	UserInfoEndpoint            *string                                                                     `json:"userInfoEndpoint,omitempty"`
 } {
 	base := buildOidcConfig(cfg)
 	out := &struct {
-		AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
-		ClientId              string  `json:"clientId"`
-		ClientSecret          string  `json:"clientSecret"`
-		DiscoveryEndpoint     string  `json:"discoveryEndpoint"`
-		Issuer                string  `json:"issuer"`
-		JwksEndpoint          *string `json:"jwksEndpoint,omitempty"`
-		Mapping               *struct {
+		AuthorizationEndpoint        *string `json:"authorizationEndpoint,omitempty"`
+		ClientId                     string  `json:"clientId"`
+		ClientSecret                 string  `json:"clientSecret"`
+		DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
+		EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
+		EnterpriseManagedCredentials *struct {
+			ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
+			ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
+			ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+			PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
+			PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
+			ProviderType                *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
+			SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
+			TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
+			TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+		} `json:"enterpriseManagedCredentials,omitempty"`
+		Issuer       string  `json:"issuer"`
+		JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
+		Mapping      *struct {
 			Email         *string            `json:"email,omitempty"`
 			EmailVerified *string            `json:"emailVerified,omitempty"`
 			ExtraFields   *map[string]string `json:"extraFields,omitempty"`
@@ -1034,44 +1141,63 @@ func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
 			Image         *string            `json:"image,omitempty"`
 			Name          *string            `json:"name,omitempty"`
 		} `json:"mapping,omitempty"`
-		OverrideUserInfo            *bool                                                                  `json:"overrideUserInfo,omitempty"`
-		Pkce                        bool                                                                   `json:"pkce"`
-		Scopes                      *[]string                                                              `json:"scopes,omitempty"`
-		TokenEndpoint               *string                                                                `json:"tokenEndpoint,omitempty"`
-		TokenEndpointAuthentication *client.CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-		UserInfoEndpoint            *string                                                                `json:"userInfoEndpoint,omitempty"`
+		OverrideUserInfo            *bool                                                                       `json:"overrideUserInfo,omitempty"`
+		Pkce                        bool                                                                        `json:"pkce"`
+		Scopes                      *[]string                                                                   `json:"scopes,omitempty"`
+		SkipDiscovery               *bool                                                                       `json:"skipDiscovery,omitempty"`
+		TokenEndpoint               *string                                                                     `json:"tokenEndpoint,omitempty"`
+		TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+		UserInfoEndpoint            *string                                                                     `json:"userInfoEndpoint,omitempty"`
 	}{
-		AuthorizationEndpoint: base.AuthorizationEndpoint,
-		ClientId:              base.ClientId,
-		ClientSecret:          base.ClientSecret,
-		DiscoveryEndpoint:     base.DiscoveryEndpoint,
-		Issuer:                base.Issuer,
-		JwksEndpoint:          base.JwksEndpoint,
-		Mapping:               base.Mapping,
-		OverrideUserInfo:      base.OverrideUserInfo,
-		Pkce:                  base.Pkce,
-		Scopes:                base.Scopes,
-		TokenEndpoint:         base.TokenEndpoint,
-		UserInfoEndpoint:      base.UserInfoEndpoint,
+		AuthorizationEndpoint:   base.AuthorizationEndpoint,
+		ClientId:                base.ClientId,
+		ClientSecret:            base.ClientSecret,
+		DiscoveryEndpoint:       base.DiscoveryEndpoint,
+		Issuer:                  base.Issuer,
+		JwksEndpoint:            base.JwksEndpoint,
+		Mapping:                 base.Mapping,
+		OverrideUserInfo:        base.OverrideUserInfo,
+		Pkce:                    base.Pkce,
+		Scopes:                  base.Scopes,
+		SkipDiscovery:           base.SkipDiscovery,
+		EnableRpInitiatedLogout: base.EnableRpInitiatedLogout,
+		TokenEndpoint:           base.TokenEndpoint,
+		UserInfoEndpoint:        base.UserInfoEndpoint,
 	}
 
 	if !cfg.TokenEndpointAuthentication.IsNull() {
 		v := cfg.TokenEndpointAuthentication.ValueString()
-		cast := client.CreateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication(v)
+		cast := client.CreateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication(v)
 		out.TokenEndpointAuthentication = &cast
+	}
+
+	if cfg.EnterpriseManagedCredentials != nil {
+		out.EnterpriseManagedCredentials = expandEnterpriseManagedCredentialsCreate(cfg.EnterpriseManagedCredentials)
 	}
 
 	return out
 }
 
 func expandOidcConfigUpdate(cfg OidcConfigModel) *struct {
-	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
-	ClientId              string  `json:"clientId"`
-	ClientSecret          string  `json:"clientSecret"`
-	DiscoveryEndpoint     string  `json:"discoveryEndpoint"`
-	Issuer                string  `json:"issuer"`
-	JwksEndpoint          *string `json:"jwksEndpoint,omitempty"`
-	Mapping               *struct {
+	AuthorizationEndpoint        *string `json:"authorizationEndpoint,omitempty"`
+	ClientId                     string  `json:"clientId"`
+	ClientSecret                 string  `json:"clientSecret"`
+	DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
+	EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
+	EnterpriseManagedCredentials *struct {
+		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
+		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
+		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
+		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
+		ProviderType                *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
+		SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
+		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
+		TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+	} `json:"enterpriseManagedCredentials,omitempty"`
+	Issuer       string  `json:"issuer"`
+	JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
+	Mapping      *struct {
 		Email         *string            `json:"email,omitempty"`
 		EmailVerified *string            `json:"emailVerified,omitempty"`
 		ExtraFields   *map[string]string `json:"extraFields,omitempty"`
@@ -1079,22 +1205,35 @@ func expandOidcConfigUpdate(cfg OidcConfigModel) *struct {
 		Image         *string            `json:"image,omitempty"`
 		Name          *string            `json:"name,omitempty"`
 	} `json:"mapping,omitempty"`
-	OverrideUserInfo            *bool                                                                  `json:"overrideUserInfo,omitempty"`
-	Pkce                        bool                                                                   `json:"pkce"`
-	Scopes                      *[]string                                                              `json:"scopes,omitempty"`
-	TokenEndpoint               *string                                                                `json:"tokenEndpoint,omitempty"`
-	TokenEndpointAuthentication *client.UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-	UserInfoEndpoint            *string                                                                `json:"userInfoEndpoint,omitempty"`
+	OverrideUserInfo            *bool                                                                       `json:"overrideUserInfo,omitempty"`
+	Pkce                        bool                                                                        `json:"pkce"`
+	Scopes                      *[]string                                                                   `json:"scopes,omitempty"`
+	SkipDiscovery               *bool                                                                       `json:"skipDiscovery,omitempty"`
+	TokenEndpoint               *string                                                                     `json:"tokenEndpoint,omitempty"`
+	TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+	UserInfoEndpoint            *string                                                                     `json:"userInfoEndpoint,omitempty"`
 } {
 	base := buildOidcConfig(cfg)
 	out := &struct {
-		AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
-		ClientId              string  `json:"clientId"`
-		ClientSecret          string  `json:"clientSecret"`
-		DiscoveryEndpoint     string  `json:"discoveryEndpoint"`
-		Issuer                string  `json:"issuer"`
-		JwksEndpoint          *string `json:"jwksEndpoint,omitempty"`
-		Mapping               *struct {
+		AuthorizationEndpoint        *string `json:"authorizationEndpoint,omitempty"`
+		ClientId                     string  `json:"clientId"`
+		ClientSecret                 string  `json:"clientSecret"`
+		DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
+		EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
+		EnterpriseManagedCredentials *struct {
+			ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
+			ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
+			ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+			PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
+			PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
+			ProviderType                *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
+			SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
+			TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
+			TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+		} `json:"enterpriseManagedCredentials,omitempty"`
+		Issuer       string  `json:"issuer"`
+		JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
+		Mapping      *struct {
 			Email         *string            `json:"email,omitempty"`
 			EmailVerified *string            `json:"emailVerified,omitempty"`
 			ExtraFields   *map[string]string `json:"extraFields,omitempty"`
@@ -1102,31 +1241,38 @@ func expandOidcConfigUpdate(cfg OidcConfigModel) *struct {
 			Image         *string            `json:"image,omitempty"`
 			Name          *string            `json:"name,omitempty"`
 		} `json:"mapping,omitempty"`
-		OverrideUserInfo            *bool                                                                  `json:"overrideUserInfo,omitempty"`
-		Pkce                        bool                                                                   `json:"pkce"`
-		Scopes                      *[]string                                                              `json:"scopes,omitempty"`
-		TokenEndpoint               *string                                                                `json:"tokenEndpoint,omitempty"`
-		TokenEndpointAuthentication *client.UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-		UserInfoEndpoint            *string                                                                `json:"userInfoEndpoint,omitempty"`
+		OverrideUserInfo            *bool                                                                       `json:"overrideUserInfo,omitempty"`
+		Pkce                        bool                                                                        `json:"pkce"`
+		Scopes                      *[]string                                                                   `json:"scopes,omitempty"`
+		SkipDiscovery               *bool                                                                       `json:"skipDiscovery,omitempty"`
+		TokenEndpoint               *string                                                                     `json:"tokenEndpoint,omitempty"`
+		TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+		UserInfoEndpoint            *string                                                                     `json:"userInfoEndpoint,omitempty"`
 	}{
-		AuthorizationEndpoint: base.AuthorizationEndpoint,
-		ClientId:              base.ClientId,
-		ClientSecret:          base.ClientSecret,
-		DiscoveryEndpoint:     base.DiscoveryEndpoint,
-		Issuer:                base.Issuer,
-		JwksEndpoint:          base.JwksEndpoint,
-		Mapping:               base.Mapping,
-		OverrideUserInfo:      base.OverrideUserInfo,
-		Pkce:                  base.Pkce,
-		Scopes:                base.Scopes,
-		TokenEndpoint:         base.TokenEndpoint,
-		UserInfoEndpoint:      base.UserInfoEndpoint,
+		AuthorizationEndpoint:   base.AuthorizationEndpoint,
+		ClientId:                base.ClientId,
+		ClientSecret:            base.ClientSecret,
+		DiscoveryEndpoint:       base.DiscoveryEndpoint,
+		Issuer:                  base.Issuer,
+		JwksEndpoint:            base.JwksEndpoint,
+		Mapping:                 base.Mapping,
+		OverrideUserInfo:        base.OverrideUserInfo,
+		Pkce:                    base.Pkce,
+		Scopes:                  base.Scopes,
+		SkipDiscovery:           base.SkipDiscovery,
+		EnableRpInitiatedLogout: base.EnableRpInitiatedLogout,
+		TokenEndpoint:           base.TokenEndpoint,
+		UserInfoEndpoint:        base.UserInfoEndpoint,
 	}
 
 	if !cfg.TokenEndpointAuthentication.IsNull() {
 		v := cfg.TokenEndpointAuthentication.ValueString()
-		cast := client.UpdateSsoProviderJSONBodyOidcConfigTokenEndpointAuthentication(v)
+		cast := client.UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication(v)
 		out.TokenEndpointAuthentication = &cast
+	}
+
+	if cfg.EnterpriseManagedCredentials != nil {
+		out.EnterpriseManagedCredentials = expandEnterpriseManagedCredentialsUpdate(cfg.EnterpriseManagedCredentials)
 	}
 
 	return out
@@ -1709,4 +1855,176 @@ func preserveSensitive(value string, prior *SsoProviderResourceModel, getter fun
 		}
 	}
 	return types.StringNull()
+}
+
+// enterpriseManagedCredentialsIntermediate is a common shape for flattening EMC from any response type.
+type enterpriseManagedCredentialsIntermediate struct {
+	ClientAssertionAudience     *string `json:"clientAssertionAudience,omitempty"`
+	ClientId                    *string `json:"clientId,omitempty"`
+	ClientSecret                *string `json:"clientSecret,omitempty"`
+	PrivateKeyId                *string `json:"privateKeyId,omitempty"`
+	PrivateKeyPem               *string `json:"privateKeyPem,omitempty"`
+	ProviderType                *string `json:"providerType,omitempty"`
+	SubjectTokenType            *string `json:"subjectTokenType,omitempty"`
+	TokenEndpoint               *string `json:"tokenEndpoint,omitempty"`
+	TokenEndpointAuthentication *string `json:"tokenEndpointAuthentication,omitempty"`
+}
+
+// flattenEnterpriseManagedCredentials converts any API response EMC struct into the Terraform model.
+// It uses JSON round-trip to avoid coupling to specific response type aliases.
+func flattenEnterpriseManagedCredentials(emc interface{}) *EnterpriseManagedCredentialsModel {
+	if emc == nil {
+		return nil
+	}
+	data, err := json.Marshal(emc)
+	if err != nil {
+		return nil
+	}
+	var intermediate enterpriseManagedCredentialsIntermediate
+	if err := json.Unmarshal(data, &intermediate); err != nil {
+		return nil
+	}
+	return &EnterpriseManagedCredentialsModel{
+		ProviderType:                stringValueOrNull(intermediate.ProviderType),
+		ClientID:                    stringValueOrNull(intermediate.ClientId),
+		ClientSecret:                stringValueOrNull(intermediate.ClientSecret),
+		TokenEndpoint:               stringValueOrNull(intermediate.TokenEndpoint),
+		TokenEndpointAuthentication: stringValueOrNull(intermediate.TokenEndpointAuthentication),
+		PrivateKeyPem:               stringValueOrNull(intermediate.PrivateKeyPem),
+		PrivateKeyID:                stringValueOrNull(intermediate.PrivateKeyId),
+		ClientAssertionAudience:     stringValueOrNull(intermediate.ClientAssertionAudience),
+		SubjectTokenType:            stringValueOrNull(intermediate.SubjectTokenType),
+	}
+}
+
+func expandEnterpriseManagedCredentialsCreate(emc *EnterpriseManagedCredentialsModel) *struct {
+	ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
+	ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
+	ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+	PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
+	PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
+	ProviderType                *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
+	SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
+	TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
+	TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+} {
+	if emc == nil {
+		return nil
+	}
+	out := &struct {
+		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
+		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
+		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
+		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
+		ProviderType                *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
+		SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
+		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
+		TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+	}{}
+
+	if !emc.ProviderType.IsNull() {
+		v := client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType(emc.ProviderType.ValueString())
+		out.ProviderType = &v
+	}
+	if !emc.ClientID.IsNull() {
+		v := emc.ClientID.ValueString()
+		out.ClientId = &v
+	}
+	if !emc.ClientSecret.IsNull() {
+		v := emc.ClientSecret.ValueString()
+		out.ClientSecret = &v
+	}
+	if !emc.TokenEndpoint.IsNull() {
+		v := emc.TokenEndpoint.ValueString()
+		out.TokenEndpoint = &v
+	}
+	if !emc.TokenEndpointAuthentication.IsNull() {
+		v := client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication(emc.TokenEndpointAuthentication.ValueString())
+		out.TokenEndpointAuthentication = &v
+	}
+	if !emc.PrivateKeyPem.IsNull() {
+		v := emc.PrivateKeyPem.ValueString()
+		out.PrivateKeyPem = &v
+	}
+	if !emc.PrivateKeyID.IsNull() {
+		v := emc.PrivateKeyID.ValueString()
+		out.PrivateKeyId = &v
+	}
+	if !emc.ClientAssertionAudience.IsNull() {
+		v := emc.ClientAssertionAudience.ValueString()
+		out.ClientAssertionAudience = &v
+	}
+	if !emc.SubjectTokenType.IsNull() {
+		v := client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType(emc.SubjectTokenType.ValueString())
+		out.SubjectTokenType = &v
+	}
+
+	return out
+}
+
+func expandEnterpriseManagedCredentialsUpdate(emc *EnterpriseManagedCredentialsModel) *struct {
+	ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
+	ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
+	ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+	PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
+	PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
+	ProviderType                *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
+	SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
+	TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
+	TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+} {
+	if emc == nil {
+		return nil
+	}
+	out := &struct {
+		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
+		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
+		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
+		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
+		ProviderType                *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
+		SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
+		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
+		TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
+	}{}
+
+	if !emc.ProviderType.IsNull() {
+		v := client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType(emc.ProviderType.ValueString())
+		out.ProviderType = &v
+	}
+	if !emc.ClientID.IsNull() {
+		v := emc.ClientID.ValueString()
+		out.ClientId = &v
+	}
+	if !emc.ClientSecret.IsNull() {
+		v := emc.ClientSecret.ValueString()
+		out.ClientSecret = &v
+	}
+	if !emc.TokenEndpoint.IsNull() {
+		v := emc.TokenEndpoint.ValueString()
+		out.TokenEndpoint = &v
+	}
+	if !emc.TokenEndpointAuthentication.IsNull() {
+		v := client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication(emc.TokenEndpointAuthentication.ValueString())
+		out.TokenEndpointAuthentication = &v
+	}
+	if !emc.PrivateKeyPem.IsNull() {
+		v := emc.PrivateKeyPem.ValueString()
+		out.PrivateKeyPem = &v
+	}
+	if !emc.PrivateKeyID.IsNull() {
+		v := emc.PrivateKeyID.ValueString()
+		out.PrivateKeyId = &v
+	}
+	if !emc.ClientAssertionAudience.IsNull() {
+		v := emc.ClientAssertionAudience.ValueString()
+		out.ClientAssertionAudience = &v
+	}
+	if !emc.SubjectTokenType.IsNull() {
+		v := client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType(emc.SubjectTokenType.ValueString())
+		out.SubjectTokenType = &v
+	}
+
+	return out
 }

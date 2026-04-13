@@ -6,6 +6,7 @@ import (
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -34,11 +35,33 @@ type ProfileLabelModel struct {
 	Value types.String `tfsdk:"value"`
 }
 
+// SuggestedPromptModel describes a suggested prompt data model.
+type SuggestedPromptModel struct {
+	Prompt       types.String `tfsdk:"prompt"`
+	SummaryTitle types.String `tfsdk:"summary_title"`
+}
+
 // ProfileResourceModel describes the resource data model.
 type ProfileResourceModel struct {
-	ID     types.String        `tfsdk:"id"`
-	Name   types.String        `tfsdk:"name"`
-	Labels []ProfileLabelModel `tfsdk:"labels"`
+	ID                         types.String           `tfsdk:"id"`
+	Name                       types.String           `tfsdk:"name"`
+	Description                types.String           `tfsdk:"description"`
+	Icon                       types.String           `tfsdk:"icon"`
+	SystemPrompt               types.String           `tfsdk:"system_prompt"`
+	LlmModel                   types.String           `tfsdk:"llm_model"`
+	LlmApiKeyId                types.String           `tfsdk:"llm_api_key_id"`
+	AgentType                  types.String           `tfsdk:"agent_type"`
+	PassthroughHeaders         types.List             `tfsdk:"passthrough_headers"`
+	KnowledgeBaseIds           types.List             `tfsdk:"knowledge_base_ids"`
+	ConnectorIds               types.List             `tfsdk:"connector_ids"`
+	IncomingEmailEnabled       types.Bool             `tfsdk:"incoming_email_enabled"`
+	IncomingEmailAllowedDomain types.String           `tfsdk:"incoming_email_allowed_domain"`
+	IncomingEmailSecurityMode  types.String           `tfsdk:"incoming_email_security_mode"`
+	ConsiderContextUntrusted   types.Bool             `tfsdk:"consider_context_untrusted"`
+	IsDefault                  types.Bool             `tfsdk:"is_default"`
+	IdentityProviderId         types.String           `tfsdk:"identity_provider_id"`
+	SuggestedPrompts           []SuggestedPromptModel `tfsdk:"suggested_prompts"`
+	Labels                     []ProfileLabelModel    `tfsdk:"labels"`
 }
 
 func (r *ProfileResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,6 +83,93 @@ func (r *ProfileResource) Schema(ctx context.Context, req resource.SchemaRequest
 			"name": schema.StringAttribute{
 				MarkdownDescription: "The name of the profile",
 				Required:            true,
+			},
+			"description": schema.StringAttribute{
+				MarkdownDescription: "Description of the profile",
+				Optional:            true,
+			},
+			"icon": schema.StringAttribute{
+				MarkdownDescription: "Emoji or base64 image for the profile icon",
+				Optional:            true,
+			},
+			"system_prompt": schema.StringAttribute{
+				MarkdownDescription: "System prompt for agent-type agents",
+				Optional:            true,
+			},
+			"llm_model": schema.StringAttribute{
+				MarkdownDescription: "LLM model ID",
+				Optional:            true,
+			},
+			"llm_api_key_id": schema.StringAttribute{
+				MarkdownDescription: "LLM API key UUID",
+				Optional:            true,
+			},
+			"agent_type": schema.StringAttribute{
+				MarkdownDescription: "The type of the agent. Valid values: profile, mcp_gateway, llm_proxy, agent",
+				Optional:            true,
+				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
+			"passthrough_headers": schema.ListAttribute{
+				MarkdownDescription: "HTTP headers to forward",
+				Optional:            true,
+				ElementType:         types.StringType,
+			},
+			"knowledge_base_ids": schema.ListAttribute{
+				MarkdownDescription: "List of knowledge base IDs to associate with the profile",
+				Optional:            true,
+				ElementType:         types.StringType,
+			},
+			"connector_ids": schema.ListAttribute{
+				MarkdownDescription: "List of connector IDs to associate with the profile",
+				Optional:            true,
+				ElementType:         types.StringType,
+			},
+			"incoming_email_enabled": schema.BoolAttribute{
+				MarkdownDescription: "Enable email trigger",
+				Optional:            true,
+				Computed:            true,
+			},
+			"incoming_email_allowed_domain": schema.StringAttribute{
+				MarkdownDescription: "Domain for internal email security mode",
+				Optional:            true,
+			},
+			"incoming_email_security_mode": schema.StringAttribute{
+				MarkdownDescription: "Email security mode: private, internal, or public",
+				Optional:            true,
+				Computed:            true,
+			},
+			"consider_context_untrusted": schema.BoolAttribute{
+				MarkdownDescription: "Whether the agent context is treated as untrusted",
+				Optional:            true,
+				Computed:            true,
+			},
+			"is_default": schema.BoolAttribute{
+				MarkdownDescription: "Whether this is the default agent",
+				Optional:            true,
+				Computed:            true,
+			},
+			"identity_provider_id": schema.StringAttribute{
+				MarkdownDescription: "Identity provider ID for SSO",
+				Optional:            true,
+			},
+			"suggested_prompts": schema.ListNestedAttribute{
+				MarkdownDescription: "Suggested prompts for the profile",
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"prompt": schema.StringAttribute{
+							MarkdownDescription: "The prompt text",
+							Required:            true,
+						},
+						"summary_title": schema.StringAttribute{
+							MarkdownDescription: "The summary title for the prompt",
+							Required:            true,
+						},
+					},
+				},
 			},
 			"labels": schema.ListNestedAttribute{
 				MarkdownDescription: "Labels to organize and identify the profile",
@@ -130,10 +240,105 @@ func (r *ProfileResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 
 	// Create request body using generated type
+	emptyTeams := []string{}
 	requestBody := client.CreateAgentJSONRequestBody{
 		Name:   data.Name.ValueString(),
-		Teams:  []string{}, // Empty teams array (required by API)
+		Scope:  client.CreateAgentJSONBodyScopeOrg,
+		Teams:  &emptyTeams,
 		Labels: &labels,
+	}
+
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		desc := data.Description.ValueString()
+		requestBody.Description = &desc
+	}
+	if !data.Icon.IsNull() && !data.Icon.IsUnknown() {
+		icon := data.Icon.ValueString()
+		requestBody.Icon = &icon
+	}
+	if !data.SystemPrompt.IsNull() && !data.SystemPrompt.IsUnknown() {
+		sp := data.SystemPrompt.ValueString()
+		requestBody.SystemPrompt = &sp
+	}
+	if !data.LlmModel.IsNull() && !data.LlmModel.IsUnknown() {
+		m := data.LlmModel.ValueString()
+		requestBody.LlmModel = &m
+	}
+	if !data.LlmApiKeyId.IsNull() && !data.LlmApiKeyId.IsUnknown() {
+		id, parseErr := uuid.Parse(data.LlmApiKeyId.ValueString())
+		if parseErr != nil {
+			resp.Diagnostics.AddError("Invalid llm_api_key_id", fmt.Sprintf("Unable to parse llm_api_key_id: %s", parseErr))
+			return
+		}
+		requestBody.LlmApiKeyId = &id
+	}
+	if !data.PassthroughHeaders.IsNull() && !data.PassthroughHeaders.IsUnknown() {
+		var headers []string
+		resp.Diagnostics.Append(data.PassthroughHeaders.ElementsAs(ctx, &headers, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		requestBody.PassthroughHeaders = &headers
+	}
+	if !data.IncomingEmailEnabled.IsNull() && !data.IncomingEmailEnabled.IsUnknown() {
+		enabled := data.IncomingEmailEnabled.ValueBool()
+		requestBody.IncomingEmailEnabled = &enabled
+	}
+	if !data.IncomingEmailAllowedDomain.IsNull() && !data.IncomingEmailAllowedDomain.IsUnknown() {
+		domain := data.IncomingEmailAllowedDomain.ValueString()
+		requestBody.IncomingEmailAllowedDomain = &domain
+	}
+	if !data.IncomingEmailSecurityMode.IsNull() && !data.IncomingEmailSecurityMode.IsUnknown() {
+		mode := client.CreateAgentJSONBodyIncomingEmailSecurityMode(data.IncomingEmailSecurityMode.ValueString())
+		requestBody.IncomingEmailSecurityMode = &mode
+	}
+	if !data.ConsiderContextUntrusted.IsNull() && !data.ConsiderContextUntrusted.IsUnknown() {
+		v := data.ConsiderContextUntrusted.ValueBool()
+		requestBody.ConsiderContextUntrusted = &v
+	}
+	if !data.IsDefault.IsNull() && !data.IsDefault.IsUnknown() {
+		v := data.IsDefault.ValueBool()
+		requestBody.IsDefault = &v
+	}
+	if !data.IdentityProviderId.IsNull() && !data.IdentityProviderId.IsUnknown() {
+		v := data.IdentityProviderId.ValueString()
+		requestBody.IdentityProviderId = &v
+	}
+	if !data.AgentType.IsNull() && !data.AgentType.IsUnknown() {
+		at := client.CreateAgentJSONBodyAgentType(data.AgentType.ValueString())
+		requestBody.AgentType = &at
+	}
+	if data.SuggestedPrompts != nil {
+		prompts := make([]struct {
+			Prompt       string `json:"prompt"`
+			SummaryTitle string `json:"summaryTitle"`
+		}, len(data.SuggestedPrompts))
+		for i, sp := range data.SuggestedPrompts {
+			prompts[i] = struct {
+				Prompt       string `json:"prompt"`
+				SummaryTitle string `json:"summaryTitle"`
+			}{
+				Prompt:       sp.Prompt.ValueString(),
+				SummaryTitle: sp.SummaryTitle.ValueString(),
+			}
+		}
+		requestBody.SuggestedPrompts = &prompts
+	}
+	if !data.KnowledgeBaseIds.IsNull() && !data.KnowledgeBaseIds.IsUnknown() {
+		var ids []string
+		resp.Diagnostics.Append(data.KnowledgeBaseIds.ElementsAs(ctx, &ids, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		requestBody.KnowledgeBaseIds = &ids
+	}
+	if !data.ConnectorIds.IsNull() && !data.ConnectorIds.IsUnknown() {
+		var ids []string
+		resp.Diagnostics.Append(data.ConnectorIds.ElementsAs(ctx, &ids, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		requestBody.ConnectorIds = &ids
 	}
 
 	// Call API
@@ -155,6 +360,30 @@ func (r *ProfileResource) Create(ctx context.Context, req resource.CreateRequest
 	// Map response to Terraform state
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.Name = types.StringValue(apiResp.JSON200.Name)
+	r.mapResponseFieldsToState(&data, apiResp.JSON200.Description, apiResp.JSON200.Icon, apiResp.JSON200.SystemPrompt, apiResp.JSON200.LlmModel, apiResp.JSON200.LlmApiKeyId, apiResp.JSON200.PassthroughHeaders, apiResp.JSON200.IncomingEmailEnabled, apiResp.JSON200.IncomingEmailAllowedDomain, string(apiResp.JSON200.IncomingEmailSecurityMode), ctx, resp.Diagnostics)
+
+	// Map agent_type from response
+	data.AgentType = types.StringValue(string(apiResp.JSON200.AgentType))
+
+	// Map consider_context_untrusted and is_default from response (non-nullable bools)
+	data.ConsiderContextUntrusted = types.BoolValue(apiResp.JSON200.ConsiderContextUntrusted)
+	data.IsDefault = types.BoolValue(apiResp.JSON200.IsDefault)
+
+	// Map identity_provider_id from response (nullable)
+	if apiResp.JSON200.IdentityProviderId != nil {
+		data.IdentityProviderId = types.StringValue(*apiResp.JSON200.IdentityProviderId)
+	} else if !data.IdentityProviderId.IsNull() {
+		data.IdentityProviderId = types.StringNull()
+	}
+
+	// Map suggested_prompts from response
+	r.mapSuggestedPromptsToState(&data, apiResp.JSON200.SuggestedPrompts)
+
+	// Map knowledge_base_ids from response
+	r.mapStringListToState(ctx, &data.KnowledgeBaseIds, apiResp.JSON200.KnowledgeBaseIds, resp.Diagnostics)
+
+	// Map connector_ids from response
+	r.mapStringListToState(ctx, &data.ConnectorIds, apiResp.JSON200.ConnectorIds, resp.Diagnostics)
 
 	// Map labels from API response, preserving configuration order
 	// If labels were not specified in config (nil), keep them nil in state
@@ -205,6 +434,30 @@ func (r *ProfileResource) Read(ctx context.Context, req resource.ReadRequest, re
 
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
+	r.mapResponseFieldsToState(&data, apiResp.JSON200.Description, apiResp.JSON200.Icon, apiResp.JSON200.SystemPrompt, apiResp.JSON200.LlmModel, apiResp.JSON200.LlmApiKeyId, apiResp.JSON200.PassthroughHeaders, apiResp.JSON200.IncomingEmailEnabled, apiResp.JSON200.IncomingEmailAllowedDomain, string(apiResp.JSON200.IncomingEmailSecurityMode), ctx, resp.Diagnostics)
+
+	// Map agent_type from response
+	data.AgentType = types.StringValue(string(apiResp.JSON200.AgentType))
+
+	// Map consider_context_untrusted and is_default from response (non-nullable bools)
+	data.ConsiderContextUntrusted = types.BoolValue(apiResp.JSON200.ConsiderContextUntrusted)
+	data.IsDefault = types.BoolValue(apiResp.JSON200.IsDefault)
+
+	// Map identity_provider_id from response (nullable)
+	if apiResp.JSON200.IdentityProviderId != nil {
+		data.IdentityProviderId = types.StringValue(*apiResp.JSON200.IdentityProviderId)
+	} else if !data.IdentityProviderId.IsNull() {
+		data.IdentityProviderId = types.StringNull()
+	}
+
+	// Map suggested_prompts from response
+	r.mapSuggestedPromptsToState(&data, apiResp.JSON200.SuggestedPrompts)
+
+	// Map knowledge_base_ids from response
+	r.mapStringListToState(ctx, &data.KnowledgeBaseIds, apiResp.JSON200.KnowledgeBaseIds, resp.Diagnostics)
+
+	// Map connector_ids from response
+	r.mapStringListToState(ctx, &data.ConnectorIds, apiResp.JSON200.ConnectorIds, resp.Diagnostics)
 
 	// Map labels from API response, preserving existing state order
 	// If labels were not specified in state (nil), keep them nil
@@ -258,6 +511,99 @@ func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest
 		Labels: &labels,
 	}
 
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		desc := data.Description.ValueString()
+		requestBody.Description = &desc
+	}
+	if !data.Icon.IsNull() && !data.Icon.IsUnknown() {
+		icon := data.Icon.ValueString()
+		requestBody.Icon = &icon
+	}
+	if !data.SystemPrompt.IsNull() && !data.SystemPrompt.IsUnknown() {
+		sp := data.SystemPrompt.ValueString()
+		requestBody.SystemPrompt = &sp
+	}
+	if !data.LlmModel.IsNull() && !data.LlmModel.IsUnknown() {
+		m := data.LlmModel.ValueString()
+		requestBody.LlmModel = &m
+	}
+	if !data.LlmApiKeyId.IsNull() && !data.LlmApiKeyId.IsUnknown() {
+		id, parseErr := uuid.Parse(data.LlmApiKeyId.ValueString())
+		if parseErr != nil {
+			resp.Diagnostics.AddError("Invalid llm_api_key_id", fmt.Sprintf("Unable to parse llm_api_key_id: %s", parseErr))
+			return
+		}
+		requestBody.LlmApiKeyId = &id
+	}
+	if !data.PassthroughHeaders.IsNull() && !data.PassthroughHeaders.IsUnknown() {
+		var headers []string
+		resp.Diagnostics.Append(data.PassthroughHeaders.ElementsAs(ctx, &headers, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		requestBody.PassthroughHeaders = &headers
+	}
+	if !data.IncomingEmailEnabled.IsNull() && !data.IncomingEmailEnabled.IsUnknown() {
+		enabled := data.IncomingEmailEnabled.ValueBool()
+		requestBody.IncomingEmailEnabled = &enabled
+	}
+	if !data.IncomingEmailAllowedDomain.IsNull() && !data.IncomingEmailAllowedDomain.IsUnknown() {
+		domain := data.IncomingEmailAllowedDomain.ValueString()
+		requestBody.IncomingEmailAllowedDomain = &domain
+	}
+	if !data.IncomingEmailSecurityMode.IsNull() && !data.IncomingEmailSecurityMode.IsUnknown() {
+		mode := client.UpdateAgentJSONBodyIncomingEmailSecurityMode(data.IncomingEmailSecurityMode.ValueString())
+		requestBody.IncomingEmailSecurityMode = &mode
+	}
+	if !data.ConsiderContextUntrusted.IsNull() && !data.ConsiderContextUntrusted.IsUnknown() {
+		v := data.ConsiderContextUntrusted.ValueBool()
+		requestBody.ConsiderContextUntrusted = &v
+	}
+	if !data.IsDefault.IsNull() && !data.IsDefault.IsUnknown() {
+		v := data.IsDefault.ValueBool()
+		requestBody.IsDefault = &v
+	}
+	if !data.IdentityProviderId.IsNull() && !data.IdentityProviderId.IsUnknown() {
+		v := data.IdentityProviderId.ValueString()
+		requestBody.IdentityProviderId = &v
+	}
+	if !data.AgentType.IsNull() && !data.AgentType.IsUnknown() {
+		at := client.UpdateAgentJSONBodyAgentType(data.AgentType.ValueString())
+		requestBody.AgentType = &at
+	}
+	if data.SuggestedPrompts != nil {
+		prompts := make([]struct {
+			Prompt       string `json:"prompt"`
+			SummaryTitle string `json:"summaryTitle"`
+		}, len(data.SuggestedPrompts))
+		for i, sp := range data.SuggestedPrompts {
+			prompts[i] = struct {
+				Prompt       string `json:"prompt"`
+				SummaryTitle string `json:"summaryTitle"`
+			}{
+				Prompt:       sp.Prompt.ValueString(),
+				SummaryTitle: sp.SummaryTitle.ValueString(),
+			}
+		}
+		requestBody.SuggestedPrompts = &prompts
+	}
+	if !data.KnowledgeBaseIds.IsNull() && !data.KnowledgeBaseIds.IsUnknown() {
+		var ids []string
+		resp.Diagnostics.Append(data.KnowledgeBaseIds.ElementsAs(ctx, &ids, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		requestBody.KnowledgeBaseIds = &ids
+	}
+	if !data.ConnectorIds.IsNull() && !data.ConnectorIds.IsUnknown() {
+		var ids []string
+		resp.Diagnostics.Append(data.ConnectorIds.ElementsAs(ctx, &ids, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		requestBody.ConnectorIds = &ids
+	}
+
 	// Call API
 	apiResp, err := r.client.UpdateAgentWithResponse(ctx, profileID, requestBody)
 	if err != nil {
@@ -276,6 +622,30 @@ func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest
 
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
+	r.mapResponseFieldsToState(&data, apiResp.JSON200.Description, apiResp.JSON200.Icon, apiResp.JSON200.SystemPrompt, apiResp.JSON200.LlmModel, apiResp.JSON200.LlmApiKeyId, apiResp.JSON200.PassthroughHeaders, apiResp.JSON200.IncomingEmailEnabled, apiResp.JSON200.IncomingEmailAllowedDomain, string(apiResp.JSON200.IncomingEmailSecurityMode), ctx, resp.Diagnostics)
+
+	// Map agent_type from response
+	data.AgentType = types.StringValue(string(apiResp.JSON200.AgentType))
+
+	// Map consider_context_untrusted and is_default from response (non-nullable bools)
+	data.ConsiderContextUntrusted = types.BoolValue(apiResp.JSON200.ConsiderContextUntrusted)
+	data.IsDefault = types.BoolValue(apiResp.JSON200.IsDefault)
+
+	// Map identity_provider_id from response (nullable)
+	if apiResp.JSON200.IdentityProviderId != nil {
+		data.IdentityProviderId = types.StringValue(*apiResp.JSON200.IdentityProviderId)
+	} else if !data.IdentityProviderId.IsNull() {
+		data.IdentityProviderId = types.StringNull()
+	}
+
+	// Map suggested_prompts from response
+	r.mapSuggestedPromptsToState(&data, apiResp.JSON200.SuggestedPrompts)
+
+	// Map knowledge_base_ids from response
+	r.mapStringListToState(ctx, &data.KnowledgeBaseIds, apiResp.JSON200.KnowledgeBaseIds, resp.Diagnostics)
+
+	// Map connector_ids from response
+	r.mapStringListToState(ctx, &data.ConnectorIds, apiResp.JSON200.ConnectorIds, resp.Diagnostics)
 
 	// Map labels from API response, preserving configuration order
 	data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
@@ -320,6 +690,61 @@ func (r *ProfileResource) ImportState(ctx context.Context, req resource.ImportSt
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
+// mapResponseFieldsToState maps the new optional fields from API response to Terraform state.
+func (r *ProfileResource) mapResponseFieldsToState(data *ProfileResourceModel, description *string, icon *string, systemPrompt *string, llmModel *string, llmApiKeyId *openapi_types.UUID, passthroughHeaders *[]string, incomingEmailEnabled bool, incomingEmailAllowedDomain *string, incomingEmailSecurityMode string, ctx context.Context, diags diag.Diagnostics) {
+	if description != nil {
+		data.Description = types.StringValue(*description)
+	} else if !data.Description.IsNull() {
+		data.Description = types.StringNull()
+	}
+
+	if icon != nil {
+		data.Icon = types.StringValue(*icon)
+	} else if !data.Icon.IsNull() {
+		data.Icon = types.StringNull()
+	}
+
+	if systemPrompt != nil {
+		data.SystemPrompt = types.StringValue(*systemPrompt)
+	} else if !data.SystemPrompt.IsNull() {
+		data.SystemPrompt = types.StringNull()
+	}
+
+	if llmModel != nil {
+		data.LlmModel = types.StringValue(*llmModel)
+	} else if !data.LlmModel.IsNull() {
+		data.LlmModel = types.StringNull()
+	}
+
+	if llmApiKeyId != nil {
+		data.LlmApiKeyId = types.StringValue(llmApiKeyId.String())
+	} else if !data.LlmApiKeyId.IsNull() {
+		data.LlmApiKeyId = types.StringNull()
+	}
+
+	if passthroughHeaders != nil {
+		headerList, d := types.ListValueFrom(ctx, types.StringType, *passthroughHeaders)
+		diags.Append(d...)
+		data.PassthroughHeaders = headerList
+	} else if !data.PassthroughHeaders.IsNull() {
+		data.PassthroughHeaders = types.ListNull(types.StringType)
+	}
+
+	data.IncomingEmailEnabled = types.BoolValue(incomingEmailEnabled)
+
+	if incomingEmailAllowedDomain != nil {
+		data.IncomingEmailAllowedDomain = types.StringValue(*incomingEmailAllowedDomain)
+	} else if !data.IncomingEmailAllowedDomain.IsNull() {
+		data.IncomingEmailAllowedDomain = types.StringNull()
+	}
+
+	if incomingEmailSecurityMode != "" {
+		data.IncomingEmailSecurityMode = types.StringValue(incomingEmailSecurityMode)
+	} else if !data.IncomingEmailSecurityMode.IsNull() {
+		data.IncomingEmailSecurityMode = types.StringNull()
+	}
+}
+
 // mapLabelsToConfigurationOrder maps API response labels back to the configuration order
 // to ensure Terraform doesn't detect false changes due to API reordering.
 func (r *ProfileResource) mapLabelsToConfigurationOrder(configLabels []ProfileLabelModel, apiLabels []struct {
@@ -350,4 +775,34 @@ func (r *ProfileResource) mapLabelsToConfigurationOrder(configLabels []ProfileLa
 	}
 
 	return result
+}
+
+// mapSuggestedPromptsToState maps suggested prompts from API response to Terraform state.
+func (r *ProfileResource) mapSuggestedPromptsToState(data *ProfileResourceModel, apiPrompts []struct {
+	Prompt       string `json:"prompt"`
+	SummaryTitle string `json:"summaryTitle"`
+}) {
+	if len(apiPrompts) > 0 {
+		prompts := make([]SuggestedPromptModel, len(apiPrompts))
+		for i, sp := range apiPrompts {
+			prompts[i] = SuggestedPromptModel{
+				Prompt:       types.StringValue(sp.Prompt),
+				SummaryTitle: types.StringValue(sp.SummaryTitle),
+			}
+		}
+		data.SuggestedPrompts = prompts
+	} else if data.SuggestedPrompts != nil {
+		data.SuggestedPrompts = nil
+	}
+}
+
+// mapStringListToState maps a string slice from API response to a types.List in Terraform state.
+func (r *ProfileResource) mapStringListToState(ctx context.Context, target *types.List, apiValues []string, diags diag.Diagnostics) {
+	if len(apiValues) > 0 {
+		list, d := types.ListValueFrom(ctx, types.StringType, apiValues)
+		diags.Append(d...)
+		*target = list
+	} else if !target.IsNull() {
+		*target = types.ListNull(types.StringType)
+	}
 }
