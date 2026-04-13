@@ -1,3 +1,7 @@
+//go:build ignore
+
+// TODO: Prompts are now inline on agents (systemPrompt field). No standalone prompt API exists.
+// This resource is obsolete.
 package provider
 
 import (
