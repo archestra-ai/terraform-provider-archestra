@@ -289,11 +289,11 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 
 			// Knowledge settings
 			"embedding_model": schema.StringAttribute{
-				MarkdownDescription: "Embedding model for knowledge base",
+				MarkdownDescription: "Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.",
 				Optional:            true,
 			},
 			"embedding_chat_api_key_id": schema.StringAttribute{
-				MarkdownDescription: "API key ID for the embedding model",
+				MarkdownDescription: "API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.",
 				Optional:            true,
 			},
 			"reranker_model": schema.StringAttribute{
