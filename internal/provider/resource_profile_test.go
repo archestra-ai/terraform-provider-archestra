@@ -338,6 +338,161 @@ resource "archestra_profile" "email_test" {
 `, name, emailEnabled, securityMode)
 }
 
+func TestAccProfileResource_WithBuiltInAgentConfig(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+	profileName := fmt.Sprintf("tf-acc-builtin-%s", rName)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create with built_in_agent_config using dual-llm-main-agent
+			{
+				Config: testAccProfileResourceConfigBuiltInAgent(profileName, 5),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact(profileName),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("agent_type"),
+						knownvalue.StringExact("agent"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("name"),
+						knownvalue.StringExact("dual-llm-main-agent"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("max_rounds"),
+						knownvalue.Int64Exact(5),
+					),
+				},
+			},
+			// Update: change max_rounds to 10
+			{
+				Config: testAccProfileResourceConfigBuiltInAgent(profileName, 10),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("name"),
+						knownvalue.StringExact("dual-llm-main-agent"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("max_rounds"),
+						knownvalue.Int64Exact(10),
+					),
+				},
+			},
+			// Clear built_in_agent_config so the profile can be destroyed
+			{
+				Config: testAccProfileResourceConfigPlain(profileName),
+			},
+		},
+	})
+}
+
+func testAccProfileResourceConfigPlain(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "builtin" {
+  name = %[1]q
+}
+`, name)
+}
+
+func testAccProfileResourceConfigBuiltInAgent(name string, maxRounds int) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "builtin" {
+  name       = %[1]q
+  agent_type = "agent"
+
+  built_in_agent_config {
+    name       = "dual-llm-main-agent"
+    max_rounds = %[2]d
+  }
+}
+`, name, maxRounds)
+}
+
+func TestAccProfileResource_WithPolicySubagent(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+	profileName := fmt.Sprintf("tf-acc-policy-sub-%s", rName)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create with built_in_agent_config using policy-configuration-subagent
+			{
+				Config: testAccProfileResourceConfigPolicySubagent(profileName, true),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.policy_sub",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact(profileName),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.policy_sub",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("name"),
+						knownvalue.StringExact("policy-configuration-subagent"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.policy_sub",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("auto_configure_on_tool_discovery"),
+						knownvalue.Bool(true),
+					),
+				},
+			},
+			// Update: change auto_configure_on_tool_discovery to false
+			{
+				Config: testAccProfileResourceConfigPolicySubagent(profileName, false),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.policy_sub",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("name"),
+						knownvalue.StringExact("policy-configuration-subagent"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.policy_sub",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("auto_configure_on_tool_discovery"),
+						knownvalue.Bool(false),
+					),
+				},
+			},
+			// Clear built_in_agent_config so the profile can be destroyed
+			{
+				Config: testAccProfileResourceConfigPlainPolicySub(profileName),
+			},
+		},
+	})
+}
+
+func testAccProfileResourceConfigPlainPolicySub(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "policy_sub" {
+  name = %[1]q
+}
+`, name)
+}
+
+func testAccProfileResourceConfigPolicySubagent(name string, autoConfigure bool) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "policy_sub" {
+  name       = %[1]q
+  agent_type = "agent"
+
+  built_in_agent_config {
+    name                             = "policy-configuration-subagent"
+    auto_configure_on_tool_discovery = %[2]t
+  }
+}
+`, name, autoConfigure)
+}
+
 func testAccProfileResourceConfigAllFields(name string, description string, considerContextUntrusted bool) string {
 	return fmt.Sprintf(`
 resource "archestra_profile" "allfields" {
