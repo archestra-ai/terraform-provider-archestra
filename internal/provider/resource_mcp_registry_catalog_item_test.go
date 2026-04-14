@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
@@ -540,6 +541,50 @@ resource "archestra_mcp_registry_catalog_item" "test_remote_pat" {
       description = "A GitHub PAT with appropriate permissions for the MCP server"
     }
   ]
+}
+`, name)
+}
+
+func TestAccMcpRegistryCatalogItemResourceWithVaultRefs(t *testing.T) {
+	if os.Getenv("ARCHESTRA_READONLY_VAULT_ENABLED") != "true" {
+		t.Skip("Skipping: backend must run with ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT and an enterprise license. Set ARCHESTRA_READONLY_VAULT_ENABLED=true to run.")
+	}
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithVaultRefs("vault-refs-item"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.vault_refs",
+						tfjsonpath.New("local_config_vault_path"),
+						knownvalue.StringExact("secret/data/mcp/local"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.vault_refs",
+						tfjsonpath.New("local_config_vault_key"),
+						knownvalue.StringExact("env"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigWithVaultRefs(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "vault_refs" {
+  name        = %[1]q
+  description = "Catalog item referencing BYOS vault paths"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+
+  local_config_vault_path = "secret/data/mcp/local"
+  local_config_vault_key  = "env"
 }
 `, name)
 }

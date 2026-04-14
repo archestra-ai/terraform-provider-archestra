@@ -25,6 +25,17 @@ func TestAccProfileResource(t *testing.T) {
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("test-profile"),
 					),
+					// scope defaults to org and teams is empty when not set
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("scope"),
+						knownvalue.StringExact("org"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("teams"),
+						knownvalue.ListSizeExact(0),
+					),
 					// Verify labels are in configuration order
 					statecheck.ExpectKnownValue(
 						"archestra_profile.test",
