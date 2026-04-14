@@ -57,6 +57,7 @@ type OidcConfigModel struct {
 	OverrideUserInfo             types.Bool                         `tfsdk:"override_user_info"`
 	SkipDiscovery                types.Bool                         `tfsdk:"skip_discovery"`
 	EnableRpInitiatedLogout      types.Bool                         `tfsdk:"enable_rp_initiated_logout"`
+	Hd                           types.String                       `tfsdk:"hd"`
 	TokenEndpointAuthentication  types.String                       `tfsdk:"token_endpoint_authentication"`
 	Mapping                      *OidcMappingModel                  `tfsdk:"mapping"`
 	EnterpriseManagedCredentials *EnterpriseManagedCredentialsModel `tfsdk:"enterprise_managed_credentials"`
@@ -215,6 +216,7 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 					"override_user_info":            schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Use token claims instead of userinfo when true."},
 					"skip_discovery":                schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Skip OIDC discovery endpoint validation."},
 					"enable_rp_initiated_logout":    schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Enable RP-initiated logout."},
+					"hd":                            schema.StringAttribute{Optional: true, MarkdownDescription: "Google Hosted Domain restriction (e.g., `example.com`). Only allows users from this domain."},
 					"token_endpoint_authentication": schema.StringAttribute{Optional: true, MarkdownDescription: "Token endpoint auth method (client_secret_basic or client_secret_post)."},
 				},
 				Blocks: map[string]schema.Block{
@@ -495,6 +497,11 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 			} else if oidcCfg.EnableRpInitiatedLogout != nil {
 				newState.OidcConfig.EnableRpInitiatedLogout = types.BoolValue(*oidcCfg.EnableRpInitiatedLogout)
 			}
+			if !state.OidcConfig.Hd.IsNull() {
+				newState.OidcConfig.Hd = state.OidcConfig.Hd
+			} else if oidcCfg.Hd != nil {
+				newState.OidcConfig.Hd = types.StringValue(*oidcCfg.Hd)
+			}
 			// Preserve other optional fields from prior state
 			if !state.OidcConfig.AuthorizationEndpoint.IsNull() {
 				newState.OidcConfig.AuthorizationEndpoint = state.OidcConfig.AuthorizationEndpoint
@@ -585,6 +592,9 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 				newState.OidcConfig.EnableRpInitiatedLogout = types.BoolValue(*oidcCfg.EnableRpInitiatedLogout)
 			} else {
 				newState.OidcConfig.EnableRpInitiatedLogout = types.BoolValue(false)
+			}
+			if oidcCfg.Hd != nil {
+				newState.OidcConfig.Hd = types.StringValue(*oidcCfg.Hd)
 			}
 			if oidcCfg.TokenEndpointAuthentication != nil {
 				newState.OidcConfig.TokenEndpointAuthentication = types.StringValue(string(*oidcCfg.TokenEndpointAuthentication))
@@ -815,6 +825,7 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 			OverrideUserInfo:        boolValueOrNull(oidcCfg.OverrideUserInfo),
 			SkipDiscovery:           boolValueOrNull(oidcCfg.SkipDiscovery),
 			EnableRpInitiatedLogout: boolValueOrNull(oidcCfg.EnableRpInitiatedLogout),
+			Hd:                      stringValueOrNull(oidcCfg.Hd),
 		}
 
 		if oidcCfg.AuthorizationEndpoint != nil {
@@ -987,6 +998,7 @@ func buildOidcConfig(cfg OidcConfigModel) *struct {
 	ClientSecret            string  `json:"clientSecret"`
 	DiscoveryEndpoint       string  `json:"discoveryEndpoint"`
 	EnableRpInitiatedLogout *bool   `json:"enableRpInitiatedLogout,omitempty"`
+	Hd                      *string `json:"hd,omitempty"`
 	Issuer                  string  `json:"issuer"`
 	JwksEndpoint            *string `json:"jwksEndpoint,omitempty"`
 	Mapping                 *struct {
@@ -1010,6 +1022,7 @@ func buildOidcConfig(cfg OidcConfigModel) *struct {
 		ClientSecret            string  `json:"clientSecret"`
 		DiscoveryEndpoint       string  `json:"discoveryEndpoint"`
 		EnableRpInitiatedLogout *bool   `json:"enableRpInitiatedLogout,omitempty"`
+		Hd                      *string `json:"hd,omitempty"`
 		Issuer                  string  `json:"issuer"`
 		JwksEndpoint            *string `json:"jwksEndpoint,omitempty"`
 		Mapping                 *struct {
@@ -1071,6 +1084,10 @@ func buildOidcConfig(cfg OidcConfigModel) *struct {
 		v := cfg.EnableRpInitiatedLogout.ValueBool()
 		out.EnableRpInitiatedLogout = &v
 	}
+	if !cfg.Hd.IsNull() {
+		v := cfg.Hd.ValueString()
+		out.Hd = &v
+	}
 	if cfg.Mapping != nil {
 		out.Mapping = expandOidcMapping(cfg.Mapping)
 	}
@@ -1095,6 +1112,7 @@ func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
 		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 		TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 	} `json:"enterpriseManagedCredentials,omitempty"`
+	Hd           *string `json:"hd,omitempty"`
 	Issuer       string  `json:"issuer"`
 	JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 	Mapping      *struct {
@@ -1131,6 +1149,7 @@ func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
 			TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 			TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 		} `json:"enterpriseManagedCredentials,omitempty"`
+		Hd           *string `json:"hd,omitempty"`
 		Issuer       string  `json:"issuer"`
 		JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 		Mapping      *struct {
@@ -1161,6 +1180,7 @@ func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
 		Scopes:                  base.Scopes,
 		SkipDiscovery:           base.SkipDiscovery,
 		EnableRpInitiatedLogout: base.EnableRpInitiatedLogout,
+		Hd:                      base.Hd,
 		TokenEndpoint:           base.TokenEndpoint,
 		UserInfoEndpoint:        base.UserInfoEndpoint,
 	}
@@ -1195,6 +1215,7 @@ func expandOidcConfigUpdate(cfg OidcConfigModel) *struct {
 		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 		TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 	} `json:"enterpriseManagedCredentials,omitempty"`
+	Hd           *string `json:"hd,omitempty"`
 	Issuer       string  `json:"issuer"`
 	JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 	Mapping      *struct {
@@ -1231,6 +1252,7 @@ func expandOidcConfigUpdate(cfg OidcConfigModel) *struct {
 			TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 			TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 		} `json:"enterpriseManagedCredentials,omitempty"`
+		Hd           *string `json:"hd,omitempty"`
 		Issuer       string  `json:"issuer"`
 		JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 		Mapping      *struct {
@@ -1261,6 +1283,7 @@ func expandOidcConfigUpdate(cfg OidcConfigModel) *struct {
 		Scopes:                  base.Scopes,
 		SkipDiscovery:           base.SkipDiscovery,
 		EnableRpInitiatedLogout: base.EnableRpInitiatedLogout,
+		Hd:                      base.Hd,
 		TokenEndpoint:           base.TokenEndpoint,
 		UserInfoEndpoint:        base.UserInfoEndpoint,
 	}

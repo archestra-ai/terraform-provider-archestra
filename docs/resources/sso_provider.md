@@ -127,6 +127,7 @@ Optional:
 - `discovery_endpoint` (String) Discovery endpoint (.well-known).
 - `enable_rp_initiated_logout` (Boolean) Enable RP-initiated logout.
 - `enterprise_managed_credentials` (Block, Optional) Enterprise-managed credentials for token exchange flows. (see [below for nested schema](#nestedblock--oidc_config--enterprise_managed_credentials))
+- `hd` (String) Google Hosted Domain restriction (e.g., `example.com`). Only allows users from this domain.
 - `issuer` (String) OIDC issuer URL.
 - `jwks_endpoint` (String) Override JWKS endpoint.
 - `mapping` (Block, Optional) Attribute mapping for user fields. (see [below for nested schema](#nestedblock--oidc_config--mapping))

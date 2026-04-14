@@ -50,7 +50,7 @@ make generate                 # Generate Terraform documentation (uses tfplugind
 make codegen-api-client       # Regenerate API client from OpenAPI spec
 ```
 
-The `codegen-api-client` command requires the Archestra backend running locally at `http://localhost:9000`. It fetches the OpenAPI spec, patches it for compatibility (via `scripts/patch_openapi.py`), then uses `oapi-codegen` to generate `internal/client/archestra_client.go`.
+The `codegen-api-client` command requires the Archestra backend running locally at `http://localhost:9000` and uses `oapi-codegen` to generate `internal/client/archestra_client.go` from the OpenAPI spec.
 
 ### Local Development with Terraform
 
@@ -87,11 +87,6 @@ Then run `make install` and use Terraform commands in the `examples/` directory.
 - Large file (~1.5MB) containing all API models and client methods
 - Configuration in `oapi-config.yaml` excludes non-Terraform routes (LLM Proxy, Auth, MCP Gateway, Chat, etc.)
 - DO NOT manually edit this file - regenerate using `make codegen-api-client`
-
-**OpenAPI Spec Patching**: `scripts/patch_openapi.py`
-
-- Fixes numeric `exclusiveMinimum`/`exclusiveMaximum` values (OpenAPI 3.1 feature) in the backend's 3.0 spec
-- Run automatically by `make codegen-api-client`
 
 ### Resources
 
@@ -198,4 +193,3 @@ Tests use MCP server tools (via `@modelcontextprotocol/server-filesystem`) for t
 - Documentation is auto-generated from examples using tfplugindocs tool - run `make generate` after making changes to ensure docs are updated
 - The API client uses `AgentId` internally (from OpenAPI spec) but Terraform schema exposes this as `profile_id` - this is intentional mapping
 - The `profile_tool_id` attribute in policy resources maps to the tool ID (not the agent-tool assignment ID)
-- The backend's OpenAPI spec may use numeric `exclusiveMinimum` (3.1 feature) - the `scripts/patch_openapi.py` handles this automatically

@@ -13,10 +13,7 @@ generate:
 	cd tools; go generate ./...
 
 codegen-api-client:
-	@echo "Fetching and patching OpenAPI spec (fixing numeric exclusiveMinimum for 3.0 compat)..."
-	@curl -s http://localhost:9000/openapi.json | \
-		python3 scripts/patch_openapi.py > /tmp/archestra-openapi-patched.json
-	go tool oapi-codegen -config oapi-config.yaml /tmp/archestra-openapi-patched.json
+	go tool oapi-codegen -config oapi-config.yaml http://localhost:9000/openapi.json
 
 fmt:
 	gofmt -s -w -e .

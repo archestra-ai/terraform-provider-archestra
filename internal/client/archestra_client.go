@@ -903,6 +903,13 @@ const (
 	Restrictive UpdateSecuritySettingsJSONBodyGlobalToolPolicy = "restrictive"
 )
 
+// Defines values for GetScheduleTriggerRunsParamsStatus.
+const (
+	Failed  GetScheduleTriggerRunsParamsStatus = "failed"
+	Running GetScheduleTriggerRunsParamsStatus = "running"
+	Success GetScheduleTriggerRunsParamsStatus = "success"
+)
+
 // Defines values for BulkUpsertDefaultCallPolicyJSONBodyAction.
 const (
 	BulkUpsertDefaultCallPolicyJSONBodyActionAllowWhenContextIsUntrusted BulkUpsertDefaultCallPolicyJSONBodyAction = "allow_when_context_is_untrusted"
@@ -1330,6 +1337,7 @@ type CreateIdentityProviderJSONBody struct {
 			TokenEndpoint               *string                                                                                          `json:"tokenEndpoint,omitempty"`
 			TokenEndpointAuthentication *CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 		} `json:"enterpriseManagedCredentials,omitempty"`
+		Hd           *string `json:"hd,omitempty"`
 		Issuer       string  `json:"issuer"`
 		JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 
@@ -1456,6 +1464,7 @@ type UpdateIdentityProviderJSONBody struct {
 			TokenEndpoint               *string                                                                                          `json:"tokenEndpoint,omitempty"`
 			TokenEndpointAuthentication *UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 		} `json:"enterpriseManagedCredentials,omitempty"`
+		Hd           *string `json:"hd,omitempty"`
 		Issuer       string  `json:"issuer"`
 		JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 
@@ -2645,6 +2654,47 @@ type UpdateSecuritySettingsJSONBody struct {
 // UpdateSecuritySettingsJSONBodyGlobalToolPolicy defines parameters for UpdateSecuritySettings.
 type UpdateSecuritySettingsJSONBodyGlobalToolPolicy string
 
+// GetScheduleTriggersParams defines parameters for GetScheduleTriggers.
+type GetScheduleTriggersParams struct {
+	Limit        *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset       *int    `form:"offset,omitempty" json:"offset,omitempty"`
+	Enabled      *bool   `form:"enabled,omitempty" json:"enabled,omitempty"`
+	Name         *string `form:"name,omitempty" json:"name,omitempty"`
+	ActorUserIds *string `form:"actorUserIds,omitempty" json:"actorUserIds,omitempty"`
+	AgentIds     *string `form:"agentIds,omitempty" json:"agentIds,omitempty"`
+	ShowAll      *bool   `form:"showAll,omitempty" json:"showAll,omitempty"`
+}
+
+// CreateScheduleTriggerJSONBody defines parameters for CreateScheduleTrigger.
+type CreateScheduleTriggerJSONBody struct {
+	AgentId         openapi_types.UUID `json:"agentId"`
+	CronExpression  string             `json:"cronExpression"`
+	Enabled         *bool              `json:"enabled,omitempty"`
+	MessageTemplate string             `json:"messageTemplate"`
+	Name            string             `json:"name"`
+	Timezone        string             `json:"timezone"`
+}
+
+// UpdateScheduleTriggerJSONBody defines parameters for UpdateScheduleTrigger.
+type UpdateScheduleTriggerJSONBody struct {
+	AgentId         *openapi_types.UUID `json:"agentId,omitempty"`
+	CronExpression  *string             `json:"cronExpression,omitempty"`
+	Enabled         *bool               `json:"enabled,omitempty"`
+	MessageTemplate *string             `json:"messageTemplate,omitempty"`
+	Name            *string             `json:"name,omitempty"`
+	Timezone        *string             `json:"timezone,omitempty"`
+}
+
+// GetScheduleTriggerRunsParams defines parameters for GetScheduleTriggerRuns.
+type GetScheduleTriggerRunsParams struct {
+	Limit  *int                                `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int                                `form:"offset,omitempty" json:"offset,omitempty"`
+	Status *GetScheduleTriggerRunsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+}
+
+// GetScheduleTriggerRunsParamsStatus defines parameters for GetScheduleTriggerRuns.
+type GetScheduleTriggerRunsParamsStatus string
+
 // GetTeamsParams defines parameters for GetTeams.
 type GetTeamsParams struct {
 	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
@@ -2873,6 +2923,12 @@ type UpdateMcpSettingsJSONRequestBody UpdateMcpSettingsJSONBody
 
 // UpdateSecuritySettingsJSONRequestBody defines body for UpdateSecuritySettings for application/json ContentType.
 type UpdateSecuritySettingsJSONRequestBody UpdateSecuritySettingsJSONBody
+
+// CreateScheduleTriggerJSONRequestBody defines body for CreateScheduleTrigger for application/json ContentType.
+type CreateScheduleTriggerJSONRequestBody CreateScheduleTriggerJSONBody
+
+// UpdateScheduleTriggerJSONRequestBody defines body for UpdateScheduleTrigger for application/json ContentType.
+type UpdateScheduleTriggerJSONRequestBody UpdateScheduleTriggerJSONBody
 
 // CreateTeamJSONRequestBody defines body for CreateTeam for application/json ContentType.
 type CreateTeamJSONRequestBody CreateTeamJSONBody
@@ -3354,6 +3410,43 @@ type ClientInterface interface {
 	UpdateSecuritySettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateSecuritySettings(ctx context.Context, body UpdateSecuritySettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetScheduleTriggers request
+	GetScheduleTriggers(ctx context.Context, params *GetScheduleTriggersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateScheduleTriggerWithBody request with any body
+	CreateScheduleTriggerWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateScheduleTrigger(ctx context.Context, body CreateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteScheduleTrigger request
+	DeleteScheduleTrigger(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetScheduleTrigger request
+	GetScheduleTrigger(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateScheduleTriggerWithBody request with any body
+	UpdateScheduleTriggerWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateScheduleTrigger(ctx context.Context, id openapi_types.UUID, body UpdateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DisableScheduleTrigger request
+	DisableScheduleTrigger(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EnableScheduleTrigger request
+	EnableScheduleTrigger(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RunScheduleTriggerNow request
+	RunScheduleTriggerNow(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetScheduleTriggerRuns request
+	GetScheduleTriggerRuns(ctx context.Context, id openapi_types.UUID, params *GetScheduleTriggerRunsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetScheduleTriggerRun request
+	GetScheduleTriggerRun(ctx context.Context, id openapi_types.UUID, runId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateScheduleTriggerRunConversation request
+	CreateScheduleTriggerRunConversation(ctx context.Context, id openapi_types.UUID, runId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetTeams request
 	GetTeams(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5129,6 +5222,162 @@ func (c *Client) UpdateSecuritySettingsWithBody(ctx context.Context, contentType
 
 func (c *Client) UpdateSecuritySettings(ctx context.Context, body UpdateSecuritySettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateSecuritySettingsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetScheduleTriggers(ctx context.Context, params *GetScheduleTriggersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetScheduleTriggersRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateScheduleTriggerWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateScheduleTriggerRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateScheduleTrigger(ctx context.Context, body CreateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateScheduleTriggerRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteScheduleTrigger(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteScheduleTriggerRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetScheduleTrigger(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetScheduleTriggerRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateScheduleTriggerWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateScheduleTriggerRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateScheduleTrigger(ctx context.Context, id openapi_types.UUID, body UpdateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateScheduleTriggerRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DisableScheduleTrigger(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDisableScheduleTriggerRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EnableScheduleTrigger(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEnableScheduleTriggerRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RunScheduleTriggerNow(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRunScheduleTriggerNowRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetScheduleTriggerRuns(ctx context.Context, id openapi_types.UUID, params *GetScheduleTriggerRunsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetScheduleTriggerRunsRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetScheduleTriggerRun(ctx context.Context, id openapi_types.UUID, runId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetScheduleTriggerRunRequest(c.Server, id, runId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateScheduleTriggerRunConversation(ctx context.Context, id openapi_types.UUID, runId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateScheduleTriggerRunConversationRequest(c.Server, id, runId)
 	if err != nil {
 		return nil, err
 	}
@@ -9905,6 +10154,578 @@ func NewUpdateSecuritySettingsRequestWithBody(server string, contentType string,
 	return req, nil
 }
 
+// NewGetScheduleTriggersRequest generates requests for GetScheduleTriggers
+func NewGetScheduleTriggersRequest(server string, params *GetScheduleTriggersParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/schedule-triggers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Enabled != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "enabled", runtime.ParamLocationQuery, *params.Enabled); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Name != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "name", runtime.ParamLocationQuery, *params.Name); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ActorUserIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "actorUserIds", runtime.ParamLocationQuery, *params.ActorUserIds); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.AgentIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "agentIds", runtime.ParamLocationQuery, *params.AgentIds); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ShowAll != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "showAll", runtime.ParamLocationQuery, *params.ShowAll); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateScheduleTriggerRequest calls the generic CreateScheduleTrigger builder with application/json body
+func NewCreateScheduleTriggerRequest(server string, body CreateScheduleTriggerJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateScheduleTriggerRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateScheduleTriggerRequestWithBody generates requests for CreateScheduleTrigger with any type of body
+func NewCreateScheduleTriggerRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/schedule-triggers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteScheduleTriggerRequest generates requests for DeleteScheduleTrigger
+func NewDeleteScheduleTriggerRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/schedule-triggers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetScheduleTriggerRequest generates requests for GetScheduleTrigger
+func NewGetScheduleTriggerRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/schedule-triggers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateScheduleTriggerRequest calls the generic UpdateScheduleTrigger builder with application/json body
+func NewUpdateScheduleTriggerRequest(server string, id openapi_types.UUID, body UpdateScheduleTriggerJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateScheduleTriggerRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateScheduleTriggerRequestWithBody generates requests for UpdateScheduleTrigger with any type of body
+func NewUpdateScheduleTriggerRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/schedule-triggers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDisableScheduleTriggerRequest generates requests for DisableScheduleTrigger
+func NewDisableScheduleTriggerRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/schedule-triggers/%s/disable", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewEnableScheduleTriggerRequest generates requests for EnableScheduleTrigger
+func NewEnableScheduleTriggerRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/schedule-triggers/%s/enable", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewRunScheduleTriggerNowRequest generates requests for RunScheduleTriggerNow
+func NewRunScheduleTriggerNowRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/schedule-triggers/%s/run-now", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetScheduleTriggerRunsRequest generates requests for GetScheduleTriggerRuns
+func NewGetScheduleTriggerRunsRequest(server string, id openapi_types.UUID, params *GetScheduleTriggerRunsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/schedule-triggers/%s/runs", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "status", runtime.ParamLocationQuery, *params.Status); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetScheduleTriggerRunRequest generates requests for GetScheduleTriggerRun
+func NewGetScheduleTriggerRunRequest(server string, id openapi_types.UUID, runId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "runId", runtime.ParamLocationPath, runId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/schedule-triggers/%s/runs/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateScheduleTriggerRunConversationRequest generates requests for CreateScheduleTriggerRunConversation
+func NewCreateScheduleTriggerRunConversationRequest(server string, id openapi_types.UUID, runId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "runId", runtime.ParamLocationPath, runId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/schedule-triggers/%s/runs/%s/conversation", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetTeamsRequest generates requests for GetTeams
 func NewGetTeamsRequest(server string, params *GetTeamsParams) (*http.Request, error) {
 	var err error
@@ -11423,6 +12244,43 @@ type ClientWithResponsesInterface interface {
 	UpdateSecuritySettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSecuritySettingsResponse, error)
 
 	UpdateSecuritySettingsWithResponse(ctx context.Context, body UpdateSecuritySettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSecuritySettingsResponse, error)
+
+	// GetScheduleTriggersWithResponse request
+	GetScheduleTriggersWithResponse(ctx context.Context, params *GetScheduleTriggersParams, reqEditors ...RequestEditorFn) (*GetScheduleTriggersResponse, error)
+
+	// CreateScheduleTriggerWithBodyWithResponse request with any body
+	CreateScheduleTriggerWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateScheduleTriggerResponse, error)
+
+	CreateScheduleTriggerWithResponse(ctx context.Context, body CreateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateScheduleTriggerResponse, error)
+
+	// DeleteScheduleTriggerWithResponse request
+	DeleteScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteScheduleTriggerResponse, error)
+
+	// GetScheduleTriggerWithResponse request
+	GetScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetScheduleTriggerResponse, error)
+
+	// UpdateScheduleTriggerWithBodyWithResponse request with any body
+	UpdateScheduleTriggerWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateScheduleTriggerResponse, error)
+
+	UpdateScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateScheduleTriggerResponse, error)
+
+	// DisableScheduleTriggerWithResponse request
+	DisableScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DisableScheduleTriggerResponse, error)
+
+	// EnableScheduleTriggerWithResponse request
+	EnableScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*EnableScheduleTriggerResponse, error)
+
+	// RunScheduleTriggerNowWithResponse request
+	RunScheduleTriggerNowWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*RunScheduleTriggerNowResponse, error)
+
+	// GetScheduleTriggerRunsWithResponse request
+	GetScheduleTriggerRunsWithResponse(ctx context.Context, id openapi_types.UUID, params *GetScheduleTriggerRunsParams, reqEditors ...RequestEditorFn) (*GetScheduleTriggerRunsResponse, error)
+
+	// GetScheduleTriggerRunWithResponse request
+	GetScheduleTriggerRunWithResponse(ctx context.Context, id openapi_types.UUID, runId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetScheduleTriggerRunResponse, error)
+
+	// CreateScheduleTriggerRunConversationWithResponse request
+	CreateScheduleTriggerRunConversationWithResponse(ctx context.Context, id openapi_types.UUID, runId openapi_types.UUID, reqEditors ...RequestEditorFn) (*CreateScheduleTriggerRunConversationResponse, error)
 
 	// GetTeamsWithResponse request
 	GetTeamsWithResponse(ctx context.Context, params *GetTeamsParams, reqEditors ...RequestEditorFn) (*GetTeamsResponse, error)
@@ -14184,6 +15042,7 @@ type GetIdentityProvidersResponse struct {
 				TokenEndpoint               *string                                                                                   `json:"tokenEndpoint,omitempty"`
 				TokenEndpointAuthentication *GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 			} `json:"enterpriseManagedCredentials,omitempty"`
+			Hd           *string `json:"hd,omitempty"`
 			Issuer       string  `json:"issuer"`
 			JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 
@@ -14365,6 +15224,7 @@ type CreateIdentityProviderResponse struct {
 				TokenEndpoint               *string                                                                                     `json:"tokenEndpoint,omitempty"`
 				TokenEndpointAuthentication *CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 			} `json:"enterpriseManagedCredentials,omitempty"`
+			Hd           *string `json:"hd,omitempty"`
 			Issuer       string  `json:"issuer"`
 			JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 
@@ -14745,6 +15605,7 @@ type GetIdentityProviderResponse struct {
 				TokenEndpoint               *string                                                                                  `json:"tokenEndpoint,omitempty"`
 				TokenEndpointAuthentication *GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 			} `json:"enterpriseManagedCredentials,omitempty"`
+			Hd           *string `json:"hd,omitempty"`
 			Issuer       string  `json:"issuer"`
 			JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 
@@ -14926,6 +15787,7 @@ type UpdateIdentityProviderResponse struct {
 				TokenEndpoint               *string                                                                                     `json:"tokenEndpoint,omitempty"`
 				TokenEndpointAuthentication *UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 			} `json:"enterpriseManagedCredentials,omitempty"`
+			Hd           *string `json:"hd,omitempty"`
 			Issuer       string  `json:"issuer"`
 			JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 
@@ -21683,6 +22545,951 @@ func (r UpdateSecuritySettingsResponse) StatusCode() int {
 	return 0
 }
 
+type GetScheduleTriggersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			Actor *struct {
+				Email *string `json:"email"`
+				Id    string  `json:"id"`
+				Name  *string `json:"name"`
+			} `json:"actor"`
+			ActorUserId string `json:"actorUserId"`
+			Agent       *struct {
+				AgentType *string `json:"agentType"`
+				Id        string  `json:"id"`
+				Name      *string `json:"name"`
+			} `json:"agent"`
+			AgentId         openapi_types.UUID `json:"agentId"`
+			CreatedAt       time.Time          `json:"createdAt"`
+			CronExpression  string             `json:"cronExpression"`
+			Enabled         bool               `json:"enabled"`
+			Id              openapi_types.UUID `json:"id"`
+			LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+			MessageTemplate string             `json:"messageTemplate"`
+			Name            string             `json:"name"`
+			OrganizationId  string             `json:"organizationId"`
+			Timezone        string             `json:"timezone"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetScheduleTriggers400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetScheduleTriggers401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetScheduleTriggers403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetScheduleTriggers404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetScheduleTriggers409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    GetScheduleTriggers500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetScheduleTriggers400ErrorType string
+type GetScheduleTriggers401ErrorType string
+type GetScheduleTriggers403ErrorType string
+type GetScheduleTriggers404ErrorType string
+type GetScheduleTriggers409ErrorType string
+type GetScheduleTriggers500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetScheduleTriggersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetScheduleTriggersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateScheduleTriggerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Actor *struct {
+			Email *string `json:"email"`
+			Id    string  `json:"id"`
+			Name  *string `json:"name"`
+		} `json:"actor"`
+		ActorUserId string `json:"actorUserId"`
+		Agent       *struct {
+			AgentType *string `json:"agentType"`
+			Id        string  `json:"id"`
+			Name      *string `json:"name"`
+		} `json:"agent"`
+		AgentId         openapi_types.UUID `json:"agentId"`
+		CreatedAt       time.Time          `json:"createdAt"`
+		CronExpression  string             `json:"cronExpression"`
+		Enabled         bool               `json:"enabled"`
+		Id              openapi_types.UUID `json:"id"`
+		LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+		MessageTemplate string             `json:"messageTemplate"`
+		Name            string             `json:"name"`
+		OrganizationId  string             `json:"organizationId"`
+		Timezone        string             `json:"timezone"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    CreateScheduleTrigger400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    CreateScheduleTrigger401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    CreateScheduleTrigger403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    CreateScheduleTrigger404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    CreateScheduleTrigger409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    CreateScheduleTrigger500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateScheduleTrigger400ErrorType string
+type CreateScheduleTrigger401ErrorType string
+type CreateScheduleTrigger403ErrorType string
+type CreateScheduleTrigger404ErrorType string
+type CreateScheduleTrigger409ErrorType string
+type CreateScheduleTrigger500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateScheduleTriggerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateScheduleTriggerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteScheduleTriggerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteScheduleTrigger400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteScheduleTrigger401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteScheduleTrigger403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteScheduleTrigger404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteScheduleTrigger409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteScheduleTrigger500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteScheduleTrigger400ErrorType string
+type DeleteScheduleTrigger401ErrorType string
+type DeleteScheduleTrigger403ErrorType string
+type DeleteScheduleTrigger404ErrorType string
+type DeleteScheduleTrigger409ErrorType string
+type DeleteScheduleTrigger500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteScheduleTriggerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteScheduleTriggerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetScheduleTriggerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Actor *struct {
+			Email *string `json:"email"`
+			Id    string  `json:"id"`
+			Name  *string `json:"name"`
+		} `json:"actor"`
+		ActorUserId string `json:"actorUserId"`
+		Agent       *struct {
+			AgentType *string `json:"agentType"`
+			Id        string  `json:"id"`
+			Name      *string `json:"name"`
+		} `json:"agent"`
+		AgentId         openapi_types.UUID `json:"agentId"`
+		CreatedAt       time.Time          `json:"createdAt"`
+		CronExpression  string             `json:"cronExpression"`
+		Enabled         bool               `json:"enabled"`
+		Id              openapi_types.UUID `json:"id"`
+		LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+		MessageTemplate string             `json:"messageTemplate"`
+		Name            string             `json:"name"`
+		OrganizationId  string             `json:"organizationId"`
+		Timezone        string             `json:"timezone"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetScheduleTrigger400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetScheduleTrigger401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetScheduleTrigger403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetScheduleTrigger404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetScheduleTrigger409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetScheduleTrigger500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetScheduleTrigger400ErrorType string
+type GetScheduleTrigger401ErrorType string
+type GetScheduleTrigger403ErrorType string
+type GetScheduleTrigger404ErrorType string
+type GetScheduleTrigger409ErrorType string
+type GetScheduleTrigger500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetScheduleTriggerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetScheduleTriggerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateScheduleTriggerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Actor *struct {
+			Email *string `json:"email"`
+			Id    string  `json:"id"`
+			Name  *string `json:"name"`
+		} `json:"actor"`
+		ActorUserId string `json:"actorUserId"`
+		Agent       *struct {
+			AgentType *string `json:"agentType"`
+			Id        string  `json:"id"`
+			Name      *string `json:"name"`
+		} `json:"agent"`
+		AgentId         openapi_types.UUID `json:"agentId"`
+		CreatedAt       time.Time          `json:"createdAt"`
+		CronExpression  string             `json:"cronExpression"`
+		Enabled         bool               `json:"enabled"`
+		Id              openapi_types.UUID `json:"id"`
+		LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+		MessageTemplate string             `json:"messageTemplate"`
+		Name            string             `json:"name"`
+		OrganizationId  string             `json:"organizationId"`
+		Timezone        string             `json:"timezone"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    UpdateScheduleTrigger400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    UpdateScheduleTrigger401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    UpdateScheduleTrigger403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    UpdateScheduleTrigger404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    UpdateScheduleTrigger409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    UpdateScheduleTrigger500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateScheduleTrigger400ErrorType string
+type UpdateScheduleTrigger401ErrorType string
+type UpdateScheduleTrigger403ErrorType string
+type UpdateScheduleTrigger404ErrorType string
+type UpdateScheduleTrigger409ErrorType string
+type UpdateScheduleTrigger500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateScheduleTriggerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateScheduleTriggerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DisableScheduleTriggerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Actor *struct {
+			Email *string `json:"email"`
+			Id    string  `json:"id"`
+			Name  *string `json:"name"`
+		} `json:"actor"`
+		ActorUserId string `json:"actorUserId"`
+		Agent       *struct {
+			AgentType *string `json:"agentType"`
+			Id        string  `json:"id"`
+			Name      *string `json:"name"`
+		} `json:"agent"`
+		AgentId         openapi_types.UUID `json:"agentId"`
+		CreatedAt       time.Time          `json:"createdAt"`
+		CronExpression  string             `json:"cronExpression"`
+		Enabled         bool               `json:"enabled"`
+		Id              openapi_types.UUID `json:"id"`
+		LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+		MessageTemplate string             `json:"messageTemplate"`
+		Name            string             `json:"name"`
+		OrganizationId  string             `json:"organizationId"`
+		Timezone        string             `json:"timezone"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    DisableScheduleTrigger400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    DisableScheduleTrigger401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    DisableScheduleTrigger403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    DisableScheduleTrigger404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    DisableScheduleTrigger409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    DisableScheduleTrigger500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DisableScheduleTrigger400ErrorType string
+type DisableScheduleTrigger401ErrorType string
+type DisableScheduleTrigger403ErrorType string
+type DisableScheduleTrigger404ErrorType string
+type DisableScheduleTrigger409ErrorType string
+type DisableScheduleTrigger500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DisableScheduleTriggerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DisableScheduleTriggerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type EnableScheduleTriggerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Actor *struct {
+			Email *string `json:"email"`
+			Id    string  `json:"id"`
+			Name  *string `json:"name"`
+		} `json:"actor"`
+		ActorUserId string `json:"actorUserId"`
+		Agent       *struct {
+			AgentType *string `json:"agentType"`
+			Id        string  `json:"id"`
+			Name      *string `json:"name"`
+		} `json:"agent"`
+		AgentId         openapi_types.UUID `json:"agentId"`
+		CreatedAt       time.Time          `json:"createdAt"`
+		CronExpression  string             `json:"cronExpression"`
+		Enabled         bool               `json:"enabled"`
+		Id              openapi_types.UUID `json:"id"`
+		LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+		MessageTemplate string             `json:"messageTemplate"`
+		Name            string             `json:"name"`
+		OrganizationId  string             `json:"organizationId"`
+		Timezone        string             `json:"timezone"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    EnableScheduleTrigger400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    EnableScheduleTrigger401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    EnableScheduleTrigger403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    EnableScheduleTrigger404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    EnableScheduleTrigger409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    EnableScheduleTrigger500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type EnableScheduleTrigger400ErrorType string
+type EnableScheduleTrigger401ErrorType string
+type EnableScheduleTrigger403ErrorType string
+type EnableScheduleTrigger404ErrorType string
+type EnableScheduleTrigger409ErrorType string
+type EnableScheduleTrigger500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r EnableScheduleTriggerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EnableScheduleTriggerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RunScheduleTriggerNowResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Artifact           *string                         `json:"artifact"`
+		ChatConversationId *openapi_types.UUID             `json:"chatConversationId"`
+		CompletedAt        *time.Time                      `json:"completedAt"`
+		CreatedAt          time.Time                       `json:"createdAt"`
+		Error              *string                         `json:"error"`
+		Id                 openapi_types.UUID              `json:"id"`
+		InitiatedByUserId  *string                         `json:"initiatedByUserId"`
+		OrganizationId     string                          `json:"organizationId"`
+		RunKind            RunScheduleTriggerNow200RunKind `json:"runKind"`
+		StartedAt          *time.Time                      `json:"startedAt"`
+		Status             RunScheduleTriggerNow200Status  `json:"status"`
+		TriggerId          openapi_types.UUID              `json:"triggerId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    RunScheduleTriggerNow400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    RunScheduleTriggerNow401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    RunScheduleTriggerNow403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    RunScheduleTriggerNow404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    RunScheduleTriggerNow409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    RunScheduleTriggerNow500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type RunScheduleTriggerNow200RunKind string
+type RunScheduleTriggerNow200Status string
+type RunScheduleTriggerNow400ErrorType string
+type RunScheduleTriggerNow401ErrorType string
+type RunScheduleTriggerNow403ErrorType string
+type RunScheduleTriggerNow404ErrorType string
+type RunScheduleTriggerNow409ErrorType string
+type RunScheduleTriggerNow500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r RunScheduleTriggerNowResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RunScheduleTriggerNowResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetScheduleTriggerRunsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			Artifact           *string                              `json:"artifact"`
+			ChatConversationId *openapi_types.UUID                  `json:"chatConversationId"`
+			CompletedAt        *time.Time                           `json:"completedAt"`
+			CreatedAt          time.Time                            `json:"createdAt"`
+			Error              *string                              `json:"error"`
+			Id                 openapi_types.UUID                   `json:"id"`
+			InitiatedByUserId  *string                              `json:"initiatedByUserId"`
+			OrganizationId     string                               `json:"organizationId"`
+			RunKind            GetScheduleTriggerRuns200DataRunKind `json:"runKind"`
+			StartedAt          *time.Time                           `json:"startedAt"`
+			Status             GetScheduleTriggerRuns200DataStatus  `json:"status"`
+			TriggerId          openapi_types.UUID                   `json:"triggerId"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetScheduleTriggerRuns400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetScheduleTriggerRuns401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetScheduleTriggerRuns403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetScheduleTriggerRuns404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetScheduleTriggerRuns409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetScheduleTriggerRuns500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetScheduleTriggerRuns200DataRunKind string
+type GetScheduleTriggerRuns200DataStatus string
+type GetScheduleTriggerRuns400ErrorType string
+type GetScheduleTriggerRuns401ErrorType string
+type GetScheduleTriggerRuns403ErrorType string
+type GetScheduleTriggerRuns404ErrorType string
+type GetScheduleTriggerRuns409ErrorType string
+type GetScheduleTriggerRuns500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetScheduleTriggerRunsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetScheduleTriggerRunsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetScheduleTriggerRunResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Artifact           *string                         `json:"artifact"`
+		ChatConversationId *openapi_types.UUID             `json:"chatConversationId"`
+		CompletedAt        *time.Time                      `json:"completedAt"`
+		CreatedAt          time.Time                       `json:"createdAt"`
+		Error              *string                         `json:"error"`
+		Id                 openapi_types.UUID              `json:"id"`
+		InitiatedByUserId  *string                         `json:"initiatedByUserId"`
+		OrganizationId     string                          `json:"organizationId"`
+		RunKind            GetScheduleTriggerRun200RunKind `json:"runKind"`
+		StartedAt          *time.Time                      `json:"startedAt"`
+		Status             GetScheduleTriggerRun200Status  `json:"status"`
+		TriggerId          openapi_types.UUID              `json:"triggerId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetScheduleTriggerRun400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetScheduleTriggerRun401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetScheduleTriggerRun403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetScheduleTriggerRun404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetScheduleTriggerRun409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    GetScheduleTriggerRun500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetScheduleTriggerRun200RunKind string
+type GetScheduleTriggerRun200Status string
+type GetScheduleTriggerRun400ErrorType string
+type GetScheduleTriggerRun401ErrorType string
+type GetScheduleTriggerRun403ErrorType string
+type GetScheduleTriggerRun404ErrorType string
+type GetScheduleTriggerRun409ErrorType string
+type GetScheduleTriggerRun500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetScheduleTriggerRunResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetScheduleTriggerRunResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateScheduleTriggerRunConversationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Agent *struct {
+			AgentType    CreateScheduleTriggerRunConversation200AgentAgentType `json:"agentType"`
+			Id           string                                                `json:"id"`
+			LlmApiKeyId  *string                                               `json:"llmApiKeyId"`
+			Name         string                                                `json:"name"`
+			SystemPrompt *string                                               `json:"systemPrompt"`
+		} `json:"agent"`
+		AgentId                *openapi_types.UUID                                      `json:"agentId"`
+		Artifact               *string                                                  `json:"artifact"`
+		ChatApiKeyId           *openapi_types.UUID                                      `json:"chatApiKeyId"`
+		CreatedAt              time.Time                                                `json:"createdAt"`
+		HasCustomToolSelection bool                                                     `json:"hasCustomToolSelection"`
+		Id                     openapi_types.UUID                                       `json:"id"`
+		Messages               []interface{}                                            `json:"messages"`
+		OrganizationId         string                                                   `json:"organizationId"`
+		PinnedAt               *time.Time                                               `json:"pinnedAt"`
+		SelectedModel          string                                                   `json:"selectedModel"`
+		SelectedProvider       *CreateScheduleTriggerRunConversation200SelectedProvider `json:"selectedProvider"`
+		Share                  *struct {
+			Id         openapi_types.UUID                                     `json:"id"`
+			Visibility CreateScheduleTriggerRunConversation200ShareVisibility `json:"visibility"`
+		} `json:"share"`
+		Title     *string                                            `json:"title"`
+		TodoList  *CreateScheduleTriggerRunConversation_200_TodoList `json:"todoList"`
+		UpdatedAt time.Time                                          `json:"updatedAt"`
+		UserId    string                                             `json:"userId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                           `json:"message"`
+			Type    CreateScheduleTriggerRunConversation400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                           `json:"message"`
+			Type    CreateScheduleTriggerRunConversation401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                           `json:"message"`
+			Type    CreateScheduleTriggerRunConversation403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                           `json:"message"`
+			Type    CreateScheduleTriggerRunConversation404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                           `json:"message"`
+			Type    CreateScheduleTriggerRunConversation409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                           `json:"message"`
+			Type    CreateScheduleTriggerRunConversation500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateScheduleTriggerRunConversation200AgentAgentType string
+type CreateScheduleTriggerRunConversation200SelectedProvider string
+type CreateScheduleTriggerRunConversation200ShareVisibility string
+type CreateScheduleTriggerRunConversation200TodoList0 struct {
+	union json.RawMessage
+}
+type CreateScheduleTriggerRunConversation200TodoList00 = string
+type CreateScheduleTriggerRunConversation200TodoList01 = float32
+type CreateScheduleTriggerRunConversation200TodoList02 = bool
+type CreateScheduleTriggerRunConversation200TodoList03 string
+type CreateScheduleTriggerRunConversation200TodoList1 map[string]interface{}
+type CreateScheduleTriggerRunConversation200TodoList2 = []interface{}
+type CreateScheduleTriggerRunConversation_200_TodoList struct {
+	union json.RawMessage
+}
+type CreateScheduleTriggerRunConversation400ErrorType string
+type CreateScheduleTriggerRunConversation401ErrorType string
+type CreateScheduleTriggerRunConversation403ErrorType string
+type CreateScheduleTriggerRunConversation404ErrorType string
+type CreateScheduleTriggerRunConversation409ErrorType string
+type CreateScheduleTriggerRunConversation500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateScheduleTriggerRunConversationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateScheduleTriggerRunConversationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetTeamsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -24796,6 +26603,121 @@ func (c *ClientWithResponses) UpdateSecuritySettingsWithResponse(ctx context.Con
 		return nil, err
 	}
 	return ParseUpdateSecuritySettingsResponse(rsp)
+}
+
+// GetScheduleTriggersWithResponse request returning *GetScheduleTriggersResponse
+func (c *ClientWithResponses) GetScheduleTriggersWithResponse(ctx context.Context, params *GetScheduleTriggersParams, reqEditors ...RequestEditorFn) (*GetScheduleTriggersResponse, error) {
+	rsp, err := c.GetScheduleTriggers(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetScheduleTriggersResponse(rsp)
+}
+
+// CreateScheduleTriggerWithBodyWithResponse request with arbitrary body returning *CreateScheduleTriggerResponse
+func (c *ClientWithResponses) CreateScheduleTriggerWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateScheduleTriggerResponse, error) {
+	rsp, err := c.CreateScheduleTriggerWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateScheduleTriggerResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateScheduleTriggerWithResponse(ctx context.Context, body CreateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateScheduleTriggerResponse, error) {
+	rsp, err := c.CreateScheduleTrigger(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateScheduleTriggerResponse(rsp)
+}
+
+// DeleteScheduleTriggerWithResponse request returning *DeleteScheduleTriggerResponse
+func (c *ClientWithResponses) DeleteScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteScheduleTriggerResponse, error) {
+	rsp, err := c.DeleteScheduleTrigger(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteScheduleTriggerResponse(rsp)
+}
+
+// GetScheduleTriggerWithResponse request returning *GetScheduleTriggerResponse
+func (c *ClientWithResponses) GetScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetScheduleTriggerResponse, error) {
+	rsp, err := c.GetScheduleTrigger(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetScheduleTriggerResponse(rsp)
+}
+
+// UpdateScheduleTriggerWithBodyWithResponse request with arbitrary body returning *UpdateScheduleTriggerResponse
+func (c *ClientWithResponses) UpdateScheduleTriggerWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateScheduleTriggerResponse, error) {
+	rsp, err := c.UpdateScheduleTriggerWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateScheduleTriggerResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateScheduleTriggerResponse, error) {
+	rsp, err := c.UpdateScheduleTrigger(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateScheduleTriggerResponse(rsp)
+}
+
+// DisableScheduleTriggerWithResponse request returning *DisableScheduleTriggerResponse
+func (c *ClientWithResponses) DisableScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DisableScheduleTriggerResponse, error) {
+	rsp, err := c.DisableScheduleTrigger(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDisableScheduleTriggerResponse(rsp)
+}
+
+// EnableScheduleTriggerWithResponse request returning *EnableScheduleTriggerResponse
+func (c *ClientWithResponses) EnableScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*EnableScheduleTriggerResponse, error) {
+	rsp, err := c.EnableScheduleTrigger(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEnableScheduleTriggerResponse(rsp)
+}
+
+// RunScheduleTriggerNowWithResponse request returning *RunScheduleTriggerNowResponse
+func (c *ClientWithResponses) RunScheduleTriggerNowWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*RunScheduleTriggerNowResponse, error) {
+	rsp, err := c.RunScheduleTriggerNow(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRunScheduleTriggerNowResponse(rsp)
+}
+
+// GetScheduleTriggerRunsWithResponse request returning *GetScheduleTriggerRunsResponse
+func (c *ClientWithResponses) GetScheduleTriggerRunsWithResponse(ctx context.Context, id openapi_types.UUID, params *GetScheduleTriggerRunsParams, reqEditors ...RequestEditorFn) (*GetScheduleTriggerRunsResponse, error) {
+	rsp, err := c.GetScheduleTriggerRuns(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetScheduleTriggerRunsResponse(rsp)
+}
+
+// GetScheduleTriggerRunWithResponse request returning *GetScheduleTriggerRunResponse
+func (c *ClientWithResponses) GetScheduleTriggerRunWithResponse(ctx context.Context, id openapi_types.UUID, runId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetScheduleTriggerRunResponse, error) {
+	rsp, err := c.GetScheduleTriggerRun(ctx, id, runId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetScheduleTriggerRunResponse(rsp)
+}
+
+// CreateScheduleTriggerRunConversationWithResponse request returning *CreateScheduleTriggerRunConversationResponse
+func (c *ClientWithResponses) CreateScheduleTriggerRunConversationWithResponse(ctx context.Context, id openapi_types.UUID, runId openapi_types.UUID, reqEditors ...RequestEditorFn) (*CreateScheduleTriggerRunConversationResponse, error) {
+	rsp, err := c.CreateScheduleTriggerRunConversation(ctx, id, runId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateScheduleTriggerRunConversationResponse(rsp)
 }
 
 // GetTeamsWithResponse request returning *GetTeamsResponse
@@ -28571,6 +30493,7 @@ func ParseGetIdentityProvidersResponse(rsp *http.Response) (*GetIdentityProvider
 					TokenEndpoint               *string                                                                                   `json:"tokenEndpoint,omitempty"`
 					TokenEndpointAuthentication *GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 				} `json:"enterpriseManagedCredentials,omitempty"`
+				Hd           *string `json:"hd,omitempty"`
 				Issuer       string  `json:"issuer"`
 				JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 
@@ -28782,6 +30705,7 @@ func ParseCreateIdentityProviderResponse(rsp *http.Response) (*CreateIdentityPro
 					TokenEndpoint               *string                                                                                     `json:"tokenEndpoint,omitempty"`
 					TokenEndpointAuthentication *CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 				} `json:"enterpriseManagedCredentials,omitempty"`
+				Hd           *string `json:"hd,omitempty"`
 				Issuer       string  `json:"issuer"`
 				JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 
@@ -29294,6 +31218,7 @@ func ParseGetIdentityProviderResponse(rsp *http.Response) (*GetIdentityProviderR
 					TokenEndpoint               *string                                                                                  `json:"tokenEndpoint,omitempty"`
 					TokenEndpointAuthentication *GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 				} `json:"enterpriseManagedCredentials,omitempty"`
+				Hd           *string `json:"hd,omitempty"`
 				Issuer       string  `json:"issuer"`
 				JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 
@@ -29505,6 +31430,7 @@ func ParseUpdateIdentityProviderResponse(rsp *http.Response) (*UpdateIdentityPro
 					TokenEndpoint               *string                                                                                     `json:"tokenEndpoint,omitempty"`
 					TokenEndpointAuthentication *UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 				} `json:"enterpriseManagedCredentials,omitempty"`
+				Hd           *string `json:"hd,omitempty"`
 				Issuer       string  `json:"issuer"`
 				JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
 
@@ -37464,6 +39390,1304 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 			Error struct {
 				Message string                             `json:"message"`
 				Type    UpdateSecuritySettings500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetScheduleTriggersResponse parses an HTTP response from a GetScheduleTriggersWithResponse call
+func ParseGetScheduleTriggersResponse(rsp *http.Response) (*GetScheduleTriggersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetScheduleTriggersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				Actor *struct {
+					Email *string `json:"email"`
+					Id    string  `json:"id"`
+					Name  *string `json:"name"`
+				} `json:"actor"`
+				ActorUserId string `json:"actorUserId"`
+				Agent       *struct {
+					AgentType *string `json:"agentType"`
+					Id        string  `json:"id"`
+					Name      *string `json:"name"`
+				} `json:"agent"`
+				AgentId         openapi_types.UUID `json:"agentId"`
+				CreatedAt       time.Time          `json:"createdAt"`
+				CronExpression  string             `json:"cronExpression"`
+				Enabled         bool               `json:"enabled"`
+				Id              openapi_types.UUID `json:"id"`
+				LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+				MessageTemplate string             `json:"messageTemplate"`
+				Name            string             `json:"name"`
+				OrganizationId  string             `json:"organizationId"`
+				Timezone        string             `json:"timezone"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetScheduleTriggers400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetScheduleTriggers401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetScheduleTriggers403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetScheduleTriggers404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetScheduleTriggers409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    GetScheduleTriggers500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateScheduleTriggerResponse parses an HTTP response from a CreateScheduleTriggerWithResponse call
+func ParseCreateScheduleTriggerResponse(rsp *http.Response) (*CreateScheduleTriggerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateScheduleTriggerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Actor *struct {
+				Email *string `json:"email"`
+				Id    string  `json:"id"`
+				Name  *string `json:"name"`
+			} `json:"actor"`
+			ActorUserId string `json:"actorUserId"`
+			Agent       *struct {
+				AgentType *string `json:"agentType"`
+				Id        string  `json:"id"`
+				Name      *string `json:"name"`
+			} `json:"agent"`
+			AgentId         openapi_types.UUID `json:"agentId"`
+			CreatedAt       time.Time          `json:"createdAt"`
+			CronExpression  string             `json:"cronExpression"`
+			Enabled         bool               `json:"enabled"`
+			Id              openapi_types.UUID `json:"id"`
+			LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+			MessageTemplate string             `json:"messageTemplate"`
+			Name            string             `json:"name"`
+			OrganizationId  string             `json:"organizationId"`
+			Timezone        string             `json:"timezone"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    CreateScheduleTrigger400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    CreateScheduleTrigger401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    CreateScheduleTrigger403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    CreateScheduleTrigger404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    CreateScheduleTrigger409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    CreateScheduleTrigger500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteScheduleTriggerResponse parses an HTTP response from a DeleteScheduleTriggerWithResponse call
+func ParseDeleteScheduleTriggerResponse(rsp *http.Response) (*DeleteScheduleTriggerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteScheduleTriggerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteScheduleTrigger400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteScheduleTrigger401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteScheduleTrigger403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteScheduleTrigger404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteScheduleTrigger409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteScheduleTrigger500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetScheduleTriggerResponse parses an HTTP response from a GetScheduleTriggerWithResponse call
+func ParseGetScheduleTriggerResponse(rsp *http.Response) (*GetScheduleTriggerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetScheduleTriggerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Actor *struct {
+				Email *string `json:"email"`
+				Id    string  `json:"id"`
+				Name  *string `json:"name"`
+			} `json:"actor"`
+			ActorUserId string `json:"actorUserId"`
+			Agent       *struct {
+				AgentType *string `json:"agentType"`
+				Id        string  `json:"id"`
+				Name      *string `json:"name"`
+			} `json:"agent"`
+			AgentId         openapi_types.UUID `json:"agentId"`
+			CreatedAt       time.Time          `json:"createdAt"`
+			CronExpression  string             `json:"cronExpression"`
+			Enabled         bool               `json:"enabled"`
+			Id              openapi_types.UUID `json:"id"`
+			LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+			MessageTemplate string             `json:"messageTemplate"`
+			Name            string             `json:"name"`
+			OrganizationId  string             `json:"organizationId"`
+			Timezone        string             `json:"timezone"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetScheduleTrigger400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetScheduleTrigger401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetScheduleTrigger403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetScheduleTrigger404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetScheduleTrigger409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetScheduleTrigger500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateScheduleTriggerResponse parses an HTTP response from a UpdateScheduleTriggerWithResponse call
+func ParseUpdateScheduleTriggerResponse(rsp *http.Response) (*UpdateScheduleTriggerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateScheduleTriggerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Actor *struct {
+				Email *string `json:"email"`
+				Id    string  `json:"id"`
+				Name  *string `json:"name"`
+			} `json:"actor"`
+			ActorUserId string `json:"actorUserId"`
+			Agent       *struct {
+				AgentType *string `json:"agentType"`
+				Id        string  `json:"id"`
+				Name      *string `json:"name"`
+			} `json:"agent"`
+			AgentId         openapi_types.UUID `json:"agentId"`
+			CreatedAt       time.Time          `json:"createdAt"`
+			CronExpression  string             `json:"cronExpression"`
+			Enabled         bool               `json:"enabled"`
+			Id              openapi_types.UUID `json:"id"`
+			LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+			MessageTemplate string             `json:"messageTemplate"`
+			Name            string             `json:"name"`
+			OrganizationId  string             `json:"organizationId"`
+			Timezone        string             `json:"timezone"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    UpdateScheduleTrigger400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    UpdateScheduleTrigger401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    UpdateScheduleTrigger403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    UpdateScheduleTrigger404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    UpdateScheduleTrigger409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    UpdateScheduleTrigger500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDisableScheduleTriggerResponse parses an HTTP response from a DisableScheduleTriggerWithResponse call
+func ParseDisableScheduleTriggerResponse(rsp *http.Response) (*DisableScheduleTriggerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DisableScheduleTriggerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Actor *struct {
+				Email *string `json:"email"`
+				Id    string  `json:"id"`
+				Name  *string `json:"name"`
+			} `json:"actor"`
+			ActorUserId string `json:"actorUserId"`
+			Agent       *struct {
+				AgentType *string `json:"agentType"`
+				Id        string  `json:"id"`
+				Name      *string `json:"name"`
+			} `json:"agent"`
+			AgentId         openapi_types.UUID `json:"agentId"`
+			CreatedAt       time.Time          `json:"createdAt"`
+			CronExpression  string             `json:"cronExpression"`
+			Enabled         bool               `json:"enabled"`
+			Id              openapi_types.UUID `json:"id"`
+			LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+			MessageTemplate string             `json:"messageTemplate"`
+			Name            string             `json:"name"`
+			OrganizationId  string             `json:"organizationId"`
+			Timezone        string             `json:"timezone"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    DisableScheduleTrigger400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    DisableScheduleTrigger401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    DisableScheduleTrigger403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    DisableScheduleTrigger404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    DisableScheduleTrigger409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    DisableScheduleTrigger500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseEnableScheduleTriggerResponse parses an HTTP response from a EnableScheduleTriggerWithResponse call
+func ParseEnableScheduleTriggerResponse(rsp *http.Response) (*EnableScheduleTriggerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EnableScheduleTriggerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Actor *struct {
+				Email *string `json:"email"`
+				Id    string  `json:"id"`
+				Name  *string `json:"name"`
+			} `json:"actor"`
+			ActorUserId string `json:"actorUserId"`
+			Agent       *struct {
+				AgentType *string `json:"agentType"`
+				Id        string  `json:"id"`
+				Name      *string `json:"name"`
+			} `json:"agent"`
+			AgentId         openapi_types.UUID `json:"agentId"`
+			CreatedAt       time.Time          `json:"createdAt"`
+			CronExpression  string             `json:"cronExpression"`
+			Enabled         bool               `json:"enabled"`
+			Id              openapi_types.UUID `json:"id"`
+			LastExecutedAt  *time.Time         `json:"lastExecutedAt"`
+			MessageTemplate string             `json:"messageTemplate"`
+			Name            string             `json:"name"`
+			OrganizationId  string             `json:"organizationId"`
+			Timezone        string             `json:"timezone"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    EnableScheduleTrigger400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    EnableScheduleTrigger401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    EnableScheduleTrigger403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    EnableScheduleTrigger404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    EnableScheduleTrigger409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    EnableScheduleTrigger500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRunScheduleTriggerNowResponse parses an HTTP response from a RunScheduleTriggerNowWithResponse call
+func ParseRunScheduleTriggerNowResponse(rsp *http.Response) (*RunScheduleTriggerNowResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RunScheduleTriggerNowResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Artifact           *string                         `json:"artifact"`
+			ChatConversationId *openapi_types.UUID             `json:"chatConversationId"`
+			CompletedAt        *time.Time                      `json:"completedAt"`
+			CreatedAt          time.Time                       `json:"createdAt"`
+			Error              *string                         `json:"error"`
+			Id                 openapi_types.UUID              `json:"id"`
+			InitiatedByUserId  *string                         `json:"initiatedByUserId"`
+			OrganizationId     string                          `json:"organizationId"`
+			RunKind            RunScheduleTriggerNow200RunKind `json:"runKind"`
+			StartedAt          *time.Time                      `json:"startedAt"`
+			Status             RunScheduleTriggerNow200Status  `json:"status"`
+			TriggerId          openapi_types.UUID              `json:"triggerId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    RunScheduleTriggerNow400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    RunScheduleTriggerNow401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    RunScheduleTriggerNow403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    RunScheduleTriggerNow404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    RunScheduleTriggerNow409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    RunScheduleTriggerNow500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetScheduleTriggerRunsResponse parses an HTTP response from a GetScheduleTriggerRunsWithResponse call
+func ParseGetScheduleTriggerRunsResponse(rsp *http.Response) (*GetScheduleTriggerRunsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetScheduleTriggerRunsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				Artifact           *string                              `json:"artifact"`
+				ChatConversationId *openapi_types.UUID                  `json:"chatConversationId"`
+				CompletedAt        *time.Time                           `json:"completedAt"`
+				CreatedAt          time.Time                            `json:"createdAt"`
+				Error              *string                              `json:"error"`
+				Id                 openapi_types.UUID                   `json:"id"`
+				InitiatedByUserId  *string                              `json:"initiatedByUserId"`
+				OrganizationId     string                               `json:"organizationId"`
+				RunKind            GetScheduleTriggerRuns200DataRunKind `json:"runKind"`
+				StartedAt          *time.Time                           `json:"startedAt"`
+				Status             GetScheduleTriggerRuns200DataStatus  `json:"status"`
+				TriggerId          openapi_types.UUID                   `json:"triggerId"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetScheduleTriggerRuns400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetScheduleTriggerRuns401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetScheduleTriggerRuns403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetScheduleTriggerRuns404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetScheduleTriggerRuns409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetScheduleTriggerRuns500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetScheduleTriggerRunResponse parses an HTTP response from a GetScheduleTriggerRunWithResponse call
+func ParseGetScheduleTriggerRunResponse(rsp *http.Response) (*GetScheduleTriggerRunResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetScheduleTriggerRunResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Artifact           *string                         `json:"artifact"`
+			ChatConversationId *openapi_types.UUID             `json:"chatConversationId"`
+			CompletedAt        *time.Time                      `json:"completedAt"`
+			CreatedAt          time.Time                       `json:"createdAt"`
+			Error              *string                         `json:"error"`
+			Id                 openapi_types.UUID              `json:"id"`
+			InitiatedByUserId  *string                         `json:"initiatedByUserId"`
+			OrganizationId     string                          `json:"organizationId"`
+			RunKind            GetScheduleTriggerRun200RunKind `json:"runKind"`
+			StartedAt          *time.Time                      `json:"startedAt"`
+			Status             GetScheduleTriggerRun200Status  `json:"status"`
+			TriggerId          openapi_types.UUID              `json:"triggerId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetScheduleTriggerRun400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetScheduleTriggerRun401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetScheduleTriggerRun403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetScheduleTriggerRun404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetScheduleTriggerRun409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    GetScheduleTriggerRun500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateScheduleTriggerRunConversationResponse parses an HTTP response from a CreateScheduleTriggerRunConversationWithResponse call
+func ParseCreateScheduleTriggerRunConversationResponse(rsp *http.Response) (*CreateScheduleTriggerRunConversationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateScheduleTriggerRunConversationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Agent *struct {
+				AgentType    CreateScheduleTriggerRunConversation200AgentAgentType `json:"agentType"`
+				Id           string                                                `json:"id"`
+				LlmApiKeyId  *string                                               `json:"llmApiKeyId"`
+				Name         string                                                `json:"name"`
+				SystemPrompt *string                                               `json:"systemPrompt"`
+			} `json:"agent"`
+			AgentId                *openapi_types.UUID                                      `json:"agentId"`
+			Artifact               *string                                                  `json:"artifact"`
+			ChatApiKeyId           *openapi_types.UUID                                      `json:"chatApiKeyId"`
+			CreatedAt              time.Time                                                `json:"createdAt"`
+			HasCustomToolSelection bool                                                     `json:"hasCustomToolSelection"`
+			Id                     openapi_types.UUID                                       `json:"id"`
+			Messages               []interface{}                                            `json:"messages"`
+			OrganizationId         string                                                   `json:"organizationId"`
+			PinnedAt               *time.Time                                               `json:"pinnedAt"`
+			SelectedModel          string                                                   `json:"selectedModel"`
+			SelectedProvider       *CreateScheduleTriggerRunConversation200SelectedProvider `json:"selectedProvider"`
+			Share                  *struct {
+				Id         openapi_types.UUID                                     `json:"id"`
+				Visibility CreateScheduleTriggerRunConversation200ShareVisibility `json:"visibility"`
+			} `json:"share"`
+			Title     *string                                            `json:"title"`
+			TodoList  *CreateScheduleTriggerRunConversation_200_TodoList `json:"todoList"`
+			UpdatedAt time.Time                                          `json:"updatedAt"`
+			UserId    string                                             `json:"userId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                           `json:"message"`
+				Type    CreateScheduleTriggerRunConversation400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                           `json:"message"`
+				Type    CreateScheduleTriggerRunConversation401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                           `json:"message"`
+				Type    CreateScheduleTriggerRunConversation403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                           `json:"message"`
+				Type    CreateScheduleTriggerRunConversation404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                           `json:"message"`
+				Type    CreateScheduleTriggerRunConversation409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                           `json:"message"`
+				Type    CreateScheduleTriggerRunConversation500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
