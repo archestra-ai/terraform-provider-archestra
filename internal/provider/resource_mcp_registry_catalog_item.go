@@ -51,6 +51,35 @@ type MCPServerRegistryResourceModel struct {
 	Scope               types.String `tfsdk:"scope"`
 	Teams               types.List   `tfsdk:"teams"`
 	Labels              types.List   `tfsdk:"labels"`
+
+	ClientSecretId             types.String `tfsdk:"client_secret_id"`
+	LocalConfigSecretId        types.String `tfsdk:"local_config_secret_id"`
+	LocalConfigVaultKey        types.String `tfsdk:"local_config_vault_key"`
+	LocalConfigVaultPath       types.String `tfsdk:"local_config_vault_path"`
+	OauthClientSecretVaultKey  types.String `tfsdk:"oauth_client_secret_vault_key"`
+	OauthClientSecretVaultPath types.String `tfsdk:"oauth_client_secret_vault_path"`
+
+	EnterpriseManagedConfig *EnterpriseManagedConfigModel `tfsdk:"enterprise_managed_config"`
+}
+
+// EnterpriseManagedConfigModel mirrors the enterpriseManagedConfig object for catalog items
+// with identity-provider-managed credentials.
+type EnterpriseManagedConfigModel struct {
+	IdentityProviderId      types.String `tfsdk:"identity_provider_id"`
+	ResourceType            types.String `tfsdk:"resource_type"`
+	ResourceIdentifier      types.String `tfsdk:"resource_identifier"`
+	RequestedIssuer         types.String `tfsdk:"requested_issuer"`
+	RequestedCredentialType types.String `tfsdk:"requested_credential_type"`
+	Scopes                  types.List   `tfsdk:"scopes"`
+	Audience                types.String `tfsdk:"audience"`
+	ClientIdOverride        types.String `tfsdk:"client_id_override"`
+	TokenInjectionMode      types.String `tfsdk:"token_injection_mode"`
+	HeaderName              types.String `tfsdk:"header_name"`
+	EnvVarName              types.String `tfsdk:"env_var_name"`
+	BodyFieldName           types.String `tfsdk:"body_field_name"`
+	ResponseFieldPath       types.String `tfsdk:"response_field_path"`
+	FallbackMode            types.String `tfsdk:"fallback_mode"`
+	CacheTtlSeconds         types.Int64  `tfsdk:"cache_ttl_seconds"`
 }
 
 type LabelModel struct {
@@ -514,6 +543,54 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 					},
 				},
 			},
+			"client_secret_id": schema.StringAttribute{
+				MarkdownDescription: "UUID of a stored secret holding the OAuth client secret. Mutually exclusive with inline `oauth_config.client_secret`.",
+				Optional:            true,
+			},
+			"local_config_secret_id": schema.StringAttribute{
+				MarkdownDescription: "UUID of a stored secret holding local_config environment values.",
+				Optional:            true,
+			},
+			"local_config_vault_key": schema.StringAttribute{
+				MarkdownDescription: "BYOS vault key for local_config secrets.",
+				Optional:            true,
+			},
+			"local_config_vault_path": schema.StringAttribute{
+				MarkdownDescription: "BYOS vault path for local_config secrets.",
+				Optional:            true,
+			},
+			"oauth_client_secret_vault_key": schema.StringAttribute{
+				MarkdownDescription: "BYOS vault key for the OAuth client secret.",
+				Optional:            true,
+			},
+			"oauth_client_secret_vault_path": schema.StringAttribute{
+				MarkdownDescription: "BYOS vault path for the OAuth client secret.",
+				Optional:            true,
+			},
+			"enterprise_managed_config": schema.SingleNestedAttribute{
+				MarkdownDescription: "Enterprise-managed credential configuration. Binds this catalog item to an identity provider that issues credentials at runtime rather than using static secrets.",
+				Optional:            true,
+				Attributes: map[string]schema.Attribute{
+					"identity_provider_id": schema.StringAttribute{Optional: true, MarkdownDescription: "Identity provider UUID issuing credentials."},
+					"resource_type":        schema.StringAttribute{Optional: true, MarkdownDescription: "Resource type. One of `mcp`, `oauth_protected_resource`, `secret`, `service_account`, `custom_http`."},
+					"resource_identifier":  schema.StringAttribute{Optional: true},
+					"requested_issuer":     schema.StringAttribute{Optional: true},
+					"requested_credential_type": schema.StringAttribute{
+						Optional:            true,
+						MarkdownDescription: "Credential type requested. One of `id_jag`, `bearer_token`, `secret`, `service_account`, `opaque_json`.",
+					},
+					"scopes":               schema.ListAttribute{Optional: true, ElementType: types.StringType},
+					"audience":             schema.StringAttribute{Optional: true},
+					"client_id_override":   schema.StringAttribute{Optional: true},
+					"token_injection_mode": schema.StringAttribute{Optional: true, MarkdownDescription: "How the token is injected into the downstream request."},
+					"header_name":          schema.StringAttribute{Optional: true},
+					"env_var_name":         schema.StringAttribute{Optional: true},
+					"body_field_name":      schema.StringAttribute{Optional: true},
+					"response_field_path":  schema.StringAttribute{Optional: true},
+					"fallback_mode":        schema.StringAttribute{Optional: true},
+					"cache_ttl_seconds":    schema.Int64Attribute{Optional: true},
+				},
+			},
 		},
 	}
 }
@@ -614,6 +691,123 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 	if !data.DeploymentSpecYaml.IsNull() {
 		dsy := data.DeploymentSpecYaml.ValueString()
 		requestBody.DeploymentSpecYaml = &dsy
+	}
+	if !data.ClientSecretId.IsNull() && !data.ClientSecretId.IsUnknown() {
+		id, parseErr := uuid.Parse(data.ClientSecretId.ValueString())
+		if parseErr != nil {
+			resp.Diagnostics.AddError("Invalid client_secret_id", parseErr.Error())
+			return
+		}
+		requestBody.ClientSecretId = &id
+	}
+	if !data.LocalConfigSecretId.IsNull() && !data.LocalConfigSecretId.IsUnknown() {
+		id, parseErr := uuid.Parse(data.LocalConfigSecretId.ValueString())
+		if parseErr != nil {
+			resp.Diagnostics.AddError("Invalid local_config_secret_id", parseErr.Error())
+			return
+		}
+		requestBody.LocalConfigSecretId = &id
+	}
+	if !data.LocalConfigVaultKey.IsNull() && !data.LocalConfigVaultKey.IsUnknown() {
+		v := data.LocalConfigVaultKey.ValueString()
+		requestBody.LocalConfigVaultKey = &v
+	}
+	if !data.LocalConfigVaultPath.IsNull() && !data.LocalConfigVaultPath.IsUnknown() {
+		v := data.LocalConfigVaultPath.ValueString()
+		requestBody.LocalConfigVaultPath = &v
+	}
+	if !data.OauthClientSecretVaultKey.IsNull() && !data.OauthClientSecretVaultKey.IsUnknown() {
+		v := data.OauthClientSecretVaultKey.ValueString()
+		requestBody.OauthClientSecretVaultKey = &v
+	}
+	if !data.OauthClientSecretVaultPath.IsNull() && !data.OauthClientSecretVaultPath.IsUnknown() {
+		v := data.OauthClientSecretVaultPath.ValueString()
+		requestBody.OauthClientSecretVaultPath = &v
+	}
+	if data.EnterpriseManagedConfig != nil {
+		emc := data.EnterpriseManagedConfig
+		emcBody := struct {
+			Audience                *string                                                                                    `json:"audience,omitempty"`
+			BodyFieldName           *string                                                                                    `json:"bodyFieldName,omitempty"`
+			CacheTtlSeconds         *int                                                                                       `json:"cacheTtlSeconds,omitempty"`
+			ClientIdOverride        *string                                                                                    `json:"clientIdOverride,omitempty"`
+			EnvVarName              *string                                                                                    `json:"envVarName,omitempty"`
+			FallbackMode            *client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode            `json:"fallbackMode,omitempty"`
+			HeaderName              *string                                                                                    `json:"headerName,omitempty"`
+			IdentityProviderId      *string                                                                                    `json:"identityProviderId,omitempty"`
+			RequestedCredentialType *client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigRequestedCredentialType `json:"requestedCredentialType,omitempty"`
+			RequestedIssuer         *string                                                                                    `json:"requestedIssuer,omitempty"`
+			ResourceIdentifier      *string                                                                                    `json:"resourceIdentifier,omitempty"`
+			ResourceType            *client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigResourceType            `json:"resourceType,omitempty"`
+			ResponseFieldPath       *string                                                                                    `json:"responseFieldPath,omitempty"`
+			Scopes                  *[]string                                                                                  `json:"scopes,omitempty"`
+			TokenInjectionMode      *client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMode      `json:"tokenInjectionMode,omitempty"`
+		}{}
+		if !emc.Audience.IsNull() {
+			v := emc.Audience.ValueString()
+			emcBody.Audience = &v
+		}
+		if !emc.BodyFieldName.IsNull() {
+			v := emc.BodyFieldName.ValueString()
+			emcBody.BodyFieldName = &v
+		}
+		if !emc.CacheTtlSeconds.IsNull() {
+			v := int(emc.CacheTtlSeconds.ValueInt64())
+			emcBody.CacheTtlSeconds = &v
+		}
+		if !emc.ClientIdOverride.IsNull() {
+			v := emc.ClientIdOverride.ValueString()
+			emcBody.ClientIdOverride = &v
+		}
+		if !emc.EnvVarName.IsNull() {
+			v := emc.EnvVarName.ValueString()
+			emcBody.EnvVarName = &v
+		}
+		if !emc.FallbackMode.IsNull() {
+			v := client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode(emc.FallbackMode.ValueString())
+			emcBody.FallbackMode = &v
+		}
+		if !emc.HeaderName.IsNull() {
+			v := emc.HeaderName.ValueString()
+			emcBody.HeaderName = &v
+		}
+		if !emc.IdentityProviderId.IsNull() {
+			v := emc.IdentityProviderId.ValueString()
+			emcBody.IdentityProviderId = &v
+		}
+		if !emc.RequestedCredentialType.IsNull() {
+			v := client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigRequestedCredentialType(emc.RequestedCredentialType.ValueString())
+			emcBody.RequestedCredentialType = &v
+		}
+		if !emc.RequestedIssuer.IsNull() {
+			v := emc.RequestedIssuer.ValueString()
+			emcBody.RequestedIssuer = &v
+		}
+		if !emc.ResourceIdentifier.IsNull() {
+			v := emc.ResourceIdentifier.ValueString()
+			emcBody.ResourceIdentifier = &v
+		}
+		if !emc.ResourceType.IsNull() {
+			v := client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigResourceType(emc.ResourceType.ValueString())
+			emcBody.ResourceType = &v
+		}
+		if !emc.ResponseFieldPath.IsNull() {
+			v := emc.ResponseFieldPath.ValueString()
+			emcBody.ResponseFieldPath = &v
+		}
+		if !emc.Scopes.IsNull() {
+			var scopes []string
+			resp.Diagnostics.Append(emc.Scopes.ElementsAs(ctx, &scopes, false)...)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+			emcBody.Scopes = &scopes
+		}
+		if !emc.TokenInjectionMode.IsNull() {
+			v := client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMode(emc.TokenInjectionMode.ValueString())
+			emcBody.TokenInjectionMode = &v
+		}
+		requestBody.EnterpriseManagedConfig = &emcBody
 	}
 	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
 		scope := client.CreateInternalMcpCatalogItemJSONBodyScope(data.Scope.ValueString())
@@ -1023,6 +1217,67 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(_ context.Context, dat
 	}
 
 	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
+
+	if apiResp.JSON200.ClientSecretId != nil {
+		data.ClientSecretId = types.StringValue(apiResp.JSON200.ClientSecretId.String())
+	} else {
+		data.ClientSecretId = types.StringNull()
+	}
+	if apiResp.JSON200.LocalConfigSecretId != nil {
+		data.LocalConfigSecretId = types.StringValue(apiResp.JSON200.LocalConfigSecretId.String())
+	} else {
+		data.LocalConfigSecretId = types.StringNull()
+	}
+	// Vault key/path are write-only on the backend; preserve whatever is already in state.
+
+	if apiResp.JSON200.EnterpriseManagedConfig != nil {
+		emc := apiResp.JSON200.EnterpriseManagedConfig
+		model := &EnterpriseManagedConfigModel{
+			IdentityProviderId: stringValueOrNull(emc.IdentityProviderId),
+			ResourceIdentifier: stringValueOrNull(emc.ResourceIdentifier),
+			RequestedIssuer:    stringValueOrNull(emc.RequestedIssuer),
+			Audience:           stringValueOrNull(emc.Audience),
+			ClientIdOverride:   stringValueOrNull(emc.ClientIdOverride),
+			HeaderName:         stringValueOrNull(emc.HeaderName),
+			EnvVarName:         stringValueOrNull(emc.EnvVarName),
+			BodyFieldName:      stringValueOrNull(emc.BodyFieldName),
+			ResponseFieldPath:  stringValueOrNull(emc.ResponseFieldPath),
+		}
+		if emc.ResourceType != nil {
+			model.ResourceType = types.StringValue(string(*emc.ResourceType))
+		} else {
+			model.ResourceType = types.StringNull()
+		}
+		if emc.RequestedCredentialType != nil {
+			model.RequestedCredentialType = types.StringValue(string(*emc.RequestedCredentialType))
+		} else {
+			model.RequestedCredentialType = types.StringNull()
+		}
+		if emc.TokenInjectionMode != nil {
+			model.TokenInjectionMode = types.StringValue(string(*emc.TokenInjectionMode))
+		} else {
+			model.TokenInjectionMode = types.StringNull()
+		}
+		if emc.FallbackMode != nil {
+			model.FallbackMode = types.StringValue(string(*emc.FallbackMode))
+		} else {
+			model.FallbackMode = types.StringNull()
+		}
+		if emc.CacheTtlSeconds != nil {
+			model.CacheTtlSeconds = types.Int64Value(int64(*emc.CacheTtlSeconds))
+		} else {
+			model.CacheTtlSeconds = types.Int64Null()
+		}
+		if emc.Scopes != nil {
+			list, _ := types.ListValueFrom(context.Background(), types.StringType, *emc.Scopes)
+			model.Scopes = list
+		} else {
+			model.Scopes = types.ListNull(types.StringType)
+		}
+		data.EnterpriseManagedConfig = model
+	} else {
+		data.EnterpriseManagedConfig = nil
+	}
 
 	// Map Teams from API response
 	if len(apiResp.JSON200.Teams) > 0 {
@@ -1449,6 +1704,123 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 	if !data.DeploymentSpecYaml.IsNull() {
 		dsy := data.DeploymentSpecYaml.ValueString()
 		requestBody.DeploymentSpecYaml = &dsy
+	}
+	if !data.ClientSecretId.IsNull() && !data.ClientSecretId.IsUnknown() {
+		id, parseErr := uuid.Parse(data.ClientSecretId.ValueString())
+		if parseErr != nil {
+			resp.Diagnostics.AddError("Invalid client_secret_id", parseErr.Error())
+			return
+		}
+		requestBody.ClientSecretId = &id
+	}
+	if !data.LocalConfigSecretId.IsNull() && !data.LocalConfigSecretId.IsUnknown() {
+		id, parseErr := uuid.Parse(data.LocalConfigSecretId.ValueString())
+		if parseErr != nil {
+			resp.Diagnostics.AddError("Invalid local_config_secret_id", parseErr.Error())
+			return
+		}
+		requestBody.LocalConfigSecretId = &id
+	}
+	if !data.LocalConfigVaultKey.IsNull() && !data.LocalConfigVaultKey.IsUnknown() {
+		v := data.LocalConfigVaultKey.ValueString()
+		requestBody.LocalConfigVaultKey = &v
+	}
+	if !data.LocalConfigVaultPath.IsNull() && !data.LocalConfigVaultPath.IsUnknown() {
+		v := data.LocalConfigVaultPath.ValueString()
+		requestBody.LocalConfigVaultPath = &v
+	}
+	if !data.OauthClientSecretVaultKey.IsNull() && !data.OauthClientSecretVaultKey.IsUnknown() {
+		v := data.OauthClientSecretVaultKey.ValueString()
+		requestBody.OauthClientSecretVaultKey = &v
+	}
+	if !data.OauthClientSecretVaultPath.IsNull() && !data.OauthClientSecretVaultPath.IsUnknown() {
+		v := data.OauthClientSecretVaultPath.ValueString()
+		requestBody.OauthClientSecretVaultPath = &v
+	}
+	if data.EnterpriseManagedConfig != nil {
+		emc := data.EnterpriseManagedConfig
+		emcBody := struct {
+			Audience                *string                                                                                    `json:"audience,omitempty"`
+			BodyFieldName           *string                                                                                    `json:"bodyFieldName,omitempty"`
+			CacheTtlSeconds         *int                                                                                       `json:"cacheTtlSeconds,omitempty"`
+			ClientIdOverride        *string                                                                                    `json:"clientIdOverride,omitempty"`
+			EnvVarName              *string                                                                                    `json:"envVarName,omitempty"`
+			FallbackMode            *client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode            `json:"fallbackMode,omitempty"`
+			HeaderName              *string                                                                                    `json:"headerName,omitempty"`
+			IdentityProviderId      *string                                                                                    `json:"identityProviderId,omitempty"`
+			RequestedCredentialType *client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigRequestedCredentialType `json:"requestedCredentialType,omitempty"`
+			RequestedIssuer         *string                                                                                    `json:"requestedIssuer,omitempty"`
+			ResourceIdentifier      *string                                                                                    `json:"resourceIdentifier,omitempty"`
+			ResourceType            *client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigResourceType            `json:"resourceType,omitempty"`
+			ResponseFieldPath       *string                                                                                    `json:"responseFieldPath,omitempty"`
+			Scopes                  *[]string                                                                                  `json:"scopes,omitempty"`
+			TokenInjectionMode      *client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMode      `json:"tokenInjectionMode,omitempty"`
+		}{}
+		if !emc.Audience.IsNull() {
+			v := emc.Audience.ValueString()
+			emcBody.Audience = &v
+		}
+		if !emc.BodyFieldName.IsNull() {
+			v := emc.BodyFieldName.ValueString()
+			emcBody.BodyFieldName = &v
+		}
+		if !emc.CacheTtlSeconds.IsNull() {
+			v := int(emc.CacheTtlSeconds.ValueInt64())
+			emcBody.CacheTtlSeconds = &v
+		}
+		if !emc.ClientIdOverride.IsNull() {
+			v := emc.ClientIdOverride.ValueString()
+			emcBody.ClientIdOverride = &v
+		}
+		if !emc.EnvVarName.IsNull() {
+			v := emc.EnvVarName.ValueString()
+			emcBody.EnvVarName = &v
+		}
+		if !emc.FallbackMode.IsNull() {
+			v := client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode(emc.FallbackMode.ValueString())
+			emcBody.FallbackMode = &v
+		}
+		if !emc.HeaderName.IsNull() {
+			v := emc.HeaderName.ValueString()
+			emcBody.HeaderName = &v
+		}
+		if !emc.IdentityProviderId.IsNull() {
+			v := emc.IdentityProviderId.ValueString()
+			emcBody.IdentityProviderId = &v
+		}
+		if !emc.RequestedCredentialType.IsNull() {
+			v := client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigRequestedCredentialType(emc.RequestedCredentialType.ValueString())
+			emcBody.RequestedCredentialType = &v
+		}
+		if !emc.RequestedIssuer.IsNull() {
+			v := emc.RequestedIssuer.ValueString()
+			emcBody.RequestedIssuer = &v
+		}
+		if !emc.ResourceIdentifier.IsNull() {
+			v := emc.ResourceIdentifier.ValueString()
+			emcBody.ResourceIdentifier = &v
+		}
+		if !emc.ResourceType.IsNull() {
+			v := client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigResourceType(emc.ResourceType.ValueString())
+			emcBody.ResourceType = &v
+		}
+		if !emc.ResponseFieldPath.IsNull() {
+			v := emc.ResponseFieldPath.ValueString()
+			emcBody.ResponseFieldPath = &v
+		}
+		if !emc.Scopes.IsNull() {
+			var scopes []string
+			resp.Diagnostics.Append(emc.Scopes.ElementsAs(ctx, &scopes, false)...)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+			emcBody.Scopes = &scopes
+		}
+		if !emc.TokenInjectionMode.IsNull() {
+			v := client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMode(emc.TokenInjectionMode.ValueString())
+			emcBody.TokenInjectionMode = &v
+		}
+		requestBody.EnterpriseManagedConfig = &emcBody
 	}
 	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
 		scope := client.UpdateInternalMcpCatalogItemJSONBodyScope(data.Scope.ValueString())

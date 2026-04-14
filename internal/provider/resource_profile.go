@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -73,6 +74,8 @@ type ProfileResourceModel struct {
 	SuggestedPrompts           []SuggestedPromptModel   `tfsdk:"suggested_prompts"`
 	Labels                     []ProfileLabelModel      `tfsdk:"labels"`
 	BuiltInAgentConfig         *BuiltInAgentConfigModel `tfsdk:"built_in_agent_config"`
+	Scope                      types.String             `tfsdk:"scope"`
+	Teams                      types.List               `tfsdk:"teams"`
 }
 
 func (r *ProfileResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -165,6 +168,23 @@ func (r *ProfileResource) Schema(ctx context.Context, req resource.SchemaRequest
 			"identity_provider_id": schema.StringAttribute{
 				MarkdownDescription: "Identity provider ID for SSO",
 				Optional:            true,
+			},
+			"scope": schema.StringAttribute{
+				MarkdownDescription: "Ownership scope of the agent. Valid values: `personal`, `team`, `org`. Defaults to `org`.",
+				Optional:            true,
+				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
+			"teams": schema.ListAttribute{
+				MarkdownDescription: "List of team IDs this agent is assigned to. Required when `scope = \"team\"`.",
+				Optional:            true,
+				Computed:            true,
+				ElementType:         types.StringType,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.UseStateForUnknown(),
+				},
 			},
 			"suggested_prompts": schema.ListNestedAttribute{
 				MarkdownDescription: "Suggested prompts for the profile",
@@ -275,11 +295,21 @@ func (r *ProfileResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 
 	// Create request body using generated type
-	emptyTeams := []string{}
+	scope := client.CreateAgentJSONBodyScopeOrg
+	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
+		scope = client.CreateAgentJSONBodyScope(data.Scope.ValueString())
+	}
+	teams := []string{}
+	if !data.Teams.IsNull() && !data.Teams.IsUnknown() {
+		resp.Diagnostics.Append(data.Teams.ElementsAs(ctx, &teams, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+	}
 	requestBody := client.CreateAgentJSONRequestBody{
 		Name:   data.Name.ValueString(),
-		Scope:  client.CreateAgentJSONBodyScopeOrg,
-		Teams:  &emptyTeams,
+		Scope:  scope,
+		Teams:  &teams,
 		Labels: &labels,
 	}
 
@@ -427,6 +457,16 @@ func (r *ProfileResource) Create(ctx context.Context, req resource.CreateRequest
 	data.ConsiderContextUntrusted = types.BoolValue(apiResp.JSON200.ConsiderContextUntrusted)
 	data.IsDefault = types.BoolValue(apiResp.JSON200.IsDefault)
 
+	// Map scope and teams from response
+	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
+	teamIDs := make([]string, len(apiResp.JSON200.Teams))
+	for i, t := range apiResp.JSON200.Teams {
+		teamIDs[i] = t.Id
+	}
+	teamsList, teamsDiag := types.ListValueFrom(ctx, types.StringType, teamIDs)
+	resp.Diagnostics.Append(teamsDiag...)
+	data.Teams = teamsList
+
 	// Map identity_provider_id from response (nullable)
 	if apiResp.JSON200.IdentityProviderId != nil {
 		data.IdentityProviderId = types.StringValue(*apiResp.JSON200.IdentityProviderId)
@@ -504,6 +544,16 @@ func (r *ProfileResource) Read(ctx context.Context, req resource.ReadRequest, re
 	data.ConsiderContextUntrusted = types.BoolValue(apiResp.JSON200.ConsiderContextUntrusted)
 	data.IsDefault = types.BoolValue(apiResp.JSON200.IsDefault)
 
+	// Map scope and teams from response
+	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
+	teamIDs := make([]string, len(apiResp.JSON200.Teams))
+	for i, t := range apiResp.JSON200.Teams {
+		teamIDs[i] = t.Id
+	}
+	teamsList, teamsDiag := types.ListValueFrom(ctx, types.StringType, teamIDs)
+	resp.Diagnostics.Append(teamsDiag...)
+	data.Teams = teamsList
+
 	// Map identity_provider_id from response (nullable)
 	if apiResp.JSON200.IdentityProviderId != nil {
 		data.IdentityProviderId = types.StringValue(*apiResp.JSON200.IdentityProviderId)
@@ -573,6 +623,18 @@ func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest
 	requestBody := client.UpdateAgentJSONRequestBody{
 		Name:   &name,
 		Labels: &labels,
+	}
+	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
+		s := client.UpdateAgentJSONBodyScope(data.Scope.ValueString())
+		requestBody.Scope = &s
+	}
+	if !data.Teams.IsNull() && !data.Teams.IsUnknown() {
+		var teams []string
+		resp.Diagnostics.Append(data.Teams.ElementsAs(ctx, &teams, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		requestBody.Teams = &teams
 	}
 
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
@@ -730,6 +792,16 @@ func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest
 	// Map consider_context_untrusted and is_default from response (non-nullable bools)
 	data.ConsiderContextUntrusted = types.BoolValue(apiResp.JSON200.ConsiderContextUntrusted)
 	data.IsDefault = types.BoolValue(apiResp.JSON200.IsDefault)
+
+	// Map scope and teams from response
+	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
+	teamIDs := make([]string, len(apiResp.JSON200.Teams))
+	for i, t := range apiResp.JSON200.Teams {
+		teamIDs[i] = t.Id
+	}
+	teamsList, teamsDiag := types.ListValueFrom(ctx, types.StringType, teamIDs)
+	resp.Diagnostics.Append(teamsDiag...)
+	data.Teams = teamsList
 
 	// Map identity_provider_id from response (nullable)
 	if apiResp.JSON200.IdentityProviderId != nil {

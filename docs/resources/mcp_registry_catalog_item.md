@@ -161,14 +161,21 @@ resource "archestra_mcp_registry_catalog_item" "remote_oauth" {
 
 - `auth_description` (String) Description of the authentication requirements
 - `auth_fields` (Attributes List) Custom authentication fields required by the MCP server (see [below for nested schema](#nestedatt--auth_fields))
+- `client_secret_id` (String) UUID of a stored secret holding the OAuth client secret. Mutually exclusive with inline `oauth_config.client_secret`.
 - `deployment_spec_yaml` (String) Custom Kubernetes deployment YAML for the MCP server
 - `description` (String) Description of the MCP server
 - `docs_url` (String) URL to the MCP server documentation
+- `enterprise_managed_config` (Attributes) Enterprise-managed credential configuration. Binds this catalog item to an identity provider that issues credentials at runtime rather than using static secrets. (see [below for nested schema](#nestedatt--enterprise_managed_config))
 - `icon` (String) Icon string for the MCP server
 - `installation_command` (String) Installation command for the MCP server (e.g., npm install -g @example/mcp-server)
 - `instructions` (String) Installation instructions text for the MCP server
 - `labels` (Attributes List) Labels for the MCP server catalog item (see [below for nested schema](#nestedatt--labels))
 - `local_config` (Attributes) Configuration for MCP servers run in the Archestra orchestrator MCP runtime (see [below for nested schema](#nestedatt--local_config))
+- `local_config_secret_id` (String) UUID of a stored secret holding local_config environment values.
+- `local_config_vault_key` (String) BYOS vault key for local_config secrets.
+- `local_config_vault_path` (String) BYOS vault path for local_config secrets.
+- `oauth_client_secret_vault_key` (String) BYOS vault key for the OAuth client secret.
+- `oauth_client_secret_vault_path` (String) BYOS vault path for the OAuth client secret.
 - `remote_config` (Attributes) Configuration for remote/hosted MCP servers accessed via HTTP (see [below for nested schema](#nestedatt--remote_config))
 - `repository` (String) Repository URL for the MCP server
 - `requires_auth` (Boolean) Whether the MCP server requires authentication
@@ -193,6 +200,28 @@ Required:
 Optional:
 
 - `description` (String) Description of the field
+
+
+<a id="nestedatt--enterprise_managed_config"></a>
+### Nested Schema for `enterprise_managed_config`
+
+Optional:
+
+- `audience` (String)
+- `body_field_name` (String)
+- `cache_ttl_seconds` (Number)
+- `client_id_override` (String)
+- `env_var_name` (String)
+- `fallback_mode` (String)
+- `header_name` (String)
+- `identity_provider_id` (String) Identity provider UUID issuing credentials.
+- `requested_credential_type` (String) Credential type requested. One of `id_jag`, `bearer_token`, `secret`, `service_account`, `opaque_json`.
+- `requested_issuer` (String)
+- `resource_identifier` (String)
+- `resource_type` (String) Resource type. One of `mcp`, `oauth_protected_resource`, `secret`, `service_account`, `custom_http`.
+- `response_field_path` (String)
+- `scopes` (List of String)
+- `token_injection_mode` (String) How the token is injected into the downstream request.
 
 
 <a id="nestedatt--labels"></a>

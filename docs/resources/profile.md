@@ -58,8 +58,10 @@ resource "archestra_profile" "example" {
 - `llm_api_key_id` (String) LLM API key UUID
 - `llm_model` (String) LLM model ID
 - `passthrough_headers` (List of String) HTTP headers to forward
+- `scope` (String) Ownership scope of the agent. Valid values: `personal`, `team`, `org`. Defaults to `org`.
 - `suggested_prompts` (Attributes List) Suggested prompts for the profile (see [below for nested schema](#nestedatt--suggested_prompts))
 - `system_prompt` (String) System prompt for agent-type agents
+- `teams` (List of String) List of team IDs this agent is assigned to. Required when `scope = "team"`.
 
 ### Read-Only
 
