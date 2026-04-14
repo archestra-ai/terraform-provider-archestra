@@ -1,7 +1,9 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
@@ -10,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -41,27 +44,35 @@ type SuggestedPromptModel struct {
 	SummaryTitle types.String `tfsdk:"summary_title"`
 }
 
+// BuiltInAgentConfigModel describes the built-in agent configuration.
+type BuiltInAgentConfigModel struct {
+	Name                         types.String `tfsdk:"name"`
+	AutoConfigureOnToolDiscovery types.Bool   `tfsdk:"auto_configure_on_tool_discovery"`
+	MaxRounds                    types.Int64  `tfsdk:"max_rounds"`
+}
+
 // ProfileResourceModel describes the resource data model.
 type ProfileResourceModel struct {
-	ID                         types.String           `tfsdk:"id"`
-	Name                       types.String           `tfsdk:"name"`
-	Description                types.String           `tfsdk:"description"`
-	Icon                       types.String           `tfsdk:"icon"`
-	SystemPrompt               types.String           `tfsdk:"system_prompt"`
-	LlmModel                   types.String           `tfsdk:"llm_model"`
-	LlmApiKeyId                types.String           `tfsdk:"llm_api_key_id"`
-	AgentType                  types.String           `tfsdk:"agent_type"`
-	PassthroughHeaders         types.List             `tfsdk:"passthrough_headers"`
-	KnowledgeBaseIds           types.List             `tfsdk:"knowledge_base_ids"`
-	ConnectorIds               types.List             `tfsdk:"connector_ids"`
-	IncomingEmailEnabled       types.Bool             `tfsdk:"incoming_email_enabled"`
-	IncomingEmailAllowedDomain types.String           `tfsdk:"incoming_email_allowed_domain"`
-	IncomingEmailSecurityMode  types.String           `tfsdk:"incoming_email_security_mode"`
-	ConsiderContextUntrusted   types.Bool             `tfsdk:"consider_context_untrusted"`
-	IsDefault                  types.Bool             `tfsdk:"is_default"`
-	IdentityProviderId         types.String           `tfsdk:"identity_provider_id"`
-	SuggestedPrompts           []SuggestedPromptModel `tfsdk:"suggested_prompts"`
-	Labels                     []ProfileLabelModel    `tfsdk:"labels"`
+	ID                         types.String             `tfsdk:"id"`
+	Name                       types.String             `tfsdk:"name"`
+	Description                types.String             `tfsdk:"description"`
+	Icon                       types.String             `tfsdk:"icon"`
+	SystemPrompt               types.String             `tfsdk:"system_prompt"`
+	LlmModel                   types.String             `tfsdk:"llm_model"`
+	LlmApiKeyId                types.String             `tfsdk:"llm_api_key_id"`
+	AgentType                  types.String             `tfsdk:"agent_type"`
+	PassthroughHeaders         types.List               `tfsdk:"passthrough_headers"`
+	KnowledgeBaseIds           types.List               `tfsdk:"knowledge_base_ids"`
+	ConnectorIds               types.List               `tfsdk:"connector_ids"`
+	IncomingEmailEnabled       types.Bool               `tfsdk:"incoming_email_enabled"`
+	IncomingEmailAllowedDomain types.String             `tfsdk:"incoming_email_allowed_domain"`
+	IncomingEmailSecurityMode  types.String             `tfsdk:"incoming_email_security_mode"`
+	ConsiderContextUntrusted   types.Bool               `tfsdk:"consider_context_untrusted"`
+	IsDefault                  types.Bool               `tfsdk:"is_default"`
+	IdentityProviderId         types.String             `tfsdk:"identity_provider_id"`
+	SuggestedPrompts           []SuggestedPromptModel   `tfsdk:"suggested_prompts"`
+	Labels                     []ProfileLabelModel      `tfsdk:"labels"`
+	BuiltInAgentConfig         *BuiltInAgentConfigModel `tfsdk:"built_in_agent_config"`
 }
 
 func (r *ProfileResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -183,6 +194,30 @@ func (r *ProfileResource) Schema(ctx context.Context, req resource.SchemaRequest
 						"value": schema.StringAttribute{
 							MarkdownDescription: "Label value",
 							Required:            true,
+						},
+					},
+				},
+			},
+		},
+
+		Blocks: map[string]schema.Block{
+			"built_in_agent_config": schema.SingleNestedBlock{
+				MarkdownDescription: "Built-in agent configuration. Discriminated by `name`.",
+				Attributes: map[string]schema.Attribute{
+					"name": schema.StringAttribute{
+						MarkdownDescription: "The built-in agent name. Valid values: `policy-configuration-subagent`, `dual-llm-main-agent`, `dual-llm-quarantine-agent`.",
+						Optional:            true,
+					},
+					"auto_configure_on_tool_discovery": schema.BoolAttribute{
+						MarkdownDescription: "Whether to auto-configure on tool discovery. Only applicable when `name` is `policy-configuration-subagent`.",
+						Optional:            true,
+					},
+					"max_rounds": schema.Int64Attribute{
+						MarkdownDescription: "Maximum number of rounds (1-20). Only applicable when `name` is `dual-llm-main-agent`.",
+						Optional:            true,
+						Computed:            true,
+						PlanModifiers: []planmodifier.Int64{
+							int64planmodifier.UseStateForUnknown(),
 						},
 					},
 				},
@@ -342,10 +377,33 @@ func (r *ProfileResource) Create(ctx context.Context, req resource.CreateRequest
 	}
 
 	// Call API
-	apiResp, err := r.client.CreateAgentWithResponse(ctx, requestBody)
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create profile, got error: %s", err))
-		return
+	var apiResp *client.CreateAgentResponse
+	if data.BuiltInAgentConfig != nil && !data.BuiltInAgentConfig.Name.IsNull() {
+		// Marshal base request body, inject builtInAgentConfig, and send as raw JSON
+		bodyBytes, marshalErr := json.Marshal(requestBody)
+		if marshalErr != nil {
+			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", marshalErr))
+			return
+		}
+		configJSON := r.buildBuiltInAgentConfigJSON(data.BuiltInAgentConfig)
+		bodyBytes, marshalErr = r.injectBuiltInAgentConfig(bodyBytes, configJSON)
+		if marshalErr != nil {
+			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to inject builtInAgentConfig: %s", marshalErr))
+			return
+		}
+		var createErr error
+		apiResp, createErr = r.client.CreateAgentWithBodyWithResponse(ctx, "application/json", bytes.NewReader(bodyBytes))
+		if createErr != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create profile, got error: %s", createErr))
+			return
+		}
+	} else {
+		var createErr error
+		apiResp, createErr = r.client.CreateAgentWithResponse(ctx, requestBody)
+		if createErr != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create profile, got error: %s", createErr))
+			return
+		}
 	}
 
 	// Check response
@@ -390,6 +448,9 @@ func (r *ProfileResource) Create(ctx context.Context, req resource.CreateRequest
 	if data.Labels != nil {
 		data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
 	}
+
+	// Map built_in_agent_config from response
+	r.mapBuiltInAgentConfigToState(&data, apiResp.Body)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -464,6 +525,9 @@ func (r *ProfileResource) Read(ctx context.Context, req resource.ReadRequest, re
 	if data.Labels != nil {
 		data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
 	}
+
+	// Map built_in_agent_config from response
+	r.mapBuiltInAgentConfigToState(&data, apiResp.Body)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -605,10 +669,46 @@ func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest
 	}
 
 	// Call API
-	apiResp, err := r.client.UpdateAgentWithResponse(ctx, profileID, requestBody)
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update profile, got error: %s", err))
-		return
+	var apiResp *client.UpdateAgentResponse
+	hasBuiltInConfig := data.BuiltInAgentConfig != nil && !data.BuiltInAgentConfig.Name.IsNull()
+
+	if hasBuiltInConfig {
+		// Set builtInAgentConfig in the request
+		bodyBytes, marshalErr := json.Marshal(requestBody)
+		if marshalErr != nil {
+			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", marshalErr))
+			return
+		}
+		configJSON := r.buildBuiltInAgentConfigJSON(data.BuiltInAgentConfig)
+		bodyBytes, marshalErr = r.injectBuiltInAgentConfig(bodyBytes, configJSON)
+		if marshalErr != nil {
+			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to inject builtInAgentConfig: %s", marshalErr))
+			return
+		}
+		var updateErr error
+		apiResp, updateErr = r.client.UpdateAgentWithBodyWithResponse(ctx, profileID, "application/json", bytes.NewReader(bodyBytes))
+		if updateErr != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update profile, got error: %s", updateErr))
+			return
+		}
+	} else {
+		// Send builtInAgentConfig:null to clear any existing config
+		bodyBytes, marshalErr := json.Marshal(requestBody)
+		if marshalErr != nil {
+			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", marshalErr))
+			return
+		}
+		bodyBytes, marshalErr = r.injectBuiltInAgentConfig(bodyBytes, json.RawMessage("null"))
+		if marshalErr != nil {
+			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to inject null builtInAgentConfig: %s", marshalErr))
+			return
+		}
+		var updateErr error
+		apiResp, updateErr = r.client.UpdateAgentWithBodyWithResponse(ctx, profileID, "application/json", bytes.NewReader(bodyBytes))
+		if updateErr != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update profile, got error: %s", updateErr))
+			return
+		}
 	}
 
 	// Check response
@@ -653,6 +753,9 @@ func (r *ProfileResource) Update(ctx context.Context, req resource.UpdateRequest
 		data.Labels = r.mapLabelsToConfigurationOrder(data.Labels, apiResp.JSON200.Labels)
 	}
 
+	// Map built_in_agent_config from response
+	r.mapBuiltInAgentConfigToState(&data, apiResp.Body)
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -676,6 +779,16 @@ func (r *ProfileResource) Delete(ctx context.Context, req resource.DeleteRequest
 	apiResp, err := r.client.DeleteAgentWithResponse(ctx, profileID)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete profile, got error: %s", err))
+		return
+	}
+
+	// Built-in agents cannot be deleted by the backend (403).
+	// Block the destroy and tell the user how to fix it.
+	if apiResp.StatusCode() == 403 {
+		resp.Diagnostics.AddError(
+			"Cannot Delete Built-In Agent",
+			"Built-in agents cannot be deleted from Archestra. To delete this profile, first remove the built_in_agent_config block from your configuration and run `terraform apply` to clear it, then run `terraform destroy`.",
+		)
 		return
 	}
 
@@ -808,4 +921,86 @@ func (r *ProfileResource) mapStringListToState(ctx context.Context, target *type
 	} else if !target.IsNull() {
 		*target = types.ListNull(types.StringType)
 	}
+}
+
+// buildBuiltInAgentConfigJSON builds the JSON representation of the built-in agent config
+// based on the discriminator name field.
+func (r *ProfileResource) buildBuiltInAgentConfigJSON(config *BuiltInAgentConfigModel) json.RawMessage {
+	name := config.Name.ValueString()
+	switch name {
+	case "policy-configuration-subagent":
+		autoConfig := config.AutoConfigureOnToolDiscovery.ValueBool()
+		b, _ := json.Marshal(map[string]interface{}{
+			"name":                         name,
+			"autoConfigureOnToolDiscovery": autoConfig,
+		})
+		return b
+	case "dual-llm-main-agent":
+		maxRounds := config.MaxRounds.ValueInt64()
+		b, _ := json.Marshal(map[string]interface{}{
+			"name":      name,
+			"maxRounds": maxRounds,
+		})
+		return b
+	case "dual-llm-quarantine-agent":
+		b, _ := json.Marshal(map[string]interface{}{
+			"name": name,
+		})
+		return b
+	default:
+		b, _ := json.Marshal(map[string]interface{}{
+			"name": name,
+		})
+		return b
+	}
+}
+
+// injectBuiltInAgentConfig injects the builtInAgentConfig field into a JSON-encoded request body.
+func (r *ProfileResource) injectBuiltInAgentConfig(body []byte, configJSON json.RawMessage) ([]byte, error) {
+	var raw map[string]json.RawMessage
+	if err := json.Unmarshal(body, &raw); err != nil {
+		return nil, err
+	}
+	raw["builtInAgentConfig"] = configJSON
+	return json.Marshal(raw)
+}
+
+// mapBuiltInAgentConfigToState parses the builtInAgentConfig from raw API response body
+// and maps it into the Terraform state model.
+func (r *ProfileResource) mapBuiltInAgentConfigToState(data *ProfileResourceModel, responseBody []byte) {
+	var rawResp struct {
+		BuiltInAgentConfig *json.RawMessage `json:"builtInAgentConfig"`
+	}
+	if err := json.Unmarshal(responseBody, &rawResp); err != nil || rawResp.BuiltInAgentConfig == nil {
+		return
+	}
+
+	var configMap map[string]interface{}
+	if err := json.Unmarshal(*rawResp.BuiltInAgentConfig, &configMap); err != nil {
+		return
+	}
+
+	name, _ := configMap["name"].(string)
+	if name == "" {
+		return
+	}
+
+	result := &BuiltInAgentConfigModel{
+		Name:                         types.StringValue(name),
+		AutoConfigureOnToolDiscovery: types.BoolNull(),
+		MaxRounds:                    types.Int64Null(),
+	}
+
+	switch name {
+	case "policy-configuration-subagent":
+		if v, ok := configMap["autoConfigureOnToolDiscovery"].(bool); ok {
+			result.AutoConfigureOnToolDiscovery = types.BoolValue(v)
+		}
+	case "dual-llm-main-agent":
+		if v, ok := configMap["maxRounds"].(float64); ok {
+			result.MaxRounds = types.Int64Value(int64(v))
+		}
+	}
+
+	data.BuiltInAgentConfig = result
 }

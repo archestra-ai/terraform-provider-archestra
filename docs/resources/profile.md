@@ -43,6 +43,7 @@ resource "archestra_profile" "example" {
 ### Optional
 
 - `agent_type` (String) The type of the agent. Valid values: profile, mcp_gateway, llm_proxy, agent
+- `built_in_agent_config` (Block, Optional) Built-in agent configuration. Discriminated by `name`. (see [below for nested schema](#nestedblock--built_in_agent_config))
 - `connector_ids` (List of String) List of connector IDs to associate with the profile
 - `consider_context_untrusted` (Boolean) Whether the agent context is treated as untrusted
 - `description` (String) Description of the profile
@@ -63,6 +64,16 @@ resource "archestra_profile" "example" {
 ### Read-Only
 
 - `id` (String) Profile identifier
+
+<a id="nestedblock--built_in_agent_config"></a>
+### Nested Schema for `built_in_agent_config`
+
+Optional:
+
+- `auto_configure_on_tool_discovery` (Boolean) Whether to auto-configure on tool discovery. Only applicable when `name` is `policy-configuration-subagent`.
+- `max_rounds` (Number) Maximum number of rounds (1-20). Only applicable when `name` is `dual-llm-main-agent`.
+- `name` (String) The built-in agent name. Valid values: `policy-configuration-subagent`, `dual-llm-main-agent`, `dual-llm-quarantine-agent`.
+
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`
