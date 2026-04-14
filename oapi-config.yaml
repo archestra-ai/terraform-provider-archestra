@@ -23,7 +23,7 @@ output-options:
     - Incoming Email
     - Invitation
     - Knowledge Bases
-    - LLM Models
+    # LLM Models - included for archestra_llm_model resource
     - MCP Tool Call
     - Member
     - Members

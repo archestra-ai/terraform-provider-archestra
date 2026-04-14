@@ -501,6 +501,58 @@ const (
 	ToolCalls      UpdateLimitJSONBodyLimitType = "tool_calls"
 )
 
+// Defines values for GetLlmModelsParamsProvider.
+const (
+	GetLlmModelsParamsProviderAnthropic  GetLlmModelsParamsProvider = "anthropic"
+	GetLlmModelsParamsProviderAzure      GetLlmModelsParamsProvider = "azure"
+	GetLlmModelsParamsProviderBedrock    GetLlmModelsParamsProvider = "bedrock"
+	GetLlmModelsParamsProviderCerebras   GetLlmModelsParamsProvider = "cerebras"
+	GetLlmModelsParamsProviderCohere     GetLlmModelsParamsProvider = "cohere"
+	GetLlmModelsParamsProviderDeepseek   GetLlmModelsParamsProvider = "deepseek"
+	GetLlmModelsParamsProviderGemini     GetLlmModelsParamsProvider = "gemini"
+	GetLlmModelsParamsProviderGroq       GetLlmModelsParamsProvider = "groq"
+	GetLlmModelsParamsProviderMinimax    GetLlmModelsParamsProvider = "minimax"
+	GetLlmModelsParamsProviderMistral    GetLlmModelsParamsProvider = "mistral"
+	GetLlmModelsParamsProviderOllama     GetLlmModelsParamsProvider = "ollama"
+	GetLlmModelsParamsProviderOpenai     GetLlmModelsParamsProvider = "openai"
+	GetLlmModelsParamsProviderOpenrouter GetLlmModelsParamsProvider = "openrouter"
+	GetLlmModelsParamsProviderPerplexity GetLlmModelsParamsProvider = "perplexity"
+	GetLlmModelsParamsProviderVllm       GetLlmModelsParamsProvider = "vllm"
+	GetLlmModelsParamsProviderXai        GetLlmModelsParamsProvider = "xai"
+	GetLlmModelsParamsProviderZhipuai    GetLlmModelsParamsProvider = "zhipuai"
+)
+
+// Defines values for UpdateModelJSONBodyEmbeddingDimensions0.
+const (
+	N3072 UpdateModelJSONBodyEmbeddingDimensions0 = 3072
+)
+
+// Defines values for UpdateModelJSONBodyEmbeddingDimensions1.
+const (
+	N1536 UpdateModelJSONBodyEmbeddingDimensions1 = 1536
+)
+
+// Defines values for UpdateModelJSONBodyEmbeddingDimensions2.
+const (
+	N768 UpdateModelJSONBodyEmbeddingDimensions2 = 768
+)
+
+// Defines values for UpdateModelJSONBodyInputModalities.
+const (
+	UpdateModelJSONBodyInputModalitiesAudio UpdateModelJSONBodyInputModalities = "audio"
+	UpdateModelJSONBodyInputModalitiesImage UpdateModelJSONBodyInputModalities = "image"
+	UpdateModelJSONBodyInputModalitiesPdf   UpdateModelJSONBodyInputModalities = "pdf"
+	UpdateModelJSONBodyInputModalitiesText  UpdateModelJSONBodyInputModalities = "text"
+	UpdateModelJSONBodyInputModalitiesVideo UpdateModelJSONBodyInputModalities = "video"
+)
+
+// Defines values for UpdateModelJSONBodyOutputModalities.
+const (
+	UpdateModelJSONBodyOutputModalitiesAudio UpdateModelJSONBodyOutputModalities = "audio"
+	UpdateModelJSONBodyOutputModalitiesImage UpdateModelJSONBodyOutputModalities = "image"
+	UpdateModelJSONBodyOutputModalitiesText  UpdateModelJSONBodyOutputModalities = "text"
+)
+
 // Defines values for GetLlmProviderApiKeysParamsProvider.
 const (
 	GetLlmProviderApiKeysParamsProviderAnthropic  GetLlmProviderApiKeysParamsProvider = "anthropic"
@@ -768,23 +820,23 @@ const (
 
 // Defines values for UpdateAgentSettingsJSONBodyDefaultLlmProvider.
 const (
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderAnthropic  UpdateAgentSettingsJSONBodyDefaultLlmProvider = "anthropic"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderAzure      UpdateAgentSettingsJSONBodyDefaultLlmProvider = "azure"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderBedrock    UpdateAgentSettingsJSONBodyDefaultLlmProvider = "bedrock"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderCerebras   UpdateAgentSettingsJSONBodyDefaultLlmProvider = "cerebras"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderCohere     UpdateAgentSettingsJSONBodyDefaultLlmProvider = "cohere"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderDeepseek   UpdateAgentSettingsJSONBodyDefaultLlmProvider = "deepseek"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderGemini     UpdateAgentSettingsJSONBodyDefaultLlmProvider = "gemini"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderGroq       UpdateAgentSettingsJSONBodyDefaultLlmProvider = "groq"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderMinimax    UpdateAgentSettingsJSONBodyDefaultLlmProvider = "minimax"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderMistral    UpdateAgentSettingsJSONBodyDefaultLlmProvider = "mistral"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderOllama     UpdateAgentSettingsJSONBodyDefaultLlmProvider = "ollama"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderOpenai     UpdateAgentSettingsJSONBodyDefaultLlmProvider = "openai"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderOpenrouter UpdateAgentSettingsJSONBodyDefaultLlmProvider = "openrouter"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderPerplexity UpdateAgentSettingsJSONBodyDefaultLlmProvider = "perplexity"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderVllm       UpdateAgentSettingsJSONBodyDefaultLlmProvider = "vllm"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderXai        UpdateAgentSettingsJSONBodyDefaultLlmProvider = "xai"
-	UpdateAgentSettingsJSONBodyDefaultLlmProviderZhipuai    UpdateAgentSettingsJSONBodyDefaultLlmProvider = "zhipuai"
+	Anthropic  UpdateAgentSettingsJSONBodyDefaultLlmProvider = "anthropic"
+	Azure      UpdateAgentSettingsJSONBodyDefaultLlmProvider = "azure"
+	Bedrock    UpdateAgentSettingsJSONBodyDefaultLlmProvider = "bedrock"
+	Cerebras   UpdateAgentSettingsJSONBodyDefaultLlmProvider = "cerebras"
+	Cohere     UpdateAgentSettingsJSONBodyDefaultLlmProvider = "cohere"
+	Deepseek   UpdateAgentSettingsJSONBodyDefaultLlmProvider = "deepseek"
+	Gemini     UpdateAgentSettingsJSONBodyDefaultLlmProvider = "gemini"
+	Groq       UpdateAgentSettingsJSONBodyDefaultLlmProvider = "groq"
+	Minimax    UpdateAgentSettingsJSONBodyDefaultLlmProvider = "minimax"
+	Mistral    UpdateAgentSettingsJSONBodyDefaultLlmProvider = "mistral"
+	Ollama     UpdateAgentSettingsJSONBodyDefaultLlmProvider = "ollama"
+	Openai     UpdateAgentSettingsJSONBodyDefaultLlmProvider = "openai"
+	Openrouter UpdateAgentSettingsJSONBodyDefaultLlmProvider = "openrouter"
+	Perplexity UpdateAgentSettingsJSONBodyDefaultLlmProvider = "perplexity"
+	Vllm       UpdateAgentSettingsJSONBodyDefaultLlmProvider = "vllm"
+	Xai        UpdateAgentSettingsJSONBodyDefaultLlmProvider = "xai"
+	Zhipuai    UpdateAgentSettingsJSONBodyDefaultLlmProvider = "zhipuai"
 )
 
 // Defines values for UpdateAppearanceSettingsJSONBodyCustomFont.
@@ -1966,6 +2018,46 @@ type UpdateLimitJSONBodyEntityType string
 // UpdateLimitJSONBodyLimitType defines parameters for UpdateLimit.
 type UpdateLimitJSONBodyLimitType string
 
+// GetLlmModelsParams defines parameters for GetLlmModels.
+type GetLlmModelsParams struct {
+	Provider    *GetLlmModelsParamsProvider `form:"provider,omitempty" json:"provider,omitempty"`
+	ApiKeyId    *openapi_types.UUID         `form:"apiKeyId,omitempty" json:"apiKeyId,omitempty"`
+	IsEmbedding *string                     `form:"isEmbedding,omitempty" json:"isEmbedding,omitempty"`
+}
+
+// GetLlmModelsParamsProvider defines parameters for GetLlmModels.
+type GetLlmModelsParamsProvider string
+
+// UpdateModelJSONBody defines parameters for UpdateModel.
+type UpdateModelJSONBody struct {
+	CustomPricePerMillionInput  *string                                  `json:"customPricePerMillionInput"`
+	CustomPricePerMillionOutput *string                                  `json:"customPricePerMillionOutput"`
+	EmbeddingDimensions         *UpdateModelJSONBody_EmbeddingDimensions `json:"embeddingDimensions"`
+	Ignored                     *bool                                    `json:"ignored,omitempty"`
+	InputModalities             *[]UpdateModelJSONBodyInputModalities    `json:"inputModalities"`
+	OutputModalities            *[]UpdateModelJSONBodyOutputModalities   `json:"outputModalities"`
+}
+
+// UpdateModelJSONBodyEmbeddingDimensions0 defines parameters for UpdateModel.
+type UpdateModelJSONBodyEmbeddingDimensions0 float32
+
+// UpdateModelJSONBodyEmbeddingDimensions1 defines parameters for UpdateModel.
+type UpdateModelJSONBodyEmbeddingDimensions1 float32
+
+// UpdateModelJSONBodyEmbeddingDimensions2 defines parameters for UpdateModel.
+type UpdateModelJSONBodyEmbeddingDimensions2 float32
+
+// UpdateModelJSONBody_EmbeddingDimensions defines parameters for UpdateModel.
+type UpdateModelJSONBody_EmbeddingDimensions struct {
+	union json.RawMessage
+}
+
+// UpdateModelJSONBodyInputModalities defines parameters for UpdateModel.
+type UpdateModelJSONBodyInputModalities string
+
+// UpdateModelJSONBodyOutputModalities defines parameters for UpdateModel.
+type UpdateModelJSONBodyOutputModalities string
+
 // GetLlmProviderApiKeysParams defines parameters for GetLlmProviderApiKeys.
 type GetLlmProviderApiKeysParams struct {
 	Search   *string                              `form:"search,omitempty" json:"search,omitempty"`
@@ -2716,6 +2808,9 @@ type CreateLimitJSONRequestBody CreateLimitJSONBody
 // UpdateLimitJSONRequestBody defines body for UpdateLimit for application/json ContentType.
 type UpdateLimitJSONRequestBody UpdateLimitJSONBody
 
+// UpdateModelJSONRequestBody defines body for UpdateModel for application/json ContentType.
+type UpdateModelJSONRequestBody UpdateModelJSONBody
+
 // CreateLlmProviderApiKeyJSONRequestBody defines body for CreateLlmProviderApiKey for application/json ContentType.
 type CreateLlmProviderApiKeyJSONRequestBody CreateLlmProviderApiKeyJSONBody
 
@@ -3074,6 +3169,20 @@ type ClientInterface interface {
 	UpdateLimitWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateLimit(ctx context.Context, id openapi_types.UUID, body UpdateLimitJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetModelsWithApiKeys request
+	GetModelsWithApiKeys(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetLlmModels request
+	GetLlmModels(ctx context.Context, params *GetLlmModelsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SyncLlmModels request
+	SyncLlmModels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateModelWithBody request with any body
+	UpdateModelWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateModel(ctx context.Context, id openapi_types.UUID, body UpdateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetLlmProviderApiKeys request
 	GetLlmProviderApiKeys(ctx context.Context, params *GetLlmProviderApiKeysParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4192,6 +4301,66 @@ func (c *Client) UpdateLimitWithBody(ctx context.Context, id openapi_types.UUID,
 
 func (c *Client) UpdateLimit(ctx context.Context, id openapi_types.UUID, body UpdateLimitJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateLimitRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetModelsWithApiKeys(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetModelsWithApiKeysRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetLlmModels(ctx context.Context, params *GetLlmModelsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetLlmModelsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SyncLlmModels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSyncLlmModelsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateModelWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateModelRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateModel(ctx context.Context, id openapi_types.UUID, body UpdateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateModelRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -7828,6 +7997,188 @@ func NewUpdateLimitRequestWithBody(server string, id openapi_types.UUID, content
 	return req, nil
 }
 
+// NewGetModelsWithApiKeysRequest generates requests for GetModelsWithApiKeys
+func NewGetModelsWithApiKeysRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-models")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetLlmModelsRequest generates requests for GetLlmModels
+func NewGetLlmModelsRequest(server string, params *GetLlmModelsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-models/available")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Provider != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "provider", runtime.ParamLocationQuery, *params.Provider); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ApiKeyId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "apiKeyId", runtime.ParamLocationQuery, *params.ApiKeyId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.IsEmbedding != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "isEmbedding", runtime.ParamLocationQuery, *params.IsEmbedding); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSyncLlmModelsRequest generates requests for SyncLlmModels
+func NewSyncLlmModelsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-models/sync")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateModelRequest calls the generic UpdateModel builder with application/json body
+func NewUpdateModelRequest(server string, id openapi_types.UUID, body UpdateModelJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateModelRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateModelRequestWithBody generates requests for UpdateModel with any type of body
+func NewUpdateModelRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-models/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetLlmProviderApiKeysRequest generates requests for GetLlmProviderApiKeys
 func NewGetLlmProviderApiKeysRequest(server string, params *GetLlmProviderApiKeysParams) (*http.Request, error) {
 	var err error
@@ -10887,6 +11238,20 @@ type ClientWithResponsesInterface interface {
 	UpdateLimitWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateLimitResponse, error)
 
 	UpdateLimitWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateLimitJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateLimitResponse, error)
+
+	// GetModelsWithApiKeysWithResponse request
+	GetModelsWithApiKeysWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetModelsWithApiKeysResponse, error)
+
+	// GetLlmModelsWithResponse request
+	GetLlmModelsWithResponse(ctx context.Context, params *GetLlmModelsParams, reqEditors ...RequestEditorFn) (*GetLlmModelsResponse, error)
+
+	// SyncLlmModelsWithResponse request
+	SyncLlmModelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*SyncLlmModelsResponse, error)
+
+	// UpdateModelWithBodyWithResponse request with any body
+	UpdateModelWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateModelResponse, error)
+
+	UpdateModelWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateModelResponse, error)
 
 	// GetLlmProviderApiKeysWithResponse request
 	GetLlmProviderApiKeysWithResponse(ctx context.Context, params *GetLlmProviderApiKeysParams, reqEditors ...RequestEditorFn) (*GetLlmProviderApiKeysResponse, error)
@@ -16578,6 +16943,364 @@ func (r UpdateLimitResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateLimitResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetModelsWithApiKeysResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		ApiKeys []struct {
+			Id       openapi_types.UUID `json:"id"`
+			IsSystem bool               `json:"isSystem"`
+			Name     string             `json:"name"`
+			Provider string             `json:"provider"`
+			Scope    string             `json:"scope"`
+		} `json:"apiKeys"`
+		CompletionPricePerToken     *string                                       `json:"completionPricePerToken"`
+		ContextLength               *int                                          `json:"contextLength"`
+		CreatedAt                   time.Time                                     `json:"createdAt"`
+		CustomPricePerMillionInput  *string                                       `json:"customPricePerMillionInput"`
+		CustomPricePerMillionOutput *string                                       `json:"customPricePerMillionOutput"`
+		Description                 *string                                       `json:"description"`
+		DiscoveredViaLlmProxy       bool                                          `json:"discoveredViaLlmProxy"`
+		EmbeddingDimensions         *GetModelsWithApiKeys_200_EmbeddingDimensions `json:"embeddingDimensions"`
+		ExternalId                  string                                        `json:"externalId"`
+		Id                          openapi_types.UUID                            `json:"id"`
+		Ignored                     bool                                          `json:"ignored"`
+		InputModalities             *[]GetModelsWithApiKeys200InputModalities     `json:"inputModalities"`
+		IsBest                      bool                                          `json:"isBest"`
+		IsCustomPrice               bool                                          `json:"isCustomPrice"`
+		IsFastest                   bool                                          `json:"isFastest"`
+		LastSyncedAt                time.Time                                     `json:"lastSyncedAt"`
+		ModelId                     string                                        `json:"modelId"`
+		OutputModalities            *[]GetModelsWithApiKeys200OutputModalities    `json:"outputModalities"`
+		PricePerMillionInput        *string                                       `json:"pricePerMillionInput"`
+		PricePerMillionOutput       *string                                       `json:"pricePerMillionOutput"`
+		PriceSource                 GetModelsWithApiKeys200PriceSource            `json:"priceSource"`
+		PromptPricePerToken         *string                                       `json:"promptPricePerToken"`
+		Provider                    GetModelsWithApiKeys200Provider               `json:"provider"`
+		SupportsToolCalling         *bool                                         `json:"supportsToolCalling"`
+		UpdatedAt                   time.Time                                     `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetModelsWithApiKeys400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetModelsWithApiKeys401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetModelsWithApiKeys403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetModelsWithApiKeys404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetModelsWithApiKeys409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetModelsWithApiKeys500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetModelsWithApiKeys200EmbeddingDimensions0 float32
+type GetModelsWithApiKeys200EmbeddingDimensions1 float32
+type GetModelsWithApiKeys200EmbeddingDimensions2 float32
+type GetModelsWithApiKeys_200_EmbeddingDimensions struct {
+	union json.RawMessage
+}
+type GetModelsWithApiKeys200InputModalities string
+type GetModelsWithApiKeys200OutputModalities string
+type GetModelsWithApiKeys200PriceSource string
+type GetModelsWithApiKeys200Provider string
+type GetModelsWithApiKeys400ErrorType string
+type GetModelsWithApiKeys401ErrorType string
+type GetModelsWithApiKeys403ErrorType string
+type GetModelsWithApiKeys404ErrorType string
+type GetModelsWithApiKeys409ErrorType string
+type GetModelsWithApiKeys500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetModelsWithApiKeysResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetModelsWithApiKeysResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetLlmModelsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		Capabilities *struct {
+			ContextLength         *int                                           `json:"contextLength"`
+			InputModalities       *[]GetLlmModels200CapabilitiesInputModalities  `json:"inputModalities"`
+			IsCustomPrice         bool                                           `json:"isCustomPrice"`
+			OutputModalities      *[]GetLlmModels200CapabilitiesOutputModalities `json:"outputModalities"`
+			PricePerMillionInput  *string                                        `json:"pricePerMillionInput"`
+			PricePerMillionOutput *string                                        `json:"pricePerMillionOutput"`
+			PriceSource           GetLlmModels200CapabilitiesPriceSource         `json:"priceSource"`
+			SupportsToolCalling   *bool                                          `json:"supportsToolCalling"`
+		} `json:"capabilities,omitempty"`
+		CreatedAt           *string                               `json:"createdAt,omitempty"`
+		DisplayName         string                                `json:"displayName"`
+		EmbeddingDimensions *GetLlmModels_200_EmbeddingDimensions `json:"embeddingDimensions"`
+		Id                  string                                `json:"id"`
+		IsBest              *bool                                 `json:"isBest,omitempty"`
+		IsFastest           *bool                                 `json:"isFastest,omitempty"`
+		Provider            GetLlmModels200Provider               `json:"provider"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetLlmModels400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetLlmModels401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetLlmModels403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetLlmModels404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetLlmModels409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetLlmModels500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetLlmModels200CapabilitiesInputModalities string
+type GetLlmModels200CapabilitiesOutputModalities string
+type GetLlmModels200CapabilitiesPriceSource string
+type GetLlmModels200EmbeddingDimensions0 float32
+type GetLlmModels200EmbeddingDimensions1 float32
+type GetLlmModels200EmbeddingDimensions2 float32
+type GetLlmModels_200_EmbeddingDimensions struct {
+	union json.RawMessage
+}
+type GetLlmModels200Provider string
+type GetLlmModels400ErrorType string
+type GetLlmModels401ErrorType string
+type GetLlmModels403ErrorType string
+type GetLlmModels404ErrorType string
+type GetLlmModels409ErrorType string
+type GetLlmModels500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetLlmModelsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetLlmModelsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SyncLlmModelsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncLlmModels400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncLlmModels401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncLlmModels403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncLlmModels404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncLlmModels409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncLlmModels500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type SyncLlmModels400ErrorType string
+type SyncLlmModels401ErrorType string
+type SyncLlmModels403ErrorType string
+type SyncLlmModels404ErrorType string
+type SyncLlmModels409ErrorType string
+type SyncLlmModels500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r SyncLlmModelsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SyncLlmModelsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateModelResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CompletionPricePerToken     *string                              `json:"completionPricePerToken"`
+		ContextLength               *int                                 `json:"contextLength"`
+		CreatedAt                   time.Time                            `json:"createdAt"`
+		CustomPricePerMillionInput  *string                              `json:"customPricePerMillionInput"`
+		CustomPricePerMillionOutput *string                              `json:"customPricePerMillionOutput"`
+		Description                 *string                              `json:"description"`
+		DiscoveredViaLlmProxy       bool                                 `json:"discoveredViaLlmProxy"`
+		EmbeddingDimensions         *UpdateModel_200_EmbeddingDimensions `json:"embeddingDimensions"`
+		ExternalId                  string                               `json:"externalId"`
+		Id                          openapi_types.UUID                   `json:"id"`
+		Ignored                     bool                                 `json:"ignored"`
+		InputModalities             *[]UpdateModel200InputModalities     `json:"inputModalities"`
+		LastSyncedAt                time.Time                            `json:"lastSyncedAt"`
+		ModelId                     string                               `json:"modelId"`
+		OutputModalities            *[]UpdateModel200OutputModalities    `json:"outputModalities"`
+		PromptPricePerToken         *string                              `json:"promptPricePerToken"`
+		Provider                    UpdateModel200Provider               `json:"provider"`
+		SupportsToolCalling         *bool                                `json:"supportsToolCalling"`
+		UpdatedAt                   time.Time                            `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    UpdateModel400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    UpdateModel401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    UpdateModel403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    UpdateModel404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    UpdateModel409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                  `json:"message"`
+			Type    UpdateModel500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateModel200EmbeddingDimensions0 float32
+type UpdateModel200EmbeddingDimensions1 float32
+type UpdateModel200EmbeddingDimensions2 float32
+type UpdateModel_200_EmbeddingDimensions struct {
+	union json.RawMessage
+}
+type UpdateModel200InputModalities string
+type UpdateModel200OutputModalities string
+type UpdateModel200Provider string
+type UpdateModel400ErrorType string
+type UpdateModel401ErrorType string
+type UpdateModel403ErrorType string
+type UpdateModel404ErrorType string
+type UpdateModel409ErrorType string
+type UpdateModel500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateModelResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateModelResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -23474,6 +24197,50 @@ func (c *ClientWithResponses) UpdateLimitWithResponse(ctx context.Context, id op
 		return nil, err
 	}
 	return ParseUpdateLimitResponse(rsp)
+}
+
+// GetModelsWithApiKeysWithResponse request returning *GetModelsWithApiKeysResponse
+func (c *ClientWithResponses) GetModelsWithApiKeysWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetModelsWithApiKeysResponse, error) {
+	rsp, err := c.GetModelsWithApiKeys(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetModelsWithApiKeysResponse(rsp)
+}
+
+// GetLlmModelsWithResponse request returning *GetLlmModelsResponse
+func (c *ClientWithResponses) GetLlmModelsWithResponse(ctx context.Context, params *GetLlmModelsParams, reqEditors ...RequestEditorFn) (*GetLlmModelsResponse, error) {
+	rsp, err := c.GetLlmModels(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetLlmModelsResponse(rsp)
+}
+
+// SyncLlmModelsWithResponse request returning *SyncLlmModelsResponse
+func (c *ClientWithResponses) SyncLlmModelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*SyncLlmModelsResponse, error) {
+	rsp, err := c.SyncLlmModels(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSyncLlmModelsResponse(rsp)
+}
+
+// UpdateModelWithBodyWithResponse request with arbitrary body returning *UpdateModelResponse
+func (c *ClientWithResponses) UpdateModelWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateModelResponse, error) {
+	rsp, err := c.UpdateModelWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateModelResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateModelWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateModelJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateModelResponse, error) {
+	rsp, err := c.UpdateModel(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateModelResponse(rsp)
 }
 
 // GetLlmProviderApiKeysWithResponse request returning *GetLlmProviderApiKeysResponse
@@ -31203,6 +31970,471 @@ func ParseUpdateLimitResponse(rsp *http.Response) (*UpdateLimitResponse, error) 
 			Error struct {
 				Message string                  `json:"message"`
 				Type    UpdateLimit500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetModelsWithApiKeysResponse parses an HTTP response from a GetModelsWithApiKeysWithResponse call
+func ParseGetModelsWithApiKeysResponse(rsp *http.Response) (*GetModelsWithApiKeysResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetModelsWithApiKeysResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			ApiKeys []struct {
+				Id       openapi_types.UUID `json:"id"`
+				IsSystem bool               `json:"isSystem"`
+				Name     string             `json:"name"`
+				Provider string             `json:"provider"`
+				Scope    string             `json:"scope"`
+			} `json:"apiKeys"`
+			CompletionPricePerToken     *string                                       `json:"completionPricePerToken"`
+			ContextLength               *int                                          `json:"contextLength"`
+			CreatedAt                   time.Time                                     `json:"createdAt"`
+			CustomPricePerMillionInput  *string                                       `json:"customPricePerMillionInput"`
+			CustomPricePerMillionOutput *string                                       `json:"customPricePerMillionOutput"`
+			Description                 *string                                       `json:"description"`
+			DiscoveredViaLlmProxy       bool                                          `json:"discoveredViaLlmProxy"`
+			EmbeddingDimensions         *GetModelsWithApiKeys_200_EmbeddingDimensions `json:"embeddingDimensions"`
+			ExternalId                  string                                        `json:"externalId"`
+			Id                          openapi_types.UUID                            `json:"id"`
+			Ignored                     bool                                          `json:"ignored"`
+			InputModalities             *[]GetModelsWithApiKeys200InputModalities     `json:"inputModalities"`
+			IsBest                      bool                                          `json:"isBest"`
+			IsCustomPrice               bool                                          `json:"isCustomPrice"`
+			IsFastest                   bool                                          `json:"isFastest"`
+			LastSyncedAt                time.Time                                     `json:"lastSyncedAt"`
+			ModelId                     string                                        `json:"modelId"`
+			OutputModalities            *[]GetModelsWithApiKeys200OutputModalities    `json:"outputModalities"`
+			PricePerMillionInput        *string                                       `json:"pricePerMillionInput"`
+			PricePerMillionOutput       *string                                       `json:"pricePerMillionOutput"`
+			PriceSource                 GetModelsWithApiKeys200PriceSource            `json:"priceSource"`
+			PromptPricePerToken         *string                                       `json:"promptPricePerToken"`
+			Provider                    GetModelsWithApiKeys200Provider               `json:"provider"`
+			SupportsToolCalling         *bool                                         `json:"supportsToolCalling"`
+			UpdatedAt                   time.Time                                     `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetModelsWithApiKeys400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetModelsWithApiKeys401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetModelsWithApiKeys403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetModelsWithApiKeys404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetModelsWithApiKeys409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetModelsWithApiKeys500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetLlmModelsResponse parses an HTTP response from a GetLlmModelsWithResponse call
+func ParseGetLlmModelsResponse(rsp *http.Response) (*GetLlmModelsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetLlmModelsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			Capabilities *struct {
+				ContextLength         *int                                           `json:"contextLength"`
+				InputModalities       *[]GetLlmModels200CapabilitiesInputModalities  `json:"inputModalities"`
+				IsCustomPrice         bool                                           `json:"isCustomPrice"`
+				OutputModalities      *[]GetLlmModels200CapabilitiesOutputModalities `json:"outputModalities"`
+				PricePerMillionInput  *string                                        `json:"pricePerMillionInput"`
+				PricePerMillionOutput *string                                        `json:"pricePerMillionOutput"`
+				PriceSource           GetLlmModels200CapabilitiesPriceSource         `json:"priceSource"`
+				SupportsToolCalling   *bool                                          `json:"supportsToolCalling"`
+			} `json:"capabilities,omitempty"`
+			CreatedAt           *string                               `json:"createdAt,omitempty"`
+			DisplayName         string                                `json:"displayName"`
+			EmbeddingDimensions *GetLlmModels_200_EmbeddingDimensions `json:"embeddingDimensions"`
+			Id                  string                                `json:"id"`
+			IsBest              *bool                                 `json:"isBest,omitempty"`
+			IsFastest           *bool                                 `json:"isFastest,omitempty"`
+			Provider            GetLlmModels200Provider               `json:"provider"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetLlmModels400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetLlmModels401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetLlmModels403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetLlmModels404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetLlmModels409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetLlmModels500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSyncLlmModelsResponse parses an HTTP response from a SyncLlmModelsWithResponse call
+func ParseSyncLlmModelsResponse(rsp *http.Response) (*SyncLlmModelsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SyncLlmModelsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncLlmModels400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncLlmModels401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncLlmModels403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncLlmModels404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncLlmModels409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncLlmModels500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateModelResponse parses an HTTP response from a UpdateModelWithResponse call
+func ParseUpdateModelResponse(rsp *http.Response) (*UpdateModelResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateModelResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CompletionPricePerToken     *string                              `json:"completionPricePerToken"`
+			ContextLength               *int                                 `json:"contextLength"`
+			CreatedAt                   time.Time                            `json:"createdAt"`
+			CustomPricePerMillionInput  *string                              `json:"customPricePerMillionInput"`
+			CustomPricePerMillionOutput *string                              `json:"customPricePerMillionOutput"`
+			Description                 *string                              `json:"description"`
+			DiscoveredViaLlmProxy       bool                                 `json:"discoveredViaLlmProxy"`
+			EmbeddingDimensions         *UpdateModel_200_EmbeddingDimensions `json:"embeddingDimensions"`
+			ExternalId                  string                               `json:"externalId"`
+			Id                          openapi_types.UUID                   `json:"id"`
+			Ignored                     bool                                 `json:"ignored"`
+			InputModalities             *[]UpdateModel200InputModalities     `json:"inputModalities"`
+			LastSyncedAt                time.Time                            `json:"lastSyncedAt"`
+			ModelId                     string                               `json:"modelId"`
+			OutputModalities            *[]UpdateModel200OutputModalities    `json:"outputModalities"`
+			PromptPricePerToken         *string                              `json:"promptPricePerToken"`
+			Provider                    UpdateModel200Provider               `json:"provider"`
+			SupportsToolCalling         *bool                                `json:"supportsToolCalling"`
+			UpdatedAt                   time.Time                            `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    UpdateModel400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    UpdateModel401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    UpdateModel403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    UpdateModel404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    UpdateModel409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                  `json:"message"`
+				Type    UpdateModel500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

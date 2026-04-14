@@ -154,7 +154,8 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewTrustedDataPolicyResource,
 		NewToolInvocationPolicyResource,
 		NewTeamResource,
-		// NewTokenPriceResource, // TODO: Token pricing moved to PATCH /api/llm-models/{id} (customPricePerMillionInput/Output). Replace with archestra_llm_model resource.
+		NewLlmModelResource,
+		// NewTokenPriceResource, // Replaced by archestra_llm_model resource above.
 		NewLimitResource,
 		NewOptimizationRuleResource,
 		NewOrganizationSettingsResource,
