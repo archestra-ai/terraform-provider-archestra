@@ -112,12 +112,13 @@ All resources follow Terraform Plugin Framework patterns (`internal/provider/res
 | `archestra_organization_settings`     | `resource_organization_settings.go`     | Full org settings (appearance, security, LLM, MCP, knowledge) |
 | `archestra_chat_llm_provider_api_key` | `resource_chat_llm_provider_api_key.go` | Manage LLM provider API keys (17 providers, BYOS vault) |
 | `archestra_sso_provider`              | `resource_sso_provider.go`              | SSO/Identity provider (OIDC + SAML + enterprise creds) |
+| `archestra_llm_model`                 | `resource_llm_model.go`                 | Manage LLM model pricing and settings (replaces token_price) |
 
 **Disabled Resources** (files have `//go:build ignore`):
 
 - `resource_prompt.go` - Prompts are now inline on agents (`system_prompt` field). No standalone API.
-- `resource_token_price.go` - Token pricing moved to `PATCH /api/llm-models/{id}`. Replace with `archestra_llm_model` resource.
-- `resource_dual_llm_config.go` - Dual LLM is now a built-in agent type. Configure via agent `built_in_agent_config`.
+- `resource_token_price.go` - Replaced by `archestra_llm_model` resource.
+- `resource_dual_llm_config.go` - Replaced by `built_in_agent_config` block on `archestra_profile`.
 - `resource_user.go` - User management (API not exposed in OpenAPI spec)
 
 ### Data Sources
