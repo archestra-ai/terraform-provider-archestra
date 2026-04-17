@@ -207,6 +207,7 @@ Optional:
 
 Optional:
 
+- `assertion_mode` (String) Assertion exchange mode. One of `exchange`, `passthrough`.
 - `audience` (String)
 - `body_field_name` (String)
 - `cache_ttl_seconds` (Number)

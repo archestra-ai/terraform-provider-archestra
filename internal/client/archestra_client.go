@@ -285,6 +285,12 @@ const (
 	UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthenticationPrivateKeyJwt     UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication = "private_key_jwt"
 )
 
+// Defines values for CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode.
+const (
+	CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionModeExchange    CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode = "exchange"
+	CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionModePassthrough CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode = "passthrough"
+)
+
 // Defines values for CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode.
 const (
 	CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackModeFailClosed        CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode = "fail_closed"
@@ -370,6 +376,12 @@ const (
 	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeFile      CreateInternalMcpCatalogItemJSONBodyUserConfigType = "file"
 	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeNumber    CreateInternalMcpCatalogItemJSONBodyUserConfigType = "number"
 	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeString    CreateInternalMcpCatalogItemJSONBodyUserConfigType = "string"
+)
+
+// Defines values for UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode.
+const (
+	UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionModeExchange    UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode = "exchange"
+	UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionModePassthrough UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode = "passthrough"
 )
 
 // Defines values for UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode.
@@ -1581,6 +1593,7 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 	Description             *string             `json:"description"`
 	DocsUrl                 *string             `json:"docsUrl"`
 	EnterpriseManagedConfig *struct {
+		AssertionMode           *CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 		Audience                *string                                                                             `json:"audience,omitempty"`
 		BodyFieldName           *string                                                                             `json:"bodyFieldName,omitempty"`
 		CacheTtlSeconds         *int                                                                                `json:"cacheTtlSeconds,omitempty"`
@@ -1667,18 +1680,23 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 	ServerUrl    *string                                        `json:"serverUrl"`
 	Teams        *[]string                                      `json:"teams,omitempty"`
 	UserConfig   *map[string]struct {
-		Default     *CreateInternalMcpCatalogItemJSONBody_UserConfig_Default `json:"default,omitempty"`
-		Description string                                                   `json:"description"`
-		Max         *float32                                                 `json:"max,omitempty"`
-		Min         *float32                                                 `json:"min,omitempty"`
-		Multiple    *bool                                                    `json:"multiple,omitempty"`
-		Required    *bool                                                    `json:"required,omitempty"`
-		Sensitive   *bool                                                    `json:"sensitive,omitempty"`
-		Title       string                                                   `json:"title"`
-		Type        CreateInternalMcpCatalogItemJSONBodyUserConfigType       `json:"type"`
+		Default              *CreateInternalMcpCatalogItemJSONBody_UserConfig_Default `json:"default,omitempty"`
+		Description          string                                                   `json:"description"`
+		HeaderName           *string                                                  `json:"headerName,omitempty"`
+		Max                  *float32                                                 `json:"max,omitempty"`
+		Min                  *float32                                                 `json:"min,omitempty"`
+		Multiple             *bool                                                    `json:"multiple,omitempty"`
+		PromptOnInstallation *bool                                                    `json:"promptOnInstallation,omitempty"`
+		Required             *bool                                                    `json:"required,omitempty"`
+		Sensitive            *bool                                                    `json:"sensitive,omitempty"`
+		Title                string                                                   `json:"title"`
+		Type                 CreateInternalMcpCatalogItemJSONBodyUserConfigType       `json:"type"`
 	} `json:"userConfig"`
 	Version *string `json:"version"`
 }
+
+// CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode string
 
 // CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode string
@@ -1793,6 +1811,7 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 	Description             *string             `json:"description"`
 	DocsUrl                 *string             `json:"docsUrl"`
 	EnterpriseManagedConfig *struct {
+		AssertionMode           *UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 		Audience                *string                                                                             `json:"audience,omitempty"`
 		BodyFieldName           *string                                                                             `json:"bodyFieldName,omitempty"`
 		CacheTtlSeconds         *int                                                                                `json:"cacheTtlSeconds,omitempty"`
@@ -1878,18 +1897,23 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 	ServerUrl    *string                                         `json:"serverUrl"`
 	Teams        *[]string                                       `json:"teams,omitempty"`
 	UserConfig   *map[string]struct {
-		Default     *UpdateInternalMcpCatalogItemJSONBody_UserConfig_Default `json:"default,omitempty"`
-		Description string                                                   `json:"description"`
-		Max         *float32                                                 `json:"max,omitempty"`
-		Min         *float32                                                 `json:"min,omitempty"`
-		Multiple    *bool                                                    `json:"multiple,omitempty"`
-		Required    *bool                                                    `json:"required,omitempty"`
-		Sensitive   *bool                                                    `json:"sensitive,omitempty"`
-		Title       string                                                   `json:"title"`
-		Type        UpdateInternalMcpCatalogItemJSONBodyUserConfigType       `json:"type"`
+		Default              *UpdateInternalMcpCatalogItemJSONBody_UserConfig_Default `json:"default,omitempty"`
+		Description          string                                                   `json:"description"`
+		HeaderName           *string                                                  `json:"headerName,omitempty"`
+		Max                  *float32                                                 `json:"max,omitempty"`
+		Min                  *float32                                                 `json:"min,omitempty"`
+		Multiple             *bool                                                    `json:"multiple,omitempty"`
+		PromptOnInstallation *bool                                                    `json:"promptOnInstallation,omitempty"`
+		Required             *bool                                                    `json:"required,omitempty"`
+		Sensitive            *bool                                                    `json:"sensitive,omitempty"`
+		Title                string                                                   `json:"title"`
+		Type                 UpdateInternalMcpCatalogItemJSONBodyUserConfigType       `json:"type"`
 	} `json:"userConfig"`
 	Version *string `json:"version"`
 }
+
+// UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode string
 
 // UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode string
@@ -2180,6 +2204,7 @@ type ReinstallMcpServerJSONBody struct {
 	EnvironmentValues *map[string]string `json:"environmentValues,omitempty"`
 	IsByosVault       *bool              `json:"isByosVault,omitempty"`
 	ServiceAccount    *string            `json:"serviceAccount,omitempty"`
+	UserConfigValues  *map[string]string `json:"userConfigValues,omitempty"`
 }
 
 // GetMcpServerInstallationRequestsParams defines parameters for GetMcpServerInstallationRequests.
@@ -2596,6 +2621,7 @@ type UpdateAppearanceSettingsJSONBody struct {
 	LogoDark         *string                                     `json:"logoDark"`
 	OgDescription    *string                                     `json:"ogDescription"`
 	ShowTwoFactor    *bool                                       `json:"showTwoFactor,omitempty"`
+	SlimChatErrorUi  *bool                                       `json:"slimChatErrorUi,omitempty"`
 	Theme            *UpdateAppearanceSettingsJSONBodyTheme      `json:"theme,omitempty"`
 }
 
@@ -15962,6 +15988,7 @@ type GetInternalMcpCatalogResponse struct {
 		Description             *string             `json:"description"`
 		DocsUrl                 *string             `json:"docsUrl"`
 		EnterpriseManagedConfig *struct {
+			AssertionMode           *GetInternalMcpCatalog200EnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 			Audience                *string                                                                 `json:"audience,omitempty"`
 			BodyFieldName           *string                                                                 `json:"bodyFieldName,omitempty"`
 			CacheTtlSeconds         *int                                                                    `json:"cacheTtlSeconds,omitempty"`
@@ -16049,15 +16076,17 @@ type GetInternalMcpCatalogResponse struct {
 		} `json:"teams"`
 		UpdatedAt  time.Time `json:"updatedAt"`
 		UserConfig *map[string]struct {
-			Default     *GetInternalMcpCatalog_200_UserConfig_Default `json:"default,omitempty"`
-			Description string                                        `json:"description"`
-			Max         *float32                                      `json:"max,omitempty"`
-			Min         *float32                                      `json:"min,omitempty"`
-			Multiple    *bool                                         `json:"multiple,omitempty"`
-			Required    *bool                                         `json:"required,omitempty"`
-			Sensitive   *bool                                         `json:"sensitive,omitempty"`
-			Title       string                                        `json:"title"`
-			Type        GetInternalMcpCatalog200UserConfigType        `json:"type"`
+			Default              *GetInternalMcpCatalog_200_UserConfig_Default `json:"default,omitempty"`
+			Description          string                                        `json:"description"`
+			HeaderName           *string                                       `json:"headerName,omitempty"`
+			Max                  *float32                                      `json:"max,omitempty"`
+			Min                  *float32                                      `json:"min,omitempty"`
+			Multiple             *bool                                         `json:"multiple,omitempty"`
+			PromptOnInstallation *bool                                         `json:"promptOnInstallation,omitempty"`
+			Required             *bool                                         `json:"required,omitempty"`
+			Sensitive            *bool                                         `json:"sensitive,omitempty"`
+			Title                string                                        `json:"title"`
+			Type                 GetInternalMcpCatalog200UserConfigType        `json:"type"`
 		} `json:"userConfig"`
 		Version *string `json:"version"`
 	}
@@ -16098,6 +16127,7 @@ type GetInternalMcpCatalogResponse struct {
 		} `json:"error"`
 	}
 }
+type GetInternalMcpCatalog200EnterpriseManagedConfigAssertionMode string
 type GetInternalMcpCatalog200EnterpriseManagedConfigFallbackMode string
 type GetInternalMcpCatalog200EnterpriseManagedConfigRequestedCredentialType string
 type GetInternalMcpCatalog200EnterpriseManagedConfigResourceType string
@@ -16183,6 +16213,7 @@ type CreateInternalMcpCatalogItemResponse struct {
 		Description             *string             `json:"description"`
 		DocsUrl                 *string             `json:"docsUrl"`
 		EnterpriseManagedConfig *struct {
+			AssertionMode           *CreateInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 			Audience                *string                                                                        `json:"audience,omitempty"`
 			BodyFieldName           *string                                                                        `json:"bodyFieldName,omitempty"`
 			CacheTtlSeconds         *int                                                                           `json:"cacheTtlSeconds,omitempty"`
@@ -16270,15 +16301,17 @@ type CreateInternalMcpCatalogItemResponse struct {
 		} `json:"teams"`
 		UpdatedAt  time.Time `json:"updatedAt"`
 		UserConfig *map[string]struct {
-			Default     *CreateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-			Description string                                               `json:"description"`
-			Max         *float32                                             `json:"max,omitempty"`
-			Min         *float32                                             `json:"min,omitempty"`
-			Multiple    *bool                                                `json:"multiple,omitempty"`
-			Required    *bool                                                `json:"required,omitempty"`
-			Sensitive   *bool                                                `json:"sensitive,omitempty"`
-			Title       string                                               `json:"title"`
-			Type        CreateInternalMcpCatalogItem200UserConfigType        `json:"type"`
+			Default              *CreateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+			Description          string                                               `json:"description"`
+			HeaderName           *string                                              `json:"headerName,omitempty"`
+			Max                  *float32                                             `json:"max,omitempty"`
+			Min                  *float32                                             `json:"min,omitempty"`
+			Multiple             *bool                                                `json:"multiple,omitempty"`
+			PromptOnInstallation *bool                                                `json:"promptOnInstallation,omitempty"`
+			Required             *bool                                                `json:"required,omitempty"`
+			Sensitive            *bool                                                `json:"sensitive,omitempty"`
+			Title                string                                               `json:"title"`
+			Type                 CreateInternalMcpCatalogItem200UserConfigType        `json:"type"`
 		} `json:"userConfig"`
 		Version *string `json:"version"`
 	}
@@ -16319,6 +16352,7 @@ type CreateInternalMcpCatalogItemResponse struct {
 		} `json:"error"`
 	}
 }
+type CreateInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode string
 type CreateInternalMcpCatalogItem200EnterpriseManagedConfigFallbackMode string
 type CreateInternalMcpCatalogItem200EnterpriseManagedConfigRequestedCredentialType string
 type CreateInternalMcpCatalogItem200EnterpriseManagedConfigResourceType string
@@ -16732,6 +16766,7 @@ type GetInternalMcpCatalogItemResponse struct {
 		Description             *string             `json:"description"`
 		DocsUrl                 *string             `json:"docsUrl"`
 		EnterpriseManagedConfig *struct {
+			AssertionMode           *GetInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 			Audience                *string                                                                     `json:"audience,omitempty"`
 			BodyFieldName           *string                                                                     `json:"bodyFieldName,omitempty"`
 			CacheTtlSeconds         *int                                                                        `json:"cacheTtlSeconds,omitempty"`
@@ -16819,15 +16854,17 @@ type GetInternalMcpCatalogItemResponse struct {
 		} `json:"teams"`
 		UpdatedAt  time.Time `json:"updatedAt"`
 		UserConfig *map[string]struct {
-			Default     *GetInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-			Description string                                            `json:"description"`
-			Max         *float32                                          `json:"max,omitempty"`
-			Min         *float32                                          `json:"min,omitempty"`
-			Multiple    *bool                                             `json:"multiple,omitempty"`
-			Required    *bool                                             `json:"required,omitempty"`
-			Sensitive   *bool                                             `json:"sensitive,omitempty"`
-			Title       string                                            `json:"title"`
-			Type        GetInternalMcpCatalogItem200UserConfigType        `json:"type"`
+			Default              *GetInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+			Description          string                                            `json:"description"`
+			HeaderName           *string                                           `json:"headerName,omitempty"`
+			Max                  *float32                                          `json:"max,omitempty"`
+			Min                  *float32                                          `json:"min,omitempty"`
+			Multiple             *bool                                             `json:"multiple,omitempty"`
+			PromptOnInstallation *bool                                             `json:"promptOnInstallation,omitempty"`
+			Required             *bool                                             `json:"required,omitempty"`
+			Sensitive            *bool                                             `json:"sensitive,omitempty"`
+			Title                string                                            `json:"title"`
+			Type                 GetInternalMcpCatalogItem200UserConfigType        `json:"type"`
 		} `json:"userConfig"`
 		Version *string `json:"version"`
 	}
@@ -16868,6 +16905,7 @@ type GetInternalMcpCatalogItemResponse struct {
 		} `json:"error"`
 	}
 }
+type GetInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode string
 type GetInternalMcpCatalogItem200EnterpriseManagedConfigFallbackMode string
 type GetInternalMcpCatalogItem200EnterpriseManagedConfigRequestedCredentialType string
 type GetInternalMcpCatalogItem200EnterpriseManagedConfigResourceType string
@@ -16953,6 +16991,7 @@ type UpdateInternalMcpCatalogItemResponse struct {
 		Description             *string             `json:"description"`
 		DocsUrl                 *string             `json:"docsUrl"`
 		EnterpriseManagedConfig *struct {
+			AssertionMode           *UpdateInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 			Audience                *string                                                                        `json:"audience,omitempty"`
 			BodyFieldName           *string                                                                        `json:"bodyFieldName,omitempty"`
 			CacheTtlSeconds         *int                                                                           `json:"cacheTtlSeconds,omitempty"`
@@ -17040,15 +17079,17 @@ type UpdateInternalMcpCatalogItemResponse struct {
 		} `json:"teams"`
 		UpdatedAt  time.Time `json:"updatedAt"`
 		UserConfig *map[string]struct {
-			Default     *UpdateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-			Description string                                               `json:"description"`
-			Max         *float32                                             `json:"max,omitempty"`
-			Min         *float32                                             `json:"min,omitempty"`
-			Multiple    *bool                                                `json:"multiple,omitempty"`
-			Required    *bool                                                `json:"required,omitempty"`
-			Sensitive   *bool                                                `json:"sensitive,omitempty"`
-			Title       string                                               `json:"title"`
-			Type        UpdateInternalMcpCatalogItem200UserConfigType        `json:"type"`
+			Default              *UpdateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+			Description          string                                               `json:"description"`
+			HeaderName           *string                                              `json:"headerName,omitempty"`
+			Max                  *float32                                             `json:"max,omitempty"`
+			Min                  *float32                                             `json:"min,omitempty"`
+			Multiple             *bool                                                `json:"multiple,omitempty"`
+			PromptOnInstallation *bool                                                `json:"promptOnInstallation,omitempty"`
+			Required             *bool                                                `json:"required,omitempty"`
+			Sensitive            *bool                                                `json:"sensitive,omitempty"`
+			Title                string                                               `json:"title"`
+			Type                 UpdateInternalMcpCatalogItem200UserConfigType        `json:"type"`
 		} `json:"userConfig"`
 		Version *string `json:"version"`
 	}
@@ -17089,6 +17130,7 @@ type UpdateInternalMcpCatalogItemResponse struct {
 		} `json:"error"`
 	}
 }
+type UpdateInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode string
 type UpdateInternalMcpCatalogItem200EnterpriseManagedConfigFallbackMode string
 type UpdateInternalMcpCatalogItem200EnterpriseManagedConfigRequestedCredentialType string
 type UpdateInternalMcpCatalogItem200EnterpriseManagedConfigResourceType string
@@ -21111,6 +21153,7 @@ type GetOrganizationResponse struct {
 		RerankerChatApiKeyId               *openapi_types.UUID                     `json:"rerankerChatApiKeyId"`
 		RerankerModel                      *string                                 `json:"rerankerModel"`
 		ShowTwoFactor                      bool                                    `json:"showTwoFactor"`
+		SlimChatErrorUi                    bool                                    `json:"slimChatErrorUi"`
 		Slug                               string                                  `json:"slug"`
 		Theme                              GetOrganization200Theme                 `json:"theme"`
 	}
@@ -21220,6 +21263,7 @@ type UpdateAgentSettingsResponse struct {
 		RerankerChatApiKeyId               *openapi_types.UUID                         `json:"rerankerChatApiKeyId"`
 		RerankerModel                      *string                                     `json:"rerankerModel"`
 		ShowTwoFactor                      bool                                        `json:"showTwoFactor"`
+		SlimChatErrorUi                    bool                                        `json:"slimChatErrorUi"`
 		Slug                               string                                      `json:"slug"`
 		Theme                              UpdateAgentSettings200Theme                 `json:"theme"`
 	}
@@ -21300,14 +21344,15 @@ type GetAppearanceSettingsResponse struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
-		CustomFont    GetAppearanceSettings200CustomFont `json:"customFont"`
-		Favicon       *string                            `json:"favicon"`
-		FooterText    *string                            `json:"footerText"`
-		IconLogo      *string                            `json:"iconLogo"`
-		Logo          *string                            `json:"logo"`
-		LogoDark      *string                            `json:"logoDark"`
-		OgDescription *string                            `json:"ogDescription"`
-		Theme         GetAppearanceSettings200Theme      `json:"theme"`
+		CustomFont      GetAppearanceSettings200CustomFont `json:"customFont"`
+		Favicon         *string                            `json:"favicon"`
+		FooterText      *string                            `json:"footerText"`
+		IconLogo        *string                            `json:"iconLogo"`
+		Logo            *string                            `json:"logo"`
+		LogoDark        *string                            `json:"logoDark"`
+		OgDescription   *string                            `json:"ogDescription"`
+		SlimChatErrorUi bool                               `json:"slimChatErrorUi"`
+		Theme           GetAppearanceSettings200Theme      `json:"theme"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -21411,6 +21456,7 @@ type UpdateAppearanceSettingsResponse struct {
 		RerankerChatApiKeyId               *openapi_types.UUID                              `json:"rerankerChatApiKeyId"`
 		RerankerModel                      *string                                          `json:"rerankerModel"`
 		ShowTwoFactor                      bool                                             `json:"showTwoFactor"`
+		SlimChatErrorUi                    bool                                             `json:"slimChatErrorUi"`
 		Slug                               string                                           `json:"slug"`
 		Theme                              UpdateAppearanceSettings200Theme                 `json:"theme"`
 	}
@@ -21520,6 +21566,7 @@ type CompleteOnboardingResponse struct {
 		RerankerChatApiKeyId               *openapi_types.UUID                        `json:"rerankerChatApiKeyId"`
 		RerankerModel                      *string                                    `json:"rerankerModel"`
 		ShowTwoFactor                      bool                                       `json:"showTwoFactor"`
+		SlimChatErrorUi                    bool                                       `json:"slimChatErrorUi"`
 		Slug                               string                                     `json:"slug"`
 		Theme                              CompleteOnboarding200Theme                 `json:"theme"`
 	}
@@ -21629,6 +21676,7 @@ type UpdateKnowledgeSettingsResponse struct {
 		RerankerChatApiKeyId               *openapi_types.UUID                             `json:"rerankerChatApiKeyId"`
 		RerankerModel                      *string                                         `json:"rerankerModel"`
 		ShowTwoFactor                      bool                                            `json:"showTwoFactor"`
+		SlimChatErrorUi                    bool                                            `json:"slimChatErrorUi"`
 		Slug                               string                                          `json:"slug"`
 		Theme                              UpdateKnowledgeSettings200Theme                 `json:"theme"`
 	}
@@ -21738,6 +21786,7 @@ type DropEmbeddingConfigResponse struct {
 		RerankerChatApiKeyId               *openapi_types.UUID                         `json:"rerankerChatApiKeyId"`
 		RerankerModel                      *string                                     `json:"rerankerModel"`
 		ShowTwoFactor                      bool                                        `json:"showTwoFactor"`
+		SlimChatErrorUi                    bool                                        `json:"slimChatErrorUi"`
 		Slug                               string                                      `json:"slug"`
 		Theme                              DropEmbeddingConfig200Theme                 `json:"theme"`
 	}
@@ -21914,6 +21963,7 @@ type UpdateLlmSettingsResponse struct {
 		RerankerChatApiKeyId               *openapi_types.UUID                       `json:"rerankerChatApiKeyId"`
 		RerankerModel                      *string                                   `json:"rerankerModel"`
 		ShowTwoFactor                      bool                                      `json:"showTwoFactor"`
+		SlimChatErrorUi                    bool                                      `json:"slimChatErrorUi"`
 		Slug                               string                                    `json:"slug"`
 		Theme                              UpdateLlmSettings200Theme                 `json:"theme"`
 	}
@@ -22023,6 +22073,7 @@ type UpdateMcpSettingsResponse struct {
 		RerankerChatApiKeyId               *openapi_types.UUID                       `json:"rerankerChatApiKeyId"`
 		RerankerModel                      *string                                   `json:"rerankerModel"`
 		ShowTwoFactor                      bool                                      `json:"showTwoFactor"`
+		SlimChatErrorUi                    bool                                      `json:"slimChatErrorUi"`
 		Slug                               string                                    `json:"slug"`
 		Theme                              UpdateMcpSettings200Theme                 `json:"theme"`
 	}
@@ -22476,6 +22527,7 @@ type UpdateSecuritySettingsResponse struct {
 		RerankerChatApiKeyId               *openapi_types.UUID                            `json:"rerankerChatApiKeyId"`
 		RerankerModel                      *string                                        `json:"rerankerModel"`
 		ShowTwoFactor                      bool                                           `json:"showTwoFactor"`
+		SlimChatErrorUi                    bool                                           `json:"slimChatErrorUi"`
 		Slug                               string                                         `json:"slug"`
 		Theme                              UpdateSecuritySettings200Theme                 `json:"theme"`
 	}
@@ -31635,6 +31687,7 @@ func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCata
 			Description             *string             `json:"description"`
 			DocsUrl                 *string             `json:"docsUrl"`
 			EnterpriseManagedConfig *struct {
+				AssertionMode           *GetInternalMcpCatalog200EnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 				Audience                *string                                                                 `json:"audience,omitempty"`
 				BodyFieldName           *string                                                                 `json:"bodyFieldName,omitempty"`
 				CacheTtlSeconds         *int                                                                    `json:"cacheTtlSeconds,omitempty"`
@@ -31722,15 +31775,17 @@ func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCata
 			} `json:"teams"`
 			UpdatedAt  time.Time `json:"updatedAt"`
 			UserConfig *map[string]struct {
-				Default     *GetInternalMcpCatalog_200_UserConfig_Default `json:"default,omitempty"`
-				Description string                                        `json:"description"`
-				Max         *float32                                      `json:"max,omitempty"`
-				Min         *float32                                      `json:"min,omitempty"`
-				Multiple    *bool                                         `json:"multiple,omitempty"`
-				Required    *bool                                         `json:"required,omitempty"`
-				Sensitive   *bool                                         `json:"sensitive,omitempty"`
-				Title       string                                        `json:"title"`
-				Type        GetInternalMcpCatalog200UserConfigType        `json:"type"`
+				Default              *GetInternalMcpCatalog_200_UserConfig_Default `json:"default,omitempty"`
+				Description          string                                        `json:"description"`
+				HeaderName           *string                                       `json:"headerName,omitempty"`
+				Max                  *float32                                      `json:"max,omitempty"`
+				Min                  *float32                                      `json:"min,omitempty"`
+				Multiple             *bool                                         `json:"multiple,omitempty"`
+				PromptOnInstallation *bool                                         `json:"promptOnInstallation,omitempty"`
+				Required             *bool                                         `json:"required,omitempty"`
+				Sensitive            *bool                                         `json:"sensitive,omitempty"`
+				Title                string                                        `json:"title"`
+				Type                 GetInternalMcpCatalog200UserConfigType        `json:"type"`
 			} `json:"userConfig"`
 			Version *string `json:"version"`
 		}
@@ -31848,6 +31903,7 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 			Description             *string             `json:"description"`
 			DocsUrl                 *string             `json:"docsUrl"`
 			EnterpriseManagedConfig *struct {
+				AssertionMode           *CreateInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 				Audience                *string                                                                        `json:"audience,omitempty"`
 				BodyFieldName           *string                                                                        `json:"bodyFieldName,omitempty"`
 				CacheTtlSeconds         *int                                                                           `json:"cacheTtlSeconds,omitempty"`
@@ -31935,15 +31991,17 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 			} `json:"teams"`
 			UpdatedAt  time.Time `json:"updatedAt"`
 			UserConfig *map[string]struct {
-				Default     *CreateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-				Description string                                               `json:"description"`
-				Max         *float32                                             `json:"max,omitempty"`
-				Min         *float32                                             `json:"min,omitempty"`
-				Multiple    *bool                                                `json:"multiple,omitempty"`
-				Required    *bool                                                `json:"required,omitempty"`
-				Sensitive   *bool                                                `json:"sensitive,omitempty"`
-				Title       string                                               `json:"title"`
-				Type        CreateInternalMcpCatalogItem200UserConfigType        `json:"type"`
+				Default              *CreateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+				Description          string                                               `json:"description"`
+				HeaderName           *string                                              `json:"headerName,omitempty"`
+				Max                  *float32                                             `json:"max,omitempty"`
+				Min                  *float32                                             `json:"min,omitempty"`
+				Multiple             *bool                                                `json:"multiple,omitempty"`
+				PromptOnInstallation *bool                                                `json:"promptOnInstallation,omitempty"`
+				Required             *bool                                                `json:"required,omitempty"`
+				Sensitive            *bool                                                `json:"sensitive,omitempty"`
+				Title                string                                               `json:"title"`
+				Type                 CreateInternalMcpCatalogItem200UserConfigType        `json:"type"`
 			} `json:"userConfig"`
 			Version *string `json:"version"`
 		}
@@ -32559,6 +32617,7 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 			Description             *string             `json:"description"`
 			DocsUrl                 *string             `json:"docsUrl"`
 			EnterpriseManagedConfig *struct {
+				AssertionMode           *GetInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 				Audience                *string                                                                     `json:"audience,omitempty"`
 				BodyFieldName           *string                                                                     `json:"bodyFieldName,omitempty"`
 				CacheTtlSeconds         *int                                                                        `json:"cacheTtlSeconds,omitempty"`
@@ -32646,15 +32705,17 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 			} `json:"teams"`
 			UpdatedAt  time.Time `json:"updatedAt"`
 			UserConfig *map[string]struct {
-				Default     *GetInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-				Description string                                            `json:"description"`
-				Max         *float32                                          `json:"max,omitempty"`
-				Min         *float32                                          `json:"min,omitempty"`
-				Multiple    *bool                                             `json:"multiple,omitempty"`
-				Required    *bool                                             `json:"required,omitempty"`
-				Sensitive   *bool                                             `json:"sensitive,omitempty"`
-				Title       string                                            `json:"title"`
-				Type        GetInternalMcpCatalogItem200UserConfigType        `json:"type"`
+				Default              *GetInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+				Description          string                                            `json:"description"`
+				HeaderName           *string                                           `json:"headerName,omitempty"`
+				Max                  *float32                                          `json:"max,omitempty"`
+				Min                  *float32                                          `json:"min,omitempty"`
+				Multiple             *bool                                             `json:"multiple,omitempty"`
+				PromptOnInstallation *bool                                             `json:"promptOnInstallation,omitempty"`
+				Required             *bool                                             `json:"required,omitempty"`
+				Sensitive            *bool                                             `json:"sensitive,omitempty"`
+				Title                string                                            `json:"title"`
+				Type                 GetInternalMcpCatalogItem200UserConfigType        `json:"type"`
 			} `json:"userConfig"`
 			Version *string `json:"version"`
 		}
@@ -32772,6 +32833,7 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 			Description             *string             `json:"description"`
 			DocsUrl                 *string             `json:"docsUrl"`
 			EnterpriseManagedConfig *struct {
+				AssertionMode           *UpdateInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 				Audience                *string                                                                        `json:"audience,omitempty"`
 				BodyFieldName           *string                                                                        `json:"bodyFieldName,omitempty"`
 				CacheTtlSeconds         *int                                                                           `json:"cacheTtlSeconds,omitempty"`
@@ -32859,15 +32921,17 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 			} `json:"teams"`
 			UpdatedAt  time.Time `json:"updatedAt"`
 			UserConfig *map[string]struct {
-				Default     *UpdateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-				Description string                                               `json:"description"`
-				Max         *float32                                             `json:"max,omitempty"`
-				Min         *float32                                             `json:"min,omitempty"`
-				Multiple    *bool                                                `json:"multiple,omitempty"`
-				Required    *bool                                                `json:"required,omitempty"`
-				Sensitive   *bool                                                `json:"sensitive,omitempty"`
-				Title       string                                               `json:"title"`
-				Type        UpdateInternalMcpCatalogItem200UserConfigType        `json:"type"`
+				Default              *UpdateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
+				Description          string                                               `json:"description"`
+				HeaderName           *string                                              `json:"headerName,omitempty"`
+				Max                  *float32                                             `json:"max,omitempty"`
+				Min                  *float32                                             `json:"min,omitempty"`
+				Multiple             *bool                                                `json:"multiple,omitempty"`
+				PromptOnInstallation *bool                                                `json:"promptOnInstallation,omitempty"`
+				Required             *bool                                                `json:"required,omitempty"`
+				Sensitive            *bool                                                `json:"sensitive,omitempty"`
+				Title                string                                               `json:"title"`
+				Type                 UpdateInternalMcpCatalogItem200UserConfigType        `json:"type"`
 			} `json:"userConfig"`
 			Version *string `json:"version"`
 		}
@@ -37492,6 +37556,7 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 			RerankerChatApiKeyId               *openapi_types.UUID                     `json:"rerankerChatApiKeyId"`
 			RerankerModel                      *string                                 `json:"rerankerModel"`
 			ShowTwoFactor                      bool                                    `json:"showTwoFactor"`
+			SlimChatErrorUi                    bool                                    `json:"slimChatErrorUi"`
 			Slug                               string                                  `json:"slug"`
 			Theme                              GetOrganization200Theme                 `json:"theme"`
 		}
@@ -37629,6 +37694,7 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 			RerankerChatApiKeyId               *openapi_types.UUID                         `json:"rerankerChatApiKeyId"`
 			RerankerModel                      *string                                     `json:"rerankerModel"`
 			ShowTwoFactor                      bool                                        `json:"showTwoFactor"`
+			SlimChatErrorUi                    bool                                        `json:"slimChatErrorUi"`
 			Slug                               string                                      `json:"slug"`
 			Theme                              UpdateAgentSettings200Theme                 `json:"theme"`
 		}
@@ -37737,14 +37803,15 @@ func ParseGetAppearanceSettingsResponse(rsp *http.Response) (*GetAppearanceSetti
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
-			CustomFont    GetAppearanceSettings200CustomFont `json:"customFont"`
-			Favicon       *string                            `json:"favicon"`
-			FooterText    *string                            `json:"footerText"`
-			IconLogo      *string                            `json:"iconLogo"`
-			Logo          *string                            `json:"logo"`
-			LogoDark      *string                            `json:"logoDark"`
-			OgDescription *string                            `json:"ogDescription"`
-			Theme         GetAppearanceSettings200Theme      `json:"theme"`
+			CustomFont      GetAppearanceSettings200CustomFont `json:"customFont"`
+			Favicon         *string                            `json:"favicon"`
+			FooterText      *string                            `json:"footerText"`
+			IconLogo        *string                            `json:"iconLogo"`
+			Logo            *string                            `json:"logo"`
+			LogoDark        *string                            `json:"logoDark"`
+			OgDescription   *string                            `json:"ogDescription"`
+			SlimChatErrorUi bool                               `json:"slimChatErrorUi"`
+			Theme           GetAppearanceSettings200Theme      `json:"theme"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -37880,6 +37947,7 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 			RerankerChatApiKeyId               *openapi_types.UUID                              `json:"rerankerChatApiKeyId"`
 			RerankerModel                      *string                                          `json:"rerankerModel"`
 			ShowTwoFactor                      bool                                             `json:"showTwoFactor"`
+			SlimChatErrorUi                    bool                                             `json:"slimChatErrorUi"`
 			Slug                               string                                           `json:"slug"`
 			Theme                              UpdateAppearanceSettings200Theme                 `json:"theme"`
 		}
@@ -38017,6 +38085,7 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 			RerankerChatApiKeyId               *openapi_types.UUID                        `json:"rerankerChatApiKeyId"`
 			RerankerModel                      *string                                    `json:"rerankerModel"`
 			ShowTwoFactor                      bool                                       `json:"showTwoFactor"`
+			SlimChatErrorUi                    bool                                       `json:"slimChatErrorUi"`
 			Slug                               string                                     `json:"slug"`
 			Theme                              CompleteOnboarding200Theme                 `json:"theme"`
 		}
@@ -38154,6 +38223,7 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 			RerankerChatApiKeyId               *openapi_types.UUID                             `json:"rerankerChatApiKeyId"`
 			RerankerModel                      *string                                         `json:"rerankerModel"`
 			ShowTwoFactor                      bool                                            `json:"showTwoFactor"`
+			SlimChatErrorUi                    bool                                            `json:"slimChatErrorUi"`
 			Slug                               string                                          `json:"slug"`
 			Theme                              UpdateKnowledgeSettings200Theme                 `json:"theme"`
 		}
@@ -38291,6 +38361,7 @@ func ParseDropEmbeddingConfigResponse(rsp *http.Response) (*DropEmbeddingConfigR
 			RerankerChatApiKeyId               *openapi_types.UUID                         `json:"rerankerChatApiKeyId"`
 			RerankerModel                      *string                                     `json:"rerankerModel"`
 			ShowTwoFactor                      bool                                        `json:"showTwoFactor"`
+			SlimChatErrorUi                    bool                                        `json:"slimChatErrorUi"`
 			Slug                               string                                      `json:"slug"`
 			Theme                              DropEmbeddingConfig200Theme                 `json:"theme"`
 		}
@@ -38529,6 +38600,7 @@ func ParseUpdateLlmSettingsResponse(rsp *http.Response) (*UpdateLlmSettingsRespo
 			RerankerChatApiKeyId               *openapi_types.UUID                       `json:"rerankerChatApiKeyId"`
 			RerankerModel                      *string                                   `json:"rerankerModel"`
 			ShowTwoFactor                      bool                                      `json:"showTwoFactor"`
+			SlimChatErrorUi                    bool                                      `json:"slimChatErrorUi"`
 			Slug                               string                                    `json:"slug"`
 			Theme                              UpdateLlmSettings200Theme                 `json:"theme"`
 		}
@@ -38666,6 +38738,7 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 			RerankerChatApiKeyId               *openapi_types.UUID                       `json:"rerankerChatApiKeyId"`
 			RerankerModel                      *string                                   `json:"rerankerModel"`
 			ShowTwoFactor                      bool                                      `json:"showTwoFactor"`
+			SlimChatErrorUi                    bool                                      `json:"slimChatErrorUi"`
 			Slug                               string                                    `json:"slug"`
 			Theme                              UpdateMcpSettings200Theme                 `json:"theme"`
 		}
@@ -39317,6 +39390,7 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 			RerankerChatApiKeyId               *openapi_types.UUID                            `json:"rerankerChatApiKeyId"`
 			RerankerModel                      *string                                        `json:"rerankerModel"`
 			ShowTwoFactor                      bool                                           `json:"showTwoFactor"`
+			SlimChatErrorUi                    bool                                           `json:"slimChatErrorUi"`
 			Slug                               string                                         `json:"slug"`
 			Theme                              UpdateSecuritySettings200Theme                 `json:"theme"`
 		}

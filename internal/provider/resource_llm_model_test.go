@@ -27,7 +27,7 @@ func testAccGetFirstModelID(t *testing.T) string {
 		t.Skipf("Unable to create client: %s", err)
 	}
 
-	resp, err := c.GetModelsWithApiKeysWithResponse(context.Background())
+	resp, err := c.GetModelsWithApiKeysWithResponse(t.Context())
 	if err != nil || resp.JSON200 == nil || len(*resp.JSON200) == 0 {
 		t.Skip("No LLM models available in the backend — skipping LLM model test")
 	}

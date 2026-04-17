@@ -80,6 +80,7 @@ type EnterpriseManagedConfigModel struct {
 	ResponseFieldPath       types.String `tfsdk:"response_field_path"`
 	FallbackMode            types.String `tfsdk:"fallback_mode"`
 	CacheTtlSeconds         types.Int64  `tfsdk:"cache_ttl_seconds"`
+	AssertionMode           types.String `tfsdk:"assertion_mode"`
 }
 
 type LabelModel struct {
@@ -589,6 +590,10 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 					"response_field_path":  schema.StringAttribute{Optional: true},
 					"fallback_mode":        schema.StringAttribute{Optional: true},
 					"cache_ttl_seconds":    schema.Int64Attribute{Optional: true},
+					"assertion_mode": schema.StringAttribute{
+						Optional:            true,
+						MarkdownDescription: "Assertion exchange mode. One of `exchange`, `passthrough`.",
+					},
 				},
 			},
 		},
@@ -727,6 +732,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 	if data.EnterpriseManagedConfig != nil {
 		emc := data.EnterpriseManagedConfig
 		emcBody := struct {
+			AssertionMode           *client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 			Audience                *string                                                                                    `json:"audience,omitempty"`
 			BodyFieldName           *string                                                                                    `json:"bodyFieldName,omitempty"`
 			CacheTtlSeconds         *int                                                                                       `json:"cacheTtlSeconds,omitempty"`
@@ -743,6 +749,10 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 			Scopes                  *[]string                                                                                  `json:"scopes,omitempty"`
 			TokenInjectionMode      *client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMode      `json:"tokenInjectionMode,omitempty"`
 		}{}
+		if !emc.AssertionMode.IsNull() {
+			v := client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode(emc.AssertionMode.ValueString())
+			emcBody.AssertionMode = &v
+		}
 		if !emc.Audience.IsNull() {
 			v := emc.Audience.ValueString()
 			emcBody.Audience = &v
@@ -1258,6 +1268,11 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(_ context.Context, dat
 		} else {
 			model.TokenInjectionMode = types.StringNull()
 		}
+		if emc.AssertionMode != nil {
+			model.AssertionMode = types.StringValue(string(*emc.AssertionMode))
+		} else {
+			model.AssertionMode = types.StringNull()
+		}
 		if emc.FallbackMode != nil {
 			model.FallbackMode = types.StringValue(string(*emc.FallbackMode))
 		} else {
@@ -1740,6 +1755,7 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 	if data.EnterpriseManagedConfig != nil {
 		emc := data.EnterpriseManagedConfig
 		emcBody := struct {
+			AssertionMode           *client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 			Audience                *string                                                                                    `json:"audience,omitempty"`
 			BodyFieldName           *string                                                                                    `json:"bodyFieldName,omitempty"`
 			CacheTtlSeconds         *int                                                                                       `json:"cacheTtlSeconds,omitempty"`
@@ -1756,6 +1772,10 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 			Scopes                  *[]string                                                                                  `json:"scopes,omitempty"`
 			TokenInjectionMode      *client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMode      `json:"tokenInjectionMode,omitempty"`
 		}{}
+		if !emc.AssertionMode.IsNull() {
+			v := client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode(emc.AssertionMode.ValueString())
+			emcBody.AssertionMode = &v
+		}
 		if !emc.Audience.IsNull() {
 			v := emc.Audience.ValueString()
 			emcBody.Audience = &v
