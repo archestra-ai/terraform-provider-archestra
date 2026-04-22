@@ -139,6 +139,12 @@ func (r *ProfileToolResource) Create(ctx context.Context, req resource.CreateReq
 		body.CredentialResolutionMode = &mode
 	}
 
+	// Note: `resolveAtCallTime` is intentionally not exposed on this resource.
+	// It is request-body shorthand that the backend collapses into
+	// `credential_resolution_mode` ("dynamic" when true, "static" otherwise) —
+	// never stored, never echoed. Users wanting per-call resolution should
+	// set `credential_resolution_mode = "dynamic"` directly.
+
 	assignResp, err := r.client.AssignToolToAgentWithResponse(ctx, profileUUID, toolUUID, body)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to assign tool to profile, got error: %s", err))

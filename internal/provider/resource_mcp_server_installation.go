@@ -42,7 +42,7 @@ type MCPServerResourceModel struct {
 	ID                types.String `tfsdk:"id"`
 	Name              types.String `tfsdk:"name"`
 	DisplayName       types.String `tfsdk:"display_name"`
-	MCPServerID       types.String `tfsdk:"mcp_server_id"`
+	CatalogID         types.String `tfsdk:"catalog_id"`
 	TeamID            types.String `tfsdk:"team_id"`
 	EnvironmentValues types.Map    `tfsdk:"environment_values"`
 	UserConfigValues  types.Map    `tfsdk:"user_config_values"`
@@ -59,7 +59,11 @@ func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataR
 
 func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an Archestra MCP server installation.",
+		MarkdownDescription: "Manages an Archestra MCP server installation.\n\n" +
+			"~> **Note:** The `ownerId` and `userId` fields on the underlying API are derived " +
+			"from the authenticated caller and cannot be set declaratively. Any value sent in " +
+			"the request body is overwritten by the backend with the API key's user ID, so " +
+			"these fields are intentionally not exposed on this resource.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -83,9 +87,9 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"mcp_server_id": schema.StringAttribute{
-				MarkdownDescription: "The MCP server ID from the private MCP registry (archestra_mcp_registry_catalog_item resource)",
-				Optional:            true,
+			"catalog_id": schema.StringAttribute{
+				MarkdownDescription: "Catalog item ID (UUID of the `archestra_mcp_registry_catalog_item` resource) this installation is based on.",
+				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -183,14 +187,12 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		Name: data.Name.ValueString(),
 	}
 
-	if !data.MCPServerID.IsNull() {
-		mcpServerID, err := uuid.Parse(data.MCPServerID.ValueString())
-		if err != nil {
-			resp.Diagnostics.AddError("Invalid MCP Server ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
-			return
-		}
-		requestBody.CatalogId = mcpServerID
+	catalogUUID, catalogErr := uuid.Parse(data.CatalogID.ValueString())
+	if catalogErr != nil {
+		resp.Diagnostics.AddError("Invalid catalog_id", fmt.Sprintf("Unable to parse catalog_id as a UUID: %s", catalogErr))
+		return
 	}
+	requestBody.CatalogId = catalogUUID
 
 	if !data.TeamID.IsNull() && !data.TeamID.IsUnknown() {
 		teamId := data.TeamID.ValueString()
@@ -275,7 +277,7 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
-	data.MCPServerID = types.StringValue(apiResp.JSON200.CatalogId.String())
+	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
 
 	if apiResp.JSON200.TeamId != nil {
 		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
@@ -301,7 +303,7 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	// Parse UUID from state
 	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server installation ID: %s", err))
 		return
 	}
 
@@ -330,7 +332,7 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	// Map response to Terraform state
 	// Note: Keep user's configured name, set display_name to the API-returned name
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
-	data.MCPServerID = types.StringValue(apiResp.JSON200.CatalogId.String())
+	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
 
 	if apiResp.JSON200.TeamId != nil {
 		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
@@ -370,7 +372,7 @@ func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteReque
 	// Parse UUID from state
 	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server installation ID: %s", err))
 		return
 	}
 

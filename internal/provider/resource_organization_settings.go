@@ -53,6 +53,7 @@ type OrganizationSettingsResourceModel struct {
 	ChatLinks               types.List   `tfsdk:"chat_links"`
 	AnimateChatPlaceholders types.Bool   `tfsdk:"animate_chat_placeholders"`
 	ShowTwoFactor           types.Bool   `tfsdk:"show_two_factor"`
+	SlimChatErrorUI         types.Bool   `tfsdk:"slim_chat_error_ui"`
 
 	// Security settings
 	GlobalToolPolicy     types.String `tfsdk:"global_tool_policy"`
@@ -243,6 +244,11 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			},
 			"show_two_factor": schema.BoolAttribute{
 				MarkdownDescription: "Whether to show two-factor authentication options",
+				Optional:            true,
+				Computed:            true,
+			},
+			"slim_chat_error_ui": schema.BoolAttribute{
+				MarkdownDescription: "When enabled, renders a compact error UI in chat views.",
 				Optional:            true,
 				Computed:            true,
 			},
@@ -469,6 +475,10 @@ func (r *OrganizationSettingsResource) applySettings(ctx context.Context, data *
 	if !data.ShowTwoFactor.IsNull() && !data.ShowTwoFactor.IsUnknown() {
 		show := data.ShowTwoFactor.ValueBool()
 		appearanceBody.ShowTwoFactor = &show
+	}
+	if !data.SlimChatErrorUI.IsNull() && !data.SlimChatErrorUI.IsUnknown() {
+		v := data.SlimChatErrorUI.ValueBool()
+		appearanceBody.SlimChatErrorUi = &v
 	}
 
 	appearanceResp, err := r.client.UpdateAppearanceSettingsWithResponse(ctx, appearanceBody)
@@ -732,6 +742,7 @@ func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, dat
 	}
 	data.AnimateChatPlaceholders = types.BoolValue(apiResp.JSON200.AnimateChatPlaceholders)
 	data.ShowTwoFactor = types.BoolValue(apiResp.JSON200.ShowTwoFactor)
+	data.SlimChatErrorUI = types.BoolValue(apiResp.JSON200.SlimChatErrorUi)
 
 	// Security settings
 	data.GlobalToolPolicy = types.StringValue(string(apiResp.JSON200.GlobalToolPolicy))

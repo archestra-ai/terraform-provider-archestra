@@ -18,6 +18,24 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+// Defines values for UserConfigFieldType.
+const (
+	UserConfigFieldTypeBoolean   UserConfigFieldType = "boolean"
+	UserConfigFieldTypeDirectory UserConfigFieldType = "directory"
+	UserConfigFieldTypeFile      UserConfigFieldType = "file"
+	UserConfigFieldTypeNumber    UserConfigFieldType = "number"
+	UserConfigFieldTypeString    UserConfigFieldType = "string"
+)
+
+// Defines values for UserConfigFieldInputType.
+const (
+	UserConfigFieldInputTypeBoolean   UserConfigFieldInputType = "boolean"
+	UserConfigFieldInputTypeDirectory UserConfigFieldInputType = "directory"
+	UserConfigFieldInputTypeFile      UserConfigFieldInputType = "file"
+	UserConfigFieldInputTypeNumber    UserConfigFieldInputType = "number"
+	UserConfigFieldInputTypeString    UserConfigFieldInputType = "string"
+)
+
 // Defines values for GetAllAgentToolsParamsSortBy.
 const (
 	GetAllAgentToolsParamsSortByAgent     GetAllAgentToolsParamsSortBy = "agent"
@@ -229,11 +247,11 @@ const (
 	UpdateToolInvocationPolicyJSONBodyConditionsOperatorStartsWith  UpdateToolInvocationPolicyJSONBodyConditionsOperator = "startsWith"
 )
 
-// Defines values for CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType.
+// Defines values for CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy.
 const (
-	CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderTypeGenericOidc CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType = "generic_oidc"
-	CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderTypeKeycloak    CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType = "keycloak"
-	CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderTypeOkta        CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType = "okta"
+	CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyEntraObo    CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "entra_obo"
+	CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyOktaManaged CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "okta_managed"
+	CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyRfc8693     CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "rfc8693"
 )
 
 // Defines values for CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType.
@@ -257,11 +275,11 @@ const (
 	CreateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthenticationPrivateKeyJwt     CreateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication = "private_key_jwt"
 )
 
-// Defines values for UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType.
+// Defines values for UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy.
 const (
-	UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderTypeGenericOidc UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType = "generic_oidc"
-	UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderTypeKeycloak    UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType = "keycloak"
-	UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderTypeOkta        UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType = "okta"
+	UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyEntraObo    UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "entra_obo"
+	UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyOktaManaged UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "okta_managed"
+	UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyRfc8693     UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "rfc8693"
 )
 
 // Defines values for UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType.
@@ -355,6 +373,12 @@ const (
 	CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportTypeStreamableHttp CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType = "streamable-http"
 )
 
+// Defines values for CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType.
+const (
+	CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantTypeAuthorizationCode CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType = "authorization_code"
+	CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantTypeClientCredentials CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType = "client_credentials"
+)
+
 // Defines values for CreateInternalMcpCatalogItemJSONBodyScope.
 const (
 	CreateInternalMcpCatalogItemJSONBodyScopeOrg      CreateInternalMcpCatalogItemJSONBodyScope = "org"
@@ -367,15 +391,6 @@ const (
 	CreateInternalMcpCatalogItemJSONBodyServerTypeBuiltin CreateInternalMcpCatalogItemJSONBodyServerType = "builtin"
 	CreateInternalMcpCatalogItemJSONBodyServerTypeLocal   CreateInternalMcpCatalogItemJSONBodyServerType = "local"
 	CreateInternalMcpCatalogItemJSONBodyServerTypeRemote  CreateInternalMcpCatalogItemJSONBodyServerType = "remote"
-)
-
-// Defines values for CreateInternalMcpCatalogItemJSONBodyUserConfigType.
-const (
-	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeBoolean   CreateInternalMcpCatalogItemJSONBodyUserConfigType = "boolean"
-	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeDirectory CreateInternalMcpCatalogItemJSONBodyUserConfigType = "directory"
-	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeFile      CreateInternalMcpCatalogItemJSONBodyUserConfigType = "file"
-	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeNumber    CreateInternalMcpCatalogItemJSONBodyUserConfigType = "number"
-	CreateInternalMcpCatalogItemJSONBodyUserConfigTypeString    CreateInternalMcpCatalogItemJSONBodyUserConfigType = "string"
 )
 
 // Defines values for UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode.
@@ -448,6 +463,12 @@ const (
 	UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportTypeStreamableHttp UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType = "streamable-http"
 )
 
+// Defines values for UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType.
+const (
+	UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantTypeAuthorizationCode UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType = "authorization_code"
+	UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantTypeClientCredentials UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType = "client_credentials"
+)
+
 // Defines values for UpdateInternalMcpCatalogItemJSONBodyScope.
 const (
 	UpdateInternalMcpCatalogItemJSONBodyScopeOrg      UpdateInternalMcpCatalogItemJSONBodyScope = "org"
@@ -460,15 +481,6 @@ const (
 	UpdateInternalMcpCatalogItemJSONBodyServerTypeBuiltin UpdateInternalMcpCatalogItemJSONBodyServerType = "builtin"
 	UpdateInternalMcpCatalogItemJSONBodyServerTypeLocal   UpdateInternalMcpCatalogItemJSONBodyServerType = "local"
 	UpdateInternalMcpCatalogItemJSONBodyServerTypeRemote  UpdateInternalMcpCatalogItemJSONBodyServerType = "remote"
-)
-
-// Defines values for UpdateInternalMcpCatalogItemJSONBodyUserConfigType.
-const (
-	UpdateInternalMcpCatalogItemJSONBodyUserConfigTypeBoolean   UpdateInternalMcpCatalogItemJSONBodyUserConfigType = "boolean"
-	UpdateInternalMcpCatalogItemJSONBodyUserConfigTypeDirectory UpdateInternalMcpCatalogItemJSONBodyUserConfigType = "directory"
-	UpdateInternalMcpCatalogItemJSONBodyUserConfigTypeFile      UpdateInternalMcpCatalogItemJSONBodyUserConfigType = "file"
-	UpdateInternalMcpCatalogItemJSONBodyUserConfigTypeNumber    UpdateInternalMcpCatalogItemJSONBodyUserConfigType = "number"
-	UpdateInternalMcpCatalogItemJSONBodyUserConfigTypeString    UpdateInternalMcpCatalogItemJSONBodyUserConfigType = "string"
 )
 
 // Defines values for GetLimitsParamsEntityType.
@@ -677,6 +689,12 @@ const (
 	GetMcpServerInstallationRequestsParamsStatusPending  GetMcpServerInstallationRequestsParamsStatus = "pending"
 )
 
+// Defines values for CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType.
+const (
+	CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantTypeAuthorizationCode CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType = "authorization_code"
+	CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantTypeClientCredentials CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType = "client_credentials"
+)
+
 // Defines values for CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type.
 const (
 	CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0TypeRemote CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type = "remote"
@@ -720,6 +738,12 @@ const (
 // Defines values for CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type.
 const (
 	CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1TypeLocal CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1Type = "local"
+)
+
+// Defines values for UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType.
+const (
+	UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantTypeAuthorizationCode UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType = "authorization_code"
+	UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantTypeClientCredentials UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType = "client_credentials"
 )
 
 // Defines values for UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type.
@@ -989,6 +1013,76 @@ const (
 	UpdateTrustedDataPolicyJSONBodyConditionsOperatorRegex       UpdateTrustedDataPolicyJSONBodyConditionsOperator = "regex"
 	UpdateTrustedDataPolicyJSONBodyConditionsOperatorStartsWith  UpdateTrustedDataPolicyJSONBodyConditionsOperator = "startsWith"
 )
+
+// UserConfigField defines model for UserConfigField.
+type UserConfigField struct {
+	Default              *UserConfigFieldDefault `json:"default,omitempty"`
+	Description          string                  `json:"description"`
+	HeaderName           *string                 `json:"headerName,omitempty"`
+	Max                  *float32                `json:"max,omitempty"`
+	Min                  *float32                `json:"min,omitempty"`
+	Multiple             *bool                   `json:"multiple,omitempty"`
+	PromptOnInstallation *bool                   `json:"promptOnInstallation,omitempty"`
+	Required             *bool                   `json:"required,omitempty"`
+	Sensitive            *bool                   `json:"sensitive,omitempty"`
+	Title                string                  `json:"title"`
+	Type                 UserConfigFieldType     `json:"type"`
+}
+
+// UserConfigFieldType defines model for UserConfigField.Type.
+type UserConfigFieldType string
+
+// UserConfigFieldDefault defines model for UserConfigFieldDefault.
+type UserConfigFieldDefault struct {
+	union json.RawMessage
+}
+
+// UserConfigFieldDefault0 defines model for .
+type UserConfigFieldDefault0 = string
+
+// UserConfigFieldDefault1 defines model for .
+type UserConfigFieldDefault1 = float32
+
+// UserConfigFieldDefault2 defines model for .
+type UserConfigFieldDefault2 = bool
+
+// UserConfigFieldDefault3 defines model for .
+type UserConfigFieldDefault3 = []string
+
+// UserConfigFieldDefaultInput defines model for UserConfigFieldDefaultInput.
+type UserConfigFieldDefaultInput struct {
+	union json.RawMessage
+}
+
+// UserConfigFieldDefaultInput0 defines model for .
+type UserConfigFieldDefaultInput0 = string
+
+// UserConfigFieldDefaultInput1 defines model for .
+type UserConfigFieldDefaultInput1 = float32
+
+// UserConfigFieldDefaultInput2 defines model for .
+type UserConfigFieldDefaultInput2 = bool
+
+// UserConfigFieldDefaultInput3 defines model for .
+type UserConfigFieldDefaultInput3 = []string
+
+// UserConfigFieldInput defines model for UserConfigFieldInput.
+type UserConfigFieldInput struct {
+	Default              *UserConfigFieldDefaultInput `json:"default,omitempty"`
+	Description          string                       `json:"description"`
+	HeaderName           *string                      `json:"headerName,omitempty"`
+	Max                  *float32                     `json:"max,omitempty"`
+	Min                  *float32                     `json:"min,omitempty"`
+	Multiple             *bool                        `json:"multiple,omitempty"`
+	PromptOnInstallation *bool                        `json:"promptOnInstallation,omitempty"`
+	Required             *bool                        `json:"required,omitempty"`
+	Sensitive            *bool                        `json:"sensitive,omitempty"`
+	Title                string                       `json:"title"`
+	Type                 UserConfigFieldInputType     `json:"type"`
+}
+
+// UserConfigFieldInputType defines model for UserConfigFieldInput.Type.
+type UserConfigFieldInputType string
 
 // GetAllAgentToolsParams defines parameters for GetAllAgentTools.
 type GetAllAgentToolsParams struct {
@@ -1342,9 +1436,9 @@ type CreateIdentityProviderJSONBody struct {
 			ClientAssertionAudience     *string                                                                                          `json:"clientAssertionAudience,omitempty"`
 			ClientId                    *string                                                                                          `json:"clientId,omitempty"`
 			ClientSecret                *string                                                                                          `json:"clientSecret,omitempty"`
+			ExchangeStrategy            *CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 			PrivateKeyId                *string                                                                                          `json:"privateKeyId,omitempty"`
 			PrivateKeyPem               *string                                                                                          `json:"privateKeyPem,omitempty"`
-			ProviderType                *CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 			SubjectTokenType            *CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 			TokenEndpoint               *string                                                                                          `json:"tokenEndpoint,omitempty"`
 			TokenEndpointAuthentication *CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -1440,8 +1534,8 @@ type CreateIdentityProviderJSONBody struct {
 	UserId *string `json:"userId"`
 }
 
-// CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType defines parameters for CreateIdentityProvider.
-type CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType string
+// CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy defines parameters for CreateIdentityProvider.
+type CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy string
 
 // CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType defines parameters for CreateIdentityProvider.
 type CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType string
@@ -1469,9 +1563,9 @@ type UpdateIdentityProviderJSONBody struct {
 			ClientAssertionAudience     *string                                                                                          `json:"clientAssertionAudience,omitempty"`
 			ClientId                    *string                                                                                          `json:"clientId,omitempty"`
 			ClientSecret                *string                                                                                          `json:"clientSecret,omitempty"`
+			ExchangeStrategy            *UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 			PrivateKeyId                *string                                                                                          `json:"privateKeyId,omitempty"`
 			PrivateKeyPem               *string                                                                                          `json:"privateKeyPem,omitempty"`
-			ProviderType                *UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 			SubjectTokenType            *UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 			TokenEndpoint               *string                                                                                          `json:"tokenEndpoint,omitempty"`
 			TokenEndpointAuthentication *UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -1566,8 +1660,8 @@ type UpdateIdentityProviderJSONBody struct {
 	} `json:"teamSyncConfig,omitempty"`
 }
 
-// UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType defines parameters for UpdateIdentityProvider.
-type UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType string
+// UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy defines parameters for UpdateIdentityProvider.
+type UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy string
 
 // UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType defines parameters for UpdateIdentityProvider.
 type UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType string
@@ -1651,27 +1745,29 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 	OauthClientSecretVaultKey  *string             `json:"oauthClientSecretVaultKey,omitempty"`
 	OauthClientSecretVaultPath *string             `json:"oauthClientSecretVaultPath,omitempty"`
 	OauthConfig                *struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                   `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                   `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                   `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                   `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                     `json:"browser_auth,omitempty"`
+		ClientId                 string                                                    `json:"client_id"`
+		ClientSecret             *string                                                   `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                  `json:"default_scopes"`
+		Description              *string                                                   `json:"description,omitempty"`
+		GenericOauth             *bool                                                     `json:"generic_oauth,omitempty"`
+		GrantType                *CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                    `json:"name"`
+		ProviderName             *string                                                   `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                  `json:"redirect_uris"`
+		RequiresProxy            *bool                                                     `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                   `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                  `json:"scopes"`
+		ServerUrl                string                                                    `json:"server_url"`
+		StreamableHttpPort       *float32                                                  `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                   `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                      `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                   `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                   `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig"`
 	Repository   *string                                        `json:"repository"`
 	RequiresAuth *bool                                          `json:"requiresAuth,omitempty"`
@@ -1679,20 +1775,8 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 	ServerType   CreateInternalMcpCatalogItemJSONBodyServerType `json:"serverType"`
 	ServerUrl    *string                                        `json:"serverUrl"`
 	Teams        *[]string                                      `json:"teams,omitempty"`
-	UserConfig   *map[string]struct {
-		Default              *CreateInternalMcpCatalogItemJSONBody_UserConfig_Default `json:"default,omitempty"`
-		Description          string                                                   `json:"description"`
-		HeaderName           *string                                                  `json:"headerName,omitempty"`
-		Max                  *float32                                                 `json:"max,omitempty"`
-		Min                  *float32                                                 `json:"min,omitempty"`
-		Multiple             *bool                                                    `json:"multiple,omitempty"`
-		PromptOnInstallation *bool                                                    `json:"promptOnInstallation,omitempty"`
-		Required             *bool                                                    `json:"required,omitempty"`
-		Sensitive            *bool                                                    `json:"sensitive,omitempty"`
-		Title                string                                                   `json:"title"`
-		Type                 CreateInternalMcpCatalogItemJSONBodyUserConfigType       `json:"type"`
-	} `json:"userConfig"`
-	Version *string `json:"version"`
+	UserConfig   *map[string]UserConfigFieldInput               `json:"userConfig"`
+	Version      *string                                        `json:"version"`
 }
 
 // CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode defines parameters for CreateInternalMcpCatalogItem.
@@ -1759,31 +1843,14 @@ type CreateInternalMcpCatalogItemJSONBody_LocalConfig_ImagePullSecrets_Item stru
 // CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType string
 
+// CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType defines parameters for CreateInternalMcpCatalogItem.
+type CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType string
+
 // CreateInternalMcpCatalogItemJSONBodyScope defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBodyScope string
 
 // CreateInternalMcpCatalogItemJSONBodyServerType defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBodyServerType string
-
-// CreateInternalMcpCatalogItemJSONBodyUserConfigDefault0 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyUserConfigDefault0 = string
-
-// CreateInternalMcpCatalogItemJSONBodyUserConfigDefault1 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyUserConfigDefault1 = float32
-
-// CreateInternalMcpCatalogItemJSONBodyUserConfigDefault2 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyUserConfigDefault2 = bool
-
-// CreateInternalMcpCatalogItemJSONBodyUserConfigDefault3 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyUserConfigDefault3 = []string
-
-// CreateInternalMcpCatalogItemJSONBody_UserConfig_Default defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBody_UserConfig_Default struct {
-	union json.RawMessage
-}
-
-// CreateInternalMcpCatalogItemJSONBodyUserConfigType defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyUserConfigType string
 
 // GetInternalMcpCatalogLabelValuesParams defines parameters for GetInternalMcpCatalogLabelValues.
 type GetInternalMcpCatalogLabelValuesParams struct {
@@ -1868,27 +1935,29 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 	OauthClientSecretVaultKey  *string             `json:"oauthClientSecretVaultKey,omitempty"`
 	OauthClientSecretVaultPath *string             `json:"oauthClientSecretVaultPath,omitempty"`
 	OauthConfig                *struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                   `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                   `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                   `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                   `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                     `json:"browser_auth,omitempty"`
+		ClientId                 string                                                    `json:"client_id"`
+		ClientSecret             *string                                                   `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                  `json:"default_scopes"`
+		Description              *string                                                   `json:"description,omitempty"`
+		GenericOauth             *bool                                                     `json:"generic_oauth,omitempty"`
+		GrantType                *UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                    `json:"name"`
+		ProviderName             *string                                                   `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                  `json:"redirect_uris"`
+		RequiresProxy            *bool                                                     `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                   `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                  `json:"scopes"`
+		ServerUrl                string                                                    `json:"server_url"`
+		StreamableHttpPort       *float32                                                  `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                   `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                      `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                   `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                   `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig"`
 	Repository   *string                                         `json:"repository"`
 	RequiresAuth *bool                                           `json:"requiresAuth,omitempty"`
@@ -1896,20 +1965,8 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 	ServerType   *UpdateInternalMcpCatalogItemJSONBodyServerType `json:"serverType,omitempty"`
 	ServerUrl    *string                                         `json:"serverUrl"`
 	Teams        *[]string                                       `json:"teams,omitempty"`
-	UserConfig   *map[string]struct {
-		Default              *UpdateInternalMcpCatalogItemJSONBody_UserConfig_Default `json:"default,omitempty"`
-		Description          string                                                   `json:"description"`
-		HeaderName           *string                                                  `json:"headerName,omitempty"`
-		Max                  *float32                                                 `json:"max,omitempty"`
-		Min                  *float32                                                 `json:"min,omitempty"`
-		Multiple             *bool                                                    `json:"multiple,omitempty"`
-		PromptOnInstallation *bool                                                    `json:"promptOnInstallation,omitempty"`
-		Required             *bool                                                    `json:"required,omitempty"`
-		Sensitive            *bool                                                    `json:"sensitive,omitempty"`
-		Title                string                                                   `json:"title"`
-		Type                 UpdateInternalMcpCatalogItemJSONBodyUserConfigType       `json:"type"`
-	} `json:"userConfig"`
-	Version *string `json:"version"`
+	UserConfig   *map[string]UserConfigFieldInput                `json:"userConfig"`
+	Version      *string                                         `json:"version"`
 }
 
 // UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode defines parameters for UpdateInternalMcpCatalogItem.
@@ -1976,31 +2033,14 @@ type UpdateInternalMcpCatalogItemJSONBody_LocalConfig_ImagePullSecrets_Item stru
 // UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType string
 
+// UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType defines parameters for UpdateInternalMcpCatalogItem.
+type UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType string
+
 // UpdateInternalMcpCatalogItemJSONBodyScope defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBodyScope string
 
 // UpdateInternalMcpCatalogItemJSONBodyServerType defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBodyServerType string
-
-// UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault0 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault0 = string
-
-// UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault1 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault1 = float32
-
-// UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault2 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault2 = bool
-
-// UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault3 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyUserConfigDefault3 = []string
-
-// UpdateInternalMcpCatalogItemJSONBody_UserConfig_Default defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBody_UserConfig_Default struct {
-	union json.RawMessage
-}
-
-// UpdateInternalMcpCatalogItemJSONBodyUserConfigType defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyUserConfigType string
 
 // GetLimitsParams defines parameters for GetLimits.
 type GetLimitsParams struct {
@@ -2229,27 +2269,29 @@ type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0 struct {
 	Label       string  `json:"label"`
 	Name        string  `json:"name"`
 	OauthConfig *struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                                            `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                                            `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                                            `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                                            `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                                              `json:"browser_auth,omitempty"`
+		ClientId                 string                                                                             `json:"client_id"`
+		ClientSecret             *string                                                                            `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                                           `json:"default_scopes"`
+		Description              *string                                                                            `json:"description,omitempty"`
+		GenericOauth             *bool                                                                              `json:"generic_oauth,omitempty"`
+		GrantType                *CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                                             `json:"name"`
+		ProviderName             *string                                                                            `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                                           `json:"redirect_uris"`
+		RequiresProxy            *bool                                                                              `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                                            `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                                           `json:"scopes"`
+		ServerUrl                string                                                                             `json:"server_url"`
+		StreamableHttpPort       *float32                                                                           `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                                            `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                                               `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                                            `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                                            `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig,omitempty"`
 	ServerType string                                                            `json:"serverType"`
 	ServerUrl  *string                                                           `json:"serverUrl,omitempty"`
@@ -2257,6 +2299,9 @@ type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0 struct {
 	UserConfig *map[string]interface{}                                           `json:"userConfig,omitempty"`
 	Version    *string                                                           `json:"version,omitempty"`
 }
+
+// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType defines parameters for CreateMcpServerInstallationRequest.
+type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType string
 
 // CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type defines parameters for CreateMcpServerInstallationRequest.
 type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type string
@@ -2379,27 +2424,29 @@ type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0 struct {
 	Label       string  `json:"label"`
 	Name        string  `json:"name"`
 	OauthConfig *struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                                            `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                                            `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                                            `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                                            `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                                              `json:"browser_auth,omitempty"`
+		ClientId                 string                                                                             `json:"client_id"`
+		ClientSecret             *string                                                                            `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                                           `json:"default_scopes"`
+		Description              *string                                                                            `json:"description,omitempty"`
+		GenericOauth             *bool                                                                              `json:"generic_oauth,omitempty"`
+		GrantType                *UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                                             `json:"name"`
+		ProviderName             *string                                                                            `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                                           `json:"redirect_uris"`
+		RequiresProxy            *bool                                                                              `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                                            `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                                           `json:"scopes"`
+		ServerUrl                string                                                                             `json:"server_url"`
+		StreamableHttpPort       *float32                                                                           `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                                            `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                                               `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                                            `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                                            `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig,omitempty"`
 	ServerType string                                                            `json:"serverType"`
 	ServerUrl  *string                                                           `json:"serverUrl,omitempty"`
@@ -2407,6 +2454,9 @@ type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0 struct {
 	UserConfig *map[string]interface{}                                           `json:"userConfig,omitempty"`
 	Version    *string                                                           `json:"version,omitempty"`
 }
+
+// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType defines parameters for UpdateMcpServerInstallationRequest.
+type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0OauthConfigGrantType string
 
 // UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type defines parameters for UpdateMcpServerInstallationRequest.
 type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig0Type string
@@ -2979,6 +3029,234 @@ type BulkUpsertDefaultResultPolicyJSONRequestBody BulkUpsertDefaultResultPolicyJ
 
 // UpdateTrustedDataPolicyJSONRequestBody defines body for UpdateTrustedDataPolicy for application/json ContentType.
 type UpdateTrustedDataPolicyJSONRequestBody UpdateTrustedDataPolicyJSONBody
+
+// AsUserConfigFieldDefault0 returns the union data inside the UserConfigFieldDefault as a UserConfigFieldDefault0
+func (t UserConfigFieldDefault) AsUserConfigFieldDefault0() (UserConfigFieldDefault0, error) {
+	var body UserConfigFieldDefault0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUserConfigFieldDefault0 overwrites any union data inside the UserConfigFieldDefault as the provided UserConfigFieldDefault0
+func (t *UserConfigFieldDefault) FromUserConfigFieldDefault0(v UserConfigFieldDefault0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUserConfigFieldDefault0 performs a merge with any union data inside the UserConfigFieldDefault, using the provided UserConfigFieldDefault0
+func (t *UserConfigFieldDefault) MergeUserConfigFieldDefault0(v UserConfigFieldDefault0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsUserConfigFieldDefault1 returns the union data inside the UserConfigFieldDefault as a UserConfigFieldDefault1
+func (t UserConfigFieldDefault) AsUserConfigFieldDefault1() (UserConfigFieldDefault1, error) {
+	var body UserConfigFieldDefault1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUserConfigFieldDefault1 overwrites any union data inside the UserConfigFieldDefault as the provided UserConfigFieldDefault1
+func (t *UserConfigFieldDefault) FromUserConfigFieldDefault1(v UserConfigFieldDefault1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUserConfigFieldDefault1 performs a merge with any union data inside the UserConfigFieldDefault, using the provided UserConfigFieldDefault1
+func (t *UserConfigFieldDefault) MergeUserConfigFieldDefault1(v UserConfigFieldDefault1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsUserConfigFieldDefault2 returns the union data inside the UserConfigFieldDefault as a UserConfigFieldDefault2
+func (t UserConfigFieldDefault) AsUserConfigFieldDefault2() (UserConfigFieldDefault2, error) {
+	var body UserConfigFieldDefault2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUserConfigFieldDefault2 overwrites any union data inside the UserConfigFieldDefault as the provided UserConfigFieldDefault2
+func (t *UserConfigFieldDefault) FromUserConfigFieldDefault2(v UserConfigFieldDefault2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUserConfigFieldDefault2 performs a merge with any union data inside the UserConfigFieldDefault, using the provided UserConfigFieldDefault2
+func (t *UserConfigFieldDefault) MergeUserConfigFieldDefault2(v UserConfigFieldDefault2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsUserConfigFieldDefault3 returns the union data inside the UserConfigFieldDefault as a UserConfigFieldDefault3
+func (t UserConfigFieldDefault) AsUserConfigFieldDefault3() (UserConfigFieldDefault3, error) {
+	var body UserConfigFieldDefault3
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUserConfigFieldDefault3 overwrites any union data inside the UserConfigFieldDefault as the provided UserConfigFieldDefault3
+func (t *UserConfigFieldDefault) FromUserConfigFieldDefault3(v UserConfigFieldDefault3) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUserConfigFieldDefault3 performs a merge with any union data inside the UserConfigFieldDefault, using the provided UserConfigFieldDefault3
+func (t *UserConfigFieldDefault) MergeUserConfigFieldDefault3(v UserConfigFieldDefault3) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t UserConfigFieldDefault) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *UserConfigFieldDefault) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsUserConfigFieldDefaultInput0 returns the union data inside the UserConfigFieldDefaultInput as a UserConfigFieldDefaultInput0
+func (t UserConfigFieldDefaultInput) AsUserConfigFieldDefaultInput0() (UserConfigFieldDefaultInput0, error) {
+	var body UserConfigFieldDefaultInput0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUserConfigFieldDefaultInput0 overwrites any union data inside the UserConfigFieldDefaultInput as the provided UserConfigFieldDefaultInput0
+func (t *UserConfigFieldDefaultInput) FromUserConfigFieldDefaultInput0(v UserConfigFieldDefaultInput0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUserConfigFieldDefaultInput0 performs a merge with any union data inside the UserConfigFieldDefaultInput, using the provided UserConfigFieldDefaultInput0
+func (t *UserConfigFieldDefaultInput) MergeUserConfigFieldDefaultInput0(v UserConfigFieldDefaultInput0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsUserConfigFieldDefaultInput1 returns the union data inside the UserConfigFieldDefaultInput as a UserConfigFieldDefaultInput1
+func (t UserConfigFieldDefaultInput) AsUserConfigFieldDefaultInput1() (UserConfigFieldDefaultInput1, error) {
+	var body UserConfigFieldDefaultInput1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUserConfigFieldDefaultInput1 overwrites any union data inside the UserConfigFieldDefaultInput as the provided UserConfigFieldDefaultInput1
+func (t *UserConfigFieldDefaultInput) FromUserConfigFieldDefaultInput1(v UserConfigFieldDefaultInput1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUserConfigFieldDefaultInput1 performs a merge with any union data inside the UserConfigFieldDefaultInput, using the provided UserConfigFieldDefaultInput1
+func (t *UserConfigFieldDefaultInput) MergeUserConfigFieldDefaultInput1(v UserConfigFieldDefaultInput1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsUserConfigFieldDefaultInput2 returns the union data inside the UserConfigFieldDefaultInput as a UserConfigFieldDefaultInput2
+func (t UserConfigFieldDefaultInput) AsUserConfigFieldDefaultInput2() (UserConfigFieldDefaultInput2, error) {
+	var body UserConfigFieldDefaultInput2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUserConfigFieldDefaultInput2 overwrites any union data inside the UserConfigFieldDefaultInput as the provided UserConfigFieldDefaultInput2
+func (t *UserConfigFieldDefaultInput) FromUserConfigFieldDefaultInput2(v UserConfigFieldDefaultInput2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUserConfigFieldDefaultInput2 performs a merge with any union data inside the UserConfigFieldDefaultInput, using the provided UserConfigFieldDefaultInput2
+func (t *UserConfigFieldDefaultInput) MergeUserConfigFieldDefaultInput2(v UserConfigFieldDefaultInput2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsUserConfigFieldDefaultInput3 returns the union data inside the UserConfigFieldDefaultInput as a UserConfigFieldDefaultInput3
+func (t UserConfigFieldDefaultInput) AsUserConfigFieldDefaultInput3() (UserConfigFieldDefaultInput3, error) {
+	var body UserConfigFieldDefaultInput3
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromUserConfigFieldDefaultInput3 overwrites any union data inside the UserConfigFieldDefaultInput as the provided UserConfigFieldDefaultInput3
+func (t *UserConfigFieldDefaultInput) FromUserConfigFieldDefaultInput3(v UserConfigFieldDefaultInput3) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeUserConfigFieldDefaultInput3 performs a merge with any union data inside the UserConfigFieldDefaultInput, using the provided UserConfigFieldDefaultInput3
+func (t *UserConfigFieldDefaultInput) MergeUserConfigFieldDefaultInput3(v UserConfigFieldDefaultInput3) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t UserConfigFieldDefaultInput) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *UserConfigFieldDefaultInput) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -15061,9 +15339,9 @@ type GetIdentityProvidersResponse struct {
 				ClientAssertionAudience     *string                                                                                   `json:"clientAssertionAudience,omitempty"`
 				ClientId                    *string                                                                                   `json:"clientId,omitempty"`
 				ClientSecret                *string                                                                                   `json:"clientSecret,omitempty"`
+				ExchangeStrategy            *GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 				PrivateKeyId                *string                                                                                   `json:"privateKeyId,omitempty"`
 				PrivateKeyPem               *string                                                                                   `json:"privateKeyPem,omitempty"`
-				ProviderType                *GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 				SubjectTokenType            *GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 				TokenEndpoint               *string                                                                                   `json:"tokenEndpoint,omitempty"`
 				TokenEndpointAuthentication *GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -15196,7 +15474,7 @@ type GetIdentityProvidersResponse struct {
 		} `json:"error"`
 	}
 }
-type GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsProviderType string
+type GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsExchangeStrategy string
 type GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsSubjectTokenType string
 type GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication string
 type GetIdentityProviders200OidcConfigTokenEndpointAuthentication string
@@ -15243,9 +15521,9 @@ type CreateIdentityProviderResponse struct {
 				ClientAssertionAudience     *string                                                                                     `json:"clientAssertionAudience,omitempty"`
 				ClientId                    *string                                                                                     `json:"clientId,omitempty"`
 				ClientSecret                *string                                                                                     `json:"clientSecret,omitempty"`
+				ExchangeStrategy            *CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 				PrivateKeyId                *string                                                                                     `json:"privateKeyId,omitempty"`
 				PrivateKeyPem               *string                                                                                     `json:"privateKeyPem,omitempty"`
-				ProviderType                *CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 				SubjectTokenType            *CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 				TokenEndpoint               *string                                                                                     `json:"tokenEndpoint,omitempty"`
 				TokenEndpointAuthentication *CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -15378,7 +15656,7 @@ type CreateIdentityProviderResponse struct {
 		} `json:"error"`
 	}
 }
-type CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsProviderType string
+type CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsExchangeStrategy string
 type CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsSubjectTokenType string
 type CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication string
 type CreateIdentityProvider200OidcConfigTokenEndpointAuthentication string
@@ -15624,9 +15902,9 @@ type GetIdentityProviderResponse struct {
 				ClientAssertionAudience     *string                                                                                  `json:"clientAssertionAudience,omitempty"`
 				ClientId                    *string                                                                                  `json:"clientId,omitempty"`
 				ClientSecret                *string                                                                                  `json:"clientSecret,omitempty"`
+				ExchangeStrategy            *GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 				PrivateKeyId                *string                                                                                  `json:"privateKeyId,omitempty"`
 				PrivateKeyPem               *string                                                                                  `json:"privateKeyPem,omitempty"`
-				ProviderType                *GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 				SubjectTokenType            *GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 				TokenEndpoint               *string                                                                                  `json:"tokenEndpoint,omitempty"`
 				TokenEndpointAuthentication *GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -15759,7 +16037,7 @@ type GetIdentityProviderResponse struct {
 		} `json:"error"`
 	}
 }
-type GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsProviderType string
+type GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsExchangeStrategy string
 type GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsSubjectTokenType string
 type GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication string
 type GetIdentityProvider200OidcConfigTokenEndpointAuthentication string
@@ -15806,9 +16084,9 @@ type UpdateIdentityProviderResponse struct {
 				ClientAssertionAudience     *string                                                                                     `json:"clientAssertionAudience,omitempty"`
 				ClientId                    *string                                                                                     `json:"clientId,omitempty"`
 				ClientSecret                *string                                                                                     `json:"clientSecret,omitempty"`
+				ExchangeStrategy            *UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 				PrivateKeyId                *string                                                                                     `json:"privateKeyId,omitempty"`
 				PrivateKeyPem               *string                                                                                     `json:"privateKeyPem,omitempty"`
-				ProviderType                *UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 				SubjectTokenType            *UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 				TokenEndpoint               *string                                                                                     `json:"tokenEndpoint,omitempty"`
 				TokenEndpointAuthentication *UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -15941,7 +16219,7 @@ type UpdateIdentityProviderResponse struct {
 		} `json:"error"`
 	}
 }
-type UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsProviderType string
+type UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsExchangeStrategy string
 type UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsSubjectTokenType string
 type UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication string
 type UpdateIdentityProvider200OidcConfigTokenEndpointAuthentication string
@@ -16042,27 +16320,29 @@ type GetInternalMcpCatalogResponse struct {
 		LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 		Name                string              `json:"name"`
 		OauthConfig         *struct {
-			AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-			AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-			AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-			BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-			ClientId                 string   `json:"client_id"`
-			ClientSecret             *string  `json:"client_secret,omitempty"`
-			DefaultScopes            []string `json:"default_scopes"`
-			Description              *string  `json:"description,omitempty"`
-			GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-			Name                     string   `json:"name"`
-			ProviderName             *string  `json:"provider_name,omitempty"`
-			RedirectUris             []string `json:"redirect_uris"`
-			RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-			ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-			Scopes                   []string `json:"scopes"`
-			ServerUrl                string   `json:"server_url"`
-			StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-			StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-			SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-			TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-			WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+			AccessTokenEnvVar        *string                                       `json:"access_token_env_var,omitempty"`
+			Audience                 *string                                       `json:"audience,omitempty"`
+			AuthServerUrl            *string                                       `json:"auth_server_url,omitempty"`
+			AuthorizationEndpoint    *string                                       `json:"authorization_endpoint,omitempty"`
+			BrowserAuth              *bool                                         `json:"browser_auth,omitempty"`
+			ClientId                 string                                        `json:"client_id"`
+			ClientSecret             *string                                       `json:"client_secret,omitempty"`
+			DefaultScopes            []string                                      `json:"default_scopes"`
+			Description              *string                                       `json:"description,omitempty"`
+			GenericOauth             *bool                                         `json:"generic_oauth,omitempty"`
+			GrantType                *GetInternalMcpCatalog200OauthConfigGrantType `json:"grant_type,omitempty"`
+			Name                     string                                        `json:"name"`
+			ProviderName             *string                                       `json:"provider_name,omitempty"`
+			RedirectUris             []string                                      `json:"redirect_uris"`
+			RequiresProxy            *bool                                         `json:"requires_proxy,omitempty"`
+			ResourceMetadataUrl      *string                                       `json:"resource_metadata_url,omitempty"`
+			Scopes                   []string                                      `json:"scopes"`
+			ServerUrl                string                                        `json:"server_url"`
+			StreamableHttpPort       *float32                                      `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl        *string                                       `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata bool                                          `json:"supports_resource_metadata"`
+			TokenEndpoint            *string                                       `json:"token_endpoint,omitempty"`
+			WellKnownUrl             *string                                       `json:"well_known_url,omitempty"`
 		} `json:"oauthConfig"`
 		OrganizationId *string                            `json:"organizationId"`
 		Repository     *string                            `json:"repository"`
@@ -16074,21 +16354,9 @@ type GetInternalMcpCatalogResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"teams"`
-		UpdatedAt  time.Time `json:"updatedAt"`
-		UserConfig *map[string]struct {
-			Default              *GetInternalMcpCatalog_200_UserConfig_Default `json:"default,omitempty"`
-			Description          string                                        `json:"description"`
-			HeaderName           *string                                       `json:"headerName,omitempty"`
-			Max                  *float32                                      `json:"max,omitempty"`
-			Min                  *float32                                      `json:"min,omitempty"`
-			Multiple             *bool                                         `json:"multiple,omitempty"`
-			PromptOnInstallation *bool                                         `json:"promptOnInstallation,omitempty"`
-			Required             *bool                                         `json:"required,omitempty"`
-			Sensitive            *bool                                         `json:"sensitive,omitempty"`
-			Title                string                                        `json:"title"`
-			Type                 GetInternalMcpCatalog200UserConfigType        `json:"type"`
-		} `json:"userConfig"`
-		Version *string `json:"version"`
+		UpdatedAt  time.Time                   `json:"updatedAt"`
+		UserConfig *map[string]UserConfigField `json:"userConfig"`
+		Version    *string                     `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -16160,16 +16428,9 @@ type GetInternalMcpCatalog_200_LocalConfig_ImagePullSecrets_Item struct {
 	union json.RawMessage
 }
 type GetInternalMcpCatalog200LocalConfigTransportType string
+type GetInternalMcpCatalog200OauthConfigGrantType string
 type GetInternalMcpCatalog200Scope string
 type GetInternalMcpCatalog200ServerType string
-type GetInternalMcpCatalog200UserConfigDefault0 = string
-type GetInternalMcpCatalog200UserConfigDefault1 = float32
-type GetInternalMcpCatalog200UserConfigDefault2 = bool
-type GetInternalMcpCatalog200UserConfigDefault3 = []string
-type GetInternalMcpCatalog_200_UserConfig_Default struct {
-	union json.RawMessage
-}
-type GetInternalMcpCatalog200UserConfigType string
 type GetInternalMcpCatalog400ErrorType string
 type GetInternalMcpCatalog401ErrorType string
 type GetInternalMcpCatalog403ErrorType string
@@ -16267,27 +16528,29 @@ type CreateInternalMcpCatalogItemResponse struct {
 		LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 		Name                string              `json:"name"`
 		OauthConfig         *struct {
-			AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-			AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-			AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-			BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-			ClientId                 string   `json:"client_id"`
-			ClientSecret             *string  `json:"client_secret,omitempty"`
-			DefaultScopes            []string `json:"default_scopes"`
-			Description              *string  `json:"description,omitempty"`
-			GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-			Name                     string   `json:"name"`
-			ProviderName             *string  `json:"provider_name,omitempty"`
-			RedirectUris             []string `json:"redirect_uris"`
-			RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-			ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-			Scopes                   []string `json:"scopes"`
-			ServerUrl                string   `json:"server_url"`
-			StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-			StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-			SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-			TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-			WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+			AccessTokenEnvVar        *string                                              `json:"access_token_env_var,omitempty"`
+			Audience                 *string                                              `json:"audience,omitempty"`
+			AuthServerUrl            *string                                              `json:"auth_server_url,omitempty"`
+			AuthorizationEndpoint    *string                                              `json:"authorization_endpoint,omitempty"`
+			BrowserAuth              *bool                                                `json:"browser_auth,omitempty"`
+			ClientId                 string                                               `json:"client_id"`
+			ClientSecret             *string                                              `json:"client_secret,omitempty"`
+			DefaultScopes            []string                                             `json:"default_scopes"`
+			Description              *string                                              `json:"description,omitempty"`
+			GenericOauth             *bool                                                `json:"generic_oauth,omitempty"`
+			GrantType                *CreateInternalMcpCatalogItem200OauthConfigGrantType `json:"grant_type,omitempty"`
+			Name                     string                                               `json:"name"`
+			ProviderName             *string                                              `json:"provider_name,omitempty"`
+			RedirectUris             []string                                             `json:"redirect_uris"`
+			RequiresProxy            *bool                                                `json:"requires_proxy,omitempty"`
+			ResourceMetadataUrl      *string                                              `json:"resource_metadata_url,omitempty"`
+			Scopes                   []string                                             `json:"scopes"`
+			ServerUrl                string                                               `json:"server_url"`
+			StreamableHttpPort       *float32                                             `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl        *string                                              `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata bool                                                 `json:"supports_resource_metadata"`
+			TokenEndpoint            *string                                              `json:"token_endpoint,omitempty"`
+			WellKnownUrl             *string                                              `json:"well_known_url,omitempty"`
 		} `json:"oauthConfig"`
 		OrganizationId *string                                   `json:"organizationId"`
 		Repository     *string                                   `json:"repository"`
@@ -16299,21 +16562,9 @@ type CreateInternalMcpCatalogItemResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"teams"`
-		UpdatedAt  time.Time `json:"updatedAt"`
-		UserConfig *map[string]struct {
-			Default              *CreateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-			Description          string                                               `json:"description"`
-			HeaderName           *string                                              `json:"headerName,omitempty"`
-			Max                  *float32                                             `json:"max,omitempty"`
-			Min                  *float32                                             `json:"min,omitempty"`
-			Multiple             *bool                                                `json:"multiple,omitempty"`
-			PromptOnInstallation *bool                                                `json:"promptOnInstallation,omitempty"`
-			Required             *bool                                                `json:"required,omitempty"`
-			Sensitive            *bool                                                `json:"sensitive,omitempty"`
-			Title                string                                               `json:"title"`
-			Type                 CreateInternalMcpCatalogItem200UserConfigType        `json:"type"`
-		} `json:"userConfig"`
-		Version *string `json:"version"`
+		UpdatedAt  time.Time                   `json:"updatedAt"`
+		UserConfig *map[string]UserConfigField `json:"userConfig"`
+		Version    *string                     `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -16385,16 +16636,9 @@ type CreateInternalMcpCatalogItem_200_LocalConfig_ImagePullSecrets_Item struct {
 	union json.RawMessage
 }
 type CreateInternalMcpCatalogItem200LocalConfigTransportType string
+type CreateInternalMcpCatalogItem200OauthConfigGrantType string
 type CreateInternalMcpCatalogItem200Scope string
 type CreateInternalMcpCatalogItem200ServerType string
-type CreateInternalMcpCatalogItem200UserConfigDefault0 = string
-type CreateInternalMcpCatalogItem200UserConfigDefault1 = float32
-type CreateInternalMcpCatalogItem200UserConfigDefault2 = bool
-type CreateInternalMcpCatalogItem200UserConfigDefault3 = []string
-type CreateInternalMcpCatalogItem_200_UserConfig_Default struct {
-	union json.RawMessage
-}
-type CreateInternalMcpCatalogItem200UserConfigType string
 type CreateInternalMcpCatalogItem400ErrorType string
 type CreateInternalMcpCatalogItem401ErrorType string
 type CreateInternalMcpCatalogItem403ErrorType string
@@ -16820,27 +17064,29 @@ type GetInternalMcpCatalogItemResponse struct {
 		LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 		Name                string              `json:"name"`
 		OauthConfig         *struct {
-			AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-			AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-			AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-			BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-			ClientId                 string   `json:"client_id"`
-			ClientSecret             *string  `json:"client_secret,omitempty"`
-			DefaultScopes            []string `json:"default_scopes"`
-			Description              *string  `json:"description,omitempty"`
-			GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-			Name                     string   `json:"name"`
-			ProviderName             *string  `json:"provider_name,omitempty"`
-			RedirectUris             []string `json:"redirect_uris"`
-			RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-			ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-			Scopes                   []string `json:"scopes"`
-			ServerUrl                string   `json:"server_url"`
-			StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-			StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-			SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-			TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-			WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+			AccessTokenEnvVar        *string                                           `json:"access_token_env_var,omitempty"`
+			Audience                 *string                                           `json:"audience,omitempty"`
+			AuthServerUrl            *string                                           `json:"auth_server_url,omitempty"`
+			AuthorizationEndpoint    *string                                           `json:"authorization_endpoint,omitempty"`
+			BrowserAuth              *bool                                             `json:"browser_auth,omitempty"`
+			ClientId                 string                                            `json:"client_id"`
+			ClientSecret             *string                                           `json:"client_secret,omitempty"`
+			DefaultScopes            []string                                          `json:"default_scopes"`
+			Description              *string                                           `json:"description,omitempty"`
+			GenericOauth             *bool                                             `json:"generic_oauth,omitempty"`
+			GrantType                *GetInternalMcpCatalogItem200OauthConfigGrantType `json:"grant_type,omitempty"`
+			Name                     string                                            `json:"name"`
+			ProviderName             *string                                           `json:"provider_name,omitempty"`
+			RedirectUris             []string                                          `json:"redirect_uris"`
+			RequiresProxy            *bool                                             `json:"requires_proxy,omitempty"`
+			ResourceMetadataUrl      *string                                           `json:"resource_metadata_url,omitempty"`
+			Scopes                   []string                                          `json:"scopes"`
+			ServerUrl                string                                            `json:"server_url"`
+			StreamableHttpPort       *float32                                          `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl        *string                                           `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata bool                                              `json:"supports_resource_metadata"`
+			TokenEndpoint            *string                                           `json:"token_endpoint,omitempty"`
+			WellKnownUrl             *string                                           `json:"well_known_url,omitempty"`
 		} `json:"oauthConfig"`
 		OrganizationId *string                                `json:"organizationId"`
 		Repository     *string                                `json:"repository"`
@@ -16852,21 +17098,9 @@ type GetInternalMcpCatalogItemResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"teams"`
-		UpdatedAt  time.Time `json:"updatedAt"`
-		UserConfig *map[string]struct {
-			Default              *GetInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-			Description          string                                            `json:"description"`
-			HeaderName           *string                                           `json:"headerName,omitempty"`
-			Max                  *float32                                          `json:"max,omitempty"`
-			Min                  *float32                                          `json:"min,omitempty"`
-			Multiple             *bool                                             `json:"multiple,omitempty"`
-			PromptOnInstallation *bool                                             `json:"promptOnInstallation,omitempty"`
-			Required             *bool                                             `json:"required,omitempty"`
-			Sensitive            *bool                                             `json:"sensitive,omitempty"`
-			Title                string                                            `json:"title"`
-			Type                 GetInternalMcpCatalogItem200UserConfigType        `json:"type"`
-		} `json:"userConfig"`
-		Version *string `json:"version"`
+		UpdatedAt  time.Time                   `json:"updatedAt"`
+		UserConfig *map[string]UserConfigField `json:"userConfig"`
+		Version    *string                     `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -16938,16 +17172,9 @@ type GetInternalMcpCatalogItem_200_LocalConfig_ImagePullSecrets_Item struct {
 	union json.RawMessage
 }
 type GetInternalMcpCatalogItem200LocalConfigTransportType string
+type GetInternalMcpCatalogItem200OauthConfigGrantType string
 type GetInternalMcpCatalogItem200Scope string
 type GetInternalMcpCatalogItem200ServerType string
-type GetInternalMcpCatalogItem200UserConfigDefault0 = string
-type GetInternalMcpCatalogItem200UserConfigDefault1 = float32
-type GetInternalMcpCatalogItem200UserConfigDefault2 = bool
-type GetInternalMcpCatalogItem200UserConfigDefault3 = []string
-type GetInternalMcpCatalogItem_200_UserConfig_Default struct {
-	union json.RawMessage
-}
-type GetInternalMcpCatalogItem200UserConfigType string
 type GetInternalMcpCatalogItem400ErrorType string
 type GetInternalMcpCatalogItem401ErrorType string
 type GetInternalMcpCatalogItem403ErrorType string
@@ -17045,27 +17272,29 @@ type UpdateInternalMcpCatalogItemResponse struct {
 		LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 		Name                string              `json:"name"`
 		OauthConfig         *struct {
-			AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-			AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-			AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-			BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-			ClientId                 string   `json:"client_id"`
-			ClientSecret             *string  `json:"client_secret,omitempty"`
-			DefaultScopes            []string `json:"default_scopes"`
-			Description              *string  `json:"description,omitempty"`
-			GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-			Name                     string   `json:"name"`
-			ProviderName             *string  `json:"provider_name,omitempty"`
-			RedirectUris             []string `json:"redirect_uris"`
-			RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-			ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-			Scopes                   []string `json:"scopes"`
-			ServerUrl                string   `json:"server_url"`
-			StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-			StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-			SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-			TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-			WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+			AccessTokenEnvVar        *string                                              `json:"access_token_env_var,omitempty"`
+			Audience                 *string                                              `json:"audience,omitempty"`
+			AuthServerUrl            *string                                              `json:"auth_server_url,omitempty"`
+			AuthorizationEndpoint    *string                                              `json:"authorization_endpoint,omitempty"`
+			BrowserAuth              *bool                                                `json:"browser_auth,omitempty"`
+			ClientId                 string                                               `json:"client_id"`
+			ClientSecret             *string                                              `json:"client_secret,omitempty"`
+			DefaultScopes            []string                                             `json:"default_scopes"`
+			Description              *string                                              `json:"description,omitempty"`
+			GenericOauth             *bool                                                `json:"generic_oauth,omitempty"`
+			GrantType                *UpdateInternalMcpCatalogItem200OauthConfigGrantType `json:"grant_type,omitempty"`
+			Name                     string                                               `json:"name"`
+			ProviderName             *string                                              `json:"provider_name,omitempty"`
+			RedirectUris             []string                                             `json:"redirect_uris"`
+			RequiresProxy            *bool                                                `json:"requires_proxy,omitempty"`
+			ResourceMetadataUrl      *string                                              `json:"resource_metadata_url,omitempty"`
+			Scopes                   []string                                             `json:"scopes"`
+			ServerUrl                string                                               `json:"server_url"`
+			StreamableHttpPort       *float32                                             `json:"streamable_http_port,omitempty"`
+			StreamableHttpUrl        *string                                              `json:"streamable_http_url,omitempty"`
+			SupportsResourceMetadata bool                                                 `json:"supports_resource_metadata"`
+			TokenEndpoint            *string                                              `json:"token_endpoint,omitempty"`
+			WellKnownUrl             *string                                              `json:"well_known_url,omitempty"`
 		} `json:"oauthConfig"`
 		OrganizationId *string                                   `json:"organizationId"`
 		Repository     *string                                   `json:"repository"`
@@ -17077,21 +17306,9 @@ type UpdateInternalMcpCatalogItemResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"teams"`
-		UpdatedAt  time.Time `json:"updatedAt"`
-		UserConfig *map[string]struct {
-			Default              *UpdateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-			Description          string                                               `json:"description"`
-			HeaderName           *string                                              `json:"headerName,omitempty"`
-			Max                  *float32                                             `json:"max,omitempty"`
-			Min                  *float32                                             `json:"min,omitempty"`
-			Multiple             *bool                                                `json:"multiple,omitempty"`
-			PromptOnInstallation *bool                                                `json:"promptOnInstallation,omitempty"`
-			Required             *bool                                                `json:"required,omitempty"`
-			Sensitive            *bool                                                `json:"sensitive,omitempty"`
-			Title                string                                               `json:"title"`
-			Type                 UpdateInternalMcpCatalogItem200UserConfigType        `json:"type"`
-		} `json:"userConfig"`
-		Version *string `json:"version"`
+		UpdatedAt  time.Time                   `json:"updatedAt"`
+		UserConfig *map[string]UserConfigField `json:"userConfig"`
+		Version    *string                     `json:"version"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -17163,16 +17380,9 @@ type UpdateInternalMcpCatalogItem_200_LocalConfig_ImagePullSecrets_Item struct {
 	union json.RawMessage
 }
 type UpdateInternalMcpCatalogItem200LocalConfigTransportType string
+type UpdateInternalMcpCatalogItem200OauthConfigGrantType string
 type UpdateInternalMcpCatalogItem200Scope string
 type UpdateInternalMcpCatalogItem200ServerType string
-type UpdateInternalMcpCatalogItem200UserConfigDefault0 = string
-type UpdateInternalMcpCatalogItem200UserConfigDefault1 = float32
-type UpdateInternalMcpCatalogItem200UserConfigDefault2 = bool
-type UpdateInternalMcpCatalogItem200UserConfigDefault3 = []string
-type UpdateInternalMcpCatalogItem_200_UserConfig_Default struct {
-	union json.RawMessage
-}
-type UpdateInternalMcpCatalogItem200UserConfigType string
 type UpdateInternalMcpCatalogItem400ErrorType string
 type UpdateInternalMcpCatalogItem401ErrorType string
 type UpdateInternalMcpCatalogItem403ErrorType string
@@ -19524,27 +19734,29 @@ type GetMcpServerInstallationRequests200CustomServerConfig0 struct {
 	Label       string  `json:"label"`
 	Name        string  `json:"name"`
 	OauthConfig *struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                                     `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                                     `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                                     `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                                     `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                                       `json:"browser_auth,omitempty"`
+		ClientId                 string                                                                      `json:"client_id"`
+		ClientSecret             *string                                                                     `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                                    `json:"default_scopes"`
+		Description              *string                                                                     `json:"description,omitempty"`
+		GenericOauth             *bool                                                                       `json:"generic_oauth,omitempty"`
+		GrantType                *GetMcpServerInstallationRequests200CustomServerConfig0OauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                                      `json:"name"`
+		ProviderName             *string                                                                     `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                                    `json:"redirect_uris"`
+		RequiresProxy            *bool                                                                       `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                                     `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                                    `json:"scopes"`
+		ServerUrl                string                                                                      `json:"server_url"`
+		StreamableHttpPort       *float32                                                                    `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                                     `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                                        `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                                     `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                                     `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig,omitempty"`
 	ServerType string                                                     `json:"serverType"`
 	ServerUrl  *string                                                    `json:"serverUrl,omitempty"`
@@ -19552,6 +19764,7 @@ type GetMcpServerInstallationRequests200CustomServerConfig0 struct {
 	UserConfig *map[string]interface{}                                    `json:"userConfig,omitempty"`
 	Version    *string                                                    `json:"version,omitempty"`
 }
+type GetMcpServerInstallationRequests200CustomServerConfig0OauthConfigGrantType string
 type GetMcpServerInstallationRequests200CustomServerConfig0Type string
 type GetMcpServerInstallationRequests200CustomServerConfig1 struct {
 	Label       string `json:"label"`
@@ -19705,27 +19918,29 @@ type CreateMcpServerInstallationRequest200CustomServerConfig0 struct {
 	Label       string  `json:"label"`
 	Name        string  `json:"name"`
 	OauthConfig *struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                                       `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                                       `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                                       `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                                       `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                                         `json:"browser_auth,omitempty"`
+		ClientId                 string                                                                        `json:"client_id"`
+		ClientSecret             *string                                                                       `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                                      `json:"default_scopes"`
+		Description              *string                                                                       `json:"description,omitempty"`
+		GenericOauth             *bool                                                                         `json:"generic_oauth,omitempty"`
+		GrantType                *CreateMcpServerInstallationRequest200CustomServerConfig0OauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                                        `json:"name"`
+		ProviderName             *string                                                                       `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                                      `json:"redirect_uris"`
+		RequiresProxy            *bool                                                                         `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                                       `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                                      `json:"scopes"`
+		ServerUrl                string                                                                        `json:"server_url"`
+		StreamableHttpPort       *float32                                                                      `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                                       `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                                          `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                                       `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                                       `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig,omitempty"`
 	ServerType string                                                       `json:"serverType"`
 	ServerUrl  *string                                                      `json:"serverUrl,omitempty"`
@@ -19733,6 +19948,7 @@ type CreateMcpServerInstallationRequest200CustomServerConfig0 struct {
 	UserConfig *map[string]interface{}                                      `json:"userConfig,omitempty"`
 	Version    *string                                                      `json:"version,omitempty"`
 }
+type CreateMcpServerInstallationRequest200CustomServerConfig0OauthConfigGrantType string
 type CreateMcpServerInstallationRequest200CustomServerConfig0Type string
 type CreateMcpServerInstallationRequest200CustomServerConfig1 struct {
 	Label       string `json:"label"`
@@ -19952,27 +20168,29 @@ type GetMcpServerInstallationRequest200CustomServerConfig0 struct {
 	Label       string  `json:"label"`
 	Name        string  `json:"name"`
 	OauthConfig *struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                                    `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                                    `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                                    `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                                    `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                                      `json:"browser_auth,omitempty"`
+		ClientId                 string                                                                     `json:"client_id"`
+		ClientSecret             *string                                                                    `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                                   `json:"default_scopes"`
+		Description              *string                                                                    `json:"description,omitempty"`
+		GenericOauth             *bool                                                                      `json:"generic_oauth,omitempty"`
+		GrantType                *GetMcpServerInstallationRequest200CustomServerConfig0OauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                                     `json:"name"`
+		ProviderName             *string                                                                    `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                                   `json:"redirect_uris"`
+		RequiresProxy            *bool                                                                      `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                                    `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                                   `json:"scopes"`
+		ServerUrl                string                                                                     `json:"server_url"`
+		StreamableHttpPort       *float32                                                                   `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                                    `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                                       `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                                    `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                                    `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig,omitempty"`
 	ServerType string                                                    `json:"serverType"`
 	ServerUrl  *string                                                   `json:"serverUrl,omitempty"`
@@ -19980,6 +20198,7 @@ type GetMcpServerInstallationRequest200CustomServerConfig0 struct {
 	UserConfig *map[string]interface{}                                   `json:"userConfig,omitempty"`
 	Version    *string                                                   `json:"version,omitempty"`
 }
+type GetMcpServerInstallationRequest200CustomServerConfig0OauthConfigGrantType string
 type GetMcpServerInstallationRequest200CustomServerConfig0Type string
 type GetMcpServerInstallationRequest200CustomServerConfig1 struct {
 	Label       string `json:"label"`
@@ -20133,27 +20352,29 @@ type UpdateMcpServerInstallationRequest200CustomServerConfig0 struct {
 	Label       string  `json:"label"`
 	Name        string  `json:"name"`
 	OauthConfig *struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                                       `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                                       `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                                       `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                                       `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                                         `json:"browser_auth,omitempty"`
+		ClientId                 string                                                                        `json:"client_id"`
+		ClientSecret             *string                                                                       `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                                      `json:"default_scopes"`
+		Description              *string                                                                       `json:"description,omitempty"`
+		GenericOauth             *bool                                                                         `json:"generic_oauth,omitempty"`
+		GrantType                *UpdateMcpServerInstallationRequest200CustomServerConfig0OauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                                        `json:"name"`
+		ProviderName             *string                                                                       `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                                      `json:"redirect_uris"`
+		RequiresProxy            *bool                                                                         `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                                       `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                                      `json:"scopes"`
+		ServerUrl                string                                                                        `json:"server_url"`
+		StreamableHttpPort       *float32                                                                      `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                                       `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                                          `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                                       `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                                       `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig,omitempty"`
 	ServerType string                                                       `json:"serverType"`
 	ServerUrl  *string                                                      `json:"serverUrl,omitempty"`
@@ -20161,6 +20382,7 @@ type UpdateMcpServerInstallationRequest200CustomServerConfig0 struct {
 	UserConfig *map[string]interface{}                                      `json:"userConfig,omitempty"`
 	Version    *string                                                      `json:"version,omitempty"`
 }
+type UpdateMcpServerInstallationRequest200CustomServerConfig0OauthConfigGrantType string
 type UpdateMcpServerInstallationRequest200CustomServerConfig0Type string
 type UpdateMcpServerInstallationRequest200CustomServerConfig1 struct {
 	Label       string `json:"label"`
@@ -20314,27 +20536,29 @@ type ApproveMcpServerInstallationRequest200CustomServerConfig0 struct {
 	Label       string  `json:"label"`
 	Name        string  `json:"name"`
 	OauthConfig *struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                                        `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                                        `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                                        `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                                        `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                                          `json:"browser_auth,omitempty"`
+		ClientId                 string                                                                         `json:"client_id"`
+		ClientSecret             *string                                                                        `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                                       `json:"default_scopes"`
+		Description              *string                                                                        `json:"description,omitempty"`
+		GenericOauth             *bool                                                                          `json:"generic_oauth,omitempty"`
+		GrantType                *ApproveMcpServerInstallationRequest200CustomServerConfig0OauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                                         `json:"name"`
+		ProviderName             *string                                                                        `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                                       `json:"redirect_uris"`
+		RequiresProxy            *bool                                                                          `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                                        `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                                       `json:"scopes"`
+		ServerUrl                string                                                                         `json:"server_url"`
+		StreamableHttpPort       *float32                                                                       `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                                        `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                                           `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                                        `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                                        `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig,omitempty"`
 	ServerType string                                                        `json:"serverType"`
 	ServerUrl  *string                                                       `json:"serverUrl,omitempty"`
@@ -20342,6 +20566,7 @@ type ApproveMcpServerInstallationRequest200CustomServerConfig0 struct {
 	UserConfig *map[string]interface{}                                       `json:"userConfig,omitempty"`
 	Version    *string                                                       `json:"version,omitempty"`
 }
+type ApproveMcpServerInstallationRequest200CustomServerConfig0OauthConfigGrantType string
 type ApproveMcpServerInstallationRequest200CustomServerConfig0Type string
 type ApproveMcpServerInstallationRequest200CustomServerConfig1 struct {
 	Label       string `json:"label"`
@@ -20495,27 +20720,29 @@ type DeclineMcpServerInstallationRequest200CustomServerConfig0 struct {
 	Label       string  `json:"label"`
 	Name        string  `json:"name"`
 	OauthConfig *struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                                        `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                                        `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                                        `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                                        `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                                          `json:"browser_auth,omitempty"`
+		ClientId                 string                                                                         `json:"client_id"`
+		ClientSecret             *string                                                                        `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                                       `json:"default_scopes"`
+		Description              *string                                                                        `json:"description,omitempty"`
+		GenericOauth             *bool                                                                          `json:"generic_oauth,omitempty"`
+		GrantType                *DeclineMcpServerInstallationRequest200CustomServerConfig0OauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                                         `json:"name"`
+		ProviderName             *string                                                                        `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                                       `json:"redirect_uris"`
+		RequiresProxy            *bool                                                                          `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                                        `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                                       `json:"scopes"`
+		ServerUrl                string                                                                         `json:"server_url"`
+		StreamableHttpPort       *float32                                                                       `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                                        `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                                           `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                                        `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                                        `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig,omitempty"`
 	ServerType string                                                        `json:"serverType"`
 	ServerUrl  *string                                                       `json:"serverUrl,omitempty"`
@@ -20523,6 +20750,7 @@ type DeclineMcpServerInstallationRequest200CustomServerConfig0 struct {
 	UserConfig *map[string]interface{}                                       `json:"userConfig,omitempty"`
 	Version    *string                                                       `json:"version,omitempty"`
 }
+type DeclineMcpServerInstallationRequest200CustomServerConfig0OauthConfigGrantType string
 type DeclineMcpServerInstallationRequest200CustomServerConfig0Type string
 type DeclineMcpServerInstallationRequest200CustomServerConfig1 struct {
 	Label       string `json:"label"`
@@ -20676,27 +20904,29 @@ type AddMcpServerInstallationRequestNote200CustomServerConfig0 struct {
 	Label       string  `json:"label"`
 	Name        string  `json:"name"`
 	OauthConfig *struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                                        `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                                        `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                                        `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                                        `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                                          `json:"browser_auth,omitempty"`
+		ClientId                 string                                                                         `json:"client_id"`
+		ClientSecret             *string                                                                        `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                                       `json:"default_scopes"`
+		Description              *string                                                                        `json:"description,omitempty"`
+		GenericOauth             *bool                                                                          `json:"generic_oauth,omitempty"`
+		GrantType                *AddMcpServerInstallationRequestNote200CustomServerConfig0OauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                                         `json:"name"`
+		ProviderName             *string                                                                        `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                                       `json:"redirect_uris"`
+		RequiresProxy            *bool                                                                          `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                                        `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                                       `json:"scopes"`
+		ServerUrl                string                                                                         `json:"server_url"`
+		StreamableHttpPort       *float32                                                                       `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                                        `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                                           `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                                        `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                                        `json:"well_known_url,omitempty"`
 	} `json:"oauthConfig,omitempty"`
 	ServerType string                                                        `json:"serverType"`
 	ServerUrl  *string                                                       `json:"serverUrl,omitempty"`
@@ -20704,6 +20934,7 @@ type AddMcpServerInstallationRequestNote200CustomServerConfig0 struct {
 	UserConfig *map[string]interface{}                                       `json:"userConfig,omitempty"`
 	Version    *string                                                       `json:"version,omitempty"`
 }
+type AddMcpServerInstallationRequestNote200CustomServerConfig0OauthConfigGrantType string
 type AddMcpServerInstallationRequestNote200CustomServerConfig0Type string
 type AddMcpServerInstallationRequestNote200CustomServerConfig1 struct {
 	Label       string `json:"label"`
@@ -30538,9 +30769,9 @@ func ParseGetIdentityProvidersResponse(rsp *http.Response) (*GetIdentityProvider
 					ClientAssertionAudience     *string                                                                                   `json:"clientAssertionAudience,omitempty"`
 					ClientId                    *string                                                                                   `json:"clientId,omitempty"`
 					ClientSecret                *string                                                                                   `json:"clientSecret,omitempty"`
+					ExchangeStrategy            *GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 					PrivateKeyId                *string                                                                                   `json:"privateKeyId,omitempty"`
 					PrivateKeyPem               *string                                                                                   `json:"privateKeyPem,omitempty"`
-					ProviderType                *GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 					SubjectTokenType            *GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 					TokenEndpoint               *string                                                                                   `json:"tokenEndpoint,omitempty"`
 					TokenEndpointAuthentication *GetIdentityProviders200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -30750,9 +30981,9 @@ func ParseCreateIdentityProviderResponse(rsp *http.Response) (*CreateIdentityPro
 					ClientAssertionAudience     *string                                                                                     `json:"clientAssertionAudience,omitempty"`
 					ClientId                    *string                                                                                     `json:"clientId,omitempty"`
 					ClientSecret                *string                                                                                     `json:"clientSecret,omitempty"`
+					ExchangeStrategy            *CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 					PrivateKeyId                *string                                                                                     `json:"privateKeyId,omitempty"`
 					PrivateKeyPem               *string                                                                                     `json:"privateKeyPem,omitempty"`
-					ProviderType                *CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 					SubjectTokenType            *CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 					TokenEndpoint               *string                                                                                     `json:"tokenEndpoint,omitempty"`
 					TokenEndpointAuthentication *CreateIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -31263,9 +31494,9 @@ func ParseGetIdentityProviderResponse(rsp *http.Response) (*GetIdentityProviderR
 					ClientAssertionAudience     *string                                                                                  `json:"clientAssertionAudience,omitempty"`
 					ClientId                    *string                                                                                  `json:"clientId,omitempty"`
 					ClientSecret                *string                                                                                  `json:"clientSecret,omitempty"`
+					ExchangeStrategy            *GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 					PrivateKeyId                *string                                                                                  `json:"privateKeyId,omitempty"`
 					PrivateKeyPem               *string                                                                                  `json:"privateKeyPem,omitempty"`
-					ProviderType                *GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 					SubjectTokenType            *GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 					TokenEndpoint               *string                                                                                  `json:"tokenEndpoint,omitempty"`
 					TokenEndpointAuthentication *GetIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -31475,9 +31706,9 @@ func ParseUpdateIdentityProviderResponse(rsp *http.Response) (*UpdateIdentityPro
 					ClientAssertionAudience     *string                                                                                     `json:"clientAssertionAudience,omitempty"`
 					ClientId                    *string                                                                                     `json:"clientId,omitempty"`
 					ClientSecret                *string                                                                                     `json:"clientSecret,omitempty"`
+					ExchangeStrategy            *UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 					PrivateKeyId                *string                                                                                     `json:"privateKeyId,omitempty"`
 					PrivateKeyPem               *string                                                                                     `json:"privateKeyPem,omitempty"`
-					ProviderType                *UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 					SubjectTokenType            *UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 					TokenEndpoint               *string                                                                                     `json:"tokenEndpoint,omitempty"`
 					TokenEndpointAuthentication *UpdateIdentityProvider200OidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -31741,27 +31972,29 @@ func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCata
 			LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 			Name                string              `json:"name"`
 			OauthConfig         *struct {
-				AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-				AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-				AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-				BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-				ClientId                 string   `json:"client_id"`
-				ClientSecret             *string  `json:"client_secret,omitempty"`
-				DefaultScopes            []string `json:"default_scopes"`
-				Description              *string  `json:"description,omitempty"`
-				GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-				Name                     string   `json:"name"`
-				ProviderName             *string  `json:"provider_name,omitempty"`
-				RedirectUris             []string `json:"redirect_uris"`
-				RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-				ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-				Scopes                   []string `json:"scopes"`
-				ServerUrl                string   `json:"server_url"`
-				StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-				StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-				SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-				TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-				WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+				AccessTokenEnvVar        *string                                       `json:"access_token_env_var,omitempty"`
+				Audience                 *string                                       `json:"audience,omitempty"`
+				AuthServerUrl            *string                                       `json:"auth_server_url,omitempty"`
+				AuthorizationEndpoint    *string                                       `json:"authorization_endpoint,omitempty"`
+				BrowserAuth              *bool                                         `json:"browser_auth,omitempty"`
+				ClientId                 string                                        `json:"client_id"`
+				ClientSecret             *string                                       `json:"client_secret,omitempty"`
+				DefaultScopes            []string                                      `json:"default_scopes"`
+				Description              *string                                       `json:"description,omitempty"`
+				GenericOauth             *bool                                         `json:"generic_oauth,omitempty"`
+				GrantType                *GetInternalMcpCatalog200OauthConfigGrantType `json:"grant_type,omitempty"`
+				Name                     string                                        `json:"name"`
+				ProviderName             *string                                       `json:"provider_name,omitempty"`
+				RedirectUris             []string                                      `json:"redirect_uris"`
+				RequiresProxy            *bool                                         `json:"requires_proxy,omitempty"`
+				ResourceMetadataUrl      *string                                       `json:"resource_metadata_url,omitempty"`
+				Scopes                   []string                                      `json:"scopes"`
+				ServerUrl                string                                        `json:"server_url"`
+				StreamableHttpPort       *float32                                      `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl        *string                                       `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata bool                                          `json:"supports_resource_metadata"`
+				TokenEndpoint            *string                                       `json:"token_endpoint,omitempty"`
+				WellKnownUrl             *string                                       `json:"well_known_url,omitempty"`
 			} `json:"oauthConfig"`
 			OrganizationId *string                            `json:"organizationId"`
 			Repository     *string                            `json:"repository"`
@@ -31773,21 +32006,9 @@ func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCata
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"teams"`
-			UpdatedAt  time.Time `json:"updatedAt"`
-			UserConfig *map[string]struct {
-				Default              *GetInternalMcpCatalog_200_UserConfig_Default `json:"default,omitempty"`
-				Description          string                                        `json:"description"`
-				HeaderName           *string                                       `json:"headerName,omitempty"`
-				Max                  *float32                                      `json:"max,omitempty"`
-				Min                  *float32                                      `json:"min,omitempty"`
-				Multiple             *bool                                         `json:"multiple,omitempty"`
-				PromptOnInstallation *bool                                         `json:"promptOnInstallation,omitempty"`
-				Required             *bool                                         `json:"required,omitempty"`
-				Sensitive            *bool                                         `json:"sensitive,omitempty"`
-				Title                string                                        `json:"title"`
-				Type                 GetInternalMcpCatalog200UserConfigType        `json:"type"`
-			} `json:"userConfig"`
-			Version *string `json:"version"`
+			UpdatedAt  time.Time                   `json:"updatedAt"`
+			UserConfig *map[string]UserConfigField `json:"userConfig"`
+			Version    *string                     `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -31957,27 +32178,29 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 			LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 			Name                string              `json:"name"`
 			OauthConfig         *struct {
-				AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-				AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-				AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-				BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-				ClientId                 string   `json:"client_id"`
-				ClientSecret             *string  `json:"client_secret,omitempty"`
-				DefaultScopes            []string `json:"default_scopes"`
-				Description              *string  `json:"description,omitempty"`
-				GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-				Name                     string   `json:"name"`
-				ProviderName             *string  `json:"provider_name,omitempty"`
-				RedirectUris             []string `json:"redirect_uris"`
-				RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-				ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-				Scopes                   []string `json:"scopes"`
-				ServerUrl                string   `json:"server_url"`
-				StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-				StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-				SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-				TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-				WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+				AccessTokenEnvVar        *string                                              `json:"access_token_env_var,omitempty"`
+				Audience                 *string                                              `json:"audience,omitempty"`
+				AuthServerUrl            *string                                              `json:"auth_server_url,omitempty"`
+				AuthorizationEndpoint    *string                                              `json:"authorization_endpoint,omitempty"`
+				BrowserAuth              *bool                                                `json:"browser_auth,omitempty"`
+				ClientId                 string                                               `json:"client_id"`
+				ClientSecret             *string                                              `json:"client_secret,omitempty"`
+				DefaultScopes            []string                                             `json:"default_scopes"`
+				Description              *string                                              `json:"description,omitempty"`
+				GenericOauth             *bool                                                `json:"generic_oauth,omitempty"`
+				GrantType                *CreateInternalMcpCatalogItem200OauthConfigGrantType `json:"grant_type,omitempty"`
+				Name                     string                                               `json:"name"`
+				ProviderName             *string                                              `json:"provider_name,omitempty"`
+				RedirectUris             []string                                             `json:"redirect_uris"`
+				RequiresProxy            *bool                                                `json:"requires_proxy,omitempty"`
+				ResourceMetadataUrl      *string                                              `json:"resource_metadata_url,omitempty"`
+				Scopes                   []string                                             `json:"scopes"`
+				ServerUrl                string                                               `json:"server_url"`
+				StreamableHttpPort       *float32                                             `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl        *string                                              `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata bool                                                 `json:"supports_resource_metadata"`
+				TokenEndpoint            *string                                              `json:"token_endpoint,omitempty"`
+				WellKnownUrl             *string                                              `json:"well_known_url,omitempty"`
 			} `json:"oauthConfig"`
 			OrganizationId *string                                   `json:"organizationId"`
 			Repository     *string                                   `json:"repository"`
@@ -31989,21 +32212,9 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"teams"`
-			UpdatedAt  time.Time `json:"updatedAt"`
-			UserConfig *map[string]struct {
-				Default              *CreateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-				Description          string                                               `json:"description"`
-				HeaderName           *string                                              `json:"headerName,omitempty"`
-				Max                  *float32                                             `json:"max,omitempty"`
-				Min                  *float32                                             `json:"min,omitempty"`
-				Multiple             *bool                                                `json:"multiple,omitempty"`
-				PromptOnInstallation *bool                                                `json:"promptOnInstallation,omitempty"`
-				Required             *bool                                                `json:"required,omitempty"`
-				Sensitive            *bool                                                `json:"sensitive,omitempty"`
-				Title                string                                               `json:"title"`
-				Type                 CreateInternalMcpCatalogItem200UserConfigType        `json:"type"`
-			} `json:"userConfig"`
-			Version *string `json:"version"`
+			UpdatedAt  time.Time                   `json:"updatedAt"`
+			UserConfig *map[string]UserConfigField `json:"userConfig"`
+			Version    *string                     `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -32671,27 +32882,29 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 			LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 			Name                string              `json:"name"`
 			OauthConfig         *struct {
-				AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-				AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-				AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-				BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-				ClientId                 string   `json:"client_id"`
-				ClientSecret             *string  `json:"client_secret,omitempty"`
-				DefaultScopes            []string `json:"default_scopes"`
-				Description              *string  `json:"description,omitempty"`
-				GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-				Name                     string   `json:"name"`
-				ProviderName             *string  `json:"provider_name,omitempty"`
-				RedirectUris             []string `json:"redirect_uris"`
-				RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-				ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-				Scopes                   []string `json:"scopes"`
-				ServerUrl                string   `json:"server_url"`
-				StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-				StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-				SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-				TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-				WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+				AccessTokenEnvVar        *string                                           `json:"access_token_env_var,omitempty"`
+				Audience                 *string                                           `json:"audience,omitempty"`
+				AuthServerUrl            *string                                           `json:"auth_server_url,omitempty"`
+				AuthorizationEndpoint    *string                                           `json:"authorization_endpoint,omitempty"`
+				BrowserAuth              *bool                                             `json:"browser_auth,omitempty"`
+				ClientId                 string                                            `json:"client_id"`
+				ClientSecret             *string                                           `json:"client_secret,omitempty"`
+				DefaultScopes            []string                                          `json:"default_scopes"`
+				Description              *string                                           `json:"description,omitempty"`
+				GenericOauth             *bool                                             `json:"generic_oauth,omitempty"`
+				GrantType                *GetInternalMcpCatalogItem200OauthConfigGrantType `json:"grant_type,omitempty"`
+				Name                     string                                            `json:"name"`
+				ProviderName             *string                                           `json:"provider_name,omitempty"`
+				RedirectUris             []string                                          `json:"redirect_uris"`
+				RequiresProxy            *bool                                             `json:"requires_proxy,omitempty"`
+				ResourceMetadataUrl      *string                                           `json:"resource_metadata_url,omitempty"`
+				Scopes                   []string                                          `json:"scopes"`
+				ServerUrl                string                                            `json:"server_url"`
+				StreamableHttpPort       *float32                                          `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl        *string                                           `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata bool                                              `json:"supports_resource_metadata"`
+				TokenEndpoint            *string                                           `json:"token_endpoint,omitempty"`
+				WellKnownUrl             *string                                           `json:"well_known_url,omitempty"`
 			} `json:"oauthConfig"`
 			OrganizationId *string                                `json:"organizationId"`
 			Repository     *string                                `json:"repository"`
@@ -32703,21 +32916,9 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"teams"`
-			UpdatedAt  time.Time `json:"updatedAt"`
-			UserConfig *map[string]struct {
-				Default              *GetInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-				Description          string                                            `json:"description"`
-				HeaderName           *string                                           `json:"headerName,omitempty"`
-				Max                  *float32                                          `json:"max,omitempty"`
-				Min                  *float32                                          `json:"min,omitempty"`
-				Multiple             *bool                                             `json:"multiple,omitempty"`
-				PromptOnInstallation *bool                                             `json:"promptOnInstallation,omitempty"`
-				Required             *bool                                             `json:"required,omitempty"`
-				Sensitive            *bool                                             `json:"sensitive,omitempty"`
-				Title                string                                            `json:"title"`
-				Type                 GetInternalMcpCatalogItem200UserConfigType        `json:"type"`
-			} `json:"userConfig"`
-			Version *string `json:"version"`
+			UpdatedAt  time.Time                   `json:"updatedAt"`
+			UserConfig *map[string]UserConfigField `json:"userConfig"`
+			Version    *string                     `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -32887,27 +33088,29 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 			LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
 			Name                string              `json:"name"`
 			OauthConfig         *struct {
-				AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-				AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-				AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-				BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-				ClientId                 string   `json:"client_id"`
-				ClientSecret             *string  `json:"client_secret,omitempty"`
-				DefaultScopes            []string `json:"default_scopes"`
-				Description              *string  `json:"description,omitempty"`
-				GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-				Name                     string   `json:"name"`
-				ProviderName             *string  `json:"provider_name,omitempty"`
-				RedirectUris             []string `json:"redirect_uris"`
-				RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-				ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-				Scopes                   []string `json:"scopes"`
-				ServerUrl                string   `json:"server_url"`
-				StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-				StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-				SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-				TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-				WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+				AccessTokenEnvVar        *string                                              `json:"access_token_env_var,omitempty"`
+				Audience                 *string                                              `json:"audience,omitempty"`
+				AuthServerUrl            *string                                              `json:"auth_server_url,omitempty"`
+				AuthorizationEndpoint    *string                                              `json:"authorization_endpoint,omitempty"`
+				BrowserAuth              *bool                                                `json:"browser_auth,omitempty"`
+				ClientId                 string                                               `json:"client_id"`
+				ClientSecret             *string                                              `json:"client_secret,omitempty"`
+				DefaultScopes            []string                                             `json:"default_scopes"`
+				Description              *string                                              `json:"description,omitempty"`
+				GenericOauth             *bool                                                `json:"generic_oauth,omitempty"`
+				GrantType                *UpdateInternalMcpCatalogItem200OauthConfigGrantType `json:"grant_type,omitempty"`
+				Name                     string                                               `json:"name"`
+				ProviderName             *string                                              `json:"provider_name,omitempty"`
+				RedirectUris             []string                                             `json:"redirect_uris"`
+				RequiresProxy            *bool                                                `json:"requires_proxy,omitempty"`
+				ResourceMetadataUrl      *string                                              `json:"resource_metadata_url,omitempty"`
+				Scopes                   []string                                             `json:"scopes"`
+				ServerUrl                string                                               `json:"server_url"`
+				StreamableHttpPort       *float32                                             `json:"streamable_http_port,omitempty"`
+				StreamableHttpUrl        *string                                              `json:"streamable_http_url,omitempty"`
+				SupportsResourceMetadata bool                                                 `json:"supports_resource_metadata"`
+				TokenEndpoint            *string                                              `json:"token_endpoint,omitempty"`
+				WellKnownUrl             *string                                              `json:"well_known_url,omitempty"`
 			} `json:"oauthConfig"`
 			OrganizationId *string                                   `json:"organizationId"`
 			Repository     *string                                   `json:"repository"`
@@ -32919,21 +33122,9 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"teams"`
-			UpdatedAt  time.Time `json:"updatedAt"`
-			UserConfig *map[string]struct {
-				Default              *UpdateInternalMcpCatalogItem_200_UserConfig_Default `json:"default,omitempty"`
-				Description          string                                               `json:"description"`
-				HeaderName           *string                                              `json:"headerName,omitempty"`
-				Max                  *float32                                             `json:"max,omitempty"`
-				Min                  *float32                                             `json:"min,omitempty"`
-				Multiple             *bool                                                `json:"multiple,omitempty"`
-				PromptOnInstallation *bool                                                `json:"promptOnInstallation,omitempty"`
-				Required             *bool                                                `json:"required,omitempty"`
-				Sensitive            *bool                                                `json:"sensitive,omitempty"`
-				Title                string                                               `json:"title"`
-				Type                 UpdateInternalMcpCatalogItem200UserConfigType        `json:"type"`
-			} `json:"userConfig"`
-			Version *string `json:"version"`
+			UpdatedAt  time.Time                   `json:"updatedAt"`
+			UserConfig *map[string]UserConfigField `json:"userConfig"`
+			Version    *string                     `json:"version"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err

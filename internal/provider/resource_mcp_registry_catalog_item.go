@@ -60,6 +60,40 @@ type MCPServerRegistryResourceModel struct {
 	OauthClientSecretVaultPath types.String `tfsdk:"oauth_client_secret_vault_path"`
 
 	EnterpriseManagedConfig *EnterpriseManagedConfigModel `tfsdk:"enterprise_managed_config"`
+
+	UserConfig types.Map `tfsdk:"user_config"`
+}
+
+// UserConfigFieldModel mirrors a single entry in the `userConfig` map on an MCP catalog item.
+// Defaults are polymorphic on the backend (string | number | bool | []string); we expose the
+// default as a JSON-encoded string so all variants round-trip losslessly. Users can write
+// plain strings directly or use `jsonencode(...)` for non-string defaults.
+type UserConfigFieldModel struct {
+	Title                types.String  `tfsdk:"title"`
+	Description          types.String  `tfsdk:"description"`
+	Type                 types.String  `tfsdk:"type"`
+	Default              types.String  `tfsdk:"default"`
+	Required             types.Bool    `tfsdk:"required"`
+	Sensitive            types.Bool    `tfsdk:"sensitive"`
+	Multiple             types.Bool    `tfsdk:"multiple"`
+	Min                  types.Float64 `tfsdk:"min"`
+	Max                  types.Float64 `tfsdk:"max"`
+	HeaderName           types.String  `tfsdk:"header_name"`
+	PromptOnInstallation types.Bool    `tfsdk:"prompt_on_installation"`
+}
+
+var userConfigAttrTypes = map[string]attr.Type{
+	"title":                  types.StringType,
+	"description":            types.StringType,
+	"type":                   types.StringType,
+	"default":                types.StringType,
+	"required":               types.BoolType,
+	"sensitive":              types.BoolType,
+	"multiple":               types.BoolType,
+	"min":                    types.Float64Type,
+	"max":                    types.Float64Type,
+	"header_name":            types.StringType,
+	"prompt_on_installation": types.BoolType,
 }
 
 // EnterpriseManagedConfigModel mirrors the enterpriseManagedConfig object for catalog items
@@ -104,7 +138,12 @@ type LocalConfigModel struct {
 }
 
 type ImagePullSecretModel struct {
-	Name types.String `tfsdk:"name"`
+	Source   types.String `tfsdk:"source"`
+	Name     types.String `tfsdk:"name"`
+	Server   types.String `tfsdk:"server"`
+	Username types.String `tfsdk:"username"`
+	Password types.String `tfsdk:"password"`
+	Email    types.String `tfsdk:"email"`
 }
 
 type EnvFromModel struct {
@@ -119,60 +158,78 @@ type RemoteConfigModel struct {
 }
 
 type OAuthConfigModel struct {
-	ClientID                 types.String `tfsdk:"client_id"`
-	ClientSecret             types.String `tfsdk:"client_secret"`
-	RedirectURIs             types.List   `tfsdk:"redirect_uris"`
-	Scopes                   types.List   `tfsdk:"scopes"`
-	SupportsResourceMetadata types.Bool   `tfsdk:"supports_resource_metadata"`
-	AuthorizationEndpoint    types.String `tfsdk:"authorization_endpoint"`
+	ClientID                 types.String  `tfsdk:"client_id"`
+	ClientSecret             types.String  `tfsdk:"client_secret"`
+	RedirectURIs             types.List    `tfsdk:"redirect_uris"`
+	Scopes                   types.List    `tfsdk:"scopes"`
+	DefaultScopes            types.List    `tfsdk:"default_scopes"`
+	SupportsResourceMetadata types.Bool    `tfsdk:"supports_resource_metadata"`
+	AuthorizationEndpoint    types.String  `tfsdk:"authorization_endpoint"`
+	TokenEndpoint            types.String  `tfsdk:"token_endpoint"`
+	AuthServerURL            types.String  `tfsdk:"auth_server_url"`
+	ResourceMetadataURL      types.String  `tfsdk:"resource_metadata_url"`
+	WellKnownURL             types.String  `tfsdk:"well_known_url"`
+	GrantType                types.String  `tfsdk:"grant_type"`
+	Audience                 types.String  `tfsdk:"audience"`
+	AccessTokenEnvVar        types.String  `tfsdk:"access_token_env_var"`
+	BrowserAuth              types.Bool    `tfsdk:"browser_auth"`
+	GenericOauth             types.Bool    `tfsdk:"generic_oauth"`
+	RequiresProxy            types.Bool    `tfsdk:"requires_proxy"`
+	ProviderName             types.String  `tfsdk:"provider_name"`
+	StreamableHTTPURL        types.String  `tfsdk:"streamable_http_url"`
+	StreamableHTTPPort       types.Float64 `tfsdk:"streamable_http_port"`
 }
 
 // buildCreateOAuthConfig builds the OauthConfig for Create requests.
 func buildCreateOAuthConfig(ctx context.Context, oauthConfig OAuthConfigModel, serverURL string, serverName string, diags *diag.Diagnostics) *struct {
-	AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-	AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-	AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-	BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-	ClientId                 string   `json:"client_id"`
-	ClientSecret             *string  `json:"client_secret,omitempty"`
-	DefaultScopes            []string `json:"default_scopes"`
-	Description              *string  `json:"description,omitempty"`
-	GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-	Name                     string   `json:"name"`
-	ProviderName             *string  `json:"provider_name,omitempty"`
-	RedirectUris             []string `json:"redirect_uris"`
-	RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-	ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-	Scopes                   []string `json:"scopes"`
-	ServerUrl                string   `json:"server_url"`
-	StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-	StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-	SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-	TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-	WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	AccessTokenEnvVar        *string                                                          `json:"access_token_env_var,omitempty"`
+	Audience                 *string                                                          `json:"audience,omitempty"`
+	AuthServerUrl            *string                                                          `json:"auth_server_url,omitempty"`
+	AuthorizationEndpoint    *string                                                          `json:"authorization_endpoint,omitempty"`
+	BrowserAuth              *bool                                                            `json:"browser_auth,omitempty"`
+	ClientId                 string                                                           `json:"client_id"`
+	ClientSecret             *string                                                          `json:"client_secret,omitempty"`
+	DefaultScopes            []string                                                         `json:"default_scopes"`
+	Description              *string                                                          `json:"description,omitempty"`
+	GenericOauth             *bool                                                            `json:"generic_oauth,omitempty"`
+	GrantType                *client.CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+	Name                     string                                                           `json:"name"`
+	ProviderName             *string                                                          `json:"provider_name,omitempty"`
+	RedirectUris             []string                                                         `json:"redirect_uris"`
+	RequiresProxy            *bool                                                            `json:"requires_proxy,omitempty"`
+	ResourceMetadataUrl      *string                                                          `json:"resource_metadata_url,omitempty"`
+	Scopes                   []string                                                         `json:"scopes"`
+	ServerUrl                string                                                           `json:"server_url"`
+	StreamableHttpPort       *float32                                                         `json:"streamable_http_port,omitempty"`
+	StreamableHttpUrl        *string                                                          `json:"streamable_http_url,omitempty"`
+	SupportsResourceMetadata bool                                                             `json:"supports_resource_metadata"`
+	TokenEndpoint            *string                                                          `json:"token_endpoint,omitempty"`
+	WellKnownUrl             *string                                                          `json:"well_known_url,omitempty"`
 } {
 	result := &struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                          `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                          `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                          `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                          `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                            `json:"browser_auth,omitempty"`
+		ClientId                 string                                                           `json:"client_id"`
+		ClientSecret             *string                                                          `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                         `json:"default_scopes"`
+		Description              *string                                                          `json:"description,omitempty"`
+		GenericOauth             *bool                                                            `json:"generic_oauth,omitempty"`
+		GrantType                *client.CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                           `json:"name"`
+		ProviderName             *string                                                          `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                         `json:"redirect_uris"`
+		RequiresProxy            *bool                                                            `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                          `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                         `json:"scopes"`
+		ServerUrl                string                                                           `json:"server_url"`
+		StreamableHttpPort       *float32                                                         `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                          `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                             `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                          `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                          `json:"well_known_url,omitempty"`
 	}{
 		DefaultScopes: []string{},
 		RedirectUris:  []string{},
@@ -206,55 +263,116 @@ func buildCreateOAuthConfig(ctx context.Context, oauthConfig OAuthConfigModel, s
 		result.AuthorizationEndpoint = &endpoint
 	}
 
+	if !oauthConfig.AccessTokenEnvVar.IsNull() {
+		v := oauthConfig.AccessTokenEnvVar.ValueString()
+		result.AccessTokenEnvVar = &v
+	}
+	if !oauthConfig.Audience.IsNull() {
+		v := oauthConfig.Audience.ValueString()
+		result.Audience = &v
+	}
+	if !oauthConfig.AuthServerURL.IsNull() {
+		v := oauthConfig.AuthServerURL.ValueString()
+		result.AuthServerUrl = &v
+	}
+	if !oauthConfig.BrowserAuth.IsNull() {
+		v := oauthConfig.BrowserAuth.ValueBool()
+		result.BrowserAuth = &v
+	}
+	if !oauthConfig.DefaultScopes.IsNull() {
+		var ds []string
+		diags.Append(oauthConfig.DefaultScopes.ElementsAs(ctx, &ds, false)...)
+		result.DefaultScopes = ds
+	}
+	if !oauthConfig.GenericOauth.IsNull() {
+		v := oauthConfig.GenericOauth.ValueBool()
+		result.GenericOauth = &v
+	}
+	if !oauthConfig.GrantType.IsNull() {
+		v := client.CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType(oauthConfig.GrantType.ValueString())
+		result.GrantType = &v
+	}
+	if !oauthConfig.ProviderName.IsNull() {
+		v := oauthConfig.ProviderName.ValueString()
+		result.ProviderName = &v
+	}
+	if !oauthConfig.RequiresProxy.IsNull() {
+		v := oauthConfig.RequiresProxy.ValueBool()
+		result.RequiresProxy = &v
+	}
+	if !oauthConfig.ResourceMetadataURL.IsNull() {
+		v := oauthConfig.ResourceMetadataURL.ValueString()
+		result.ResourceMetadataUrl = &v
+	}
+	if !oauthConfig.StreamableHTTPURL.IsNull() {
+		v := oauthConfig.StreamableHTTPURL.ValueString()
+		result.StreamableHttpUrl = &v
+	}
+	if !oauthConfig.StreamableHTTPPort.IsNull() {
+		v := float32(oauthConfig.StreamableHTTPPort.ValueFloat64())
+		result.StreamableHttpPort = &v
+	}
+	if !oauthConfig.TokenEndpoint.IsNull() {
+		v := oauthConfig.TokenEndpoint.ValueString()
+		result.TokenEndpoint = &v
+	}
+	if !oauthConfig.WellKnownURL.IsNull() {
+		v := oauthConfig.WellKnownURL.ValueString()
+		result.WellKnownUrl = &v
+	}
 	return result
 }
 
 // buildUpdateOAuthConfig builds the OauthConfig for Update requests.
 func buildUpdateOAuthConfig(ctx context.Context, oauthConfig OAuthConfigModel, serverURL string, serverName string, diags *diag.Diagnostics) *struct {
-	AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-	AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-	AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-	BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-	ClientId                 string   `json:"client_id"`
-	ClientSecret             *string  `json:"client_secret,omitempty"`
-	DefaultScopes            []string `json:"default_scopes"`
-	Description              *string  `json:"description,omitempty"`
-	GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-	Name                     string   `json:"name"`
-	ProviderName             *string  `json:"provider_name,omitempty"`
-	RedirectUris             []string `json:"redirect_uris"`
-	RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-	ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-	Scopes                   []string `json:"scopes"`
-	ServerUrl                string   `json:"server_url"`
-	StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-	StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-	SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-	TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-	WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+	AccessTokenEnvVar        *string                                                          `json:"access_token_env_var,omitempty"`
+	Audience                 *string                                                          `json:"audience,omitempty"`
+	AuthServerUrl            *string                                                          `json:"auth_server_url,omitempty"`
+	AuthorizationEndpoint    *string                                                          `json:"authorization_endpoint,omitempty"`
+	BrowserAuth              *bool                                                            `json:"browser_auth,omitempty"`
+	ClientId                 string                                                           `json:"client_id"`
+	ClientSecret             *string                                                          `json:"client_secret,omitempty"`
+	DefaultScopes            []string                                                         `json:"default_scopes"`
+	Description              *string                                                          `json:"description,omitempty"`
+	GenericOauth             *bool                                                            `json:"generic_oauth,omitempty"`
+	GrantType                *client.UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+	Name                     string                                                           `json:"name"`
+	ProviderName             *string                                                          `json:"provider_name,omitempty"`
+	RedirectUris             []string                                                         `json:"redirect_uris"`
+	RequiresProxy            *bool                                                            `json:"requires_proxy,omitempty"`
+	ResourceMetadataUrl      *string                                                          `json:"resource_metadata_url,omitempty"`
+	Scopes                   []string                                                         `json:"scopes"`
+	ServerUrl                string                                                           `json:"server_url"`
+	StreamableHttpPort       *float32                                                         `json:"streamable_http_port,omitempty"`
+	StreamableHttpUrl        *string                                                          `json:"streamable_http_url,omitempty"`
+	SupportsResourceMetadata bool                                                             `json:"supports_resource_metadata"`
+	TokenEndpoint            *string                                                          `json:"token_endpoint,omitempty"`
+	WellKnownUrl             *string                                                          `json:"well_known_url,omitempty"`
 } {
 	result := &struct {
-		AccessTokenEnvVar        *string  `json:"access_token_env_var,omitempty"`
-		AuthServerUrl            *string  `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string  `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool    `json:"browser_auth,omitempty"`
-		ClientId                 string   `json:"client_id"`
-		ClientSecret             *string  `json:"client_secret,omitempty"`
-		DefaultScopes            []string `json:"default_scopes"`
-		Description              *string  `json:"description,omitempty"`
-		GenericOauth             *bool    `json:"generic_oauth,omitempty"`
-		Name                     string   `json:"name"`
-		ProviderName             *string  `json:"provider_name,omitempty"`
-		RedirectUris             []string `json:"redirect_uris"`
-		RequiresProxy            *bool    `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string  `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string `json:"scopes"`
-		ServerUrl                string   `json:"server_url"`
-		StreamableHttpPort       *float32 `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string  `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool     `json:"supports_resource_metadata"`
-		TokenEndpoint            *string  `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string  `json:"well_known_url,omitempty"`
+		AccessTokenEnvVar        *string                                                          `json:"access_token_env_var,omitempty"`
+		Audience                 *string                                                          `json:"audience,omitempty"`
+		AuthServerUrl            *string                                                          `json:"auth_server_url,omitempty"`
+		AuthorizationEndpoint    *string                                                          `json:"authorization_endpoint,omitempty"`
+		BrowserAuth              *bool                                                            `json:"browser_auth,omitempty"`
+		ClientId                 string                                                           `json:"client_id"`
+		ClientSecret             *string                                                          `json:"client_secret,omitempty"`
+		DefaultScopes            []string                                                         `json:"default_scopes"`
+		Description              *string                                                          `json:"description,omitempty"`
+		GenericOauth             *bool                                                            `json:"generic_oauth,omitempty"`
+		GrantType                *client.UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
+		Name                     string                                                           `json:"name"`
+		ProviderName             *string                                                          `json:"provider_name,omitempty"`
+		RedirectUris             []string                                                         `json:"redirect_uris"`
+		RequiresProxy            *bool                                                            `json:"requires_proxy,omitempty"`
+		ResourceMetadataUrl      *string                                                          `json:"resource_metadata_url,omitempty"`
+		Scopes                   []string                                                         `json:"scopes"`
+		ServerUrl                string                                                           `json:"server_url"`
+		StreamableHttpPort       *float32                                                         `json:"streamable_http_port,omitempty"`
+		StreamableHttpUrl        *string                                                          `json:"streamable_http_url,omitempty"`
+		SupportsResourceMetadata bool                                                             `json:"supports_resource_metadata"`
+		TokenEndpoint            *string                                                          `json:"token_endpoint,omitempty"`
+		WellKnownUrl             *string                                                          `json:"well_known_url,omitempty"`
 	}{
 		DefaultScopes: []string{},
 		RedirectUris:  []string{},
@@ -288,6 +406,63 @@ func buildUpdateOAuthConfig(ctx context.Context, oauthConfig OAuthConfigModel, s
 		result.AuthorizationEndpoint = &endpoint
 	}
 
+	if !oauthConfig.AccessTokenEnvVar.IsNull() {
+		v := oauthConfig.AccessTokenEnvVar.ValueString()
+		result.AccessTokenEnvVar = &v
+	}
+	if !oauthConfig.Audience.IsNull() {
+		v := oauthConfig.Audience.ValueString()
+		result.Audience = &v
+	}
+	if !oauthConfig.AuthServerURL.IsNull() {
+		v := oauthConfig.AuthServerURL.ValueString()
+		result.AuthServerUrl = &v
+	}
+	if !oauthConfig.BrowserAuth.IsNull() {
+		v := oauthConfig.BrowserAuth.ValueBool()
+		result.BrowserAuth = &v
+	}
+	if !oauthConfig.DefaultScopes.IsNull() {
+		var ds []string
+		diags.Append(oauthConfig.DefaultScopes.ElementsAs(ctx, &ds, false)...)
+		result.DefaultScopes = ds
+	}
+	if !oauthConfig.GenericOauth.IsNull() {
+		v := oauthConfig.GenericOauth.ValueBool()
+		result.GenericOauth = &v
+	}
+	if !oauthConfig.GrantType.IsNull() {
+		v := client.UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType(oauthConfig.GrantType.ValueString())
+		result.GrantType = &v
+	}
+	if !oauthConfig.ProviderName.IsNull() {
+		v := oauthConfig.ProviderName.ValueString()
+		result.ProviderName = &v
+	}
+	if !oauthConfig.RequiresProxy.IsNull() {
+		v := oauthConfig.RequiresProxy.ValueBool()
+		result.RequiresProxy = &v
+	}
+	if !oauthConfig.ResourceMetadataURL.IsNull() {
+		v := oauthConfig.ResourceMetadataURL.ValueString()
+		result.ResourceMetadataUrl = &v
+	}
+	if !oauthConfig.StreamableHTTPURL.IsNull() {
+		v := oauthConfig.StreamableHTTPURL.ValueString()
+		result.StreamableHttpUrl = &v
+	}
+	if !oauthConfig.StreamableHTTPPort.IsNull() {
+		v := float32(oauthConfig.StreamableHTTPPort.ValueFloat64())
+		result.StreamableHttpPort = &v
+	}
+	if !oauthConfig.TokenEndpoint.IsNull() {
+		v := oauthConfig.TokenEndpoint.ValueString()
+		result.TokenEndpoint = &v
+	}
+	if !oauthConfig.WellKnownURL.IsNull() {
+		v := oauthConfig.WellKnownURL.ValueString()
+		result.WellKnownUrl = &v
+	}
 	return result
 }
 
@@ -409,13 +584,34 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 						Optional:            true,
 					},
 					"image_pull_secrets": schema.ListNestedAttribute{
-						MarkdownDescription: "List of existing Kubernetes image pull secrets to use for pulling the Docker image",
+						MarkdownDescription: "Kubernetes image pull secrets for the MCP server pod. Supports two variants: `source = \"existing\"` references a pre-existing secret by `name`; `source = \"credentials\"` creates a new secret from explicit registry credentials (`server`, `username`, `password`, optional `email`).",
 						Optional:            true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
+								"source": schema.StringAttribute{
+									MarkdownDescription: "Source of the pull secret. One of `existing`, `credentials`. Defaults to `existing` for backward compatibility when only `name` is set.",
+									Optional:            true,
+								},
 								"name": schema.StringAttribute{
-									MarkdownDescription: "Name of the existing Kubernetes secret",
-									Required:            true,
+									MarkdownDescription: "Name of the existing Kubernetes secret (required for `source = existing`).",
+									Optional:            true,
+								},
+								"server": schema.StringAttribute{
+									MarkdownDescription: "Docker registry server URL (required for `source = credentials`).",
+									Optional:            true,
+								},
+								"username": schema.StringAttribute{
+									MarkdownDescription: "Registry username (required for `source = credentials`).",
+									Optional:            true,
+								},
+								"password": schema.StringAttribute{
+									MarkdownDescription: "Registry password (required for `source = credentials`). Write-only: the backend never echoes it back. To stay consistent across refreshes the provider preserves it keyed by `(server, username)`; rotating either of those values drops the password from state and forces re-entry.",
+									Optional:            true,
+									Sensitive:           true,
+								},
+								"email": schema.StringAttribute{
+									MarkdownDescription: "Registry email (optional for `source = credentials`).",
+									Optional:            true,
 								},
 							},
 						},
@@ -453,12 +649,70 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 								Optional:            true,
 								ElementType:         types.StringType,
 							},
+							"default_scopes": schema.ListAttribute{
+								MarkdownDescription: "Scopes requested by default when the server doesn't advertise its own.",
+								Optional:            true,
+								ElementType:         types.StringType,
+							},
 							"supports_resource_metadata": schema.BoolAttribute{
 								MarkdownDescription: "Enable if the server publishes OAuth metadata at /.well-known/oauth-authorization-server for automatic endpoint discovery",
 								Optional:            true,
+								Computed:            true,
 							},
 							"authorization_endpoint": schema.StringAttribute{
 								MarkdownDescription: "Custom OAuth authorization endpoint URL",
+								Optional:            true,
+							},
+							"token_endpoint": schema.StringAttribute{
+								MarkdownDescription: "Custom OAuth token endpoint URL.",
+								Optional:            true,
+							},
+							"auth_server_url": schema.StringAttribute{
+								MarkdownDescription: "Override for the OAuth authorization server root URL.",
+								Optional:            true,
+							},
+							"resource_metadata_url": schema.StringAttribute{
+								MarkdownDescription: "URL of the protected-resource metadata document.",
+								Optional:            true,
+							},
+							"well_known_url": schema.StringAttribute{
+								MarkdownDescription: "Override for the `.well-known` discovery document URL.",
+								Optional:            true,
+							},
+							"grant_type": schema.StringAttribute{
+								MarkdownDescription: "OAuth grant type. One of `authorization_code`, `client_credentials`.",
+								Optional:            true,
+							},
+							"audience": schema.StringAttribute{
+								MarkdownDescription: "`aud` claim to request when performing token exchange.",
+								Optional:            true,
+							},
+							"access_token_env_var": schema.StringAttribute{
+								MarkdownDescription: "Environment variable name to inject the acquired access token into.",
+								Optional:            true,
+							},
+							"browser_auth": schema.BoolAttribute{
+								MarkdownDescription: "Prompt the installer through an interactive browser auth flow.",
+								Optional:            true,
+							},
+							"generic_oauth": schema.BoolAttribute{
+								MarkdownDescription: "Treat the server as a generic OAuth provider (skip vendor-specific probes).",
+								Optional:            true,
+							},
+							"requires_proxy": schema.BoolAttribute{
+								MarkdownDescription: "Route OAuth redirects through the Archestra proxy.",
+								Optional:            true,
+							},
+							"provider_name": schema.StringAttribute{
+								MarkdownDescription: "Human-readable name of the OAuth provider for display.",
+								Optional:            true,
+							},
+							"streamable_http_url": schema.StringAttribute{
+								MarkdownDescription: "Streamable-HTTP MCP server URL override.",
+								Optional:            true,
+							},
+							"streamable_http_port": schema.Float64Attribute{
+								MarkdownDescription: "Streamable-HTTP MCP server port override.",
 								Optional:            true,
 							},
 						},
@@ -545,12 +799,16 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"client_secret_id": schema.StringAttribute{
-				MarkdownDescription: "UUID of a stored secret holding the OAuth client secret. Mutually exclusive with inline `oauth_config.client_secret`.",
+				MarkdownDescription: "UUID of a stored secret holding the OAuth client secret. Mutually exclusive with inline `oauth_config.client_secret`. Computed when the backend auto-creates a BYOS vault reference.",
 				Optional:            true,
+				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"local_config_secret_id": schema.StringAttribute{
-				MarkdownDescription: "UUID of a stored secret holding local_config environment values.",
+				MarkdownDescription: "UUID of a stored secret holding local_config environment values. Computed when the backend auto-creates a BYOS vault reference.",
 				Optional:            true,
+				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"local_config_vault_key": schema.StringAttribute{
 				MarkdownDescription: "BYOS vault key for local_config secrets.",
@@ -593,6 +851,34 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 					"assertion_mode": schema.StringAttribute{
 						Optional:            true,
 						MarkdownDescription: "Assertion exchange mode. One of `exchange`, `passthrough`.",
+					},
+				},
+			},
+			"user_config": schema.MapNestedAttribute{
+				MarkdownDescription: "User-configurable fields collected from the installer at install time. The map key is the field name the installer will see.",
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"title":       schema.StringAttribute{Required: true, MarkdownDescription: "Human-readable field title shown to the installer."},
+						"description": schema.StringAttribute{Required: true, MarkdownDescription: "Description of the field shown to the installer."},
+						"type": schema.StringAttribute{
+							Required:            true,
+							MarkdownDescription: "Field type. One of `string`, `number`, `boolean`, `file`, `directory`.",
+							Validators: []validator.String{
+								stringvalidator.OneOf("string", "number", "boolean", "file", "directory"),
+							},
+						},
+						"default": schema.StringAttribute{
+							Optional:            true,
+							MarkdownDescription: "Default value. Use `jsonencode(...)` to encode non-string defaults (number, bool, or []string). Plain strings may be provided as-is.",
+						},
+						"required":               schema.BoolAttribute{Optional: true, MarkdownDescription: "Whether the installer must supply this field."},
+						"sensitive":              schema.BoolAttribute{Optional: true, MarkdownDescription: "If true, the value is redacted in logs and UI."},
+						"multiple":               schema.BoolAttribute{Optional: true, MarkdownDescription: "Whether multiple values may be supplied."},
+						"min":                    schema.Float64Attribute{Optional: true, MarkdownDescription: "Minimum value (for numeric fields)."},
+						"max":                    schema.Float64Attribute{Optional: true, MarkdownDescription: "Maximum value (for numeric fields)."},
+						"header_name":            schema.StringAttribute{Optional: true, MarkdownDescription: "HTTP header name to bind this value to when installing a remote server."},
+						"prompt_on_installation": schema.BoolAttribute{Optional: true, MarkdownDescription: "Whether to prompt the user for this value during installation."},
 					},
 				},
 			},
@@ -1020,10 +1306,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 				return
 			}
 			for _, ips := range ipsModels {
-				createImagePullSecrets = append(createImagePullSecrets, map[string]string{
-					"source": "existing",
-					"name":   ips.Name.ValueString(),
-				})
+				createImagePullSecrets = append(createImagePullSecrets, expandImagePullSecret(ips))
 			}
 		}
 
@@ -1098,10 +1381,17 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		}
 	}
 
-	// Call API - if imagePullSecrets need to be set, marshal to raw JSON and inject them
-	// because the generated union type has unexported fields that cannot be populated directly
+	// Build user_config override map — injected via raw JSON because default is a polymorphic union.
+	userConfigOverride, diags := expandUserConfig(ctx, data.UserConfig)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Call API - if imagePullSecrets or userConfig need to be set, marshal to raw JSON and inject them
+	// because the generated union types have unexported fields that cannot be populated directly.
 	var apiResp *client.CreateInternalMcpCatalogItemResponse
-	if len(createImagePullSecrets) > 0 {
+	if len(createImagePullSecrets) > 0 || userConfigOverride != nil {
 		bodyBytes, marshalErr := json.Marshal(requestBody)
 		if marshalErr != nil {
 			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", marshalErr))
@@ -1112,8 +1402,11 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 			resp.Diagnostics.AddError("Unmarshal Error", fmt.Sprintf("Unable to unmarshal request body: %s", unmarshalErr))
 			return
 		}
-		if lc, ok := bodyMap["localConfig"].(map[string]interface{}); ok {
+		if lc, ok := bodyMap["localConfig"].(map[string]interface{}); ok && len(createImagePullSecrets) > 0 {
 			lc["imagePullSecrets"] = createImagePullSecrets
+		}
+		if userConfigOverride != nil {
+			bodyMap["userConfig"] = userConfigOverride
 		}
 		finalBytes, marshalErr := json.Marshal(bodyMap)
 		if marshalErr != nil {
@@ -1166,7 +1459,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *MCPServerRegistryResource) mapGetResponseToState(_ context.Context, data *MCPServerRegistryResourceModel, apiResp *client.GetInternalMcpCatalogItemResponse, _ *diag.Diagnostics) {
+func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, data *MCPServerRegistryResourceModel, apiResp *client.GetInternalMcpCatalogItemResponse, diags *diag.Diagnostics) {
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 
@@ -1294,6 +1587,16 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(_ context.Context, dat
 		data.EnterpriseManagedConfig = nil
 	}
 
+	// Map UserConfig. All callers pass a non-nil diags, so marshal/unmarshal
+	// errors always surface on the response.
+	if apiResp.JSON200.UserConfig != nil {
+		uc, ucDiags := flattenUserConfig(apiResp.JSON200.UserConfig)
+		diags.Append(ucDiags...)
+		data.UserConfig = uc
+	} else {
+		data.UserConfig = types.MapNull(types.ObjectType{AttrTypes: userConfigAttrTypes})
+	}
+
 	// Map Teams from API response
 	if len(apiResp.JSON200.Teams) > 0 {
 		teamValues := make([]attr.Value, len(apiResp.JSON200.Teams))
@@ -1333,7 +1636,12 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(_ context.Context, dat
 	envFromObjectType := types.ObjectType{AttrTypes: envFromAttrTypes}
 
 	ipSecretAttrTypes := map[string]attr.Type{
-		"name": types.StringType,
+		"source":   types.StringType,
+		"name":     types.StringType,
+		"server":   types.StringType,
+		"username": types.StringType,
+		"password": types.StringType,
+		"email":    types.StringType,
 	}
 	ipSecretObjectType := types.ObjectType{AttrTypes: ipSecretAttrTypes}
 
@@ -1407,33 +1715,57 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(_ context.Context, dat
 			localConfigObj["node_port"] = types.Float64Value(float64(*apiResp.JSON200.LocalConfig.NodePort))
 		}
 
-		// ImagePullSecrets - parse from raw response body since the generated union type has unexported fields
+		// ImagePullSecrets — parse from raw response body; the generated union type has unexported fields.
 		{
 			var rawResp struct {
 				LocalConfig *struct {
 					ImagePullSecrets *[]struct {
-						Source string `json:"source"`
-						Name   string `json:"name"`
+						Source   string `json:"source"`
+						Name     string `json:"name,omitempty"`
+						Server   string `json:"server,omitempty"`
+						Username string `json:"username,omitempty"`
+						Password string `json:"password,omitempty"`
+						Email    string `json:"email,omitempty"`
 					} `json:"imagePullSecrets,omitempty"`
 				} `json:"localConfig"`
 			}
 			if parseErr := json.Unmarshal(apiResp.Body, &rawResp); parseErr == nil &&
 				rawResp.LocalConfig != nil && rawResp.LocalConfig.ImagePullSecrets != nil &&
 				len(*rawResp.LocalConfig.ImagePullSecrets) > 0 {
-				ipsValues := make([]attr.Value, 0)
-				for _, ips := range *rawResp.LocalConfig.ImagePullSecrets {
-					if ips.Source == "existing" {
-						ipsValues = append(ipsValues, func() attr.Value {
-							v, _ := types.ObjectValue(ipSecretAttrTypes, map[string]attr.Value{
-								"name": types.StringValue(ips.Name),
-							})
-							return v
-						}())
+				// The backend never echoes passwords back; preserve from prior state
+				// keyed by server|username to keep sensitive-value consistency on apply.
+				priorPasswords := make(map[string]types.String)
+				if !data.LocalConfig.IsNull() && !data.LocalConfig.IsUnknown() {
+					var priorLC LocalConfigModel
+					if d := data.LocalConfig.As(ctx, &priorLC, basetypes.ObjectAsOptions{}); !d.HasError() && !priorLC.ImagePullSecrets.IsNull() && !priorLC.ImagePullSecrets.IsUnknown() {
+						var priorIPS []ImagePullSecretModel
+						if d := priorLC.ImagePullSecrets.ElementsAs(ctx, &priorIPS, false); !d.HasError() {
+							for _, p := range priorIPS {
+								key := p.Server.ValueString() + "|" + p.Username.ValueString()
+								priorPasswords[key] = p.Password
+							}
+						}
 					}
 				}
-				if len(ipsValues) > 0 {
-					localConfigObj["image_pull_secrets"], _ = types.ListValue(ipSecretObjectType, ipsValues)
+
+				ipsValues := make([]attr.Value, 0, len(*rawResp.LocalConfig.ImagePullSecrets))
+				for _, ips := range *rawResp.LocalConfig.ImagePullSecrets {
+					password := types.StringNull()
+					if prev, ok := priorPasswords[ips.Server+"|"+ips.Username]; ok && !prev.IsNull() {
+						password = prev
+					}
+					fields := map[string]attr.Value{
+						"source":   types.StringValue(ips.Source),
+						"name":     strOrNull(ips.Name),
+						"server":   strOrNull(ips.Server),
+						"username": strOrNull(ips.Username),
+						"password": password,
+						"email":    strOrNull(ips.Email),
+					}
+					obj, _ := types.ObjectValue(ipSecretAttrTypes, fields)
+					ipsValues = append(ipsValues, obj)
 				}
+				localConfigObj["image_pull_secrets"], _ = types.ListValue(ipSecretObjectType, ipsValues)
 			}
 		}
 
@@ -1493,8 +1825,22 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(_ context.Context, dat
 		"client_secret":              types.StringType,
 		"redirect_uris":              types.ListType{ElemType: types.StringType},
 		"scopes":                     types.ListType{ElemType: types.StringType},
+		"default_scopes":             types.ListType{ElemType: types.StringType},
 		"supports_resource_metadata": types.BoolType,
 		"authorization_endpoint":     types.StringType,
+		"token_endpoint":             types.StringType,
+		"auth_server_url":            types.StringType,
+		"resource_metadata_url":      types.StringType,
+		"well_known_url":             types.StringType,
+		"grant_type":                 types.StringType,
+		"audience":                   types.StringType,
+		"access_token_env_var":       types.StringType,
+		"browser_auth":               types.BoolType,
+		"generic_oauth":              types.BoolType,
+		"requires_proxy":             types.BoolType,
+		"provider_name":              types.StringType,
+		"streamable_http_url":        types.StringType,
+		"streamable_http_port":       types.Float64Type,
 	}
 
 	remoteConfigAttrTypes := map[string]attr.Type{
@@ -1509,35 +1855,90 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(_ context.Context, dat
 
 		// Map OAuth config if present
 		if apiResp.JSON200.OauthConfig != nil {
+			oc := apiResp.JSON200.OauthConfig
+			// Preserve the prior state's client_secret — the API never echoes it back.
+			// Failures to decode the prior object are surfaced with a contextual
+			// summary so users see why the sensitive value was lost on refresh.
+			priorClientSecret := types.StringNull()
+			if !data.RemoteConfig.IsNull() && !data.RemoteConfig.IsUnknown() {
+				var prior RemoteConfigModel
+				priorDiags := data.RemoteConfig.As(ctx, &prior, basetypes.ObjectAsOptions{UnhandledNullAsEmpty: true, UnhandledUnknownAsEmpty: true})
+				if priorDiags.HasError() {
+					diags.AddWarning(
+						"Could not preserve OAuth client_secret from prior state",
+						"Failed to decode prior remote_config while reading the MCP catalog item. "+
+							"The sensitive client_secret may be reset on next apply. Underlying error(s) follow.",
+					)
+					diags.Append(priorDiags...)
+				} else if !prior.OAuthConfig.IsNull() && !prior.OAuthConfig.IsUnknown() {
+					var priorOAuth OAuthConfigModel
+					oauthDiags := prior.OAuthConfig.As(ctx, &priorOAuth, basetypes.ObjectAsOptions{UnhandledNullAsEmpty: true, UnhandledUnknownAsEmpty: true})
+					if oauthDiags.HasError() {
+						diags.AddWarning(
+							"Could not preserve OAuth client_secret from prior state",
+							"Failed to decode prior oauth_config while reading the MCP catalog item. "+
+								"The sensitive client_secret may be reset on next apply. Underlying error(s) follow.",
+						)
+						diags.Append(oauthDiags...)
+					} else {
+						priorClientSecret = priorOAuth.ClientSecret
+					}
+				}
+			}
 			oauthConfigObj := map[string]attr.Value{
-				"client_id":                  types.StringValue(apiResp.JSON200.OauthConfig.ClientId),
-				"client_secret":              types.StringNull(), // Client secret is not returned from API for security
+				"client_id":                  types.StringValue(oc.ClientId),
+				"client_secret":              priorClientSecret,
 				"redirect_uris":              types.ListNull(types.StringType),
 				"scopes":                     types.ListNull(types.StringType),
-				"supports_resource_metadata": types.BoolValue(apiResp.JSON200.OauthConfig.SupportsResourceMetadata),
-				"authorization_endpoint":     types.StringNull(),
+				"default_scopes":             types.ListNull(types.StringType),
+				"supports_resource_metadata": types.BoolValue(oc.SupportsResourceMetadata),
+				"authorization_endpoint":     stringValueOrNull(oc.AuthorizationEndpoint),
+				"token_endpoint":             stringValueOrNull(oc.TokenEndpoint),
+				"auth_server_url":            stringValueOrNull(oc.AuthServerUrl),
+				"resource_metadata_url":      stringValueOrNull(oc.ResourceMetadataUrl),
+				"well_known_url":             stringValueOrNull(oc.WellKnownUrl),
+				"audience":                   stringValueOrNull(oc.Audience),
+				"access_token_env_var":       stringValueOrNull(oc.AccessTokenEnvVar),
+				"browser_auth":               boolValueOrNull(oc.BrowserAuth),
+				"generic_oauth":              boolValueOrNull(oc.GenericOauth),
+				"requires_proxy":             boolValueOrNull(oc.RequiresProxy),
+				"provider_name":              stringValueOrNull(oc.ProviderName),
+				"streamable_http_url":        stringValueOrNull(oc.StreamableHttpUrl),
+				"streamable_http_port":       types.Float64Null(),
+				"grant_type":                 types.StringNull(),
 			}
-
-			if apiResp.JSON200.OauthConfig.AuthorizationEndpoint != nil {
-				oauthConfigObj["authorization_endpoint"] = types.StringValue(*apiResp.JSON200.OauthConfig.AuthorizationEndpoint)
+			if oc.GrantType != nil {
+				oauthConfigObj["grant_type"] = types.StringValue(string(*oc.GrantType))
+			}
+			if oc.StreamableHttpPort != nil {
+				oauthConfigObj["streamable_http_port"] = types.Float64Value(float64(*oc.StreamableHttpPort))
 			}
 
 			// Redirect URIs
-			if len(apiResp.JSON200.OauthConfig.RedirectUris) > 0 {
-				redirectValues := make([]attr.Value, len(apiResp.JSON200.OauthConfig.RedirectUris))
-				for i, uri := range apiResp.JSON200.OauthConfig.RedirectUris {
+			if len(oc.RedirectUris) > 0 {
+				redirectValues := make([]attr.Value, len(oc.RedirectUris))
+				for i, uri := range oc.RedirectUris {
 					redirectValues[i] = types.StringValue(uri)
 				}
 				oauthConfigObj["redirect_uris"], _ = types.ListValue(types.StringType, redirectValues)
 			}
 
 			// Scopes
-			if len(apiResp.JSON200.OauthConfig.Scopes) > 0 {
-				scopeValues := make([]attr.Value, len(apiResp.JSON200.OauthConfig.Scopes))
-				for i, scope := range apiResp.JSON200.OauthConfig.Scopes {
+			if len(oc.Scopes) > 0 {
+				scopeValues := make([]attr.Value, len(oc.Scopes))
+				for i, scope := range oc.Scopes {
 					scopeValues[i] = types.StringValue(scope)
 				}
 				oauthConfigObj["scopes"], _ = types.ListValue(types.StringType, scopeValues)
+			}
+
+			// Default scopes
+			if len(oc.DefaultScopes) > 0 {
+				dsValues := make([]attr.Value, len(oc.DefaultScopes))
+				for i, s := range oc.DefaultScopes {
+					dsValues[i] = types.StringValue(s)
+				}
+				oauthConfigObj["default_scopes"], _ = types.ListValue(types.StringType, dsValues)
 			}
 
 			remoteConfigObj["oauth_config"], _ = types.ObjectValue(oauthConfigAttrTypes, oauthConfigObj)
@@ -2043,10 +2444,7 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 				return
 			}
 			for _, ips := range ipsModels {
-				updateImagePullSecrets = append(updateImagePullSecrets, map[string]string{
-					"source": "existing",
-					"name":   ips.Name.ValueString(),
-				})
+				updateImagePullSecrets = append(updateImagePullSecrets, expandImagePullSecret(ips))
 			}
 		}
 
@@ -2125,9 +2523,16 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		}
 	}
 
-	// Call API - if imagePullSecrets need to be set, marshal to raw JSON and inject them
+	// Build user_config override map — injected via raw JSON (polymorphic default union).
+	updateUserConfigOverride, ucDiags := expandUserConfig(ctx, data.UserConfig)
+	resp.Diagnostics.Append(ucDiags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Call API - if imagePullSecrets or userConfig need to be set, marshal to raw JSON and inject them
 	var updateApiResp *client.UpdateInternalMcpCatalogItemResponse
-	if len(updateImagePullSecrets) > 0 {
+	if len(updateImagePullSecrets) > 0 || updateUserConfigOverride != nil {
 		bodyBytes, marshalErr := json.Marshal(requestBody)
 		if marshalErr != nil {
 			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", marshalErr))
@@ -2138,8 +2543,11 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 			resp.Diagnostics.AddError("Unmarshal Error", fmt.Sprintf("Unable to unmarshal request body: %s", unmarshalErr))
 			return
 		}
-		if lc, ok := bodyMap["localConfig"].(map[string]interface{}); ok {
+		if lc, ok := bodyMap["localConfig"].(map[string]interface{}); ok && len(updateImagePullSecrets) > 0 {
 			lc["imagePullSecrets"] = updateImagePullSecrets
+		}
+		if updateUserConfigOverride != nil {
+			bodyMap["userConfig"] = updateUserConfigOverride
 		}
 		finalBytes, marshalErr := json.Marshal(bodyMap)
 		if marshalErr != nil {
@@ -2214,4 +2622,185 @@ func (r *MCPServerRegistryResource) Delete(ctx context.Context, req resource.Del
 
 func (r *MCPServerRegistryResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+}
+
+// strOrNull returns a null Terraform string for empty go strings, otherwise a string value.
+func strOrNull(s string) types.String {
+	if s == "" {
+		return types.StringNull()
+	}
+	return types.StringValue(s)
+}
+
+// expandImagePullSecret converts one ImagePullSecretModel into the map-shape injected into the
+// raw request body. Defaults to `source = "existing"` when only `name` is set, preserving
+// backwards compatibility with older configs.
+func expandImagePullSecret(ips ImagePullSecretModel) map[string]string {
+	source := ips.Source.ValueString()
+	if source == "" {
+		source = "existing"
+	}
+	entry := map[string]string{"source": source}
+	if source == "credentials" {
+		if !ips.Server.IsNull() {
+			entry["server"] = ips.Server.ValueString()
+		}
+		if !ips.Username.IsNull() {
+			entry["username"] = ips.Username.ValueString()
+		}
+		if !ips.Password.IsNull() {
+			entry["password"] = ips.Password.ValueString()
+		}
+		if !ips.Email.IsNull() {
+			entry["email"] = ips.Email.ValueString()
+		}
+	} else {
+		entry["name"] = ips.Name.ValueString()
+	}
+	return entry
+}
+
+// expandUserConfig builds the JSON-ready override map for the polymorphic backend userConfig.
+// Returns nil when the attribute is null/unknown. Default values are supplied as JSON strings on
+// the Terraform side; we try to parse them as JSON, falling back to a plain string for unquoted
+// input (friendly HCL: `default = "my-value"`).
+func expandUserConfig(ctx context.Context, m types.Map) (map[string]interface{}, diag.Diagnostics) {
+	var diags diag.Diagnostics
+	if m.IsNull() || m.IsUnknown() {
+		return nil, diags
+	}
+	var entries map[string]UserConfigFieldModel
+	diags.Append(m.ElementsAs(ctx, &entries, false)...)
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := make(map[string]interface{}, len(entries))
+	for key, f := range entries {
+		entry := map[string]interface{}{
+			"title":       f.Title.ValueString(),
+			"description": f.Description.ValueString(),
+			"type":        f.Type.ValueString(),
+		}
+		if !f.Default.IsNull() && !f.Default.IsUnknown() {
+			s := f.Default.ValueString()
+			var parsed interface{}
+			if err := json.Unmarshal([]byte(s), &parsed); err == nil {
+				entry["default"] = parsed
+			} else {
+				entry["default"] = s
+			}
+		}
+		if !f.Required.IsNull() {
+			entry["required"] = f.Required.ValueBool()
+		}
+		if !f.Sensitive.IsNull() {
+			entry["sensitive"] = f.Sensitive.ValueBool()
+		}
+		if !f.Multiple.IsNull() {
+			entry["multiple"] = f.Multiple.ValueBool()
+		}
+		// The backend struct stores min/max as float32; Terraform only has
+		// Float64. Narrow here so the server never receives spurious extra
+		// precision (otherwise Go's json decoder silently drops the overflow).
+		if !f.Min.IsNull() {
+			entry["min"] = float32(f.Min.ValueFloat64())
+		}
+		if !f.Max.IsNull() {
+			entry["max"] = float32(f.Max.ValueFloat64())
+		}
+		if !f.HeaderName.IsNull() {
+			entry["headerName"] = f.HeaderName.ValueString()
+		}
+		if !f.PromptOnInstallation.IsNull() {
+			entry["promptOnInstallation"] = f.PromptOnInstallation.ValueBool()
+		}
+		out[key] = entry
+	}
+	return out, diags
+}
+
+// flattenUserConfig reads the backend's generic userConfig payload back into a Terraform map.
+// Uses a JSON round-trip so callers can pass the generated anonymous-struct pointer directly.
+func flattenUserConfig(raw interface{}) (types.Map, diag.Diagnostics) {
+	var diags diag.Diagnostics
+	objType := types.ObjectType{AttrTypes: userConfigAttrTypes}
+	if raw == nil {
+		return types.MapNull(objType), diags
+	}
+
+	b, err := json.Marshal(raw)
+	if err != nil {
+		diags.AddError("Failed to marshal user_config", err.Error())
+		return types.MapNull(objType), diags
+	}
+	var entries map[string]map[string]interface{}
+	if err := json.Unmarshal(b, &entries); err != nil {
+		diags.AddError("Failed to unmarshal user_config", err.Error())
+		return types.MapNull(objType), diags
+	}
+	if len(entries) == 0 {
+		return types.MapNull(objType), diags
+	}
+
+	values := make(map[string]attr.Value, len(entries))
+	for key, v := range entries {
+		fieldVals := map[string]attr.Value{
+			"title":                  types.StringNull(),
+			"description":            types.StringNull(),
+			"type":                   types.StringNull(),
+			"default":                types.StringNull(),
+			"required":               types.BoolNull(),
+			"sensitive":              types.BoolNull(),
+			"multiple":               types.BoolNull(),
+			"min":                    types.Float64Null(),
+			"max":                    types.Float64Null(),
+			"header_name":            types.StringNull(),
+			"prompt_on_installation": types.BoolNull(),
+		}
+		if s, ok := v["title"].(string); ok {
+			fieldVals["title"] = types.StringValue(s)
+		}
+		if s, ok := v["description"].(string); ok {
+			fieldVals["description"] = types.StringValue(s)
+		}
+		if s, ok := v["type"].(string); ok {
+			fieldVals["type"] = types.StringValue(s)
+		}
+		if d, ok := v["default"]; ok && d != nil {
+			if s, isStr := d.(string); isStr {
+				fieldVals["default"] = types.StringValue(s)
+			} else {
+				encoded, _ := json.Marshal(d)
+				fieldVals["default"] = types.StringValue(string(encoded))
+			}
+		}
+		if b, ok := v["required"].(bool); ok {
+			fieldVals["required"] = types.BoolValue(b)
+		}
+		if b, ok := v["sensitive"].(bool); ok {
+			fieldVals["sensitive"] = types.BoolValue(b)
+		}
+		if b, ok := v["multiple"].(bool); ok {
+			fieldVals["multiple"] = types.BoolValue(b)
+		}
+		if n, ok := v["min"].(float64); ok {
+			fieldVals["min"] = types.Float64Value(n)
+		}
+		if n, ok := v["max"].(float64); ok {
+			fieldVals["max"] = types.Float64Value(n)
+		}
+		if s, ok := v["headerName"].(string); ok {
+			fieldVals["header_name"] = types.StringValue(s)
+		}
+		if b, ok := v["promptOnInstallation"].(bool); ok {
+			fieldVals["prompt_on_installation"] = types.BoolValue(b)
+		}
+		obj, d := types.ObjectValue(userConfigAttrTypes, fieldVals)
+		diags.Append(d...)
+		values[key] = obj
+	}
+	result, d := types.MapValue(objType, values)
+	diags.Append(d...)
+	return result, diags
 }

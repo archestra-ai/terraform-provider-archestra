@@ -6,7 +6,9 @@ import (
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -14,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -64,7 +67,7 @@ type OidcConfigModel struct {
 }
 
 type EnterpriseManagedCredentialsModel struct {
-	ProviderType                types.String `tfsdk:"provider_type"`
+	ExchangeStrategy            types.String `tfsdk:"exchange_strategy"`
 	ClientID                    types.String `tfsdk:"client_id"`
 	ClientSecret                types.String `tfsdk:"client_secret"`
 	TokenEndpoint               types.String `tfsdk:"token_endpoint"`
@@ -85,20 +88,21 @@ type OidcMappingModel struct {
 }
 
 type SamlConfigModel struct {
-	Issuer               types.String      `tfsdk:"issuer"`
-	EntryPoint           types.String      `tfsdk:"entry_point"`
-	CallbackURL          types.String      `tfsdk:"callback_url"`
-	Cert                 types.String      `tfsdk:"cert"`
-	Audience             types.String      `tfsdk:"audience"`
-	DigestAlgorithm      types.String      `tfsdk:"digest_algorithm"`
-	IdentifierFormat     types.String      `tfsdk:"identifier_format"`
-	DecryptionPvk        types.String      `tfsdk:"decryption_pvk"`
-	PrivateKey           types.String      `tfsdk:"private_key"`
-	SignatureAlgorithm   types.String      `tfsdk:"signature_algorithm"`
-	WantAssertionsSigned types.Bool        `tfsdk:"want_assertions_signed"`
-	IdpMetadata          *SamlIdpMetadata  `tfsdk:"idp_metadata"`
-	SpMetadata           *SamlSpMetadata   `tfsdk:"sp_metadata"`
-	Mapping              *SamlMappingModel `tfsdk:"mapping"`
+	Issuer               types.String         `tfsdk:"issuer"`
+	EntryPoint           types.String         `tfsdk:"entry_point"`
+	CallbackURL          types.String         `tfsdk:"callback_url"`
+	Cert                 types.String         `tfsdk:"cert"`
+	Audience             types.String         `tfsdk:"audience"`
+	DigestAlgorithm      types.String         `tfsdk:"digest_algorithm"`
+	IdentifierFormat     types.String         `tfsdk:"identifier_format"`
+	DecryptionPvk        types.String         `tfsdk:"decryption_pvk"`
+	PrivateKey           types.String         `tfsdk:"private_key"`
+	SignatureAlgorithm   types.String         `tfsdk:"signature_algorithm"`
+	WantAssertionsSigned types.Bool           `tfsdk:"want_assertions_signed"`
+	IdpMetadata          *SamlIdpMetadata     `tfsdk:"idp_metadata"`
+	SpMetadata           *SamlSpMetadata      `tfsdk:"sp_metadata"`
+	Mapping              *SamlMappingModel    `tfsdk:"mapping"`
+	AdditionalParams     jsontypes.Normalized `tfsdk:"additional_params"`
 }
 
 type SamlIdpMetadata struct {
@@ -234,7 +238,7 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 					"enterprise_managed_credentials": schema.SingleNestedBlock{
 						MarkdownDescription: "Enterprise-managed credentials for token exchange flows.",
 						Attributes: map[string]schema.Attribute{
-							"provider_type":                 schema.StringAttribute{Optional: true, MarkdownDescription: "Provider type: generic_oidc, okta, or keycloak."},
+							"exchange_strategy":             schema.StringAttribute{Optional: true, MarkdownDescription: "Downstream token exchange strategy. One of `rfc8693` (generic OIDC), `okta_managed` (Okta-managed credentials), `entra_obo` (Microsoft Entra OBO)."},
 							"client_id":                     schema.StringAttribute{Optional: true, MarkdownDescription: "Client ID for enterprise-managed credentials."},
 							"client_secret":                 schema.StringAttribute{Optional: true, Sensitive: true, MarkdownDescription: "Client secret for enterprise-managed credentials."},
 							"token_endpoint":                schema.StringAttribute{Optional: true, MarkdownDescription: "Token endpoint URL."},
@@ -261,6 +265,14 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 					"private_key":            schema.StringAttribute{Optional: true, Sensitive: true},
 					"signature_algorithm":    schema.StringAttribute{Optional: true},
 					"want_assertions_signed": schema.BoolAttribute{Optional: true},
+					"additional_params": schema.StringAttribute{
+						Optional:            true,
+						CustomType:          jsontypes.NormalizedType{},
+						MarkdownDescription: "JSON-encoded map of extra SAML request parameters forwarded to the IdP (booleans, numbers, and nested structures preserved). Must be a JSON object; use `jsonencode({...})`.",
+						Validators: []validator.String{
+							jsonObjectValidator(),
+						},
+					},
 				},
 				Blocks: map[string]schema.Block{
 					"idp_metadata": schema.SingleNestedBlock{
@@ -381,7 +393,10 @@ func (r *SsoProviderResource) Create(ctx context.Context, req resource.CreateReq
 	}
 
 	if data.SamlConfig != nil {
-		body.SamlConfig = expandSamlConfigCreate(*data.SamlConfig)
+		body.SamlConfig = expandSamlConfigCreate(*data.SamlConfig, &resp.Diagnostics)
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 
 	if data.RoleMapping != nil {
@@ -631,6 +646,7 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 			PrivateKey:           stringValueOrNull(samlCfg.PrivateKey),
 			SignatureAlgorithm:   stringValueOrNull(samlCfg.SignatureAlgorithm),
 			WantAssertionsSigned: boolValueOrNull(samlCfg.WantAssertionsSigned),
+			AdditionalParams:     encodeAdditionalParams(samlCfg.AdditionalParams),
 		}
 
 		// Map IdpMetadata if present
@@ -761,7 +777,10 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 
 	if plan.SamlConfig != nil {
-		body.SamlConfig = expandSamlConfigUpdate(*plan.SamlConfig)
+		body.SamlConfig = expandSamlConfigUpdate(*plan.SamlConfig, &resp.Diagnostics)
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 
 	if plan.RoleMapping != nil {
@@ -872,6 +891,7 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 			PrivateKey:           stringValueOrNull(samlCfg.PrivateKey),
 			SignatureAlgorithm:   stringValueOrNull(samlCfg.SignatureAlgorithm),
 			WantAssertionsSigned: boolValueOrNull(samlCfg.WantAssertionsSigned),
+			AdditionalParams:     encodeAdditionalParams(samlCfg.AdditionalParams),
 		}
 
 		// Map IdpMetadata if present
@@ -1105,9 +1125,9 @@ func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
 		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
 		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
 		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+		ExchangeStrategy            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
 		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-		ProviderType                *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 		SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 		TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -1142,9 +1162,9 @@ func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
 			ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
 			ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
 			ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+			ExchangeStrategy            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 			PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
 			PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-			ProviderType                *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 			SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 			TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 			TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -1208,9 +1228,9 @@ func expandOidcConfigUpdate(cfg OidcConfigModel) *struct {
 		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
 		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
 		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+		ExchangeStrategy            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
 		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-		ProviderType                *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 		SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 		TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -1245,9 +1265,9 @@ func expandOidcConfigUpdate(cfg OidcConfigModel) *struct {
 			ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
 			ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
 			ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+			ExchangeStrategy            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 			PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
 			PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-			ProviderType                *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 			SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 			TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 			TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -1346,7 +1366,7 @@ func expandOidcMapping(mapping *OidcMappingModel) *struct {
 	return out
 }
 
-func expandSamlConfigCreate(cfg SamlConfigModel) *struct {
+func expandSamlConfigCreate(cfg SamlConfigModel, diags *diag.Diagnostics) *struct {
 	AdditionalParams *map[string]interface{} `json:"additionalParams,omitempty"`
 	Audience         *string                 `json:"audience,omitempty"`
 	CallbackUrl      string                  `json:"callbackUrl"`
@@ -1487,11 +1507,42 @@ func expandSamlConfigCreate(cfg SamlConfigModel) *struct {
 	if cfg.Mapping != nil {
 		out.Mapping = expandSamlMapping(cfg.Mapping)
 	}
+	if ap, err := decodeAdditionalParams(cfg.AdditionalParams); err != nil {
+		diags.AddAttributeError(
+			path.Root("saml_config").AtName("additional_params"),
+			"Invalid additional_params JSON",
+			err.Error(),
+		)
+	} else if ap != nil {
+		out.AdditionalParams = ap
+	}
 
 	return out
 }
 
-func expandSamlConfigUpdate(cfg SamlConfigModel) *struct {
+func decodeAdditionalParams(v jsontypes.Normalized) (*map[string]interface{}, error) {
+	if v.IsNull() || v.IsUnknown() || v.ValueString() == "" {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal([]byte(v.ValueString()), &m); err != nil {
+		return nil, err
+	}
+	return &m, nil
+}
+
+func encodeAdditionalParams(m *map[string]interface{}) jsontypes.Normalized {
+	if m == nil {
+		return jsontypes.NewNormalizedNull()
+	}
+	b, err := json.Marshal(*m)
+	if err != nil {
+		return jsontypes.NewNormalizedNull()
+	}
+	return jsontypes.NewNormalizedValue(string(b))
+}
+
+func expandSamlConfigUpdate(cfg SamlConfigModel, diags *diag.Diagnostics) *struct {
 	AdditionalParams *map[string]interface{} `json:"additionalParams,omitempty"`
 	Audience         *string                 `json:"audience,omitempty"`
 	CallbackUrl      string                  `json:"callbackUrl"`
@@ -1540,7 +1591,7 @@ func expandSamlConfigUpdate(cfg SamlConfigModel) *struct {
 	} `json:"spMetadata"`
 	WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
 } {
-	return expandSamlConfigCreate(cfg)
+	return expandSamlConfigCreate(cfg, diags)
 }
 
 func expandSamlIdpMetadata(md *SamlIdpMetadata) *struct {
@@ -1885,9 +1936,9 @@ type enterpriseManagedCredentialsIntermediate struct {
 	ClientAssertionAudience     *string `json:"clientAssertionAudience,omitempty"`
 	ClientId                    *string `json:"clientId,omitempty"`
 	ClientSecret                *string `json:"clientSecret,omitempty"`
+	ExchangeStrategy            *string `json:"exchangeStrategy,omitempty"`
 	PrivateKeyId                *string `json:"privateKeyId,omitempty"`
 	PrivateKeyPem               *string `json:"privateKeyPem,omitempty"`
-	ProviderType                *string `json:"providerType,omitempty"`
 	SubjectTokenType            *string `json:"subjectTokenType,omitempty"`
 	TokenEndpoint               *string `json:"tokenEndpoint,omitempty"`
 	TokenEndpointAuthentication *string `json:"tokenEndpointAuthentication,omitempty"`
@@ -1908,7 +1959,7 @@ func flattenEnterpriseManagedCredentials(emc interface{}) *EnterpriseManagedCred
 		return nil
 	}
 	return &EnterpriseManagedCredentialsModel{
-		ProviderType:                stringValueOrNull(intermediate.ProviderType),
+		ExchangeStrategy:            stringValueOrNull(intermediate.ExchangeStrategy),
 		ClientID:                    stringValueOrNull(intermediate.ClientId),
 		ClientSecret:                stringValueOrNull(intermediate.ClientSecret),
 		TokenEndpoint:               stringValueOrNull(intermediate.TokenEndpoint),
@@ -1924,9 +1975,9 @@ func expandEnterpriseManagedCredentialsCreate(emc *EnterpriseManagedCredentialsM
 	ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
 	ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
 	ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+	ExchangeStrategy            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 	PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
 	PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-	ProviderType                *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 	SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 	TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 	TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -1938,17 +1989,17 @@ func expandEnterpriseManagedCredentialsCreate(emc *EnterpriseManagedCredentialsM
 		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
 		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
 		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+		ExchangeStrategy            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
 		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-		ProviderType                *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 		SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 		TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 	}{}
 
-	if !emc.ProviderType.IsNull() {
-		v := client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType(emc.ProviderType.ValueString())
-		out.ProviderType = &v
+	if !emc.ExchangeStrategy.IsNull() {
+		v := client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy(emc.ExchangeStrategy.ValueString())
+		out.ExchangeStrategy = &v
 	}
 	if !emc.ClientID.IsNull() {
 		v := emc.ClientID.ValueString()
@@ -1990,9 +2041,9 @@ func expandEnterpriseManagedCredentialsUpdate(emc *EnterpriseManagedCredentialsM
 	ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
 	ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
 	ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+	ExchangeStrategy            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 	PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
 	PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-	ProviderType                *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 	SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 	TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 	TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
@@ -2004,17 +2055,17 @@ func expandEnterpriseManagedCredentialsUpdate(emc *EnterpriseManagedCredentialsM
 		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
 		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
 		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
+		ExchangeStrategy            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
 		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
 		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-		ProviderType                *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType                `json:"providerType,omitempty"`
 		SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
 		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
 		TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
 	}{}
 
-	if !emc.ProviderType.IsNull() {
-		v := client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsProviderType(emc.ProviderType.ValueString())
-		out.ProviderType = &v
+	if !emc.ExchangeStrategy.IsNull() {
+		v := client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy(emc.ExchangeStrategy.ValueString())
+		out.ExchangeStrategy = &v
 	}
 	if !emc.ClientID.IsNull() {
 		v := emc.ClientID.ValueString()
