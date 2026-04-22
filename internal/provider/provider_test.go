@@ -28,6 +28,13 @@ func testAccPreCheck(t *testing.T) {
 	}
 }
 
+//nolint:unused // Used by vault-ref-dependent tests
+func testAccRequireByosEnabled(t *testing.T) {
+	if os.Getenv("ARCHESTRA_READONLY_VAULT_ENABLED") != "true" {
+		t.Fatal("requires ARCHESTRA_READONLY_VAULT_ENABLED=true and a backend with ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT + EE license")
+	}
+}
+
 // Unit tests for provider.
 func TestProviderNew(t *testing.T) {
 	provider := New("test")()

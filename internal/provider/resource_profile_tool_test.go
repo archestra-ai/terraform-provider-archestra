@@ -51,7 +51,7 @@ resource "archestra_mcp_registry_catalog_item" "test" {
 
 resource "archestra_mcp_server_installation" "test" {
   name          = "test-server-inst"
-  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
+  catalog_id = archestra_mcp_registry_catalog_item.test.id
 }
 
 data "archestra_mcp_server_tool" "test" {

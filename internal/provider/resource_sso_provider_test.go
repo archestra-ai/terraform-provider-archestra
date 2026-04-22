@@ -164,8 +164,8 @@ func TestAccSsoProviderResource_oidcWithEnterpriseCredentials(t *testing.T) {
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_sso_provider.test",
-						tfjsonpath.New("oidc_config").AtMapKey("enterprise_managed_credentials").AtMapKey("provider_type"),
-						knownvalue.StringExact("generic_oidc"),
+						tfjsonpath.New("oidc_config").AtMapKey("enterprise_managed_credentials").AtMapKey("exchange_strategy"),
+						knownvalue.StringExact("rfc8693"),
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_sso_provider.test",
@@ -182,6 +182,58 @@ func TestAccSsoProviderResource_oidcWithEnterpriseCredentials(t *testing.T) {
 			},
 		},
 	})
+}
+
+// TestAccSsoProviderResource_oidcExchangeStrategies exercises every enum
+// value of `enterprise_managed_credentials.exchange_strategy` via in-place
+// updates. Catches regressions if the backend renames the enum again.
+func TestAccSsoProviderResource_oidcExchangeStrategies(t *testing.T) {
+	strategies := []string{"rfc8693", "okta_managed", "entra_obo"}
+	steps := make([]resource.TestStep, 0, len(strategies))
+	for _, s := range strategies {
+		steps = append(steps, resource.TestStep{
+			Config: testAccSsoProviderOIDCExchangeStrategyConfig("test-exchange-strategy", "exchange.example.com", s),
+			ConfigStateChecks: []statecheck.StateCheck{
+				statecheck.ExpectKnownValue(
+					"archestra_sso_provider.test",
+					tfjsonpath.New("oidc_config").AtMapKey("enterprise_managed_credentials").AtMapKey("exchange_strategy"),
+					knownvalue.StringExact(s),
+				),
+			},
+		})
+	}
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps:                    steps,
+	})
+}
+
+func testAccSsoProviderOIDCExchangeStrategyConfig(providerID, domain, strategy string) string {
+	return fmt.Sprintf(`
+resource "archestra_sso_provider" "test" {
+  provider_id = %q
+  domain      = %q
+  issuer      = "https://%[3]s.example.com"
+
+  oidc_config {
+    issuer             = "https://%[3]s.example.com"
+    discovery_endpoint = "https://%[3]s.example.com/.well-known/openid-configuration"
+    client_id          = "enterprise-client"
+    client_secret      = "enterprise-secret"
+    pkce               = true
+    skip_discovery     = true
+
+    enterprise_managed_credentials {
+      exchange_strategy             = %[4]q
+      client_id                     = "downstream-client"
+      client_secret                 = "downstream-secret"
+      token_endpoint                = "https://%[3]s.example.com/oauth/token"
+      token_endpoint_authentication = "client_secret_post"
+    }
+  }
+}
+`, providerID, domain, strategy, strategy)
 }
 
 func testAccSsoProviderOIDCWithEnterpriseCredentialsConfig(providerID, domain string) string {
@@ -201,7 +253,7 @@ resource "archestra_sso_provider" "test" {
     token_endpoint_authentication = "client_secret_post"
 
     enterprise_managed_credentials {
-      provider_type                = "generic_oidc"
+      exchange_strategy            = "rfc8693"
       client_id                    = "downstream-client"
       client_secret                = "downstream-secret"
       token_endpoint               = "https://enterprise.example.com/oauth/token"
@@ -226,6 +278,11 @@ func TestAccSsoProviderResource_saml(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("archestra_sso_provider.test", tfjsonpath.New("provider_id"), knownvalue.StringExact("test-saml")),
 					statecheck.ExpectKnownValue("archestra_sso_provider.test", tfjsonpath.New("domain"), knownvalue.StringExact("example.com")),
+					statecheck.ExpectKnownValue(
+						"archestra_sso_provider.test",
+						tfjsonpath.New("saml_config").AtMapKey("additional_params"),
+						knownvalue.StringExact(`{"Custom":"value","ForceAuthn":true,"MaxAge":3600}`),
+					),
 				},
 			},
 			{
@@ -260,6 +317,12 @@ resource "archestra_sso_provider" "test" {
     audience         = "https://archestra.example.com"
     digest_algorithm = "sha256"
     identifier_format = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
+
+    additional_params = jsonencode({
+      ForceAuthn = true
+      MaxAge     = 3600
+      Custom     = "value"
+    })
 
     idp_metadata {
       entity_id = "https://idp.example.com"

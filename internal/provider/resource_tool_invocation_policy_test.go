@@ -132,7 +132,7 @@ resource "archestra_mcp_registry_catalog_item" "noreason" {
 
 resource "archestra_mcp_server_installation" "noreason" {
   name          = "tip-noreason-inst-%[1]s"
-  mcp_server_id = archestra_mcp_registry_catalog_item.noreason.id
+  catalog_id = archestra_mcp_registry_catalog_item.noreason.id
 }
 
 data "archestra_mcp_server_tool" "noreason" {
@@ -204,7 +204,7 @@ resource "archestra_mcp_registry_catalog_item" "test" {
 
 resource "archestra_mcp_server_installation" "test" {
   name          = "tip-test-inst-%[1]s"
-  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
+  catalog_id = archestra_mcp_registry_catalog_item.test.id
 }
 
 data "archestra_mcp_server_tool" "test" {
@@ -251,7 +251,7 @@ resource "archestra_mcp_registry_catalog_item" "test" {
 
 resource "archestra_mcp_server_installation" "test" {
   name          = "tip-test-inst-%[1]s"
-  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
+  catalog_id = archestra_mcp_registry_catalog_item.test.id
 }
 
 data "archestra_mcp_server_tool" "test" {
@@ -298,7 +298,7 @@ resource "archestra_mcp_registry_catalog_item" "regex" {
 
 resource "archestra_mcp_server_installation" "regex" {
   name          = "tip-regex-inst-%[1]s"
-  mcp_server_id = archestra_mcp_registry_catalog_item.regex.id
+  catalog_id = archestra_mcp_registry_catalog_item.regex.id
 }
 
 data "archestra_mcp_server_tool" "regex" {

@@ -127,7 +127,7 @@ resource "archestra_mcp_registry_catalog_item" "test" {
 
 resource "archestra_mcp_server_installation" "test" {
   name          = "tdp-test-inst-%[1]s"
-  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
+  catalog_id = archestra_mcp_registry_catalog_item.test.id
 }
 
 data "archestra_mcp_server_tool" "test" {
@@ -174,7 +174,7 @@ resource "archestra_mcp_registry_catalog_item" "test" {
 
 resource "archestra_mcp_server_installation" "test" {
   name          = "tdp-test-inst-%[1]s"
-  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
+  catalog_id = archestra_mcp_registry_catalog_item.test.id
 }
 
 data "archestra_mcp_server_tool" "test" {
@@ -221,7 +221,7 @@ resource "archestra_mcp_registry_catalog_item" "sanitize" {
 
 resource "archestra_mcp_server_installation" "sanitize" {
   name          = "tdp-sanitize-inst-%[1]s"
-  mcp_server_id = archestra_mcp_registry_catalog_item.sanitize.id
+  catalog_id = archestra_mcp_registry_catalog_item.sanitize.id
 }
 
 data "archestra_mcp_server_tool" "sanitize" {
