@@ -57,6 +57,7 @@ resource "archestra_organization_settings" "example" {
 - `reranker_chat_api_key_id` (String) API key ID for the reranker model
 - `reranker_model` (String) Reranker model for knowledge base
 - `show_two_factor` (Boolean) Whether to show two-factor authentication options
+- `slim_chat_error_ui` (Boolean) When enabled, renders a compact error UI in chat views.
 
 ### Read-Only
 

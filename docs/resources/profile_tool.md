@@ -52,8 +52,8 @@ resource "archestra_mcp_registry_catalog_item" "filesystem" {
 
 # Install the MCP server
 resource "archestra_mcp_server_installation" "filesystem" {
-  name          = "my-filesystem-server"
-  mcp_server_id = archestra_mcp_registry_catalog_item.filesystem.id
+  name       = "my-filesystem-server"
+  catalog_id = archestra_mcp_registry_catalog_item.filesystem.id
 }
 
 # Look up a tool from the installed MCP server
@@ -71,7 +71,10 @@ resource "archestra_profile_tool" "read_text_file" {
   # The MCP server instance associated with this tool
   mcp_server_id = archestra_mcp_server_installation.filesystem.id
 
-  # How credentials are resolved for this tool
+  # How credentials are resolved for this tool.
+  # Use "dynamic" for per-invocation credential/config resolution
+  # (equivalent to the backend's resolveAtCallTime input), or "static"
+  # to bind at assignment time.
   credential_resolution_mode = "dynamic"
 }
 ```

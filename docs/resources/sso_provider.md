@@ -63,6 +63,13 @@ resource "archestra_sso_provider" "saml" {
     digest_algorithm  = "sha256"
     identifier_format = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
 
+    # Extra parameters forwarded to the IdP alongside the SAML AuthnRequest.
+    # Use jsonencode so booleans and numbers round-trip losslessly.
+    additional_params = jsonencode({
+      ForceAuthn = true
+      MaxAge     = 3600
+    })
+
     idp_metadata {
       entity_id = "https://okta.example.com"
       metadata  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\" entityID=\"https://okta.example.com\"><IDPSSODescriptor protocolSupportEnumeration=\"urn:oasis:names:tc:SAML:2.0:protocol\"><SingleSignOnService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect\" Location=\"https://okta.example.com/app/sso/saml\"/></IDPSSODescriptor></EntityDescriptor>"
@@ -147,9 +154,9 @@ Optional:
 - `client_assertion_audience` (String) Audience for client assertion JWT.
 - `client_id` (String) Client ID for enterprise-managed credentials.
 - `client_secret` (String, Sensitive) Client secret for enterprise-managed credentials.
+- `exchange_strategy` (String) Downstream token exchange strategy. One of `rfc8693` (generic OIDC), `okta_managed` (Okta-managed credentials), `entra_obo` (Microsoft Entra OBO).
 - `private_key_id` (String) Key ID for the private key.
 - `private_key_pem` (String, Sensitive) PEM-encoded private key for private_key_jwt authentication.
-- `provider_type` (String) Provider type: generic_oidc, okta, or keycloak.
 - `subject_token_type` (String) Subject token type for token exchange.
 - `token_endpoint` (String) Token endpoint URL.
 - `token_endpoint_authentication` (String) Token endpoint auth method: client_secret_post, client_secret_basic, or private_key_jwt.
@@ -194,6 +201,7 @@ Required:
 
 Optional:
 
+- `additional_params` (String) JSON-encoded map of extra SAML request parameters forwarded to the IdP (booleans, numbers, and nested structures preserved). Must be a JSON object; use `jsonencode({...})`.
 - `audience` (String)
 - `callback_url` (String) ACS callback URL.
 - `cert` (String, Sensitive) IdP certificate (X.509).
