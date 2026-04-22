@@ -184,6 +184,13 @@ Tests follow the pattern `*_test.go` alongside each resource/data source. Accept
 
 Tests use MCP server tools (via `@modelcontextprotocol/server-filesystem`) for tool-dependent test scenarios rather than built-in tools.
 
+Some tests opt in via extra environment variables:
+
+- `ARCHESTRA_READONLY_VAULT_ENABLED=true` — required by BYOS-vault-dependent tests (`TestAccMcpRegistryCatalogItemResourceWithVaultRefs` and all `TestAccChatLLMProviderApiKeyResource*`). The helper `testAccRequireByosEnabled` calls `t.Fatal` loudly instead of silently skipping, so a DB-mode backend fails fast with an actionable message. The backend must also run with `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` plus an enterprise license.
+- `ARCHESTRA_TEST_IDP_ID=<uuid>` — run `TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig` against an existing identity provider; skipped otherwise because the EE IdP API is license-gated.
+
+CI runs BYOS-mode: the workflow deploys a dev Vault pod and an Ollama `/v1/models` HTTP stub, and overrides `ARCHESTRA_OLLAMA_BASE_URL` at `.github/values-ci.yaml` so backend key-validation passes without real Ollama.
+
 ## Important Notes
 
 - Disabled resources have `//go:build ignore` build tags - do not remove these unless re-enabling
