@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.5.0...v0.6.0) (2026-04-23)
+
+
+### Features
+
+* update provider for Archestra v1.2.20 API ([#82](https://github.com/archestra-ai/terraform-provider-archestra/issues/82)) ([f658cd4](https://github.com/archestra-ai/terraform-provider-archestra/commit/f658cd45f4a9e96a07607b387718cf019635b3f0))
+
+
+### Dependencies
+
+* **terraform:** bump github.com/hashicorp/terraform-plugin-sdk/v2 from 2.38.1 to 2.38.2 in the terraform-go-dependencies group ([#77](https://github.com/archestra-ai/terraform-provider-archestra/issues/77)) ([cc21eec](https://github.com/archestra-ai/terraform-provider-archestra/commit/cc21eec3cc4141d8de5ca1390ecbbed3a5371c91))
+
 ## [0.5.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.4.1...v0.5.0) (2026-01-06)
 
 
