@@ -22,13 +22,10 @@ type ProfileToolDataSource struct {
 }
 
 type ProfileToolDataSourceModel struct {
-	ID                                   types.String `tfsdk:"id"`
-	ProfileID                            types.String `tfsdk:"profile_id"`
-	ToolID                               types.String `tfsdk:"tool_id"`
-	ToolName                             types.String `tfsdk:"tool_name"`
-	AllowUsageWhenUntrustedDataIsPresent types.Bool   `tfsdk:"allow_usage_when_untrusted_data_is_present"`
-	ToolResultTreatment                  types.String `tfsdk:"tool_result_treatment"`
-	ResponseModifierTemplate             types.String `tfsdk:"response_modifier_template"`
+	ID        types.String `tfsdk:"id"`
+	ProfileID types.String `tfsdk:"profile_id"`
+	ToolID    types.String `tfsdk:"tool_id"`
+	ToolName  types.String `tfsdk:"tool_name"`
 }
 
 func (d *ProfileToolDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -55,18 +52,6 @@ func (d *ProfileToolDataSource) Schema(ctx context.Context, req datasource.Schem
 			},
 			"tool_id": schema.StringAttribute{
 				MarkdownDescription: "The tool ID",
-				Computed:            true,
-			},
-			"allow_usage_when_untrusted_data_is_present": schema.BoolAttribute{
-				MarkdownDescription: "Whether to allow tool usage when untrusted data is present",
-				Computed:            true,
-			},
-			"tool_result_treatment": schema.StringAttribute{
-				MarkdownDescription: "How to treat tool results (trusted/untrusted)",
-				Computed:            true,
-			},
-			"response_modifier_template": schema.StringAttribute{
-				MarkdownDescription: "Optional response modifier template",
 				Computed:            true,
 			},
 		},
@@ -101,56 +86,59 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 	targetProfileID := data.ProfileID.ValueString()
 	targetToolName := data.ToolName.ValueString()
 
-	// Use retry logic for built-in tools that may not be immediately available after profile creation.
-	// Built-in tools like "archestra__whoami" are assigned asynchronously.
 	retryConfig := DefaultRetryConfig(fmt.Sprintf("Tool '%s' for profile %s", targetToolName, targetProfileID))
 
-	// profileToolResult holds the extracted data we need from the API response
 	type profileToolResult struct {
-		ID                                   string
-		ToolID                               string
-		AllowUsageWhenUntrustedDataIsPresent bool
-		ToolResultTreatment                  string
-		ResponseModifierTemplate             *string
+		ID     string
+		ToolID string
 	}
 
-	// Parse profile ID as UUID for the API filter
 	profileUUID, err := uuid.Parse(targetProfileID)
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid Profile ID", fmt.Sprintf("Could not parse profile ID as UUID: %s", err))
 		return
 	}
 
-	// Use max allowed limit to get all tools for this profile in one request
-	// (built-in tools are typically <30, so 100 is more than enough)
 	limit := 100
 
 	result, found, err := RetryUntilFound(ctx, retryConfig, func() (profileToolResult, bool, error) {
-		// Get profile tools filtered by profile ID (more efficient than fetching all)
-		toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx, &client.GetAllAgentToolsParams{
-			AgentId: &profileUUID,
-			Limit:   &limit,
-		})
-		if err != nil {
-			return profileToolResult{}, false, fmt.Errorf("unable to read profile tools: %w", err)
-		}
-
-		if toolsResp.JSON200 == nil {
-			return profileToolResult{}, false, fmt.Errorf("expected 200 OK, got status %d", toolsResp.StatusCode())
-		}
-
-		// Find the specific tool by name
-		for i := range toolsResp.JSON200.Data {
-			profileTool := &toolsResp.JSON200.Data[i]
-			if profileTool.Tool.Name == targetToolName {
-				return profileToolResult{
-					ID:                                   profileTool.Id.String(),
-					ToolID:                               profileTool.Tool.Id,
-					AllowUsageWhenUntrustedDataIsPresent: profileTool.AllowUsageWhenUntrustedDataIsPresent,
-					ToolResultTreatment:                  string(profileTool.ToolResultTreatment),
-					ResponseModifierTemplate:             profileTool.ResponseModifierTemplate,
-				}, true, nil
+		offset := 0
+		totalTools := 0
+		for {
+			toolsResp, err := d.client.GetAllAgentToolsWithResponse(ctx, &client.GetAllAgentToolsParams{
+				AgentId: &profileUUID,
+				Limit:   &limit,
+				Offset:  &offset,
+			})
+			if err != nil {
+				return profileToolResult{}, false, fmt.Errorf("unable to read profile tools: %w", err)
 			}
+
+			if toolsResp.JSON200 == nil {
+				return profileToolResult{}, false, fmt.Errorf("expected 200 OK, got status %d", toolsResp.StatusCode())
+			}
+
+			totalTools = toolsResp.JSON200.Pagination.Total
+
+			for i := range toolsResp.JSON200.Data {
+				profileTool := &toolsResp.JSON200.Data[i]
+				if profileTool.Tool.Name == targetToolName {
+					return profileToolResult{
+						ID:     profileTool.Id.String(),
+						ToolID: profileTool.Tool.Id,
+					}, true, nil
+				}
+			}
+
+			if !toolsResp.JSON200.Pagination.HasNext {
+				break
+			}
+			offset += limit
+		}
+
+		// If the profile has no tools at all, don't retry — nothing will appear asynchronously
+		if totalTools == 0 {
+			return profileToolResult{}, false, fmt.Errorf("profile %s has no tools assigned", targetProfileID)
 		}
 
 		return profileToolResult{}, false, nil
@@ -166,17 +154,8 @@ func (d *ProfileToolDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	// Map to state
 	data.ID = types.StringValue(result.ID)
 	data.ToolID = types.StringValue(result.ToolID)
-	data.AllowUsageWhenUntrustedDataIsPresent = types.BoolValue(result.AllowUsageWhenUntrustedDataIsPresent)
-	data.ToolResultTreatment = types.StringValue(result.ToolResultTreatment)
-
-	if result.ResponseModifierTemplate != nil {
-		data.ResponseModifierTemplate = types.StringValue(*result.ResponseModifierTemplate)
-	} else {
-		data.ResponseModifierTemplate = types.StringNull()
-	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

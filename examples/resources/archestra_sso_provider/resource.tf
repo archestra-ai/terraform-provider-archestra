@@ -48,6 +48,13 @@ resource "archestra_sso_provider" "saml" {
     digest_algorithm  = "sha256"
     identifier_format = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
 
+    # Extra parameters forwarded to the IdP alongside the SAML AuthnRequest.
+    # Use jsonencode so booleans and numbers round-trip losslessly.
+    additional_params = jsonencode({
+      ForceAuthn = true
+      MaxAge     = 3600
+    })
+
     idp_metadata {
       entity_id = "https://okta.example.com"
       metadata  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\" entityID=\"https://okta.example.com\"><IDPSSODescriptor protocolSupportEnumeration=\"urn:oasis:names:tc:SAML:2.0:protocol\"><SingleSignOnService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect\" Location=\"https://okta.example.com/app/sso/saml\"/></IDPSSODescriptor></EntityDescriptor>"

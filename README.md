@@ -6,7 +6,7 @@ Thank you for your interest in contributing to the Archestra Terraform Provider!
 
 ### Prerequisites
 
-- [Go](https://golang.org/doc/install) >= 1.24
+- [Go](https://golang.org/doc/install) >= 1.25
 - [Terraform](https://www.terraform.io/downloads.html)
   - We recommend using [`tenv`](https://github.com/tofuutils/tenv) to manage your `terraform` installations
 - Make (optional, for convenience)
@@ -35,11 +35,28 @@ make build
 
 ### Testing
 
-Run the provider tests:
+#### Unit tests
 
 ```bash
 make test
 ```
+
+#### Acceptance tests
+
+Run against a local Archestra platform at `http://localhost:9000`:
+
+```bash
+export ARCHESTRA_BASE_URL="http://localhost:9000"
+export ARCHESTRA_API_KEY="arch_..."   # sign in and create one at /api/auth/api-key/create
+make testacc
+```
+
+A few tests are gated on extra environment flags:
+
+- `ARCHESTRA_READONLY_VAULT_ENABLED=true` — required by vault-ref tests (`TestAccMcpRegistryCatalogItemResourceWithVaultRefs` and all `TestAccChatLLMProviderApiKeyResource*`). Backend must run with `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` + an enterprise license; the seeded Vault secret at `secret/data/test/ollama#api_key` must exist.
+- `ARCHESTRA_TEST_IDP_ID=<uuid>` — required by `TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig`. Create an OIDC identity provider first and pass its UUID here.
+
+CI runs in BYOS mode with both flags set — see [`.github/workflows/on-pull-request.yml`](.github/workflows/on-pull-request.yml) for the Vault + Ollama-stub + IdP fixture setup.
 
 ### Codegen
 

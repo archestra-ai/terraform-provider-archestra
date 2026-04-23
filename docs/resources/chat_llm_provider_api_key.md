@@ -13,11 +13,23 @@ Manages Chat LLM Provider API keys in Archestra.
 ## Example Usage
 
 ```terraform
-resource "archestra_chat_llm_provider_api_key" "example" {
+# Inline API key (default DB-backed secrets mode).
+resource "archestra_chat_llm_provider_api_key" "inline" {
   name                    = "Production OpenAI Key"
   api_key                 = var.openai_api_key
   llm_provider            = "openai"
   is_organization_default = true
+}
+
+# Vault reference — required when the Archestra backend runs in BYOS
+# (READONLY_VAULT) mode. The secret at the given path/key is read by the
+# backend at creation time; the plaintext never touches Terraform state.
+resource "archestra_chat_llm_provider_api_key" "vault_backed" {
+  name              = "Production Anthropic Key"
+  llm_provider      = "anthropic"
+  vault_secret_path = "secret/data/archestra/llm"
+  vault_secret_key  = "anthropic_api_key"
+  scope             = "org"
 }
 ```
 
@@ -26,13 +38,18 @@ resource "archestra_chat_llm_provider_api_key" "example" {
 
 ### Required
 
-- `api_key` (String, Sensitive) The API key value
 - `llm_provider` (String) LLM provider for this API key
 - `name` (String) Name of the API key
 
 ### Optional
 
-- `is_organization_default` (Boolean) Whether this API key is the organization default for the provider
+- `api_key` (String, Sensitive) The API key value. Mutually exclusive with `vault_secret_path`/`vault_secret_key`. In BYOS (READONLY_VAULT) mode the backend requires the vault pair and rejects inline `api_key`.
+- `base_url` (String) Custom base URL for the LLM provider endpoint
+- `is_organization_default` (Boolean) Whether this API key is the primary key for the provider
+- `scope` (String) Visibility scope for the API key: `personal`, `team`, or `org`
+- `team_id` (String) Team ID for team-scoped keys
+- `vault_secret_key` (String) Key within the vault secret. Must be set together with `vault_secret_path` and cannot be combined with `api_key`.
+- `vault_secret_path` (String) Path to the secret in the vault. Must be set together with `vault_secret_key` and cannot be combined with `api_key`.
 
 ### Read-Only
 

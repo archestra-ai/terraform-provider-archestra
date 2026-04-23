@@ -1,3 +1,7 @@
+//go:build ignore
+
+// TODO: Token pricing has moved to PATCH /api/llm-models/{id} (customPricePerMillionInput/Output).
+// This standalone resource is obsolete. Replace with an archestra_llm_model resource.
 package provider
 
 import (

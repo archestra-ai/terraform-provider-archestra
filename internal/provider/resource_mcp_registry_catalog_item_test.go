@@ -2,8 +2,10 @@ package provider
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -70,6 +72,69 @@ resource "archestra_mcp_registry_catalog_item" "test" {
   }
 }
 `, name, description)
+}
+
+func TestAccMcpRegistryCatalogItemResourceWithMetadata(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithMetadata("test-metadata-item"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_metadata",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-metadata-item"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_metadata",
+						tfjsonpath.New("version"),
+						knownvalue.StringExact("1.0.0"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_metadata",
+						tfjsonpath.New("repository"),
+						knownvalue.StringExact("https://github.com/example/mcp-server"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_metadata",
+						tfjsonpath.New("instructions"),
+						knownvalue.StringExact("Run npm install"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_metadata",
+						tfjsonpath.New("icon"),
+						knownvalue.StringExact("\U0001f527"),
+					),
+				},
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_mcp_registry_catalog_item.test_metadata",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigWithMetadata(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "test_metadata" {
+  name         = %[1]q
+  description  = "Test MCP server with metadata fields"
+  version      = "1.0.0"
+  repository   = "https://github.com/example/mcp-server"
+  instructions = "Run npm install"
+  icon         = "\U0001f527"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+}
+`, name)
 }
 
 func TestAccMcpRegistryCatalogItemResourceRemote(t *testing.T) {
@@ -342,6 +407,76 @@ resource "archestra_mcp_registry_catalog_item" "test_docker_env" {
 `, name)
 }
 
+func TestAccMcpRegistryCatalogItemResourceWithLabelsAndEnvFrom(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithLabelsAndEnvFrom(rName),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_labels_envfrom",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact(fmt.Sprintf("labels-envfrom-test-%s", rName)),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_labels_envfrom",
+						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
+						knownvalue.StringExact("env"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_labels_envfrom",
+						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("value"),
+						knownvalue.StringExact("test"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_labels_envfrom",
+						tfjsonpath.New("local_config").AtMapKey("env_from"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"type":   knownvalue.StringExact("configMap"),
+								"name":   knownvalue.StringExact("test-config"),
+								"prefix": knownvalue.Null(),
+							}),
+						}),
+					),
+				},
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_mcp_registry_catalog_item.test_labels_envfrom",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigWithLabelsAndEnvFrom(rName string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "test_labels_envfrom" {
+  name        = "labels-envfrom-test-%[1]s"
+  description = "Test MCP server with labels and env_from"
+
+  labels = [{
+    key   = "env"
+    value = "test"
+  }]
+
+  local_config = {
+    docker_image = "alpine:latest"
+    env_from = [{
+      type = "configMap"
+      name = "test-config"
+    }]
+  }
+}
+`, rName)
+}
+
 func TestAccMcpRegistryCatalogItemResourceRemoteWithPAT(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -408,4 +543,332 @@ resource "archestra_mcp_registry_catalog_item" "test_remote_pat" {
   ]
 }
 `, name)
+}
+
+// TestAccMcpRegistryCatalogItemResourceAdvancedOAuth exercises the OAuth fields
+// added in Archestra v1.2.20: grant_type, audience, endpoint overrides,
+// default_scopes, discovery URL, provider metadata, and assorted flags.
+func TestAccMcpRegistryCatalogItemResourceAdvancedOAuth(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigAdvancedOAuth("oauth-advanced-" + acctest.RandString(6)),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.oauth_advanced",
+						tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("grant_type"),
+						knownvalue.StringExact("authorization_code"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.oauth_advanced",
+						tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("audience"),
+						knownvalue.StringExact("https://api.example.com"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.oauth_advanced",
+						tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("authorization_endpoint"),
+						knownvalue.StringExact("https://auth.example.com/oauth/authorize"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.oauth_advanced",
+						tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("token_endpoint"),
+						knownvalue.StringExact("https://auth.example.com/oauth/token"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.oauth_advanced",
+						tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("well_known_url"),
+						knownvalue.StringExact("https://auth.example.com/.well-known/oauth-authorization-server"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.oauth_advanced",
+						tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("default_scopes"),
+						knownvalue.ListExact([]knownvalue.Check{knownvalue.StringExact("openid")}),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.oauth_advanced",
+						tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("provider_name"),
+						knownvalue.StringExact("Example OAuth"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.oauth_advanced",
+						tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("browser_auth"),
+						knownvalue.Bool(true),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.oauth_advanced",
+						tfjsonpath.New("remote_config").AtMapKey("oauth_config").AtMapKey("generic_oauth"),
+						knownvalue.Bool(false),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigAdvancedOAuth(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "oauth_advanced" {
+  name        = %[1]q
+  description = "OAuth advanced config for acceptance testing"
+
+  remote_config = {
+    url = "https://api.example.com/mcp/"
+    oauth_config = {
+      client_id              = "acc-client"
+      client_secret          = "acc-secret"
+      grant_type             = "authorization_code"
+      redirect_uris          = ["https://app.example.com/callback"]
+      scopes                 = ["read", "write"]
+      default_scopes         = ["openid"]
+      audience               = "https://api.example.com"
+      authorization_endpoint = "https://auth.example.com/oauth/authorize"
+      token_endpoint         = "https://auth.example.com/oauth/token"
+      well_known_url         = "https://auth.example.com/.well-known/oauth-authorization-server"
+      provider_name          = "Example OAuth"
+      browser_auth           = true
+      generic_oauth          = false
+    }
+  }
+}
+`, name)
+}
+
+// TestAccMcpRegistryCatalogItemResourceImagePullCredentials exercises the
+// `credentials` variant of image_pull_secrets added in Archestra v1.2.20.
+func TestAccMcpRegistryCatalogItemResourceImagePullCredentials(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigImagePullCredentials("ipsc-" + acctest.RandString(6)),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.ipsc",
+						tfjsonpath.New("local_config").AtMapKey("image_pull_secrets").AtSliceIndex(0).AtMapKey("source"),
+						knownvalue.StringExact("credentials"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.ipsc",
+						tfjsonpath.New("local_config").AtMapKey("image_pull_secrets").AtSliceIndex(0).AtMapKey("server"),
+						knownvalue.StringExact("registry.example.com"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.ipsc",
+						tfjsonpath.New("local_config").AtMapKey("image_pull_secrets").AtSliceIndex(0).AtMapKey("username"),
+						knownvalue.StringExact("deploy-bot"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigImagePullCredentials(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "ipsc" {
+  name        = %[1]q
+  description = "Catalog item pulling from a private registry with inline credentials"
+
+  local_config = {
+    command      = "/usr/local/bin/mcp-server"
+    docker_image = "registry.example.com/team/mcp-server:1.0.0"
+    image_pull_secrets = [
+      {
+        source   = "credentials"
+        server   = "registry.example.com"
+        username = "deploy-bot"
+        password = "super-secret"
+        email    = "devops@example.com"
+      }
+    ]
+  }
+}
+`, name)
+}
+
+func TestAccMcpRegistryCatalogItemResourceWithVaultRefs(t *testing.T) {
+	if os.Getenv("ARCHESTRA_READONLY_VAULT_ENABLED") != "true" {
+		t.Skip("Skipping: backend must run with ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT and an enterprise license. Set ARCHESTRA_READONLY_VAULT_ENABLED=true to run.")
+	}
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithVaultRefs("vault-refs-item"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.vault_refs",
+						tfjsonpath.New("local_config_vault_path"),
+						knownvalue.StringExact("secret/data/mcp/local"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.vault_refs",
+						tfjsonpath.New("local_config_vault_key"),
+						knownvalue.StringExact("env"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigWithVaultRefs(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "vault_refs" {
+  name        = %[1]q
+  description = "Catalog item referencing BYOS vault paths"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+
+  local_config_vault_path = "secret/data/mcp/local"
+  local_config_vault_key  = "env"
+}
+`, name)
+}
+
+func TestAccMcpRegistryCatalogItemResourceWithUserConfig(t *testing.T) {
+	name := "user-config-" + acctest.RandString(6)
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithUserConfig(name),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.user_config",
+						tfjsonpath.New("user_config").AtMapKey("workspace").AtMapKey("title"),
+						knownvalue.StringExact("Workspace Path"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.user_config",
+						tfjsonpath.New("user_config").AtMapKey("workspace").AtMapKey("type"),
+						knownvalue.StringExact("directory"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.user_config",
+						tfjsonpath.New("user_config").AtMapKey("workspace").AtMapKey("required"),
+						knownvalue.Bool(true),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.user_config",
+						tfjsonpath.New("user_config").AtMapKey("max_results").AtMapKey("default"),
+						knownvalue.StringExact("50"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.user_config",
+						tfjsonpath.New("user_config").AtMapKey("enable_cache").AtMapKey("default"),
+						knownvalue.StringExact("true"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigWithUserConfig(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "user_config" {
+  name        = %[1]q
+  description = "Catalog item exposing installer-configurable fields"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+
+  user_config = {
+    workspace = {
+      title       = "Workspace Path"
+      description = "Absolute path to the workspace root"
+      type        = "directory"
+      required    = true
+    }
+    max_results = {
+      title       = "Max Results"
+      description = "Maximum number of records to return"
+      type        = "number"
+      default     = jsonencode(50)
+      min         = 1
+      max         = 500
+    }
+    enable_cache = {
+      title       = "Enable Cache"
+      description = "Whether to cache API responses"
+      type        = "boolean"
+      default     = jsonencode(true)
+    }
+  }
+}
+`, name)
+}
+
+// TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig round-trips an EE catalog item.
+// Requires a pre-existing identity provider UUID; set ARCHESTRA_TEST_IDP_ID to opt in.
+func TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig(t *testing.T) {
+	idpID := os.Getenv("ARCHESTRA_TEST_IDP_ID")
+	if idpID == "" {
+		t.Skip("Skipping: set ARCHESTRA_TEST_IDP_ID to an existing identity provider UUID to run this test")
+	}
+	name := "emc-" + acctest.RandString(6)
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithEMC(name, idpID),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.emc",
+						tfjsonpath.New("enterprise_managed_config").AtMapKey("identity_provider_id"),
+						knownvalue.StringExact(idpID),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.emc",
+						tfjsonpath.New("enterprise_managed_config").AtMapKey("token_injection_mode"),
+						knownvalue.StringExact("header"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.emc",
+						tfjsonpath.New("enterprise_managed_config").AtMapKey("assertion_mode"),
+						knownvalue.StringExact("exchange"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigWithEMC(name, idpID string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "emc" {
+  name        = %[1]q
+  description = "Catalog item with enterprise-managed credentials"
+
+  remote_config = {
+    url = "https://mcp.example.com/sse"
+  }
+
+  enterprise_managed_config = {
+    identity_provider_id      = %[2]q
+    resource_type             = "mcp"
+    resource_identifier       = "mcp://example.com/resource"
+    requested_credential_type = "bearer_token"
+    scopes                    = ["read", "write"]
+    audience                  = "mcp.example.com"
+    token_injection_mode      = "header"
+    header_name               = "Authorization"
+    fallback_mode             = "fail_closed"
+    cache_ttl_seconds         = 300
+    assertion_mode            = "exchange"
+  }
+}
+`, name, idpID)
 }

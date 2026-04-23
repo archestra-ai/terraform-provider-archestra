@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -23,6 +24,17 @@ func TestAccProfileResource(t *testing.T) {
 						"archestra_profile.test",
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("test-profile"),
+					),
+					// scope defaults to org and teams is empty when not set
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("scope"),
+						knownvalue.StringExact("org"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.test",
+						tfjsonpath.New("teams"),
+						knownvalue.ListSizeExact(0),
 					),
 					// Verify labels are in configuration order
 					statecheck.ExpectKnownValue(
@@ -188,4 +200,326 @@ resource "archestra_profile" "nolabels" {
   ]
 }
 `, name)
+}
+
+func TestAccProfileResource_WithAllFields(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+	profileName := fmt.Sprintf("tf-acc-allfields-%s", rName)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create with all fields
+			{
+				Config: testAccProfileResourceConfigAllFields(profileName, "Test profile description", true),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact(profileName),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("description"),
+						knownvalue.StringExact("Test profile description"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("icon"),
+						knownvalue.StringExact("🤖"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("system_prompt"),
+						knownvalue.StringExact("You are a helpful assistant"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("consider_context_untrusted"),
+						knownvalue.Bool(true),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("agent_type"),
+						knownvalue.StringExact("agent"),
+					),
+				},
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_profile.allfields",
+				ImportState:       true,
+				ImportStateVerify: true,
+				// Labels order may differ on import; suggested_prompts not set so no issue
+				ImportStateVerifyIgnore: []string{"labels"},
+			},
+			// Update: change description and consider_context_untrusted
+			{
+				Config: testAccProfileResourceConfigAllFields(profileName, "Updated description", false),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("description"),
+						knownvalue.StringExact("Updated description"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("consider_context_untrusted"),
+						knownvalue.Bool(false),
+					),
+					// Verify unchanged fields persist
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("icon"),
+						knownvalue.StringExact("🤖"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("system_prompt"),
+						knownvalue.StringExact("You are a helpful assistant"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.allfields",
+						tfjsonpath.New("agent_type"),
+						knownvalue.StringExact("agent"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func TestAccProfileResource_WithEmailConfig(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+	profileName := fmt.Sprintf("tf-acc-email-%s", rName)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create with incoming_email_enabled = true and security_mode = "public"
+			{
+				Config: testAccProfileResourceConfigWithEmail(profileName, true, "public"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.email_test",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact(profileName),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.email_test",
+						tfjsonpath.New("incoming_email_enabled"),
+						knownvalue.Bool(true),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.email_test",
+						tfjsonpath.New("incoming_email_security_mode"),
+						knownvalue.StringExact("public"),
+					),
+				},
+			},
+			// Update: change security_mode to "private"
+			{
+				Config: testAccProfileResourceConfigWithEmail(profileName, true, "private"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.email_test",
+						tfjsonpath.New("incoming_email_enabled"),
+						knownvalue.Bool(true),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.email_test",
+						tfjsonpath.New("incoming_email_security_mode"),
+						knownvalue.StringExact("private"),
+					),
+				},
+			},
+		},
+	})
+}
+
+func testAccProfileResourceConfigWithEmail(name string, emailEnabled bool, securityMode string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "email_test" {
+  name                        = %[1]q
+  incoming_email_enabled       = %[2]t
+  incoming_email_security_mode = %[3]q
+}
+`, name, emailEnabled, securityMode)
+}
+
+func TestAccProfileResource_WithBuiltInAgentConfig(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+	profileName := fmt.Sprintf("tf-acc-builtin-%s", rName)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create with built_in_agent_config using dual-llm-main-agent
+			{
+				Config: testAccProfileResourceConfigBuiltInAgent(profileName, 5),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact(profileName),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("agent_type"),
+						knownvalue.StringExact("agent"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("name"),
+						knownvalue.StringExact("dual-llm-main-agent"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("max_rounds"),
+						knownvalue.Int64Exact(5),
+					),
+				},
+			},
+			// Update: change max_rounds to 10
+			{
+				Config: testAccProfileResourceConfigBuiltInAgent(profileName, 10),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("name"),
+						knownvalue.StringExact("dual-llm-main-agent"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.builtin",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("max_rounds"),
+						knownvalue.Int64Exact(10),
+					),
+				},
+			},
+			// Clear built_in_agent_config so the profile can be destroyed
+			{
+				Config: testAccProfileResourceConfigPlain(profileName),
+			},
+		},
+	})
+}
+
+func testAccProfileResourceConfigPlain(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "builtin" {
+  name = %[1]q
+}
+`, name)
+}
+
+func testAccProfileResourceConfigBuiltInAgent(name string, maxRounds int) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "builtin" {
+  name       = %[1]q
+  agent_type = "agent"
+
+  built_in_agent_config {
+    name       = "dual-llm-main-agent"
+    max_rounds = %[2]d
+  }
+}
+`, name, maxRounds)
+}
+
+func TestAccProfileResource_WithPolicySubagent(t *testing.T) {
+	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
+	profileName := fmt.Sprintf("tf-acc-policy-sub-%s", rName)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create with built_in_agent_config using policy-configuration-subagent
+			{
+				Config: testAccProfileResourceConfigPolicySubagent(profileName, true),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.policy_sub",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact(profileName),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.policy_sub",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("name"),
+						knownvalue.StringExact("policy-configuration-subagent"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.policy_sub",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("auto_configure_on_tool_discovery"),
+						knownvalue.Bool(true),
+					),
+				},
+			},
+			// Update: change auto_configure_on_tool_discovery to false
+			{
+				Config: testAccProfileResourceConfigPolicySubagent(profileName, false),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_profile.policy_sub",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("name"),
+						knownvalue.StringExact("policy-configuration-subagent"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_profile.policy_sub",
+						tfjsonpath.New("built_in_agent_config").AtMapKey("auto_configure_on_tool_discovery"),
+						knownvalue.Bool(false),
+					),
+				},
+			},
+			// Clear built_in_agent_config so the profile can be destroyed
+			{
+				Config: testAccProfileResourceConfigPlainPolicySub(profileName),
+			},
+		},
+	})
+}
+
+func testAccProfileResourceConfigPlainPolicySub(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "policy_sub" {
+  name = %[1]q
+}
+`, name)
+}
+
+func testAccProfileResourceConfigPolicySubagent(name string, autoConfigure bool) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "policy_sub" {
+  name       = %[1]q
+  agent_type = "agent"
+
+  built_in_agent_config {
+    name                             = "policy-configuration-subagent"
+    auto_configure_on_tool_discovery = %[2]t
+  }
+}
+`, name, autoConfigure)
+}
+
+func testAccProfileResourceConfigAllFields(name string, description string, considerContextUntrusted bool) string {
+	return fmt.Sprintf(`
+resource "archestra_profile" "allfields" {
+  name                       = %[1]q
+  description                = %[2]q
+  icon                       = "🤖"
+  system_prompt              = "You are a helpful assistant"
+  consider_context_untrusted = %[3]t
+  agent_type                 = "agent"
+
+  labels = [
+    {
+      key   = "env"
+      value = "test"
+    }
+  ]
+}
+`, name, description, considerContextUntrusted)
 }

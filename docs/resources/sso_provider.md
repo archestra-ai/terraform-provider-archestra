@@ -63,6 +63,13 @@ resource "archestra_sso_provider" "saml" {
     digest_algorithm  = "sha256"
     identifier_format = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
 
+    # Extra parameters forwarded to the IdP alongside the SAML AuthnRequest.
+    # Use jsonencode so booleans and numbers round-trip losslessly.
+    additional_params = jsonencode({
+      ForceAuthn = true
+      MaxAge     = 3600
+    })
+
     idp_metadata {
       entity_id = "https://okta.example.com"
       metadata  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\" entityID=\"https://okta.example.com\"><IDPSSODescriptor protocolSupportEnumeration=\"urn:oasis:names:tc:SAML:2.0:protocol\"><SingleSignOnService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect\" Location=\"https://okta.example.com/app/sso/saml\"/></IDPSSODescriptor></EntityDescriptor>"
@@ -125,15 +132,35 @@ Optional:
 - `client_id` (String) OIDC client ID.
 - `client_secret` (String, Sensitive) OIDC client secret.
 - `discovery_endpoint` (String) Discovery endpoint (.well-known).
+- `enable_rp_initiated_logout` (Boolean) Enable RP-initiated logout.
+- `enterprise_managed_credentials` (Block, Optional) Enterprise-managed credentials for token exchange flows. (see [below for nested schema](#nestedblock--oidc_config--enterprise_managed_credentials))
+- `hd` (String) Google Hosted Domain restriction (e.g., `example.com`). Only allows users from this domain.
 - `issuer` (String) OIDC issuer URL.
 - `jwks_endpoint` (String) Override JWKS endpoint.
 - `mapping` (Block, Optional) Attribute mapping for user fields. (see [below for nested schema](#nestedblock--oidc_config--mapping))
 - `override_user_info` (Boolean) Use token claims instead of userinfo when true.
 - `pkce` (Boolean) Enable PKCE.
 - `scopes` (List of String) OAuth scopes to request.
+- `skip_discovery` (Boolean) Skip OIDC discovery endpoint validation.
 - `token_endpoint` (String) Override token endpoint.
 - `token_endpoint_authentication` (String) Token endpoint auth method (client_secret_basic or client_secret_post).
 - `user_info_endpoint` (String) Override user info endpoint.
+
+<a id="nestedblock--oidc_config--enterprise_managed_credentials"></a>
+### Nested Schema for `oidc_config.enterprise_managed_credentials`
+
+Optional:
+
+- `client_assertion_audience` (String) Audience for client assertion JWT.
+- `client_id` (String) Client ID for enterprise-managed credentials.
+- `client_secret` (String, Sensitive) Client secret for enterprise-managed credentials.
+- `exchange_strategy` (String) Downstream token exchange strategy. One of `rfc8693` (generic OIDC), `okta_managed` (Okta-managed credentials), `entra_obo` (Microsoft Entra OBO).
+- `private_key_id` (String) Key ID for the private key.
+- `private_key_pem` (String, Sensitive) PEM-encoded private key for private_key_jwt authentication.
+- `subject_token_type` (String) Subject token type for token exchange.
+- `token_endpoint` (String) Token endpoint URL.
+- `token_endpoint_authentication` (String) Token endpoint auth method: client_secret_post, client_secret_basic, or private_key_jwt.
+
 
 <a id="nestedblock--oidc_config--mapping"></a>
 ### Nested Schema for `oidc_config.mapping`
@@ -174,6 +201,7 @@ Required:
 
 Optional:
 
+- `additional_params` (String) JSON-encoded map of extra SAML request parameters forwarded to the IdP (booleans, numbers, and nested structures preserved). Must be a JSON object; use `jsonencode({...})`.
 - `audience` (String)
 - `callback_url` (String) ACS callback URL.
 - `cert` (String, Sensitive) IdP certificate (X.509).

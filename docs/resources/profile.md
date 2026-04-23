@@ -14,7 +14,8 @@ Manages an Archestra profile.
 
 ```terraform
 resource "archestra_profile" "example" {
-  name = "production-profile"
+  name  = "production-profile"
+  scope = "org" # one of "personal", "team", "org"
 
   labels = [
     {
@@ -42,11 +43,40 @@ resource "archestra_profile" "example" {
 
 ### Optional
 
+- `agent_type` (String) The type of the agent. Valid values: profile, mcp_gateway, llm_proxy, agent
+- `built_in_agent_config` (Block, Optional) Built-in agent configuration. Discriminated by `name`. (see [below for nested schema](#nestedblock--built_in_agent_config))
+- `connector_ids` (List of String) List of connector IDs to associate with the profile
+- `consider_context_untrusted` (Boolean) Whether the agent context is treated as untrusted
+- `description` (String) Description of the profile
+- `icon` (String) Emoji or base64 image for the profile icon
+- `identity_provider_id` (String) Identity provider ID for SSO
+- `incoming_email_allowed_domain` (String) Domain for internal email security mode
+- `incoming_email_enabled` (Boolean) Enable email trigger
+- `incoming_email_security_mode` (String) Email security mode: private, internal, or public
+- `is_default` (Boolean) Whether this is the default agent
+- `knowledge_base_ids` (List of String) List of knowledge base IDs to associate with the profile
 - `labels` (Attributes List) Labels to organize and identify the profile (see [below for nested schema](#nestedatt--labels))
+- `llm_api_key_id` (String) LLM API key UUID
+- `llm_model` (String) LLM model ID
+- `passthrough_headers` (List of String) HTTP headers to forward
+- `scope` (String) Ownership scope of the agent. Valid values: `personal`, `team`, `org`. Defaults to `org`.
+- `suggested_prompts` (Attributes List) Suggested prompts for the profile (see [below for nested schema](#nestedatt--suggested_prompts))
+- `system_prompt` (String) System prompt for agent-type agents
+- `teams` (List of String) List of team IDs this agent is assigned to. Required when `scope = "team"`.
 
 ### Read-Only
 
 - `id` (String) Profile identifier
+
+<a id="nestedblock--built_in_agent_config"></a>
+### Nested Schema for `built_in_agent_config`
+
+Optional:
+
+- `auto_configure_on_tool_discovery` (Boolean) Whether to auto-configure on tool discovery. Only applicable when `name` is `policy-configuration-subagent`.
+- `max_rounds` (Number) Maximum number of rounds (1-20). Only applicable when `name` is `dual-llm-main-agent`.
+- `name` (String) The built-in agent name. Valid values: `policy-configuration-subagent`, `dual-llm-main-agent`, `dual-llm-quarantine-agent`.
+
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`
@@ -55,3 +85,12 @@ Required:
 
 - `key` (String) Label key
 - `value` (String) Label value
+
+
+<a id="nestedatt--suggested_prompts"></a>
+### Nested Schema for `suggested_prompts`
+
+Required:
+
+- `prompt` (String) The prompt text
+- `summary_title` (String) The summary title for the prompt
