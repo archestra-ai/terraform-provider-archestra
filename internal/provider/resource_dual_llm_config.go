@@ -1,3 +1,7 @@
+//go:build ignore
+
+// TODO: Dual LLM is now a built-in agent type, not a standalone config.
+// Configure via agent builtInAgentConfig instead. This resource is obsolete.
 package provider
 
 import (

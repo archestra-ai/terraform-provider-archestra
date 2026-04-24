@@ -54,7 +54,7 @@ resource "archestra_mcp_registry_catalog_item" "test" {
 # Install the MCP server (this now waits for tools to be available)
 resource "archestra_mcp_server_installation" "test" {
   name          = "test-tool-datasource-installation"
-  mcp_server_id = archestra_mcp_registry_catalog_item.test.id
+  catalog_id = archestra_mcp_registry_catalog_item.test.id
 }
 
 # Look up a tool from the installed MCP server

@@ -1,5 +1,6 @@
 resource "archestra_profile" "example" {
-  name = "production-profile"
+  name  = "production-profile"
+  scope = "org" # one of "personal", "team", "org"
 
   labels = [
     {

@@ -43,7 +43,6 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Manages an Archestra tool invocation policy.",
 
-		// NOTE: it would be nice to "automatically have"
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
@@ -53,7 +52,7 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"profile_tool_id": schema.StringAttribute{
-				MarkdownDescription: "The profile tool ID this policy applies to",
+				MarkdownDescription: "The tool ID this policy applies to",
 				Required:            true,
 			},
 			"argument_name": schema.StringAttribute{
@@ -69,7 +68,7 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 				Required:            true,
 			},
 			"action": schema.StringAttribute{
-				MarkdownDescription: "The action to take when the policy matches. Valid values: `allow_when_context_is_untrusted`, `block_always`",
+				MarkdownDescription: "The action to take when the policy matches. Valid values: `allow_when_context_is_untrusted`, `block_when_context_is_untrusted`, `block_always`, `require_approval`",
 				Required:            true,
 			},
 			"reason": schema.StringAttribute{
@@ -114,11 +113,19 @@ func (r *ToolInvocationPolicyResource) Create(ctx context.Context, req resource.
 
 	// Create request body using generated type
 	requestBody := client.CreateToolInvocationPolicyJSONRequestBody{
-		AgentToolId:  profileToolID,
-		ArgumentName: data.ArgumentName.ValueString(),
-		Operator:     client.CreateToolInvocationPolicyJSONBodyOperator(data.Operator.ValueString()),
-		Value:        data.Value.ValueString(),
-		Action:       client.CreateToolInvocationPolicyJSONBodyAction(data.Action.ValueString()),
+		ToolId: profileToolID,
+		Conditions: []struct {
+			Key      string                                                      `json:"key"`
+			Operator client.CreateToolInvocationPolicyJSONBodyConditionsOperator `json:"operator"`
+			Value    string                                                      `json:"value"`
+		}{
+			{
+				Key:      data.ArgumentName.ValueString(),
+				Operator: client.CreateToolInvocationPolicyJSONBodyConditionsOperator(data.Operator.ValueString()),
+				Value:    data.Value.ValueString(),
+			},
+		},
+		Action: client.CreateToolInvocationPolicyJSONBodyAction(data.Action.ValueString()),
 	}
 
 	if !data.Reason.IsNull() {
@@ -144,10 +151,12 @@ func (r *ToolInvocationPolicyResource) Create(ctx context.Context, req resource.
 
 	// Map response to Terraform state
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
-	data.ArgumentName = types.StringValue(apiResp.JSON200.ArgumentName)
-	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
-	data.Value = types.StringValue(apiResp.JSON200.Value)
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	if len(apiResp.JSON200.Conditions) > 0 {
+		data.ArgumentName = types.StringValue(apiResp.JSON200.Conditions[0].Key)
+		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))
+		data.Value = types.StringValue(apiResp.JSON200.Conditions[0].Value)
+	}
 	data.Action = types.StringValue(string(apiResp.JSON200.Action))
 	if apiResp.JSON200.Reason != nil {
 		data.Reason = types.StringValue(*apiResp.JSON200.Reason)
@@ -194,10 +203,12 @@ func (r *ToolInvocationPolicyResource) Read(ctx context.Context, req resource.Re
 	}
 
 	// Map response to Terraform state
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
-	data.ArgumentName = types.StringValue(apiResp.JSON200.ArgumentName)
-	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
-	data.Value = types.StringValue(apiResp.JSON200.Value)
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	if len(apiResp.JSON200.Conditions) > 0 {
+		data.ArgumentName = types.StringValue(apiResp.JSON200.Conditions[0].Key)
+		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))
+		data.Value = types.StringValue(apiResp.JSON200.Conditions[0].Value)
+	}
 	data.Action = types.StringValue(string(apiResp.JSON200.Action))
 	if apiResp.JSON200.Reason != nil {
 		data.Reason = types.StringValue(*apiResp.JSON200.Reason)
@@ -231,17 +242,23 @@ func (r *ToolInvocationPolicyResource) Update(ctx context.Context, req resource.
 	profileToolID := parsedProfileToolID
 
 	// Create request body using generated type
-	argumentName := data.ArgumentName.ValueString()
-	operator := client.UpdateToolInvocationPolicyJSONBodyOperator(data.Operator.ValueString())
-	value := data.Value.ValueString()
 	action := client.UpdateToolInvocationPolicyJSONBodyAction(data.Action.ValueString())
+	conditions := []struct {
+		Key      string                                                      `json:"key"`
+		Operator client.UpdateToolInvocationPolicyJSONBodyConditionsOperator `json:"operator"`
+		Value    string                                                      `json:"value"`
+	}{
+		{
+			Key:      data.ArgumentName.ValueString(),
+			Operator: client.UpdateToolInvocationPolicyJSONBodyConditionsOperator(data.Operator.ValueString()),
+			Value:    data.Value.ValueString(),
+		},
+	}
 
 	requestBody := client.UpdateToolInvocationPolicyJSONRequestBody{
-		AgentToolId:  &profileToolID,
-		ArgumentName: &argumentName,
-		Operator:     &operator,
-		Value:        &value,
-		Action:       &action,
+		ToolId:     &profileToolID,
+		Conditions: &conditions,
+		Action:     &action,
 	}
 
 	if !data.Reason.IsNull() {
@@ -266,10 +283,12 @@ func (r *ToolInvocationPolicyResource) Update(ctx context.Context, req resource.
 	}
 
 	// Map response to Terraform state
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.AgentToolId.String())
-	data.ArgumentName = types.StringValue(apiResp.JSON200.ArgumentName)
-	data.Operator = types.StringValue(string(apiResp.JSON200.Operator))
-	data.Value = types.StringValue(apiResp.JSON200.Value)
+	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	if len(apiResp.JSON200.Conditions) > 0 {
+		data.ArgumentName = types.StringValue(apiResp.JSON200.Conditions[0].Key)
+		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))
+		data.Value = types.StringValue(apiResp.JSON200.Conditions[0].Value)
+	}
 	data.Action = types.StringValue(string(apiResp.JSON200.Action))
 	if apiResp.JSON200.Reason != nil {
 		data.Reason = types.StringValue(*apiResp.JSON200.Reason)

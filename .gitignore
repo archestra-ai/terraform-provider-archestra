@@ -40,3 +40,4 @@ terraform.tfstate
 terraform-provider-archestra
 .terraform.lock.hcl
 *.tfvars
+.sessions/

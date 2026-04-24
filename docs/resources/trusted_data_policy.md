@@ -45,7 +45,7 @@ resource "archestra_trusted_data_policy" "trust_company_api" {
 
 ### Optional
 
-- `action` (String) The action to take when the policy matches. Valid values: `mark_as_trusted`, `block_always`, `sanitize_with_dual_llm` (default: `mark_as_trusted`)
+- `action` (String) The action to take when the policy matches. Valid values: `mark_as_trusted`, `mark_as_untrusted`, `block_always`, `sanitize_with_dual_llm` (default: `mark_as_trusted`)
 
 ### Read-Only
 

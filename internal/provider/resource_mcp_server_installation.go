@@ -11,16 +11,21 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
-const (
-	mcpServerPollTimeout  = 30 * time.Second
-	mcpServerPollInterval = 1 * time.Second
-)
+var mcpServerRetryConfig = RetryConfig{
+	MaxRetries:     30,
+	InitialBackoff: 1 * time.Second,
+	MaxBackoff:     2 * time.Second,
+	Description:    "MCP server tools",
+}
 
 var _ resource.Resource = &MCPServerResource{}
 var _ resource.ResourceWithImportState = &MCPServerResource{}
@@ -34,10 +39,18 @@ type MCPServerResource struct {
 }
 
 type MCPServerResourceModel struct {
-	ID          types.String `tfsdk:"id"`
-	Name        types.String `tfsdk:"name"`
-	DisplayName types.String `tfsdk:"display_name"`
-	MCPServerID types.String `tfsdk:"mcp_server_id"`
+	ID                types.String `tfsdk:"id"`
+	Name              types.String `tfsdk:"name"`
+	DisplayName       types.String `tfsdk:"display_name"`
+	CatalogID         types.String `tfsdk:"catalog_id"`
+	TeamID            types.String `tfsdk:"team_id"`
+	EnvironmentValues types.Map    `tfsdk:"environment_values"`
+	UserConfigValues  types.Map    `tfsdk:"user_config_values"`
+	SecretID          types.String `tfsdk:"secret_id"`
+	AccessToken       types.String `tfsdk:"access_token"`
+	ServiceAccount    types.String `tfsdk:"service_account"`
+	IsByosVault       types.Bool   `tfsdk:"is_byos_vault"`
+	AgentIDs          types.List   `tfsdk:"agent_ids"`
 }
 
 func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -46,7 +59,11 @@ func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataR
 
 func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an Archestra MCP server installation.",
+		MarkdownDescription: "Manages an Archestra MCP server installation.\n\n" +
+			"~> **Note:** The `ownerId` and `userId` fields on the underlying API are derived " +
+			"from the authenticated caller and cannot be set declaratively. Any value sent in " +
+			"the request body is overwritten by the backend with the API key's user ID, so " +
+			"these fields are intentionally not exposed on this resource.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -70,11 +87,71 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"mcp_server_id": schema.StringAttribute{
-				MarkdownDescription: "The MCP server ID from the private MCP registry (archestra_mcp_registry_catalog_item resource)",
+			"catalog_id": schema.StringAttribute{
+				MarkdownDescription: "Catalog item ID (UUID of the `archestra_mcp_registry_catalog_item` resource) this installation is based on.",
+				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"team_id": schema.StringAttribute{
+				MarkdownDescription: "Team ID for team-scoped installations",
 				Optional:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"environment_values": schema.MapAttribute{
+				MarkdownDescription: "Environment variable values for the MCP server installation",
+				Optional:            true,
+				ElementType:         types.StringType,
+				PlanModifiers: []planmodifier.Map{
+					mapplanmodifier.RequiresReplace(),
+				},
+			},
+			"user_config_values": schema.MapAttribute{
+				MarkdownDescription: "User configuration field values for the MCP server installation",
+				Optional:            true,
+				ElementType:         types.StringType,
+				PlanModifiers: []planmodifier.Map{
+					mapplanmodifier.RequiresReplace(),
+				},
+			},
+			"secret_id": schema.StringAttribute{
+				MarkdownDescription: "Pre-created secret UUID for the MCP server installation",
+				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"access_token": schema.StringAttribute{
+				MarkdownDescription: "Personal access token for the MCP server",
+				Optional:            true,
+				Sensitive:           true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"service_account": schema.StringAttribute{
+				MarkdownDescription: "Kubernetes service account override for the MCP server pod",
+				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"is_byos_vault": schema.BoolAttribute{
+				MarkdownDescription: "When true, environment_values and user_config_values are treated as vault references",
+				Optional:            true,
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.RequiresReplace(),
+				},
+			},
+			"agent_ids": schema.ListAttribute{
+				MarkdownDescription: "Agent IDs to auto-assign tools to on install",
+				Optional:            true,
+				ElementType:         types.StringType,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplace(),
 				},
 			},
 		},
@@ -110,13 +187,76 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		Name: data.Name.ValueString(),
 	}
 
-	if !data.MCPServerID.IsNull() {
-		mcpServerID, err := uuid.Parse(data.MCPServerID.ValueString())
-		if err != nil {
-			resp.Diagnostics.AddError("Invalid MCP Server ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
+	catalogUUID, catalogErr := uuid.Parse(data.CatalogID.ValueString())
+	if catalogErr != nil {
+		resp.Diagnostics.AddError("Invalid catalog_id", fmt.Sprintf("Unable to parse catalog_id as a UUID: %s", catalogErr))
+		return
+	}
+	requestBody.CatalogId = catalogUUID
+
+	if !data.TeamID.IsNull() && !data.TeamID.IsUnknown() {
+		teamId := data.TeamID.ValueString()
+		requestBody.TeamId = &teamId
+	}
+
+	if !data.EnvironmentValues.IsNull() && !data.EnvironmentValues.IsUnknown() {
+		var envVals map[string]string
+		resp.Diagnostics.Append(data.EnvironmentValues.ElementsAs(ctx, &envVals, false)...)
+		if resp.Diagnostics.HasError() {
 			return
 		}
-		requestBody.CatalogId = mcpServerID
+		requestBody.EnvironmentValues = &envVals
+	}
+
+	if !data.UserConfigValues.IsNull() && !data.UserConfigValues.IsUnknown() {
+		var ucVals map[string]string
+		resp.Diagnostics.Append(data.UserConfigValues.ElementsAs(ctx, &ucVals, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		requestBody.UserConfigValues = &ucVals
+	}
+
+	if !data.SecretID.IsNull() && !data.SecretID.IsUnknown() {
+		secretUUID, err := uuid.Parse(data.SecretID.ValueString())
+		if err != nil {
+			resp.Diagnostics.AddError("Invalid Secret ID", fmt.Sprintf("Unable to parse secret ID: %s", err))
+			return
+		}
+		requestBody.SecretId = &secretUUID
+	}
+
+	if !data.AccessToken.IsNull() && !data.AccessToken.IsUnknown() {
+		token := data.AccessToken.ValueString()
+		requestBody.AccessToken = &token
+	}
+
+	if !data.ServiceAccount.IsNull() && !data.ServiceAccount.IsUnknown() {
+		sa := data.ServiceAccount.ValueString()
+		requestBody.ServiceAccount = &sa
+	}
+
+	if !data.IsByosVault.IsNull() && !data.IsByosVault.IsUnknown() {
+		isByosVault := data.IsByosVault.ValueBool()
+		requestBody.IsByosVault = &isByosVault
+	}
+
+	if !data.AgentIDs.IsNull() && !data.AgentIDs.IsUnknown() {
+		var agentIDStrs []string
+		resp.Diagnostics.Append(data.AgentIDs.ElementsAs(ctx, &agentIDStrs, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		agentUUIDs := make([]openapi_types.UUID, len(agentIDStrs))
+		for i, idStr := range agentIDStrs {
+			parsed, err := uuid.Parse(idStr)
+			if err != nil {
+				resp.Diagnostics.AddError("Invalid Agent ID", fmt.Sprintf("Unable to parse agent ID %q: %s", idStr, err))
+				return
+			}
+			agentUUIDs[i] = parsed
+		}
+		requestBody.AgentIds = &agentUUIDs
 	}
 
 	// Call API
@@ -137,7 +277,11 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
-	data.MCPServerID = types.StringValue(apiResp.JSON200.CatalogId.String())
+	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
+
+	if apiResp.JSON200.TeamId != nil {
+		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
+	}
 
 	if err := r.waitForServerTools(ctx, apiResp.JSON200.Id.String()); err != nil {
 		resp.Diagnostics.AddWarning(
@@ -159,7 +303,7 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	// Parse UUID from state
 	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server installation ID: %s", err))
 		return
 	}
 
@@ -188,7 +332,22 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	// Map response to Terraform state
 	// Note: Keep user's configured name, set display_name to the API-returned name
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
-	data.MCPServerID = types.StringValue(apiResp.JSON200.CatalogId.String())
+	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
+
+	if apiResp.JSON200.TeamId != nil {
+		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
+	} else {
+		data.TeamID = types.StringNull()
+	}
+
+	if apiResp.JSON200.SecretId != nil {
+		data.SecretID = types.StringValue(apiResp.JSON200.SecretId.String())
+	} else {
+		data.SecretID = types.StringNull()
+	}
+
+	// EnvironmentValues, UserConfigValues, and AccessToken are write-only;
+	// preserve from prior state to avoid spurious diffs.
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -213,7 +372,7 @@ func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteReque
 	// Parse UUID from state
 	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server installation ID: %s", err))
 		return
 	}
 
@@ -239,55 +398,27 @@ func (r *MCPServerResource) ImportState(ctx context.Context, req resource.Import
 }
 
 func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID string) error {
-	ctx, cancel := context.WithTimeout(ctx, mcpServerPollTimeout)
-	defer cancel()
-
-	ticker := time.NewTicker(mcpServerPollInterval)
-	defer ticker.Stop()
-
-	for {
-		select {
-		case <-ctx.Done():
-			return fmt.Errorf("timeout waiting for MCP server tools to be ready")
-
-		case <-ticker.C:
-			ready, err := r.checkServerToolsReady(ctx, serverID)
-			if err != nil {
-				tflog.Debug(ctx, "Error checking server tools", map[string]interface{}{
-					"error": err.Error(),
-				})
-				continue
-			}
-
-			if ready {
-				tflog.Info(ctx, "MCP server tools are ready", map[string]interface{}{
-					"server_id": serverID,
-				})
-				return nil
-			}
-
-			tflog.Debug(ctx, "MCP server tools not yet ready, retrying...", map[string]interface{}{
-				"server_id": serverID,
-			})
-		}
-	}
-}
-
-func (r *MCPServerResource) checkServerToolsReady(ctx context.Context, serverID string) (bool, error) {
-	toolsResp, err := r.client.GetToolsWithResponse(ctx)
+	serverUUID, err := uuid.Parse(serverID)
 	if err != nil {
-		return false, fmt.Errorf("failed to get tools: %w", err)
+		return fmt.Errorf("failed to parse server ID: %w", err)
 	}
 
-	if toolsResp.JSON200 == nil {
-		return false, fmt.Errorf("unexpected response status: %d", toolsResp.StatusCode())
-	}
-
-	for _, tool := range *toolsResp.JSON200 {
-		if tool.McpServer != nil && tool.McpServer.Id == serverID {
-			return true, nil
+	_, found, err := RetryUntilFound(ctx, mcpServerRetryConfig, func() (bool, bool, error) {
+		toolsResp, err := r.client.GetMcpServerToolsWithResponse(ctx, serverUUID)
+		if err != nil {
+			return false, false, fmt.Errorf("failed to get server tools: %w", err)
 		}
+		if toolsResp.JSON200 == nil {
+			return false, false, fmt.Errorf("unexpected response status: %d", toolsResp.StatusCode())
+		}
+		ready := len(*toolsResp.JSON200) > 0
+		return ready, ready, nil
+	})
+	if err != nil {
+		return err
 	}
-
-	return false, nil
+	if !found {
+		return fmt.Errorf("timeout waiting for MCP server tools to be ready")
+	}
+	return nil
 }

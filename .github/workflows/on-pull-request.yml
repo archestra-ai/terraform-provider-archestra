@@ -7,6 +7,9 @@ on:
       - edited
       - synchronize
 
+permissions:
+  contents: read
+
 concurrency:
   # Cancel any running workflow for the same branch when new commits are pushed.
   # We group both by ref_name (available when CI is triggered by a push to a branch/tag)
@@ -59,7 +62,7 @@ jobs:
       - name: Linting
         uses: golangci/golangci-lint-action@4afd733a84b1f43292c63897423277bb7f4313a9 # v8.0.0
         with:
-          version: v2.1
+          version: v2.11
 
       - name: Ensure formatting and generation are up to date
         run: |
@@ -85,7 +88,7 @@ jobs:
     env:
       # Archestra platform version for acceptance tests
       # Update this single value to bump the version used
-      ARCHESTRA_VERSION: "1.0.8"
+      ARCHESTRA_VERSION: "1.2.20"
     steps:
       - name: Checkout project
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -110,6 +113,107 @@ jobs:
           deploy-e2e-dependencies: "false"
           build-platform-image: "false"
           platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}
+
+      # Stub /v1/models so backend's testProviderApiKey passes without a real Ollama.
+      - name: Deploy Ollama mock
+        run: |
+          kubectl apply -f - <<'EOF'
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: ollama-mock
+            namespace: default
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: ollama-mock
+            template:
+              metadata:
+                labels:
+                  app: ollama-mock
+              spec:
+                containers:
+                  - name: http-echo
+                    image: hashicorp/http-echo:1.0.0
+                    args:
+                      - "-listen=:11434"
+                      - '-text={"object":"list","data":[{"id":"llama3","object":"model","created":1700000000,"owned_by":"ci-stub"}]}'
+                    ports:
+                      - containerPort: 11434
+          ---
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: ollama-mock
+            namespace: default
+          spec:
+            selector:
+              app: ollama-mock
+            ports:
+              - port: 11434
+                targetPort: 11434
+          EOF
+
+          kubectl rollout status deployment/ollama-mock --namespace default --timeout=60s
+
+      # Dev-mode Vault for BYOS tests. Ephemeral; do not mirror outside CI.
+      - name: Deploy Vault (dev mode)
+        run: |
+          kubectl apply -f - <<'EOF'
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: vault
+            namespace: default
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: vault
+            template:
+              metadata:
+                labels:
+                  app: vault
+              spec:
+                containers:
+                  - name: vault
+                    image: hashicorp/vault:1.17
+                    args: ["server", "-dev", "-dev-root-token-id=root", "-dev-listen-address=0.0.0.0:8200"]
+                    ports:
+                      - containerPort: 8200
+                    readinessProbe:
+                      httpGet:
+                        path: /v1/sys/health
+                        port: 8200
+                      initialDelaySeconds: 2
+                      periodSeconds: 2
+          ---
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: vault
+            namespace: default
+          spec:
+            selector:
+              app: vault
+            ports:
+              - port: 8200
+                targetPort: 8200
+          EOF
+
+          kubectl rollout status deployment/vault --namespace default --timeout=120s
+
+          # Seed the vault secret referenced by the LLM provider API key tests.
+          kubectl run vault-seed --rm -i --restart=Never --image=curlimages/curl:8.10.1 -- \
+            curl -sS -X POST "http://vault.default.svc.cluster.local:8200/v1/secret/data/test/ollama" \
+              -H "X-Vault-Token: root" \
+              -H "Content-Type: application/json" \
+              -d '{"data":{"api_key":"test-api-key-value"}}'
+
+          # Restart the archestra backend so it picks up a reachable Vault at startup.
+          kubectl rollout restart deployment --namespace archestra --selector=app.kubernetes.io/name=archestra-platform
+          kubectl rollout status deployment --namespace archestra --selector=app.kubernetes.io/name=archestra-platform --timeout=180s
 
       - name: Check for codegen'd API client changes
         run: |
@@ -165,8 +269,51 @@ jobs:
           # Cleanup
           rm -f cookies.txt
 
+      # Provision a throwaway OIDC identity provider so the enterprise_managed_config
+      # acceptance test can exercise the full EMC round-trip. The test skips gracefully
+      # if ARCHESTRA_TEST_IDP_ID is unset; in CI we always set it.
+      - name: Provision test Identity Provider
+        id: test-idp
+        env:
+          API_KEY: ${{ steps.api-key.outputs.api-key }}
+        run: |
+          BACKEND_URL="http://localhost:9000"
+
+          echo "Creating throwaway OIDC identity provider for EMC acceptance test..."
+          IDP_RESPONSE=$(curl -s -X POST "${BACKEND_URL}/api/identity-providers" \
+            -H "Authorization: ${API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "providerId": "ci-test-emc",
+              "domain": "ci.emc.test",
+              "issuer": "https://idp.ci.example.com",
+              "oidcConfig": {
+                "issuer": "https://idp.ci.example.com",
+                "discoveryEndpoint": "https://idp.ci.example.com/.well-known/openid-configuration",
+                "clientId": "ci-test",
+                "clientSecret": "ci-secret",
+                "pkce": false,
+                "skipDiscovery": true
+              }
+            }')
+
+          echo "IdP response: ${IDP_RESPONSE}"
+
+          IDP_ID=$(echo "${IDP_RESPONSE}" | jq -r '.id')
+
+          if [ -z "${IDP_ID}" ] || [ "${IDP_ID}" = "null" ]; then
+            echo "Failed to create identity provider"
+            echo "Response: ${IDP_RESPONSE}"
+            exit 1
+          fi
+
+          echo "Successfully provisioned IdP with id ${IDP_ID}"
+          echo "idp-id=${IDP_ID}" >> $GITHUB_OUTPUT
+
       - name: Run Acceptance Tests
         run: make testacc
         env:
           ARCHESTRA_BASE_URL: "http://localhost:9000"
           ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
+          ARCHESTRA_TEST_IDP_ID: ${{ steps.test-idp.outputs.idp-id }}
+          ARCHESTRA_READONLY_VAULT_ENABLED: "true"

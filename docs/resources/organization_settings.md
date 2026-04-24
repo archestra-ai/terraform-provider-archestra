@@ -28,14 +28,45 @@ resource "archestra_organization_settings" "example" {
 
 ### Optional
 
+- `allow_chat_file_uploads` (Boolean) Whether to allow file uploads in chat
+- `animate_chat_placeholders` (Boolean) Whether to animate chat placeholders in the UI
+- `app_name` (String) Custom application name displayed in the UI
+- `chat_error_support_message` (String) Custom error support message displayed in the chat UI
+- `chat_links` (Attributes List) Chat links displayed in the chat UI (see [below for nested schema](#nestedatt--chat_links))
+- `chat_placeholders` (List of String) Chat placeholder texts displayed in the chat input
 - `color_theme` (String) Color theme for the organization UI
 - `compression_scope` (String) Scope for tool results compression
 - `convert_tool_results_to_toon` (Boolean) Whether to convert tool results to TOON format for compression
+- `default_agent_id` (String) Default agent (profile) ID for the organization
+- `default_llm_api_key_id` (String) Default LLM API key ID for the organization
+- `default_llm_model` (String) Default LLM model for the organization
+- `default_llm_provider` (String) Default LLM provider for the organization
+- `embedding_chat_api_key_id` (String) API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
+- `embedding_model` (String) Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
+- `favicon` (String) Base64 encoded favicon image for the organization
 - `font` (String) Custom font for the organization UI
+- `footer_text` (String) Custom footer text displayed in the UI
+- `global_tool_policy` (String) Global tool invocation policy. Valid values: permissive, restrictive.
+- `icon_logo` (String) Base64 encoded icon logo image for the organization
 - `limit_cleanup_interval` (String) Interval for cleaning up usage limits. Valid values: 1h, 12h, 24h, 1w, 1m. Set to null to disable.
 - `logo` (String) Base64 encoded logo image for the organization
-- `onboarding_complete` (Boolean) Whether organization onboarding is complete
+- `logo_dark` (String) Base64 encoded dark mode logo image for the organization
+- `mcp_oauth_access_token_lifetime_seconds` (Number) Lifetime in seconds for MCP OAuth access tokens
+- `og_description` (String) OG meta description for the organization, max 500 characters
+- `onboarding_complete` (Boolean) Whether organization onboarding is complete. This is a one-way flag — once set to `true`, it cannot be reverted to `false`.
+- `reranker_chat_api_key_id` (String) API key ID for the reranker model
+- `reranker_model` (String) Reranker model for knowledge base
+- `show_two_factor` (Boolean) Whether to show two-factor authentication options
+- `slim_chat_error_ui` (Boolean) When enabled, renders a compact error UI in chat views.
 
 ### Read-Only
 
 - `id` (String) Organization identifier
+
+<a id="nestedatt--chat_links"></a>
+### Nested Schema for `chat_links`
+
+Required:
+
+- `label` (String) Display label for the chat link
+- `url` (String) URL for the chat link

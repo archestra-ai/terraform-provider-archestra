@@ -4,11 +4,14 @@ page_title: "archestra_mcp_server_installation Resource - archestra"
 subcategory: ""
 description: |-
   Manages an Archestra MCP server installation.
+  ~> Note: The ownerId and userId fields on the underlying API are derived from the authenticated caller and cannot be set declaratively. Any value sent in the request body is overwritten by the backend with the API key's user ID, so these fields are intentionally not exposed on this resource.
 ---
 
 # archestra_mcp_server_installation (Resource)
 
 Manages an Archestra MCP server installation.
+
+~> **Note:** The `ownerId` and `userId` fields on the underlying API are derived from the authenticated caller and cannot be set declaratively. Any value sent in the request body is overwritten by the backend with the API key's user ID, so these fields are intentionally not exposed on this resource.
 
 ## Example Usage
 
@@ -31,8 +34,8 @@ resource "archestra_mcp_registry_catalog_item" "filesystem" {
 
 # Then, install the MCP server from the private registry
 resource "archestra_mcp_server_installation" "example" {
-  name          = "my-filesystem-server"
-  mcp_server_id = archestra_mcp_registry_catalog_item.filesystem.id
+  name       = "my-filesystem-server"
+  catalog_id = archestra_mcp_registry_catalog_item.filesystem.id
 }
 ```
 
@@ -41,11 +44,19 @@ resource "archestra_mcp_server_installation" "example" {
 
 ### Required
 
+- `catalog_id` (String) Catalog item ID (UUID of the `archestra_mcp_registry_catalog_item` resource) this installation is based on.
 - `name` (String) The name of the MCP server installation.
 
 ### Optional
 
-- `mcp_server_id` (String) The MCP server ID from the private MCP registry (archestra_mcp_registry_catalog_item resource)
+- `access_token` (String, Sensitive) Personal access token for the MCP server
+- `agent_ids` (List of String) Agent IDs to auto-assign tools to on install
+- `environment_values` (Map of String) Environment variable values for the MCP server installation
+- `is_byos_vault` (Boolean) When true, environment_values and user_config_values are treated as vault references
+- `secret_id` (String) Pre-created secret UUID for the MCP server installation
+- `service_account` (String) Kubernetes service account override for the MCP server pod
+- `team_id` (String) Team ID for team-scoped installations
+- `user_config_values` (Map of String) User configuration field values for the MCP server installation
 
 ### Read-Only
 
