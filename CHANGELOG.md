@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.6.0...v0.6.1) (2026-04-24)
+
+
+### Dependencies
+
+* **terraform:** bump the terraform-go-dependencies group across 1 directory with 5 updates ([#80](https://github.com/archestra-ai/terraform-provider-archestra/issues/80)) ([39f2051](https://github.com/archestra-ai/terraform-provider-archestra/commit/39f205199e902d8288ab7e45f067989b0676d7ea))
+
 ## [0.6.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.5.0...v0.6.0) (2026-04-23)
 
 
