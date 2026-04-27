@@ -1,0 +1,42 @@
+#!/bin/sh
+# Pre-commit hook: ensure generated docs and formatting are up to date
+
+# Ensure Go and Terraform are in PATH
+export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
+
+# Only run if provider source files are staged
+STAGED_GO=$(git diff --cached --name-only --diff-filter=ACM | grep '\.go$' | grep -v '_test.go$' || true)
+STAGED_TF=$(git diff --cached --name-only --diff-filter=ACM | grep '\.tf$' || true)
+
+if [ -z "$STAGED_GO" ] && [ -z "$STAGED_TF" ]; then
+  exit 0
+fi
+
+# Run gofmt
+if [ -n "$STAGED_GO" ]; then
+  UNFORMATTED=$(gofmt -l $STAGED_GO 2>/dev/null || true)
+  if [ -n "$UNFORMATTED" ]; then
+    echo "ERROR: Go files not formatted:"
+    echo "$UNFORMATTED"
+    echo "Run: make fmt"
+    exit 1
+  fi
+fi
+
+# Check if docs are stale (only if provider schema files changed)
+SCHEMA_CHANGED=$(echo "$STAGED_GO" | grep 'internal/provider/' || true)
+if [ -n "$SCHEMA_CHANGED" ]; then
+  # Save current doc state, run generate, compare
+  DOCS_BEFORE=$(find docs/ examples/ -name '*.md' -o -name '*.tf' 2>/dev/null | sort | xargs md5sum 2>/dev/null || true)
+  make generate > /dev/null 2>&1
+  DOCS_AFTER=$(find docs/ examples/ -name '*.md' -o -name '*.tf' 2>/dev/null | sort | xargs md5sum 2>/dev/null || true)
+
+  if [ "$DOCS_BEFORE" != "$DOCS_AFTER" ]; then
+    CHANGED=$(git diff --name-only docs/ examples/ 2>/dev/null || true)
+    echo "ERROR: Generated docs are stale. These files changed after 'make generate':"
+    echo "$CHANGED"
+    echo ""
+    echo "Run: make generate && git add docs/ examples/"
+    exit 1
+  fi
+fi
