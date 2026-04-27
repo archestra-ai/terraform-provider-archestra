@@ -48,7 +48,7 @@ resource "archestra_mcp_gateway" "authenticated" {
 - `identity_provider_id` (String) Identity provider used to validate inbound JWTs. Reference an `archestra_sso_provider`. Omit to disable JWT auth.
 - `is_default` (Boolean) Whether this is the default MCP gateway
 - `knowledge_base_ids` (List of String) Knowledge base IDs the gateway has access to
-- `labels` (Attributes List) Key/value labels for organizing gateways (see [below for nested schema](#nestedatt--labels))
+- `labels` (Attributes Set) Key/value labels for organizing gateways (see [below for nested schema](#nestedatt--labels))
 - `passthrough_headers` (List of String) Allowlist of HTTP header names to forward from gateway requests to downstream MCP servers
 - `scope` (String) Ownership scope: `personal`, `team`, or `org` (default: `org`).
 - `teams` (List of String) Team IDs this gateway is assigned to. Required when `scope = "team"`.

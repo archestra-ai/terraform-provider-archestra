@@ -46,7 +46,7 @@ resource "archestra_llm_proxy" "authenticated" {
 - `icon` (String) Emoji or base64 image data URL
 - `identity_provider_id` (String) Identity provider used to validate inbound JWTs. Reference an `archestra_sso_provider`. Omit to disable JWT auth.
 - `is_default` (Boolean) Whether this is the default LLM proxy
-- `labels` (Attributes List) Key/value labels for organizing proxies (see [below for nested schema](#nestedatt--labels))
+- `labels` (Attributes Set) Key/value labels for organizing proxies (see [below for nested schema](#nestedatt--labels))
 - `llm_api_key_id` (String) ID of the upstream LLM provider API key
 - `llm_model` (String) Upstream LLM model ID
 - `passthrough_headers` (List of String) Allowlist of HTTP header names to forward from proxy requests to the upstream LLM

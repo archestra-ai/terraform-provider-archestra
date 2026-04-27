@@ -281,9 +281,17 @@ func TestAccMcpRegistryCatalogItemResourceWithEnvironmentVariables(t *testing.T)
 					statecheck.ExpectKnownValue(
 						"archestra_mcp_registry_catalog_item.test_env",
 						tfjsonpath.New("local_config").AtMapKey("environment"),
-						knownvalue.MapExact(map[string]knownvalue.Check{
-							"API_URL":   knownvalue.StringExact("{{API_URL}}"),
-							"API_TOKEN": knownvalue.StringExact("{{API_TOKEN}}"),
+						knownvalue.SetExact([]knownvalue.Check{
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":   knownvalue.StringExact("API_URL"),
+								"type":  knownvalue.StringExact("plain_text"),
+								"value": knownvalue.StringExact("{{API_URL}}"),
+							}),
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":   knownvalue.StringExact("API_TOKEN"),
+								"type":  knownvalue.StringExact("plain_text"),
+								"value": knownvalue.StringExact("{{API_TOKEN}}"),
+							}),
 						}),
 					),
 				},
@@ -307,10 +315,10 @@ resource "archestra_mcp_registry_catalog_item" "test_env" {
   local_config = {
     command   = "npx"
     arguments = ["-y", "@example/mcp-server"]
-    environment = {
-      API_URL   = "{{API_URL}}"
-      API_TOKEN = "{{API_TOKEN}}"
-    }
+    environment = [
+      { key = "API_URL",   type = "plain_text", value = "{{API_URL}}" },
+      { key = "API_TOKEN", type = "plain_text", value = "{{API_TOKEN}}" },
+    ]
   }
 
   auth_fields = [
@@ -355,9 +363,17 @@ func TestAccMcpRegistryCatalogItemResourceDockerImageWithEnv(t *testing.T) {
 					statecheck.ExpectKnownValue(
 						"archestra_mcp_registry_catalog_item.test_docker_env",
 						tfjsonpath.New("local_config").AtMapKey("environment"),
-						knownvalue.MapExact(map[string]knownvalue.Check{
-							"GRAFANA_URL":                   knownvalue.StringExact("{{GRAFANA_URL}}"),
-							"GRAFANA_SERVICE_ACCOUNT_TOKEN": knownvalue.StringExact("{{GRAFANA_SERVICE_ACCOUNT_TOKEN}}"),
+						knownvalue.SetExact([]knownvalue.Check{
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":   knownvalue.StringExact("GRAFANA_URL"),
+								"type":  knownvalue.StringExact("plain_text"),
+								"value": knownvalue.StringExact("{{GRAFANA_URL}}"),
+							}),
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":   knownvalue.StringExact("GRAFANA_SERVICE_ACCOUNT_TOKEN"),
+								"type":  knownvalue.StringExact("secret"),
+								"value": knownvalue.StringExact("{{GRAFANA_SERVICE_ACCOUNT_TOKEN}}"),
+							}),
 						}),
 					),
 				},
@@ -381,10 +397,10 @@ resource "archestra_mcp_registry_catalog_item" "test_docker_env" {
   local_config = {
     docker_image = "mcp/grafana"
     arguments    = ["-t", "stdio"]
-    environment = {
-      GRAFANA_URL                   = "{{GRAFANA_URL}}"
-      GRAFANA_SERVICE_ACCOUNT_TOKEN = "{{GRAFANA_SERVICE_ACCOUNT_TOKEN}}"
-    }
+    environment = [
+      { key = "GRAFANA_URL",                   type = "plain_text", value = "{{GRAFANA_URL}}" },
+      { key = "GRAFANA_SERVICE_ACCOUNT_TOKEN", type = "secret",     value = "{{GRAFANA_SERVICE_ACCOUNT_TOKEN}}" },
+    ]
   }
 
   auth_fields = [

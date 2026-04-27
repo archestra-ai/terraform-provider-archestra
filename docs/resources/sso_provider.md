@@ -137,7 +137,7 @@ Optional:
 - `hd` (String) Google Hosted Domain restriction (e.g., `example.com`). Only allows users from this domain.
 - `issuer` (String) OIDC issuer URL.
 - `jwks_endpoint` (String) Override JWKS endpoint.
-- `mapping` (Block, Optional) Attribute mapping for user fields. (see [below for nested schema](#nestedblock--oidc_config--mapping))
+- `mapping` (Block, Optional) Attribute mapping for user fields. The `id` field is required by the better-auth OIDC library; defaults to `"sub"` if unset. (see [below for nested schema](#nestedblock--oidc_config--mapping))
 - `override_user_info` (Boolean) Use token claims instead of userinfo when true.
 - `pkce` (Boolean) Enable PKCE.
 - `scopes` (List of String) OAuth scopes to request.
@@ -170,7 +170,7 @@ Optional:
 - `email` (String)
 - `email_verified` (String)
 - `extra_fields` (Map of String)
-- `id` (String)
+- `id` (String) OIDC claim that maps to the user identity. Defaults to `"sub"` (the better-auth OIDC library treats this as required and the backend silently fills it in).
 - `image` (String)
 - `name` (String)
 
@@ -211,7 +211,7 @@ Optional:
 - `identifier_format` (String)
 - `idp_metadata` (Block, Optional) IdP metadata details. (see [below for nested schema](#nestedblock--saml_config--idp_metadata))
 - `issuer` (String) SAML issuer/entity ID.
-- `mapping` (Block, Optional) Attribute mapping for user fields. (see [below for nested schema](#nestedblock--saml_config--mapping))
+- `mapping` (Block, Optional) Attribute mapping for user fields. The `id` field is required by the better-auth SAML library; defaults to `"sub"` if unset. (see [below for nested schema](#nestedblock--saml_config--mapping))
 - `private_key` (String, Sensitive)
 - `signature_algorithm` (String)
 - `sp_metadata` (Block, Optional) SP metadata details. (see [below for nested schema](#nestedblock--saml_config--sp_metadata))
@@ -253,7 +253,7 @@ Optional:
 - `email_verified` (String)
 - `extra_fields` (Map of String)
 - `first_name` (String)
-- `id` (String)
+- `id` (String) SAML attribute that maps to the user identity. Defaults to `"sub"` (the better-auth SAML library treats this as required).
 - `last_name` (String)
 - `name` (String)
 

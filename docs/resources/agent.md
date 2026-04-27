@@ -52,7 +52,7 @@ resource "archestra_agent" "support" {
 - `incoming_email_security_mode` (String) Email-trigger security mode. One of `private` (only the agent owner can email it), `internal` (any sender from `incoming_email_allowed_domain` can), or `public` (any sender). Defaults to `private`.
 - `is_default` (Boolean) Whether this is the default agent for its type
 - `knowledge_base_ids` (List of String) Knowledge base IDs the agent has access to
-- `labels` (Attributes List) Key/value labels for organizing agents (see [below for nested schema](#nestedatt--labels))
+- `labels` (Attributes Set) Key/value labels for organizing agents (see [below for nested schema](#nestedatt--labels))
 - `llm_api_key_id` (String) ID of the LLM provider API key the agent should use
 - `llm_model` (String) Model ID used for LLM calls
 - `scope` (String) Ownership scope: `personal`, `team`, or `org` (default: `org`).

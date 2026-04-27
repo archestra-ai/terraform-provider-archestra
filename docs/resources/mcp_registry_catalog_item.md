@@ -23,9 +23,9 @@ resource "archestra_mcp_registry_catalog_item" "filesystem" {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/home/user"]
 
-    environment = {
-      NODE_ENV = "production"
-    }
+    environment = [
+      { key = "NODE_ENV", type = "plain_text", value = "production" },
+    ]
   }
 }
 
@@ -41,9 +41,9 @@ resource "archestra_mcp_registry_catalog_item" "github" {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-github"]
 
-    environment = {
-      NODE_ENV = "production"
-    }
+    environment = [
+      { key = "NODE_ENV", type = "plain_text", value = "production" },
+    ]
   }
 
   auth_fields = [
@@ -93,11 +93,11 @@ resource "archestra_mcp_registry_catalog_item" "postgres" {
     arguments    = ["-y", "@modelcontextprotocol/server-postgres"]
     docker_image = "postgres:16-alpine"
 
-    environment = {
-      POSTGRES_USER     = "admin"
-      POSTGRES_PASSWORD = "${var.postgres_password}"
-      POSTGRES_DB       = "myapp"
-    }
+    environment = [
+      { key = "POSTGRES_USER", type = "plain_text", value = "admin" },
+      { key = "POSTGRES_PASSWORD", type = "secret", value = var.postgres_password },
+      { key = "POSTGRES_DB", type = "plain_text", value = "myapp" },
+    ]
   }
 
   auth_fields = [
@@ -326,11 +326,10 @@ Optional:
 - `command` (String) The executable command to run (e.g., 'node', 'python', 'npx'). Optional if Docker Image is set (will use image's default CMD).
 - `docker_image` (String) Custom Docker image URL. If not specified, Archestra's default base image will be used.
 - `env_from` (Attributes List) List of sources to populate environment variables from (Kubernetes secrets or configMaps) (see [below for nested schema](#nestedatt--local_config--env_from))
-- `environment` (Map of String) Environment variables for the MCP server (KEY=value format)
+- `environment` (Attributes Set) Environment variables declared on the MCP server. Each entry mirrors the backend's wire shape one-to-one: `key`, `type`, optional `value`, `default`, `description`, plus `prompt_on_installation`, `required`, and `mounted` flags. (see [below for nested schema](#nestedatt--local_config--environment))
 - `http_path` (String) HTTP path for streamable-http transport (e.g., '/sse')
 - `http_port` (Number) HTTP port for streamable-http transport
 - `image_pull_secrets` (Attributes List) Kubernetes image pull secrets for the MCP server pod. Supports two variants: `source = "existing"` references a pre-existing secret by `name`; `source = "credentials"` creates a new secret from explicit registry credentials (`server`, `username`, `password`, optional `email`). (see [below for nested schema](#nestedatt--local_config--image_pull_secrets))
-- `mounted_env_keys` (Set of String) Set of environment variable keys that should be mounted as files at /secrets/<key>
 - `node_port` (Number) Node port for the MCP server service
 - `service_account` (String) Kubernetes service account for the MCP server pod
 - `transport_type` (String) Transport type: 'stdio' or 'streamable-http'. Defaults to 'stdio'
@@ -346,6 +345,24 @@ Required:
 Optional:
 
 - `prefix` (String) Optional prefix for environment variable names
+
+
+<a id="nestedatt--local_config--environment"></a>
+### Nested Schema for `local_config.environment`
+
+Required:
+
+- `key` (String) Environment variable name.
+- `type` (String) Variable type. One of `plain_text`, `secret`, `boolean`, `number`.
+
+Optional:
+
+- `default` (String) Default value. Use `jsonencode(...)` to encode non-string defaults (number, bool). Plain strings may be provided as-is.
+- `description` (String) Human-readable description of the variable.
+- `mounted` (Boolean) When true, the value is mounted as a file at `/secrets/<key>` rather than injected as an env var.
+- `prompt_on_installation` (Boolean) Whether the installer must supply this value at install time. Required field on the wire — defaults to `false`.
+- `required` (Boolean) Whether the value must be set.
+- `value` (String) Value for `plain_text` / `secret` variables.
 
 
 <a id="nestedatt--local_config--image_pull_secrets"></a>

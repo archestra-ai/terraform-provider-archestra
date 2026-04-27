@@ -86,8 +86,16 @@ var catalogItemAttrSpec = []AttrSpec{
 	{TFName: "local_config", JSONName: "localConfig", Kind: AtomicObject, Children: []AttrSpec{
 		{TFName: "command", JSONName: "command", Kind: Scalar},
 		{TFName: "arguments", JSONName: "arguments", Kind: List},
-		{TFName: "environment", JSONName: "environment", Kind: Map},
-		{TFName: "mounted_env_keys", JSONName: "mountedEnvKeys", Kind: Set},
+		{TFName: "environment", JSONName: "environment", Kind: Set, Children: []AttrSpec{
+			{TFName: "key", JSONName: "key", Kind: Scalar},
+			{TFName: "type", JSONName: "type", Kind: Scalar},
+			{TFName: "value", JSONName: "value", Kind: Scalar},
+			{TFName: "prompt_on_installation", JSONName: "promptOnInstallation", Kind: Scalar},
+			{TFName: "required", JSONName: "required", Kind: Scalar},
+			{TFName: "description", JSONName: "description", Kind: Scalar},
+			{TFName: "default", JSONName: "default", Kind: Scalar, Encoder: parseUserConfigDefault},
+			{TFName: "mounted", JSONName: "mounted", Kind: Scalar},
+		}},
 		{TFName: "env_from", JSONName: "envFrom", Kind: List, Children: []AttrSpec{
 			{TFName: "type", JSONName: "type", Kind: Scalar},
 			{TFName: "name", JSONName: "name", Kind: Scalar},
@@ -124,6 +132,18 @@ var catalogItemAttrSpec = []AttrSpec{
 	}},
 
 	{TFName: "remote_config", Kind: Synthetic},
+}
+
+// stringFromJSONScalar reports whether the JSON bytes are a quoted string and
+// returns the unquoted value when so. Used by Read flatteners to keep plain
+// HCL strings as `"foo"` rather than the JSON-encoded `"\"foo\""` form for
+// polymorphic-default fields.
+func stringFromJSONScalar(b []byte) (string, bool) {
+	var s string
+	if err := json.Unmarshal(b, &s); err == nil {
+		return s, true
+	}
+	return "", false
 }
 
 // parseUserConfigDefault transforms a user_config.default JSON-encoded string
@@ -164,8 +184,9 @@ func finalizeCatalogItemPatch(
 	finalizeRemoteConfigInPatch(ctx, patch, plan, prior, serverName, diags)
 }
 
-// finalizeLocalConfigInPatch reshapes localConfig.environment + mountedEnvKeys
-// into the wire array form, and normalizes imagePullSecrets entries.
+// finalizeLocalConfigInPatch normalizes the imagePullSecrets entries inside
+// `localConfig` to the wire shape — `existing` keeps `name`, `credentials`
+// keeps `server`/`username`/`password`/`email`, with empties dropped.
 func finalizeLocalConfigInPatch(patch map[string]any) {
 	lcRaw, ok := patch["localConfig"]
 	if !ok || lcRaw == nil {
@@ -176,34 +197,20 @@ func finalizeLocalConfigInPatch(patch map[string]any) {
 		return
 	}
 
-	envMap, _ := lc["environment"].(map[string]any)
-	mountedArr, _ := lc["mountedEnvKeys"].([]any)
-	if envMap != nil || mountedArr != nil {
-		mounted := make(map[string]bool, len(mountedArr))
-		for _, k := range mountedArr {
-			if s, ok := k.(string); ok {
-				mounted[s] = true
+	// promptOnInstallation is required on every env entry; default false when
+	// the user omits it. (Schema sets a Default so plan time has it; this is
+	// belt-and-braces for any path that might bypass the default — e.g. when
+	// the plan is unknown but the entry shape is otherwise complete.)
+	if envArr, ok := lc["environment"].([]any); ok {
+		for _, item := range envArr {
+			entry, ok := item.(map[string]any)
+			if !ok {
+				continue
+			}
+			if _, set := entry["promptOnInstallation"]; !set {
+				entry["promptOnInstallation"] = false
 			}
 		}
-		envArray := make([]map[string]any, 0, len(envMap))
-		for k, v := range envMap {
-			entry := map[string]any{
-				"key":                  k,
-				"value":                v,
-				"type":                 "plain_text",
-				"promptOnInstallation": false,
-			}
-			if mounted[k] {
-				entry["mounted"] = true
-			}
-			envArray = append(envArray, entry)
-		}
-		if len(envArray) > 0 {
-			lc["environment"] = envArray
-		} else {
-			delete(lc, "environment")
-		}
-		delete(lc, "mountedEnvKeys")
 	}
 
 	if ips, ok := lc["imagePullSecrets"].([]any); ok {

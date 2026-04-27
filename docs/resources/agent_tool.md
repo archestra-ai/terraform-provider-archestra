@@ -35,7 +35,7 @@ resource "archestra_mcp_server_installation" "filesystem" {
 
 data "archestra_mcp_server_tool" "read_text_file" {
   mcp_server_id = archestra_mcp_server_installation.filesystem.id
-  name          = "read_text_file"
+  name          = "${archestra_mcp_registry_catalog_item.filesystem.name}__read_text_file"
 }
 
 resource "archestra_agent_tool" "read_text_file" {

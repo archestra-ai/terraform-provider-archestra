@@ -8,9 +8,9 @@ resource "archestra_mcp_registry_catalog_item" "filesystem" {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/home/user"]
 
-    environment = {
-      NODE_ENV = "production"
-    }
+    environment = [
+      { key = "NODE_ENV", type = "plain_text", value = "production" },
+    ]
   }
 }
 
@@ -26,9 +26,9 @@ resource "archestra_mcp_registry_catalog_item" "github" {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-github"]
 
-    environment = {
-      NODE_ENV = "production"
-    }
+    environment = [
+      { key = "NODE_ENV", type = "plain_text", value = "production" },
+    ]
   }
 
   auth_fields = [
@@ -78,11 +78,11 @@ resource "archestra_mcp_registry_catalog_item" "postgres" {
     arguments    = ["-y", "@modelcontextprotocol/server-postgres"]
     docker_image = "postgres:16-alpine"
 
-    environment = {
-      POSTGRES_USER     = "admin"
-      POSTGRES_PASSWORD = "${var.postgres_password}"
-      POSTGRES_DB       = "myapp"
-    }
+    environment = [
+      { key = "POSTGRES_USER", type = "plain_text", value = "admin" },
+      { key = "POSTGRES_PASSWORD", type = "secret", value = var.postgres_password },
+      { key = "POSTGRES_DB", type = "plain_text", value = "myapp" },
+    ]
   }
 
   auth_fields = [

@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -126,8 +127,7 @@ type LabelModel struct {
 type LocalConfigModel struct {
 	Command          types.String  `tfsdk:"command"`
 	Arguments        types.List    `tfsdk:"arguments"`
-	Environment      types.Map     `tfsdk:"environment"`
-	MountedEnvKeys   types.Set     `tfsdk:"mounted_env_keys"`
+	Environment      types.Set     `tfsdk:"environment"`
 	EnvFrom          types.List    `tfsdk:"env_from"`
 	DockerImage      types.String  `tfsdk:"docker_image"`
 	TransportType    types.String  `tfsdk:"transport_type"`
@@ -136,6 +136,18 @@ type LocalConfigModel struct {
 	ServiceAccount   types.String  `tfsdk:"service_account"`
 	NodePort         types.Float64 `tfsdk:"node_port"`
 	ImagePullSecrets types.List    `tfsdk:"image_pull_secrets"`
+}
+
+// EnvironmentVariableModel mirrors the wire shape one-to-one.
+type EnvironmentVariableModel struct {
+	Key                  types.String `tfsdk:"key"`
+	Type                 types.String `tfsdk:"type"`
+	Value                types.String `tfsdk:"value"`
+	PromptOnInstallation types.Bool   `tfsdk:"prompt_on_installation"`
+	Required             types.Bool   `tfsdk:"required"`
+	Description          types.String `tfsdk:"description"`
+	Default              types.String `tfsdk:"default"`
+	Mounted              types.Bool   `tfsdk:"mounted"`
 }
 
 type ImagePullSecretModel struct {
@@ -239,15 +251,50 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 						Optional:            true,
 						ElementType:         types.StringType,
 					},
-					"environment": schema.MapAttribute{
-						MarkdownDescription: "Environment variables for the MCP server (KEY=value format)",
+					"environment": schema.SetNestedAttribute{
+						MarkdownDescription: "Environment variables declared on the MCP server. Each entry mirrors the backend's wire shape one-to-one: `key`, `type`, optional `value`, `default`, `description`, plus `prompt_on_installation`, `required`, and `mounted` flags.",
 						Optional:            true,
-						ElementType:         types.StringType,
-					},
-					"mounted_env_keys": schema.SetAttribute{
-						MarkdownDescription: "Set of environment variable keys that should be mounted as files at /secrets/<key>",
-						Optional:            true,
-						ElementType:         types.StringType,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"key": schema.StringAttribute{
+									MarkdownDescription: "Environment variable name.",
+									Required:            true,
+								},
+								"type": schema.StringAttribute{
+									MarkdownDescription: "Variable type. One of `plain_text`, `secret`, `boolean`, `number`.",
+									Required:            true,
+									Validators: []validator.String{
+										stringvalidator.OneOf("plain_text", "secret", "boolean", "number"),
+									},
+								},
+								"value": schema.StringAttribute{
+									MarkdownDescription: "Value for `plain_text` / `secret` variables.",
+									Optional:            true,
+								},
+								"prompt_on_installation": schema.BoolAttribute{
+									MarkdownDescription: "Whether the installer must supply this value at install time. Required field on the wire — defaults to `false`.",
+									Optional:            true,
+									Computed:            true,
+									Default:             booldefault.StaticBool(false),
+								},
+								"required": schema.BoolAttribute{
+									MarkdownDescription: "Whether the value must be set.",
+									Optional:            true,
+								},
+								"description": schema.StringAttribute{
+									MarkdownDescription: "Human-readable description of the variable.",
+									Optional:            true,
+								},
+								"default": schema.StringAttribute{
+									MarkdownDescription: "Default value. Use `jsonencode(...)` to encode non-string defaults (number, bool). Plain strings may be provided as-is.",
+									Optional:            true,
+								},
+								"mounted": schema.BoolAttribute{
+									MarkdownDescription: "When true, the value is mounted as a file at `/secrets/<key>` rather than injected as an env var.",
+									Optional:            true,
+								},
+							},
+						},
 					},
 					"env_from": schema.ListNestedAttribute{
 						MarkdownDescription: "List of sources to populate environment variables from (Kubernetes secrets or configMaps)",
@@ -909,12 +956,23 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 	}
 	ipSecretObjectType := types.ObjectType{AttrTypes: ipSecretAttrTypes}
 
+	envVariableAttrTypes := map[string]attr.Type{
+		"key":                    types.StringType,
+		"type":                   types.StringType,
+		"value":                  types.StringType,
+		"prompt_on_installation": types.BoolType,
+		"required":               types.BoolType,
+		"description":            types.StringType,
+		"default":                types.StringType,
+		"mounted":                types.BoolType,
+	}
+	envVariableObjectType := types.ObjectType{AttrTypes: envVariableAttrTypes}
+
 	if apiResp.JSON200.LocalConfig != nil {
 		localConfigObj := map[string]attr.Value{
 			"command":            types.StringNull(),
 			"arguments":          types.ListNull(types.StringType),
-			"environment":        types.MapNull(types.StringType),
-			"mounted_env_keys":   types.SetNull(types.StringType),
+			"environment":        types.SetNull(envVariableObjectType),
 			"env_from":           types.ListNull(envFromObjectType),
 			"docker_image":       types.StringNull(),
 			"transport_type":     types.StringNull(),
@@ -939,24 +997,45 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 			localConfigObj["arguments"], _ = types.ListValue(types.StringType, argValues)
 		}
 
-		// Environment and mounted_env_keys
 		if apiResp.JSON200.LocalConfig.Environment != nil && len(*apiResp.JSON200.LocalConfig.Environment) > 0 {
-			envMap := make(map[string]attr.Value)
-			var mountedKeyValues []attr.Value
+			envValues := make([]attr.Value, 0, len(*apiResp.JSON200.LocalConfig.Environment))
 			for _, envVar := range *apiResp.JSON200.LocalConfig.Environment {
+				fields := map[string]attr.Value{
+					"key":                    types.StringValue(envVar.Key),
+					"type":                   types.StringValue(string(envVar.Type)),
+					"value":                  types.StringNull(),
+					"prompt_on_installation": types.BoolValue(envVar.PromptOnInstallation),
+					"required":               types.BoolNull(),
+					"description":            types.StringNull(),
+					"default":                types.StringNull(),
+					"mounted":                types.BoolNull(),
+				}
 				if envVar.Value != nil {
-					envMap[envVar.Key] = types.StringValue(*envVar.Value)
-				} else {
-					envMap[envVar.Key] = types.StringValue("")
+					fields["value"] = types.StringValue(*envVar.Value)
 				}
-				if envVar.Mounted != nil && *envVar.Mounted {
-					mountedKeyValues = append(mountedKeyValues, types.StringValue(envVar.Key))
+				if envVar.Required != nil {
+					fields["required"] = types.BoolValue(*envVar.Required)
 				}
+				if envVar.Description != nil {
+					fields["description"] = types.StringValue(*envVar.Description)
+				}
+				if envVar.Default != nil {
+					if encoded, err := json.Marshal(envVar.Default); err == nil {
+						// Strings round-trip with surrounding quotes; collapse to bare value.
+						if s, isStr := stringFromJSONScalar(encoded); isStr {
+							fields["default"] = types.StringValue(s)
+						} else {
+							fields["default"] = types.StringValue(string(encoded))
+						}
+					}
+				}
+				if envVar.Mounted != nil {
+					fields["mounted"] = types.BoolValue(*envVar.Mounted)
+				}
+				obj, _ := types.ObjectValue(envVariableAttrTypes, fields)
+				envValues = append(envValues, obj)
 			}
-			localConfigObj["environment"], _ = types.MapValue(types.StringType, envMap)
-			if len(mountedKeyValues) > 0 {
-				localConfigObj["mounted_env_keys"], _ = types.SetValue(types.StringType, mountedKeyValues)
-			}
+			localConfigObj["environment"], _ = types.SetValue(envVariableObjectType, envValues)
 		}
 
 		// Optional fields
@@ -1053,8 +1132,7 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 		localConfigAttrTypes := map[string]attr.Type{
 			"command":            types.StringType,
 			"arguments":          types.ListType{ElemType: types.StringType},
-			"environment":        types.MapType{ElemType: types.StringType},
-			"mounted_env_keys":   types.SetType{ElemType: types.StringType},
+			"environment":        types.SetType{ElemType: envVariableObjectType},
 			"env_from":           types.ListType{ElemType: envFromObjectType},
 			"docker_image":       types.StringType,
 			"transport_type":     types.StringType,
@@ -1070,8 +1148,7 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 		data.LocalConfig = types.ObjectNull(map[string]attr.Type{
 			"command":            types.StringType,
 			"arguments":          types.ListType{ElemType: types.StringType},
-			"environment":        types.MapType{ElemType: types.StringType},
-			"mounted_env_keys":   types.SetType{ElemType: types.StringType},
+			"environment":        types.SetType{ElemType: envVariableObjectType},
 			"env_from":           types.ListType{ElemType: envFromObjectType},
 			"docker_image":       types.StringType,
 			"transport_type":     types.StringType,
