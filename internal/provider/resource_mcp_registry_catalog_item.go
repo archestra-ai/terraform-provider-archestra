@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 var _ resource.Resource = &MCPServerRegistryResource{}
@@ -180,291 +181,6 @@ type OAuthConfigModel struct {
 	StreamableHTTPPort       types.Float64 `tfsdk:"streamable_http_port"`
 }
 
-// buildCreateOAuthConfig builds the OauthConfig for Create requests.
-func buildCreateOAuthConfig(ctx context.Context, oauthConfig OAuthConfigModel, serverURL string, serverName string, diags *diag.Diagnostics) *struct {
-	AccessTokenEnvVar        *string                                                          `json:"access_token_env_var,omitempty"`
-	Audience                 *string                                                          `json:"audience,omitempty"`
-	AuthServerUrl            *string                                                          `json:"auth_server_url,omitempty"`
-	AuthorizationEndpoint    *string                                                          `json:"authorization_endpoint,omitempty"`
-	BrowserAuth              *bool                                                            `json:"browser_auth,omitempty"`
-	ClientId                 string                                                           `json:"client_id"`
-	ClientSecret             *string                                                          `json:"client_secret,omitempty"`
-	DefaultScopes            []string                                                         `json:"default_scopes"`
-	Description              *string                                                          `json:"description,omitempty"`
-	GenericOauth             *bool                                                            `json:"generic_oauth,omitempty"`
-	GrantType                *client.CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-	Name                     string                                                           `json:"name"`
-	ProviderName             *string                                                          `json:"provider_name,omitempty"`
-	RedirectUris             []string                                                         `json:"redirect_uris"`
-	RequiresProxy            *bool                                                            `json:"requires_proxy,omitempty"`
-	ResourceMetadataUrl      *string                                                          `json:"resource_metadata_url,omitempty"`
-	Scopes                   []string                                                         `json:"scopes"`
-	ServerUrl                string                                                           `json:"server_url"`
-	StreamableHttpPort       *float32                                                         `json:"streamable_http_port,omitempty"`
-	StreamableHttpUrl        *string                                                          `json:"streamable_http_url,omitempty"`
-	SupportsResourceMetadata bool                                                             `json:"supports_resource_metadata"`
-	TokenEndpoint            *string                                                          `json:"token_endpoint,omitempty"`
-	WellKnownUrl             *string                                                          `json:"well_known_url,omitempty"`
-} {
-	result := &struct {
-		AccessTokenEnvVar        *string                                                          `json:"access_token_env_var,omitempty"`
-		Audience                 *string                                                          `json:"audience,omitempty"`
-		AuthServerUrl            *string                                                          `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string                                                          `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool                                                            `json:"browser_auth,omitempty"`
-		ClientId                 string                                                           `json:"client_id"`
-		ClientSecret             *string                                                          `json:"client_secret,omitempty"`
-		DefaultScopes            []string                                                         `json:"default_scopes"`
-		Description              *string                                                          `json:"description,omitempty"`
-		GenericOauth             *bool                                                            `json:"generic_oauth,omitempty"`
-		GrantType                *client.CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-		Name                     string                                                           `json:"name"`
-		ProviderName             *string                                                          `json:"provider_name,omitempty"`
-		RedirectUris             []string                                                         `json:"redirect_uris"`
-		RequiresProxy            *bool                                                            `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string                                                          `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string                                                         `json:"scopes"`
-		ServerUrl                string                                                           `json:"server_url"`
-		StreamableHttpPort       *float32                                                         `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string                                                          `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool                                                             `json:"supports_resource_metadata"`
-		TokenEndpoint            *string                                                          `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string                                                          `json:"well_known_url,omitempty"`
-	}{
-		DefaultScopes: []string{},
-		RedirectUris:  []string{},
-		Scopes:        []string{},
-		ServerUrl:     serverURL,
-		Name:          serverName,
-	}
-
-	if !oauthConfig.ClientID.IsNull() {
-		result.ClientId = oauthConfig.ClientID.ValueString()
-	}
-	if !oauthConfig.ClientSecret.IsNull() {
-		secret := oauthConfig.ClientSecret.ValueString()
-		result.ClientSecret = &secret
-	}
-	if !oauthConfig.RedirectURIs.IsNull() {
-		var redirectURIs []string
-		diags.Append(oauthConfig.RedirectURIs.ElementsAs(ctx, &redirectURIs, false)...)
-		result.RedirectUris = redirectURIs
-	}
-	if !oauthConfig.Scopes.IsNull() {
-		var scopes []string
-		diags.Append(oauthConfig.Scopes.ElementsAs(ctx, &scopes, false)...)
-		result.Scopes = scopes
-	}
-	if !oauthConfig.SupportsResourceMetadata.IsNull() {
-		result.SupportsResourceMetadata = oauthConfig.SupportsResourceMetadata.ValueBool()
-	}
-	if !oauthConfig.AuthorizationEndpoint.IsNull() {
-		endpoint := oauthConfig.AuthorizationEndpoint.ValueString()
-		result.AuthorizationEndpoint = &endpoint
-	}
-
-	if !oauthConfig.AccessTokenEnvVar.IsNull() {
-		v := oauthConfig.AccessTokenEnvVar.ValueString()
-		result.AccessTokenEnvVar = &v
-	}
-	if !oauthConfig.Audience.IsNull() {
-		v := oauthConfig.Audience.ValueString()
-		result.Audience = &v
-	}
-	if !oauthConfig.AuthServerURL.IsNull() {
-		v := oauthConfig.AuthServerURL.ValueString()
-		result.AuthServerUrl = &v
-	}
-	if !oauthConfig.BrowserAuth.IsNull() {
-		v := oauthConfig.BrowserAuth.ValueBool()
-		result.BrowserAuth = &v
-	}
-	if !oauthConfig.DefaultScopes.IsNull() {
-		var ds []string
-		diags.Append(oauthConfig.DefaultScopes.ElementsAs(ctx, &ds, false)...)
-		result.DefaultScopes = ds
-	}
-	if !oauthConfig.GenericOauth.IsNull() {
-		v := oauthConfig.GenericOauth.ValueBool()
-		result.GenericOauth = &v
-	}
-	if !oauthConfig.GrantType.IsNull() {
-		v := client.CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType(oauthConfig.GrantType.ValueString())
-		result.GrantType = &v
-	}
-	if !oauthConfig.ProviderName.IsNull() {
-		v := oauthConfig.ProviderName.ValueString()
-		result.ProviderName = &v
-	}
-	if !oauthConfig.RequiresProxy.IsNull() {
-		v := oauthConfig.RequiresProxy.ValueBool()
-		result.RequiresProxy = &v
-	}
-	if !oauthConfig.ResourceMetadataURL.IsNull() {
-		v := oauthConfig.ResourceMetadataURL.ValueString()
-		result.ResourceMetadataUrl = &v
-	}
-	if !oauthConfig.StreamableHTTPURL.IsNull() {
-		v := oauthConfig.StreamableHTTPURL.ValueString()
-		result.StreamableHttpUrl = &v
-	}
-	if !oauthConfig.StreamableHTTPPort.IsNull() {
-		v := float32(oauthConfig.StreamableHTTPPort.ValueFloat64())
-		result.StreamableHttpPort = &v
-	}
-	if !oauthConfig.TokenEndpoint.IsNull() {
-		v := oauthConfig.TokenEndpoint.ValueString()
-		result.TokenEndpoint = &v
-	}
-	if !oauthConfig.WellKnownURL.IsNull() {
-		v := oauthConfig.WellKnownURL.ValueString()
-		result.WellKnownUrl = &v
-	}
-	return result
-}
-
-// buildUpdateOAuthConfig builds the OauthConfig for Update requests.
-func buildUpdateOAuthConfig(ctx context.Context, oauthConfig OAuthConfigModel, serverURL string, serverName string, diags *diag.Diagnostics) *struct {
-	AccessTokenEnvVar        *string                                                          `json:"access_token_env_var,omitempty"`
-	Audience                 *string                                                          `json:"audience,omitempty"`
-	AuthServerUrl            *string                                                          `json:"auth_server_url,omitempty"`
-	AuthorizationEndpoint    *string                                                          `json:"authorization_endpoint,omitempty"`
-	BrowserAuth              *bool                                                            `json:"browser_auth,omitempty"`
-	ClientId                 string                                                           `json:"client_id"`
-	ClientSecret             *string                                                          `json:"client_secret,omitempty"`
-	DefaultScopes            []string                                                         `json:"default_scopes"`
-	Description              *string                                                          `json:"description,omitempty"`
-	GenericOauth             *bool                                                            `json:"generic_oauth,omitempty"`
-	GrantType                *client.UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-	Name                     string                                                           `json:"name"`
-	ProviderName             *string                                                          `json:"provider_name,omitempty"`
-	RedirectUris             []string                                                         `json:"redirect_uris"`
-	RequiresProxy            *bool                                                            `json:"requires_proxy,omitempty"`
-	ResourceMetadataUrl      *string                                                          `json:"resource_metadata_url,omitempty"`
-	Scopes                   []string                                                         `json:"scopes"`
-	ServerUrl                string                                                           `json:"server_url"`
-	StreamableHttpPort       *float32                                                         `json:"streamable_http_port,omitempty"`
-	StreamableHttpUrl        *string                                                          `json:"streamable_http_url,omitempty"`
-	SupportsResourceMetadata bool                                                             `json:"supports_resource_metadata"`
-	TokenEndpoint            *string                                                          `json:"token_endpoint,omitempty"`
-	WellKnownUrl             *string                                                          `json:"well_known_url,omitempty"`
-} {
-	result := &struct {
-		AccessTokenEnvVar        *string                                                          `json:"access_token_env_var,omitempty"`
-		Audience                 *string                                                          `json:"audience,omitempty"`
-		AuthServerUrl            *string                                                          `json:"auth_server_url,omitempty"`
-		AuthorizationEndpoint    *string                                                          `json:"authorization_endpoint,omitempty"`
-		BrowserAuth              *bool                                                            `json:"browser_auth,omitempty"`
-		ClientId                 string                                                           `json:"client_id"`
-		ClientSecret             *string                                                          `json:"client_secret,omitempty"`
-		DefaultScopes            []string                                                         `json:"default_scopes"`
-		Description              *string                                                          `json:"description,omitempty"`
-		GenericOauth             *bool                                                            `json:"generic_oauth,omitempty"`
-		GrantType                *client.UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType `json:"grant_type,omitempty"`
-		Name                     string                                                           `json:"name"`
-		ProviderName             *string                                                          `json:"provider_name,omitempty"`
-		RedirectUris             []string                                                         `json:"redirect_uris"`
-		RequiresProxy            *bool                                                            `json:"requires_proxy,omitempty"`
-		ResourceMetadataUrl      *string                                                          `json:"resource_metadata_url,omitempty"`
-		Scopes                   []string                                                         `json:"scopes"`
-		ServerUrl                string                                                           `json:"server_url"`
-		StreamableHttpPort       *float32                                                         `json:"streamable_http_port,omitempty"`
-		StreamableHttpUrl        *string                                                          `json:"streamable_http_url,omitempty"`
-		SupportsResourceMetadata bool                                                             `json:"supports_resource_metadata"`
-		TokenEndpoint            *string                                                          `json:"token_endpoint,omitempty"`
-		WellKnownUrl             *string                                                          `json:"well_known_url,omitempty"`
-	}{
-		DefaultScopes: []string{},
-		RedirectUris:  []string{},
-		Scopes:        []string{},
-		ServerUrl:     serverURL,
-		Name:          serverName,
-	}
-
-	if !oauthConfig.ClientID.IsNull() {
-		result.ClientId = oauthConfig.ClientID.ValueString()
-	}
-	if !oauthConfig.ClientSecret.IsNull() {
-		secret := oauthConfig.ClientSecret.ValueString()
-		result.ClientSecret = &secret
-	}
-	if !oauthConfig.RedirectURIs.IsNull() {
-		var redirectURIs []string
-		diags.Append(oauthConfig.RedirectURIs.ElementsAs(ctx, &redirectURIs, false)...)
-		result.RedirectUris = redirectURIs
-	}
-	if !oauthConfig.Scopes.IsNull() {
-		var scopes []string
-		diags.Append(oauthConfig.Scopes.ElementsAs(ctx, &scopes, false)...)
-		result.Scopes = scopes
-	}
-	if !oauthConfig.SupportsResourceMetadata.IsNull() {
-		result.SupportsResourceMetadata = oauthConfig.SupportsResourceMetadata.ValueBool()
-	}
-	if !oauthConfig.AuthorizationEndpoint.IsNull() {
-		endpoint := oauthConfig.AuthorizationEndpoint.ValueString()
-		result.AuthorizationEndpoint = &endpoint
-	}
-
-	if !oauthConfig.AccessTokenEnvVar.IsNull() {
-		v := oauthConfig.AccessTokenEnvVar.ValueString()
-		result.AccessTokenEnvVar = &v
-	}
-	if !oauthConfig.Audience.IsNull() {
-		v := oauthConfig.Audience.ValueString()
-		result.Audience = &v
-	}
-	if !oauthConfig.AuthServerURL.IsNull() {
-		v := oauthConfig.AuthServerURL.ValueString()
-		result.AuthServerUrl = &v
-	}
-	if !oauthConfig.BrowserAuth.IsNull() {
-		v := oauthConfig.BrowserAuth.ValueBool()
-		result.BrowserAuth = &v
-	}
-	if !oauthConfig.DefaultScopes.IsNull() {
-		var ds []string
-		diags.Append(oauthConfig.DefaultScopes.ElementsAs(ctx, &ds, false)...)
-		result.DefaultScopes = ds
-	}
-	if !oauthConfig.GenericOauth.IsNull() {
-		v := oauthConfig.GenericOauth.ValueBool()
-		result.GenericOauth = &v
-	}
-	if !oauthConfig.GrantType.IsNull() {
-		v := client.UpdateInternalMcpCatalogItemJSONBodyOauthConfigGrantType(oauthConfig.GrantType.ValueString())
-		result.GrantType = &v
-	}
-	if !oauthConfig.ProviderName.IsNull() {
-		v := oauthConfig.ProviderName.ValueString()
-		result.ProviderName = &v
-	}
-	if !oauthConfig.RequiresProxy.IsNull() {
-		v := oauthConfig.RequiresProxy.ValueBool()
-		result.RequiresProxy = &v
-	}
-	if !oauthConfig.ResourceMetadataURL.IsNull() {
-		v := oauthConfig.ResourceMetadataURL.ValueString()
-		result.ResourceMetadataUrl = &v
-	}
-	if !oauthConfig.StreamableHTTPURL.IsNull() {
-		v := oauthConfig.StreamableHTTPURL.ValueString()
-		result.StreamableHttpUrl = &v
-	}
-	if !oauthConfig.StreamableHTTPPort.IsNull() {
-		v := float32(oauthConfig.StreamableHTTPPort.ValueFloat64())
-		result.StreamableHttpPort = &v
-	}
-	if !oauthConfig.TokenEndpoint.IsNull() {
-		v := oauthConfig.TokenEndpoint.ValueString()
-		result.TokenEndpoint = &v
-	}
-	if !oauthConfig.WellKnownURL.IsNull() {
-		v := oauthConfig.WellKnownURL.ValueString()
-		result.WellKnownUrl = &v
-	}
-	return result
-}
 
 type AuthFieldModel struct {
 	Name        types.String `tfsdk:"name"`
@@ -903,6 +619,11 @@ func (r *MCPServerRegistryResource) Configure(ctx context.Context, req resource.
 	r.client = client
 }
 
+// AttrSpecs implements resourceWithAttrSpec for the merge-patch drift check.
+func (r *MCPServerRegistryResource) AttrSpecs() []AttrSpec {
+	return catalogItemAttrSpec
+}
+
 func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data MCPServerRegistryResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -910,7 +631,6 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	// Validate mutual exclusivity of local_config and remote_config
 	if !data.LocalConfig.IsNull() && !data.RemoteConfig.IsNull() {
 		resp.Diagnostics.AddError(
 			"Invalid Configuration",
@@ -918,7 +638,6 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		)
 		return
 	}
-
 	if data.LocalConfig.IsNull() && data.RemoteConfig.IsNull() {
 		resp.Diagnostics.AddError(
 			"Invalid Configuration",
@@ -926,509 +645,57 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		)
 		return
 	}
-
-	// Determine server type based on config
-	var serverType client.CreateInternalMcpCatalogItemJSONBodyServerType
-	if !data.RemoteConfig.IsNull() {
-		serverType = client.CreateInternalMcpCatalogItemJSONBodyServerTypeRemote
-	} else {
-		serverType = client.CreateInternalMcpCatalogItemJSONBodyServerTypeLocal
-	}
-
-	// Build the request body
-	requestBody := client.CreateInternalMcpCatalogItemJSONRequestBody{
-		Name:       data.Name.ValueString(),
-		ServerType: serverType,
-	}
-	var createImagePullSecrets []map[string]string
-
-	// Set optional string fields
-	if !data.Description.IsNull() {
-		desc := data.Description.ValueString()
-		requestBody.Description = &desc
-	}
-	if !data.DocsURL.IsNull() {
-		url := data.DocsURL.ValueString()
-		requestBody.DocsUrl = &url
-	}
-	if !data.InstallationCommand.IsNull() {
-		cmd := data.InstallationCommand.ValueString()
-		requestBody.InstallationCommand = &cmd
-	}
-	if !data.AuthDescription.IsNull() {
-		desc := data.AuthDescription.ValueString()
-		requestBody.AuthDescription = &desc
-	}
-	if !data.Version.IsNull() {
-		ver := data.Version.ValueString()
-		requestBody.Version = &ver
-	}
-	if !data.Repository.IsNull() {
-		repo := data.Repository.ValueString()
-		requestBody.Repository = &repo
-	}
-	if !data.Instructions.IsNull() {
-		instr := data.Instructions.ValueString()
-		requestBody.Instructions = &instr
-	}
-	if !data.Icon.IsNull() {
-		icon := data.Icon.ValueString()
-		requestBody.Icon = &icon
-	}
-	if !data.RequiresAuth.IsNull() {
-		ra := data.RequiresAuth.ValueBool()
-		requestBody.RequiresAuth = &ra
-	}
-	if !data.DeploymentSpecYaml.IsNull() {
-		dsy := data.DeploymentSpecYaml.ValueString()
-		requestBody.DeploymentSpecYaml = &dsy
-	}
-	if !data.ClientSecretId.IsNull() && !data.ClientSecretId.IsUnknown() {
-		id, parseErr := uuid.Parse(data.ClientSecretId.ValueString())
-		if parseErr != nil {
-			resp.Diagnostics.AddError("Invalid client_secret_id", parseErr.Error())
-			return
-		}
-		requestBody.ClientSecretId = &id
-	}
-	if !data.LocalConfigSecretId.IsNull() && !data.LocalConfigSecretId.IsUnknown() {
-		id, parseErr := uuid.Parse(data.LocalConfigSecretId.ValueString())
-		if parseErr != nil {
-			resp.Diagnostics.AddError("Invalid local_config_secret_id", parseErr.Error())
-			return
-		}
-		requestBody.LocalConfigSecretId = &id
-	}
-	if !data.LocalConfigVaultKey.IsNull() && !data.LocalConfigVaultKey.IsUnknown() {
-		v := data.LocalConfigVaultKey.ValueString()
-		requestBody.LocalConfigVaultKey = &v
-	}
-	if !data.LocalConfigVaultPath.IsNull() && !data.LocalConfigVaultPath.IsUnknown() {
-		v := data.LocalConfigVaultPath.ValueString()
-		requestBody.LocalConfigVaultPath = &v
-	}
-	if !data.OauthClientSecretVaultKey.IsNull() && !data.OauthClientSecretVaultKey.IsUnknown() {
-		v := data.OauthClientSecretVaultKey.ValueString()
-		requestBody.OauthClientSecretVaultKey = &v
-	}
-	if !data.OauthClientSecretVaultPath.IsNull() && !data.OauthClientSecretVaultPath.IsUnknown() {
-		v := data.OauthClientSecretVaultPath.ValueString()
-		requestBody.OauthClientSecretVaultPath = &v
-	}
-	if data.EnterpriseManagedConfig != nil {
-		emc := data.EnterpriseManagedConfig
-		emcBody := struct {
-			AssertionMode           *client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
-			Audience                *string                                                                                    `json:"audience,omitempty"`
-			BodyFieldName           *string                                                                                    `json:"bodyFieldName,omitempty"`
-			CacheTtlSeconds         *int                                                                                       `json:"cacheTtlSeconds,omitempty"`
-			ClientIdOverride        *string                                                                                    `json:"clientIdOverride,omitempty"`
-			EnvVarName              *string                                                                                    `json:"envVarName,omitempty"`
-			FallbackMode            *client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode            `json:"fallbackMode,omitempty"`
-			HeaderName              *string                                                                                    `json:"headerName,omitempty"`
-			IdentityProviderId      *string                                                                                    `json:"identityProviderId,omitempty"`
-			RequestedCredentialType *client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigRequestedCredentialType `json:"requestedCredentialType,omitempty"`
-			RequestedIssuer         *string                                                                                    `json:"requestedIssuer,omitempty"`
-			ResourceIdentifier      *string                                                                                    `json:"resourceIdentifier,omitempty"`
-			ResourceType            *client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigResourceType            `json:"resourceType,omitempty"`
-			ResponseFieldPath       *string                                                                                    `json:"responseFieldPath,omitempty"`
-			Scopes                  *[]string                                                                                  `json:"scopes,omitempty"`
-			TokenInjectionMode      *client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMode      `json:"tokenInjectionMode,omitempty"`
-		}{}
-		if !emc.AssertionMode.IsNull() {
-			v := client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode(emc.AssertionMode.ValueString())
-			emcBody.AssertionMode = &v
-		}
-		if !emc.Audience.IsNull() {
-			v := emc.Audience.ValueString()
-			emcBody.Audience = &v
-		}
-		if !emc.BodyFieldName.IsNull() {
-			v := emc.BodyFieldName.ValueString()
-			emcBody.BodyFieldName = &v
-		}
-		if !emc.CacheTtlSeconds.IsNull() {
-			v := int(emc.CacheTtlSeconds.ValueInt64())
-			emcBody.CacheTtlSeconds = &v
-		}
-		if !emc.ClientIdOverride.IsNull() {
-			v := emc.ClientIdOverride.ValueString()
-			emcBody.ClientIdOverride = &v
-		}
-		if !emc.EnvVarName.IsNull() {
-			v := emc.EnvVarName.ValueString()
-			emcBody.EnvVarName = &v
-		}
-		if !emc.FallbackMode.IsNull() {
-			v := client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode(emc.FallbackMode.ValueString())
-			emcBody.FallbackMode = &v
-		}
-		if !emc.HeaderName.IsNull() {
-			v := emc.HeaderName.ValueString()
-			emcBody.HeaderName = &v
-		}
-		if !emc.IdentityProviderId.IsNull() {
-			v := emc.IdentityProviderId.ValueString()
-			emcBody.IdentityProviderId = &v
-		}
-		if !emc.RequestedCredentialType.IsNull() {
-			v := client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigRequestedCredentialType(emc.RequestedCredentialType.ValueString())
-			emcBody.RequestedCredentialType = &v
-		}
-		if !emc.RequestedIssuer.IsNull() {
-			v := emc.RequestedIssuer.ValueString()
-			emcBody.RequestedIssuer = &v
-		}
-		if !emc.ResourceIdentifier.IsNull() {
-			v := emc.ResourceIdentifier.ValueString()
-			emcBody.ResourceIdentifier = &v
-		}
-		if !emc.ResourceType.IsNull() {
-			v := client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigResourceType(emc.ResourceType.ValueString())
-			emcBody.ResourceType = &v
-		}
-		if !emc.ResponseFieldPath.IsNull() {
-			v := emc.ResponseFieldPath.ValueString()
-			emcBody.ResponseFieldPath = &v
-		}
-		if !emc.Scopes.IsNull() {
-			var scopes []string
-			resp.Diagnostics.Append(emc.Scopes.ElementsAs(ctx, &scopes, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			emcBody.Scopes = &scopes
-		}
-		if !emc.TokenInjectionMode.IsNull() {
-			v := client.CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMode(emc.TokenInjectionMode.ValueString())
-			emcBody.TokenInjectionMode = &v
-		}
-		requestBody.EnterpriseManagedConfig = &emcBody
-	}
-	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
-		scope := client.CreateInternalMcpCatalogItemJSONBodyScope(data.Scope.ValueString())
-		requestBody.Scope = &scope
-	}
-	if !data.Teams.IsNull() {
-		var teamIDs []string
-		resp.Diagnostics.Append(data.Teams.ElementsAs(ctx, &teamIDs, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		requestBody.Teams = &teamIDs
-	}
-	if !data.Labels.IsNull() {
-		var labelModels []LabelModel
-		resp.Diagnostics.Append(data.Labels.ElementsAs(ctx, &labelModels, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		labelsSlice := make([]struct {
-			Key   string `json:"key"`
-			Value string `json:"value"`
-		}, len(labelModels))
-		for i, lm := range labelModels {
-			labelsSlice[i].Key = lm.Key.ValueString()
-			labelsSlice[i].Value = lm.Value.ValueString()
-		}
-		requestBody.Labels = &labelsSlice
-	}
-
-	// Handle LocalConfig
 	if !data.LocalConfig.IsNull() {
-		var localConfig LocalConfigModel
-		resp.Diagnostics.Append(data.LocalConfig.As(ctx, &localConfig, basetypes.ObjectAsOptions{})...)
+		var lc LocalConfigModel
+		resp.Diagnostics.Append(data.LocalConfig.As(ctx, &lc, basetypes.ObjectAsOptions{})...)
 		if resp.Diagnostics.HasError() {
 			return
 		}
-
-		// Validate that either command or docker_image is provided
-		if localConfig.Command.IsNull() && localConfig.DockerImage.IsNull() {
+		if lc.Command.IsNull() && lc.DockerImage.IsNull() {
 			resp.Diagnostics.AddError(
 				"Invalid Configuration",
 				"Either 'command' or 'docker_image' must be specified in 'local_config'.",
 			)
 			return
 		}
-
-		lcStruct := struct {
-			Arguments   *[]string `json:"arguments,omitempty"`
-			Command     *string   `json:"command,omitempty"`
-			DockerImage *string   `json:"dockerImage,omitempty"`
-			EnvFrom     *[]struct {
-				Name   string                                                            `json:"name"`
-				Prefix *string                                                           `json:"prefix,omitempty"`
-				Type   client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType `json:"type"`
-			} `json:"envFrom,omitempty"`
-			Environment *[]struct {
-				Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
-				Description          *string                                                                      `json:"description,omitempty"`
-				Key                  string                                                                       `json:"key"`
-				Mounted              *bool                                                                        `json:"mounted,omitempty"`
-				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
-				Required             *bool                                                                        `json:"required,omitempty"`
-				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
-				Value                *string                                                                      `json:"value,omitempty"`
-			} `json:"environment,omitempty"`
-			HttpPath         *string                                                                          `json:"httpPath,omitempty"`
-			HttpPort         *float32                                                                         `json:"httpPort,omitempty"`
-			ImagePullSecrets *[]client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
-			NodePort         *float32                                                                         `json:"nodePort,omitempty"`
-			ServiceAccount   *string                                                                          `json:"serviceAccount,omitempty"`
-			TransportType    *client.CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType             `json:"transportType,omitempty"`
-		}{}
-
-		// Command
-		if !localConfig.Command.IsNull() {
-			cmd := localConfig.Command.ValueString()
-			lcStruct.Command = &cmd
-		}
-
-		// Arguments
-		if !localConfig.Arguments.IsNull() {
-			var args []string
-			resp.Diagnostics.Append(localConfig.Arguments.ElementsAs(ctx, &args, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			lcStruct.Arguments = &args
-		}
-
-		// Build mounted env keys set for lookup
-		mountedKeys := make(map[string]bool)
-		if !localConfig.MountedEnvKeys.IsNull() && !localConfig.MountedEnvKeys.IsUnknown() {
-			var keys []string
-			resp.Diagnostics.Append(localConfig.MountedEnvKeys.ElementsAs(ctx, &keys, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			for _, k := range keys {
-				mountedKeys[k] = true
-			}
-		}
-
-		// Environment - convert map[string]string to new struct format
-		if !localConfig.Environment.IsNull() {
-			var env map[string]string
-			resp.Diagnostics.Append(localConfig.Environment.ElementsAs(ctx, &env, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			envSlice := make([]struct {
-				Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
-				Description          *string                                                                      `json:"description,omitempty"`
-				Key                  string                                                                       `json:"key"`
-				Mounted              *bool                                                                        `json:"mounted,omitempty"`
-				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
-				Required             *bool                                                                        `json:"required,omitempty"`
-				Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
-				Value                *string                                                                      `json:"value,omitempty"`
-			}, 0, len(env))
-			for k, v := range env {
-				val := v
-				entry := struct {
-					Default              *client.CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
-					Description          *string                                                                      `json:"description,omitempty"`
-					Key                  string                                                                       `json:"key"`
-					Mounted              *bool                                                                        `json:"mounted,omitempty"`
-					PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
-					Required             *bool                                                                        `json:"required,omitempty"`
-					Type                 client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
-					Value                *string                                                                      `json:"value,omitempty"`
-				}{
-					Key:   k,
-					Value: &val,
-					Type:  "plain_text",
-				}
-				if mountedKeys[k] {
-					trueVal := true
-					entry.Mounted = &trueVal
-				}
-				envSlice = append(envSlice, entry)
-			}
-			lcStruct.Environment = &envSlice
-		}
-
-		// EnvFrom
-		if !localConfig.EnvFrom.IsNull() {
-			var envFromModels []EnvFromModel
-			resp.Diagnostics.Append(localConfig.EnvFrom.ElementsAs(ctx, &envFromModels, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			envFromSlice := make([]struct {
-				Name   string                                                            `json:"name"`
-				Prefix *string                                                           `json:"prefix,omitempty"`
-				Type   client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType `json:"type"`
-			}, len(envFromModels))
-			for i, ef := range envFromModels {
-				envFromSlice[i].Name = ef.Name.ValueString()
-				envFromSlice[i].Type = client.CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType(ef.Type.ValueString())
-				if !ef.Prefix.IsNull() {
-					p := ef.Prefix.ValueString()
-					envFromSlice[i].Prefix = &p
-				}
-			}
-			lcStruct.EnvFrom = &envFromSlice
-		}
-
-		// Optional fields
-		if !localConfig.DockerImage.IsNull() {
-			img := localConfig.DockerImage.ValueString()
-			lcStruct.DockerImage = &img
-		}
-		if !localConfig.HTTPPath.IsNull() {
-			path := localConfig.HTTPPath.ValueString()
-			lcStruct.HttpPath = &path
-		}
-		if !localConfig.HTTPPort.IsNull() {
-			port := float32(localConfig.HTTPPort.ValueInt64())
-			lcStruct.HttpPort = &port
-		}
-		if !localConfig.TransportType.IsNull() {
-			tt := client.CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType(localConfig.TransportType.ValueString())
-			lcStruct.TransportType = &tt
-		}
-		if !localConfig.ServiceAccount.IsNull() {
-			sa := localConfig.ServiceAccount.ValueString()
-			lcStruct.ServiceAccount = &sa
-		}
-		if !localConfig.NodePort.IsNull() {
-			np := float32(localConfig.NodePort.ValueFloat64())
-			lcStruct.NodePort = &np
-		}
-
-		// Collect ImagePullSecrets for later injection into raw JSON
-		if !localConfig.ImagePullSecrets.IsNull() && !localConfig.ImagePullSecrets.IsUnknown() {
-			var ipsModels []ImagePullSecretModel
-			resp.Diagnostics.Append(localConfig.ImagePullSecrets.ElementsAs(ctx, &ipsModels, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			for _, ips := range ipsModels {
-				createImagePullSecrets = append(createImagePullSecrets, expandImagePullSecret(ips))
-			}
-		}
-
-		requestBody.LocalConfig = &lcStruct
 	}
 
-	// Handle RemoteConfig
-	if !data.RemoteConfig.IsNull() {
-		var remoteConfig RemoteConfigModel
-		resp.Diagnostics.Append(data.RemoteConfig.As(ctx, &remoteConfig, basetypes.ObjectAsOptions{})...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-
-		// Set the server URL
-		if !remoteConfig.URL.IsNull() {
-			url := remoteConfig.URL.ValueString()
-			requestBody.ServerUrl = &url
-		}
-
-		// Handle OAuth config if present
-		if !remoteConfig.OAuthConfig.IsNull() {
-			var oauthConfig OAuthConfigModel
-			resp.Diagnostics.Append(remoteConfig.OAuthConfig.As(ctx, &oauthConfig, basetypes.ObjectAsOptions{})...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-
-			requestBody.OauthConfig = buildCreateOAuthConfig(ctx, oauthConfig, remoteConfig.URL.ValueString(), data.Name.ValueString(), &resp.Diagnostics)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-		}
-	}
-
-	// Handle AuthFields
-	if !data.AuthFields.IsNull() {
-		var authFields []AuthFieldModel
-		resp.Diagnostics.Append(data.AuthFields.ElementsAs(ctx, &authFields, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-
-		afSlice := make([]struct {
-			Description *string `json:"description,omitempty"`
-			Label       string  `json:"label"`
-			Name        string  `json:"name"`
-			Required    *bool   `json:"required,omitempty"`
-			Type        string  `json:"type"`
-		}, len(authFields))
-
-		for i, af := range authFields {
-			afSlice[i].Name = af.Name.ValueString()
-			afSlice[i].Label = af.Label.ValueString()
-			afSlice[i].Type = af.Type.ValueString()
-			req := af.Required.ValueBool()
-			afSlice[i].Required = &req
-			if !af.Description.IsNull() {
-				desc := af.Description.ValueString()
-				afSlice[i].Description = &desc
-			}
-		}
-
-		requestBody.AuthFields = &afSlice
-	}
-
-	// Auto-set RequiresAuth for remote servers with authentication, if not explicitly set
-	if data.RequiresAuth.IsNull() && !data.RemoteConfig.IsNull() {
-		if !data.AuthFields.IsNull() || requestBody.OauthConfig != nil {
-			requiresAuth := true
-			requestBody.RequiresAuth = &requiresAuth
-		}
-	}
-
-	// Build user_config override map — injected via raw JSON because default is a polymorphic union.
-	userConfigOverride, diags := expandUserConfig(ctx, data.UserConfig)
-	resp.Diagnostics.Append(diags...)
+	plan := req.Plan.Raw
+	prior := tftypes.NewValue(plan.Type(), nil)
+	patch := MergePatch(ctx, plan, prior, catalogItemAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Call API - if imagePullSecrets or userConfig need to be set, marshal to raw JSON and inject them
-	// because the generated union types have unexported fields that cannot be populated directly.
-	var apiResp *client.CreateInternalMcpCatalogItemResponse
-	if len(createImagePullSecrets) > 0 || userConfigOverride != nil {
-		bodyBytes, marshalErr := json.Marshal(requestBody)
-		if marshalErr != nil {
-			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", marshalErr))
-			return
-		}
-		var bodyMap map[string]interface{}
-		if unmarshalErr := json.Unmarshal(bodyBytes, &bodyMap); unmarshalErr != nil {
-			resp.Diagnostics.AddError("Unmarshal Error", fmt.Sprintf("Unable to unmarshal request body: %s", unmarshalErr))
-			return
-		}
-		if lc, ok := bodyMap["localConfig"].(map[string]interface{}); ok && len(createImagePullSecrets) > 0 {
-			lc["imagePullSecrets"] = createImagePullSecrets
-		}
-		if userConfigOverride != nil {
-			bodyMap["userConfig"] = userConfigOverride
-		}
-		finalBytes, marshalErr := json.Marshal(bodyMap)
-		if marshalErr != nil {
-			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal final request body: %s", marshalErr))
-			return
-		}
-		var parseErr error
-		apiResp, parseErr = r.client.CreateInternalMcpCatalogItemWithBodyWithResponse(ctx, "application/json", bytes.NewReader(finalBytes))
-		if parseErr != nil {
-			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create MCP server, got error: %s", parseErr))
-			return
-		}
+	serverName := data.Name.ValueString()
+	finalizeCatalogItemPatch(ctx, patch, plan, prior, serverName, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	if !data.RemoteConfig.IsNull() {
+		patch["serverType"] = "remote"
 	} else {
-		var err error
-		apiResp, err = r.client.CreateInternalMcpCatalogItemWithResponse(ctx, requestBody)
-		if err != nil {
-			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create MCP server, got error: %s", err))
-			return
+		patch["serverType"] = "local"
+	}
+
+	if data.RequiresAuth.IsNull() && !data.RemoteConfig.IsNull() {
+		if !data.AuthFields.IsNull() || patch["oauthConfig"] != nil {
+			patch["requiresAuth"] = true
 		}
 	}
 
-	// Check response
+	LogPatch(ctx, "create catalog item", patch, catalogItemAttrSpec)
+	bodyBytes, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
+	}
+	apiResp, err := r.client.CreateInternalMcpCatalogItemWithBodyWithResponse(ctx, "application/json", bytes.NewReader(bodyBytes))
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create MCP server, got error: %s", err))
+		return
+	}
 	if apiResp.JSON200 == nil {
 		resp.Diagnostics.AddError(
 			"Unexpected API Response",
@@ -1437,8 +704,6 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	// Set ID from Create response, then read back the full resource
-	// to populate Computed fields (scope, requires_auth, etc.)
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 
 	readResp, err := r.client.GetInternalMcpCatalogItemWithResponse(ctx, apiResp.JSON200.Id)
@@ -1455,7 +720,6 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -2038,7 +1302,6 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	// Validate mutual exclusivity of local_config and remote_config
 	if !data.LocalConfig.IsNull() && !data.RemoteConfig.IsNull() {
 		resp.Diagnostics.AddError(
 			"Invalid Configuration",
@@ -2046,7 +1309,6 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		)
 		return
 	}
-
 	if data.LocalConfig.IsNull() && data.RemoteConfig.IsNull() {
 		resp.Diagnostics.AddError(
 			"Invalid Configuration",
@@ -2054,534 +1316,74 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		)
 		return
 	}
-
-	// Parse UUID from state
-	serverID, err := uuid.Parse(data.ID.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
-		return
-	}
-
-	// Determine server type based on config
-	var serverType client.UpdateInternalMcpCatalogItemJSONBodyServerType
-	if !data.RemoteConfig.IsNull() {
-		serverType = client.UpdateInternalMcpCatalogItemJSONBodyServerTypeRemote
-	} else {
-		serverType = client.UpdateInternalMcpCatalogItemJSONBodyServerTypeLocal
-	}
-
-	// Build the request body
-	requestBody := client.UpdateInternalMcpCatalogItemJSONRequestBody{
-		ServerType: &serverType,
-	}
-	var updateImagePullSecrets []map[string]string
-
-	// Set optional string fields
-	if !data.Name.IsNull() {
-		name := data.Name.ValueString()
-		requestBody.Name = &name
-	}
-	if !data.Description.IsNull() {
-		desc := data.Description.ValueString()
-		requestBody.Description = &desc
-	}
-	if !data.DocsURL.IsNull() {
-		url := data.DocsURL.ValueString()
-		requestBody.DocsUrl = &url
-	}
-	if !data.InstallationCommand.IsNull() {
-		cmd := data.InstallationCommand.ValueString()
-		requestBody.InstallationCommand = &cmd
-	}
-	if !data.AuthDescription.IsNull() {
-		desc := data.AuthDescription.ValueString()
-		requestBody.AuthDescription = &desc
-	}
-	if !data.Version.IsNull() {
-		ver := data.Version.ValueString()
-		requestBody.Version = &ver
-	}
-	if !data.Repository.IsNull() {
-		repo := data.Repository.ValueString()
-		requestBody.Repository = &repo
-	}
-	if !data.Instructions.IsNull() {
-		instr := data.Instructions.ValueString()
-		requestBody.Instructions = &instr
-	}
-	if !data.Icon.IsNull() {
-		icon := data.Icon.ValueString()
-		requestBody.Icon = &icon
-	}
-	if !data.RequiresAuth.IsNull() {
-		ra := data.RequiresAuth.ValueBool()
-		requestBody.RequiresAuth = &ra
-	}
-	if !data.DeploymentSpecYaml.IsNull() {
-		dsy := data.DeploymentSpecYaml.ValueString()
-		requestBody.DeploymentSpecYaml = &dsy
-	}
-	if !data.ClientSecretId.IsNull() && !data.ClientSecretId.IsUnknown() {
-		id, parseErr := uuid.Parse(data.ClientSecretId.ValueString())
-		if parseErr != nil {
-			resp.Diagnostics.AddError("Invalid client_secret_id", parseErr.Error())
-			return
-		}
-		requestBody.ClientSecretId = &id
-	}
-	if !data.LocalConfigSecretId.IsNull() && !data.LocalConfigSecretId.IsUnknown() {
-		id, parseErr := uuid.Parse(data.LocalConfigSecretId.ValueString())
-		if parseErr != nil {
-			resp.Diagnostics.AddError("Invalid local_config_secret_id", parseErr.Error())
-			return
-		}
-		requestBody.LocalConfigSecretId = &id
-	}
-	if !data.LocalConfigVaultKey.IsNull() && !data.LocalConfigVaultKey.IsUnknown() {
-		v := data.LocalConfigVaultKey.ValueString()
-		requestBody.LocalConfigVaultKey = &v
-	}
-	if !data.LocalConfigVaultPath.IsNull() && !data.LocalConfigVaultPath.IsUnknown() {
-		v := data.LocalConfigVaultPath.ValueString()
-		requestBody.LocalConfigVaultPath = &v
-	}
-	if !data.OauthClientSecretVaultKey.IsNull() && !data.OauthClientSecretVaultKey.IsUnknown() {
-		v := data.OauthClientSecretVaultKey.ValueString()
-		requestBody.OauthClientSecretVaultKey = &v
-	}
-	if !data.OauthClientSecretVaultPath.IsNull() && !data.OauthClientSecretVaultPath.IsUnknown() {
-		v := data.OauthClientSecretVaultPath.ValueString()
-		requestBody.OauthClientSecretVaultPath = &v
-	}
-	if data.EnterpriseManagedConfig != nil {
-		emc := data.EnterpriseManagedConfig
-		emcBody := struct {
-			AssertionMode           *client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
-			Audience                *string                                                                                    `json:"audience,omitempty"`
-			BodyFieldName           *string                                                                                    `json:"bodyFieldName,omitempty"`
-			CacheTtlSeconds         *int                                                                                       `json:"cacheTtlSeconds,omitempty"`
-			ClientIdOverride        *string                                                                                    `json:"clientIdOverride,omitempty"`
-			EnvVarName              *string                                                                                    `json:"envVarName,omitempty"`
-			FallbackMode            *client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode            `json:"fallbackMode,omitempty"`
-			HeaderName              *string                                                                                    `json:"headerName,omitempty"`
-			IdentityProviderId      *string                                                                                    `json:"identityProviderId,omitempty"`
-			RequestedCredentialType *client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigRequestedCredentialType `json:"requestedCredentialType,omitempty"`
-			RequestedIssuer         *string                                                                                    `json:"requestedIssuer,omitempty"`
-			ResourceIdentifier      *string                                                                                    `json:"resourceIdentifier,omitempty"`
-			ResourceType            *client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigResourceType            `json:"resourceType,omitempty"`
-			ResponseFieldPath       *string                                                                                    `json:"responseFieldPath,omitempty"`
-			Scopes                  *[]string                                                                                  `json:"scopes,omitempty"`
-			TokenInjectionMode      *client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMode      `json:"tokenInjectionMode,omitempty"`
-		}{}
-		if !emc.AssertionMode.IsNull() {
-			v := client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigAssertionMode(emc.AssertionMode.ValueString())
-			emcBody.AssertionMode = &v
-		}
-		if !emc.Audience.IsNull() {
-			v := emc.Audience.ValueString()
-			emcBody.Audience = &v
-		}
-		if !emc.BodyFieldName.IsNull() {
-			v := emc.BodyFieldName.ValueString()
-			emcBody.BodyFieldName = &v
-		}
-		if !emc.CacheTtlSeconds.IsNull() {
-			v := int(emc.CacheTtlSeconds.ValueInt64())
-			emcBody.CacheTtlSeconds = &v
-		}
-		if !emc.ClientIdOverride.IsNull() {
-			v := emc.ClientIdOverride.ValueString()
-			emcBody.ClientIdOverride = &v
-		}
-		if !emc.EnvVarName.IsNull() {
-			v := emc.EnvVarName.ValueString()
-			emcBody.EnvVarName = &v
-		}
-		if !emc.FallbackMode.IsNull() {
-			v := client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigFallbackMode(emc.FallbackMode.ValueString())
-			emcBody.FallbackMode = &v
-		}
-		if !emc.HeaderName.IsNull() {
-			v := emc.HeaderName.ValueString()
-			emcBody.HeaderName = &v
-		}
-		if !emc.IdentityProviderId.IsNull() {
-			v := emc.IdentityProviderId.ValueString()
-			emcBody.IdentityProviderId = &v
-		}
-		if !emc.RequestedCredentialType.IsNull() {
-			v := client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigRequestedCredentialType(emc.RequestedCredentialType.ValueString())
-			emcBody.RequestedCredentialType = &v
-		}
-		if !emc.RequestedIssuer.IsNull() {
-			v := emc.RequestedIssuer.ValueString()
-			emcBody.RequestedIssuer = &v
-		}
-		if !emc.ResourceIdentifier.IsNull() {
-			v := emc.ResourceIdentifier.ValueString()
-			emcBody.ResourceIdentifier = &v
-		}
-		if !emc.ResourceType.IsNull() {
-			v := client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigResourceType(emc.ResourceType.ValueString())
-			emcBody.ResourceType = &v
-		}
-		if !emc.ResponseFieldPath.IsNull() {
-			v := emc.ResponseFieldPath.ValueString()
-			emcBody.ResponseFieldPath = &v
-		}
-		if !emc.Scopes.IsNull() {
-			var scopes []string
-			resp.Diagnostics.Append(emc.Scopes.ElementsAs(ctx, &scopes, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			emcBody.Scopes = &scopes
-		}
-		if !emc.TokenInjectionMode.IsNull() {
-			v := client.UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMode(emc.TokenInjectionMode.ValueString())
-			emcBody.TokenInjectionMode = &v
-		}
-		requestBody.EnterpriseManagedConfig = &emcBody
-	}
-	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
-		scope := client.UpdateInternalMcpCatalogItemJSONBodyScope(data.Scope.ValueString())
-		requestBody.Scope = &scope
-	}
-	if !data.Teams.IsNull() {
-		var teamIDs []string
-		resp.Diagnostics.Append(data.Teams.ElementsAs(ctx, &teamIDs, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		requestBody.Teams = &teamIDs
-	}
-	if !data.Labels.IsNull() {
-		var labelModels []LabelModel
-		resp.Diagnostics.Append(data.Labels.ElementsAs(ctx, &labelModels, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		labelsSlice := make([]struct {
-			Key   string `json:"key"`
-			Value string `json:"value"`
-		}, len(labelModels))
-		for i, lm := range labelModels {
-			labelsSlice[i].Key = lm.Key.ValueString()
-			labelsSlice[i].Value = lm.Value.ValueString()
-		}
-		requestBody.Labels = &labelsSlice
-	}
-
-	// Handle LocalConfig
 	if !data.LocalConfig.IsNull() {
-		var localConfig LocalConfigModel
-		resp.Diagnostics.Append(data.LocalConfig.As(ctx, &localConfig, basetypes.ObjectAsOptions{})...)
+		var lc LocalConfigModel
+		resp.Diagnostics.Append(data.LocalConfig.As(ctx, &lc, basetypes.ObjectAsOptions{})...)
 		if resp.Diagnostics.HasError() {
 			return
 		}
-
-		// Validate that either command or docker_image is provided
-		if localConfig.Command.IsNull() && localConfig.DockerImage.IsNull() {
+		if lc.Command.IsNull() && lc.DockerImage.IsNull() {
 			resp.Diagnostics.AddError(
 				"Invalid Configuration",
 				"Either 'command' or 'docker_image' must be specified in 'local_config'.",
 			)
 			return
 		}
-
-		lcStruct := struct {
-			Arguments   *[]string `json:"arguments,omitempty"`
-			Command     *string   `json:"command,omitempty"`
-			DockerImage *string   `json:"dockerImage,omitempty"`
-			EnvFrom     *[]struct {
-				Name   string                                                            `json:"name"`
-				Prefix *string                                                           `json:"prefix,omitempty"`
-				Type   client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType `json:"type"`
-			} `json:"envFrom,omitempty"`
-			Environment *[]struct {
-				Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
-				Description          *string                                                                      `json:"description,omitempty"`
-				Key                  string                                                                       `json:"key"`
-				Mounted              *bool                                                                        `json:"mounted,omitempty"`
-				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
-				Required             *bool                                                                        `json:"required,omitempty"`
-				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
-				Value                *string                                                                      `json:"value,omitempty"`
-			} `json:"environment,omitempty"`
-			HttpPath         *string                                                                          `json:"httpPath,omitempty"`
-			HttpPort         *float32                                                                         `json:"httpPort,omitempty"`
-			ImagePullSecrets *[]client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_ImagePullSecrets_Item `json:"imagePullSecrets,omitempty"`
-			NodePort         *float32                                                                         `json:"nodePort,omitempty"`
-			ServiceAccount   *string                                                                          `json:"serviceAccount,omitempty"`
-			TransportType    *client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType             `json:"transportType,omitempty"`
-		}{}
-
-		// Command
-		if !localConfig.Command.IsNull() {
-			cmd := localConfig.Command.ValueString()
-			lcStruct.Command = &cmd
-		}
-
-		// Arguments
-		if !localConfig.Arguments.IsNull() {
-			var args []string
-			resp.Diagnostics.Append(localConfig.Arguments.ElementsAs(ctx, &args, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			lcStruct.Arguments = &args
-		}
-
-		// Build mounted env keys set for lookup
-		mountedKeys := make(map[string]bool)
-		if !localConfig.MountedEnvKeys.IsNull() && !localConfig.MountedEnvKeys.IsUnknown() {
-			var keys []string
-			resp.Diagnostics.Append(localConfig.MountedEnvKeys.ElementsAs(ctx, &keys, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			for _, k := range keys {
-				mountedKeys[k] = true
-			}
-		}
-
-		// Environment - convert map[string]string to new struct format
-		if !localConfig.Environment.IsNull() {
-			var env map[string]string
-			resp.Diagnostics.Append(localConfig.Environment.ElementsAs(ctx, &env, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			envSlice := make([]struct {
-				Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
-				Description          *string                                                                      `json:"description,omitempty"`
-				Key                  string                                                                       `json:"key"`
-				Mounted              *bool                                                                        `json:"mounted,omitempty"`
-				PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
-				Required             *bool                                                                        `json:"required,omitempty"`
-				Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
-				Value                *string                                                                      `json:"value,omitempty"`
-			}, 0, len(env))
-			for k, v := range env {
-				val := v
-				entry := struct {
-					Default              *client.UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
-					Description          *string                                                                      `json:"description,omitempty"`
-					Key                  string                                                                       `json:"key"`
-					Mounted              *bool                                                                        `json:"mounted,omitempty"`
-					PromptOnInstallation bool                                                                         `json:"promptOnInstallation"`
-					Required             *bool                                                                        `json:"required,omitempty"`
-					Type                 client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
-					Value                *string                                                                      `json:"value,omitempty"`
-				}{
-					Key:   k,
-					Value: &val,
-					Type:  "plain_text",
-				}
-				if mountedKeys[k] {
-					trueVal := true
-					entry.Mounted = &trueVal
-				}
-				envSlice = append(envSlice, entry)
-			}
-			lcStruct.Environment = &envSlice
-		}
-
-		// EnvFrom
-		if !localConfig.EnvFrom.IsNull() {
-			var envFromModels []EnvFromModel
-			resp.Diagnostics.Append(localConfig.EnvFrom.ElementsAs(ctx, &envFromModels, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			envFromSlice := make([]struct {
-				Name   string                                                            `json:"name"`
-				Prefix *string                                                           `json:"prefix,omitempty"`
-				Type   client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType `json:"type"`
-			}, len(envFromModels))
-			for i, ef := range envFromModels {
-				envFromSlice[i].Name = ef.Name.ValueString()
-				envFromSlice[i].Type = client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType(ef.Type.ValueString())
-				if !ef.Prefix.IsNull() {
-					p := ef.Prefix.ValueString()
-					envFromSlice[i].Prefix = &p
-				}
-			}
-			lcStruct.EnvFrom = &envFromSlice
-		}
-
-		// Optional fields
-		if !localConfig.DockerImage.IsNull() {
-			img := localConfig.DockerImage.ValueString()
-			lcStruct.DockerImage = &img
-		}
-		if !localConfig.HTTPPath.IsNull() {
-			path := localConfig.HTTPPath.ValueString()
-			lcStruct.HttpPath = &path
-		}
-		if !localConfig.HTTPPort.IsNull() {
-			port := float32(localConfig.HTTPPort.ValueInt64())
-			lcStruct.HttpPort = &port
-		}
-		if !localConfig.TransportType.IsNull() {
-			tt := client.UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType(localConfig.TransportType.ValueString())
-			lcStruct.TransportType = &tt
-		}
-		if !localConfig.ServiceAccount.IsNull() {
-			sa := localConfig.ServiceAccount.ValueString()
-			lcStruct.ServiceAccount = &sa
-		}
-		if !localConfig.NodePort.IsNull() {
-			np := float32(localConfig.NodePort.ValueFloat64())
-			lcStruct.NodePort = &np
-		}
-
-		// Collect ImagePullSecrets for later injection into raw JSON
-		if !localConfig.ImagePullSecrets.IsNull() && !localConfig.ImagePullSecrets.IsUnknown() {
-			var ipsModels []ImagePullSecretModel
-			resp.Diagnostics.Append(localConfig.ImagePullSecrets.ElementsAs(ctx, &ipsModels, false)...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-			for _, ips := range ipsModels {
-				updateImagePullSecrets = append(updateImagePullSecrets, expandImagePullSecret(ips))
-			}
-		}
-
-		requestBody.LocalConfig = &lcStruct
 	}
 
-	// Handle RemoteConfig
-	if !data.RemoteConfig.IsNull() {
-		var remoteConfig RemoteConfigModel
-		resp.Diagnostics.Append(data.RemoteConfig.As(ctx, &remoteConfig, basetypes.ObjectAsOptions{})...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-
-		// Set the server URL
-		if !remoteConfig.URL.IsNull() {
-			url := remoteConfig.URL.ValueString()
-			requestBody.ServerUrl = &url
-		}
-
-		// Handle OAuth config if present
-		if !remoteConfig.OAuthConfig.IsNull() {
-			var oauthConfig OAuthConfigModel
-			resp.Diagnostics.Append(remoteConfig.OAuthConfig.As(ctx, &oauthConfig, basetypes.ObjectAsOptions{})...)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-
-			serverName := ""
-			if !data.Name.IsNull() {
-				serverName = data.Name.ValueString()
-			}
-			requestBody.OauthConfig = buildUpdateOAuthConfig(ctx, oauthConfig, remoteConfig.URL.ValueString(), serverName, &resp.Diagnostics)
-			if resp.Diagnostics.HasError() {
-				return
-			}
-		}
+	serverID, err := uuid.Parse(data.ID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
+		return
 	}
 
-	// Handle AuthFields
-	if !data.AuthFields.IsNull() {
-		var authFields []AuthFieldModel
-		resp.Diagnostics.Append(data.AuthFields.ElementsAs(ctx, &authFields, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-
-		afSlice := make([]struct {
-			Description *string `json:"description,omitempty"`
-			Label       string  `json:"label"`
-			Name        string  `json:"name"`
-			Required    *bool   `json:"required,omitempty"`
-			Type        string  `json:"type"`
-		}, len(authFields))
-
-		for i, af := range authFields {
-			afSlice[i].Name = af.Name.ValueString()
-			afSlice[i].Label = af.Label.ValueString()
-			afSlice[i].Type = af.Type.ValueString()
-			req := af.Required.ValueBool()
-			afSlice[i].Required = &req
-			if !af.Description.IsNull() {
-				desc := af.Description.ValueString()
-				afSlice[i].Description = &desc
-			}
-		}
-
-		requestBody.AuthFields = &afSlice
-	}
-
-	// Auto-set RequiresAuth for remote servers with authentication, if not explicitly set
-	if data.RequiresAuth.IsNull() && !data.RemoteConfig.IsNull() {
-		if !data.AuthFields.IsNull() || requestBody.OauthConfig != nil {
-			requiresAuth := true
-			requestBody.RequiresAuth = &requiresAuth
-		}
-	}
-
-	// Build user_config override map — injected via raw JSON (polymorphic default union).
-	updateUserConfigOverride, ucDiags := expandUserConfig(ctx, data.UserConfig)
-	resp.Diagnostics.Append(ucDiags...)
+	plan := req.Plan.Raw
+	prior := req.State.Raw
+	patch := MergePatch(ctx, plan, prior, catalogItemAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Call API - if imagePullSecrets or userConfig need to be set, marshal to raw JSON and inject them
-	var updateApiResp *client.UpdateInternalMcpCatalogItemResponse
-	if len(updateImagePullSecrets) > 0 || updateUserConfigOverride != nil {
-		bodyBytes, marshalErr := json.Marshal(requestBody)
-		if marshalErr != nil {
-			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", marshalErr))
-			return
-		}
-		var bodyMap map[string]interface{}
-		if unmarshalErr := json.Unmarshal(bodyBytes, &bodyMap); unmarshalErr != nil {
-			resp.Diagnostics.AddError("Unmarshal Error", fmt.Sprintf("Unable to unmarshal request body: %s", unmarshalErr))
-			return
-		}
-		if lc, ok := bodyMap["localConfig"].(map[string]interface{}); ok && len(updateImagePullSecrets) > 0 {
-			lc["imagePullSecrets"] = updateImagePullSecrets
-		}
-		if updateUserConfigOverride != nil {
-			bodyMap["userConfig"] = updateUserConfigOverride
-		}
-		finalBytes, marshalErr := json.Marshal(bodyMap)
-		if marshalErr != nil {
-			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal final request body: %s", marshalErr))
-			return
-		}
-		var parseErr error
-		updateApiResp, parseErr = r.client.UpdateInternalMcpCatalogItemWithBodyWithResponse(ctx, serverID, "application/json", bytes.NewReader(finalBytes))
-		if parseErr != nil {
-			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update MCP server, got error: %s", parseErr))
-			return
-		}
+	serverName := data.Name.ValueString()
+	finalizeCatalogItemPatch(ctx, patch, plan, prior, serverName, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// serverType is mode-derived and the backend treats it as required on
+	// Update; always send so the backend's Zod schema accepts the body.
+	if !data.RemoteConfig.IsNull() {
+		patch["serverType"] = "remote"
 	} else {
-		var err error
-		updateApiResp, err = r.client.UpdateInternalMcpCatalogItemWithResponse(ctx, serverID, requestBody)
-		if err != nil {
-			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update MCP server, got error: %s", err))
-			return
+		patch["serverType"] = "local"
+	}
+
+	if data.RequiresAuth.IsNull() && !data.RemoteConfig.IsNull() {
+		if !data.AuthFields.IsNull() || patch["oauthConfig"] != nil {
+			patch["requiresAuth"] = true
 		}
 	}
 
-	// Check response
-	if updateApiResp.JSON200 == nil {
+	LogPatch(ctx, "update catalog item", patch, catalogItemAttrSpec)
+	bodyBytes, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
+	}
+	apiResp, err := r.client.UpdateInternalMcpCatalogItemWithBodyWithResponse(ctx, serverID, "application/json", bytes.NewReader(bodyBytes))
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update MCP server, got error: %s", err))
+		return
+	}
+	if apiResp.JSON200 == nil {
 		resp.Diagnostics.AddError(
 			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d: %s", updateApiResp.StatusCode(), string(updateApiResp.Body)),
+			fmt.Sprintf("Expected 200 OK, got status %d: %s", apiResp.StatusCode(), string(apiResp.Body)),
 		)
 		return
 	}
 
-	// Read back the updated resource
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-
-	// Trigger a read to get the full updated state
 	readReq := resource.ReadRequest{State: resp.State}
 	readResp := resource.ReadResponse{State: resp.State}
 	r.Read(ctx, readReq, &readResp)
@@ -2630,94 +1432,6 @@ func strOrNull(s string) types.String {
 		return types.StringNull()
 	}
 	return types.StringValue(s)
-}
-
-// expandImagePullSecret converts one ImagePullSecretModel into the map-shape injected into the
-// raw request body. Defaults to `source = "existing"` when only `name` is set, preserving
-// backwards compatibility with older configs.
-func expandImagePullSecret(ips ImagePullSecretModel) map[string]string {
-	source := ips.Source.ValueString()
-	if source == "" {
-		source = "existing"
-	}
-	entry := map[string]string{"source": source}
-	if source == "credentials" {
-		if !ips.Server.IsNull() {
-			entry["server"] = ips.Server.ValueString()
-		}
-		if !ips.Username.IsNull() {
-			entry["username"] = ips.Username.ValueString()
-		}
-		if !ips.Password.IsNull() {
-			entry["password"] = ips.Password.ValueString()
-		}
-		if !ips.Email.IsNull() {
-			entry["email"] = ips.Email.ValueString()
-		}
-	} else {
-		entry["name"] = ips.Name.ValueString()
-	}
-	return entry
-}
-
-// expandUserConfig builds the JSON-ready override map for the polymorphic backend userConfig.
-// Returns nil when the attribute is null/unknown. Default values are supplied as JSON strings on
-// the Terraform side; we try to parse them as JSON, falling back to a plain string for unquoted
-// input (friendly HCL: `default = "my-value"`).
-func expandUserConfig(ctx context.Context, m types.Map) (map[string]interface{}, diag.Diagnostics) {
-	var diags diag.Diagnostics
-	if m.IsNull() || m.IsUnknown() {
-		return nil, diags
-	}
-	var entries map[string]UserConfigFieldModel
-	diags.Append(m.ElementsAs(ctx, &entries, false)...)
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := make(map[string]interface{}, len(entries))
-	for key, f := range entries {
-		entry := map[string]interface{}{
-			"title":       f.Title.ValueString(),
-			"description": f.Description.ValueString(),
-			"type":        f.Type.ValueString(),
-		}
-		if !f.Default.IsNull() && !f.Default.IsUnknown() {
-			s := f.Default.ValueString()
-			var parsed interface{}
-			if err := json.Unmarshal([]byte(s), &parsed); err == nil {
-				entry["default"] = parsed
-			} else {
-				entry["default"] = s
-			}
-		}
-		if !f.Required.IsNull() {
-			entry["required"] = f.Required.ValueBool()
-		}
-		if !f.Sensitive.IsNull() {
-			entry["sensitive"] = f.Sensitive.ValueBool()
-		}
-		if !f.Multiple.IsNull() {
-			entry["multiple"] = f.Multiple.ValueBool()
-		}
-		// The backend struct stores min/max as float32; Terraform only has
-		// Float64. Narrow here so the server never receives spurious extra
-		// precision (otherwise Go's json decoder silently drops the overflow).
-		if !f.Min.IsNull() {
-			entry["min"] = float32(f.Min.ValueFloat64())
-		}
-		if !f.Max.IsNull() {
-			entry["max"] = float32(f.Max.ValueFloat64())
-		}
-		if !f.HeaderName.IsNull() {
-			entry["headerName"] = f.HeaderName.ValueString()
-		}
-		if !f.PromptOnInstallation.IsNull() {
-			entry["promptOnInstallation"] = f.PromptOnInstallation.ValueBool()
-		}
-		out[key] = entry
-	}
-	return out, diags
 }
 
 // flattenUserConfig reads the backend's generic userConfig payload back into a Terraform map.

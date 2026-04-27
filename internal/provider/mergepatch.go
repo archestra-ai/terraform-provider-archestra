@@ -43,6 +43,13 @@ const (
 	AtomicObject
 	// RecursiveObject: multi-column group. Diff field-by-field.
 	RecursiveObject
+	// Synthetic: HCL-only ergonomic grouping with no direct wire field. Used
+	// for schema attributes that explode into multiple top-level wire keys
+	// (e.g., a `remote_config` block whose `url` and `oauth_config` materialize
+	// as top-level `serverUrl` and `oauthConfig`). MergePatch skips Synthetic
+	// entries entirely; the caller is responsible for materializing the wire
+	// fields out-of-band.
+	Synthetic
 )
 
 // AttrSpec declares one field's wire shape and diff behavior. One slice per
@@ -126,6 +133,10 @@ func MergePatch(
 
 	out := map[string]any{}
 	for _, spec := range attrs {
+		if spec.Kind == Synthetic {
+			continue
+		}
+
 		planV, hasPlan := planFields[spec.TFName]
 		priorV, hasPrior := priorFields[spec.TFName]
 
@@ -287,7 +298,7 @@ func encodeValue(v tftypes.Value, attrs []AttrSpec) (any, error) {
 			if sub.IsNull() || !sub.IsKnown() {
 				continue
 			}
-			enc, err := encodeValue(sub, nil)
+			enc, err := encodeValue(sub, attrs)
 			if err != nil {
 				return nil, fmt.Errorf("encoding map key %q: %w", k, err)
 			}
