@@ -12,9 +12,15 @@ import (
 )
 
 // testAccGetFirstModelID discovers the first available LLM model from the backend.
-// Returns the model_id string. Skips the test if no models are available.
+// Returns the model_id string. Acceptance tests gated by TF_ACC: when TF_ACC is
+// unset, returns early so resource.Test handles the skip; when TF_ACC is set,
+// fails loud (t.Fatal) on any setup defect — never silently skips.
 func testAccGetFirstModelID(t *testing.T) string {
 	t.Helper()
+
+	if os.Getenv("TF_ACC") == "" {
+		return ""
+	}
 
 	baseURL := os.Getenv("ARCHESTRA_BASE_URL")
 	apiKey := os.Getenv("ARCHESTRA_API_KEY")

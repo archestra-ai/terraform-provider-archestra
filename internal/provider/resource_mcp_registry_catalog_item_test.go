@@ -814,7 +814,10 @@ resource "archestra_mcp_registry_catalog_item" "user_config" {
 // Requires a pre-existing identity provider UUID; set ARCHESTRA_TEST_IDP_ID to opt in.
 func TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig(t *testing.T) {
 	idpID := os.Getenv("ARCHESTRA_TEST_IDP_ID")
-	if idpID == "" {
+	// Gate the t.Fatal on TF_ACC so plain `go test` doesn't bomb out before
+	// resource.Test can apply its own TF_ACC skip. With TF_ACC set, missing
+	// IDP env is a setup defect, not a test skip.
+	if idpID == "" && os.Getenv("TF_ACC") != "" {
 		t.Fatal("ARCHESTRA_TEST_IDP_ID must be set; provision a throwaway IdP with scripts/bootstrap-test-idp.sh and export the resulting UUID")
 	}
 	name := "emc-" + acctest.RandString(6)
