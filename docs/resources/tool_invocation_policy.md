@@ -13,22 +13,18 @@ Manages an Archestra tool invocation policy.
 ## Example Usage
 
 ```terraform
-data "archestra_profile" "test" {
-  profile_id = "profile-id-here"
-}
-
-data "archestra_profile_tool" "file_write" {
-  profile_id = data.archestra_profile.test.id
-  tool_name  = "write_file"
+data "archestra_agent_tool" "file_write" {
+  agent_id  = "00000000-0000-0000-0000-000000000000"
+  tool_name = "write_file"
 }
 
 resource "archestra_tool_invocation_policy" "block_system_paths" {
-  profile_tool_id = data.archestra_profile_tool.file_write.id
-  argument_name   = "path"
-  operator        = "contains"
-  value           = "/etc/"
-  action          = "block_always"
-  description     = "Block writes to system configuration directories"
+  tool_id       = data.archestra_agent_tool.file_write.id
+  argument_name = "path"
+  operator      = "contains"
+  value         = "/etc/"
+  action        = "block_always"
+  reason        = "Block writes to system configuration directories"
 }
 ```
 
@@ -40,7 +36,7 @@ resource "archestra_tool_invocation_policy" "block_system_paths" {
 - `action` (String) The action to take when the policy matches. Valid values: `allow_when_context_is_untrusted`, `block_when_context_is_untrusted`, `block_always`, `require_approval`
 - `argument_name` (String) The argument name to match
 - `operator` (String) The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`
-- `profile_tool_id` (String) The tool ID this policy applies to
+- `tool_id` (String) ID of the tool this policy applies to. This is the bare tool UUID — use `data.archestra_mcp_server_tool.<name>.id` or `archestra_agent_tool.<name>.tool_id`.
 - `value` (String) The value to compare against
 
 ### Optional

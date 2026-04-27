@@ -113,7 +113,7 @@ func TestAccTrustedDataPolicyResource_SanitizeAction(t *testing.T) {
 
 func testAccTrustedDataPolicyResourceConfig(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_profile" "test" {
+resource "archestra_mcp_gateway" "test" {
   name = "tdp-test-profile-%[1]s"
 }
 
@@ -135,20 +135,20 @@ data "archestra_mcp_server_tool" "test" {
   name          = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
 }
 
-resource "archestra_profile_tool" "test" {
-  profile_id    = archestra_profile.test.id
+resource "archestra_agent_tool" "test" {
+  agent_id    = archestra_mcp_gateway.test.id
   tool_id       = data.archestra_mcp_server_tool.test.id
   mcp_server_id = archestra_mcp_server_installation.test.id
 }
 
-data "archestra_profile_tool" "test" {
-  profile_id = archestra_profile.test.id
+data "archestra_agent_tool" "test" {
+  agent_id = archestra_mcp_gateway.test.id
   tool_name  = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
-  depends_on = [archestra_profile_tool.test]
+  depends_on = [archestra_agent_tool.test]
 }
 
 resource "archestra_trusted_data_policy" "test" {
-  profile_tool_id = data.archestra_mcp_server_tool.test.id
+  tool_id = data.archestra_mcp_server_tool.test.id
   description     = "Trust internal API responses"
   attribute_path = "url"
   operator       = "contains"
@@ -160,7 +160,7 @@ resource "archestra_trusted_data_policy" "test" {
 
 func testAccTrustedDataPolicyResourceConfigUpdated(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_profile" "test" {
+resource "archestra_mcp_gateway" "test" {
   name = "tdp-test-profile-%[1]s"
 }
 
@@ -182,20 +182,20 @@ data "archestra_mcp_server_tool" "test" {
   name          = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
 }
 
-resource "archestra_profile_tool" "test" {
-  profile_id    = archestra_profile.test.id
+resource "archestra_agent_tool" "test" {
+  agent_id    = archestra_mcp_gateway.test.id
   tool_id       = data.archestra_mcp_server_tool.test.id
   mcp_server_id = archestra_mcp_server_installation.test.id
 }
 
-data "archestra_profile_tool" "test" {
-  profile_id = archestra_profile.test.id
+data "archestra_agent_tool" "test" {
+  agent_id = archestra_mcp_gateway.test.id
   tool_name  = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
-  depends_on = [archestra_profile_tool.test]
+  depends_on = [archestra_agent_tool.test]
 }
 
 resource "archestra_trusted_data_policy" "test" {
-  profile_tool_id = data.archestra_mcp_server_tool.test.id
+  tool_id = data.archestra_mcp_server_tool.test.id
   description     = "Block untrusted external data"
   attribute_path = "source"
   operator       = "notContains"
@@ -207,7 +207,7 @@ resource "archestra_trusted_data_policy" "test" {
 
 func testAccTrustedDataPolicyResourceConfigSanitize(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_profile" "sanitize" {
+resource "archestra_mcp_gateway" "sanitize" {
   name = "tdp-sanitize-profile-%[1]s"
 }
 
@@ -229,20 +229,20 @@ data "archestra_mcp_server_tool" "sanitize" {
   name          = "${archestra_mcp_registry_catalog_item.sanitize.name}__list_directory"
 }
 
-resource "archestra_profile_tool" "sanitize" {
-  profile_id    = archestra_profile.sanitize.id
+resource "archestra_agent_tool" "sanitize" {
+  agent_id    = archestra_mcp_gateway.sanitize.id
   tool_id       = data.archestra_mcp_server_tool.sanitize.id
   mcp_server_id = archestra_mcp_server_installation.sanitize.id
 }
 
-data "archestra_profile_tool" "sanitize" {
-  profile_id = archestra_profile.sanitize.id
+data "archestra_agent_tool" "sanitize" {
+  agent_id = archestra_mcp_gateway.sanitize.id
   tool_name  = "${archestra_mcp_registry_catalog_item.sanitize.name}__list_directory"
-  depends_on = [archestra_profile_tool.sanitize]
+  depends_on = [archestra_agent_tool.sanitize]
 }
 
 resource "archestra_trusted_data_policy" "sanitize" {
-  profile_tool_id = data.archestra_mcp_server_tool.sanitize.id
+  tool_id = data.archestra_mcp_server_tool.sanitize.id
   description     = "Sanitize user input with dual LLM"
   attribute_path = "user_input"
   operator       = "regex"

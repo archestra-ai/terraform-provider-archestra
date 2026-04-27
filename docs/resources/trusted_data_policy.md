@@ -13,22 +13,18 @@ Manages an Archestra trusted data policy.
 ## Example Usage
 
 ```terraform
-data "archestra_profile" "test" {
-  profile_id = "profile-id-here"
-}
-
-data "archestra_profile_tool" "fetch_url" {
-  profile_id = data.archestra_profile.test.id
-  tool_name  = "fetch_url"
+data "archestra_agent_tool" "fetch_url" {
+  agent_id  = "00000000-0000-0000-0000-000000000000"
+  tool_name = "fetch_url"
 }
 
 resource "archestra_trusted_data_policy" "trust_company_api" {
-  profile_tool_id = data.archestra_profile_tool.fetch_url.id
-  description     = "Mark data from company API as trusted"
-  attribute_path  = "url"
-  operator        = "contains"
-  value           = "api.company.com"
-  action          = "mark_as_trusted"
+  tool_id        = data.archestra_agent_tool.fetch_url.id
+  description    = "Mark data from company API as trusted"
+  attribute_path = "url"
+  operator       = "contains"
+  value          = "api.company.com"
+  action         = "mark_as_trusted"
 }
 ```
 
@@ -40,7 +36,7 @@ resource "archestra_trusted_data_policy" "trust_company_api" {
 - `attribute_path` (String) The attribute path to match
 - `description` (String) Description of the policy
 - `operator` (String) The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`
-- `profile_tool_id` (String) The profile tool ID this policy applies to
+- `tool_id` (String) ID of the tool this policy applies to. This is the bare tool UUID — use `data.archestra_mcp_server_tool.<name>.id` or `archestra_agent_tool.<name>.tool_id`.
 - `value` (String) The value to compare against
 
 ### Optional

@@ -118,7 +118,7 @@ func TestAccToolInvocationPolicyResource_WithoutReason(t *testing.T) {
 
 func testAccToolInvocationPolicyResourceConfigNoReason(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_profile" "noreason" {
+resource "archestra_mcp_gateway" "noreason" {
   name = "tip-noreason-profile-%[1]s"
 }
 
@@ -140,20 +140,20 @@ data "archestra_mcp_server_tool" "noreason" {
   name          = "${archestra_mcp_registry_catalog_item.noreason.name}__list_directory"
 }
 
-resource "archestra_profile_tool" "noreason" {
-  profile_id    = archestra_profile.noreason.id
+resource "archestra_agent_tool" "noreason" {
+  agent_id    = archestra_mcp_gateway.noreason.id
   tool_id       = data.archestra_mcp_server_tool.noreason.id
   mcp_server_id = archestra_mcp_server_installation.noreason.id
 }
 
-data "archestra_profile_tool" "noreason" {
-  profile_id = archestra_profile.noreason.id
+data "archestra_agent_tool" "noreason" {
+  agent_id = archestra_mcp_gateway.noreason.id
   tool_name  = "${archestra_mcp_registry_catalog_item.noreason.name}__list_directory"
-  depends_on = [archestra_profile_tool.noreason]
+  depends_on = [archestra_agent_tool.noreason]
 }
 
 resource "archestra_tool_invocation_policy" "noreason" {
-  profile_tool_id = data.archestra_mcp_server_tool.noreason.id
+  tool_id = data.archestra_mcp_server_tool.noreason.id
   argument_name = "command"
   operator      = "equal"
   value         = "rm -rf"
@@ -190,7 +190,7 @@ func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
 
 func testAccToolInvocationPolicyResourceConfig(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_profile" "test" {
+resource "archestra_mcp_gateway" "test" {
   name = "tip-test-profile-%[1]s"
 }
 
@@ -212,20 +212,20 @@ data "archestra_mcp_server_tool" "test" {
   name          = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
 }
 
-resource "archestra_profile_tool" "test" {
-  profile_id    = archestra_profile.test.id
+resource "archestra_agent_tool" "test" {
+  agent_id    = archestra_mcp_gateway.test.id
   tool_id       = data.archestra_mcp_server_tool.test.id
   mcp_server_id = archestra_mcp_server_installation.test.id
 }
 
-data "archestra_profile_tool" "test" {
-  profile_id = archestra_profile.test.id
+data "archestra_agent_tool" "test" {
+  agent_id = archestra_mcp_gateway.test.id
   tool_name  = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
-  depends_on = [archestra_profile_tool.test]
+  depends_on = [archestra_agent_tool.test]
 }
 
 resource "archestra_tool_invocation_policy" "test" {
-  profile_tool_id = data.archestra_mcp_server_tool.test.id
+  tool_id = data.archestra_mcp_server_tool.test.id
   argument_name   = "path"
   operator        = "contains"
   value           = "/etc/"
@@ -237,7 +237,7 @@ resource "archestra_tool_invocation_policy" "test" {
 
 func testAccToolInvocationPolicyResourceConfigUpdated(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_profile" "test" {
+resource "archestra_mcp_gateway" "test" {
   name = "tip-test-profile-%[1]s"
 }
 
@@ -259,20 +259,20 @@ data "archestra_mcp_server_tool" "test" {
   name          = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
 }
 
-resource "archestra_profile_tool" "test" {
-  profile_id    = archestra_profile.test.id
+resource "archestra_agent_tool" "test" {
+  agent_id    = archestra_mcp_gateway.test.id
   tool_id       = data.archestra_mcp_server_tool.test.id
   mcp_server_id = archestra_mcp_server_installation.test.id
 }
 
-data "archestra_profile_tool" "test" {
-  profile_id = archestra_profile.test.id
+data "archestra_agent_tool" "test" {
+  agent_id = archestra_mcp_gateway.test.id
   tool_name  = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
-  depends_on = [archestra_profile_tool.test]
+  depends_on = [archestra_agent_tool.test]
 }
 
 resource "archestra_tool_invocation_policy" "test" {
-  profile_tool_id = data.archestra_mcp_server_tool.test.id
+  tool_id = data.archestra_mcp_server_tool.test.id
   argument_name   = "path"
   operator        = "startsWith"
   value           = "/var/log/"
@@ -284,7 +284,7 @@ resource "archestra_tool_invocation_policy" "test" {
 
 func testAccToolInvocationPolicyResourceConfigRegex(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_profile" "regex" {
+resource "archestra_mcp_gateway" "regex" {
   name = "tip-regex-profile-%[1]s"
 }
 
@@ -306,20 +306,20 @@ data "archestra_mcp_server_tool" "regex" {
   name          = "${archestra_mcp_registry_catalog_item.regex.name}__list_directory"
 }
 
-resource "archestra_profile_tool" "regex" {
-  profile_id    = archestra_profile.regex.id
+resource "archestra_agent_tool" "regex" {
+  agent_id    = archestra_mcp_gateway.regex.id
   tool_id       = data.archestra_mcp_server_tool.regex.id
   mcp_server_id = archestra_mcp_server_installation.regex.id
 }
 
-data "archestra_profile_tool" "regex" {
-  profile_id = archestra_profile.regex.id
+data "archestra_agent_tool" "regex" {
+  agent_id = archestra_mcp_gateway.regex.id
   tool_name  = "${archestra_mcp_registry_catalog_item.regex.name}__list_directory"
-  depends_on = [archestra_profile_tool.regex]
+  depends_on = [archestra_agent_tool.regex]
 }
 
 resource "archestra_tool_invocation_policy" "regex" {
-  profile_tool_id = data.archestra_mcp_server_tool.regex.id
+  tool_id = data.archestra_mcp_server_tool.regex.id
   argument_name   = "path"
   operator      = "regex"
   value         = "^/home/[a-z]+/.ssh/.*"

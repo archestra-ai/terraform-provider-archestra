@@ -28,7 +28,7 @@ type TrustedDataPolicyResource struct {
 
 type TrustedDataPolicyResourceModel struct {
 	ID            types.String `tfsdk:"id"`
-	ProfileToolID types.String `tfsdk:"profile_tool_id"`
+	ToolID        types.String `tfsdk:"tool_id"`
 	Description   types.String `tfsdk:"description"`
 	AttributePath types.String `tfsdk:"attribute_path"`
 	Operator      types.String `tfsdk:"operator"`
@@ -52,8 +52,8 @@ func (r *TrustedDataPolicyResource) Schema(ctx context.Context, req resource.Sch
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"profile_tool_id": schema.StringAttribute{
-				MarkdownDescription: "The profile tool ID this policy applies to",
+			"tool_id": schema.StringAttribute{
+				MarkdownDescription: "ID of the tool this policy applies to. This is the bare tool UUID — use `data.archestra_mcp_server_tool.<name>.id` or `archestra_agent_tool.<name>.tool_id`.",
 				Required:            true,
 			},
 			"description": schema.StringAttribute{
@@ -106,18 +106,18 @@ func (r *TrustedDataPolicyResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	// Parse ProfileToolID as UUID
-	parsedProfileToolID, err := uuid.Parse(data.ProfileToolID.ValueString())
+	// Parse ToolID as UUID
+	parsedToolID, err := uuid.Parse(data.ToolID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Profile Tool ID", fmt.Sprintf("Unable to parse profile tool ID: %s", err))
+		resp.Diagnostics.AddError("Invalid tool_id", fmt.Sprintf("Unable to parse tool_id as UUID: %s", err))
 		return
 	}
-	profileToolID := parsedProfileToolID
+	toolID := parsedToolID
 
 	// Create request body using generated type
 	description := data.Description.ValueString()
 	requestBody := client.CreateTrustedDataPolicyJSONRequestBody{
-		ToolId: profileToolID,
+		ToolId: toolID,
 		Conditions: []struct {
 			Key      string                                                   `json:"key"`
 			Operator client.CreateTrustedDataPolicyJSONBodyConditionsOperator `json:"operator"`
@@ -151,7 +151,7 @@ func (r *TrustedDataPolicyResource) Create(ctx context.Context, req resource.Cre
 
 	// Map response to Terraform state
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	data.ToolID = types.StringValue(apiResp.JSON200.ToolId.String())
 	if apiResp.JSON200.Description != nil {
 		data.Description = types.StringValue(*apiResp.JSON200.Description)
 	}
@@ -203,7 +203,7 @@ func (r *TrustedDataPolicyResource) Read(ctx context.Context, req resource.ReadR
 	}
 
 	// Map response to Terraform state
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	data.ToolID = types.StringValue(apiResp.JSON200.ToolId.String())
 	if apiResp.JSON200.Description != nil {
 		data.Description = types.StringValue(*apiResp.JSON200.Description)
 	}
@@ -232,12 +232,12 @@ func (r *TrustedDataPolicyResource) Update(ctx context.Context, req resource.Upd
 	}
 	policyID := parsedID
 
-	parsedProfileToolID, err := uuid.Parse(data.ProfileToolID.ValueString())
+	parsedToolID, err := uuid.Parse(data.ToolID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Profile Tool ID", fmt.Sprintf("Unable to parse profile tool ID: %s", err))
+		resp.Diagnostics.AddError("Invalid tool_id", fmt.Sprintf("Unable to parse tool_id as UUID: %s", err))
 		return
 	}
-	profileToolID := parsedProfileToolID
+	toolID := parsedToolID
 
 	// Create request body using generated type
 	description := data.Description.ValueString()
@@ -255,7 +255,7 @@ func (r *TrustedDataPolicyResource) Update(ctx context.Context, req resource.Upd
 	}
 
 	requestBody := client.UpdateTrustedDataPolicyJSONRequestBody{
-		ToolId:      &profileToolID,
+		ToolId:      &toolID,
 		Description: &description,
 		Conditions:  &conditions,
 		Action:      &action,
@@ -278,7 +278,7 @@ func (r *TrustedDataPolicyResource) Update(ctx context.Context, req resource.Upd
 	}
 
 	// Map response to Terraform state
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	data.ToolID = types.StringValue(apiResp.JSON200.ToolId.String())
 	if apiResp.JSON200.Description != nil {
 		data.Description = types.StringValue(*apiResp.JSON200.Description)
 	}

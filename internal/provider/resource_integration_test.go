@@ -14,7 +14,7 @@ func TestAccIntegration_FullWorkflow(t *testing.T) {
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create team, profile, MCP server, and installation
+			// Create team, MCP gateway, MCP server, and installation
 			{
 				Config: testAccIntegrationConfig(),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -24,19 +24,19 @@ func TestAccIntegration_FullWorkflow(t *testing.T) {
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("Integration Test Team"),
 					),
-					// Profile checks
+					// MCP gateway checks
 					statecheck.ExpectKnownValue(
-						"archestra_profile.test",
+						"archestra_mcp_gateway.test",
 						tfjsonpath.New("name"),
-						knownvalue.StringExact("integration-test-profile"),
+						knownvalue.StringExact("integration-test-mcp-gateway"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_profile.test",
+						"archestra_mcp_gateway.test",
 						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("key"),
 						knownvalue.StringExact("environment"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_profile.test",
+						"archestra_mcp_gateway.test",
 						tfjsonpath.New("labels").AtSliceIndex(0).AtMapKey("value"),
 						knownvalue.StringExact("test"),
 					),
@@ -84,9 +84,9 @@ resource "archestra_team" "test" {
   description = "Team for integration testing"
 }
 
-# Create a test profile with labels
-resource "archestra_profile" "test" {
-  name = "integration-test-profile"
+# Create a test MCP gateway with labels
+resource "archestra_mcp_gateway" "test" {
+  name = "integration-test-mcp-gateway"
 
   labels = [
     {
@@ -133,9 +133,9 @@ data "archestra_team" "lookup" {
   id = archestra_team.test.id
 }
 
-# Create a test profile with labels
-resource "archestra_profile" "test" {
-  name = "integration-test-profile"
+# Create a test MCP gateway with labels
+resource "archestra_mcp_gateway" "test" {
+  name = "integration-test-mcp-gateway"
 
   labels = [
     {

@@ -26,13 +26,13 @@ type ToolInvocationPolicyResource struct {
 }
 
 type ToolInvocationPolicyResourceModel struct {
-	ID            types.String `tfsdk:"id"`
-	ProfileToolID types.String `tfsdk:"profile_tool_id"`
-	ArgumentName  types.String `tfsdk:"argument_name"`
-	Operator      types.String `tfsdk:"operator"`
-	Value         types.String `tfsdk:"value"`
-	Action        types.String `tfsdk:"action"`
-	Reason        types.String `tfsdk:"reason"`
+	ID           types.String `tfsdk:"id"`
+	ToolID       types.String `tfsdk:"tool_id"`
+	ArgumentName types.String `tfsdk:"argument_name"`
+	Operator     types.String `tfsdk:"operator"`
+	Value        types.String `tfsdk:"value"`
+	Action       types.String `tfsdk:"action"`
+	Reason       types.String `tfsdk:"reason"`
 }
 
 func (r *ToolInvocationPolicyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -51,8 +51,8 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"profile_tool_id": schema.StringAttribute{
-				MarkdownDescription: "The tool ID this policy applies to",
+			"tool_id": schema.StringAttribute{
+				MarkdownDescription: "ID of the tool this policy applies to. This is the bare tool UUID — use `data.archestra_mcp_server_tool.<name>.id` or `archestra_agent_tool.<name>.tool_id`.",
 				Required:            true,
 			},
 			"argument_name": schema.StringAttribute{
@@ -103,17 +103,17 @@ func (r *ToolInvocationPolicyResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	// Parse ProfileToolID as UUID
-	parsedProfileToolID, err := uuid.Parse(data.ProfileToolID.ValueString())
+	// Parse ToolID as UUID
+	parsedToolID, err := uuid.Parse(data.ToolID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Profile Tool ID", fmt.Sprintf("Unable to parse profile tool ID: %s", err))
+		resp.Diagnostics.AddError("Invalid tool_id", fmt.Sprintf("Unable to parse tool_id as UUID: %s", err))
 		return
 	}
-	profileToolID := parsedProfileToolID
+	toolID := parsedToolID
 
 	// Create request body using generated type
 	requestBody := client.CreateToolInvocationPolicyJSONRequestBody{
-		ToolId: profileToolID,
+		ToolId: toolID,
 		Conditions: []struct {
 			Key      string                                                      `json:"key"`
 			Operator client.CreateToolInvocationPolicyJSONBodyConditionsOperator `json:"operator"`
@@ -151,7 +151,7 @@ func (r *ToolInvocationPolicyResource) Create(ctx context.Context, req resource.
 
 	// Map response to Terraform state
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	data.ToolID = types.StringValue(apiResp.JSON200.ToolId.String())
 	if len(apiResp.JSON200.Conditions) > 0 {
 		data.ArgumentName = types.StringValue(apiResp.JSON200.Conditions[0].Key)
 		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))
@@ -203,7 +203,7 @@ func (r *ToolInvocationPolicyResource) Read(ctx context.Context, req resource.Re
 	}
 
 	// Map response to Terraform state
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	data.ToolID = types.StringValue(apiResp.JSON200.ToolId.String())
 	if len(apiResp.JSON200.Conditions) > 0 {
 		data.ArgumentName = types.StringValue(apiResp.JSON200.Conditions[0].Key)
 		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))
@@ -234,12 +234,12 @@ func (r *ToolInvocationPolicyResource) Update(ctx context.Context, req resource.
 	}
 	policyID := parsedID
 
-	parsedProfileToolID, err := uuid.Parse(data.ProfileToolID.ValueString())
+	parsedToolID, err := uuid.Parse(data.ToolID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid Profile Tool ID", fmt.Sprintf("Unable to parse profile tool ID: %s", err))
+		resp.Diagnostics.AddError("Invalid tool_id", fmt.Sprintf("Unable to parse tool_id as UUID: %s", err))
 		return
 	}
-	profileToolID := parsedProfileToolID
+	toolID := parsedToolID
 
 	// Create request body using generated type
 	action := client.UpdateToolInvocationPolicyJSONBodyAction(data.Action.ValueString())
@@ -256,7 +256,7 @@ func (r *ToolInvocationPolicyResource) Update(ctx context.Context, req resource.
 	}
 
 	requestBody := client.UpdateToolInvocationPolicyJSONRequestBody{
-		ToolId:     &profileToolID,
+		ToolId:     &toolID,
 		Conditions: &conditions,
 		Action:     &action,
 	}
@@ -283,7 +283,7 @@ func (r *ToolInvocationPolicyResource) Update(ctx context.Context, req resource.
 	}
 
 	// Map response to Terraform state
-	data.ProfileToolID = types.StringValue(apiResp.JSON200.ToolId.String())
+	data.ToolID = types.StringValue(apiResp.JSON200.ToolId.String())
 	if len(apiResp.JSON200.Conditions) > 0 {
 		data.ArgumentName = types.StringValue(apiResp.JSON200.Conditions[0].Key)
 		data.Operator = types.StringValue(string(apiResp.JSON200.Conditions[0].Operator))

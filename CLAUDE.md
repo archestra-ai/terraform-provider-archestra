@@ -94,8 +94,10 @@ All resources follow Terraform Plugin Framework patterns (`internal/provider/res
 
 | Resource                              | File                                    | Description                                           |
 | ------------------------------------- | --------------------------------------- | ----------------------------------------------------- |
-| `archestra_profile`                   | `resource_profile.go`                   | Manage agents/profiles (config, LLM, email, security) |
-| `archestra_profile_tool`              | `resource_profile_tool.go`              | Assign tools to profiles with MCP server binding      |
+| `archestra_agent`                     | `resource_agent.go`                     | Manage internal chat agents (system prompt, LLM, knowledge sources, email triggers) |
+| `archestra_llm_proxy`                 | `resource_llm_proxy.go`                 | Manage LLM proxies (upstream LLM, passthrough headers, identity provider)            |
+| `archestra_mcp_gateway`               | `resource_mcp_gateway.go`               | Manage MCP gateways (knowledge sources, passthrough headers, identity provider)      |
+| `archestra_agent_tool`                | `resource_agent_tool.go`                | Assign tools to agents (any type) with MCP server binding |
 | `archestra_mcp_registry_catalog_item` | `resource_mcp_registry_catalog_item.go` | Register MCP servers with full catalog metadata       |
 | `archestra_mcp_server_installation`   | `resource_mcp_server_installation.go`   | Install MCP servers with auth + team scoping          |
 | `archestra_team`                      | `resource_team.go`                      | Manage teams with TOON compression settings           |
@@ -113,7 +115,7 @@ All resources follow Terraform Plugin Framework patterns (`internal/provider/res
 
 - `resource_prompt.go` - Prompts are now inline on agents (`system_prompt` field). No standalone API.
 - `resource_token_price.go` - Replaced by `archestra_llm_model` resource.
-- `resource_dual_llm_config.go` - Replaced by `built_in_agent_config` block on `archestra_profile`.
+- `resource_dual_llm_config.go` - Replaced by `built_in_agent_config` block on `archestra_agent`.
 - `resource_user.go` - User management (API not exposed in OpenAPI spec)
 
 ### Data Sources
@@ -123,7 +125,7 @@ Data sources for reading existing resources (`internal/provider/datasource_*.go`
 | Data Source                      | File                                 | Description                       |
 | -------------------------------- | ------------------------------------ | --------------------------------- |
 | `archestra_tool`                 | `datasource_tool.go`                 | Look up any tool by name          |
-| `archestra_profile_tool`         | `datasource_profile_tool.go`         | Look up profile tools by name     |
+| `archestra_agent_tool`           | `datasource_agent_tool.go`           | Look up agent-tool assignments    |
 | `archestra_mcp_server_tool`      | `datasource_mcp_server_tool.go`      | Look up MCP server tools          |
 | `archestra_team`                 | `datasource_team.go`                 | Look up team information          |
 | `archestra_team_external_groups` | `datasource_team_external_groups.go` | List external groups for a team   |
@@ -137,7 +139,8 @@ Data sources for reading existing resources (`internal/provider/datasource_*.go`
 
 ### Helper Utilities
 
-- `retry.go` - Retry logic for async operations (used by profile tool and MCP server tool data sources)
+- `retry.go` - Retry logic for async operations (used by agent-tool and MCP server tool data sources)
+- `agent_shared.go` - Shared helpers for the three agent-type resources (`archestra_agent`, `archestra_llm_proxy`, `archestra_mcp_gateway`)
 - `prompt_shared.go` - Shared prompt helpers (disabled, `//go:build ignore`)
 
 ### Each Resource/Data Source Contains
@@ -198,5 +201,5 @@ CI runs BYOS-mode: the workflow deploys a dev Vault pod and an Ollama `/v1/model
 - Default base URL is `http://localhost:9000` for local development
 - Provider uses API key authentication via `Authorization` header (format: `arch_...`)
 - Documentation is auto-generated from examples using tfplugindocs tool - run `make generate` after making changes to ensure docs are updated
-- The API client uses `AgentId` internally (from OpenAPI spec) but Terraform schema exposes this as `profile_id` - this is intentional mapping
-- The `profile_tool_id` attribute in policy resources maps to the tool ID (not the agent-tool assignment ID)
+- Backend models all four agent variants (`agent`, `llm_proxy`, `mcp_gateway`, plus the legacy `profile` type) on a single `agents` table with an `agentType` discriminator. The provider exposes them as three separate resources (`archestra_agent`, `archestra_llm_proxy`, `archestra_mcp_gateway`) for 1:1 parity with the UI; the legacy `profile` type is not surfaced.
+- The `tool_id` attribute on `archestra_tool_invocation_policy` and `archestra_trusted_data_policy` is the **bare tool UUID** (matching the `tools` table — the backend stores `toolId` directly). It is NOT the agent-tool assignment composite ID. Use `data.archestra_mcp_server_tool.<name>.id` or `archestra_agent_tool.<name>.tool_id` to populate it.

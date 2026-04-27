@@ -148,22 +148,21 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 
 func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewProfileResource,
+		NewAgentResource,
+		NewLlmProxyResource,
+		NewMcpGatewayResource,
 		NewMCPServerResource,
 		NewMCPServerRegistryResource,
 		NewTrustedDataPolicyResource,
 		NewToolInvocationPolicyResource,
 		NewTeamResource,
 		NewLlmModelResource,
-		// NewTokenPriceResource, // Replaced by archestra_llm_model resource above.
 		NewLimitResource,
 		NewOptimizationRuleResource,
 		NewOrganizationSettingsResource,
-		// NewUserResource, // TODO: Enable when user API endpoints are implemented
 		NewTeamExternalGroupResource,
 		NewChatLLMProviderApiKeyResource,
-		// NewDualLlmConfigResource, // TODO: Dual LLM is now a built-in agent type, not a standalone config. Configure via agent's builtInAgentConfig instead.
-		NewProfileToolResource,
+		NewAgentToolResource,
 		NewSsoProviderResource,
 		// NewPromptResource, // TODO: Prompts are now inline on agents (systemPrompt field). No standalone prompt API exists.
 	}
@@ -174,7 +173,7 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewTeamDataSource,
 		// NewUserDataSource, // TODO: Enable when user API endpoints are implemented
 		NewToolDataSource,
-		NewProfileToolDataSource,
+		NewAgentToolDataSource,
 		NewMCPServerToolDataSource,
 		// NewTokenPricesDataSource, // TODO: Token pricing moved to LLM Models API. Replace with archestra_llm_models data source.
 		NewTeamExternalGroupsDataSource,
