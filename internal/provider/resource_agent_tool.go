@@ -1,7 +1,9 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -14,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
@@ -123,28 +126,24 @@ func (r *AgentToolResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 
-	body := client.AssignToolToAgentJSONRequestBody{}
-
-	if !data.McpServerID.IsNull() && !data.McpServerID.IsUnknown() {
-		id, err := uuid.Parse(data.McpServerID.ValueString())
-		if err != nil {
-			resp.Diagnostics.AddError("Invalid MCP Server ID", fmt.Sprintf("Unable to parse ID: %s", err))
-			return
-		}
-		body.McpServerId = &id
+	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, prior, agentToolAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
 	}
+	LogPatch(ctx, "archestra_agent_tool Create", patch, agentToolAttrSpec)
 
-	if !data.CredentialResolutionMode.IsNull() && !data.CredentialResolutionMode.IsUnknown() {
-		mode := client.AssignToolToAgentJSONBodyCredentialResolutionMode(data.CredentialResolutionMode.ValueString())
-		body.CredentialResolutionMode = &mode
+	bodyBytes, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
 
 	// `resolveAtCallTime` is intentionally not exposed: the backend collapses
 	// it into `credential_resolution_mode` ("dynamic" when true, "static"
-	// otherwise) and never stores or echoes it. Use
-	// `credential_resolution_mode = "dynamic"` for per-call resolution.
+	// otherwise) and never stores or echoes it.
 
-	assignResp, err := r.client.AssignToolToAgentWithResponse(ctx, agentUUID, toolUUID, body)
+	assignResp, err := r.client.AssignToolToAgentWithBodyWithResponse(ctx, agentUUID, toolUUID, "application/json", bytes.NewReader(bodyBytes))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to assign tool to agent, got error: %s", err))
 		return
@@ -225,20 +224,16 @@ func (r *AgentToolResource) Update(ctx context.Context, req resource.UpdateReque
 		return
 	}
 
-	updateBody := client.UpdateAgentToolJSONRequestBody{}
-
-	if !data.McpServerID.IsNull() {
-		id, err := uuid.Parse(data.McpServerID.ValueString())
-		if err != nil {
-			resp.Diagnostics.AddError("Invalid MCP Server ID", fmt.Sprintf("Unable to parse ID: %s", err))
-			return
-		}
-		updateBody.McpServerId = &id
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, agentToolAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
 	}
+	LogPatch(ctx, "archestra_agent_tool Update", patch, agentToolAttrSpec)
 
-	if !data.CredentialResolutionMode.IsNull() {
-		mode := client.UpdateAgentToolJSONBodyCredentialResolutionMode(data.CredentialResolutionMode.ValueString())
-		updateBody.CredentialResolutionMode = &mode
+	bodyBytes, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
 
 	assignmentID, found := r.findAndReadState(ctx, agentUUID, toolUUID, &data, &resp.Diagnostics)
@@ -249,7 +244,7 @@ func (r *AgentToolResource) Update(ctx context.Context, req resource.UpdateReque
 		return
 	}
 
-	updateResp, err := r.client.UpdateAgentToolWithResponse(ctx, assignmentID, updateBody)
+	updateResp, err := r.client.UpdateAgentToolWithBodyWithResponse(ctx, assignmentID, "application/json", bytes.NewReader(bodyBytes))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update agent tool, got error: %s", err))
 		return

@@ -1,7 +1,9 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
@@ -12,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 var _ resource.Resource = &TeamResource{}
@@ -129,18 +132,19 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
-	// Create request body using generated type
-	requestBody := client.CreateTeamJSONRequestBody{
-		Name: data.Name.ValueString(),
+	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, prior, teamAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
 	}
+	LogPatch(ctx, "archestra_team Create", patch, teamAttrSpec)
 
-	if !data.Description.IsNull() {
-		desc := data.Description.ValueString()
-		requestBody.Description = &desc
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
-
-	// Call API
-	apiResp, err := r.client.CreateTeamWithResponse(ctx, requestBody)
+	apiResp, err := r.client.CreateTeamWithBodyWithResponse(ctx, "application/json", bytes.NewReader(body))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create team, got error: %s", err))
 		return
@@ -270,31 +274,23 @@ func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 
 func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data TeamResourceModel
-	var state TeamResourceModel
-
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Create request body using generated type
-	name := data.Name.ValueString()
-	requestBody := client.UpdateTeamJSONRequestBody{
-		Name: &name,
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, teamAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
 	}
+	LogPatch(ctx, "archestra_team Update", patch, teamAttrSpec)
 
-	if !data.Description.IsNull() {
-		desc := data.Description.ValueString()
-		requestBody.Description = &desc
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
-	if !data.ConvertToolResultsToToon.IsNull() && !data.ConvertToolResultsToToon.IsUnknown() {
-		v := data.ConvertToolResultsToToon.ValueBool()
-		requestBody.ConvertToolResultsToToon = &v
-	}
-
-	// Call API
-	apiResp, err := r.client.UpdateTeamWithResponse(ctx, data.ID.ValueString(), requestBody)
+	apiResp, err := r.client.UpdateTeamWithBodyWithResponse(ctx, data.ID.ValueString(), "application/json", bytes.NewReader(body))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update team, got error: %s", err))
 		return

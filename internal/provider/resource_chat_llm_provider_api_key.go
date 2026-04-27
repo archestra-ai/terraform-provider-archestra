@@ -1,7 +1,9 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
@@ -16,6 +18,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 var _ resource.Resource = &ChatLLMProviderApiKeyResource{}
@@ -174,43 +177,19 @@ func (r *ChatLLMProviderApiKeyResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	isPrimary := data.IsOrganizationDefault.ValueBool()
-	requestBody := client.CreateLlmProviderApiKeyJSONRequestBody{
-		Name:      data.Name.ValueString(),
-		Provider:  client.CreateLlmProviderApiKeyJSONBodyProvider(data.LLMProvider.ValueString()),
-		IsPrimary: &isPrimary,
+	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, prior, chatLlmProviderApiKeyAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	if !data.ApiKey.IsNull() && !data.ApiKey.IsUnknown() {
-		apiKey := data.ApiKey.ValueString()
-		requestBody.ApiKey = &apiKey
-	}
+	LogPatch(ctx, "archestra_chat_llm_provider_api_key Create", patch, chatLlmProviderApiKeyAttrSpec)
 
-	if !data.BaseUrl.IsNull() && !data.BaseUrl.IsUnknown() {
-		baseUrl := data.BaseUrl.ValueString()
-		requestBody.BaseUrl = &baseUrl
+	bodyBytes, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
-
-	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
-		scope := client.CreateLlmProviderApiKeyJSONBodyScope(data.Scope.ValueString())
-		requestBody.Scope = &scope
-	}
-
-	if !data.TeamID.IsNull() && !data.TeamID.IsUnknown() {
-		teamId := data.TeamID.ValueString()
-		requestBody.TeamId = &teamId
-	}
-
-	if !data.VaultSecretPath.IsNull() && !data.VaultSecretPath.IsUnknown() {
-		v := data.VaultSecretPath.ValueString()
-		requestBody.VaultSecretPath = &v
-	}
-
-	if !data.VaultSecretKey.IsNull() && !data.VaultSecretKey.IsUnknown() {
-		v := data.VaultSecretKey.ValueString()
-		requestBody.VaultSecretKey = &v
-	}
-
-	apiResp, err := r.client.CreateLlmProviderApiKeyWithResponse(ctx, requestBody)
+	apiResp, err := r.client.CreateLlmProviderApiKeyWithBodyWithResponse(ctx, "application/json", bytes.NewReader(bodyBytes))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create LLM provider API key, got error: %s", err))
 		return
@@ -324,47 +303,22 @@ func (r *ChatLLMProviderApiKeyResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	name := data.Name.ValueString()
-	isPrimary := data.IsOrganizationDefault.ValueBool()
-	requestBody := client.UpdateLlmProviderApiKeyJSONRequestBody{
-		Name:      &name,
-		IsPrimary: &isPrimary,
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, chatLlmProviderApiKeyAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	if !data.ApiKey.IsNull() && !data.ApiKey.IsUnknown() {
-		apiKey := data.ApiKey.ValueString()
-		requestBody.ApiKey = &apiKey
+	if len(patch) == 0 {
+		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+		return
 	}
+	LogPatch(ctx, "archestra_chat_llm_provider_api_key Update", patch, chatLlmProviderApiKeyAttrSpec)
 
-	if !data.BaseUrl.IsNull() && !data.BaseUrl.IsUnknown() {
-		baseUrl := data.BaseUrl.ValueString()
-		requestBody.BaseUrl = &baseUrl
+	bodyBytes, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
-
-	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
-		scope := client.UpdateLlmProviderApiKeyJSONBodyScope(data.Scope.ValueString())
-		requestBody.Scope = &scope
-	}
-
-	if !data.TeamID.IsNull() && !data.TeamID.IsUnknown() {
-		teamUUID, parseErr := uuid.Parse(data.TeamID.ValueString())
-		if parseErr != nil {
-			resp.Diagnostics.AddError("Invalid Team ID", fmt.Sprintf("Unable to parse team ID: %s", parseErr))
-			return
-		}
-		requestBody.TeamId = &teamUUID
-	}
-
-	if !data.VaultSecretPath.IsNull() && !data.VaultSecretPath.IsUnknown() {
-		v := data.VaultSecretPath.ValueString()
-		requestBody.VaultSecretPath = &v
-	}
-
-	if !data.VaultSecretKey.IsNull() && !data.VaultSecretKey.IsUnknown() {
-		v := data.VaultSecretKey.ValueString()
-		requestBody.VaultSecretKey = &v
-	}
-
-	apiResp, err := r.client.UpdateLlmProviderApiKeyWithResponse(ctx, id, requestBody)
+	apiResp, err := r.client.UpdateLlmProviderApiKeyWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(bodyBytes))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update LLM provider API key, got error: %s", err))
 		return

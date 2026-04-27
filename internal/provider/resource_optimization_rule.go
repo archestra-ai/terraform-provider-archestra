@@ -9,7 +9,6 @@ import (
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -18,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -132,34 +132,6 @@ func (r *OptimizationRuleResource) Configure(ctx context.Context, req resource.C
 	r.client = client
 }
 
-// buildConditionsJSON converts Terraform conditions to a slice of JSON-serializable maps.
-func buildConditionsJSON(ctx context.Context, conditionsList types.List) ([]map[string]interface{}, diag.Diagnostics) {
-	var diags diag.Diagnostics
-	var conditions []OptimizationRuleConditionModel
-
-	diags.Append(conditionsList.ElementsAs(ctx, &conditions, false)...)
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	apiConditions := make([]map[string]interface{}, 0, len(conditions))
-	for _, cond := range conditions {
-		if !cond.MaxLength.IsNull() && !cond.MaxLength.IsUnknown() {
-			apiConditions = append(apiConditions, map[string]interface{}{
-				"maxLength": cond.MaxLength.ValueInt64(),
-			})
-		}
-
-		if !cond.HasTools.IsNull() && !cond.HasTools.IsUnknown() {
-			apiConditions = append(apiConditions, map[string]interface{}{
-				"hasTools": cond.HasTools.ValueBool(),
-			})
-		}
-	}
-
-	return apiConditions, diags
-}
-
 func (r *OptimizationRuleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data OptimizationRuleResourceModel
 
@@ -169,23 +141,14 @@ func (r *OptimizationRuleResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	apiConditions, diags := buildConditionsJSON(ctx, data.Conditions)
-	resp.Diagnostics.Append(diags...)
+	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, prior, optimizationRuleAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	LogPatch(ctx, "archestra_optimization_rule Create", patch, optimizationRuleAttrSpec)
 
-	enabled := data.Enabled.ValueBool()
-	requestBody := map[string]interface{}{
-		"entityId":    data.EntityID.ValueString(),
-		"entityType":  data.EntityType.ValueString(),
-		"provider":    data.LLMProvider.ValueString(),
-		"targetModel": data.TargetModel.ValueString(),
-		"enabled":     enabled,
-		"conditions":  apiConditions,
-	}
-
-	jsonBody, err := json.Marshal(requestBody)
+	jsonBody, err := json.Marshal(patch)
 	if err != nil {
 		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
 		return
@@ -308,22 +271,13 @@ func (r *OptimizationRuleResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	apiConditions, diags := buildConditionsJSON(ctx, data.Conditions)
-	resp.Diagnostics.Append(diags...)
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, optimizationRuleAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	LogPatch(ctx, "archestra_optimization_rule Update", patch, optimizationRuleAttrSpec)
 
-	requestBody := map[string]interface{}{
-		"entityId":    data.EntityID.ValueString(),
-		"entityType":  data.EntityType.ValueString(),
-		"provider":    data.LLMProvider.ValueString(),
-		"targetModel": data.TargetModel.ValueString(),
-		"enabled":     data.Enabled.ValueBool(),
-		"conditions":  apiConditions,
-	}
-
-	jsonBody, err := json.Marshal(requestBody)
+	jsonBody, err := json.Marshal(patch)
 	if err != nil {
 		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
 		return

@@ -1,10 +1,11 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 
-	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -14,6 +15,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
+
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -215,41 +219,28 @@ func (r *LimitResource) Configure(ctx context.Context, req resource.ConfigureReq
 
 func (r *LimitResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data LimitResourceModel
-
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	requestBody := client.CreateLimitJSONRequestBody{
-		EntityId:    data.EntityID.ValueString(),
-		EntityType:  client.CreateLimitJSONBodyEntityType(data.EntityType.ValueString()),
-		LimitType:   client.CreateLimitJSONBodyLimitType(data.LimitType.ValueString()),
-		LimitValue:  int(data.LimitValue.ValueInt64()),
-		LastCleanup: nil,
+	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, prior, limitAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
 	}
+	LogPatch(ctx, "archestra_limit Create", patch, limitAttrSpec)
 
-	if !data.Model.IsNull() {
-		var models []string
-		data.Model.ElementsAs(ctx, &models, false)
-		requestBody.Model = &models
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
-	if !data.ToolName.IsNull() {
-		toolName := data.ToolName.ValueString()
-		requestBody.ToolName = &toolName
-	}
-	if !data.MCPServerName.IsNull() {
-		mcpServerName := data.MCPServerName.ValueString()
-		requestBody.McpServerName = &mcpServerName
-	}
-
-	apiResp, err := r.client.CreateLimitWithResponse(ctx, requestBody)
+	apiResp, err := r.client.CreateLimitWithBodyWithResponse(ctx, "application/json", bytes.NewReader(body))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create limit, got error: %s", err))
 		return
 	}
-
 	if apiResp.JSON200 == nil {
 		resp.Diagnostics.AddError(
 			"Unexpected API Response",
@@ -343,9 +334,7 @@ func (r *LimitResource) Read(ctx context.Context, req resource.ReadRequest, resp
 
 func (r *LimitResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data LimitResourceModel
-
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -356,34 +345,18 @@ func (r *LimitResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
-	entityID := data.EntityID.ValueString()
-	entityType := client.UpdateLimitJSONBodyEntityType(data.EntityType.ValueString())
-	limitType := client.UpdateLimitJSONBodyLimitType(data.LimitType.ValueString())
-	limitValue := int(data.LimitValue.ValueInt64())
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, limitAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	LogPatch(ctx, "archestra_limit Update", patch, limitAttrSpec)
 
-	requestBody := client.UpdateLimitJSONRequestBody{
-		EntityId:    &entityID,
-		EntityType:  &entityType,
-		LimitType:   &limitType,
-		LimitValue:  &limitValue,
-		LastCleanup: nil,
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
-
-	if !data.Model.IsNull() {
-		var models []string
-		data.Model.ElementsAs(ctx, &models, false)
-		requestBody.Model = &models
-	}
-	if !data.ToolName.IsNull() {
-		toolName := data.ToolName.ValueString()
-		requestBody.ToolName = &toolName
-	}
-	if !data.MCPServerName.IsNull() {
-		mcpServerName := data.MCPServerName.ValueString()
-		requestBody.McpServerName = &mcpServerName
-	}
-
-	apiResp, err := r.client.UpdateLimitWithResponse(ctx, id, requestBody)
+	apiResp, err := r.client.UpdateLimitWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(body))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update limit, got error: %s", err))
 		return

@@ -1,7 +1,9 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
@@ -14,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 var _ resource.Resource = &LlmModelResource{}
@@ -194,42 +197,19 @@ func (r *LlmModelResource) Create(ctx context.Context, req resource.CreateReques
 
 	data.ID = types.StringValue(foundID.String())
 
-	// Apply custom pricing if set
-	if !data.CustomPricePerMillionInput.IsNull() || !data.CustomPricePerMillionOutput.IsNull() || !data.Ignored.IsNull() || !data.InputModalities.IsNull() || !data.OutputModalities.IsNull() {
-		updateBody := client.UpdateModelJSONRequestBody{}
-
-		if !data.CustomPricePerMillionInput.IsNull() && !data.CustomPricePerMillionInput.IsUnknown() {
-			v := data.CustomPricePerMillionInput.ValueString()
-			updateBody.CustomPricePerMillionInput = &v
+	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, prior, llmModelAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if len(patch) > 0 {
+		LogPatch(ctx, "archestra_llm_model Create", patch, llmModelAttrSpec)
+		bodyBytes, err := json.Marshal(patch)
+		if err != nil {
+			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+			return
 		}
-		if !data.CustomPricePerMillionOutput.IsNull() && !data.CustomPricePerMillionOutput.IsUnknown() {
-			v := data.CustomPricePerMillionOutput.ValueString()
-			updateBody.CustomPricePerMillionOutput = &v
-		}
-		if !data.Ignored.IsNull() && !data.Ignored.IsUnknown() {
-			v := data.Ignored.ValueBool()
-			updateBody.Ignored = &v
-		}
-		if !data.InputModalities.IsNull() && !data.InputModalities.IsUnknown() {
-			var vals []string
-			data.InputModalities.ElementsAs(ctx, &vals, false)
-			modalities := make([]client.UpdateModelJSONBodyInputModalities, len(vals))
-			for i, v := range vals {
-				modalities[i] = client.UpdateModelJSONBodyInputModalities(v)
-			}
-			updateBody.InputModalities = &modalities
-		}
-		if !data.OutputModalities.IsNull() && !data.OutputModalities.IsUnknown() {
-			var vals []string
-			data.OutputModalities.ElementsAs(ctx, &vals, false)
-			modalities := make([]client.UpdateModelJSONBodyOutputModalities, len(vals))
-			for i, v := range vals {
-				modalities[i] = client.UpdateModelJSONBodyOutputModalities(v)
-			}
-			updateBody.OutputModalities = &modalities
-		}
-
-		updateResp, err := r.client.UpdateModelWithResponse(ctx, *foundID, updateBody)
+		updateResp, err := r.client.UpdateModelWithBodyWithResponse(ctx, *foundID, "application/json", bytes.NewReader(bodyBytes))
 		if err != nil {
 			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update model pricing: %s", err))
 			return
@@ -279,40 +259,22 @@ func (r *LlmModelResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	updateBody := client.UpdateModelJSONRequestBody{}
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, llmModelAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if len(patch) == 0 {
+		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+		return
+	}
+	LogPatch(ctx, "archestra_llm_model Update", patch, llmModelAttrSpec)
 
-	if !data.CustomPricePerMillionInput.IsNull() {
-		v := data.CustomPricePerMillionInput.ValueString()
-		updateBody.CustomPricePerMillionInput = &v
+	bodyBytes, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
-	if !data.CustomPricePerMillionOutput.IsNull() {
-		v := data.CustomPricePerMillionOutput.ValueString()
-		updateBody.CustomPricePerMillionOutput = &v
-	}
-	if !data.Ignored.IsNull() {
-		v := data.Ignored.ValueBool()
-		updateBody.Ignored = &v
-	}
-	if !data.InputModalities.IsNull() && !data.InputModalities.IsUnknown() {
-		var vals []string
-		data.InputModalities.ElementsAs(ctx, &vals, false)
-		modalities := make([]client.UpdateModelJSONBodyInputModalities, len(vals))
-		for i, v := range vals {
-			modalities[i] = client.UpdateModelJSONBodyInputModalities(v)
-		}
-		updateBody.InputModalities = &modalities
-	}
-	if !data.OutputModalities.IsNull() && !data.OutputModalities.IsUnknown() {
-		var vals []string
-		data.OutputModalities.ElementsAs(ctx, &vals, false)
-		modalities := make([]client.UpdateModelJSONBodyOutputModalities, len(vals))
-		for i, v := range vals {
-			modalities[i] = client.UpdateModelJSONBodyOutputModalities(v)
-		}
-		updateBody.OutputModalities = &modalities
-	}
-
-	updateResp, err := r.client.UpdateModelWithResponse(ctx, id, updateBody)
+	updateResp, err := r.client.UpdateModelWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(bodyBytes))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update model: %s", err))
 		return
