@@ -690,11 +690,11 @@ resource "archestra_mcp_registry_catalog_item" "ipsc" {
 }
 
 func TestAccMcpRegistryCatalogItemResourceWithVaultRefs(t *testing.T) {
-	if os.Getenv("ARCHESTRA_READONLY_VAULT_ENABLED") != "true" {
-		t.Skip("Skipping: backend must run with ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT and an enterprise license. Set ARCHESTRA_READONLY_VAULT_ENABLED=true to run.")
-	}
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
+		PreCheck: func() {
+			testAccPreCheck(t)
+			testAccRequireByosEnabled(t)
+		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
@@ -815,7 +815,7 @@ resource "archestra_mcp_registry_catalog_item" "user_config" {
 func TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig(t *testing.T) {
 	idpID := os.Getenv("ARCHESTRA_TEST_IDP_ID")
 	if idpID == "" {
-		t.Skip("Skipping: set ARCHESTRA_TEST_IDP_ID to an existing identity provider UUID to run this test")
+		t.Fatal("ARCHESTRA_TEST_IDP_ID must be set; provision a throwaway IdP with scripts/bootstrap-test-idp.sh and export the resulting UUID")
 	}
 	name := "emc-" + acctest.RandString(6)
 	resource.Test(t, resource.TestCase{
