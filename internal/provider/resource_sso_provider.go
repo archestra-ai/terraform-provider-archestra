@@ -227,14 +227,19 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 				},
 				Blocks: map[string]schema.Block{
 					"mapping": schema.SingleNestedBlock{
-						MarkdownDescription: "Attribute mapping for user fields.",
+						MarkdownDescription: "Attribute mapping for user fields. The `id` field is required by the better-auth OIDC library; defaults to `\"sub\"` if unset.",
 						Attributes: map[string]schema.Attribute{
 							"email":          schema.StringAttribute{Optional: true},
 							"email_verified": schema.StringAttribute{Optional: true},
 							"extra_fields":   schema.MapAttribute{Optional: true, ElementType: types.StringType},
-							"id":             schema.StringAttribute{Optional: true},
-							"image":          schema.StringAttribute{Optional: true},
-							"name":           schema.StringAttribute{Optional: true},
+							"id": schema.StringAttribute{
+								Optional:            true,
+								Computed:            true,
+								Default:             stringdefault.StaticString("sub"),
+								MarkdownDescription: "OIDC claim that maps to the user identity. Defaults to `\"sub\"` (the better-auth OIDC library treats this as required and the backend silently fills it in).",
+							},
+							"image": schema.StringAttribute{Optional: true},
+							"name":  schema.StringAttribute{Optional: true},
 						},
 					},
 					"enterprise_managed_credentials": schema.SingleNestedBlock{
@@ -458,282 +463,24 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	newState := state
-	newState.ID = types.StringValue(apiResp.JSON200.Id)
-	newState.ProviderID = types.StringValue(apiResp.JSON200.ProviderId)
-	newState.Domain = types.StringValue(apiResp.JSON200.Domain)
-	newState.Issuer = types.StringValue(apiResp.JSON200.Issuer)
-
-	if apiResp.JSON200.DomainVerified != nil {
-		newState.DomainVerified = types.BoolValue(*apiResp.JSON200.DomainVerified)
-	} else {
-		newState.DomainVerified = state.DomainVerified
-	}
-	if apiResp.JSON200.OrganizationId != nil {
-		newState.OrganizationID = types.StringValue(*apiResp.JSON200.OrganizationId)
-	}
-	if apiResp.JSON200.UserId != nil {
-		newState.UserID = types.StringValue(*apiResp.JSON200.UserId)
-	}
-
-	// Map OIDC config if present
-	if apiResp.JSON200.OidcConfig != nil {
-		oidcCfg := apiResp.JSON200.OidcConfig
-		newState.OidcConfig = &OidcConfigModel{
-			Issuer:            types.StringValue(oidcCfg.Issuer),
-			DiscoveryEndpoint: types.StringValue(oidcCfg.DiscoveryEndpoint),
-			ClientID:          types.StringValue(oidcCfg.ClientId),
-			ClientSecret: preserveSensitive(oidcCfg.ClientSecret, &state, func(p *SsoProviderResourceModel) types.String {
-				if p != nil && p.OidcConfig != nil {
-					return p.OidcConfig.ClientSecret
-				}
-				return types.StringNull()
-			}),
-			Pkce: types.BoolValue(oidcCfg.Pkce),
-		}
-
-		// Preserve user input for optional fields if they were set in the prior state
-		if state.OidcConfig != nil {
-			// For override_user_info, prefer the prior state since it was explicitly configured
-			if !state.OidcConfig.OverrideUserInfo.IsNull() {
-				newState.OidcConfig.OverrideUserInfo = state.OidcConfig.OverrideUserInfo
-			} else if oidcCfg.OverrideUserInfo != nil {
-				newState.OidcConfig.OverrideUserInfo = types.BoolValue(*oidcCfg.OverrideUserInfo)
-			}
-			if !state.OidcConfig.SkipDiscovery.IsNull() {
-				newState.OidcConfig.SkipDiscovery = state.OidcConfig.SkipDiscovery
-			} else if oidcCfg.SkipDiscovery != nil {
-				newState.OidcConfig.SkipDiscovery = types.BoolValue(*oidcCfg.SkipDiscovery)
-			}
-			if !state.OidcConfig.EnableRpInitiatedLogout.IsNull() {
-				newState.OidcConfig.EnableRpInitiatedLogout = state.OidcConfig.EnableRpInitiatedLogout
-			} else if oidcCfg.EnableRpInitiatedLogout != nil {
-				newState.OidcConfig.EnableRpInitiatedLogout = types.BoolValue(*oidcCfg.EnableRpInitiatedLogout)
-			}
-			if !state.OidcConfig.Hd.IsNull() {
-				newState.OidcConfig.Hd = state.OidcConfig.Hd
-			} else if oidcCfg.Hd != nil {
-				newState.OidcConfig.Hd = types.StringValue(*oidcCfg.Hd)
-			}
-			// Preserve other optional fields from prior state
-			if !state.OidcConfig.AuthorizationEndpoint.IsNull() {
-				newState.OidcConfig.AuthorizationEndpoint = state.OidcConfig.AuthorizationEndpoint
-			} else if oidcCfg.AuthorizationEndpoint != nil {
-				newState.OidcConfig.AuthorizationEndpoint = types.StringValue(*oidcCfg.AuthorizationEndpoint)
-			}
-			if !state.OidcConfig.TokenEndpoint.IsNull() {
-				newState.OidcConfig.TokenEndpoint = state.OidcConfig.TokenEndpoint
-			} else if oidcCfg.TokenEndpoint != nil {
-				newState.OidcConfig.TokenEndpoint = types.StringValue(*oidcCfg.TokenEndpoint)
-			}
-			if !state.OidcConfig.UserInfoEndpoint.IsNull() {
-				newState.OidcConfig.UserInfoEndpoint = state.OidcConfig.UserInfoEndpoint
-			} else if oidcCfg.UserInfoEndpoint != nil {
-				newState.OidcConfig.UserInfoEndpoint = types.StringValue(*oidcCfg.UserInfoEndpoint)
-			}
-			if !state.OidcConfig.JwksEndpoint.IsNull() {
-				newState.OidcConfig.JwksEndpoint = state.OidcConfig.JwksEndpoint
-			} else if oidcCfg.JwksEndpoint != nil {
-				newState.OidcConfig.JwksEndpoint = types.StringValue(*oidcCfg.JwksEndpoint)
-			}
-			if len(state.OidcConfig.Scopes) > 0 {
-				newState.OidcConfig.Scopes = state.OidcConfig.Scopes
-			} else if oidcCfg.Scopes != nil {
-				scopes := make([]types.String, len(*oidcCfg.Scopes))
-				for i, scope := range *oidcCfg.Scopes {
-					scopes[i] = types.StringValue(scope)
-				}
-				newState.OidcConfig.Scopes = scopes
-			}
-			if !state.OidcConfig.TokenEndpointAuthentication.IsNull() {
-				newState.OidcConfig.TokenEndpointAuthentication = state.OidcConfig.TokenEndpointAuthentication
-			} else if oidcCfg.TokenEndpointAuthentication != nil {
-				newState.OidcConfig.TokenEndpointAuthentication = types.StringValue(string(*oidcCfg.TokenEndpointAuthentication))
-			}
-			// Preserve mapping from prior state - user may have configured it
-			if state.OidcConfig.Mapping != nil {
-				newState.OidcConfig.Mapping = state.OidcConfig.Mapping
-			} else if oidcCfg.Mapping != nil {
-				mapping := oidcCfg.Mapping
-				newState.OidcConfig.Mapping = &OidcMappingModel{
-					Email:         stringValueOrNull(mapping.Email),
-					EmailVerified: stringValueOrNull(mapping.EmailVerified),
-					ExtraFields:   mapStringToTypes(mapping.ExtraFields),
-					ID:            stringValueOrNull(mapping.Id),
-					Image:         stringValueOrNull(mapping.Image),
-					Name:          stringValueOrNull(mapping.Name),
-				}
-			}
-			// Preserve enterprise_managed_credentials from prior state
-			if state.OidcConfig.EnterpriseManagedCredentials != nil {
-				newState.OidcConfig.EnterpriseManagedCredentials = state.OidcConfig.EnterpriseManagedCredentials
-			} else if oidcCfg.EnterpriseManagedCredentials != nil {
-				newState.OidcConfig.EnterpriseManagedCredentials = flattenEnterpriseManagedCredentials(oidcCfg.EnterpriseManagedCredentials)
-			}
-		} else {
-			// If there was no prior OIDC config, populate from API response
-			if oidcCfg.AuthorizationEndpoint != nil {
-				newState.OidcConfig.AuthorizationEndpoint = types.StringValue(*oidcCfg.AuthorizationEndpoint)
-			}
-			if oidcCfg.TokenEndpoint != nil {
-				newState.OidcConfig.TokenEndpoint = types.StringValue(*oidcCfg.TokenEndpoint)
-			}
-			if oidcCfg.UserInfoEndpoint != nil {
-				newState.OidcConfig.UserInfoEndpoint = types.StringValue(*oidcCfg.UserInfoEndpoint)
-			}
-			if oidcCfg.JwksEndpoint != nil {
-				newState.OidcConfig.JwksEndpoint = types.StringValue(*oidcCfg.JwksEndpoint)
-			}
-			if oidcCfg.Scopes != nil {
-				scopes := make([]types.String, len(*oidcCfg.Scopes))
-				for i, scope := range *oidcCfg.Scopes {
-					scopes[i] = types.StringValue(scope)
-				}
-				newState.OidcConfig.Scopes = scopes
-			}
-			if oidcCfg.OverrideUserInfo != nil {
-				newState.OidcConfig.OverrideUserInfo = types.BoolValue(*oidcCfg.OverrideUserInfo)
-			} else {
-				newState.OidcConfig.OverrideUserInfo = types.BoolValue(false)
-			}
-			if oidcCfg.SkipDiscovery != nil {
-				newState.OidcConfig.SkipDiscovery = types.BoolValue(*oidcCfg.SkipDiscovery)
-			} else {
-				newState.OidcConfig.SkipDiscovery = types.BoolValue(false)
-			}
-			if oidcCfg.EnableRpInitiatedLogout != nil {
-				newState.OidcConfig.EnableRpInitiatedLogout = types.BoolValue(*oidcCfg.EnableRpInitiatedLogout)
-			} else {
-				newState.OidcConfig.EnableRpInitiatedLogout = types.BoolValue(false)
-			}
-			if oidcCfg.Hd != nil {
-				newState.OidcConfig.Hd = types.StringValue(*oidcCfg.Hd)
-			}
-			if oidcCfg.TokenEndpointAuthentication != nil {
-				newState.OidcConfig.TokenEndpointAuthentication = types.StringValue(string(*oidcCfg.TokenEndpointAuthentication))
-			}
-			if oidcCfg.Mapping != nil {
-				mapping := oidcCfg.Mapping
-				newState.OidcConfig.Mapping = &OidcMappingModel{
-					Email:         stringValueOrNull(mapping.Email),
-					EmailVerified: stringValueOrNull(mapping.EmailVerified),
-					ExtraFields:   mapStringToTypes(mapping.ExtraFields),
-					ID:            stringValueOrNull(mapping.Id),
-					Image:         stringValueOrNull(mapping.Image),
-					Name:          stringValueOrNull(mapping.Name),
-				}
-			}
-			if oidcCfg.EnterpriseManagedCredentials != nil {
-				newState.OidcConfig.EnterpriseManagedCredentials = flattenEnterpriseManagedCredentials(oidcCfg.EnterpriseManagedCredentials)
-			}
-		}
-	}
-
-	// Map SAML config if present
-	if apiResp.JSON200.SamlConfig != nil {
-		samlCfg := apiResp.JSON200.SamlConfig
-		newState.SamlConfig = &SamlConfigModel{
-			Issuer:               types.StringValue(samlCfg.Issuer),
-			EntryPoint:           types.StringValue(samlCfg.EntryPoint),
-			CallbackURL:          types.StringValue(samlCfg.CallbackUrl),
-			Cert:                 types.StringValue(samlCfg.Cert),
-			Audience:             stringValueOrNull(samlCfg.Audience),
-			DigestAlgorithm:      stringValueOrNull(samlCfg.DigestAlgorithm),
-			IdentifierFormat:     stringValueOrNull(samlCfg.IdentifierFormat),
-			DecryptionPvk:        stringValueOrNull(samlCfg.DecryptionPvk),
-			PrivateKey:           stringValueOrNull(samlCfg.PrivateKey),
-			SignatureAlgorithm:   stringValueOrNull(samlCfg.SignatureAlgorithm),
-			WantAssertionsSigned: boolValueOrNull(samlCfg.WantAssertionsSigned),
-			AdditionalParams:     encodeAdditionalParams(samlCfg.AdditionalParams),
-		}
-
-		// Map IdpMetadata if present
-		if samlCfg.IdpMetadata != nil {
-			idpMeta := samlCfg.IdpMetadata
-			newState.SamlConfig.IdpMetadata = &SamlIdpMetadata{
-				EntityID:             stringValueOrNull(idpMeta.EntityID),
-				EncPrivateKey:        stringValueOrNull(idpMeta.EncPrivateKey),
-				EncPrivateKeyPass:    stringValueOrNull(idpMeta.EncPrivateKeyPass),
-				EntityURL:            stringValueOrNull(idpMeta.EntityURL),
-				IsAssertionEncrypted: boolValueOrNull(idpMeta.IsAssertionEncrypted),
-				Metadata:             stringValueOrNull(idpMeta.Metadata),
-				PrivateKey:           stringValueOrNull(idpMeta.PrivateKey),
-				PrivateKeyPass:       stringValueOrNull(idpMeta.PrivateKeyPass),
-				RedirectURL:          stringValueOrNull(idpMeta.RedirectURL),
-				Cert:                 stringValueOrNull(idpMeta.Cert),
-			}
-			if idpMeta.SingleSignOnService != nil {
-				services := make([]SsoService, len(*idpMeta.SingleSignOnService))
-				for i, svc := range *idpMeta.SingleSignOnService {
-					services[i] = SsoService{
-						Binding:  types.StringValue(svc.Binding),
-						Location: types.StringValue(svc.Location),
-					}
-				}
-				newState.SamlConfig.IdpMetadata.SingleSignOnService = services
-			}
-		}
-
-		// Map SpMetadata if present
-		if samlCfg.SpMetadata.Metadata != nil || samlCfg.SpMetadata.EntityID != nil {
-			spMeta := samlCfg.SpMetadata
-			newState.SamlConfig.SpMetadata = &SamlSpMetadata{
-				Binding:              stringValueOrNull(spMeta.Binding),
-				EncPrivateKey:        stringValueOrNull(spMeta.EncPrivateKey),
-				EncPrivateKeyPass:    stringValueOrNull(spMeta.EncPrivateKeyPass),
-				EntityID:             stringValueOrNull(spMeta.EntityID),
-				IsAssertionEncrypted: boolValueOrNull(spMeta.IsAssertionEncrypted),
-				Metadata:             stringValueOrNull(spMeta.Metadata),
-				PrivateKey:           stringValueOrNull(spMeta.PrivateKey),
-				PrivateKeyPass:       stringValueOrNull(spMeta.PrivateKeyPass),
-			}
-		}
-
-		// Map Mapping if present - preserve from prior state to avoid spurious diffs
-		if state.SamlConfig != nil && state.SamlConfig.Mapping != nil {
-			newState.SamlConfig.Mapping = state.SamlConfig.Mapping
-		} else if samlCfg.Mapping != nil {
-			mapping := samlCfg.Mapping
-			newState.SamlConfig.Mapping = &SamlMappingModel{
-				Email:         stringValueOrNull(mapping.Email),
-				EmailVerified: stringValueOrNull(mapping.EmailVerified),
-				ExtraFields:   mapStringToTypes(mapping.ExtraFields),
-				FirstName:     stringValueOrNull(mapping.FirstName),
-				ID:            stringValueOrNull(mapping.Id),
-				LastName:      stringValueOrNull(mapping.LastName),
-				Name:          stringValueOrNull(mapping.Name),
-			}
-		}
-	}
-
-	// Map role mapping - populate during import, only update existing during refresh
+	// Drift-honest read: trust the API. The backend returns full secrets without
+	// redaction (verified at platform/backend/src/models/identity-provider.ee.ts:496-529),
+	// so we no longer need preserveSensitive or prior-state-wins logic for any
+	// field. Plan-output masking is delivered by the schema's `Sensitive: true`
+	// markers.
+	//
+	// role_mapping and team_sync_config are gated INDEPENDENTLY: pull each
+	// from the API only when the user already opted into managing it (state has
+	// the block) or during import (no state yet — capture everything). A
+	// backend default for one shouldn't auto-attach the other to state.
 	isImport := state.OidcConfig == nil && state.SamlConfig == nil
-	if (isImport || state.RoleMapping != nil) && apiResp.JSON200.RoleMapping != nil {
-		rm := apiResp.JSON200.RoleMapping
-		newState.RoleMapping = &RoleMappingModel{
-			DefaultRole:  stringValueOrNull(rm.DefaultRole),
-			SkipRoleSync: boolValueOrNull(rm.SkipRoleSync),
-			StrictMode:   boolValueOrNull(rm.StrictMode),
-		}
-		if rm.Rules != nil {
-			rules := make([]RoleRuleModel, len(*rm.Rules))
-			for i, rule := range *rm.Rules {
-				rules[i] = RoleRuleModel{
-					Expression: types.StringValue(rule.Expression),
-					Role:       types.StringValue(rule.Role),
-				}
-			}
-			newState.RoleMapping.Rules = rules
-		}
-	}
+	populateRoleMapping := isImport || state.RoleMapping != nil
+	populateTeamSync := isImport || state.TeamSyncConfig != nil
 
-	// Map team sync config - populate during import, only update existing during refresh
-	if (isImport || state.TeamSyncConfig != nil) && apiResp.JSON200.TeamSyncConfig != nil {
-		tsc := apiResp.JSON200.TeamSyncConfig
-		newState.TeamSyncConfig = &TeamSyncConfigModel{
-			Enabled:          boolValueOrNull(tsc.Enabled),
-			GroupsExpression: stringValueOrNull(tsc.GroupsExpression),
-		}
+	newState := state
+	if err := mapSsoProviderResponse(apiResp.JSON200, &newState, populateRoleMapping, populateTeamSync); err != nil {
+		resp.Diagnostics.AddError("Failed to map SSO provider response", err.Error())
+		return
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &newState)...)
@@ -779,155 +526,16 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
+	// Drift-honest write-then-read. role_mapping and team_sync_config gated
+	// independently — see helper comment. Backend's `.optional()` (not
+	// `.nullable()`) zod for these means OmitOnNull on the send side, so an
+	// HCL-removed block is a no-op server-side; pulling those fields when
+	// the user dropped them from HCL would surface a spurious "remove" plan
+	// after refresh.
 	newState := plan
-
-	// Ensure optional fields are nil if not present in plan
-	if plan.RoleMapping == nil {
-		newState.RoleMapping = nil
-	}
-	if plan.TeamSyncConfig == nil {
-		newState.TeamSyncConfig = nil
-	}
-
-	newState.ID = types.StringValue(apiResp.JSON200.Id)
-	newState.ProviderID = types.StringValue(apiResp.JSON200.ProviderId)
-	newState.Domain = types.StringValue(apiResp.JSON200.Domain)
-	newState.Issuer = types.StringValue(apiResp.JSON200.Issuer)
-
-	if apiResp.JSON200.DomainVerified != nil {
-		newState.DomainVerified = types.BoolValue(*apiResp.JSON200.DomainVerified)
-	}
-	if apiResp.JSON200.OrganizationId != nil {
-		newState.OrganizationID = types.StringValue(*apiResp.JSON200.OrganizationId)
-	}
-	if apiResp.JSON200.UserId != nil {
-		newState.UserID = types.StringValue(*apiResp.JSON200.UserId)
-	}
-
-	// Map OIDC config if present (similar to Read method)
-	if apiResp.JSON200.OidcConfig != nil {
-		oidcCfg := apiResp.JSON200.OidcConfig
-		newState.OidcConfig = &OidcConfigModel{
-			Issuer:            types.StringValue(oidcCfg.Issuer),
-			DiscoveryEndpoint: types.StringValue(oidcCfg.DiscoveryEndpoint),
-			ClientID:          types.StringValue(oidcCfg.ClientId),
-			ClientSecret: preserveSensitive(oidcCfg.ClientSecret, &state, func(p *SsoProviderResourceModel) types.String {
-				if p != nil && p.OidcConfig != nil {
-					return p.OidcConfig.ClientSecret
-				}
-				return types.StringNull()
-			}),
-			Pkce:                    types.BoolValue(oidcCfg.Pkce),
-			OverrideUserInfo:        boolValueOrNull(oidcCfg.OverrideUserInfo),
-			SkipDiscovery:           boolValueOrNull(oidcCfg.SkipDiscovery),
-			EnableRpInitiatedLogout: boolValueOrNull(oidcCfg.EnableRpInitiatedLogout),
-			Hd:                      stringValueOrNull(oidcCfg.Hd),
-		}
-
-		if oidcCfg.AuthorizationEndpoint != nil {
-			newState.OidcConfig.AuthorizationEndpoint = types.StringValue(*oidcCfg.AuthorizationEndpoint)
-		}
-		if oidcCfg.TokenEndpoint != nil {
-			newState.OidcConfig.TokenEndpoint = types.StringValue(*oidcCfg.TokenEndpoint)
-		}
-		if oidcCfg.UserInfoEndpoint != nil {
-			newState.OidcConfig.UserInfoEndpoint = types.StringValue(*oidcCfg.UserInfoEndpoint)
-		}
-		if oidcCfg.JwksEndpoint != nil {
-			newState.OidcConfig.JwksEndpoint = types.StringValue(*oidcCfg.JwksEndpoint)
-		}
-		if oidcCfg.Scopes != nil {
-			scopes := make([]types.String, len(*oidcCfg.Scopes))
-			for i, scope := range *oidcCfg.Scopes {
-				scopes[i] = types.StringValue(scope)
-			}
-			newState.OidcConfig.Scopes = scopes
-		}
-		if oidcCfg.TokenEndpointAuthentication != nil {
-			newState.OidcConfig.TokenEndpointAuthentication = types.StringValue(string(*oidcCfg.TokenEndpointAuthentication))
-		}
-		if oidcCfg.EnterpriseManagedCredentials != nil {
-			newState.OidcConfig.EnterpriseManagedCredentials = flattenEnterpriseManagedCredentials(oidcCfg.EnterpriseManagedCredentials)
-		} else if plan.OidcConfig != nil {
-			newState.OidcConfig.EnterpriseManagedCredentials = plan.OidcConfig.EnterpriseManagedCredentials
-		}
-	}
-
-	// Map SAML config if present (similar to Read method)
-	if apiResp.JSON200.SamlConfig != nil {
-		samlCfg := apiResp.JSON200.SamlConfig
-		newState.SamlConfig = &SamlConfigModel{
-			Issuer:               types.StringValue(samlCfg.Issuer),
-			EntryPoint:           types.StringValue(samlCfg.EntryPoint),
-			CallbackURL:          types.StringValue(samlCfg.CallbackUrl),
-			Cert:                 types.StringValue(samlCfg.Cert),
-			Audience:             stringValueOrNull(samlCfg.Audience),
-			DigestAlgorithm:      stringValueOrNull(samlCfg.DigestAlgorithm),
-			IdentifierFormat:     stringValueOrNull(samlCfg.IdentifierFormat),
-			DecryptionPvk:        stringValueOrNull(samlCfg.DecryptionPvk),
-			PrivateKey:           stringValueOrNull(samlCfg.PrivateKey),
-			SignatureAlgorithm:   stringValueOrNull(samlCfg.SignatureAlgorithm),
-			WantAssertionsSigned: boolValueOrNull(samlCfg.WantAssertionsSigned),
-			AdditionalParams:     encodeAdditionalParams(samlCfg.AdditionalParams),
-		}
-
-		// Map IdpMetadata if present
-		if samlCfg.IdpMetadata != nil {
-			idpMeta := samlCfg.IdpMetadata
-			newState.SamlConfig.IdpMetadata = &SamlIdpMetadata{
-				EntityID:             stringValueOrNull(idpMeta.EntityID),
-				EncPrivateKey:        stringValueOrNull(idpMeta.EncPrivateKey),
-				EncPrivateKeyPass:    stringValueOrNull(idpMeta.EncPrivateKeyPass),
-				EntityURL:            stringValueOrNull(idpMeta.EntityURL),
-				IsAssertionEncrypted: boolValueOrNull(idpMeta.IsAssertionEncrypted),
-				Metadata:             stringValueOrNull(idpMeta.Metadata),
-				PrivateKey:           stringValueOrNull(idpMeta.PrivateKey),
-				PrivateKeyPass:       stringValueOrNull(idpMeta.PrivateKeyPass),
-				RedirectURL:          stringValueOrNull(idpMeta.RedirectURL),
-				Cert:                 stringValueOrNull(idpMeta.Cert),
-			}
-			if idpMeta.SingleSignOnService != nil {
-				services := make([]SsoService, len(*idpMeta.SingleSignOnService))
-				for i, svc := range *idpMeta.SingleSignOnService {
-					services[i] = SsoService{
-						Binding:  types.StringValue(svc.Binding),
-						Location: types.StringValue(svc.Location),
-					}
-				}
-				newState.SamlConfig.IdpMetadata.SingleSignOnService = services
-			}
-		}
-
-		// Map SpMetadata if present
-		if samlCfg.SpMetadata.Metadata != nil || samlCfg.SpMetadata.EntityID != nil {
-			spMeta := samlCfg.SpMetadata
-			newState.SamlConfig.SpMetadata = &SamlSpMetadata{
-				Binding:              stringValueOrNull(spMeta.Binding),
-				EncPrivateKey:        stringValueOrNull(spMeta.EncPrivateKey),
-				EncPrivateKeyPass:    stringValueOrNull(spMeta.EncPrivateKeyPass),
-				EntityID:             stringValueOrNull(spMeta.EntityID),
-				IsAssertionEncrypted: boolValueOrNull(spMeta.IsAssertionEncrypted),
-				Metadata:             stringValueOrNull(spMeta.Metadata),
-				PrivateKey:           stringValueOrNull(spMeta.PrivateKey),
-				PrivateKeyPass:       stringValueOrNull(spMeta.PrivateKeyPass),
-			}
-		}
-
-		// Map Mapping if present - preserve from prior state to avoid spurious diffs
-		if plan.SamlConfig != nil && plan.SamlConfig.Mapping != nil {
-			newState.SamlConfig.Mapping = plan.SamlConfig.Mapping
-		} else if samlCfg.Mapping != nil {
-			mapping := samlCfg.Mapping
-			newState.SamlConfig.Mapping = &SamlMappingModel{
-				Email:         stringValueOrNull(mapping.Email),
-				EmailVerified: stringValueOrNull(mapping.EmailVerified),
-				ExtraFields:   mapStringToTypes(mapping.ExtraFields),
-				FirstName:     stringValueOrNull(mapping.FirstName),
-				ID:            stringValueOrNull(mapping.Id),
-				LastName:      stringValueOrNull(mapping.LastName),
-				Name:          stringValueOrNull(mapping.Name),
-			}
-		}
+	if err := mapSsoProviderResponse(apiResp.JSON200, &newState, plan.RoleMapping != nil, plan.TeamSyncConfig != nil); err != nil {
+		resp.Diagnostics.AddError("Failed to map SSO provider response", err.Error())
+		return
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &newState)...)
@@ -1028,59 +636,6 @@ func mapStringToTypes(in *map[string]string) types.Map {
 		elems[k] = types.StringValue(v)
 	}
 	return types.MapValueMust(types.StringType, elems)
-}
-
-func preserveSensitive(value string, prior *SsoProviderResourceModel, getter func(*SsoProviderResourceModel) types.String) types.String {
-	if value != "" {
-		return types.StringValue(value)
-	}
-	if prior != nil {
-		prev := getter(prior)
-		if !prev.IsNull() {
-			return prev
-		}
-	}
-	return types.StringNull()
-}
-
-// enterpriseManagedCredentialsIntermediate is a common shape for flattening EMC from any response type.
-type enterpriseManagedCredentialsIntermediate struct {
-	ClientAssertionAudience     *string `json:"clientAssertionAudience,omitempty"`
-	ClientId                    *string `json:"clientId,omitempty"`
-	ClientSecret                *string `json:"clientSecret,omitempty"`
-	ExchangeStrategy            *string `json:"exchangeStrategy,omitempty"`
-	PrivateKeyId                *string `json:"privateKeyId,omitempty"`
-	PrivateKeyPem               *string `json:"privateKeyPem,omitempty"`
-	SubjectTokenType            *string `json:"subjectTokenType,omitempty"`
-	TokenEndpoint               *string `json:"tokenEndpoint,omitempty"`
-	TokenEndpointAuthentication *string `json:"tokenEndpointAuthentication,omitempty"`
-}
-
-// flattenEnterpriseManagedCredentials converts any API response EMC struct into the Terraform model.
-// It uses JSON round-trip to avoid coupling to specific response type aliases.
-func flattenEnterpriseManagedCredentials(emc interface{}) *EnterpriseManagedCredentialsModel {
-	if emc == nil {
-		return nil
-	}
-	data, err := json.Marshal(emc)
-	if err != nil {
-		return nil
-	}
-	var intermediate enterpriseManagedCredentialsIntermediate
-	if err := json.Unmarshal(data, &intermediate); err != nil {
-		return nil
-	}
-	return &EnterpriseManagedCredentialsModel{
-		ExchangeStrategy:            stringValueOrNull(intermediate.ExchangeStrategy),
-		ClientID:                    stringValueOrNull(intermediate.ClientId),
-		ClientSecret:                stringValueOrNull(intermediate.ClientSecret),
-		TokenEndpoint:               stringValueOrNull(intermediate.TokenEndpoint),
-		TokenEndpointAuthentication: stringValueOrNull(intermediate.TokenEndpointAuthentication),
-		PrivateKeyPem:               stringValueOrNull(intermediate.PrivateKeyPem),
-		PrivateKeyID:                stringValueOrNull(intermediate.PrivateKeyId),
-		ClientAssertionAudience:     stringValueOrNull(intermediate.ClientAssertionAudience),
-		SubjectTokenType:            stringValueOrNull(intermediate.SubjectTokenType),
-	}
 }
 
 // AttrSpecs implements resourceWithAttrSpec — activates the schema↔AttrSpec
