@@ -1,0 +1,55 @@
+# HashiCorp Vault in dev mode for BYOS acceptance tests.
+#
+# Required by tests behind ARCHESTRA_READONLY_VAULT_ENABLED=true (the
+# `archestra_chat_llm_provider_api_key` BYOS suite and the
+# `TestAccMcpRegistryCatalogItemResourceWithVaultRefs` catalog test).
+#
+# WARNING: Dev mode disables auth and persists nothing — DO NOT use this
+# manifest outside ephemeral test clusters.
+#
+# Applied by scripts/bootstrap-vault.sh, which also seeds
+# `secret/data/test/ollama` and restarts the Archestra backend so it picks up
+# the now-reachable Vault on startup.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault
+  template:
+    metadata:
+      labels:
+        app: vault
+    spec:
+      containers:
+        - name: vault
+          image: hashicorp/vault:1.17
+          args:
+            - server
+            - -dev
+            - -dev-root-token-id=root
+            - -dev-listen-address=0.0.0.0:8200
+          ports:
+            - containerPort: 8200
+          readinessProbe:
+            httpGet:
+              path: /v1/sys/health
+              port: 8200
+            initialDelaySeconds: 2
+            periodSeconds: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault
+  namespace: default
+spec:
+  selector:
+    app: vault
+  ports:
+    - port: 8200
+      targetPort: 8200

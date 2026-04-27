@@ -43,20 +43,54 @@ make test
 
 #### Acceptance tests
 
-Run against a local Archestra platform at `http://localhost:9000`:
+Run against a local Archestra platform at `http://localhost:9000`. The repo
+ships a set of helper scripts under [`scripts/`](scripts/) that mirror what
+CI does, so local and CI share the exact same bootstrap path.
+
+**Always-needed:**
 
 ```bash
 export ARCHESTRA_BASE_URL="http://localhost:9000"
-export ARCHESTRA_API_KEY="arch_..."   # sign in and create one at /api/auth/api-key/create
+
+# Sign in and mint an API key (uses the seeded admin@example.com / password
+# credentials by default; override via ARCHESTRA_ADMIN_EMAIL /
+# ARCHESTRA_ADMIN_PASSWORD).
+export ARCHESTRA_API_KEY=$(./scripts/bootstrap-api-key.sh)
+
 make testacc
 ```
 
-A few tests are gated on extra environment flags:
+**For BYOS / Vault / EMC tests** (CI runs all of these):
 
-- `ARCHESTRA_READONLY_VAULT_ENABLED=true` — required by vault-ref tests (`TestAccMcpRegistryCatalogItemResourceWithVaultRefs` and all `TestAccChatLLMProviderApiKeyResource*`). Backend must run with `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` + an enterprise license; the seeded Vault secret at `secret/data/test/ollama#api_key` must exist.
-- `ARCHESTRA_TEST_IDP_ID=<uuid>` — required by `TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig`. Create an OIDC identity provider first and pass its UUID here.
+```bash
+# Throwaway OIDC IdP for the EMC acceptance test. Idempotent: reuses an
+# existing IdP with the same providerId if present.
+export ARCHESTRA_TEST_IDP_ID=$(./scripts/bootstrap-test-idp.sh)
 
-CI runs in BYOS mode with both flags set — see [`.github/workflows/on-pull-request.yml`](.github/workflows/on-pull-request.yml) for the Vault + Ollama-stub + IdP fixture setup.
+# Kind-cluster only: deploy an Ollama mock so the backend's testProviderApiKey
+# passes for Ollama BYOS keys without a real Ollama install.
+./scripts/bootstrap-ollama-mock.sh
+
+# Kind-cluster only: deploy dev-mode Vault and seed secret/data/test/ollama,
+# then restart the Archestra backend so it picks up Vault on startup.
+./scripts/bootstrap-vault.sh
+
+export ARCHESTRA_READONLY_VAULT_ENABLED=true
+make testacc
+```
+
+The Vault and Ollama-mock scripts use `kubectl` against your current context
+and apply manifests from [`scripts/k8s/`](scripts/k8s/). They assume the
+backend is deployed via the Archestra Helm chart in a Kind cluster (the same
+shape CI uses); local-only Docker setups can skip them and run only the
+non-BYOS test subset.
+
+A few test gates worth knowing:
+
+- `ARCHESTRA_READONLY_VAULT_ENABLED=true` — gates the vault-ref test suite (`TestAccMcpRegistryCatalogItemResourceWithVaultRefs` and all `TestAccChatLLMProviderApiKeyResource*`). Backend must run with `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` + an enterprise license.
+- `ARCHESTRA_TEST_IDP_ID=<uuid>` — gates `TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig`. `bootstrap-test-idp.sh` provisions one and prints its UUID.
+
+CI calls the same `scripts/bootstrap-*.sh` helpers — see [`.github/workflows/on-pull-request.yml`](.github/workflows/on-pull-request.yml).
 
 ### Codegen
 
