@@ -1,11 +1,14 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
-	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -18,6 +21,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 var _ resource.Resource = &OrganizationSettingsResource{}
@@ -149,10 +153,12 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			"logo": schema.StringAttribute{
 				MarkdownDescription: "Base64 encoded logo image for the organization",
 				Optional:            true,
+				Computed:            true,
 			},
 			"limit_cleanup_interval": schema.StringAttribute{
 				MarkdownDescription: "Interval for cleaning up usage limits. Valid values: 1h, 12h, 24h, 1w, 1m. Set to null to disable.",
 				Optional:            true,
+				Computed:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						string(client.N1h),
@@ -191,39 +197,48 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			"logo_dark": schema.StringAttribute{
 				MarkdownDescription: "Base64 encoded dark mode logo image for the organization",
 				Optional:            true,
+				Computed:            true,
 			},
 			"favicon": schema.StringAttribute{
 				MarkdownDescription: "Base64 encoded favicon image for the organization",
 				Optional:            true,
+				Computed:            true,
 			},
 			"icon_logo": schema.StringAttribute{
 				MarkdownDescription: "Base64 encoded icon logo image for the organization",
 				Optional:            true,
+				Computed:            true,
 			},
 			"app_name": schema.StringAttribute{
 				MarkdownDescription: "Custom application name displayed in the UI",
 				Optional:            true,
+				Computed:            true,
 			},
 			"footer_text": schema.StringAttribute{
 				MarkdownDescription: "Custom footer text displayed in the UI",
 				Optional:            true,
+				Computed:            true,
 			},
 			"og_description": schema.StringAttribute{
 				MarkdownDescription: "OG meta description for the organization, max 500 characters",
 				Optional:            true,
+				Computed:            true,
 			},
 			"chat_error_support_message": schema.StringAttribute{
 				MarkdownDescription: "Custom error support message displayed in the chat UI",
 				Optional:            true,
+				Computed:            true,
 			},
 			"chat_placeholders": schema.ListAttribute{
 				MarkdownDescription: "Chat placeholder texts displayed in the chat input",
 				Optional:            true,
+				Computed:            true,
 				ElementType:         types.StringType,
 			},
 			"chat_links": schema.ListNestedAttribute{
 				MarkdownDescription: "Chat links displayed in the chat UI",
 				Optional:            true,
+				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"label": schema.StringAttribute{
@@ -272,18 +287,22 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			"default_llm_model": schema.StringAttribute{
 				MarkdownDescription: "Default LLM model for the organization",
 				Optional:            true,
+				Computed:            true,
 			},
 			"default_llm_provider": schema.StringAttribute{
 				MarkdownDescription: "Default LLM provider for the organization",
 				Optional:            true,
+				Computed:            true,
 			},
 			"default_llm_api_key_id": schema.StringAttribute{
 				MarkdownDescription: "Default LLM API key ID for the organization",
 				Optional:            true,
+				Computed:            true,
 			},
 			"default_agent_id": schema.StringAttribute{
 				MarkdownDescription: "Default agent (profile) ID for the organization",
 				Optional:            true,
+				Computed:            true,
 			},
 
 			// MCP settings
@@ -297,18 +316,22 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			"embedding_model": schema.StringAttribute{
 				MarkdownDescription: "Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.",
 				Optional:            true,
+				Computed:            true,
 			},
 			"embedding_chat_api_key_id": schema.StringAttribute{
 				MarkdownDescription: "API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.",
 				Optional:            true,
+				Computed:            true,
 			},
 			"reranker_model": schema.StringAttribute{
 				MarkdownDescription: "Reranker model for knowledge base",
 				Optional:            true,
+				Computed:            true,
 			},
 			"reranker_chat_api_key_id": schema.StringAttribute{
 				MarkdownDescription: "API key ID for the reranker model",
 				Optional:            true,
+				Computed:            true,
 			},
 		},
 	}
@@ -340,7 +363,8 @@ func (r *OrganizationSettingsResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	r.applySettings(ctx, &data, &resp.Diagnostics)
+	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
+	r.applySettings(ctx, req.Plan.Raw, prior, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -379,7 +403,7 @@ func (r *OrganizationSettingsResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	r.applySettings(ctx, &data, &resp.Diagnostics)
+	r.applySettings(ctx, req.Plan.Raw, req.State.Raw, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -401,248 +425,133 @@ func (r *OrganizationSettingsResource) ImportState(ctx context.Context, req reso
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-func (r *OrganizationSettingsResource) applySettings(ctx context.Context, data *OrganizationSettingsResourceModel, diags *diag.Diagnostics) {
-	// Update appearance settings (font, theme, logo)
-	appearanceBody := client.UpdateAppearanceSettingsJSONRequestBody{}
-	if !data.Font.IsNull() && !data.Font.IsUnknown() {
-		font := client.UpdateAppearanceSettingsJSONBodyCustomFont(data.Font.ValueString())
-		appearanceBody.CustomFont = &font
+// applySettings fans out plan-vs-prior diffs to the six per-domain backend
+// endpoints. An endpoint whose merge-patch is empty is skipped — that's the
+// whole win over the previous "send every non-null field every time" flow.
+//
+// CompleteOnboarding is fire-once: only invoked when the plan flips
+// onboarding_complete to true and the prior wasn't already true. Backend
+// rejects flipping it back to false, so we don't bother diffing the other
+// direction.
+func (r *OrganizationSettingsResource) applySettings(ctx context.Context, plan, prior tftypes.Value, diags *diag.Diagnostics) {
+	endpoints := []struct {
+		name string
+		spec []AttrSpec
+		send func(io.Reader) (int, []byte, error)
+	}{
+		{"appearance", orgSettingsAppearanceSpec, func(body io.Reader) (int, []byte, error) {
+			resp, err := r.client.UpdateAppearanceSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return resp.StatusCode(), resp.Body, nil
+		}},
+		{"llm", orgSettingsLlmSpec, func(body io.Reader) (int, []byte, error) {
+			resp, err := r.client.UpdateLlmSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return resp.StatusCode(), resp.Body, nil
+		}},
+		{"security", orgSettingsSecuritySpec, func(body io.Reader) (int, []byte, error) {
+			resp, err := r.client.UpdateSecuritySettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return resp.StatusCode(), resp.Body, nil
+		}},
+		{"agent", orgSettingsAgentSpec, func(body io.Reader) (int, []byte, error) {
+			resp, err := r.client.UpdateAgentSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return resp.StatusCode(), resp.Body, nil
+		}},
+		{"mcp", orgSettingsMcpSpec, func(body io.Reader) (int, []byte, error) {
+			resp, err := r.client.UpdateMcpSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return resp.StatusCode(), resp.Body, nil
+		}},
+		{"knowledge", orgSettingsKnowledgeSpec, func(body io.Reader) (int, []byte, error) {
+			resp, err := r.client.UpdateKnowledgeSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return resp.StatusCode(), resp.Body, nil
+		}},
 	}
-	if !data.ColorTheme.IsNull() && !data.ColorTheme.IsUnknown() {
-		theme := client.UpdateAppearanceSettingsJSONBodyTheme(data.ColorTheme.ValueString())
-		appearanceBody.Theme = &theme
-	}
-	if !data.Logo.IsNull() && !data.Logo.IsUnknown() {
-		logo := data.Logo.ValueString()
-		appearanceBody.Logo = &logo
-	}
-	if !data.LogoDark.IsNull() && !data.LogoDark.IsUnknown() {
-		logoDark := data.LogoDark.ValueString()
-		appearanceBody.LogoDark = &logoDark
-	}
-	if !data.Favicon.IsNull() && !data.Favicon.IsUnknown() {
-		favicon := data.Favicon.ValueString()
-		appearanceBody.Favicon = &favicon
-	}
-	if !data.IconLogo.IsNull() && !data.IconLogo.IsUnknown() {
-		iconLogo := data.IconLogo.ValueString()
-		appearanceBody.IconLogo = &iconLogo
-	}
-	if !data.AppName.IsNull() && !data.AppName.IsUnknown() {
-		appName := data.AppName.ValueString()
-		appearanceBody.AppName = &appName
-	}
-	if !data.FooterText.IsNull() && !data.FooterText.IsUnknown() {
-		footerText := data.FooterText.ValueString()
-		appearanceBody.FooterText = &footerText
-	}
-	if !data.OgDescription.IsNull() && !data.OgDescription.IsUnknown() {
-		ogDesc := data.OgDescription.ValueString()
-		appearanceBody.OgDescription = &ogDesc
-	}
-	if !data.ChatErrorSupportMessage.IsNull() && !data.ChatErrorSupportMessage.IsUnknown() {
-		msg := data.ChatErrorSupportMessage.ValueString()
-		appearanceBody.ChatErrorSupportMessage = &msg
-	}
-	if !data.ChatPlaceholders.IsNull() && !data.ChatPlaceholders.IsUnknown() {
-		var placeholders []string
-		diags.Append(data.ChatPlaceholders.ElementsAs(ctx, &placeholders, false)...)
+
+	for _, ep := range endpoints {
+		patch := MergePatch(ctx, plan, prior, ep.spec, diags)
 		if diags.HasError() {
 			return
 		}
-		appearanceBody.ChatPlaceholders = &placeholders
-	}
-	if !data.ChatLinks.IsNull() && !data.ChatLinks.IsUnknown() {
-		var chatLinkModels []ChatLinkModel
-		diags.Append(data.ChatLinks.ElementsAs(ctx, &chatLinkModels, false)...)
-		if diags.HasError() {
-			return
+		if len(patch) == 0 {
+			continue
 		}
-		chatLinks := make([]struct {
-			Label string `json:"label"`
-			Url   string `json:"url"`
-		}, len(chatLinkModels))
-		for i, cl := range chatLinkModels {
-			chatLinks[i].Label = cl.Label.ValueString()
-			chatLinks[i].Url = cl.URL.ValueString()
-		}
-		appearanceBody.ChatLinks = &chatLinks
-	}
-	if !data.AnimateChatPlaceholders.IsNull() && !data.AnimateChatPlaceholders.IsUnknown() {
-		animate := data.AnimateChatPlaceholders.ValueBool()
-		appearanceBody.AnimateChatPlaceholders = &animate
-	}
-	if !data.ShowTwoFactor.IsNull() && !data.ShowTwoFactor.IsUnknown() {
-		show := data.ShowTwoFactor.ValueBool()
-		appearanceBody.ShowTwoFactor = &show
-	}
-	if !data.SlimChatErrorUI.IsNull() && !data.SlimChatErrorUI.IsUnknown() {
-		v := data.SlimChatErrorUI.ValueBool()
-		appearanceBody.SlimChatErrorUi = &v
-	}
+		LogPatch(ctx, "archestra_organization_settings "+ep.name, patch, ep.spec)
 
-	appearanceResp, err := r.client.UpdateAppearanceSettingsWithResponse(ctx, appearanceBody)
-	if err != nil {
-		diags.AddError("API Error", fmt.Sprintf("Unable to update appearance settings, got error: %s", err))
-		return
-	}
-	if appearanceResp.JSON200 == nil {
-		diags.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK from UpdateAppearanceSettings, got status %d: %s", appearanceResp.StatusCode(), string(appearanceResp.Body)))
-		return
-	}
-
-	// Update LLM settings (compression, convertToolResultsToToon, limitCleanupInterval)
-	llmBody := client.UpdateLlmSettingsJSONRequestBody{}
-	if !data.CompressionScope.IsNull() && !data.CompressionScope.IsUnknown() {
-		scope := client.UpdateLlmSettingsJSONBodyCompressionScope(data.CompressionScope.ValueString())
-		llmBody.CompressionScope = &scope
-	}
-	if !data.ConvertToolResultsToToon.IsNull() && !data.ConvertToolResultsToToon.IsUnknown() {
-		convert := data.ConvertToolResultsToToon.ValueBool()
-		llmBody.ConvertToolResultsToToon = &convert
-	}
-	if !data.LimitCleanupInterval.IsNull() && !data.LimitCleanupInterval.IsUnknown() {
-		interval := client.UpdateLlmSettingsJSONBodyLimitCleanupInterval(data.LimitCleanupInterval.ValueString())
-		llmBody.LimitCleanupInterval = &interval
-	}
-
-	llmResp, err := r.client.UpdateLlmSettingsWithResponse(ctx, llmBody)
-	if err != nil {
-		diags.AddError("API Error", fmt.Sprintf("Unable to update LLM settings, got error: %s", err))
-		return
-	}
-	if llmResp.JSON200 == nil {
-		diags.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK from UpdateLlmSettings, got status %d: %s", llmResp.StatusCode(), string(llmResp.Body)))
-		return
-	}
-
-	// Update security settings
-	securityBody := client.UpdateSecuritySettingsJSONRequestBody{}
-	if !data.GlobalToolPolicy.IsNull() && !data.GlobalToolPolicy.IsUnknown() {
-		policy := client.UpdateSecuritySettingsJSONBodyGlobalToolPolicy(data.GlobalToolPolicy.ValueString())
-		securityBody.GlobalToolPolicy = &policy
-	}
-	if !data.AllowChatFileUploads.IsNull() && !data.AllowChatFileUploads.IsUnknown() {
-		allow := data.AllowChatFileUploads.ValueBool()
-		securityBody.AllowChatFileUploads = &allow
-	}
-
-	securityResp, err := r.client.UpdateSecuritySettingsWithResponse(ctx, securityBody)
-	if err != nil {
-		diags.AddError("API Error", fmt.Sprintf("Unable to update security settings, got error: %s", err))
-		return
-	}
-	if securityResp.JSON200 == nil {
-		diags.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK from UpdateSecuritySettings, got status %d: %s", securityResp.StatusCode(), string(securityResp.Body)))
-		return
-	}
-
-	// Update agent settings
-	agentBody := client.UpdateAgentSettingsJSONRequestBody{}
-	if !data.DefaultLlmModel.IsNull() && !data.DefaultLlmModel.IsUnknown() {
-		model := data.DefaultLlmModel.ValueString()
-		agentBody.DefaultLlmModel = &model
-	}
-	if !data.DefaultLlmProvider.IsNull() && !data.DefaultLlmProvider.IsUnknown() {
-		provider := client.UpdateAgentSettingsJSONBodyDefaultLlmProvider(data.DefaultLlmProvider.ValueString())
-		agentBody.DefaultLlmProvider = &provider
-	}
-	if !data.DefaultLlmApiKeyId.IsNull() && !data.DefaultLlmApiKeyId.IsUnknown() {
-		parsedID, parseErr := uuid.Parse(data.DefaultLlmApiKeyId.ValueString())
-		if parseErr != nil {
-			diags.AddError("Invalid UUID", fmt.Sprintf("Unable to parse default_llm_api_key_id: %s", parseErr))
-			return
-		}
-		agentBody.DefaultLlmApiKeyId = &parsedID
-	}
-	if !data.DefaultAgentId.IsNull() && !data.DefaultAgentId.IsUnknown() {
-		parsedID, parseErr := uuid.Parse(data.DefaultAgentId.ValueString())
-		if parseErr != nil {
-			diags.AddError("Invalid UUID", fmt.Sprintf("Unable to parse default_agent_id: %s", parseErr))
-			return
-		}
-		agentBody.DefaultAgentId = &parsedID
-	}
-
-	agentResp, err := r.client.UpdateAgentSettingsWithResponse(ctx, agentBody)
-	if err != nil {
-		diags.AddError("API Error", fmt.Sprintf("Unable to update agent settings, got error: %s", err))
-		return
-	}
-	if agentResp.JSON200 == nil {
-		diags.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK from UpdateAgentSettings, got status %d: %s", agentResp.StatusCode(), string(agentResp.Body)))
-		return
-	}
-
-	// Update MCP settings
-	mcpBody := client.UpdateMcpSettingsJSONRequestBody{}
-	if !data.McpOauthAccessTokenLifetimeSeconds.IsNull() && !data.McpOauthAccessTokenLifetimeSeconds.IsUnknown() {
-		lifetime := int(data.McpOauthAccessTokenLifetimeSeconds.ValueInt64())
-		mcpBody.McpOauthAccessTokenLifetimeSeconds = &lifetime
-	}
-
-	mcpResp, err := r.client.UpdateMcpSettingsWithResponse(ctx, mcpBody)
-	if err != nil {
-		diags.AddError("API Error", fmt.Sprintf("Unable to update MCP settings, got error: %s", err))
-		return
-	}
-	if mcpResp.JSON200 == nil {
-		diags.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK from UpdateMcpSettings, got status %d: %s", mcpResp.StatusCode(), string(mcpResp.Body)))
-		return
-	}
-
-	// Update knowledge settings
-	knowledgeBody := client.UpdateKnowledgeSettingsJSONRequestBody{}
-	if !data.EmbeddingModel.IsNull() && !data.EmbeddingModel.IsUnknown() {
-		model := data.EmbeddingModel.ValueString()
-		knowledgeBody.EmbeddingModel = &model
-	}
-	if !data.EmbeddingChatApiKeyId.IsNull() && !data.EmbeddingChatApiKeyId.IsUnknown() {
-		parsedID, parseErr := uuid.Parse(data.EmbeddingChatApiKeyId.ValueString())
-		if parseErr != nil {
-			diags.AddError("Invalid UUID", fmt.Sprintf("Unable to parse embedding_chat_api_key_id: %s", parseErr))
-			return
-		}
-		knowledgeBody.EmbeddingChatApiKeyId = &parsedID
-	}
-	if !data.RerankerModel.IsNull() && !data.RerankerModel.IsUnknown() {
-		model := data.RerankerModel.ValueString()
-		knowledgeBody.RerankerModel = &model
-	}
-	if !data.RerankerChatApiKeyId.IsNull() && !data.RerankerChatApiKeyId.IsUnknown() {
-		parsedID, parseErr := uuid.Parse(data.RerankerChatApiKeyId.ValueString())
-		if parseErr != nil {
-			diags.AddError("Invalid UUID", fmt.Sprintf("Unable to parse reranker_chat_api_key_id: %s", parseErr))
-			return
-		}
-		knowledgeBody.RerankerChatApiKeyId = &parsedID
-	}
-
-	knowledgeResp, err := r.client.UpdateKnowledgeSettingsWithResponse(ctx, knowledgeBody)
-	if err != nil {
-		diags.AddError("API Error", fmt.Sprintf("Unable to update knowledge settings, got error: %s", err))
-		return
-	}
-	if knowledgeResp.JSON200 == nil {
-		diags.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK from UpdateKnowledgeSettings, got status %d: %s", knowledgeResp.StatusCode(), string(knowledgeResp.Body)))
-		return
-	}
-
-	// Complete onboarding if requested
-	if !data.OnboardingComplete.IsNull() && !data.OnboardingComplete.IsUnknown() && data.OnboardingComplete.ValueBool() {
-		onboardingBody := client.CompleteOnboardingJSONRequestBody{
-			OnboardingComplete: true,
-		}
-		onboardingResp, err := r.client.CompleteOnboardingWithResponse(ctx, onboardingBody)
+		body, err := json.Marshal(patch)
 		if err != nil {
-			diags.AddError("API Error", fmt.Sprintf("Unable to complete onboarding, got error: %s", err))
+			diags.AddError("Marshal Error", fmt.Sprintf("Unable to marshal %s patch: %s", ep.name, err))
+			return
+		}
+		status, respBody, err := ep.send(bytes.NewReader(body))
+		if err != nil {
+			diags.AddError("API Error", fmt.Sprintf("Unable to update %s settings: %s", ep.name, err))
+			return
+		}
+		if status != http.StatusOK {
+			diags.AddError(
+				"Unexpected API Response",
+				fmt.Sprintf("Expected 200 OK from %s settings, got status %d: %s", ep.name, status, string(respBody)),
+			)
+			return
+		}
+	}
+
+	if shouldCompleteOnboarding(plan, prior) {
+		onboardingResp, err := r.client.CompleteOnboardingWithResponse(ctx, client.CompleteOnboardingJSONRequestBody{
+			OnboardingComplete: true,
+		})
+		if err != nil {
+			diags.AddError("API Error", fmt.Sprintf("Unable to complete onboarding: %s", err))
 			return
 		}
 		if onboardingResp.JSON200 == nil {
-			diags.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK from CompleteOnboarding, got status %d: %s", onboardingResp.StatusCode(), string(onboardingResp.Body)))
+			diags.AddError(
+				"Unexpected API Response",
+				fmt.Sprintf("Expected 200 OK from CompleteOnboarding, got status %d: %s", onboardingResp.StatusCode(), string(onboardingResp.Body)),
+			)
 			return
 		}
 	}
+}
+
+// shouldCompleteOnboarding reports whether the plan asks for a fresh transition
+// from "not complete" (null or false) to true. The endpoint is one-way; replaying
+// it on every Update would be wasted but harmless, but we skip when prior was
+// already true to keep refresh diffs clean.
+func shouldCompleteOnboarding(plan, prior tftypes.Value) bool {
+	planV := lookupOrNull(plan, "onboarding_complete")
+	if !planV.IsKnown() || planV.IsNull() {
+		return false
+	}
+	var v bool
+	if err := planV.As(&v); err != nil || !v {
+		return false
+	}
+	priorV := lookupOrNull(prior, "onboarding_complete")
+	if !priorV.IsKnown() || priorV.IsNull() {
+		return true
+	}
+	var pv bool
+	if err := priorV.As(&pv); err != nil {
+		return true
+	}
+	return !pv
 }
 
 func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, data *OrganizationSettingsResourceModel, diags *diag.Diagnostics) {
