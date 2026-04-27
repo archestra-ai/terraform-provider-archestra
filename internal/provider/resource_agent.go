@@ -16,9 +16,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 var _ resource.Resource = &AgentResource{}
@@ -131,8 +133,9 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"scope": schema.StringAttribute{
 				Optional:            true,
 				Computed:            true,
+				Default:             stringdefault.StaticString("org"),
 				MarkdownDescription: "Ownership scope: `personal`, `team`, or `org` (default: `org`).",
-				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+				Validators:          []validator.String{stringvalidator.OneOf("personal", "team", "org")},
 			},
 			"teams": schema.ListAttribute{
 				Optional:            true,
@@ -202,135 +205,44 @@ func (r *AgentResource) Configure(_ context.Context, req resource.ConfigureReque
 }
 
 func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	// Run merge-patch with prior=null Object: every non-null plan attribute
+	// emits, which is exactly Create semantics.
+	priorNull := tftypes.NewValue(req.Plan.Schema.Type().TerraformType(ctx), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, priorNull, agentAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// agent_type isn't surfaced as a TF attribute (the resource is type-specific
+	// by construction); set it on the wire so the backend stores the right
+	// discriminator.
+	patch["agentType"] = "agent"
+
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("unable to marshal merge patch: %s", err))
+		return
+	}
+	LogPatch(ctx, "archestra_agent Create", patch, agentAttrSpec)
+
+	apiResp, err := r.client.CreateAgentWithBodyWithResponse(ctx, "application/json", bytes.NewReader(body))
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create agent: %s", err))
+		return
+	}
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d: %s", apiResp.StatusCode(), string(apiResp.Body)),
+		)
+		return
+	}
+
 	var data AgentResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
-	scope := client.CreateAgentJSONBodyScopeOrg
-	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
-		scope = client.CreateAgentJSONBodyScope(data.Scope.ValueString())
-	}
-	teams := []string{}
-	if !data.Teams.IsNull() && !data.Teams.IsUnknown() {
-		resp.Diagnostics.Append(data.Teams.ElementsAs(ctx, &teams, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-	}
-
-	labels := buildAgentLabelsCreate(data.Labels)
-	requestBody := client.CreateAgentJSONRequestBody{
-		Name:   data.Name.ValueString(),
-		Scope:  scope,
-		Teams:  &teams,
-		Labels: &labels,
-	}
-
-	agentType := client.CreateAgentJSONBodyAgentType("agent")
-	requestBody.AgentType = &agentType
-
-	if !data.Description.IsNull() && !data.Description.IsUnknown() {
-		v := data.Description.ValueString()
-		requestBody.Description = &v
-	}
-	if !data.Icon.IsNull() && !data.Icon.IsUnknown() {
-		v := data.Icon.ValueString()
-		requestBody.Icon = &v
-	}
-	if !data.SystemPrompt.IsNull() && !data.SystemPrompt.IsUnknown() {
-		v := data.SystemPrompt.ValueString()
-		requestBody.SystemPrompt = &v
-	}
-	if !data.LlmModel.IsNull() && !data.LlmModel.IsUnknown() {
-		v := data.LlmModel.ValueString()
-		requestBody.LlmModel = &v
-	}
-	if !data.LlmApiKeyId.IsNull() && !data.LlmApiKeyId.IsUnknown() {
-		id, parseErr := uuid.Parse(data.LlmApiKeyId.ValueString())
-		if parseErr != nil {
-			resp.Diagnostics.AddError("Invalid llm_api_key_id", fmt.Sprintf("Unable to parse llm_api_key_id: %s", parseErr))
-			return
-		}
-		requestBody.LlmApiKeyId = &id
-	}
-	if !data.IncomingEmailEnabled.IsNull() && !data.IncomingEmailEnabled.IsUnknown() {
-		v := data.IncomingEmailEnabled.ValueBool()
-		requestBody.IncomingEmailEnabled = &v
-	}
-	if !data.IncomingEmailAllowedDomain.IsNull() && !data.IncomingEmailAllowedDomain.IsUnknown() {
-		v := data.IncomingEmailAllowedDomain.ValueString()
-		requestBody.IncomingEmailAllowedDomain = &v
-	}
-	if !data.IncomingEmailSecurityMode.IsNull() && !data.IncomingEmailSecurityMode.IsUnknown() {
-		mode := client.CreateAgentJSONBodyIncomingEmailSecurityMode(data.IncomingEmailSecurityMode.ValueString())
-		requestBody.IncomingEmailSecurityMode = &mode
-	}
-	if !data.ConsiderContextUntrusted.IsNull() && !data.ConsiderContextUntrusted.IsUnknown() {
-		v := data.ConsiderContextUntrusted.ValueBool()
-		requestBody.ConsiderContextUntrusted = &v
-	}
-	if !data.IsDefault.IsNull() && !data.IsDefault.IsUnknown() {
-		v := data.IsDefault.ValueBool()
-		requestBody.IsDefault = &v
-	}
-	if data.SuggestedPrompts != nil {
-		prompts := suggestedPromptsToAPI(data.SuggestedPrompts)
-		requestBody.SuggestedPrompts = &prompts
-	}
-	if !data.KnowledgeBaseIds.IsNull() && !data.KnowledgeBaseIds.IsUnknown() {
-		var ids []string
-		resp.Diagnostics.Append(data.KnowledgeBaseIds.ElementsAs(ctx, &ids, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		requestBody.KnowledgeBaseIds = &ids
-	}
-	if !data.ConnectorIds.IsNull() && !data.ConnectorIds.IsUnknown() {
-		var ids []string
-		resp.Diagnostics.Append(data.ConnectorIds.ElementsAs(ctx, &ids, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		requestBody.ConnectorIds = &ids
-	}
-
-	var apiResp *client.CreateAgentResponse
-	if data.BuiltInAgentConfig != nil && !data.BuiltInAgentConfig.Name.IsNull() {
-		bodyBytes, marshalErr := json.Marshal(requestBody)
-		if marshalErr != nil {
-			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", marshalErr))
-			return
-		}
-		bodyBytes, marshalErr = injectBuiltInAgentConfig(bodyBytes, buildBuiltInAgentConfigJSON(data.BuiltInAgentConfig))
-		if marshalErr != nil {
-			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to inject builtInAgentConfig: %s", marshalErr))
-			return
-		}
-		var createErr error
-		apiResp, createErr = r.client.CreateAgentWithBodyWithResponse(ctx, "application/json", bytes.NewReader(bodyBytes))
-		if createErr != nil {
-			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create agent, got error: %s", createErr))
-			return
-		}
-	} else {
-		var createErr error
-		apiResp, createErr = r.client.CreateAgentWithResponse(ctx, requestBody)
-		if createErr != nil {
-			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create agent, got error: %s", createErr))
-			return
-		}
-	}
-
-	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
-		)
-		return
-	}
-
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -370,132 +282,48 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 }
 
 func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data AgentResourceModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	var stateData AgentResourceModel
+	resp.Diagnostics.Append(req.State.Get(ctx, &stateData)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	id, err := uuid.Parse(data.ID.ValueString())
+	id, err := uuid.Parse(stateData.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse agent ID: %s", err))
 		return
 	}
 
-	labels := buildAgentLabelsUpdate(data.Labels)
-	name := data.Name.ValueString()
-	requestBody := client.UpdateAgentJSONRequestBody{
-		Name:   &name,
-		Labels: &labels,
-	}
-	at := client.UpdateAgentJSONBodyAgentType("agent")
-	requestBody.AgentType = &at
-
-	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
-		s := client.UpdateAgentJSONBodyScope(data.Scope.ValueString())
-		requestBody.Scope = &s
-	}
-	if !data.Teams.IsNull() && !data.Teams.IsUnknown() {
-		var teams []string
-		resp.Diagnostics.Append(data.Teams.ElementsAs(ctx, &teams, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		requestBody.Teams = &teams
-	}
-	if !data.Description.IsNull() && !data.Description.IsUnknown() {
-		v := data.Description.ValueString()
-		requestBody.Description = &v
-	}
-	if !data.Icon.IsNull() && !data.Icon.IsUnknown() {
-		v := data.Icon.ValueString()
-		requestBody.Icon = &v
-	}
-	if !data.SystemPrompt.IsNull() && !data.SystemPrompt.IsUnknown() {
-		v := data.SystemPrompt.ValueString()
-		requestBody.SystemPrompt = &v
-	}
-	if !data.LlmModel.IsNull() && !data.LlmModel.IsUnknown() {
-		v := data.LlmModel.ValueString()
-		requestBody.LlmModel = &v
-	}
-	if !data.LlmApiKeyId.IsNull() && !data.LlmApiKeyId.IsUnknown() {
-		uid, parseErr := uuid.Parse(data.LlmApiKeyId.ValueString())
-		if parseErr != nil {
-			resp.Diagnostics.AddError("Invalid llm_api_key_id", fmt.Sprintf("Unable to parse llm_api_key_id: %s", parseErr))
-			return
-		}
-		requestBody.LlmApiKeyId = &uid
-	}
-	if !data.IncomingEmailEnabled.IsNull() && !data.IncomingEmailEnabled.IsUnknown() {
-		v := data.IncomingEmailEnabled.ValueBool()
-		requestBody.IncomingEmailEnabled = &v
-	}
-	if !data.IncomingEmailAllowedDomain.IsNull() && !data.IncomingEmailAllowedDomain.IsUnknown() {
-		v := data.IncomingEmailAllowedDomain.ValueString()
-		requestBody.IncomingEmailAllowedDomain = &v
-	}
-	if !data.IncomingEmailSecurityMode.IsNull() && !data.IncomingEmailSecurityMode.IsUnknown() {
-		mode := client.UpdateAgentJSONBodyIncomingEmailSecurityMode(data.IncomingEmailSecurityMode.ValueString())
-		requestBody.IncomingEmailSecurityMode = &mode
-	}
-	if !data.ConsiderContextUntrusted.IsNull() && !data.ConsiderContextUntrusted.IsUnknown() {
-		v := data.ConsiderContextUntrusted.ValueBool()
-		requestBody.ConsiderContextUntrusted = &v
-	}
-	if !data.IsDefault.IsNull() && !data.IsDefault.IsUnknown() {
-		v := data.IsDefault.ValueBool()
-		requestBody.IsDefault = &v
-	}
-	if data.SuggestedPrompts != nil {
-		prompts := suggestedPromptsToAPI(data.SuggestedPrompts)
-		requestBody.SuggestedPrompts = &prompts
-	}
-	if !data.KnowledgeBaseIds.IsNull() && !data.KnowledgeBaseIds.IsUnknown() {
-		var ids []string
-		resp.Diagnostics.Append(data.KnowledgeBaseIds.ElementsAs(ctx, &ids, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		requestBody.KnowledgeBaseIds = &ids
-	}
-	if !data.ConnectorIds.IsNull() && !data.ConnectorIds.IsUnknown() {
-		var ids []string
-		resp.Diagnostics.Append(data.ConnectorIds.ElementsAs(ctx, &ids, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		requestBody.ConnectorIds = &ids
-	}
-
-	bodyBytes, marshalErr := json.Marshal(requestBody)
-	if marshalErr != nil {
-		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", marshalErr))
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, agentAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
 		return
 	}
-	if data.BuiltInAgentConfig != nil && !data.BuiltInAgentConfig.Name.IsNull() {
-		bodyBytes, marshalErr = injectBuiltInAgentConfig(bodyBytes, buildBuiltInAgentConfigJSON(data.BuiltInAgentConfig))
-	} else {
-		bodyBytes, marshalErr = injectBuiltInAgentConfig(bodyBytes, json.RawMessage("null"))
-	}
-	if marshalErr != nil {
-		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to inject builtInAgentConfig: %s", marshalErr))
+	LogPatch(ctx, "archestra_agent Update", patch, agentAttrSpec)
+
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("unable to marshal merge patch: %s", err))
 		return
 	}
 
-	apiResp, updateErr := r.client.UpdateAgentWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(bodyBytes))
-	if updateErr != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update agent, got error: %s", updateErr))
+	apiResp, err := r.client.UpdateAgentWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(body))
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update agent: %s", err))
 		return
 	}
 	if apiResp.JSON200 == nil {
 		resp.Diagnostics.AddError(
 			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
+			fmt.Sprintf("Expected 200 OK, got status %d: %s", apiResp.StatusCode(), string(apiResp.Body)),
 		)
 		return
 	}
 
+	var data AgentResourceModel
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -573,4 +401,91 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 	data.Labels = flattenAgentLabels(data.Labels, resp.Labels)
 
 	data.BuiltInAgentConfig = builtInAgentConfigFromResponse(body)
+}
+
+// AttrSpecs implements the resourceWithAttrSpec interface (see specdrift_test.go).
+// Activates the schema ↔ AttrSpec drift lint for this resource.
+func (r *AgentResource) AttrSpecs() []AttrSpec { return agentAttrSpec }
+
+// agentAttrSpec declares the wire shape for `archestra_agent`. Kept adjacent
+// to Schema() so a contributor changing one notices the other.
+//
+// Storage notes (per platform/backend/src/database/schemas/agent.ts):
+//   - Most fields are top-level columns → Scalar / List / Set.
+//   - `passthrough_headers` is `text("passthrough_headers").array()` (Postgres
+//     text[]) — atomic on the wire, so List with no element-spec.
+//   - `built_in_agent_config` is `jsonb("built_in_agent_config")` → AtomicObject
+//     with a polymorphic Encoder (the wire shape depends on the `name`
+//     discriminator).
+//   - `teams`, `labels`, `knowledge_base_ids`, `connector_ids`,
+//     `suggested_prompts` are many-to-many sync'd by AgentModel.update via
+//     `if (field !== undefined)` per-field guards. Merge-patch's "omit when
+//     equal, emit when changed" lines up with that exactly.
+var agentAttrSpec = []AttrSpec{
+	{TFName: "name", JSONName: "name", Kind: Scalar},
+	{TFName: "description", JSONName: "description", Kind: Scalar},
+	{TFName: "icon", JSONName: "icon", Kind: Scalar},
+	{TFName: "system_prompt", JSONName: "systemPrompt", Kind: Scalar},
+	{TFName: "llm_model", JSONName: "llmModel", Kind: Scalar},
+	{TFName: "llm_api_key_id", JSONName: "llmApiKeyId", Kind: Scalar},
+	{TFName: "knowledge_base_ids", JSONName: "knowledgeBaseIds", Kind: List},
+	{TFName: "connector_ids", JSONName: "connectorIds", Kind: List},
+	{TFName: "incoming_email_enabled", JSONName: "incomingEmailEnabled", Kind: Scalar},
+	{TFName: "incoming_email_allowed_domain", JSONName: "incomingEmailAllowedDomain", Kind: Scalar},
+	{TFName: "incoming_email_security_mode", JSONName: "incomingEmailSecurityMode", Kind: Scalar},
+	{TFName: "consider_context_untrusted", JSONName: "considerContextUntrusted", Kind: Scalar},
+	{TFName: "is_default", JSONName: "isDefault", Kind: Scalar},
+	{TFName: "scope", JSONName: "scope", Kind: Scalar},
+	{TFName: "teams", JSONName: "teams", Kind: List},
+	{
+		TFName: "suggested_prompts", JSONName: "suggestedPrompts", Kind: List,
+		Children: []AttrSpec{
+			{TFName: "prompt", JSONName: "prompt", Kind: Scalar},
+			{TFName: "summary_title", JSONName: "summaryTitle", Kind: Scalar},
+		},
+	},
+	{
+		TFName: "labels", JSONName: "labels", Kind: Set,
+		Children: []AttrSpec{
+			{TFName: "key", JSONName: "key", Kind: Scalar},
+			{TFName: "value", JSONName: "value", Kind: Scalar},
+		},
+	},
+	{
+		TFName: "built_in_agent_config", JSONName: "builtInAgentConfig", Kind: AtomicObject,
+		Children: []AttrSpec{
+			{TFName: "name", JSONName: "name", Kind: Scalar},
+			{TFName: "auto_configure_on_tool_discovery", JSONName: "autoConfigureOnToolDiscovery", Kind: Scalar},
+			{TFName: "max_rounds", JSONName: "maxRounds", Kind: Scalar},
+		},
+		Encoder: encodeBuiltInAgentConfig,
+	},
+}
+
+// encodeBuiltInAgentConfig narrows the AtomicObject's encoded map to only the
+// sub-fields valid for the discriminator's `name` value. Backend zod is a
+// discriminated union; sending extra sub-fields would reject.
+func encodeBuiltInAgentConfig(v any) any {
+	m, ok := v.(map[string]any)
+	if !ok || m == nil {
+		return v
+	}
+	name, _ := m["name"].(string)
+	switch name {
+	case "policy-configuration-subagent":
+		out := map[string]any{"name": name}
+		if v, ok := m["autoConfigureOnToolDiscovery"]; ok {
+			out["autoConfigureOnToolDiscovery"] = v
+		}
+		return out
+	case "dual-llm-main-agent":
+		out := map[string]any{"name": name}
+		if v, ok := m["maxRounds"]; ok {
+			out["maxRounds"] = v
+		}
+		return out
+	case "dual-llm-quarantine-agent":
+		return map[string]any{"name": name}
+	}
+	return m
 }

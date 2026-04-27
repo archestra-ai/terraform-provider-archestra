@@ -66,45 +66,6 @@ type AgentLabelModel struct {
 	Value types.String `tfsdk:"value"`
 }
 
-// buildAgentLabelsCreate produces the inline anonymous label struct expected
-// by the generated client's CreateAgent request body. oapi-codegen emits a
-// fresh anonymous struct per request so it isn't assignable from a shared
-// named type — the helper rebuilds the literal each time. Always returns a
-// non-nil slice so the JSON encoder emits `[]` rather than `null`.
-func buildAgentLabelsCreate(in []AgentLabelModel) []struct {
-	Key     string              `json:"key"`
-	KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
-	Value   string              `json:"value"`
-	ValueId *openapi_types.UUID `json:"valueId,omitempty"`
-} {
-	out := make([]struct {
-		Key     string              `json:"key"`
-		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
-		Value   string              `json:"value"`
-		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
-	}, 0, len(in))
-	for _, l := range in {
-		out = append(out, struct {
-			Key     string              `json:"key"`
-			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
-			Value   string              `json:"value"`
-			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
-		}{Key: l.Key.ValueString(), Value: l.Value.ValueString()})
-	}
-	return out
-}
-
-// buildAgentLabelsUpdate mirrors buildAgentLabelsCreate. The Update request
-// body uses the same inline struct shape, so we delegate.
-func buildAgentLabelsUpdate(in []AgentLabelModel) []struct {
-	Key     string              `json:"key"`
-	KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
-	Value   string              `json:"value"`
-	ValueId *openapi_types.UUID `json:"valueId,omitempty"`
-} {
-	return buildAgentLabelsCreate(in)
-}
-
 // SuggestedPromptModel describes a suggested prompt on an internal agent.
 type SuggestedPromptModel struct {
 	Prompt       types.String `tfsdk:"prompt"`
@@ -190,26 +151,6 @@ func optionalUUIDFromAPI(target *types.String, v *openapi_types.UUID) {
 
 // suggestedPromptsToAPI converts the model representation to the API wire
 // format for suggestedPrompts.
-func suggestedPromptsToAPI(in []SuggestedPromptModel) []struct {
-	Prompt       string `json:"prompt"`
-	SummaryTitle string `json:"summaryTitle"`
-} {
-	out := make([]struct {
-		Prompt       string `json:"prompt"`
-		SummaryTitle string `json:"summaryTitle"`
-	}, len(in))
-	for i, sp := range in {
-		out[i] = struct {
-			Prompt       string `json:"prompt"`
-			SummaryTitle string `json:"summaryTitle"`
-		}{
-			Prompt:       sp.Prompt.ValueString(),
-			SummaryTitle: sp.SummaryTitle.ValueString(),
-		}
-	}
-	return out
-}
-
 // suggestedPromptsFromAPI maps suggestedPrompts from API response into model.
 func suggestedPromptsFromAPI(apiPrompts []struct {
 	Prompt       string `json:"prompt"`
@@ -226,41 +167,6 @@ func suggestedPromptsFromAPI(apiPrompts []struct {
 		}
 	}
 	return out
-}
-
-// buildBuiltInAgentConfigJSON builds the JSON payload for the
-// builtInAgentConfig field, using the Name discriminator to pick the right
-// shape.
-func buildBuiltInAgentConfigJSON(config *BuiltInAgentConfigModel) json.RawMessage {
-	name := config.Name.ValueString()
-	switch name {
-	case "policy-configuration-subagent":
-		b, _ := json.Marshal(map[string]interface{}{
-			"name":                         name,
-			"autoConfigureOnToolDiscovery": config.AutoConfigureOnToolDiscovery.ValueBool(),
-		})
-		return b
-	case "dual-llm-main-agent":
-		b, _ := json.Marshal(map[string]interface{}{
-			"name":      name,
-			"maxRounds": config.MaxRounds.ValueInt64(),
-		})
-		return b
-	default:
-		b, _ := json.Marshal(map[string]interface{}{"name": name})
-		return b
-	}
-}
-
-// injectBuiltInAgentConfig injects (or sets to null) the builtInAgentConfig
-// key into a JSON-encoded request body.
-func injectBuiltInAgentConfig(body []byte, configJSON json.RawMessage) ([]byte, error) {
-	var raw map[string]json.RawMessage
-	if err := json.Unmarshal(body, &raw); err != nil {
-		return nil, err
-	}
-	raw["builtInAgentConfig"] = configJSON
-	return json.Marshal(raw)
 }
 
 // builtInAgentConfigFromResponse parses builtInAgentConfig from a raw API

@@ -1,19 +1,25 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 var _ resource.Resource = &LlmProxyResource{}
@@ -90,8 +96,9 @@ func (r *LlmProxyResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 			"scope": schema.StringAttribute{
 				Optional:            true,
 				Computed:            true,
+				Default:             stringdefault.StaticString("org"),
 				MarkdownDescription: "Ownership scope: `personal`, `team`, or `org` (default: `org`).",
-				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+				Validators:          []validator.String{stringvalidator.OneOf("personal", "team", "org")},
 			},
 			"teams": schema.ListAttribute{
 				Optional:            true,
@@ -130,88 +137,38 @@ func (r *LlmProxyResource) Configure(_ context.Context, req resource.ConfigureRe
 }
 
 func (r *LlmProxyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data LlmProxyResourceModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	priorNull := tftypes.NewValue(req.Plan.Schema.Type().TerraformType(ctx), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, priorNull, llmProxyAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	patch["agentType"] = "llm_proxy"
+	LogPatch(ctx, "archestra_llm_proxy Create", patch, llmProxyAttrSpec)
 
-	scope := client.CreateAgentJSONBodyScopeOrg
-	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
-		scope = client.CreateAgentJSONBodyScope(data.Scope.ValueString())
-	}
-	teams := []string{}
-	if !data.Teams.IsNull() && !data.Teams.IsUnknown() {
-		resp.Diagnostics.Append(data.Teams.ElementsAs(ctx, &teams, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("unable to marshal merge patch: %s", err))
+		return
 	}
 
-	labels := buildAgentLabelsCreate(data.Labels)
-	requestBody := client.CreateAgentJSONRequestBody{
-		Name:   data.Name.ValueString(),
-		Scope:  scope,
-		Teams:  &teams,
-		Labels: &labels,
-	}
-	at := client.CreateAgentJSONBodyAgentType("llm_proxy")
-	requestBody.AgentType = &at
-
-	if !data.Description.IsNull() && !data.Description.IsUnknown() {
-		v := data.Description.ValueString()
-		requestBody.Description = &v
-	}
-	if !data.Icon.IsNull() && !data.Icon.IsUnknown() {
-		v := data.Icon.ValueString()
-		requestBody.Icon = &v
-	}
-	if !data.LlmModel.IsNull() && !data.LlmModel.IsUnknown() {
-		v := data.LlmModel.ValueString()
-		requestBody.LlmModel = &v
-	}
-	if !data.LlmApiKeyId.IsNull() && !data.LlmApiKeyId.IsUnknown() {
-		uid, parseErr := uuid.Parse(data.LlmApiKeyId.ValueString())
-		if parseErr != nil {
-			resp.Diagnostics.AddError("Invalid llm_api_key_id", fmt.Sprintf("Unable to parse llm_api_key_id: %s", parseErr))
-			return
-		}
-		requestBody.LlmApiKeyId = &uid
-	}
-	if !data.PassthroughHeaders.IsNull() && !data.PassthroughHeaders.IsUnknown() {
-		var headers []string
-		resp.Diagnostics.Append(data.PassthroughHeaders.ElementsAs(ctx, &headers, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		requestBody.PassthroughHeaders = &headers
-	}
-	if !data.IdentityProviderId.IsNull() && !data.IdentityProviderId.IsUnknown() {
-		v := data.IdentityProviderId.ValueString()
-		requestBody.IdentityProviderId = &v
-	}
-	if !data.ConsiderContextUntrusted.IsNull() && !data.ConsiderContextUntrusted.IsUnknown() {
-		v := data.ConsiderContextUntrusted.ValueBool()
-		requestBody.ConsiderContextUntrusted = &v
-	}
-	if !data.IsDefault.IsNull() && !data.IsDefault.IsUnknown() {
-		v := data.IsDefault.ValueBool()
-		requestBody.IsDefault = &v
-	}
-
-	apiResp, createErr := r.client.CreateAgentWithResponse(ctx, requestBody)
-	if createErr != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create LLM proxy, got error: %s", createErr))
+	apiResp, err := r.client.CreateAgentWithBodyWithResponse(ctx, "application/json", bytes.NewReader(body))
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create LLM proxy: %s", err))
 		return
 	}
 	if apiResp.JSON200 == nil {
 		resp.Diagnostics.AddError(
 			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
+			fmt.Sprintf("Expected 200 OK, got status %d: %s", apiResp.StatusCode(), string(apiResp.Body)),
 		)
 		return
 	}
 
+	var data LlmProxyResourceModel
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -251,93 +208,48 @@ func (r *LlmProxyResource) Read(ctx context.Context, req resource.ReadRequest, r
 }
 
 func (r *LlmProxyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data LlmProxyResourceModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	var stateData LlmProxyResourceModel
+	resp.Diagnostics.Append(req.State.Get(ctx, &stateData)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	id, err := uuid.Parse(data.ID.ValueString())
+	id, err := uuid.Parse(stateData.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse LLM proxy ID: %s", err))
 		return
 	}
 
-	labels := buildAgentLabelsUpdate(data.Labels)
-	name := data.Name.ValueString()
-	requestBody := client.UpdateAgentJSONRequestBody{
-		Name:   &name,
-		Labels: &labels,
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, llmProxyAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	at := client.UpdateAgentJSONBodyAgentType("llm_proxy")
-	requestBody.AgentType = &at
+	LogPatch(ctx, "archestra_llm_proxy Update", patch, llmProxyAttrSpec)
 
-	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
-		s := client.UpdateAgentJSONBodyScope(data.Scope.ValueString())
-		requestBody.Scope = &s
-	}
-	if !data.Teams.IsNull() && !data.Teams.IsUnknown() {
-		var teams []string
-		resp.Diagnostics.Append(data.Teams.ElementsAs(ctx, &teams, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		requestBody.Teams = &teams
-	}
-	if !data.Description.IsNull() && !data.Description.IsUnknown() {
-		v := data.Description.ValueString()
-		requestBody.Description = &v
-	}
-	if !data.Icon.IsNull() && !data.Icon.IsUnknown() {
-		v := data.Icon.ValueString()
-		requestBody.Icon = &v
-	}
-	if !data.LlmModel.IsNull() && !data.LlmModel.IsUnknown() {
-		v := data.LlmModel.ValueString()
-		requestBody.LlmModel = &v
-	}
-	if !data.LlmApiKeyId.IsNull() && !data.LlmApiKeyId.IsUnknown() {
-		uid, parseErr := uuid.Parse(data.LlmApiKeyId.ValueString())
-		if parseErr != nil {
-			resp.Diagnostics.AddError("Invalid llm_api_key_id", fmt.Sprintf("Unable to parse llm_api_key_id: %s", parseErr))
-			return
-		}
-		requestBody.LlmApiKeyId = &uid
-	}
-	if !data.PassthroughHeaders.IsNull() && !data.PassthroughHeaders.IsUnknown() {
-		var headers []string
-		resp.Diagnostics.Append(data.PassthroughHeaders.ElementsAs(ctx, &headers, false)...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		requestBody.PassthroughHeaders = &headers
-	}
-	if !data.IdentityProviderId.IsNull() && !data.IdentityProviderId.IsUnknown() {
-		v := data.IdentityProviderId.ValueString()
-		requestBody.IdentityProviderId = &v
-	}
-	if !data.ConsiderContextUntrusted.IsNull() && !data.ConsiderContextUntrusted.IsUnknown() {
-		v := data.ConsiderContextUntrusted.ValueBool()
-		requestBody.ConsiderContextUntrusted = &v
-	}
-	if !data.IsDefault.IsNull() && !data.IsDefault.IsUnknown() {
-		v := data.IsDefault.ValueBool()
-		requestBody.IsDefault = &v
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("unable to marshal merge patch: %s", err))
+		return
 	}
 
-	apiResp, updateErr := r.client.UpdateAgentWithResponse(ctx, id, requestBody)
-	if updateErr != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update LLM proxy, got error: %s", updateErr))
+	apiResp, err := r.client.UpdateAgentWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(body))
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update LLM proxy: %s", err))
 		return
 	}
 	if apiResp.JSON200 == nil {
 		resp.Diagnostics.AddError(
 			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()),
+			fmt.Sprintf("Expected 200 OK, got status %d: %s", apiResp.StatusCode(), string(apiResp.Body)),
 		)
 		return
 	}
 
+	var data LlmProxyResourceModel
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -400,4 +312,34 @@ func (r *LlmProxyResource) flatten(ctx context.Context, data *LlmProxyResourceMo
 	data.Teams = teamsListFromAPI(ctx, resp.Teams, diags)
 
 	data.Labels = flattenAgentLabels(data.Labels, resp.Labels)
+}
+
+// AttrSpecs implements resourceWithAttrSpec — activates the schema↔AttrSpec
+// drift lint for this resource.
+func (r *LlmProxyResource) AttrSpecs() []AttrSpec { return llmProxyAttrSpec }
+
+// llmProxyAttrSpec declares the wire shape for `archestra_llm_proxy`. Same
+// underlying agents table as archestra_agent (per
+// platform/backend/src/database/schemas/agent.ts) so the column-storage
+// rationale matches: no JSONB sub-objects, just top-level columns plus a
+// Postgres `text[]` for passthrough_headers (atomic on the wire).
+var llmProxyAttrSpec = []AttrSpec{
+	{TFName: "name", JSONName: "name", Kind: Scalar},
+	{TFName: "description", JSONName: "description", Kind: Scalar},
+	{TFName: "icon", JSONName: "icon", Kind: Scalar},
+	{TFName: "llm_model", JSONName: "llmModel", Kind: Scalar},
+	{TFName: "llm_api_key_id", JSONName: "llmApiKeyId", Kind: Scalar},
+	{TFName: "passthrough_headers", JSONName: "passthroughHeaders", Kind: List},
+	{TFName: "identity_provider_id", JSONName: "identityProviderId", Kind: Scalar},
+	{TFName: "consider_context_untrusted", JSONName: "considerContextUntrusted", Kind: Scalar},
+	{TFName: "is_default", JSONName: "isDefault", Kind: Scalar},
+	{TFName: "scope", JSONName: "scope", Kind: Scalar},
+	{TFName: "teams", JSONName: "teams", Kind: List},
+	{
+		TFName: "labels", JSONName: "labels", Kind: Set,
+		Children: []AttrSpec{
+			{TFName: "key", JSONName: "key", Kind: Scalar},
+			{TFName: "value", JSONName: "value", Kind: Scalar},
+		},
+	},
 }
