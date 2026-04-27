@@ -28,18 +28,14 @@ func TestAccTrustedDataPolicyResource(t *testing.T) {
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("attribute_path"),
-						knownvalue.StringExact("url"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("operator"),
-						knownvalue.StringExact("contains"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("value"),
-						knownvalue.StringExact("api.internal.example.com"),
+						tfjsonpath.New("conditions"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"key":      knownvalue.StringExact("url"),
+								"operator": knownvalue.StringExact("contains"),
+								"value":    knownvalue.StringExact("api.internal.example.com"),
+							}),
+						}),
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
@@ -65,18 +61,14 @@ func TestAccTrustedDataPolicyResource(t *testing.T) {
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("attribute_path"),
-						knownvalue.StringExact("source"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("operator"),
-						knownvalue.StringExact("notContains"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("value"),
-						knownvalue.StringExact("example.com"),
+						tfjsonpath.New("conditions"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"key":      knownvalue.StringExact("source"),
+								"operator": knownvalue.StringExact("notContains"),
+								"value":    knownvalue.StringExact("example.com"),
+							}),
+						}),
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
@@ -149,11 +141,11 @@ data "archestra_agent_tool" "test" {
 
 resource "archestra_trusted_data_policy" "test" {
   tool_id = data.archestra_mcp_server_tool.test.id
-  description     = "Trust internal API responses"
-  attribute_path = "url"
-  operator       = "contains"
-  value          = "api.internal.example.com"
-  action         = "mark_as_trusted"
+  description = "Trust internal API responses"
+  conditions = [
+    { key = "url", operator = "contains", value = "api.internal.example.com" },
+  ]
+  action = "mark_as_trusted"
 }
 `, rName)
 }
@@ -196,11 +188,11 @@ data "archestra_agent_tool" "test" {
 
 resource "archestra_trusted_data_policy" "test" {
   tool_id = data.archestra_mcp_server_tool.test.id
-  description     = "Block untrusted external data"
-  attribute_path = "source"
-  operator       = "notContains"
-  value          = "example.com"
-  action         = "block_always"
+  description = "Block untrusted external data"
+  conditions = [
+    { key = "source", operator = "notContains", value = "example.com" },
+  ]
+  action = "block_always"
 }
 `, rName)
 }
@@ -243,11 +235,11 @@ data "archestra_agent_tool" "sanitize" {
 
 resource "archestra_trusted_data_policy" "sanitize" {
   tool_id = data.archestra_mcp_server_tool.sanitize.id
-  description     = "Sanitize user input with dual LLM"
-  attribute_path = "user_input"
-  operator       = "regex"
-  value          = ".*"
-  action         = "sanitize_with_dual_llm"
+  description = "Sanitize user input with dual LLM"
+  conditions = [
+    { key = "user_input", operator = "regex", value = ".*" },
+  ]
+  action = "sanitize_with_dual_llm"
 }
 `, rName)
 }

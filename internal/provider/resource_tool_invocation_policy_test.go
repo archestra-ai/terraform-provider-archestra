@@ -23,18 +23,14 @@ func TestAccToolInvocationPolicyResource(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("argument_name"),
-						knownvalue.StringExact("path"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("operator"),
-						knownvalue.StringExact("contains"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("value"),
-						knownvalue.StringExact("/etc/"),
+						tfjsonpath.New("conditions"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"key":      knownvalue.StringExact("path"),
+								"operator": knownvalue.StringExact("contains"),
+								"value":    knownvalue.StringExact("/etc/"),
+							}),
+						}),
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_tool_invocation_policy.test",
@@ -60,18 +56,14 @@ func TestAccToolInvocationPolicyResource(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("argument_name"),
-						knownvalue.StringExact("path"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("operator"),
-						knownvalue.StringExact("startsWith"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.test",
-						tfjsonpath.New("value"),
-						knownvalue.StringExact("/var/log/"),
+						tfjsonpath.New("conditions"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"key":      knownvalue.StringExact("path"),
+								"operator": knownvalue.StringExact("startsWith"),
+								"value":    knownvalue.StringExact("/var/log/"),
+							}),
+						}),
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_tool_invocation_policy.test",
@@ -102,8 +94,14 @@ func TestAccToolInvocationPolicyResource_WithoutReason(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_tool_invocation_policy.noreason",
-						tfjsonpath.New("argument_name"),
-						knownvalue.StringExact("command"),
+						tfjsonpath.New("conditions"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"key":      knownvalue.StringExact("command"),
+								"operator": knownvalue.StringExact("equal"),
+								"value":    knownvalue.StringExact("rm -rf"),
+							}),
+						}),
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_tool_invocation_policy.noreason",
@@ -154,10 +152,10 @@ data "archestra_agent_tool" "noreason" {
 
 resource "archestra_tool_invocation_policy" "noreason" {
   tool_id = data.archestra_mcp_server_tool.noreason.id
-  argument_name = "command"
-  operator      = "equal"
-  value         = "rm -rf"
-  action        = "block_always"
+  conditions = [
+    { key = "command", operator = "equal", value = "rm -rf" },
+  ]
+  action = "block_always"
 }
 `, rName)
 }
@@ -174,13 +172,14 @@ func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"archestra_tool_invocation_policy.regex",
-						tfjsonpath.New("operator"),
-						knownvalue.StringExact("regex"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_tool_invocation_policy.regex",
-						tfjsonpath.New("value"),
-						knownvalue.StringExact("^/home/[a-z]+/.ssh/.*"),
+						tfjsonpath.New("conditions"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"key":      knownvalue.StringExact("path"),
+								"operator": knownvalue.StringExact("regex"),
+								"value":    knownvalue.StringExact("^/home/[a-z]+/.ssh/.*"),
+							}),
+						}),
 					),
 				},
 			},
@@ -226,11 +225,11 @@ data "archestra_agent_tool" "test" {
 
 resource "archestra_tool_invocation_policy" "test" {
   tool_id = data.archestra_mcp_server_tool.test.id
-  argument_name   = "path"
-  operator        = "contains"
-  value           = "/etc/"
-  action          = "block_always"
-  reason          = "Block access to system configuration files"
+  conditions = [
+    { key = "path", operator = "contains", value = "/etc/" },
+  ]
+  action = "block_always"
+  reason = "Block access to system configuration files"
 }
 `, rName)
 }
@@ -273,11 +272,11 @@ data "archestra_agent_tool" "test" {
 
 resource "archestra_tool_invocation_policy" "test" {
   tool_id = data.archestra_mcp_server_tool.test.id
-  argument_name   = "path"
-  operator        = "startsWith"
-  value           = "/var/log/"
-  action          = "allow_when_context_is_untrusted"
-  reason          = "Allow log file access in untrusted contexts"
+  conditions = [
+    { key = "path", operator = "startsWith", value = "/var/log/" },
+  ]
+  action = "allow_when_context_is_untrusted"
+  reason = "Allow log file access in untrusted contexts"
 }
 `, rName)
 }
@@ -320,11 +319,11 @@ data "archestra_agent_tool" "regex" {
 
 resource "archestra_tool_invocation_policy" "regex" {
   tool_id = data.archestra_mcp_server_tool.regex.id
-  argument_name   = "path"
-  operator      = "regex"
-  value         = "^/home/[a-z]+/.ssh/.*"
-  action        = "block_always"
-  reason        = "Block SSH key access using regex pattern"
+  conditions = [
+    { key = "path", operator = "regex", value = "^/home/[a-z]+/.ssh/.*" },
+  ]
+  action = "block_always"
+  reason = "Block SSH key access using regex pattern"
 }
 `, rName)
 }

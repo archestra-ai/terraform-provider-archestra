@@ -3,12 +3,12 @@
 page_title: "archestra_tool_invocation_policy Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an Archestra tool invocation policy.
+  Manages an Archestra tool invocation policy. A single policy may carry multiple conditions; ALL must match for the action to fire.
 ---
 
 # archestra_tool_invocation_policy (Resource)
 
-Manages an Archestra tool invocation policy.
+Manages an Archestra tool invocation policy. A single policy may carry multiple conditions; ALL must match for the action to fire.
 
 ## Example Usage
 
@@ -19,12 +19,23 @@ data "archestra_agent_tool" "file_write" {
 }
 
 resource "archestra_tool_invocation_policy" "block_system_paths" {
-  tool_id       = data.archestra_agent_tool.file_write.id
-  argument_name = "path"
-  operator      = "contains"
-  value         = "/etc/"
-  action        = "block_always"
-  reason        = "Block writes to system configuration directories"
+  tool_id = data.archestra_agent_tool.file_write.id
+  conditions = [
+    { key = "path", operator = "contains", value = "/etc/" },
+  ]
+  action = "block_always"
+  reason = "Block writes to system configuration directories"
+}
+
+# Multi-condition policy — ALL conditions must match for `action` to fire.
+resource "archestra_tool_invocation_policy" "block_dotfiles_in_home" {
+  tool_id = data.archestra_agent_tool.file_write.id
+  conditions = [
+    { key = "path", operator = "startsWith", value = "/home/" },
+    { key = "path", operator = "contains", value = "/." },
+  ]
+  action = "block_always"
+  reason = "Block writes that target hidden files under /home"
 }
 ```
 
@@ -33,16 +44,23 @@ resource "archestra_tool_invocation_policy" "block_system_paths" {
 
 ### Required
 
-- `action` (String) The action to take when the policy matches. Valid values: `allow_when_context_is_untrusted`, `block_when_context_is_untrusted`, `block_always`, `require_approval`
-- `argument_name` (String) The argument name to match
-- `operator` (String) The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`
+- `action` (String) Action to take when the policy matches. One of `allow_when_context_is_untrusted`, `block_when_context_is_untrusted`, `block_always`, `require_approval`.
+- `conditions` (Attributes List) Conditions evaluated against tool-call arguments. ALL must match for `action` to fire. (see [below for nested schema](#nestedatt--conditions))
 - `tool_id` (String) ID of the tool this policy applies to. This is the bare tool UUID — use `data.archestra_mcp_server_tool.<name>.id` or `archestra_agent_tool.<name>.tool_id`.
-- `value` (String) The value to compare against
 
 ### Optional
 
-- `reason` (String) Optional reason for the policy
+- `reason` (String) Optional reason describing why this policy exists.
 
 ### Read-Only
 
 - `id` (String) Policy identifier
+
+<a id="nestedatt--conditions"></a>
+### Nested Schema for `conditions`
+
+Required:
+
+- `key` (String) Argument name to match.
+- `operator` (String) Comparison operator. One of `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`.
+- `value` (String) Value to compare against.

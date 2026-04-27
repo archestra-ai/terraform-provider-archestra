@@ -3,12 +3,12 @@
 page_title: "archestra_trusted_data_policy Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an Archestra trusted data policy.
+  Manages an Archestra trusted data policy. A single policy may carry multiple conditions; ALL must match for the action to fire.
 ---
 
 # archestra_trusted_data_policy (Resource)
 
-Manages an Archestra trusted data policy.
+Manages an Archestra trusted data policy. A single policy may carry multiple conditions; ALL must match for the action to fire.
 
 ## Example Usage
 
@@ -19,12 +19,12 @@ data "archestra_agent_tool" "fetch_url" {
 }
 
 resource "archestra_trusted_data_policy" "trust_company_api" {
-  tool_id        = data.archestra_agent_tool.fetch_url.id
-  description    = "Mark data from company API as trusted"
-  attribute_path = "url"
-  operator       = "contains"
-  value          = "api.company.com"
-  action         = "mark_as_trusted"
+  tool_id     = data.archestra_agent_tool.fetch_url.id
+  description = "Mark data from company API as trusted"
+  conditions = [
+    { key = "url", operator = "contains", value = "api.company.com" },
+  ]
+  action = "mark_as_trusted"
 }
 ```
 
@@ -33,16 +33,23 @@ resource "archestra_trusted_data_policy" "trust_company_api" {
 
 ### Required
 
-- `attribute_path` (String) The attribute path to match
+- `conditions` (Attributes List) Conditions evaluated against the data attribute. ALL must match for `action` to fire. Use `key` for the JSON path of the attribute being matched. (see [below for nested schema](#nestedatt--conditions))
 - `description` (String) Description of the policy
-- `operator` (String) The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`
 - `tool_id` (String) ID of the tool this policy applies to. This is the bare tool UUID — use `data.archestra_mcp_server_tool.<name>.id` or `archestra_agent_tool.<name>.tool_id`.
-- `value` (String) The value to compare against
 
 ### Optional
 
-- `action` (String) The action to take when the policy matches. Valid values: `mark_as_trusted`, `mark_as_untrusted`, `block_always`, `sanitize_with_dual_llm` (default: `mark_as_trusted`)
+- `action` (String) Action to take when the policy matches. One of `mark_as_trusted`, `mark_as_untrusted`, `block_always`, `sanitize_with_dual_llm`. Default `mark_as_trusted`.
 
 ### Read-Only
 
 - `id` (String) Policy identifier
+
+<a id="nestedatt--conditions"></a>
+### Nested Schema for `conditions`
+
+Required:
+
+- `key` (String) Attribute path to match (e.g., `payload.role`).
+- `operator` (String) Comparison operator. One of `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`.
+- `value` (String) Value to compare against.
