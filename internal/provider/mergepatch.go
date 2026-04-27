@@ -66,6 +66,16 @@ type AttrSpec struct {
 	Encoder func(any) any
 	// Sensitive mirrors the schema's `Sensitive: true`. Drives log masking.
 	Sensitive bool
+	// OmitOnNull, when true, causes plan-null + prior-non-null transitions
+	// to be omitted from the patch instead of emitted as JSON null.
+	//
+	// Use for backend fields whose zod schema is `.optional()` but not
+	// `.nullable().optional()` — sending null gets rejected as
+	// "Invalid input: expected ..., received null". With this flag, removing
+	// the attribute from HCL is interpreted as "stop managing" rather than
+	// "explicitly clear", which matches the backend's actual semantics for
+	// non-nullable optional fields.
+	OmitOnNull bool
 }
 
 // MergePatch returns an RFC 7396 JSON Merge Patch representing the diff
@@ -138,6 +148,9 @@ func MergePatch(
 		}
 
 		if planV.IsNull() {
+			if spec.OmitOnNull {
+				continue
+			}
 			out[spec.JSONName] = nil
 			continue
 		}

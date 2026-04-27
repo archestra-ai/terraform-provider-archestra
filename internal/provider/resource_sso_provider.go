@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -8,16 +9,17 @@ import (
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 var _ resource.Resource = &SsoProviderResource{}
@@ -314,15 +316,20 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 						},
 					},
 					"mapping": schema.SingleNestedBlock{
-						MarkdownDescription: "Attribute mapping for user fields.",
+						MarkdownDescription: "Attribute mapping for user fields. The `id` field is required by the better-auth SAML library; defaults to `\"sub\"` if unset.",
 						Attributes: map[string]schema.Attribute{
 							"email":          schema.StringAttribute{Optional: true},
 							"email_verified": schema.StringAttribute{Optional: true},
 							"extra_fields":   schema.MapAttribute{Optional: true, ElementType: types.StringType},
 							"first_name":     schema.StringAttribute{Optional: true},
-							"id":             schema.StringAttribute{Optional: true},
-							"last_name":      schema.StringAttribute{Optional: true},
-							"name":           schema.StringAttribute{Optional: true},
+							"id": schema.StringAttribute{
+								Optional:            true,
+								Computed:            true,
+								Default:             stringdefault.StaticString("sub"),
+								MarkdownDescription: "SAML attribute that maps to the user identity. Defaults to `\"sub\"` (the better-auth SAML library treats this as required).",
+							},
+							"last_name": schema.StringAttribute{Optional: true},
+							"name":      schema.StringAttribute{Optional: true},
 						},
 					},
 				},
@@ -382,39 +389,30 @@ func (r *SsoProviderResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	body := client.CreateIdentityProviderJSONRequestBody{
-		Domain:     data.Domain.ValueString(),
-		Issuer:     data.Issuer.ValueString(),
-		ProviderId: data.ProviderID.ValueString(),
+	priorNull := tftypes.NewValue(req.Plan.Schema.Type().TerraformType(ctx), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, priorNull, ssoProviderAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	LogPatch(ctx, "archestra_sso_provider Create", patch, ssoProviderAttrSpec)
+
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("unable to marshal merge patch: %s", err))
+		return
 	}
 
-	if data.OidcConfig != nil {
-		body.OidcConfig = expandOidcConfigCreate(*data.OidcConfig)
-	}
-
-	if data.SamlConfig != nil {
-		body.SamlConfig = expandSamlConfigCreate(*data.SamlConfig, &resp.Diagnostics)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-	}
-
-	if data.RoleMapping != nil {
-		body.RoleMapping = expandRoleMapping(data.RoleMapping)
-	}
-
-	if data.TeamSyncConfig != nil {
-		body.TeamSyncConfig = expandTeamSyncConfig(data.TeamSyncConfig)
-	}
-
-	apiResp, err := r.client.CreateIdentityProviderWithResponse(ctx, body)
+	apiResp, err := r.client.CreateIdentityProviderWithBodyWithResponse(ctx, "application/json", bytes.NewReader(body))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create SSO provider: %s", err))
 		return
 	}
 
 	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()))
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d: %s", apiResp.StatusCode(), string(apiResp.Body)),
+		)
 		return
 	}
 
@@ -755,50 +753,29 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	body := client.UpdateIdentityProviderJSONRequestBody{}
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, ssoProviderAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	LogPatch(ctx, "archestra_sso_provider Update", patch, ssoProviderAttrSpec)
 
-	if !plan.Domain.IsNull() {
-		domain := plan.Domain.ValueString()
-		body.Domain = &domain
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("unable to marshal merge patch: %s", err))
+		return
 	}
 
-	if !plan.Issuer.IsNull() {
-		issuer := plan.Issuer.ValueString()
-		body.Issuer = &issuer
-	}
-
-	if !plan.ProviderID.IsNull() {
-		pid := plan.ProviderID.ValueString()
-		body.ProviderId = &pid
-	}
-
-	if plan.OidcConfig != nil {
-		body.OidcConfig = expandOidcConfigUpdate(*plan.OidcConfig)
-	}
-
-	if plan.SamlConfig != nil {
-		body.SamlConfig = expandSamlConfigUpdate(*plan.SamlConfig, &resp.Diagnostics)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-	}
-
-	if plan.RoleMapping != nil {
-		body.RoleMapping = expandRoleMapping(plan.RoleMapping)
-	}
-
-	if plan.TeamSyncConfig != nil {
-		body.TeamSyncConfig = expandTeamSyncConfig(plan.TeamSyncConfig)
-	}
-
-	apiResp, err := r.client.UpdateIdentityProviderWithResponse(ctx, state.ID.ValueString(), body)
+	apiResp, err := r.client.UpdateIdentityProviderWithBodyWithResponse(ctx, state.ID.ValueString(), "application/json", bytes.NewReader(body))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update SSO provider: %s", err))
 		return
 	}
 
 	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()))
+		resp.Diagnostics.AddError(
+			"Unexpected API Response",
+			fmt.Sprintf("Expected 200 OK, got status %d: %s", apiResp.StatusCode(), string(apiResp.Body)),
+		)
 		return
 	}
 
@@ -1012,525 +989,6 @@ func validateSsoConfigChoice(oidc *OidcConfigModel, saml *SamlConfigModel) error
 	return nil
 }
 
-func buildOidcConfig(cfg OidcConfigModel) *struct {
-	AuthorizationEndpoint   *string `json:"authorizationEndpoint,omitempty"`
-	ClientId                string  `json:"clientId"`
-	ClientSecret            string  `json:"clientSecret"`
-	DiscoveryEndpoint       string  `json:"discoveryEndpoint"`
-	EnableRpInitiatedLogout *bool   `json:"enableRpInitiatedLogout,omitempty"`
-	Hd                      *string `json:"hd,omitempty"`
-	Issuer                  string  `json:"issuer"`
-	JwksEndpoint            *string `json:"jwksEndpoint,omitempty"`
-	Mapping                 *struct {
-		Email         *string            `json:"email,omitempty"`
-		EmailVerified *string            `json:"emailVerified,omitempty"`
-		ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-		Id            *string            `json:"id,omitempty"`
-		Image         *string            `json:"image,omitempty"`
-		Name          *string            `json:"name,omitempty"`
-	} `json:"mapping,omitempty"`
-	OverrideUserInfo *bool     `json:"overrideUserInfo,omitempty"`
-	Pkce             bool      `json:"pkce"`
-	Scopes           *[]string `json:"scopes,omitempty"`
-	SkipDiscovery    *bool     `json:"skipDiscovery,omitempty"`
-	TokenEndpoint    *string   `json:"tokenEndpoint,omitempty"`
-	UserInfoEndpoint *string   `json:"userInfoEndpoint,omitempty"`
-} {
-	out := &struct {
-		AuthorizationEndpoint   *string `json:"authorizationEndpoint,omitempty"`
-		ClientId                string  `json:"clientId"`
-		ClientSecret            string  `json:"clientSecret"`
-		DiscoveryEndpoint       string  `json:"discoveryEndpoint"`
-		EnableRpInitiatedLogout *bool   `json:"enableRpInitiatedLogout,omitempty"`
-		Hd                      *string `json:"hd,omitempty"`
-		Issuer                  string  `json:"issuer"`
-		JwksEndpoint            *string `json:"jwksEndpoint,omitempty"`
-		Mapping                 *struct {
-			Email         *string            `json:"email,omitempty"`
-			EmailVerified *string            `json:"emailVerified,omitempty"`
-			ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-			Id            *string            `json:"id,omitempty"`
-			Image         *string            `json:"image,omitempty"`
-			Name          *string            `json:"name,omitempty"`
-		} `json:"mapping,omitempty"`
-		OverrideUserInfo *bool     `json:"overrideUserInfo,omitempty"`
-		Pkce             bool      `json:"pkce"`
-		Scopes           *[]string `json:"scopes,omitempty"`
-		SkipDiscovery    *bool     `json:"skipDiscovery,omitempty"`
-		TokenEndpoint    *string   `json:"tokenEndpoint,omitempty"`
-		UserInfoEndpoint *string   `json:"userInfoEndpoint,omitempty"`
-	}{
-		ClientId:          cfg.ClientID.ValueString(),
-		ClientSecret:      cfg.ClientSecret.ValueString(),
-		DiscoveryEndpoint: cfg.DiscoveryEndpoint.ValueString(),
-		Issuer:            cfg.Issuer.ValueString(),
-		Pkce:              cfg.Pkce.ValueBool(),
-	}
-
-	if !cfg.AuthorizationEndpoint.IsNull() {
-		v := cfg.AuthorizationEndpoint.ValueString()
-		out.AuthorizationEndpoint = &v
-	}
-	if !cfg.TokenEndpoint.IsNull() {
-		v := cfg.TokenEndpoint.ValueString()
-		out.TokenEndpoint = &v
-	}
-	if !cfg.UserInfoEndpoint.IsNull() {
-		v := cfg.UserInfoEndpoint.ValueString()
-		out.UserInfoEndpoint = &v
-	}
-	if !cfg.JwksEndpoint.IsNull() {
-		v := cfg.JwksEndpoint.ValueString()
-		out.JwksEndpoint = &v
-	}
-	if len(cfg.Scopes) > 0 {
-		scopes := make([]string, 0, len(cfg.Scopes))
-		for _, s := range cfg.Scopes {
-			if !s.IsNull() {
-				scopes = append(scopes, s.ValueString())
-			}
-		}
-		out.Scopes = &scopes
-	}
-	if !cfg.OverrideUserInfo.IsNull() {
-		v := cfg.OverrideUserInfo.ValueBool()
-		out.OverrideUserInfo = &v
-	}
-	if !cfg.SkipDiscovery.IsNull() {
-		v := cfg.SkipDiscovery.ValueBool()
-		out.SkipDiscovery = &v
-	}
-	if !cfg.EnableRpInitiatedLogout.IsNull() {
-		v := cfg.EnableRpInitiatedLogout.ValueBool()
-		out.EnableRpInitiatedLogout = &v
-	}
-	if !cfg.Hd.IsNull() {
-		v := cfg.Hd.ValueString()
-		out.Hd = &v
-	}
-	if cfg.Mapping != nil {
-		out.Mapping = expandOidcMapping(cfg.Mapping)
-	}
-
-	return out
-}
-
-func expandOidcConfigCreate(cfg OidcConfigModel) *struct {
-	AuthorizationEndpoint        *string `json:"authorizationEndpoint,omitempty"`
-	ClientId                     string  `json:"clientId"`
-	ClientSecret                 string  `json:"clientSecret"`
-	DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
-	EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
-	EnterpriseManagedCredentials *struct {
-		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
-		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
-		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
-		ExchangeStrategy            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
-		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
-		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-		SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
-		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
-		TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-	} `json:"enterpriseManagedCredentials,omitempty"`
-	Hd           *string `json:"hd,omitempty"`
-	Issuer       string  `json:"issuer"`
-	JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
-	Mapping      *struct {
-		Email         *string            `json:"email,omitempty"`
-		EmailVerified *string            `json:"emailVerified,omitempty"`
-		ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-		Id            *string            `json:"id,omitempty"`
-		Image         *string            `json:"image,omitempty"`
-		Name          *string            `json:"name,omitempty"`
-	} `json:"mapping,omitempty"`
-	OverrideUserInfo            *bool                                                                       `json:"overrideUserInfo,omitempty"`
-	Pkce                        bool                                                                        `json:"pkce"`
-	Scopes                      *[]string                                                                   `json:"scopes,omitempty"`
-	SkipDiscovery               *bool                                                                       `json:"skipDiscovery,omitempty"`
-	TokenEndpoint               *string                                                                     `json:"tokenEndpoint,omitempty"`
-	TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-	UserInfoEndpoint            *string                                                                     `json:"userInfoEndpoint,omitempty"`
-} {
-	base := buildOidcConfig(cfg)
-	out := &struct {
-		AuthorizationEndpoint        *string `json:"authorizationEndpoint,omitempty"`
-		ClientId                     string  `json:"clientId"`
-		ClientSecret                 string  `json:"clientSecret"`
-		DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
-		EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
-		EnterpriseManagedCredentials *struct {
-			ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
-			ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
-			ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
-			ExchangeStrategy            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
-			PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
-			PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-			SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
-			TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
-			TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-		} `json:"enterpriseManagedCredentials,omitempty"`
-		Hd           *string `json:"hd,omitempty"`
-		Issuer       string  `json:"issuer"`
-		JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
-		Mapping      *struct {
-			Email         *string            `json:"email,omitempty"`
-			EmailVerified *string            `json:"emailVerified,omitempty"`
-			ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-			Id            *string            `json:"id,omitempty"`
-			Image         *string            `json:"image,omitempty"`
-			Name          *string            `json:"name,omitempty"`
-		} `json:"mapping,omitempty"`
-		OverrideUserInfo            *bool                                                                       `json:"overrideUserInfo,omitempty"`
-		Pkce                        bool                                                                        `json:"pkce"`
-		Scopes                      *[]string                                                                   `json:"scopes,omitempty"`
-		SkipDiscovery               *bool                                                                       `json:"skipDiscovery,omitempty"`
-		TokenEndpoint               *string                                                                     `json:"tokenEndpoint,omitempty"`
-		TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-		UserInfoEndpoint            *string                                                                     `json:"userInfoEndpoint,omitempty"`
-	}{
-		AuthorizationEndpoint:   base.AuthorizationEndpoint,
-		ClientId:                base.ClientId,
-		ClientSecret:            base.ClientSecret,
-		DiscoveryEndpoint:       base.DiscoveryEndpoint,
-		Issuer:                  base.Issuer,
-		JwksEndpoint:            base.JwksEndpoint,
-		Mapping:                 base.Mapping,
-		OverrideUserInfo:        base.OverrideUserInfo,
-		Pkce:                    base.Pkce,
-		Scopes:                  base.Scopes,
-		SkipDiscovery:           base.SkipDiscovery,
-		EnableRpInitiatedLogout: base.EnableRpInitiatedLogout,
-		Hd:                      base.Hd,
-		TokenEndpoint:           base.TokenEndpoint,
-		UserInfoEndpoint:        base.UserInfoEndpoint,
-	}
-
-	if !cfg.TokenEndpointAuthentication.IsNull() {
-		v := cfg.TokenEndpointAuthentication.ValueString()
-		cast := client.CreateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication(v)
-		out.TokenEndpointAuthentication = &cast
-	}
-
-	if cfg.EnterpriseManagedCredentials != nil {
-		out.EnterpriseManagedCredentials = expandEnterpriseManagedCredentialsCreate(cfg.EnterpriseManagedCredentials)
-	}
-
-	return out
-}
-
-func expandOidcConfigUpdate(cfg OidcConfigModel) *struct {
-	AuthorizationEndpoint        *string `json:"authorizationEndpoint,omitempty"`
-	ClientId                     string  `json:"clientId"`
-	ClientSecret                 string  `json:"clientSecret"`
-	DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
-	EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
-	EnterpriseManagedCredentials *struct {
-		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
-		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
-		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
-		ExchangeStrategy            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
-		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
-		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-		SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
-		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
-		TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-	} `json:"enterpriseManagedCredentials,omitempty"`
-	Hd           *string `json:"hd,omitempty"`
-	Issuer       string  `json:"issuer"`
-	JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
-	Mapping      *struct {
-		Email         *string            `json:"email,omitempty"`
-		EmailVerified *string            `json:"emailVerified,omitempty"`
-		ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-		Id            *string            `json:"id,omitempty"`
-		Image         *string            `json:"image,omitempty"`
-		Name          *string            `json:"name,omitempty"`
-	} `json:"mapping,omitempty"`
-	OverrideUserInfo            *bool                                                                       `json:"overrideUserInfo,omitempty"`
-	Pkce                        bool                                                                        `json:"pkce"`
-	Scopes                      *[]string                                                                   `json:"scopes,omitempty"`
-	SkipDiscovery               *bool                                                                       `json:"skipDiscovery,omitempty"`
-	TokenEndpoint               *string                                                                     `json:"tokenEndpoint,omitempty"`
-	TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-	UserInfoEndpoint            *string                                                                     `json:"userInfoEndpoint,omitempty"`
-} {
-	base := buildOidcConfig(cfg)
-	out := &struct {
-		AuthorizationEndpoint        *string `json:"authorizationEndpoint,omitempty"`
-		ClientId                     string  `json:"clientId"`
-		ClientSecret                 string  `json:"clientSecret"`
-		DiscoveryEndpoint            string  `json:"discoveryEndpoint"`
-		EnableRpInitiatedLogout      *bool   `json:"enableRpInitiatedLogout,omitempty"`
-		EnterpriseManagedCredentials *struct {
-			ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
-			ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
-			ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
-			ExchangeStrategy            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
-			PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
-			PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-			SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
-			TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
-			TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-		} `json:"enterpriseManagedCredentials,omitempty"`
-		Hd           *string `json:"hd,omitempty"`
-		Issuer       string  `json:"issuer"`
-		JwksEndpoint *string `json:"jwksEndpoint,omitempty"`
-		Mapping      *struct {
-			Email         *string            `json:"email,omitempty"`
-			EmailVerified *string            `json:"emailVerified,omitempty"`
-			ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-			Id            *string            `json:"id,omitempty"`
-			Image         *string            `json:"image,omitempty"`
-			Name          *string            `json:"name,omitempty"`
-		} `json:"mapping,omitempty"`
-		OverrideUserInfo            *bool                                                                       `json:"overrideUserInfo,omitempty"`
-		Pkce                        bool                                                                        `json:"pkce"`
-		Scopes                      *[]string                                                                   `json:"scopes,omitempty"`
-		SkipDiscovery               *bool                                                                       `json:"skipDiscovery,omitempty"`
-		TokenEndpoint               *string                                                                     `json:"tokenEndpoint,omitempty"`
-		TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-		UserInfoEndpoint            *string                                                                     `json:"userInfoEndpoint,omitempty"`
-	}{
-		AuthorizationEndpoint:   base.AuthorizationEndpoint,
-		ClientId:                base.ClientId,
-		ClientSecret:            base.ClientSecret,
-		DiscoveryEndpoint:       base.DiscoveryEndpoint,
-		Issuer:                  base.Issuer,
-		JwksEndpoint:            base.JwksEndpoint,
-		Mapping:                 base.Mapping,
-		OverrideUserInfo:        base.OverrideUserInfo,
-		Pkce:                    base.Pkce,
-		Scopes:                  base.Scopes,
-		SkipDiscovery:           base.SkipDiscovery,
-		EnableRpInitiatedLogout: base.EnableRpInitiatedLogout,
-		Hd:                      base.Hd,
-		TokenEndpoint:           base.TokenEndpoint,
-		UserInfoEndpoint:        base.UserInfoEndpoint,
-	}
-
-	if !cfg.TokenEndpointAuthentication.IsNull() {
-		v := cfg.TokenEndpointAuthentication.ValueString()
-		cast := client.UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication(v)
-		out.TokenEndpointAuthentication = &cast
-	}
-
-	if cfg.EnterpriseManagedCredentials != nil {
-		out.EnterpriseManagedCredentials = expandEnterpriseManagedCredentialsUpdate(cfg.EnterpriseManagedCredentials)
-	}
-
-	return out
-}
-
-func expandOidcMapping(mapping *OidcMappingModel) *struct {
-	Email         *string            `json:"email,omitempty"`
-	EmailVerified *string            `json:"emailVerified,omitempty"`
-	ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-	Id            *string            `json:"id,omitempty"`
-	Image         *string            `json:"image,omitempty"`
-	Name          *string            `json:"name,omitempty"`
-} {
-	if mapping == nil {
-		return nil
-	}
-	out := &struct {
-		Email         *string            `json:"email,omitempty"`
-		EmailVerified *string            `json:"emailVerified,omitempty"`
-		ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-		Id            *string            `json:"id,omitempty"`
-		Image         *string            `json:"image,omitempty"`
-		Name          *string            `json:"name,omitempty"`
-	}{}
-
-	if !mapping.Email.IsNull() {
-		v := mapping.Email.ValueString()
-		out.Email = &v
-	}
-	if !mapping.EmailVerified.IsNull() {
-		v := mapping.EmailVerified.ValueString()
-		out.EmailVerified = &v
-	}
-	// extra_fields is optional; omit from payload to avoid leaking unknowns
-	if !mapping.ID.IsNull() {
-		v := mapping.ID.ValueString()
-		out.Id = &v
-	}
-	if !mapping.Image.IsNull() {
-		v := mapping.Image.ValueString()
-		out.Image = &v
-	}
-	if !mapping.Name.IsNull() {
-		v := mapping.Name.ValueString()
-		out.Name = &v
-	}
-
-	return out
-}
-
-func expandSamlConfigCreate(cfg SamlConfigModel, diags *diag.Diagnostics) *struct {
-	AdditionalParams *map[string]interface{} `json:"additionalParams,omitempty"`
-	Audience         *string                 `json:"audience,omitempty"`
-	CallbackUrl      string                  `json:"callbackUrl"`
-	Cert             string                  `json:"cert"`
-	DecryptionPvk    *string                 `json:"decryptionPvk,omitempty"`
-	DigestAlgorithm  *string                 `json:"digestAlgorithm,omitempty"`
-	EntryPoint       string                  `json:"entryPoint"`
-	IdentifierFormat *string                 `json:"identifierFormat,omitempty"`
-	IdpMetadata      *struct {
-		Cert                 *string `json:"cert,omitempty"`
-		EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-		EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-		EntityID             *string `json:"entityID,omitempty"`
-		EntityURL            *string `json:"entityURL,omitempty"`
-		IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-		Metadata             *string `json:"metadata,omitempty"`
-		PrivateKey           *string `json:"privateKey,omitempty"`
-		PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-		RedirectURL          *string `json:"redirectURL,omitempty"`
-		SingleSignOnService  *[]struct {
-			Binding  string `json:"Binding"`
-			Location string `json:"Location"`
-		} `json:"singleSignOnService,omitempty"`
-	} `json:"idpMetadata,omitempty"`
-	Issuer  string `json:"issuer"`
-	Mapping *struct {
-		Email         *string            `json:"email,omitempty"`
-		EmailVerified *string            `json:"emailVerified,omitempty"`
-		ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-		FirstName     *string            `json:"firstName,omitempty"`
-		Id            *string            `json:"id,omitempty"`
-		LastName      *string            `json:"lastName,omitempty"`
-		Name          *string            `json:"name,omitempty"`
-	} `json:"mapping,omitempty"`
-	PrivateKey         *string `json:"privateKey,omitempty"`
-	SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty"`
-	SpMetadata         struct {
-		Binding              *string `json:"binding,omitempty"`
-		EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-		EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-		EntityID             *string `json:"entityID,omitempty"`
-		IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-		Metadata             *string `json:"metadata,omitempty"`
-		PrivateKey           *string `json:"privateKey,omitempty"`
-		PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-	} `json:"spMetadata"`
-	WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
-} {
-	out := &struct {
-		AdditionalParams *map[string]interface{} `json:"additionalParams,omitempty"`
-		Audience         *string                 `json:"audience,omitempty"`
-		CallbackUrl      string                  `json:"callbackUrl"`
-		Cert             string                  `json:"cert"`
-		DecryptionPvk    *string                 `json:"decryptionPvk,omitempty"`
-		DigestAlgorithm  *string                 `json:"digestAlgorithm,omitempty"`
-		EntryPoint       string                  `json:"entryPoint"`
-		IdentifierFormat *string                 `json:"identifierFormat,omitempty"`
-		IdpMetadata      *struct {
-			Cert                 *string `json:"cert,omitempty"`
-			EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-			EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-			EntityID             *string `json:"entityID,omitempty"`
-			EntityURL            *string `json:"entityURL,omitempty"`
-			IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-			Metadata             *string `json:"metadata,omitempty"`
-			PrivateKey           *string `json:"privateKey,omitempty"`
-			PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-			RedirectURL          *string `json:"redirectURL,omitempty"`
-			SingleSignOnService  *[]struct {
-				Binding  string `json:"Binding"`
-				Location string `json:"Location"`
-			} `json:"singleSignOnService,omitempty"`
-		} `json:"idpMetadata,omitempty"`
-		Issuer  string `json:"issuer"`
-		Mapping *struct {
-			Email         *string            `json:"email,omitempty"`
-			EmailVerified *string            `json:"emailVerified,omitempty"`
-			ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-			FirstName     *string            `json:"firstName,omitempty"`
-			Id            *string            `json:"id,omitempty"`
-			LastName      *string            `json:"lastName,omitempty"`
-			Name          *string            `json:"name,omitempty"`
-		} `json:"mapping,omitempty"`
-		PrivateKey         *string `json:"privateKey,omitempty"`
-		SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty"`
-		SpMetadata         struct {
-			Binding              *string `json:"binding,omitempty"`
-			EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-			EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-			EntityID             *string `json:"entityID,omitempty"`
-			IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-			Metadata             *string `json:"metadata,omitempty"`
-			PrivateKey           *string `json:"privateKey,omitempty"`
-			PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-		} `json:"spMetadata"`
-		WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
-	}{
-		CallbackUrl: cfg.CallbackURL.ValueString(),
-		Cert:        cfg.Cert.ValueString(),
-		EntryPoint:  cfg.EntryPoint.ValueString(),
-		Issuer:      cfg.Issuer.ValueString(),
-	}
-
-	if !cfg.Audience.IsNull() {
-		v := cfg.Audience.ValueString()
-		out.Audience = &v
-	}
-	if !cfg.DigestAlgorithm.IsNull() {
-		v := cfg.DigestAlgorithm.ValueString()
-		out.DigestAlgorithm = &v
-	}
-	if !cfg.IdentifierFormat.IsNull() {
-		v := cfg.IdentifierFormat.ValueString()
-		out.IdentifierFormat = &v
-	}
-	if !cfg.DecryptionPvk.IsNull() {
-		v := cfg.DecryptionPvk.ValueString()
-		out.DecryptionPvk = &v
-	}
-	if !cfg.PrivateKey.IsNull() {
-		v := cfg.PrivateKey.ValueString()
-		out.PrivateKey = &v
-	}
-	if !cfg.SignatureAlgorithm.IsNull() {
-		v := cfg.SignatureAlgorithm.ValueString()
-		out.SignatureAlgorithm = &v
-	}
-	if !cfg.WantAssertionsSigned.IsNull() {
-		v := cfg.WantAssertionsSigned.ValueBool()
-		out.WantAssertionsSigned = &v
-	}
-	if cfg.IdpMetadata != nil {
-		out.IdpMetadata = expandSamlIdpMetadata(cfg.IdpMetadata)
-	}
-	if cfg.SpMetadata != nil {
-		out.SpMetadata = *expandSamlSpMetadata(cfg.SpMetadata)
-	}
-	if cfg.Mapping != nil {
-		out.Mapping = expandSamlMapping(cfg.Mapping)
-	}
-	if ap, err := decodeAdditionalParams(cfg.AdditionalParams); err != nil {
-		diags.AddAttributeError(
-			path.Root("saml_config").AtName("additional_params"),
-			"Invalid additional_params JSON",
-			err.Error(),
-		)
-	} else if ap != nil {
-		out.AdditionalParams = ap
-	}
-
-	return out
-}
-
-func decodeAdditionalParams(v jsontypes.Normalized) (*map[string]interface{}, error) {
-	if v.IsNull() || v.IsUnknown() || v.ValueString() == "" {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal([]byte(v.ValueString()), &m); err != nil {
-		return nil, err
-	}
-	return &m, nil
-}
-
 func encodeAdditionalParams(m *map[string]interface{}) jsontypes.Normalized {
 	if m == nil {
 		return jsontypes.NewNormalizedNull()
@@ -1540,352 +998,6 @@ func encodeAdditionalParams(m *map[string]interface{}) jsontypes.Normalized {
 		return jsontypes.NewNormalizedNull()
 	}
 	return jsontypes.NewNormalizedValue(string(b))
-}
-
-func expandSamlConfigUpdate(cfg SamlConfigModel, diags *diag.Diagnostics) *struct {
-	AdditionalParams *map[string]interface{} `json:"additionalParams,omitempty"`
-	Audience         *string                 `json:"audience,omitempty"`
-	CallbackUrl      string                  `json:"callbackUrl"`
-	Cert             string                  `json:"cert"`
-	DecryptionPvk    *string                 `json:"decryptionPvk,omitempty"`
-	DigestAlgorithm  *string                 `json:"digestAlgorithm,omitempty"`
-	EntryPoint       string                  `json:"entryPoint"`
-	IdentifierFormat *string                 `json:"identifierFormat,omitempty"`
-	IdpMetadata      *struct {
-		Cert                 *string `json:"cert,omitempty"`
-		EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-		EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-		EntityID             *string `json:"entityID,omitempty"`
-		EntityURL            *string `json:"entityURL,omitempty"`
-		IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-		Metadata             *string `json:"metadata,omitempty"`
-		PrivateKey           *string `json:"privateKey,omitempty"`
-		PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-		RedirectURL          *string `json:"redirectURL,omitempty"`
-		SingleSignOnService  *[]struct {
-			Binding  string `json:"Binding"`
-			Location string `json:"Location"`
-		} `json:"singleSignOnService,omitempty"`
-	} `json:"idpMetadata,omitempty"`
-	Issuer  string `json:"issuer"`
-	Mapping *struct {
-		Email         *string            `json:"email,omitempty"`
-		EmailVerified *string            `json:"emailVerified,omitempty"`
-		ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-		FirstName     *string            `json:"firstName,omitempty"`
-		Id            *string            `json:"id,omitempty"`
-		LastName      *string            `json:"lastName,omitempty"`
-		Name          *string            `json:"name,omitempty"`
-	} `json:"mapping,omitempty"`
-	PrivateKey         *string `json:"privateKey,omitempty"`
-	SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty"`
-	SpMetadata         struct {
-		Binding              *string `json:"binding,omitempty"`
-		EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-		EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-		EntityID             *string `json:"entityID,omitempty"`
-		IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-		Metadata             *string `json:"metadata,omitempty"`
-		PrivateKey           *string `json:"privateKey,omitempty"`
-		PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-	} `json:"spMetadata"`
-	WantAssertionsSigned *bool `json:"wantAssertionsSigned,omitempty"`
-} {
-	return expandSamlConfigCreate(cfg, diags)
-}
-
-func expandSamlIdpMetadata(md *SamlIdpMetadata) *struct {
-	Cert                 *string `json:"cert,omitempty"`
-	EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-	EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-	EntityID             *string `json:"entityID,omitempty"`
-	EntityURL            *string `json:"entityURL,omitempty"`
-	IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-	Metadata             *string `json:"metadata,omitempty"`
-	PrivateKey           *string `json:"privateKey,omitempty"`
-	PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-	RedirectURL          *string `json:"redirectURL,omitempty"`
-	SingleSignOnService  *[]struct {
-		Binding  string `json:"Binding"`
-		Location string `json:"Location"`
-	} `json:"singleSignOnService,omitempty"`
-} {
-	if md == nil {
-		return nil
-	}
-	out := &struct {
-		Cert                 *string `json:"cert,omitempty"`
-		EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-		EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-		EntityID             *string `json:"entityID,omitempty"`
-		EntityURL            *string `json:"entityURL,omitempty"`
-		IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-		Metadata             *string `json:"metadata,omitempty"`
-		PrivateKey           *string `json:"privateKey,omitempty"`
-		PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-		RedirectURL          *string `json:"redirectURL,omitempty"`
-		SingleSignOnService  *[]struct {
-			Binding  string `json:"Binding"`
-			Location string `json:"Location"`
-		} `json:"singleSignOnService,omitempty"`
-	}{}
-
-	if !md.Cert.IsNull() {
-		v := md.Cert.ValueString()
-		out.Cert = &v
-	}
-	if !md.EncPrivateKey.IsNull() {
-		v := md.EncPrivateKey.ValueString()
-		out.EncPrivateKey = &v
-	}
-	if !md.EncPrivateKeyPass.IsNull() {
-		v := md.EncPrivateKeyPass.ValueString()
-		out.EncPrivateKeyPass = &v
-	}
-	if !md.EntityID.IsNull() {
-		v := md.EntityID.ValueString()
-		out.EntityID = &v
-	}
-	if !md.EntityURL.IsNull() {
-		v := md.EntityURL.ValueString()
-		out.EntityURL = &v
-	}
-	if !md.IsAssertionEncrypted.IsNull() {
-		v := md.IsAssertionEncrypted.ValueBool()
-		out.IsAssertionEncrypted = &v
-	}
-	if !md.Metadata.IsNull() {
-		v := md.Metadata.ValueString()
-		out.Metadata = &v
-	}
-	if !md.PrivateKey.IsNull() {
-		v := md.PrivateKey.ValueString()
-		out.PrivateKey = &v
-	}
-	if !md.PrivateKeyPass.IsNull() {
-		v := md.PrivateKeyPass.ValueString()
-		out.PrivateKeyPass = &v
-	}
-	if !md.RedirectURL.IsNull() {
-		v := md.RedirectURL.ValueString()
-		out.RedirectURL = &v
-	}
-	if len(md.SingleSignOnService) > 0 {
-		services := make([]struct {
-			Binding  string `json:"Binding"`
-			Location string `json:"Location"`
-		}, 0, len(md.SingleSignOnService))
-		for _, svc := range md.SingleSignOnService {
-			if svc.Binding.IsNull() || svc.Location.IsNull() {
-				continue
-			}
-			services = append(services, struct {
-				Binding  string `json:"Binding"`
-				Location string `json:"Location"`
-			}{Binding: svc.Binding.ValueString(), Location: svc.Location.ValueString()})
-		}
-		if len(services) > 0 {
-			out.SingleSignOnService = &services
-		}
-	}
-
-	return out
-}
-
-func expandSamlSpMetadata(md *SamlSpMetadata) *struct {
-	Binding              *string `json:"binding,omitempty"`
-	EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-	EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-	EntityID             *string `json:"entityID,omitempty"`
-	IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-	Metadata             *string `json:"metadata,omitempty"`
-	PrivateKey           *string `json:"privateKey,omitempty"`
-	PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-} {
-	if md == nil {
-		return nil
-	}
-	out := &struct {
-		Binding              *string `json:"binding,omitempty"`
-		EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
-		EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
-		EntityID             *string `json:"entityID,omitempty"`
-		IsAssertionEncrypted *bool   `json:"isAssertionEncrypted,omitempty"`
-		Metadata             *string `json:"metadata,omitempty"`
-		PrivateKey           *string `json:"privateKey,omitempty"`
-		PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
-	}{}
-
-	if !md.Binding.IsNull() {
-		v := md.Binding.ValueString()
-		out.Binding = &v
-	}
-	if !md.EncPrivateKey.IsNull() {
-		v := md.EncPrivateKey.ValueString()
-		out.EncPrivateKey = &v
-	}
-	if !md.EncPrivateKeyPass.IsNull() {
-		v := md.EncPrivateKeyPass.ValueString()
-		out.EncPrivateKeyPass = &v
-	}
-	if !md.EntityID.IsNull() {
-		v := md.EntityID.ValueString()
-		out.EntityID = &v
-	}
-	if !md.IsAssertionEncrypted.IsNull() {
-		v := md.IsAssertionEncrypted.ValueBool()
-		out.IsAssertionEncrypted = &v
-	}
-	if !md.Metadata.IsNull() {
-		v := md.Metadata.ValueString()
-		out.Metadata = &v
-	}
-	if !md.PrivateKey.IsNull() {
-		v := md.PrivateKey.ValueString()
-		out.PrivateKey = &v
-	}
-	if !md.PrivateKeyPass.IsNull() {
-		v := md.PrivateKeyPass.ValueString()
-		out.PrivateKeyPass = &v
-	}
-
-	return out
-}
-
-func expandSamlMapping(mapping *SamlMappingModel) *struct {
-	Email         *string            `json:"email,omitempty"`
-	EmailVerified *string            `json:"emailVerified,omitempty"`
-	ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-	FirstName     *string            `json:"firstName,omitempty"`
-	Id            *string            `json:"id,omitempty"`
-	LastName      *string            `json:"lastName,omitempty"`
-	Name          *string            `json:"name,omitempty"`
-} {
-	if mapping == nil {
-		return nil
-	}
-	out := &struct {
-		Email         *string            `json:"email,omitempty"`
-		EmailVerified *string            `json:"emailVerified,omitempty"`
-		ExtraFields   *map[string]string `json:"extraFields,omitempty"`
-		FirstName     *string            `json:"firstName,omitempty"`
-		Id            *string            `json:"id,omitempty"`
-		LastName      *string            `json:"lastName,omitempty"`
-		Name          *string            `json:"name,omitempty"`
-	}{}
-
-	// ID is required; default to "sub" if not provided
-	var id string
-	if !mapping.ID.IsNull() {
-		id = mapping.ID.ValueString()
-	} else {
-		id = "sub"
-	}
-	out.Id = &id
-
-	if !mapping.Email.IsNull() {
-		v := mapping.Email.ValueString()
-		out.Email = &v
-	}
-	if !mapping.EmailVerified.IsNull() {
-		v := mapping.EmailVerified.ValueString()
-		out.EmailVerified = &v
-	}
-	// extra_fields is optional; omit from payload to avoid leaking unknowns
-	if !mapping.FirstName.IsNull() {
-		v := mapping.FirstName.ValueString()
-		out.FirstName = &v
-	}
-	if !mapping.LastName.IsNull() {
-		v := mapping.LastName.ValueString()
-		out.LastName = &v
-	}
-	if !mapping.Name.IsNull() {
-		v := mapping.Name.ValueString()
-		out.Name = &v
-	}
-
-	return out
-}
-
-func expandRoleMapping(mapping *RoleMappingModel) *struct {
-	DefaultRole *string `json:"defaultRole,omitempty"`
-	Rules       *[]struct {
-		Expression string `json:"expression"`
-		Role       string `json:"role"`
-	} `json:"rules,omitempty"`
-	SkipRoleSync *bool `json:"skipRoleSync,omitempty"`
-	StrictMode   *bool `json:"strictMode,omitempty"`
-} {
-	if mapping == nil {
-		return nil
-	}
-	out := &struct {
-		DefaultRole *string `json:"defaultRole,omitempty"`
-		Rules       *[]struct {
-			Expression string `json:"expression"`
-			Role       string `json:"role"`
-		} `json:"rules,omitempty"`
-		SkipRoleSync *bool `json:"skipRoleSync,omitempty"`
-		StrictMode   *bool `json:"strictMode,omitempty"`
-	}{}
-
-	if !mapping.DefaultRole.IsNull() {
-		v := mapping.DefaultRole.ValueString()
-		out.DefaultRole = &v
-	}
-	if len(mapping.Rules) > 0 {
-		rules := make([]struct {
-			Expression string `json:"expression"`
-			Role       string `json:"role"`
-		}, 0, len(mapping.Rules))
-		for _, rule := range mapping.Rules {
-			if rule.Expression.IsNull() || rule.Role.IsNull() {
-				continue
-			}
-			rules = append(rules, struct {
-				Expression string `json:"expression"`
-				Role       string `json:"role"`
-			}{Expression: rule.Expression.ValueString(), Role: rule.Role.ValueString()})
-		}
-		if len(rules) > 0 {
-			out.Rules = &rules
-		}
-	}
-	if !mapping.SkipRoleSync.IsNull() {
-		v := mapping.SkipRoleSync.ValueBool()
-		out.SkipRoleSync = &v
-	}
-	if !mapping.StrictMode.IsNull() {
-		v := mapping.StrictMode.ValueBool()
-		out.StrictMode = &v
-	}
-
-	return out
-}
-
-func expandTeamSyncConfig(cfg *TeamSyncConfigModel) *struct {
-	Enabled          *bool   `json:"enabled,omitempty"`
-	GroupsExpression *string `json:"groupsExpression,omitempty"`
-} {
-	if cfg == nil {
-		return nil
-	}
-	out := &struct {
-		Enabled          *bool   `json:"enabled,omitempty"`
-		GroupsExpression *string `json:"groupsExpression,omitempty"`
-	}{}
-
-	if !cfg.Enabled.IsNull() {
-		v := cfg.Enabled.ValueBool()
-		out.Enabled = &v
-	}
-	if !cfg.GroupsExpression.IsNull() {
-		v := cfg.GroupsExpression.ValueString()
-		out.GroupsExpression = &v
-	}
-
-	return out
 }
 
 // ssoAPIModel is a normalized view of SSO provider responses to handle differing token auth enum types.
@@ -1971,134 +1083,197 @@ func flattenEnterpriseManagedCredentials(emc interface{}) *EnterpriseManagedCred
 	}
 }
 
-func expandEnterpriseManagedCredentialsCreate(emc *EnterpriseManagedCredentialsModel) *struct {
-	ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
-	ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
-	ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
-	ExchangeStrategy            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
-	PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
-	PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-	SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
-	TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
-	TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-} {
-	if emc == nil {
-		return nil
-	}
-	out := &struct {
-		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
-		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
-		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
-		ExchangeStrategy            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
-		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
-		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-		SubjectTokenType            *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
-		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
-		TokenEndpointAuthentication *client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-	}{}
+// AttrSpecs implements resourceWithAttrSpec — activates the schema↔AttrSpec
+// drift lint for this resource.
+func (r *SsoProviderResource) AttrSpecs() []AttrSpec { return ssoProviderAttrSpec }
 
-	if !emc.ExchangeStrategy.IsNull() {
-		v := client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy(emc.ExchangeStrategy.ValueString())
-		out.ExchangeStrategy = &v
-	}
-	if !emc.ClientID.IsNull() {
-		v := emc.ClientID.ValueString()
-		out.ClientId = &v
-	}
-	if !emc.ClientSecret.IsNull() {
-		v := emc.ClientSecret.ValueString()
-		out.ClientSecret = &v
-	}
-	if !emc.TokenEndpoint.IsNull() {
-		v := emc.TokenEndpoint.ValueString()
-		out.TokenEndpoint = &v
-	}
-	if !emc.TokenEndpointAuthentication.IsNull() {
-		v := client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication(emc.TokenEndpointAuthentication.ValueString())
-		out.TokenEndpointAuthentication = &v
-	}
-	if !emc.PrivateKeyPem.IsNull() {
-		v := emc.PrivateKeyPem.ValueString()
-		out.PrivateKeyPem = &v
-	}
-	if !emc.PrivateKeyID.IsNull() {
-		v := emc.PrivateKeyID.ValueString()
-		out.PrivateKeyId = &v
-	}
-	if !emc.ClientAssertionAudience.IsNull() {
-		v := emc.ClientAssertionAudience.ValueString()
-		out.ClientAssertionAudience = &v
-	}
-	if !emc.SubjectTokenType.IsNull() {
-		v := client.CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType(emc.SubjectTokenType.ValueString())
-		out.SubjectTokenType = &v
-	}
-
-	return out
+// ssoProviderAttrSpec declares the wire shape for `archestra_sso_provider`.
+//
+// Storage (per platform/backend/src/database/schemas/identity-provider.ts):
+//   - oidc_config / saml_config / role_mapping / team_sync_config are
+//     `text(...)` columns serialized as JSON via serializeConfigValue (per
+//     identity-provider.ee.ts:697-749). Drizzle replaces the whole TEXT
+//     column on update — there is no field-level merge inside. Modelled as
+//     AtomicObject; merge-patch emits the whole nested object on any change.
+//   - All other fields are top-level columns → Scalar.
+//
+// Sensitive fields inside AtomicObjects (per A7 + A9): masked on emit via
+// LogPatch. State is set from plan (for Create) or response (for Read);
+// plan-based state for sensitive fields is correct because the plan IS the
+// user-supplied value.
+var ssoProviderAttrSpec = []AttrSpec{
+	{TFName: "provider_id", JSONName: "providerId", Kind: Scalar},
+	{TFName: "domain", JSONName: "domain", Kind: Scalar},
+	{TFName: "domain_verified", JSONName: "domainVerified", Kind: Scalar},
+	{TFName: "issuer", JSONName: "issuer", Kind: Scalar},
+	{TFName: "user_id", JSONName: "userId", Kind: Scalar},
+	{TFName: "organization_id", JSONName: "organizationId", Kind: Scalar},
+	{
+		TFName: "oidc_config", JSONName: "oidcConfig", Kind: AtomicObject, OmitOnNull: true,
+		Children: []AttrSpec{
+			{TFName: "issuer", JSONName: "issuer", Kind: Scalar},
+			{TFName: "discovery_endpoint", JSONName: "discoveryEndpoint", Kind: Scalar},
+			{TFName: "client_id", JSONName: "clientId", Kind: Scalar},
+			{TFName: "client_secret", JSONName: "clientSecret", Kind: Scalar, Sensitive: true},
+			{TFName: "authorization_endpoint", JSONName: "authorizationEndpoint", Kind: Scalar},
+			{TFName: "token_endpoint", JSONName: "tokenEndpoint", Kind: Scalar},
+			{TFName: "user_info_endpoint", JSONName: "userInfoEndpoint", Kind: Scalar},
+			{TFName: "jwks_endpoint", JSONName: "jwksEndpoint", Kind: Scalar},
+			{TFName: "scopes", JSONName: "scopes", Kind: List},
+			{TFName: "pkce", JSONName: "pkce", Kind: Scalar},
+			{TFName: "override_user_info", JSONName: "overrideUserInfo", Kind: Scalar},
+			{TFName: "skip_discovery", JSONName: "skipDiscovery", Kind: Scalar},
+			{TFName: "enable_rp_initiated_logout", JSONName: "enableRpInitiatedLogout", Kind: Scalar},
+			{TFName: "hd", JSONName: "hd", Kind: Scalar},
+			{TFName: "token_endpoint_authentication", JSONName: "tokenEndpointAuthentication", Kind: Scalar},
+			{TFName: "mapping", JSONName: "mapping", Kind: AtomicObject, Children: oidcMappingChildren},
+			{TFName: "enterprise_managed_credentials", JSONName: "enterpriseManagedCredentials", Kind: AtomicObject, Children: emcChildren},
+		},
+	},
+	{
+		TFName: "saml_config", JSONName: "samlConfig", Kind: AtomicObject, OmitOnNull: true,
+		// Backend zod (shared/identity-provider.ts:150) requires `spMetadata`
+		// as a non-optional object — sub-fields may all be omitted, but the
+		// object itself must be present. Inject `{}` if the user didn't set
+		// sp_metadata so we don't 400 with "received undefined".
+		Encoder: ensureSamlSpMetadata,
+		Children: []AttrSpec{
+			{TFName: "issuer", JSONName: "issuer", Kind: Scalar},
+			{TFName: "entry_point", JSONName: "entryPoint", Kind: Scalar},
+			{TFName: "callback_url", JSONName: "callbackUrl", Kind: Scalar},
+			{TFName: "cert", JSONName: "cert", Kind: Scalar, Sensitive: true},
+			{TFName: "audience", JSONName: "audience", Kind: Scalar},
+			{TFName: "digest_algorithm", JSONName: "digestAlgorithm", Kind: Scalar},
+			{TFName: "identifier_format", JSONName: "identifierFormat", Kind: Scalar},
+			{TFName: "decryption_pvk", JSONName: "decryptionPvk", Kind: Scalar, Sensitive: true},
+			{TFName: "private_key", JSONName: "privateKey", Kind: Scalar, Sensitive: true},
+			{TFName: "signature_algorithm", JSONName: "signatureAlgorithm", Kind: Scalar},
+			{TFName: "want_assertions_signed", JSONName: "wantAssertionsSigned", Kind: Scalar},
+			{TFName: "idp_metadata", JSONName: "idpMetadata", Kind: AtomicObject, Children: samlIdpMetadataChildren},
+			{TFName: "sp_metadata", JSONName: "spMetadata", Kind: AtomicObject, Children: samlSpMetadataChildren},
+			{TFName: "mapping", JSONName: "mapping", Kind: AtomicObject, Children: samlMappingChildren},
+			{
+				TFName: "additional_params", JSONName: "additionalParams", Kind: Scalar,
+				// `additional_params` is a JSON-stringified object on the TF side
+				// (jsontypes.Normalized). Decode it before emission so the wire form
+				// is a real JSON object rather than a string-encoded JSON object.
+				Encoder: encodeAdditionalParamsValue,
+			},
+		},
+	},
+	{TFName: "role_mapping", JSONName: "roleMapping", Kind: AtomicObject, OmitOnNull: true, Children: roleMappingChildren},
+	{TFName: "team_sync_config", JSONName: "teamSyncConfig", Kind: AtomicObject, OmitOnNull: true, Children: teamSyncConfigChildren},
 }
 
-func expandEnterpriseManagedCredentialsUpdate(emc *EnterpriseManagedCredentialsModel) *struct {
-	ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
-	ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
-	ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
-	ExchangeStrategy            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
-	PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
-	PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-	SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
-	TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
-	TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-} {
-	if emc == nil {
+var oidcMappingChildren = []AttrSpec{
+	{TFName: "email", JSONName: "email", Kind: Scalar},
+	{TFName: "email_verified", JSONName: "emailVerified", Kind: Scalar},
+	{TFName: "extra_fields", JSONName: "extraFields", Kind: Map},
+	{TFName: "id", JSONName: "id", Kind: Scalar},
+	{TFName: "image", JSONName: "image", Kind: Scalar},
+	{TFName: "name", JSONName: "name", Kind: Scalar},
+}
+
+var emcChildren = []AttrSpec{
+	{TFName: "exchange_strategy", JSONName: "exchangeStrategy", Kind: Scalar},
+	{TFName: "client_id", JSONName: "clientId", Kind: Scalar},
+	{TFName: "client_secret", JSONName: "clientSecret", Kind: Scalar, Sensitive: true},
+	{TFName: "token_endpoint", JSONName: "tokenEndpoint", Kind: Scalar},
+	{TFName: "token_endpoint_authentication", JSONName: "tokenEndpointAuthentication", Kind: Scalar},
+	{TFName: "private_key_pem", JSONName: "privateKeyPem", Kind: Scalar, Sensitive: true},
+	{TFName: "private_key_id", JSONName: "privateKeyId", Kind: Scalar},
+	{TFName: "client_assertion_audience", JSONName: "clientAssertionAudience", Kind: Scalar},
+	{TFName: "subject_token_type", JSONName: "subjectTokenType", Kind: Scalar},
+}
+
+var samlIdpMetadataChildren = []AttrSpec{
+	{TFName: "cert", JSONName: "cert", Kind: Scalar, Sensitive: true},
+	{TFName: "enc_private_key", JSONName: "encPrivateKey", Kind: Scalar, Sensitive: true},
+	{TFName: "enc_private_key_pass", JSONName: "encPrivateKeyPass", Kind: Scalar, Sensitive: true},
+	{TFName: "entity_id", JSONName: "entityID", Kind: Scalar},
+	{TFName: "entity_url", JSONName: "entityURL", Kind: Scalar},
+	{TFName: "is_assertion_encrypted", JSONName: "isAssertionEncrypted", Kind: Scalar},
+	{TFName: "metadata", JSONName: "metadata", Kind: Scalar},
+	{TFName: "private_key", JSONName: "privateKey", Kind: Scalar, Sensitive: true},
+	{TFName: "private_key_pass", JSONName: "privateKeyPass", Kind: Scalar, Sensitive: true},
+	{TFName: "redirect_url", JSONName: "redirectURL", Kind: Scalar},
+	{
+		TFName: "single_sign_on_service", JSONName: "singleSignOnService", Kind: List,
+		Children: []AttrSpec{
+			{TFName: "binding", JSONName: "Binding", Kind: Scalar},
+			{TFName: "location", JSONName: "Location", Kind: Scalar},
+		},
+	},
+}
+
+var samlSpMetadataChildren = []AttrSpec{
+	{TFName: "binding", JSONName: "binding", Kind: Scalar},
+	{TFName: "enc_private_key", JSONName: "encPrivateKey", Kind: Scalar, Sensitive: true},
+	{TFName: "enc_private_key_pass", JSONName: "encPrivateKeyPass", Kind: Scalar, Sensitive: true},
+	{TFName: "entity_id", JSONName: "entityID", Kind: Scalar},
+	{TFName: "is_assertion_encrypted", JSONName: "isAssertionEncrypted", Kind: Scalar},
+	{TFName: "metadata", JSONName: "metadata", Kind: Scalar},
+	{TFName: "private_key", JSONName: "privateKey", Kind: Scalar, Sensitive: true},
+	{TFName: "private_key_pass", JSONName: "privateKeyPass", Kind: Scalar, Sensitive: true},
+}
+
+var samlMappingChildren = []AttrSpec{
+	{TFName: "email", JSONName: "email", Kind: Scalar},
+	{TFName: "email_verified", JSONName: "emailVerified", Kind: Scalar},
+	{TFName: "extra_fields", JSONName: "extraFields", Kind: Map},
+	{TFName: "first_name", JSONName: "firstName", Kind: Scalar},
+	{TFName: "id", JSONName: "id", Kind: Scalar},
+	{TFName: "last_name", JSONName: "lastName", Kind: Scalar},
+	{TFName: "name", JSONName: "name", Kind: Scalar},
+}
+
+var roleMappingChildren = []AttrSpec{
+	{TFName: "default_role", JSONName: "defaultRole", Kind: Scalar},
+	{TFName: "skip_role_sync", JSONName: "skipRoleSync", Kind: Scalar},
+	{TFName: "strict_mode", JSONName: "strictMode", Kind: Scalar},
+	{
+		TFName: "rules", JSONName: "rules", Kind: List,
+		Children: []AttrSpec{
+			{TFName: "expression", JSONName: "expression", Kind: Scalar},
+			{TFName: "role", JSONName: "role", Kind: Scalar},
+		},
+	},
+}
+
+var teamSyncConfigChildren = []AttrSpec{
+	{TFName: "enabled", JSONName: "enabled", Kind: Scalar},
+	{TFName: "groups_expression", JSONName: "groupsExpression", Kind: Scalar},
+}
+
+// encodeAdditionalParamsValue parses the JSON-string `additional_params`
+// value into a real JSON object before merge-patch emits it. The TF type is
+// `jsontypes.Normalized` (string), but the wire form is a JSON object.
+func encodeAdditionalParamsValue(v any) any {
+	s, ok := v.(string)
+	if !ok || s == "" {
 		return nil
 	}
-	out := &struct {
-		ClientAssertionAudience     *string                                                                                                 `json:"clientAssertionAudience,omitempty"`
-		ClientId                    *string                                                                                                 `json:"clientId,omitempty"`
-		ClientSecret                *string                                                                                                 `json:"clientSecret,omitempty"`
-		ExchangeStrategy            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy            `json:"exchangeStrategy,omitempty"`
-		PrivateKeyId                *string                                                                                                 `json:"privateKeyId,omitempty"`
-		PrivateKeyPem               *string                                                                                                 `json:"privateKeyPem,omitempty"`
-		SubjectTokenType            *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType            `json:"subjectTokenType,omitempty"`
-		TokenEndpoint               *string                                                                                                 `json:"tokenEndpoint,omitempty"`
-		TokenEndpointAuthentication *client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication `json:"tokenEndpointAuthentication,omitempty"`
-	}{}
+	var parsed any
+	if err := json.Unmarshal([]byte(s), &parsed); err != nil {
+		return s
+	}
+	return parsed
+}
 
-	if !emc.ExchangeStrategy.IsNull() {
-		v := client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy(emc.ExchangeStrategy.ValueString())
-		out.ExchangeStrategy = &v
+// ensureSamlSpMetadata guarantees the merge-patch payload's
+// `samlConfig.spMetadata` is at least an empty object. The backend zod
+// schema marks spMetadata as required (sub-fields are individually
+// optional, but the object itself must be present). When the user omits
+// the sp_metadata block, our default child-walk skips the null sub-field
+// and the wire form lacks spMetadata entirely, which the backend rejects
+// with `Invalid input: expected object, received undefined`.
+func ensureSamlSpMetadata(v any) any {
+	m, ok := v.(map[string]any)
+	if !ok || m == nil {
+		return v
 	}
-	if !emc.ClientID.IsNull() {
-		v := emc.ClientID.ValueString()
-		out.ClientId = &v
+	if _, has := m["spMetadata"]; !has {
+		m["spMetadata"] = map[string]any{}
 	}
-	if !emc.ClientSecret.IsNull() {
-		v := emc.ClientSecret.ValueString()
-		out.ClientSecret = &v
-	}
-	if !emc.TokenEndpoint.IsNull() {
-		v := emc.TokenEndpoint.ValueString()
-		out.TokenEndpoint = &v
-	}
-	if !emc.TokenEndpointAuthentication.IsNull() {
-		v := client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEndpointAuthentication(emc.TokenEndpointAuthentication.ValueString())
-		out.TokenEndpointAuthentication = &v
-	}
-	if !emc.PrivateKeyPem.IsNull() {
-		v := emc.PrivateKeyPem.ValueString()
-		out.PrivateKeyPem = &v
-	}
-	if !emc.PrivateKeyID.IsNull() {
-		v := emc.PrivateKeyID.ValueString()
-		out.PrivateKeyId = &v
-	}
-	if !emc.ClientAssertionAudience.IsNull() {
-		v := emc.ClientAssertionAudience.ValueString()
-		out.ClientAssertionAudience = &v
-	}
-	if !emc.SubjectTokenType.IsNull() {
-		v := client.UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsSubjectTokenType(emc.SubjectTokenType.ValueString())
-		out.SubjectTokenType = &v
-	}
-
-	return out
+	return m
 }
