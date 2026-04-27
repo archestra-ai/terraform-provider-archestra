@@ -463,16 +463,11 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	// Drift-honest read: trust the API. The backend returns full secrets without
-	// redaction (verified at platform/backend/src/models/identity-provider.ee.ts:496-529),
-	// so we no longer need preserveSensitive or prior-state-wins logic for any
-	// field. Plan-output masking is delivered by the schema's `Sensitive: true`
-	// markers.
-	//
-	// role_mapping and team_sync_config are gated INDEPENDENTLY: pull each
-	// from the API only when the user already opted into managing it (state has
-	// the block) or during import (no state yet — capture everything). A
-	// backend default for one shouldn't auto-attach the other to state.
+	// role_mapping and team_sync_config are pulled only when the user
+	// already manages them. The backend's zod for both is `.optional()`
+	// (not `.nullable()`), so OmitOnNull on the send side means dropping
+	// the block from HCL is a no-op server-side — pulling them back in
+	// would surface a phantom "remove this block" plan after refresh.
 	isImport := state.OidcConfig == nil && state.SamlConfig == nil
 	populateRoleMapping := isImport || state.RoleMapping != nil
 	populateTeamSync := isImport || state.TeamSyncConfig != nil
@@ -526,12 +521,6 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	// Drift-honest write-then-read. role_mapping and team_sync_config gated
-	// independently — see helper comment. Backend's `.optional()` (not
-	// `.nullable()`) zod for these means OmitOnNull on the send side, so an
-	// HCL-removed block is a no-op server-side; pulling those fields when
-	// the user dropped them from HCL would surface a spurious "remove" plan
-	// after refresh.
 	newState := plan
 	if err := mapSsoProviderResponse(apiResp.JSON200, &newState, plan.RoleMapping != nil, plan.TeamSyncConfig != nil); err != nil {
 		resp.Diagnostics.AddError("Failed to map SSO provider response", err.Error())

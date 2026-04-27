@@ -8,13 +8,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// ssoApiBody is a normalized view of the identity-provider GET/UPDATE/CREATE
-// response shapes. The generated client emits three structurally-identical
-// anonymous structs (one per endpoint); we JSON-roundtrip into this single
-// type so the response→state mapping has a single home.
-//
-// Field tags match the wire format exactly (camelCase). Optional fields are
-// pointer types so we can distinguish "absent" from "zero".
+// ssoApiBody mirrors the wire shape of the identity-provider GET/CREATE/UPDATE
+// responses. The generated client emits three structurally-identical anonymous
+// structs (one per endpoint); a JSON roundtrip through this type lets one
+// mapping function serve all three.
 type ssoApiBody struct {
 	Id             string  `json:"id"`
 	ProviderId     string  `json:"providerId"`
@@ -146,25 +143,15 @@ type ssoApiTeamSyncConfig struct {
 	GroupsExpression *string `json:"groupsExpression,omitempty"`
 }
 
-// mapSsoProviderResponse populates `target` from the API response body, which
-// is JSON-roundtripped through ssoApiBody to bridge the three generated
-// response types (Get/Create/Update) into a single mapping path.
+// mapSsoProviderResponse populates `target` from the API response body.
 //
-// Drift-honest reads (Decision A7): every field — including sensitive ones —
-// is populated from the API response. The backend's identity-provider admin
-// endpoint returns full secrets (no redaction; verified at
-// platform/backend/src/models/identity-provider.ee.ts:496-529), so prior-state
-// preservation is unnecessary and would mask real drift. Plan-output masking
-// is handled by `Sensitive: true` on the schema attribute.
-//
-// `populateRoleMapping` and `populateTeamSync` are gated independently because
-// the backend's zod for these is `.optional()` (not `.nullable()`), so the
-// merge-patch send-side declares them OmitOnNull — i.e. removing the block
-// from HCL doesn't clear the row server-side. Pulling those fields back into
-// state when the user dropped them from HCL would cause a spurious "remove"
-// plan after refresh. Caller passes `true` only when the field is present in
-// HCL (Update with non-nil block) or during import (state is empty and we
-// need to capture everything).
+// `populateRoleMapping` and `populateTeamSync` gate those two blocks
+// independently. Backend zod for both is `.optional()` (not `.nullable()`),
+// matched by OmitOnNull on the send side — so dropping the block from HCL is
+// a no-op server-side. If we pulled them back into state regardless, refresh
+// after such an HCL change would surface a phantom "remove this block" plan.
+// Caller passes `true` only when the user already manages the block (in plan
+// or in state) or during import.
 func mapSsoProviderResponse(rawBody any, target *SsoProviderResourceModel, populateRoleMapping, populateTeamSync bool) error {
 	raw, err := json.Marshal(rawBody)
 	if err != nil {

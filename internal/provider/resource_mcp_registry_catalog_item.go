@@ -1117,41 +1117,14 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 			"url": types.StringValue(*apiResp.JSON200.ServerUrl),
 		}
 
-		// Map OAuth config if present
+		// client_secret round-trips via the secret manager: on write it's
+		// extracted to `clientSecretId`, on read the backend rehydrates it
+		// into oauthConfig.client_secret. So GET is a faithful source.
 		if apiResp.JSON200.OauthConfig != nil {
 			oc := apiResp.JSON200.OauthConfig
-			// Preserve the prior state's client_secret — the API never echoes it back.
-			// Failures to decode the prior object are surfaced with a contextual
-			// summary so users see why the sensitive value was lost on refresh.
-			priorClientSecret := types.StringNull()
-			if !data.RemoteConfig.IsNull() && !data.RemoteConfig.IsUnknown() {
-				var prior RemoteConfigModel
-				priorDiags := data.RemoteConfig.As(ctx, &prior, basetypes.ObjectAsOptions{UnhandledNullAsEmpty: true, UnhandledUnknownAsEmpty: true})
-				if priorDiags.HasError() {
-					diags.AddWarning(
-						"Could not preserve OAuth client_secret from prior state",
-						"Failed to decode prior remote_config while reading the MCP catalog item. "+
-							"The sensitive client_secret may be reset on next apply. Underlying error(s) follow.",
-					)
-					diags.Append(priorDiags...)
-				} else if !prior.OAuthConfig.IsNull() && !prior.OAuthConfig.IsUnknown() {
-					var priorOAuth OAuthConfigModel
-					oauthDiags := prior.OAuthConfig.As(ctx, &priorOAuth, basetypes.ObjectAsOptions{UnhandledNullAsEmpty: true, UnhandledUnknownAsEmpty: true})
-					if oauthDiags.HasError() {
-						diags.AddWarning(
-							"Could not preserve OAuth client_secret from prior state",
-							"Failed to decode prior oauth_config while reading the MCP catalog item. "+
-								"The sensitive client_secret may be reset on next apply. Underlying error(s) follow.",
-						)
-						diags.Append(oauthDiags...)
-					} else {
-						priorClientSecret = priorOAuth.ClientSecret
-					}
-				}
-			}
 			oauthConfigObj := map[string]attr.Value{
 				"client_id":                  types.StringValue(oc.ClientId),
-				"client_secret":              priorClientSecret,
+				"client_secret":              stringValueOrNull(oc.ClientSecret),
 				"redirect_uris":              types.ListNull(types.StringType),
 				"scopes":                     types.ListNull(types.StringType),
 				"default_scopes":             types.ListNull(types.StringType),
