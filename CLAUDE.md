@@ -35,6 +35,25 @@ export ARCHESTRA_API_KEY="your-api-key"
 make testacc                  # Run acceptance tests against hosted environment
 ```
 
+**One-shot local setup for the *full* suite (EE + BYOS + EMC):**
+
+```bash
+scripts/bootstrap-local-stack.sh                          # ~90 s, idempotent
+eval "$(scripts/bootstrap-local-stack.sh --print-env)"
+make testacc                                              # 75/75 PASS
+scripts/bootstrap-local-stack.sh --down                   # tear down
+```
+
+The script runs the platform image + `hashicorp/vault:1.18` + an Ollama
+mock (hashicorp/http-echo) on a shared docker network, with
+`ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true` and
+`ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT`. It also seeds the BYOS test
+secret and provisions the EMC IdP. The platform image tag tracks
+`ARCHESTRA_VERSION` (default matches `.github/workflows/on-pull-request.yml`;
+override the env var to test against a different release). Without the
+script, the BYOS / EMC / LLM-model subsets `t.Fatal` with actionable
+messages instead of running against an under-configured backend.
+
 ### Code Quality
 
 ```bash

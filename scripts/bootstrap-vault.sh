@@ -31,7 +31,8 @@ kubectl rollout status deployment/vault --namespace default --timeout=120s
 # Seed the secret referenced by LLM provider API key tests.
 echo "Seeding secret/data/test/ollama..." >&2
 kubectl run vault-seed --rm -i --restart=Never --image=curlimages/curl:8.10.1 -- \
-  curl -sS -X POST "http://vault.default.svc.cluster.local:8200/v1/secret/data/test/ollama" \
+  curl -sS --connect-timeout 5 --max-time 15 \
+    -X POST "http://vault.default.svc.cluster.local:8200/v1/secret/data/test/ollama" \
     -H "X-Vault-Token: root" \
     -H "Content-Type: application/json" \
     -d '{"data":{"api_key":"test-api-key-value"}}'
