@@ -415,7 +415,7 @@ Optional:
 - `scopes` (List of String) List of OAuth scopes to request (e.g., ['read', 'write'])
 - `streamable_http_port` (Number) Streamable-HTTP MCP server port override. Range 0..65535.
 - `streamable_http_url` (String) Streamable-HTTP MCP server URL override.
-- `supports_resource_metadata` (Boolean) Enable if the server publishes OAuth metadata at /.well-known/oauth-authorization-server for automatic endpoint discovery
+- `supports_resource_metadata` (Boolean) Enable if the server publishes OAuth metadata at /.well-known/oauth-authorization-server for automatic endpoint discovery. Defaults to `false` (matching the backend default).
 - `token_endpoint` (String) Custom OAuth token endpoint URL.
 - `well_known_url` (String) Override for the `.well-known` discovery document URL.
 

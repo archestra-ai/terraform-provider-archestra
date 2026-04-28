@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -361,6 +362,8 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 								"source": schema.StringAttribute{
 									MarkdownDescription: "Source of the pull secret. One of `existing`, `credentials`. Defaults to `existing` for backward compatibility when only `name` is set.",
 									Optional:            true,
+									Computed:            true,
+									Default:             stringdefault.StaticString("existing"),
 									Validators: []validator.String{
 										stringvalidator.OneOf("existing", "credentials"),
 									},
@@ -428,9 +431,10 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 								ElementType:         types.StringType,
 							},
 							"supports_resource_metadata": schema.BoolAttribute{
-								MarkdownDescription: "Enable if the server publishes OAuth metadata at /.well-known/oauth-authorization-server for automatic endpoint discovery",
+								MarkdownDescription: "Enable if the server publishes OAuth metadata at /.well-known/oauth-authorization-server for automatic endpoint discovery. Defaults to `false` (matching the backend default).",
 								Optional:            true,
 								Computed:            true,
+								Default:             booldefault.StaticBool(false),
 							},
 							"authorization_endpoint": schema.StringAttribute{
 								MarkdownDescription: "Custom OAuth authorization endpoint URL",
