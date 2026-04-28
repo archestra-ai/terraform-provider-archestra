@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> **Adding or modifying a resource? Read [CONTRIBUTING.md](CONTRIBUTING.md) first.** It covers the merge-patch + AttrSpec architecture, the two drift-check tests (TestSpecDrift, TestApiCoverage) and the per-resource opt-in interfaces (`resourceWithAttrSpec`, `resourceWithAPIShape`), the schema-attr-vs-skip-list convention, and the new-resource checklist. Skipping it leads to phantom plan diffs and silent backend-drift bugs.
+
 ## Overview
 
 This is a Terraform provider for Archestra, built using the Terraform Plugin Framework. It enables infrastructure-as-code management of Archestra resources including profiles, MCP servers, teams, security policies, cost optimization, and organization settings.

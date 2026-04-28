@@ -1,6 +1,6 @@
 # Archestra Terraform Provider
 
-Thank you for your interest in contributing to the Archestra Terraform Provider!
+Thank you for your interest in contributing to the Archestra Terraform Provider! If you're adding or modifying a resource, [CONTRIBUTING.md](CONTRIBUTING.md) is the place to start — it walks through how the codebase is structured and the conventions every resource follows.
 
 ## Development
 
