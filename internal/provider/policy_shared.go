@@ -1,5 +1,9 @@
 package provider
 
+import (
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+)
+
 // Tool invocation policies and trusted data policies share a wire shape:
 // `{toolId, conditions: [{key, operator, value}], action, reason?}`. The
 // previous schema only exposed one condition by collapsing it into three
@@ -22,6 +26,15 @@ func (r *ToolInvocationPolicyResource) AttrSpecs() []AttrSpec {
 	return toolInvocationPolicyAttrSpec
 }
 
+func (r *ToolInvocationPolicyResource) APIShape() any {
+	return client.GetToolInvocationPolicyResponse{}
+}
+
+// KnownIntentionallySkipped: createdAt/updatedAt are audit timestamps.
+func (r *ToolInvocationPolicyResource) KnownIntentionallySkipped() []string {
+	return []string{"createdAt", "updatedAt"}
+}
+
 var trustedDataPolicyAttrSpec = []AttrSpec{
 	{TFName: "tool_id", JSONName: "toolId", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
@@ -35,4 +48,13 @@ var trustedDataPolicyAttrSpec = []AttrSpec{
 
 func (r *TrustedDataPolicyResource) AttrSpecs() []AttrSpec {
 	return trustedDataPolicyAttrSpec
+}
+
+func (r *TrustedDataPolicyResource) APIShape() any {
+	return client.GetTrustedDataPolicyResponse{}
+}
+
+// KnownIntentionallySkipped: createdAt/updatedAt are audit timestamps.
+func (r *TrustedDataPolicyResource) KnownIntentionallySkipped() []string {
+	return []string{"createdAt", "updatedAt"}
 }

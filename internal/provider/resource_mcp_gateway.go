@@ -321,6 +321,26 @@ func (r *McpGatewayResource) flatten(ctx context.Context, data *McpGatewayResour
 // drift lint for this resource.
 func (r *McpGatewayResource) AttrSpecs() []AttrSpec { return mcpGatewayAttrSpec }
 
+func (r *McpGatewayResource) APIShape() any { return client.GetAgentResponse{} }
+
+// KnownIntentionallySkipped — wire fields not modeled on archestra_mcp_gateway.
+// Same agent-table discriminator + audit-field situation as archestra_llm_proxy.
+// Fields excluded here belong to archestra_agent (system_prompt,
+// built_in_agent_config, llm config, incoming email, suggested prompts) or
+// aren't relevant to a gateway (isDefault, scope, teams,
+// considerContextUntrusted). slug + tools follow the same convention as
+// the other agent-table resources.
+func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
+	return []string{
+		"agentType", "authorId", "authorName", "builtIn", "organizationId",
+		"createdAt", "updatedAt", "builtInAgentConfig", "suggestedPrompts",
+		"systemPrompt", "llmModel", "llmApiKeyId", "isDefault", "scope",
+		"teams", "considerContextUntrusted", "incomingEmailEnabled",
+		"incomingEmailAllowedDomain", "incomingEmailSecurityMode", "icon",
+		"slug", "tools",
+	}
+}
+
 // mcpGatewayAttrSpec declares the wire shape for `archestra_mcp_gateway`. Same
 // underlying agents table as archestra_agent / archestra_llm_proxy. No JSONB
 // sub-objects — top-level columns only — but several Postgres `text[]`

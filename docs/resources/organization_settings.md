@@ -61,7 +61,12 @@ resource "archestra_organization_settings" "example" {
 
 ### Read-Only
 
+- `created_at` (String) RFC3339 timestamp the organization was created.
+- `embedding_dimensions` (Number, Deprecated) Configured embedding model output dimensions. **Deprecated** — the backend is migrating this to `models.embeddingDimensions` (per-model rather than per-org). Exposed here only so existing organizations whose dimensions are still pinned at the org level can read the value via Terraform.
 - `id` (String) Organization identifier
+- `metadata` (String) Free-form metadata blob attached to the organization (text; the auth layer typically stores JSON-encoded data here). Read-only on this resource — set by the auth layer.
+- `name` (String) Organization display name. Read-only — set at organization creation time and managed by the auth layer; this resource cannot update it.
+- `slug` (String) Unique URL-safe organization slug. Read-only — set at organization creation time and managed by the auth layer; this resource cannot update it.
 
 <a id="nestedatt--chat_links"></a>
 ### Nested Schema for `chat_links`

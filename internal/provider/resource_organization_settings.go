@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
@@ -17,6 +18,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -78,6 +80,16 @@ type OrganizationSettingsResourceModel struct {
 	EmbeddingChatApiKeyId types.String `tfsdk:"embedding_chat_api_key_id"`
 	RerankerModel         types.String `tfsdk:"reranker_model"`
 	RerankerChatApiKeyId  types.String `tfsdk:"reranker_chat_api_key_id"`
+
+	// Read-only org-identity / metadata exposed by the GET endpoint. Updates
+	// are routed through better-auth (`/api/auth/organization/*`) which the
+	// provider doesn't surface today, so all five are Computed-only and
+	// reflect whatever the backend returns at refresh time.
+	Name                types.String  `tfsdk:"name"`
+	Slug                types.String  `tfsdk:"slug"`
+	EmbeddingDimensions types.Float64 `tfsdk:"embedding_dimensions"`
+	CreatedAt           types.String  `tfsdk:"created_at"`
+	Metadata            types.String  `tfsdk:"metadata"`
 }
 
 type ChatLinkModel struct {
@@ -357,6 +369,40 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: "API key ID for the reranker model",
 				Optional:            true,
 				Computed:            true,
+			},
+
+			// Read-only org-identity / metadata. These come back from
+			// GET /api/organization but the backend doesn't expose typed
+			// update endpoints for them on the settings routes — name/slug
+			// are managed by the auth layer at organization creation time
+			// and updated through admin tooling outside this resource's
+			// surface. Computed-only so users get drift visibility without
+			// the provider claiming a write path it doesn't have.
+			"name": schema.StringAttribute{
+				MarkdownDescription: "Organization display name. Read-only — set at organization creation time and managed by the auth layer; this resource cannot update it.",
+				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+			},
+			"slug": schema.StringAttribute{
+				MarkdownDescription: "Unique URL-safe organization slug. Read-only — set at organization creation time and managed by the auth layer; this resource cannot update it.",
+				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+			},
+			"embedding_dimensions": schema.Float64Attribute{
+				MarkdownDescription: "Configured embedding model output dimensions. **Deprecated** — the backend is migrating this to `models.embeddingDimensions` (per-model rather than per-org). Exposed here only so existing organizations whose dimensions are still pinned at the org level can read the value via Terraform.",
+				Computed:            true,
+				PlanModifiers:       []planmodifier.Float64{float64planmodifier.UseStateForUnknown()},
+				DeprecationMessage:  "embedding_dimensions is being migrated to per-model storage and will be removed once all organizations are migrated. Read it for now if needed; do not depend on it long-term.",
+			},
+			"created_at": schema.StringAttribute{
+				MarkdownDescription: "RFC3339 timestamp the organization was created.",
+				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+			},
+			"metadata": schema.StringAttribute{
+				MarkdownDescription: "Free-form metadata blob attached to the organization (text; the auth layer typically stores JSON-encoded data here). Read-only on this resource — set by the auth layer.",
+				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 		},
 	}
@@ -727,5 +773,20 @@ func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, dat
 		data.RerankerChatApiKeyId = types.StringValue(apiResp.JSON200.RerankerChatApiKeyId.String())
 	} else {
 		data.RerankerChatApiKeyId = types.StringNull()
+	}
+
+	// Read-only org-identity / metadata.
+	data.Name = types.StringValue(apiResp.JSON200.Name)
+	data.Slug = types.StringValue(apiResp.JSON200.Slug)
+	data.CreatedAt = types.StringValue(apiResp.JSON200.CreatedAt.Format(time.RFC3339))
+	if apiResp.JSON200.EmbeddingDimensions != nil {
+		data.EmbeddingDimensions = types.Float64Value(float64(*apiResp.JSON200.EmbeddingDimensions))
+	} else {
+		data.EmbeddingDimensions = types.Float64Null()
+	}
+	if apiResp.JSON200.Metadata != nil {
+		data.Metadata = types.StringValue(*apiResp.JSON200.Metadata)
+	} else {
+		data.Metadata = types.StringNull()
 	}
 }

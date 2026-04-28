@@ -1,5 +1,9 @@
 package provider
 
+import (
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+)
+
 // optimizationRuleAttrSpec covers the optimization rule wire body.
 //
 // `conditions` rides through MergePatch as a List<Object>, but the wire format
@@ -46,3 +50,10 @@ func encodeOptimizationConditions(v any) any {
 }
 
 func (r *OptimizationRuleResource) AttrSpecs() []AttrSpec { return optimizationRuleAttrSpec }
+
+func (r *OptimizationRuleResource) APIShape() any { return client.GetOptimizationRulesResponse{} }
+
+// KnownIntentionallySkipped: createdAt/updatedAt are audit timestamps.
+func (r *OptimizationRuleResource) KnownIntentionallySkipped() []string {
+	return []string{"createdAt", "updatedAt"}
+}

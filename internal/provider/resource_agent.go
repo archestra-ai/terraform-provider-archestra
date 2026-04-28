@@ -407,6 +407,31 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 // Activates the schema ↔ AttrSpec drift lint for this resource.
 func (r *AgentResource) AttrSpecs() []AttrSpec { return agentAttrSpec }
 
+func (r *AgentResource) APIShape() any { return client.GetAgentResponse{} }
+
+// KnownIntentionallySkipped — wire fields the provider deliberately doesn't
+// model on this resource:
+//   - agentType: discriminator the provider uses to split one backend table
+//     into three resources; not user-facing.
+//   - authorId/authorName/builtIn/organizationId/createdAt/updatedAt:
+//     audit/ownership metadata; could be added as Computed-only later if
+//     users ask, but no consumer has requested it yet.
+//   - suggestedPrompts/passthroughHeaders: llm_proxy / mcp_gateway-only
+//     wire fields; not present on the agent variant of the schema.
+//   - identityProviderId: gateway/proxy-only on the schema side (an agent
+//     never has one); the wire returns null for agent rows.
+//   - slug: auto-generated URL slug, not user-configurable.
+//   - tools: list of tool assignments managed by archestra_agent_tool —
+//     duplicating it here would create a phantom diff against the m2m
+//     relationship.
+func (r *AgentResource) KnownIntentionallySkipped() []string {
+	return []string{
+		"agentType", "authorId", "authorName", "builtIn", "organizationId",
+		"createdAt", "updatedAt", "suggestedPrompts", "passthroughHeaders",
+		"identityProviderId", "slug", "tools",
+	}
+}
+
 // agentAttrSpec declares the wire shape for `archestra_agent`. Kept adjacent
 // to Schema() so a contributor changing one notices the other.
 //

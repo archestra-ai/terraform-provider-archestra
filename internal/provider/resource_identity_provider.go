@@ -626,6 +626,15 @@ func mapStringToTypes(in *map[string]string) types.Map {
 // drift lint for this resource.
 func (r *IdentityProviderResource) AttrSpecs() []AttrSpec { return identityProviderAttrSpec }
 
+func (r *IdentityProviderResource) APIShape() any { return client.GetIdentityProviderResponse{} }
+
+// KnownIntentionallySkipped: createdAt / updatedAt are audit fields not
+// surfaced today. enabled / token / verified / scope-style auth fields
+// (if present) are managed via better-auth, not this resource.
+func (r *IdentityProviderResource) KnownIntentionallySkipped() []string {
+	return []string{"createdAt", "updatedAt"}
+}
+
 // identityProviderAttrSpec declares the wire shape for `archestra_identity_provider`.
 //
 // Storage (per platform/backend/src/database/schemas/identity-provider.ts):

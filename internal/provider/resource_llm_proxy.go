@@ -318,6 +318,32 @@ func (r *LlmProxyResource) flatten(ctx context.Context, data *LlmProxyResourceMo
 // drift lint for this resource.
 func (r *LlmProxyResource) AttrSpecs() []AttrSpec { return llmProxyAttrSpec }
 
+func (r *LlmProxyResource) APIShape() any { return client.GetAgentResponse{} }
+
+// KnownIntentionallySkipped — wire fields not modeled on archestra_llm_proxy:
+//   - agentType: discriminator (see archestra_agent).
+//   - authorId/authorName/builtIn/organizationId/createdAt/updatedAt: audit
+//     metadata not surfaced today.
+//   - builtInAgentConfig/knowledgeBaseIds/connectorIds/suggestedPrompts/
+//     systemPrompt/llmModel/llmApiKeyId/incomingEmail*/icon: agent-only
+//     wire fields; the llm_proxy variant of the schema doesn't expose
+//     them and the wire returns null for proxy rows.
+//   - isDefault/scope/teams/considerContextUntrusted: agent-scope-and-
+//     visibility fields that the proxy doesn't use.
+//   - slug: auto-generated URL slug.
+//   - tools: read-only list of tool assignments managed via
+//     archestra_agent_tool; duplicating it would create a phantom diff.
+func (r *LlmProxyResource) KnownIntentionallySkipped() []string {
+	return []string{
+		"agentType", "authorId", "authorName", "builtIn", "organizationId",
+		"createdAt", "updatedAt", "builtInAgentConfig", "knowledgeBaseIds",
+		"connectorIds", "suggestedPrompts", "systemPrompt", "llmModel",
+		"llmApiKeyId", "isDefault", "scope", "teams", "considerContextUntrusted",
+		"incomingEmailEnabled", "incomingEmailAllowedDomain",
+		"incomingEmailSecurityMode", "icon", "slug", "tools",
+	}
+}
+
 // llmProxyAttrSpec declares the wire shape for `archestra_llm_proxy`. Same
 // underlying agents table as archestra_agent (per
 // platform/backend/src/database/schemas/agent.ts) so the column-storage

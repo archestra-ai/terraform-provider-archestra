@@ -1,5 +1,9 @@
 package provider
 
+import (
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+)
+
 // Each backend org-settings endpoint owns a disjoint slice of fields. Splitting
 // the AttrSpec by endpoint lets us run MergePatch per-endpoint over the same
 // plan/prior tftypes.Value: an endpoint whose patch is empty skips the API
@@ -78,4 +82,20 @@ func (r *OrganizationSettingsResource) AttrSpecs() []AttrSpec {
 	specs = append(specs, orgSettingsKnowledgeSpec...)
 	specs = append(specs, orgSettingsOnboardingSpec...)
 	return specs
+}
+
+// APIShape implements resourceWithAPIShape — activates the API↔schema
+// coverage check (TestApiCoverage). The check ensures every wire field on
+// GET /api/organization is exposed as a schema attribute (or skipped).
+func (r *OrganizationSettingsResource) APIShape() any {
+	return client.GetOrganizationResponse{}
+}
+
+// KnownIntentionallySkipped lists wire-side JSON names exposed by the
+// backend that the provider deliberately doesn't model. Empty today;
+// every field on the response either has a managed schema attribute or
+// a Computed-only one. Add an entry here only with a justification
+// comment if the backend ever adds a field outside the provider's scope.
+func (r *OrganizationSettingsResource) KnownIntentionallySkipped() []string {
+	return nil
 }

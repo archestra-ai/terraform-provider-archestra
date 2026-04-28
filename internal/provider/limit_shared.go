@@ -1,5 +1,9 @@
 package provider
 
+import (
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+)
+
 var limitAttrSpec = []AttrSpec{
 	{TFName: "entity_id", JSONName: "entityId", Kind: Scalar},
 	{TFName: "entity_type", JSONName: "entityType", Kind: Scalar},
@@ -11,3 +15,12 @@ var limitAttrSpec = []AttrSpec{
 }
 
 func (r *LimitResource) AttrSpecs() []AttrSpec { return limitAttrSpec }
+
+func (r *LimitResource) APIShape() any { return client.GetLimitResponse{} }
+
+// KnownIntentionallySkipped: createdAt/updatedAt are audit timestamps;
+// lastCleanup is a backend bookkeeping field tracking the limit cleanup
+// scheduler — debug-only, not user-facing.
+func (r *LimitResource) KnownIntentionallySkipped() []string {
+	return []string{"createdAt", "updatedAt", "lastCleanup"}
+}

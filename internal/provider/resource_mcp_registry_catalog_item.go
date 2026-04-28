@@ -721,6 +721,34 @@ func (r *MCPServerRegistryResource) AttrSpecs() []AttrSpec {
 	return catalogItemAttrSpec
 }
 
+func (r *MCPServerRegistryResource) APIShape() any {
+	return client.GetInternalMcpCatalogItemResponse{}
+}
+
+// KnownIntentionallySkipped — wire fields not modeled on this resource:
+//   - createdAt/updatedAt/publishedAt: audit timestamps.
+//   - authorId/authorName: publishing metadata.
+//   - verified/reviews/installations/installCount: curated-catalog flags
+//     and frontend metrics.
+//   - authDescription/authFields/approval*/submitted*: catalog-browse-page
+//     hints + curation workflow; not part of the manage-this-server surface.
+//   - oauthConfig/serverUrl: wire-side top-level fields that the schema
+//     nests inside the ergonomic `remote_config` block (oauth_config /
+//     remote_config.url respectively). The Synthetic remote_config
+//     decomposition in finalizeCatalogItemPatch handles the wire shape.
+//   - serverType: wire discriminator the provider derives from which of
+//     local_config/remote_config the user populated.
+//   - organizationId: ownership metadata, never user-managed.
+func (r *MCPServerRegistryResource) KnownIntentionallySkipped() []string {
+	return []string{
+		"createdAt", "updatedAt", "publishedAt", "authorId", "authorName",
+		"verified", "reviews", "installations", "installCount",
+		"authDescription", "authFields", "approvalStatus", "approvedAt",
+		"approvedBy", "rejectionReason", "submittedAt", "submittedBy",
+		"oauthConfig", "serverType", "serverUrl", "organizationId",
+	}
+}
+
 func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data MCPServerRegistryResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
