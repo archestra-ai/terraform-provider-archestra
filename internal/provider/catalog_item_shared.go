@@ -3,8 +3,10 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
@@ -93,7 +95,7 @@ var catalogItemAttrSpec = []AttrSpec{
 			{TFName: "prompt_on_installation", JSONName: "promptOnInstallation", Kind: Scalar},
 			{TFName: "required", JSONName: "required", Kind: Scalar},
 			{TFName: "description", JSONName: "description", Kind: Scalar},
-			{TFName: "default", JSONName: "default", Kind: Scalar, Encoder: parseUserConfigDefault},
+			{TFName: "default", JSONName: "default", Kind: Scalar},
 			{TFName: "mounted", JSONName: "mounted", Kind: Scalar},
 		}},
 		{TFName: "env_from", JSONName: "envFrom", Kind: List, Children: []AttrSpec{
@@ -121,7 +123,7 @@ var catalogItemAttrSpec = []AttrSpec{
 		{TFName: "title", JSONName: "title", Kind: Scalar},
 		{TFName: "description", JSONName: "description", Kind: Scalar},
 		{TFName: "type", JSONName: "type", Kind: Scalar},
-		{TFName: "default", JSONName: "default", Kind: Scalar, Encoder: parseUserConfigDefault},
+		{TFName: "default", JSONName: "default", Kind: Scalar},
 		{TFName: "required", JSONName: "required", Kind: Scalar},
 		{TFName: "sensitive", JSONName: "sensitive", Kind: Scalar},
 		{TFName: "multiple", JSONName: "multiple", Kind: Scalar},
@@ -146,33 +148,54 @@ func stringFromJSONScalar(b []byte) (string, bool) {
 	return "", false
 }
 
-// parseUserConfigDefault transforms a user_config.default JSON-encoded string
-// into its native polymorphic value. Falls back to the raw string for unquoted
-// HCL input (`default = "my-value"`).
-func parseUserConfigDefault(v any) any {
-	s, ok := v.(string)
-	if !ok {
-		return v
+// decodePolymorphicDefault chooses string vs. number vs. bool vs. []string
+// decoding for a HCL-stringified `default`. The wire union is the union of
+// all four (`UserConfigFieldDefaultSchema` in
+// platform/backend/src/types/mcp-catalog.ts); without the type gate,
+// `default = "42"` for a `type = "string"` field would JSON-decode to int 42
+// and ship as a number.
+//
+// `multiple = true` overrides the type gate to `array<string>` (the only
+// array variant the wire allows; environment fields don't accept arrays at
+// all, so callers from environment pass multiple=false).
+//
+// Empty input means "not set" — caller should drop the field.
+func decodePolymorphicDefault(s, fieldType string, multiple bool) (value any, keep bool, err error) {
+	if s == "" {
+		return nil, false, nil
 	}
-	var parsed any
-	if err := json.Unmarshal([]byte(s), &parsed); err == nil {
-		return parsed
+	if multiple {
+		var arr []string
+		if err := json.Unmarshal([]byte(s), &arr); err != nil {
+			return nil, false, fmt.Errorf("multiple=true expects a JSON array of strings as default, got %q (use jsonencode([\"a\",\"b\"]))", s)
+		}
+		return arr, true, nil
 	}
-	return s
+	switch fieldType {
+	case "string", "file", "directory", "plain_text", "secret":
+		return s, true, nil
+	case "number":
+		var n float64
+		if err := json.Unmarshal([]byte(s), &n); err != nil {
+			return nil, false, fmt.Errorf("type=%q expects a numeric default, got %q (use jsonencode for non-string defaults)", fieldType, s)
+		}
+		return n, true, nil
+	case "boolean":
+		var b bool
+		if err := json.Unmarshal([]byte(s), &b); err != nil {
+			return nil, false, fmt.Errorf("type=%q expects a boolean default, got %q (use jsonencode(true) / jsonencode(false))", fieldType, s)
+		}
+		return b, true, nil
+	default:
+		return nil, false, fmt.Errorf("unsupported type=%q for default-value decoding", fieldType)
+	}
 }
 
-// finalizeCatalogItemPatch reshapes the merge-patch produced by MergePatch into
-// the wire shape required by the backend. Two transforms happen here, both
-// driven by HCL ergonomics that don't match the wire 1:1:
-//
-//  1. localConfig environment + mountedEnvKeys collapse into a single
-//     `environment` array of `{key, value, type, mounted}` entries.
-//  2. remote_config (HCL-only) decomposes into top-level `serverUrl` plus
-//     `oauthConfig`. The diff is computed manually here because remote_config
-//     is Synthetic in catalogItemAttrSpec.
-//
-// `serverName` is needed because oauthConfig embeds the catalog item's name
-// inside the OAuth payload (server-side requirement).
+// finalizeCatalogItemPatch covers two HCL-vs-wire impedance mismatches:
+// `remote_config` is Synthetic and must be decomposed into top-level
+// `serverUrl` + `oauthConfig` (the latter embeds the catalog item's
+// `serverName` per backend requirement); and several JSONB sub-trees need
+// per-entry post-encoding (polymorphic defaults, image-pull-secret discriminator).
 func finalizeCatalogItemPatch(
 	ctx context.Context,
 	patch map[string]any,
@@ -180,14 +203,53 @@ func finalizeCatalogItemPatch(
 	serverName string,
 	diags *diag.Diagnostics,
 ) {
-	finalizeLocalConfigInPatch(patch)
+	finalizeLocalConfigInPatch(patch, diags)
+	finalizeUserConfigInPatch(patch, diags)
 	finalizeRemoteConfigInPatch(ctx, patch, plan, prior, serverName, diags)
 }
 
-// finalizeLocalConfigInPatch normalizes the imagePullSecrets entries inside
-// `localConfig` to the wire shape — `existing` keeps `name`, `credentials`
-// keeps `server`/`username`/`password`/`email`, with empties dropped.
-func finalizeLocalConfigInPatch(patch map[string]any) {
+func finalizeUserConfigInPatch(patch map[string]any, diags *diag.Diagnostics) {
+	uc, ok := patch["userConfig"].(map[string]any)
+	if !ok {
+		return
+	}
+	for key, entryRaw := range uc {
+		entry, ok := entryRaw.(map[string]any)
+		if !ok {
+			continue
+		}
+		raw, has := entry["default"]
+		if !has || raw == nil {
+			continue
+		}
+		s, ok := raw.(string)
+		if !ok {
+			continue
+		}
+		fieldType, _ := entry["type"].(string)
+		multiple, _ := entry["multiple"].(bool)
+		v, keep, err := decodePolymorphicDefault(s, fieldType, multiple)
+		if err != nil {
+			diags.AddAttributeError(
+				path.Root("user_config").AtMapKey(key).AtName("default"),
+				"Invalid user_config default",
+				err.Error(),
+			)
+			continue
+		}
+		if keep {
+			entry["default"] = v
+		} else {
+			delete(entry, "default")
+		}
+	}
+}
+
+// finalizeLocalConfigInPatch fills in `environment[].promptOnInstallation`
+// (wire-required, no schema default reaches this point when the entry is
+// fresh-built from a partial diff), runs the polymorphic-default gate per
+// entry, and discriminates each `imagePullSecrets` entry by its `source`.
+func finalizeLocalConfigInPatch(patch map[string]any, diags *diag.Diagnostics) {
 	lcRaw, ok := patch["localConfig"]
 	if !ok || lcRaw == nil {
 		return
@@ -197,18 +259,33 @@ func finalizeLocalConfigInPatch(patch map[string]any) {
 		return
 	}
 
-	// promptOnInstallation is required on every env entry; default false when
-	// the user omits it. (Schema sets a Default so plan time has it; this is
-	// belt-and-braces for any path that might bypass the default — e.g. when
-	// the plan is unknown but the entry shape is otherwise complete.)
 	if envArr, ok := lc["environment"].([]any); ok {
-		for _, item := range envArr {
+		for i, item := range envArr {
 			entry, ok := item.(map[string]any)
 			if !ok {
 				continue
 			}
 			if _, set := entry["promptOnInstallation"]; !set {
 				entry["promptOnInstallation"] = false
+			}
+			if raw, has := entry["default"]; has && raw != nil {
+				if s, ok := raw.(string); ok {
+					fieldType, _ := entry["type"].(string)
+					v, keep, err := decodePolymorphicDefault(s, fieldType, false)
+					if err != nil {
+						diags.AddAttributeError(
+							path.Root("local_config").AtName("environment").AtListIndex(i).AtName("default"),
+							"Invalid environment default",
+							err.Error(),
+						)
+						continue
+					}
+					if keep {
+						entry["default"] = v
+					} else {
+						delete(entry, "default")
+					}
+				}
 			}
 		}
 	}
