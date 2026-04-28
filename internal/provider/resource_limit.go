@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -81,8 +82,11 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				},
 			},
 			"limit_value": schema.Int64Attribute{
-				MarkdownDescription: "Limit threshold value",
+				MarkdownDescription: "Limit threshold value. Must be at least 1.",
 				Required:            true,
+				Validators: []validator.Int64{
+					int64validator.AtLeast(1),
+				},
 			},
 			"model": schema.ListAttribute{
 				MarkdownDescription: "Required when limit_type is 'token_cost'. List of model names this limit applies to.",

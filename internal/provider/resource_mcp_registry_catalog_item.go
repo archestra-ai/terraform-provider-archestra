@@ -8,6 +8,7 @@ import (
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -125,17 +126,17 @@ type LabelModel struct {
 }
 
 type LocalConfigModel struct {
-	Command          types.String  `tfsdk:"command"`
-	Arguments        types.List    `tfsdk:"arguments"`
-	Environment      types.Set     `tfsdk:"environment"`
-	EnvFrom          types.List    `tfsdk:"env_from"`
-	DockerImage      types.String  `tfsdk:"docker_image"`
-	TransportType    types.String  `tfsdk:"transport_type"`
-	HTTPPort         types.Int64   `tfsdk:"http_port"`
-	HTTPPath         types.String  `tfsdk:"http_path"`
-	ServiceAccount   types.String  `tfsdk:"service_account"`
-	NodePort         types.Float64 `tfsdk:"node_port"`
-	ImagePullSecrets types.List    `tfsdk:"image_pull_secrets"`
+	Command          types.String `tfsdk:"command"`
+	Arguments        types.List   `tfsdk:"arguments"`
+	Environment      types.Set    `tfsdk:"environment"`
+	EnvFrom          types.List   `tfsdk:"env_from"`
+	DockerImage      types.String `tfsdk:"docker_image"`
+	TransportType    types.String `tfsdk:"transport_type"`
+	HTTPPort         types.Int64  `tfsdk:"http_port"`
+	HTTPPath         types.String `tfsdk:"http_path"`
+	ServiceAccount   types.String `tfsdk:"service_account"`
+	NodePort         types.Int64  `tfsdk:"node_port"`
+	ImagePullSecrets types.List   `tfsdk:"image_pull_secrets"`
 }
 
 // EnvironmentVariableModel mirrors the wire shape one-to-one.
@@ -190,7 +191,7 @@ type OAuthConfigModel struct {
 	RequiresProxy            types.Bool    `tfsdk:"requires_proxy"`
 	ProviderName             types.String  `tfsdk:"provider_name"`
 	StreamableHTTPURL        types.String  `tfsdk:"streamable_http_url"`
-	StreamableHTTPPort       types.Float64 `tfsdk:"streamable_http_port"`
+	StreamableHTTPPort       types.Int64   `tfsdk:"streamable_http_port"`
 }
 
 
@@ -331,8 +332,11 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 					"http_port": schema.Int64Attribute{
-						MarkdownDescription: "HTTP port for streamable-http transport",
+						MarkdownDescription: "HTTP port for streamable-http transport. Range 0..65535.",
 						Optional:            true,
+						Validators: []validator.Int64{
+							int64validator.Between(0, 65535),
+						},
 					},
 					"http_path": schema.StringAttribute{
 						MarkdownDescription: "HTTP path for streamable-http transport (e.g., '/sse')",
@@ -342,9 +346,12 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 						MarkdownDescription: "Kubernetes service account for the MCP server pod",
 						Optional:            true,
 					},
-					"node_port": schema.Float64Attribute{
-						MarkdownDescription: "Node port for the MCP server service",
+					"node_port": schema.Int64Attribute{
+						MarkdownDescription: "Node port for the MCP server service. Kubernetes NodePort range 30000..32767.",
 						Optional:            true,
+						Validators: []validator.Int64{
+							int64validator.Between(30000, 32767),
+						},
 					},
 					"image_pull_secrets": schema.ListNestedAttribute{
 						MarkdownDescription: "Kubernetes image pull secrets for the MCP server pod. Supports two variants: `source = \"existing\"` references a pre-existing secret by `name`; `source = \"credentials\"` creates a new secret from explicit registry credentials (`server`, `username`, `password`, optional `email`).",
@@ -354,6 +361,9 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 								"source": schema.StringAttribute{
 									MarkdownDescription: "Source of the pull secret. One of `existing`, `credentials`. Defaults to `existing` for backward compatibility when only `name` is set.",
 									Optional:            true,
+									Validators: []validator.String{
+										stringvalidator.OneOf("existing", "credentials"),
+									},
 								},
 								"name": schema.StringAttribute{
 									MarkdownDescription: "Name of the existing Kubernetes secret (required for `source = existing`).",
@@ -445,6 +455,9 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 							"grant_type": schema.StringAttribute{
 								MarkdownDescription: "OAuth grant type. One of `authorization_code`, `client_credentials`.",
 								Optional:            true,
+								Validators: []validator.String{
+									stringvalidator.OneOf("authorization_code", "client_credentials"),
+								},
 							},
 							"audience": schema.StringAttribute{
 								MarkdownDescription: "`aud` claim to request when performing token exchange.",
@@ -474,9 +487,12 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 								MarkdownDescription: "Streamable-HTTP MCP server URL override.",
 								Optional:            true,
 							},
-							"streamable_http_port": schema.Float64Attribute{
-								MarkdownDescription: "Streamable-HTTP MCP server port override.",
+							"streamable_http_port": schema.Int64Attribute{
+								MarkdownDescription: "Streamable-HTTP MCP server port override. Range 0..65535.",
 								Optional:            true,
+								Validators: []validator.Int64{
+									int64validator.Between(0, 65535),
+								},
 							},
 						},
 					},
@@ -594,26 +610,56 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 				Optional:            true,
 				Attributes: map[string]schema.Attribute{
 					"identity_provider_id": schema.StringAttribute{Optional: true, MarkdownDescription: "Identity provider UUID issuing credentials."},
-					"resource_type":        schema.StringAttribute{Optional: true, MarkdownDescription: "Resource type. One of `mcp`, `oauth_protected_resource`, `secret`, `service_account`, `custom_http`."},
-					"resource_identifier":  schema.StringAttribute{Optional: true},
-					"requested_issuer":     schema.StringAttribute{Optional: true},
+					"resource_type": schema.StringAttribute{
+						Optional:            true,
+						MarkdownDescription: "Resource type. One of `mcp`, `oauth_protected_resource`, `secret`, `service_account`, `custom_http`.",
+						Validators: []validator.String{
+							stringvalidator.OneOf("mcp", "oauth_protected_resource", "secret", "service_account", "custom_http"),
+						},
+					},
+					"resource_identifier": schema.StringAttribute{Optional: true},
+					"requested_issuer":    schema.StringAttribute{Optional: true},
 					"requested_credential_type": schema.StringAttribute{
 						Optional:            true,
 						MarkdownDescription: "Credential type requested. One of `id_jag`, `bearer_token`, `secret`, `service_account`, `opaque_json`.",
+						Validators: []validator.String{
+							stringvalidator.OneOf("id_jag", "bearer_token", "secret", "service_account", "opaque_json"),
+						},
 					},
-					"scopes":               schema.ListAttribute{Optional: true, ElementType: types.StringType},
-					"audience":             schema.StringAttribute{Optional: true},
-					"client_id_override":   schema.StringAttribute{Optional: true},
-					"token_injection_mode": schema.StringAttribute{Optional: true, MarkdownDescription: "How the token is injected into the downstream request."},
-					"header_name":          schema.StringAttribute{Optional: true},
-					"env_var_name":         schema.StringAttribute{Optional: true},
-					"body_field_name":      schema.StringAttribute{Optional: true},
-					"response_field_path":  schema.StringAttribute{Optional: true},
-					"fallback_mode":        schema.StringAttribute{Optional: true},
-					"cache_ttl_seconds":    schema.Int64Attribute{Optional: true},
+					"scopes":             schema.ListAttribute{Optional: true, ElementType: types.StringType},
+					"audience":           schema.StringAttribute{Optional: true},
+					"client_id_override": schema.StringAttribute{Optional: true},
+					"token_injection_mode": schema.StringAttribute{
+						Optional:            true,
+						MarkdownDescription: "How the token is injected into the downstream request. One of `authorization_bearer`, `raw_authorization`, `header`, `env`, `body_field`.",
+						Validators: []validator.String{
+							stringvalidator.OneOf("authorization_bearer", "raw_authorization", "header", "env", "body_field"),
+						},
+					},
+					"header_name":         schema.StringAttribute{Optional: true},
+					"env_var_name":        schema.StringAttribute{Optional: true},
+					"body_field_name":     schema.StringAttribute{Optional: true},
+					"response_field_path": schema.StringAttribute{Optional: true},
+					"fallback_mode": schema.StringAttribute{
+						Optional:            true,
+						MarkdownDescription: "Behavior when credential exchange fails. One of `fail_closed`, `fallback_to_dynamic`, `fallback_to_static`.",
+						Validators: []validator.String{
+							stringvalidator.OneOf("fail_closed", "fallback_to_dynamic", "fallback_to_static"),
+						},
+					},
+					"cache_ttl_seconds": schema.Int64Attribute{
+						Optional:            true,
+						MarkdownDescription: "Cache TTL in seconds. Non-negative.",
+						Validators: []validator.Int64{
+							int64validator.AtLeast(0),
+						},
+					},
 					"assertion_mode": schema.StringAttribute{
 						Optional:            true,
 						MarkdownDescription: "Assertion exchange mode. One of `exchange`, `passthrough`.",
+						Validators: []validator.String{
+							stringvalidator.OneOf("exchange", "passthrough"),
+						},
 					},
 				},
 			},
@@ -979,7 +1025,7 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 			"http_port":          types.Int64Null(),
 			"http_path":          types.StringNull(),
 			"service_account":    types.StringNull(),
-			"node_port":          types.Float64Null(),
+			"node_port":          types.Int64Null(),
 			"image_pull_secrets": types.ListNull(ipSecretObjectType),
 		}
 
@@ -1055,7 +1101,7 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 			localConfigObj["service_account"] = types.StringValue(*apiResp.JSON200.LocalConfig.ServiceAccount)
 		}
 		if apiResp.JSON200.LocalConfig.NodePort != nil {
-			localConfigObj["node_port"] = types.Float64Value(float64(*apiResp.JSON200.LocalConfig.NodePort))
+			localConfigObj["node_port"] = types.Int64Value(int64(*apiResp.JSON200.LocalConfig.NodePort))
 		}
 
 		// ImagePullSecrets — parse from raw response body; the generated union type has unexported fields.
@@ -1139,7 +1185,7 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 			"http_port":          types.Int64Type,
 			"http_path":          types.StringType,
 			"service_account":    types.StringType,
-			"node_port":          types.Float64Type,
+			"node_port":          types.Int64Type,
 			"image_pull_secrets": types.ListType{ElemType: ipSecretObjectType},
 		}
 
@@ -1155,7 +1201,7 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 			"http_port":          types.Int64Type,
 			"http_path":          types.StringType,
 			"service_account":    types.StringType,
-			"node_port":          types.Float64Type,
+			"node_port":          types.Int64Type,
 			"image_pull_secrets": types.ListType{ElemType: ipSecretObjectType},
 		})
 	}
@@ -1181,7 +1227,7 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 		"requires_proxy":             types.BoolType,
 		"provider_name":              types.StringType,
 		"streamable_http_url":        types.StringType,
-		"streamable_http_port":       types.Float64Type,
+		"streamable_http_port":       types.Int64Type,
 	}
 
 	remoteConfigAttrTypes := map[string]attr.Type{
@@ -1218,14 +1264,14 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 				"requires_proxy":             boolValueOrNull(oc.RequiresProxy),
 				"provider_name":              stringValueOrNull(oc.ProviderName),
 				"streamable_http_url":        stringValueOrNull(oc.StreamableHttpUrl),
-				"streamable_http_port":       types.Float64Null(),
+				"streamable_http_port":       types.Int64Null(),
 				"grant_type":                 types.StringNull(),
 			}
 			if oc.GrantType != nil {
 				oauthConfigObj["grant_type"] = types.StringValue(string(*oc.GrantType))
 			}
 			if oc.StreamableHttpPort != nil {
-				oauthConfigObj["streamable_http_port"] = types.Float64Value(float64(*oc.StreamableHttpPort))
+				oauthConfigObj["streamable_http_port"] = types.Int64Value(int64(*oc.StreamableHttpPort))
 			}
 
 			// Redirect URIs

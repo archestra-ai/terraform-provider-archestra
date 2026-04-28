@@ -40,7 +40,7 @@ resource "archestra_organization_settings" "example" {
 - `default_agent_id` (String) Default agent (profile) ID for the organization
 - `default_llm_api_key_id` (String) Default LLM API key ID for the organization
 - `default_llm_model` (String) Default LLM model for the organization
-- `default_llm_provider` (String) Default LLM provider for the organization
+- `default_llm_provider` (String) Default LLM provider for the organization. One of the providers supported by `archestra_chat_llm_provider_api_key.llm_provider`.
 - `embedding_chat_api_key_id` (String) API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `embedding_model` (String) Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `favicon` (String) Base64 encoded favicon image for the organization
@@ -51,7 +51,7 @@ resource "archestra_organization_settings" "example" {
 - `limit_cleanup_interval` (String) Interval for cleaning up usage limits. Valid values: 1h, 12h, 24h, 1w, 1m. Set to null to disable.
 - `logo` (String) Base64 encoded logo image for the organization
 - `logo_dark` (String) Base64 encoded dark mode logo image for the organization
-- `mcp_oauth_access_token_lifetime_seconds` (Number) Lifetime in seconds for MCP OAuth access tokens
+- `mcp_oauth_access_token_lifetime_seconds` (Number) Lifetime in seconds for MCP OAuth access tokens. Must be at least 1 second.
 - `og_description` (String) OG meta description for the organization, max 500 characters
 - `onboarding_complete` (Boolean) Whether organization onboarding is complete. This is a one-way flag — once set to `true`, it cannot be reverted to `false`.
 - `reranker_chat_api_key_id` (String) API key ID for the reranker model

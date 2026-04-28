@@ -9,12 +9,14 @@ import (
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	openapi_types "github.com/oapi-codegen/runtime/types"
@@ -78,11 +80,14 @@ func (r *AgentToolResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				},
 			},
 			"credential_resolution_mode": schema.StringAttribute{
-				MarkdownDescription: "How credentials are resolved for this tool. Valid values: `static`, `dynamic`, `enterprise_managed`",
+				MarkdownDescription: "How credentials are resolved for this tool. One of `static`, `dynamic`, `enterprise_managed`.",
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
+				},
+				Validators: []validator.String{
+					stringvalidator.OneOf("static", "dynamic", "enterprise_managed"),
 				},
 			},
 		},

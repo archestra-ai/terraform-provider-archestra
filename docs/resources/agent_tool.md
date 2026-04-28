@@ -55,7 +55,7 @@ resource "archestra_agent_tool" "read_text_file" {
 
 ### Optional
 
-- `credential_resolution_mode` (String) How credentials are resolved for this tool. Valid values: `static`, `dynamic`, `enterprise_managed`
+- `credential_resolution_mode` (String) How credentials are resolved for this tool. One of `static`, `dynamic`, `enterprise_managed`.
 - `mcp_server_id` (String) ID of the MCP Server instance associated with this tool
 
 ### Read-Only

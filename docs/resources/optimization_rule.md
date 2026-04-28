@@ -102,4 +102,4 @@ resource "archestra_optimization_rule" "agent_optimization" {
 Optional:
 
 - `has_tools` (Boolean) Whether tools are present
-- `max_length` (Number) Maximum token length threshold
+- `max_length` (Number) Maximum token length threshold. Must be at least 1.

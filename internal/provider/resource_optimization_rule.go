@@ -8,6 +8,7 @@ import (
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -101,8 +102,11 @@ func (r *OptimizationRuleResource) Schema(ctx context.Context, req resource.Sche
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"max_length": schema.Int64Attribute{
-							MarkdownDescription: "Maximum token length threshold",
+							MarkdownDescription: "Maximum token length threshold. Must be at least 1.",
 							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.AtLeast(1),
+							},
 						},
 						"has_tools": schema.BoolAttribute{
 							MarkdownDescription: "Whether tools are present",

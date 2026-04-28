@@ -50,7 +50,7 @@ resource "archestra_limit" "tool_limit" {
 - `entity_id` (String) The entity ID this limit applies to
 - `entity_type` (String) Entity type: organization, team, or agent
 - `limit_type` (String) Limit type: 'token_cost' (requires model), 'tool_calls' (requires mcp_server_name and tool_name), or 'mcp_server_calls' (requires mcp_server_name)
-- `limit_value` (Number) Limit threshold value
+- `limit_value` (Number) Limit threshold value. Must be at least 1.
 
 ### Optional
 

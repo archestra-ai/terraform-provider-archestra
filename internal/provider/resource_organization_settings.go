@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -290,9 +291,30 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Computed:            true,
 			},
 			"default_llm_provider": schema.StringAttribute{
-				MarkdownDescription: "Default LLM provider for the organization",
+				MarkdownDescription: "Default LLM provider for the organization. One of the providers supported by `archestra_chat_llm_provider_api_key.llm_provider`.",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderAnthropic),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderAzure),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderBedrock),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderCerebras),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderCohere),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderDeepseek),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderGemini),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderGroq),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderMinimax),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderMistral),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderOllama),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderOpenai),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderOpenrouter),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderPerplexity),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderVllm),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderXai),
+						string(client.CreateLlmProviderApiKeyJSONBodyProviderZhipuai),
+					),
+				},
 			},
 			"default_llm_api_key_id": schema.StringAttribute{
 				MarkdownDescription: "Default LLM API key ID for the organization",
@@ -307,9 +329,12 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 
 			// MCP settings
 			"mcp_oauth_access_token_lifetime_seconds": schema.Int64Attribute{
-				MarkdownDescription: "Lifetime in seconds for MCP OAuth access tokens",
+				MarkdownDescription: "Lifetime in seconds for MCP OAuth access tokens. Must be at least 1 second.",
 				Optional:            true,
 				Computed:            true,
+				Validators: []validator.Int64{
+					int64validator.AtLeast(1),
+				},
 			},
 
 			// Knowledge settings

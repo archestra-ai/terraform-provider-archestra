@@ -293,10 +293,10 @@ Optional:
 - `assertion_mode` (String) Assertion exchange mode. One of `exchange`, `passthrough`.
 - `audience` (String)
 - `body_field_name` (String)
-- `cache_ttl_seconds` (Number)
+- `cache_ttl_seconds` (Number) Cache TTL in seconds. Non-negative.
 - `client_id_override` (String)
 - `env_var_name` (String)
-- `fallback_mode` (String)
+- `fallback_mode` (String) Behavior when credential exchange fails. One of `fail_closed`, `fallback_to_dynamic`, `fallback_to_static`.
 - `header_name` (String)
 - `identity_provider_id` (String) Identity provider UUID issuing credentials.
 - `requested_credential_type` (String) Credential type requested. One of `id_jag`, `bearer_token`, `secret`, `service_account`, `opaque_json`.
@@ -305,7 +305,7 @@ Optional:
 - `resource_type` (String) Resource type. One of `mcp`, `oauth_protected_resource`, `secret`, `service_account`, `custom_http`.
 - `response_field_path` (String)
 - `scopes` (List of String)
-- `token_injection_mode` (String) How the token is injected into the downstream request.
+- `token_injection_mode` (String) How the token is injected into the downstream request. One of `authorization_bearer`, `raw_authorization`, `header`, `env`, `body_field`.
 
 
 <a id="nestedatt--labels"></a>
@@ -328,9 +328,9 @@ Optional:
 - `env_from` (Attributes List) List of sources to populate environment variables from (Kubernetes secrets or configMaps) (see [below for nested schema](#nestedatt--local_config--env_from))
 - `environment` (Attributes Set) Environment variables declared on the MCP server. Each entry mirrors the backend's wire shape one-to-one: `key`, `type`, optional `value`, `default`, `description`, plus `prompt_on_installation`, `required`, and `mounted` flags. (see [below for nested schema](#nestedatt--local_config--environment))
 - `http_path` (String) HTTP path for streamable-http transport (e.g., '/sse')
-- `http_port` (Number) HTTP port for streamable-http transport
+- `http_port` (Number) HTTP port for streamable-http transport. Range 0..65535.
 - `image_pull_secrets` (Attributes List) Kubernetes image pull secrets for the MCP server pod. Supports two variants: `source = "existing"` references a pre-existing secret by `name`; `source = "credentials"` creates a new secret from explicit registry credentials (`server`, `username`, `password`, optional `email`). (see [below for nested schema](#nestedatt--local_config--image_pull_secrets))
-- `node_port` (Number) Node port for the MCP server service
+- `node_port` (Number) Node port for the MCP server service. Kubernetes NodePort range 30000..32767.
 - `service_account` (String) Kubernetes service account for the MCP server pod
 - `transport_type` (String) Transport type: 'stdio' or 'streamable-http'. Defaults to 'stdio'
 
@@ -413,7 +413,7 @@ Optional:
 - `requires_proxy` (Boolean) Route OAuth redirects through the Archestra proxy.
 - `resource_metadata_url` (String) URL of the protected-resource metadata document.
 - `scopes` (List of String) List of OAuth scopes to request (e.g., ['read', 'write'])
-- `streamable_http_port` (Number) Streamable-HTTP MCP server port override.
+- `streamable_http_port` (Number) Streamable-HTTP MCP server port override. Range 0..65535.
 - `streamable_http_url` (String) Streamable-HTTP MCP server URL override.
 - `supports_resource_metadata` (Boolean) Enable if the server publishes OAuth metadata at /.well-known/oauth-authorization-server for automatic endpoint discovery
 - `token_endpoint` (String) Custom OAuth token endpoint URL.
