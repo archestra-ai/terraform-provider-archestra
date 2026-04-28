@@ -82,13 +82,21 @@ type BuiltInAgentConfigModel struct {
 // flattenAgentLabels copies API-side labels into the model. Labels are exposed
 // as a set in the schema, so element order is irrelevant for state comparison
 // — both apply and import paths can return whatever order the API gives us.
-func flattenAgentLabels(_ []AgentLabelModel, apiLabels []struct {
+//
+// `prior` distinguishes two empty-API cases that produce different states:
+// a nil prior (HCL omits the block) collapses to a typed-null set, while a
+// non-nil empty prior (HCL writes `labels = []`) preserves the explicit
+// empty so refresh doesn't churn null↔[] forever.
+func flattenAgentLabels(prior []AgentLabelModel, apiLabels []struct {
 	Key     string              `json:"key"`
 	KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
 	Value   string              `json:"value"`
 	ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 }) []AgentLabelModel {
 	if len(apiLabels) == 0 {
+		if prior != nil {
+			return []AgentLabelModel{}
+		}
 		return nil
 	}
 	out := make([]AgentLabelModel, len(apiLabels))
