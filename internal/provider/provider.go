@@ -164,21 +164,16 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewLLMProviderApiKeyResource,
 		NewAgentToolResource,
 		NewIdentityProviderResource,
-		// NewPromptResource, // TODO: Prompts are now inline on agents (systemPrompt field). No standalone prompt API exists.
 	}
 }
 
 func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewTeamDataSource,
-		// NewUserDataSource, // TODO: Enable when user API endpoints are implemented
 		NewToolDataSource,
 		NewAgentToolDataSource,
 		NewMCPServerToolDataSource,
-		// NewTokenPricesDataSource, // TODO: Token pricing moved to LLM Models API. Replace with archestra_llm_models data source.
 		NewTeamExternalGroupsDataSource,
-		// NewPromptDataSource,         // TODO: Prompts are now inline on agents (systemPrompt field). No standalone prompt API exists.
-		// NewPromptVersionsDataSource, // TODO: Prompt versioning removed. Prompts are now inline on agents.
 	}
 }
 

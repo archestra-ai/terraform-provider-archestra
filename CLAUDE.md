@@ -130,13 +130,6 @@ All resources follow Terraform Plugin Framework patterns (`internal/provider/res
 | `archestra_identity_provider`         | `resource_identity_provider.go`         | Identity provider for SSO (OIDC + SAML + enterprise creds) |
 | `archestra_llm_model`                 | `resource_llm_model.go`                 | Manage LLM model pricing and settings (replaces token_price) |
 
-**Disabled Resources** (files have `//go:build ignore`):
-
-- `resource_prompt.go` - Prompts are now inline on agents (`system_prompt` field). No standalone API.
-- `resource_token_price.go` - Replaced by `archestra_llm_model` resource.
-- `resource_dual_llm_config.go` - Replaced by `built_in_agent_config` block on `archestra_agent`.
-- `resource_user.go` - User management (API not exposed in OpenAPI spec)
-
 ### Data Sources
 
 Data sources for reading existing resources (`internal/provider/datasource_*.go`):
@@ -149,18 +142,10 @@ Data sources for reading existing resources (`internal/provider/datasource_*.go`
 | `archestra_team`                 | `datasource_team.go`                 | Look up team information          |
 | `archestra_team_external_groups` | `datasource_team_external_groups.go` | List external groups for a team   |
 
-**Disabled Data Sources** (files have `//go:build ignore`):
-
-- `datasource_prompt.go` - Prompts are now inline on agents. No standalone API.
-- `datasource_prompt_versions.go` - Prompt versioning removed.
-- `datasource_token_prices.go` - Token pricing moved to LLM Models API.
-- `datasource_user.go` - User lookups (API not exposed in OpenAPI spec)
-
 ### Helper Utilities
 
 - `retry.go` - Retry logic for async operations (used by agent-tool and MCP server tool data sources)
 - `agent_shared.go` - Shared helpers for the three agent-type resources (`archestra_agent`, `archestra_llm_proxy`, `archestra_mcp_gateway`)
-- `prompt_shared.go` - Shared prompt helpers (disabled, `//go:build ignore`)
 
 ### Each Resource/Data Source Contains
 
@@ -215,7 +200,6 @@ CI runs BYOS-mode: the workflow deploys a dev Vault pod and an Ollama `/v1/model
 
 ## Important Notes
 
-- Disabled resources have `//go:build ignore` build tags - do not remove these unless re-enabling
 - The API client is generated code - always regenerate rather than editing manually
 - Default base URL is `http://localhost:9000` for local development
 - Provider uses API key authentication via `Authorization` header (format: `arch_...`)
