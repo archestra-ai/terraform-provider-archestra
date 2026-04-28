@@ -126,8 +126,8 @@ All resources follow Terraform Plugin Framework patterns (`internal/provider/res
 | `archestra_limit`                     | `resource_limit.go`                     | Set usage limits (token cost, tool calls, MCP calls)  |
 | `archestra_optimization_rule`         | `resource_optimization_rule.go`         | Cost optimization rules for model routing             |
 | `archestra_organization_settings`     | `resource_organization_settings.go`     | Full org settings (appearance, security, LLM, MCP, knowledge) |
-| `archestra_chat_llm_provider_api_key` | `resource_chat_llm_provider_api_key.go` | Manage LLM provider API keys (17 providers, BYOS vault) |
-| `archestra_sso_provider`              | `resource_sso_provider.go`              | SSO/Identity provider (OIDC + SAML + enterprise creds) |
+| `archestra_llm_provider_api_key`      | `resource_llm_provider_api_key.go`      | Manage LLM provider API keys (17 providers, BYOS vault) |
+| `archestra_identity_provider`         | `resource_identity_provider.go`         | Identity provider for SSO (OIDC + SAML + enterprise creds) |
 | `archestra_llm_model`                 | `resource_llm_model.go`                 | Manage LLM model pricing and settings (replaces token_price) |
 
 **Disabled Resources** (files have `//go:build ignore`):
@@ -208,7 +208,7 @@ Tests use MCP server tools (via `@modelcontextprotocol/server-filesystem`) for t
 
 Some tests opt in via extra environment variables:
 
-- `ARCHESTRA_READONLY_VAULT_ENABLED=true` — required by BYOS-vault-dependent tests (`TestAccMcpRegistryCatalogItemResourceWithVaultRefs` and all `TestAccChatLLMProviderApiKeyResource*`). The helper `testAccRequireByosEnabled` calls `t.Fatal` loudly instead of silently skipping, so a DB-mode backend fails fast with an actionable message. The backend must also run with `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` plus an enterprise license.
+- `ARCHESTRA_READONLY_VAULT_ENABLED=true` — required by BYOS-vault-dependent tests (`TestAccMcpRegistryCatalogItemResourceWithVaultRefs` and all `TestAccLLMProviderApiKeyResource*`). The helper `testAccRequireByosEnabled` calls `t.Fatal` loudly instead of silently skipping, so a DB-mode backend fails fast with an actionable message. The backend must also run with `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` plus an enterprise license.
 - `ARCHESTRA_TEST_IDP_ID=<uuid>` — run `TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig` against an existing identity provider; skipped otherwise because the EE IdP API is license-gated.
 
 CI runs BYOS-mode: the workflow deploys a dev Vault pod and an Ollama `/v1/models` HTTP stub, and overrides `ARCHESTRA_OLLAMA_BASE_URL` at `.github/values-ci.yaml` so backend key-validation passes without real Ollama.

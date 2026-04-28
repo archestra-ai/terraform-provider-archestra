@@ -22,19 +22,19 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-var _ resource.Resource = &SsoProviderResource{}
-var _ resource.ResourceWithImportState = &SsoProviderResource{}
+var _ resource.Resource = &IdentityProviderResource{}
+var _ resource.ResourceWithImportState = &IdentityProviderResource{}
 
-func NewSsoProviderResource() resource.Resource {
-	return &SsoProviderResource{}
+func NewIdentityProviderResource() resource.Resource {
+	return &IdentityProviderResource{}
 }
 
-// SsoProviderResource manages SSO providers (OIDC or SAML).
-type SsoProviderResource struct {
+// IdentityProviderResource manages identity providers (OIDC or SAML).
+type IdentityProviderResource struct {
 	client *client.ClientWithResponses
 }
 
-type SsoProviderResourceModel struct {
+type IdentityProviderResourceModel struct {
 	ID             types.String         `tfsdk:"id"`
 	ProviderID     types.String         `tfsdk:"provider_id"`
 	Domain         types.String         `tfsdk:"domain"`
@@ -164,17 +164,17 @@ type TeamSyncConfigModel struct {
 	GroupsExpression types.String `tfsdk:"groups_expression"`
 }
 
-func (r *SsoProviderResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_sso_provider"
+func (r *IdentityProviderResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_identity_provider"
 }
 
-func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages Archestra SSO providers (OIDC or SAML). Exactly one of oidc_config or saml_config must be set.",
+		MarkdownDescription: "Manages Archestra identity providers (OIDC or SAML). Exactly one of oidc_config or saml_config must be set.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "SSO provider identifier",
+				MarkdownDescription: "identity provider identifier",
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"provider_id": schema.StringAttribute{
@@ -365,7 +365,7 @@ func (r *SsoProviderResource) Schema(ctx context.Context, req resource.SchemaReq
 	}
 }
 
-func (r *SsoProviderResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *IdentityProviderResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -382,24 +382,24 @@ func (r *SsoProviderResource) Configure(ctx context.Context, req resource.Config
 	r.client = apiClient
 }
 
-func (r *SsoProviderResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data SsoProviderResourceModel
+func (r *IdentityProviderResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data IdentityProviderResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	if err := validateSsoConfigChoice(data.OidcConfig, data.SamlConfig); err != nil {
+	if err := validateIdentityProviderConfigChoice(data.OidcConfig, data.SamlConfig); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
 
 	priorNull := tftypes.NewValue(req.Plan.Schema.Type().TerraformType(ctx), nil)
-	patch := MergePatch(ctx, req.Plan.Raw, priorNull, ssoProviderAttrSpec, &resp.Diagnostics)
+	patch := MergePatch(ctx, req.Plan.Raw, priorNull, identityProviderAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	LogPatch(ctx, "archestra_sso_provider Create", patch, ssoProviderAttrSpec)
+	LogPatch(ctx, "archestra_identity_provider Create", patch, identityProviderAttrSpec)
 
 	body, err := json.Marshal(patch)
 	if err != nil {
@@ -409,7 +409,7 @@ func (r *SsoProviderResource) Create(ctx context.Context, req resource.CreateReq
 
 	apiResp, err := r.client.CreateIdentityProviderWithBodyWithResponse(ctx, "application/json", bytes.NewReader(body))
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create SSO provider: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create identity provider: %s", err))
 		return
 	}
 
@@ -440,8 +440,8 @@ func (r *SsoProviderResource) Create(ctx context.Context, req resource.CreateReq
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
-func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state SsoProviderResourceModel
+func (r *IdentityProviderResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state IdentityProviderResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -449,7 +449,7 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 
 	apiResp, err := r.client.GetIdentityProviderWithResponse(ctx, state.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read SSO provider: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read identity provider: %s", err))
 		return
 	}
 
@@ -473,33 +473,33 @@ func (r *SsoProviderResource) Read(ctx context.Context, req resource.ReadRequest
 	populateTeamSync := isImport || state.TeamSyncConfig != nil
 
 	newState := state
-	if err := mapSsoProviderResponse(apiResp.JSON200, &newState, populateRoleMapping, populateTeamSync); err != nil {
-		resp.Diagnostics.AddError("Failed to map SSO provider response", err.Error())
+	if err := mapIdentityProviderResponse(apiResp.JSON200, &newState, populateRoleMapping, populateTeamSync); err != nil {
+		resp.Diagnostics.AddError("Failed to map identity provider response", err.Error())
 		return
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &newState)...)
 }
 
-func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan SsoProviderResourceModel
-	var state SsoProviderResourceModel
+func (r *IdentityProviderResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan IdentityProviderResourceModel
+	var state IdentityProviderResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	if err := validateSsoConfigChoice(plan.OidcConfig, plan.SamlConfig); err != nil {
+	if err := validateIdentityProviderConfigChoice(plan.OidcConfig, plan.SamlConfig); err != nil {
 		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
 
-	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, ssoProviderAttrSpec, &resp.Diagnostics)
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, identityProviderAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	LogPatch(ctx, "archestra_sso_provider Update", patch, ssoProviderAttrSpec)
+	LogPatch(ctx, "archestra_identity_provider Update", patch, identityProviderAttrSpec)
 
 	body, err := json.Marshal(patch)
 	if err != nil {
@@ -509,7 +509,7 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 
 	apiResp, err := r.client.UpdateIdentityProviderWithBodyWithResponse(ctx, state.ID.ValueString(), "application/json", bytes.NewReader(body))
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update SSO provider: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update identity provider: %s", err))
 		return
 	}
 
@@ -522,16 +522,16 @@ func (r *SsoProviderResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 
 	newState := plan
-	if err := mapSsoProviderResponse(apiResp.JSON200, &newState, plan.RoleMapping != nil, plan.TeamSyncConfig != nil); err != nil {
-		resp.Diagnostics.AddError("Failed to map SSO provider response", err.Error())
+	if err := mapIdentityProviderResponse(apiResp.JSON200, &newState, plan.RoleMapping != nil, plan.TeamSyncConfig != nil); err != nil {
+		resp.Diagnostics.AddError("Failed to map identity provider response", err.Error())
 		return
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &newState)...)
 }
 
-func (r *SsoProviderResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state SsoProviderResourceModel
+func (r *IdentityProviderResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state IdentityProviderResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -539,7 +539,7 @@ func (r *SsoProviderResource) Delete(ctx context.Context, req resource.DeleteReq
 
 	apiResp, err := r.client.DeleteIdentityProviderWithResponse(ctx, state.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete SSO provider: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete identity provider: %s", err))
 		return
 	}
 
@@ -548,7 +548,7 @@ func (r *SsoProviderResource) Delete(ctx context.Context, req resource.DeleteReq
 	}
 }
 
-func (r *SsoProviderResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *IdentityProviderResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
@@ -573,7 +573,7 @@ func isSamlConfigSet(cfg *SamlConfigModel) bool {
 		!cfg.Cert.IsNull()
 }
 
-func validateSsoConfigChoice(oidc *OidcConfigModel, saml *SamlConfigModel) error {
+func validateIdentityProviderConfigChoice(oidc *OidcConfigModel, saml *SamlConfigModel) error {
 	oidcSet := isOidcConfigSet(oidc)
 	samlSet := isSamlConfigSet(saml)
 
@@ -596,11 +596,6 @@ func encodeAdditionalParams(m *map[string]interface{}) jsontypes.Normalized {
 	}
 	return jsontypes.NewNormalizedValue(string(b))
 }
-
-// ssoAPIModel is a normalized view of SSO provider responses to handle differing token auth enum types.
-
-// flattenSsoProvider maps the normalized API model into Terraform state.
-// mapSsoProviderToState maps API response to Terraform state.
 
 func stringValueOrNull(ptr *string) types.String {
 	if ptr == nil {
@@ -629,9 +624,9 @@ func mapStringToTypes(in *map[string]string) types.Map {
 
 // AttrSpecs implements resourceWithAttrSpec — activates the schema↔AttrSpec
 // drift lint for this resource.
-func (r *SsoProviderResource) AttrSpecs() []AttrSpec { return ssoProviderAttrSpec }
+func (r *IdentityProviderResource) AttrSpecs() []AttrSpec { return identityProviderAttrSpec }
 
-// ssoProviderAttrSpec declares the wire shape for `archestra_sso_provider`.
+// identityProviderAttrSpec declares the wire shape for `archestra_identity_provider`.
 //
 // Storage (per platform/backend/src/database/schemas/identity-provider.ts):
 //   - oidc_config / saml_config / role_mapping / team_sync_config are
@@ -645,7 +640,7 @@ func (r *SsoProviderResource) AttrSpecs() []AttrSpec { return ssoProviderAttrSpe
 // LogPatch. State is set from plan (for Create) or response (for Read);
 // plan-based state for sensitive fields is correct because the plan IS the
 // user-supplied value.
-var ssoProviderAttrSpec = []AttrSpec{
+var identityProviderAttrSpec = []AttrSpec{
 	{TFName: "provider_id", JSONName: "providerId", Kind: Scalar},
 	{TFName: "domain", JSONName: "domain", Kind: Scalar},
 	{TFName: "domain_verified", JSONName: "domainVerified", Kind: Scalar},

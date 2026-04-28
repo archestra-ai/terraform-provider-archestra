@@ -9,9 +9,9 @@ resource "archestra_llm_proxy" "shared" {
   ]
 }
 
-# Same proxy, but requiring inbound JWTs validated against an SSO provider.
+# Same proxy, but requiring inbound JWTs validated against an identity provider.
 resource "archestra_llm_proxy" "authenticated" {
   name                 = "secure-openai"
   description          = "OpenAI proxy behind JWT auth."
-  identity_provider_id = archestra_sso_provider.oidc.id
+  identity_provider_id = archestra_identity_provider.oidc.id
 }

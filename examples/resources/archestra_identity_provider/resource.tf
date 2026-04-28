@@ -1,5 +1,5 @@
 # OIDC provider example (Keycloak / Generic OAuth)
-resource "archestra_sso_provider" "oidc" {
+resource "archestra_identity_provider" "oidc" {
   provider_id = "Keycloak"
   domain      = "example.com"
   issuer      = "https://keycloak.example.com/realms/main"
@@ -34,7 +34,7 @@ resource "archestra_sso_provider" "oidc" {
 }
 
 # SAML provider example (Okta SAML)
-resource "archestra_sso_provider" "saml" {
+resource "archestra_identity_provider" "saml" {
   provider_id = "OktaSAML"
   domain      = "example.com"
   issuer      = "https://example.com"

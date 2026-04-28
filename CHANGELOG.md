@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased
+
+### ⚠ BREAKING CHANGES
+
+* **resources renamed to match backend + frontend naming.** No deprecation aliases; HCL must migrate.
+
+  * `archestra_sso_provider` → `archestra_identity_provider`. Backend table is `identity_providers`, route is `/api/identity-providers`, frontend page is `/settings/identity-providers/`. The legacy `sso_provider` name is the provider-side outlier.
+  * `archestra_chat_llm_provider_api_key` → `archestra_llm_provider_api_key`. Backend route is `/api/llm-provider-api-keys`. The `chat_` prefix was misleading — the same key is consumed by both Chat and the LLM Proxy.
+
+  Migration: rename the `resource "archestra_sso_provider" "..."` and `resource "archestra_chat_llm_provider_api_key" "..."` blocks in HCL, then run `terraform state mv archestra_sso_provider.<n> archestra_identity_provider.<n>` and `terraform state mv archestra_chat_llm_provider_api_key.<n> archestra_llm_provider_api_key.<n>` for each instance. Schema, attribute names, and import IDs are unchanged.
+
+* **`archestra_mcp_registry_catalog_item.local_config.environment`** changed from `Map<string, string>` + sibling `mounted_env_keys: Set<string>` to `SetNested<{key, type, value, default, description, required, prompt_on_installation, mounted}>` matching the wire shape. Existing HCL must be rewritten one entry per element.
+
+* **Policy `conditions`** on `archestra_tool_invocation_policy` and `archestra_trusted_data_policy` changed from scalar fan-out (`argument_name` / `attribute_path` / `operator` / `value`) to `conditions = [{ key, operator, value }, ...]` matching the backend's array semantics. Single-condition policies must be wrapped in a one-element list; multi-condition policies (previously impossible) are now supported.
+
+* **Validators tightened** — plan-time `OneOf`/`Between`/numeric-bounds added across enum and numeric attributes. Mainly catches typos earlier; configurations that previously round-tripped values the backend would 400 on now fail at plan time. **Type tightening**: `local_config.node_port` and `oauth_config.streamable_http_port` are now `Int64` (were `Float64`); fractional values are no longer accepted.
+
 ## [0.6.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.5.0...v0.6.0) (2026-04-23)
 
 

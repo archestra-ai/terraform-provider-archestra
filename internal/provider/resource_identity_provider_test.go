@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	ssoSensitiveFields = []string{
+	identityProviderSensitiveFields = []string{
 		"oidc_config.0.client_secret",
 		"saml_config.0.cert",
 		"saml_config.0.decryption_pvk",
@@ -27,8 +27,8 @@ var (
 		"saml_config.0.sp_metadata.0.private_key_pass",
 	}
 
-	// ssoAPIDefaultFields contains fields where API returns defaults that may differ from config.
-	ssoAPIDefaultFields = []string{
+	// identityProviderAPIDefaultFields contains fields where API returns defaults that may differ from config.
+	identityProviderAPIDefaultFields = []string{
 		"oidc_config.0.override_user_info",
 		"oidc_config.0.mapping.0.id",
 		"oidc_config.override_user_info",
@@ -37,8 +37,8 @@ var (
 		"saml_config.mapping.id",
 	}
 
-	// ssoTeamSyncFields contains team sync config fields (optional, may not be returned).
-	ssoTeamSyncFields = []string{
+	// identityProviderTeamSyncFields contains team sync config fields (optional, may not be returned).
+	identityProviderTeamSyncFields = []string{
 		"team_sync_config.0.%",
 		"team_sync_config.0.enabled",
 		"team_sync_config.0.groups_expression",
@@ -47,41 +47,41 @@ var (
 		"team_sync_config.groups_expression",
 	}
 
-	// ssoImportStateVerifyIgnore is the combined list of all fields to ignore during import verification.
-	ssoImportStateVerifyIgnore = append(append(append([]string{}, ssoSensitiveFields...), ssoAPIDefaultFields...), ssoTeamSyncFields...)
+	// identityProviderImportStateVerifyIgnore is the combined list of all fields to ignore during import verification.
+	identityProviderImportStateVerifyIgnore = append(append(append([]string{}, identityProviderSensitiveFields...), identityProviderAPIDefaultFields...), identityProviderTeamSyncFields...)
 )
 
-func TestAccSsoProviderResource_oidc(t *testing.T) {
+func TestAccIdentityProviderResource_oidc(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccSsoProviderOIDCConfig("test-oidc", "example.com"),
+				Config: testAccIdentityProviderOIDCConfig("test-oidc", "example.com"),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_sso_provider.test", tfjsonpath.New("provider_id"), knownvalue.StringExact("test-oidc")),
-					statecheck.ExpectKnownValue("archestra_sso_provider.test", tfjsonpath.New("domain"), knownvalue.StringExact("example.com")),
+					statecheck.ExpectKnownValue("archestra_identity_provider.test", tfjsonpath.New("provider_id"), knownvalue.StringExact("test-oidc")),
+					statecheck.ExpectKnownValue("archestra_identity_provider.test", tfjsonpath.New("domain"), knownvalue.StringExact("example.com")),
 				},
 			},
 			{
-				ResourceName:            "archestra_sso_provider.test",
+				ResourceName:            "archestra_identity_provider.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: ssoImportStateVerifyIgnore,
+				ImportStateVerifyIgnore: identityProviderImportStateVerifyIgnore,
 			},
 			{
-				Config: testAccSsoProviderOIDCConfigUpdated("test-oidc", "example.org"),
+				Config: testAccIdentityProviderOIDCConfigUpdated("test-oidc", "example.org"),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_sso_provider.test", tfjsonpath.New("domain"), knownvalue.StringExact("example.org")),
+					statecheck.ExpectKnownValue("archestra_identity_provider.test", tfjsonpath.New("domain"), knownvalue.StringExact("example.org")),
 				},
 			},
 		},
 	})
 }
 
-func testAccSsoProviderOIDCConfig(providerID, domain string) string {
+func testAccIdentityProviderOIDCConfig(providerID, domain string) string {
 	return fmt.Sprintf(`
-resource "archestra_sso_provider" "test" {
+resource "archestra_identity_provider" "test" {
   provider_id = %q
   domain      = %q
   issuer      = "https://accounts.example.com"
@@ -119,9 +119,9 @@ resource "archestra_sso_provider" "test" {
 `, providerID, domain)
 }
 
-func testAccSsoProviderOIDCConfigUpdated(providerID, domain string) string {
+func testAccIdentityProviderOIDCConfigUpdated(providerID, domain string) string {
 	return fmt.Sprintf(`
-resource "archestra_sso_provider" "test" {
+resource "archestra_identity_provider" "test" {
   provider_id = %q
   domain      = %q
   issuer      = "https://accounts.example.com"
@@ -144,58 +144,58 @@ resource "archestra_sso_provider" "test" {
 `, providerID, domain)
 }
 
-func TestAccSsoProviderResource_oidcWithEnterpriseCredentials(t *testing.T) {
+func TestAccIdentityProviderResource_oidcWithEnterpriseCredentials(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccSsoProviderOIDCWithEnterpriseCredentialsConfig("test-enterprise", "enterprise.example.com"),
+				Config: testAccIdentityProviderOIDCWithEnterpriseCredentialsConfig("test-enterprise", "enterprise.example.com"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"archestra_sso_provider.test",
+						"archestra_identity_provider.test",
 						tfjsonpath.New("provider_id"),
 						knownvalue.StringExact("test-enterprise"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_sso_provider.test",
+						"archestra_identity_provider.test",
 						tfjsonpath.New("domain"),
 						knownvalue.StringExact("enterprise.example.com"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_sso_provider.test",
+						"archestra_identity_provider.test",
 						tfjsonpath.New("oidc_config").AtMapKey("enterprise_managed_credentials").AtMapKey("exchange_strategy"),
 						knownvalue.StringExact("rfc8693"),
 					),
 					statecheck.ExpectKnownValue(
-						"archestra_sso_provider.test",
+						"archestra_identity_provider.test",
 						tfjsonpath.New("oidc_config").AtMapKey("enterprise_managed_credentials").AtMapKey("client_id"),
 						knownvalue.StringExact("downstream-client"),
 					),
 				},
 			},
 			{
-				ResourceName:            "archestra_sso_provider.test",
+				ResourceName:            "archestra_identity_provider.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: ssoImportStateVerifyIgnore,
+				ImportStateVerifyIgnore: identityProviderImportStateVerifyIgnore,
 			},
 		},
 	})
 }
 
-// TestAccSsoProviderResource_oidcExchangeStrategies exercises every enum
+// TestAccIdentityProviderResource_oidcExchangeStrategies exercises every enum
 // value of `enterprise_managed_credentials.exchange_strategy` via in-place
 // updates. Catches regressions if the backend renames the enum again.
-func TestAccSsoProviderResource_oidcExchangeStrategies(t *testing.T) {
+func TestAccIdentityProviderResource_oidcExchangeStrategies(t *testing.T) {
 	strategies := []string{"rfc8693", "okta_managed", "entra_obo"}
 	steps := make([]resource.TestStep, 0, len(strategies))
 	for _, s := range strategies {
 		steps = append(steps, resource.TestStep{
-			Config: testAccSsoProviderOIDCExchangeStrategyConfig("test-exchange-strategy", "exchange.example.com", s),
+			Config: testAccIdentityProviderOIDCExchangeStrategyConfig("test-exchange-strategy", "exchange.example.com", s),
 			ConfigStateChecks: []statecheck.StateCheck{
 				statecheck.ExpectKnownValue(
-					"archestra_sso_provider.test",
+					"archestra_identity_provider.test",
 					tfjsonpath.New("oidc_config").AtMapKey("enterprise_managed_credentials").AtMapKey("exchange_strategy"),
 					knownvalue.StringExact(s),
 				),
@@ -209,9 +209,9 @@ func TestAccSsoProviderResource_oidcExchangeStrategies(t *testing.T) {
 	})
 }
 
-func testAccSsoProviderOIDCExchangeStrategyConfig(providerID, domain, strategy string) string {
+func testAccIdentityProviderOIDCExchangeStrategyConfig(providerID, domain, strategy string) string {
 	return fmt.Sprintf(`
-resource "archestra_sso_provider" "test" {
+resource "archestra_identity_provider" "test" {
   provider_id = %q
   domain      = %q
   issuer      = "https://%[3]s.example.com"
@@ -236,9 +236,9 @@ resource "archestra_sso_provider" "test" {
 `, providerID, domain, strategy, strategy)
 }
 
-func testAccSsoProviderOIDCWithEnterpriseCredentialsConfig(providerID, domain string) string {
+func testAccIdentityProviderOIDCWithEnterpriseCredentialsConfig(providerID, domain string) string {
 	return fmt.Sprintf(`
-resource "archestra_sso_provider" "test" {
+resource "archestra_identity_provider" "test" {
   provider_id = %q
   domain      = %q
   issuer      = "https://enterprise.example.com"
@@ -268,42 +268,42 @@ resource "archestra_sso_provider" "test" {
 `, providerID, domain)
 }
 
-func TestAccSsoProviderResource_saml(t *testing.T) {
+func TestAccIdentityProviderResource_saml(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccSsoProviderSAMLConfig("test-saml", "example.com"),
+				Config: testAccIdentityProviderSAMLConfig("test-saml", "example.com"),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_sso_provider.test", tfjsonpath.New("provider_id"), knownvalue.StringExact("test-saml")),
-					statecheck.ExpectKnownValue("archestra_sso_provider.test", tfjsonpath.New("domain"), knownvalue.StringExact("example.com")),
+					statecheck.ExpectKnownValue("archestra_identity_provider.test", tfjsonpath.New("provider_id"), knownvalue.StringExact("test-saml")),
+					statecheck.ExpectKnownValue("archestra_identity_provider.test", tfjsonpath.New("domain"), knownvalue.StringExact("example.com")),
 					statecheck.ExpectKnownValue(
-						"archestra_sso_provider.test",
+						"archestra_identity_provider.test",
 						tfjsonpath.New("saml_config").AtMapKey("additional_params"),
 						knownvalue.StringExact(`{"Custom":"value","ForceAuthn":true,"MaxAge":3600}`),
 					),
 				},
 			},
 			{
-				ResourceName:            "archestra_sso_provider.test",
+				ResourceName:            "archestra_identity_provider.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: ssoImportStateVerifyIgnore,
+				ImportStateVerifyIgnore: identityProviderImportStateVerifyIgnore,
 			},
 			{
-				Config: testAccSsoProviderSAMLConfigUpdated("test-saml", "example.org"),
+				Config: testAccIdentityProviderSAMLConfigUpdated("test-saml", "example.org"),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_sso_provider.test", tfjsonpath.New("domain"), knownvalue.StringExact("example.org")),
+					statecheck.ExpectKnownValue("archestra_identity_provider.test", tfjsonpath.New("domain"), knownvalue.StringExact("example.org")),
 				},
 			},
 		},
 	})
 }
 
-func testAccSsoProviderSAMLConfig(providerID, domain string) string {
+func testAccIdentityProviderSAMLConfig(providerID, domain string) string {
 	return fmt.Sprintf(`
-resource "archestra_sso_provider" "test" {
+resource "archestra_identity_provider" "test" {
   provider_id = %q
   domain      = %q
   issuer      = "https://example.com"
@@ -364,9 +364,9 @@ resource "archestra_sso_provider" "test" {
 `, providerID, domain, providerID, providerID)
 }
 
-func testAccSsoProviderSAMLConfigUpdated(providerID, domain string) string {
+func testAccIdentityProviderSAMLConfigUpdated(providerID, domain string) string {
 	return fmt.Sprintf(`
-resource "archestra_sso_provider" "test" {
+resource "archestra_identity_provider" "test" {
   provider_id = %q
   domain      = %q
   issuer      = "https://example.com"

@@ -291,7 +291,7 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Computed:            true,
 			},
 			"default_llm_provider": schema.StringAttribute{
-				MarkdownDescription: "Default LLM provider for the organization. One of the providers supported by `archestra_chat_llm_provider_api_key.llm_provider`.",
+				MarkdownDescription: "Default LLM provider for the organization. One of the providers supported by `archestra_llm_provider_api_key.llm_provider`.",
 				Optional:            true,
 				Computed:            true,
 				Validators: []validator.String{

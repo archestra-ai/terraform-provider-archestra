@@ -40,7 +40,7 @@ resource "archestra_organization_settings" "example" {
 - `default_agent_id` (String) Default agent (profile) ID for the organization
 - `default_llm_api_key_id` (String) Default LLM API key ID for the organization
 - `default_llm_model` (String) Default LLM model for the organization
-- `default_llm_provider` (String) Default LLM provider for the organization. One of the providers supported by `archestra_chat_llm_provider_api_key.llm_provider`.
+- `default_llm_provider` (String) Default LLM provider for the organization. One of the providers supported by `archestra_llm_provider_api_key.llm_provider`.
 - `embedding_chat_api_key_id` (String) API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `embedding_model` (String) Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `favicon` (String) Base64 encoded favicon image for the organization

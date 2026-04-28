@@ -24,11 +24,11 @@ resource "archestra_llm_proxy" "shared" {
   ]
 }
 
-# Same proxy, but requiring inbound JWTs validated against an SSO provider.
+# Same proxy, but requiring inbound JWTs validated against an identity provider.
 resource "archestra_llm_proxy" "authenticated" {
   name                 = "secure-openai"
   description          = "OpenAI proxy behind JWT auth."
-  identity_provider_id = archestra_sso_provider.oidc.id
+  identity_provider_id = archestra_identity_provider.oidc.id
 }
 ```
 
@@ -44,7 +44,7 @@ resource "archestra_llm_proxy" "authenticated" {
 - `consider_context_untrusted` (Boolean) Whether the proxy context is treated as untrusted
 - `description` (String) Human-readable description
 - `icon` (String) Emoji or base64 image data URL
-- `identity_provider_id` (String) Identity provider used to validate inbound JWTs. Reference an `archestra_sso_provider`. Omit to disable JWT auth.
+- `identity_provider_id` (String) Identity provider used to validate inbound JWTs. Reference an `archestra_identity_provider`. Omit to disable JWT auth.
 - `is_default` (Boolean) Whether this is the default LLM proxy
 - `labels` (Attributes Set) Key/value labels for organizing proxies (see [below for nested schema](#nestedatt--labels))
 - `llm_api_key_id` (String) ID of the upstream LLM provider API key

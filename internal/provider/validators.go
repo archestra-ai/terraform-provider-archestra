@@ -17,7 +17,7 @@ import (
 type jsonObject struct{}
 
 // jsonObjectValidator returns the jsonObject validator. Kept package-internal
-// because the only consumer is resource_sso_provider.go.
+// because the only consumer is resource_identity_provider.go.
 func jsonObjectValidator() validator.String {
 	return jsonObject{}
 }

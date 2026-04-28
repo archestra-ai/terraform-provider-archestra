@@ -21,18 +21,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-var _ resource.Resource = &ChatLLMProviderApiKeyResource{}
-var _ resource.ResourceWithImportState = &ChatLLMProviderApiKeyResource{}
+var _ resource.Resource = &LLMProviderApiKeyResource{}
+var _ resource.ResourceWithImportState = &LLMProviderApiKeyResource{}
 
-func NewChatLLMProviderApiKeyResource() resource.Resource {
-	return &ChatLLMProviderApiKeyResource{}
+func NewLLMProviderApiKeyResource() resource.Resource {
+	return &LLMProviderApiKeyResource{}
 }
 
-type ChatLLMProviderApiKeyResource struct {
+type LLMProviderApiKeyResource struct {
 	client *client.ClientWithResponses
 }
 
-type ChatLLMProviderApiKeyResourceModel struct {
+type LLMProviderApiKeyResourceModel struct {
 	ID                    types.String `tfsdk:"id"`
 	Name                  types.String `tfsdk:"name"`
 	ApiKey                types.String `tfsdk:"api_key"`
@@ -45,18 +45,18 @@ type ChatLLMProviderApiKeyResourceModel struct {
 	VaultSecretKey        types.String `tfsdk:"vault_secret_key"`
 }
 
-func (r *ChatLLMProviderApiKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_chat_llm_provider_api_key"
+func (r *LLMProviderApiKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_llm_provider_api_key"
 }
 
-func (r *ChatLLMProviderApiKeyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages Chat LLM Provider API keys in Archestra.",
+		MarkdownDescription: "Manages LLM Provider API keys in Archestra.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "Chat LLM Provider API key identifier",
+				MarkdownDescription: "LLM Provider API key identifier",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
@@ -151,7 +151,7 @@ func (r *ChatLLMProviderApiKeyResource) Schema(ctx context.Context, req resource
 	}
 }
 
-func (r *ChatLLMProviderApiKeyResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *LLMProviderApiKeyResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -168,8 +168,8 @@ func (r *ChatLLMProviderApiKeyResource) Configure(ctx context.Context, req resou
 	r.client = client
 }
 
-func (r *ChatLLMProviderApiKeyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data ChatLLMProviderApiKeyResourceModel
+func (r *LLMProviderApiKeyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data LLMProviderApiKeyResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -178,11 +178,11 @@ func (r *ChatLLMProviderApiKeyResource) Create(ctx context.Context, req resource
 	}
 
 	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
-	patch := MergePatch(ctx, req.Plan.Raw, prior, chatLlmProviderApiKeyAttrSpec, &resp.Diagnostics)
+	patch := MergePatch(ctx, req.Plan.Raw, prior, llmProviderApiKeyAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	LogPatch(ctx, "archestra_chat_llm_provider_api_key Create", patch, chatLlmProviderApiKeyAttrSpec)
+	LogPatch(ctx, "archestra_llm_provider_api_key Create", patch, llmProviderApiKeyAttrSpec)
 
 	bodyBytes, err := json.Marshal(patch)
 	if err != nil {
@@ -223,8 +223,8 @@ func (r *ChatLLMProviderApiKeyResource) Create(ctx context.Context, req resource
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ChatLLMProviderApiKeyResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data ChatLLMProviderApiKeyResourceModel
+func (r *LLMProviderApiKeyResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data LLMProviderApiKeyResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -288,8 +288,8 @@ func (r *ChatLLMProviderApiKeyResource) Read(ctx context.Context, req resource.R
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ChatLLMProviderApiKeyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data ChatLLMProviderApiKeyResourceModel
+func (r *LLMProviderApiKeyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data LLMProviderApiKeyResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -303,7 +303,7 @@ func (r *ChatLLMProviderApiKeyResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, chatLlmProviderApiKeyAttrSpec, &resp.Diagnostics)
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, llmProviderApiKeyAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -311,7 +311,7 @@ func (r *ChatLLMProviderApiKeyResource) Update(ctx context.Context, req resource
 		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 		return
 	}
-	LogPatch(ctx, "archestra_chat_llm_provider_api_key Update", patch, chatLlmProviderApiKeyAttrSpec)
+	LogPatch(ctx, "archestra_llm_provider_api_key Update", patch, llmProviderApiKeyAttrSpec)
 
 	bodyBytes, err := json.Marshal(patch)
 	if err != nil {
@@ -351,8 +351,8 @@ func (r *ChatLLMProviderApiKeyResource) Update(ctx context.Context, req resource
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ChatLLMProviderApiKeyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data ChatLLMProviderApiKeyResourceModel
+func (r *LLMProviderApiKeyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data LLMProviderApiKeyResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -381,6 +381,6 @@ func (r *ChatLLMProviderApiKeyResource) Delete(ctx context.Context, req resource
 	}
 }
 
-func (r *ChatLLMProviderApiKeyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *LLMProviderApiKeyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

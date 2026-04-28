@@ -4,15 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// ssoApiBody mirrors the wire shape of the identity-provider GET/CREATE/UPDATE
+// identityProviderApiBody mirrors the wire shape of the identity-provider GET/CREATE/UPDATE
 // responses. The generated client emits three structurally-identical anonymous
 // structs (one per endpoint); a JSON roundtrip through this type lets one
 // mapping function serve all three.
-type ssoApiBody struct {
+type identityProviderApiBody struct {
 	Id             string  `json:"id"`
 	ProviderId     string  `json:"providerId"`
 	Domain         string  `json:"domain"`
@@ -21,13 +20,13 @@ type ssoApiBody struct {
 	OrganizationId *string `json:"organizationId,omitempty"`
 	UserId         *string `json:"userId,omitempty"`
 
-	OidcConfig     *ssoApiOidc           `json:"oidcConfig,omitempty"`
-	SamlConfig     *ssoApiSaml           `json:"samlConfig,omitempty"`
-	RoleMapping    *ssoApiRoleMapping    `json:"roleMapping,omitempty"`
-	TeamSyncConfig *ssoApiTeamSyncConfig `json:"teamSyncConfig,omitempty"`
+	OidcConfig     *identityProviderApiOidc           `json:"oidcConfig,omitempty"`
+	SamlConfig     *identityProviderApiSaml           `json:"samlConfig,omitempty"`
+	RoleMapping    *identityProviderApiRoleMapping    `json:"roleMapping,omitempty"`
+	TeamSyncConfig *identityProviderApiTeamSyncConfig `json:"teamSyncConfig,omitempty"`
 }
 
-type ssoApiOidc struct {
+type identityProviderApiOidc struct {
 	Issuer                       string                  `json:"issuer"`
 	DiscoveryEndpoint            string                  `json:"discoveryEndpoint"`
 	ClientId                     string                  `json:"clientId"`
@@ -43,11 +42,11 @@ type ssoApiOidc struct {
 	EnableRpInitiatedLogout      *bool                   `json:"enableRpInitiatedLogout,omitempty"`
 	Hd                           *string                 `json:"hd,omitempty"`
 	TokenEndpointAuthentication  *string                 `json:"tokenEndpointAuthentication,omitempty"`
-	Mapping                      *ssoApiOidcMapping      `json:"mapping,omitempty"`
-	EnterpriseManagedCredentials *ssoApiEmcCredentials   `json:"enterpriseManagedCredentials,omitempty"`
+	Mapping                      *identityProviderApiOidcMapping      `json:"mapping,omitempty"`
+	EnterpriseManagedCredentials *identityProviderApiEmcCredentials   `json:"enterpriseManagedCredentials,omitempty"`
 }
 
-type ssoApiOidcMapping struct {
+type identityProviderApiOidcMapping struct {
 	Email         *string            `json:"email,omitempty"`
 	EmailVerified *string            `json:"emailVerified,omitempty"`
 	ExtraFields   *map[string]string `json:"extraFields,omitempty"`
@@ -56,7 +55,7 @@ type ssoApiOidcMapping struct {
 	Name          *string            `json:"name,omitempty"`
 }
 
-type ssoApiEmcCredentials struct {
+type identityProviderApiEmcCredentials struct {
 	ClientAssertionAudience     *string `json:"clientAssertionAudience,omitempty"`
 	ClientId                    *string `json:"clientId,omitempty"`
 	ClientSecret                *string `json:"clientSecret,omitempty"`
@@ -68,7 +67,7 @@ type ssoApiEmcCredentials struct {
 	TokenEndpointAuthentication *string `json:"tokenEndpointAuthentication,omitempty"`
 }
 
-type ssoApiSaml struct {
+type identityProviderApiSaml struct {
 	Issuer               string                  `json:"issuer"`
 	EntryPoint           string                  `json:"entryPoint"`
 	CallbackUrl          string                  `json:"callbackUrl"`
@@ -80,13 +79,13 @@ type ssoApiSaml struct {
 	PrivateKey           *string                 `json:"privateKey,omitempty"`
 	SignatureAlgorithm   *string                 `json:"signatureAlgorithm,omitempty"`
 	WantAssertionsSigned *bool                   `json:"wantAssertionsSigned,omitempty"`
-	IdpMetadata          *ssoApiIdpMetadata      `json:"idpMetadata,omitempty"`
-	SpMetadata           *ssoApiSpMetadata       `json:"spMetadata,omitempty"`
-	Mapping              *ssoApiSamlMapping      `json:"mapping,omitempty"`
+	IdpMetadata          *identityProviderApiIdpMetadata      `json:"idpMetadata,omitempty"`
+	SpMetadata           *identityProviderApiSpMetadata       `json:"spMetadata,omitempty"`
+	Mapping              *identityProviderApiSamlMapping      `json:"mapping,omitempty"`
 	AdditionalParams     *map[string]interface{} `json:"additionalParams,omitempty"`
 }
 
-type ssoApiIdpMetadata struct {
+type identityProviderApiIdpMetadata struct {
 	Cert                 *string                `json:"cert,omitempty"`
 	EncPrivateKey        *string                `json:"encPrivateKey,omitempty"`
 	EncPrivateKeyPass    *string                `json:"encPrivateKeyPass,omitempty"`
@@ -97,15 +96,15 @@ type ssoApiIdpMetadata struct {
 	PrivateKey           *string                `json:"privateKey,omitempty"`
 	PrivateKeyPass       *string                `json:"privateKeyPass,omitempty"`
 	RedirectURL          *string                `json:"redirectURL,omitempty"`
-	SingleSignOnService  *[]ssoApiSsoService    `json:"singleSignOnService,omitempty"`
+	SingleSignOnService  *[]identityProviderApiSsoService    `json:"singleSignOnService,omitempty"`
 }
 
-type ssoApiSsoService struct {
+type identityProviderApiSsoService struct {
 	Binding  string `json:"binding"`
 	Location string `json:"location"`
 }
 
-type ssoApiSpMetadata struct {
+type identityProviderApiSpMetadata struct {
 	Binding              *string `json:"binding,omitempty"`
 	EncPrivateKey        *string `json:"encPrivateKey,omitempty"`
 	EncPrivateKeyPass    *string `json:"encPrivateKeyPass,omitempty"`
@@ -116,7 +115,7 @@ type ssoApiSpMetadata struct {
 	PrivateKeyPass       *string `json:"privateKeyPass,omitempty"`
 }
 
-type ssoApiSamlMapping struct {
+type identityProviderApiSamlMapping struct {
 	Email         *string            `json:"email,omitempty"`
 	EmailVerified *string            `json:"emailVerified,omitempty"`
 	ExtraFields   *map[string]string `json:"extraFields,omitempty"`
@@ -126,24 +125,24 @@ type ssoApiSamlMapping struct {
 	Name          *string            `json:"name,omitempty"`
 }
 
-type ssoApiRoleMapping struct {
+type identityProviderApiRoleMapping struct {
 	DefaultRole  *string             `json:"defaultRole,omitempty"`
 	SkipRoleSync *bool               `json:"skipRoleSync,omitempty"`
 	StrictMode   *bool               `json:"strictMode,omitempty"`
-	Rules        *[]ssoApiRoleRule   `json:"rules,omitempty"`
+	Rules        *[]identityProviderApiRoleRule   `json:"rules,omitempty"`
 }
 
-type ssoApiRoleRule struct {
+type identityProviderApiRoleRule struct {
 	Expression string `json:"expression"`
 	Role       string `json:"role"`
 }
 
-type ssoApiTeamSyncConfig struct {
+type identityProviderApiTeamSyncConfig struct {
 	Enabled          *bool   `json:"enabled,omitempty"`
 	GroupsExpression *string `json:"groupsExpression,omitempty"`
 }
 
-// mapSsoProviderResponse populates `target` from the API response body.
+// mapIdentityProviderResponse populates `target` from the API response body.
 //
 // `populateRoleMapping` and `populateTeamSync` gate those two blocks
 // independently. Backend zod for both is `.optional()` (not `.nullable()`),
@@ -152,14 +151,14 @@ type ssoApiTeamSyncConfig struct {
 // after such an HCL change would surface a phantom "remove this block" plan.
 // Caller passes `true` only when the user already manages the block (in plan
 // or in state) or during import.
-func mapSsoProviderResponse(rawBody any, target *SsoProviderResourceModel, populateRoleMapping, populateTeamSync bool) error {
+func mapIdentityProviderResponse(rawBody any, target *IdentityProviderResourceModel, populateRoleMapping, populateTeamSync bool) error {
 	raw, err := json.Marshal(rawBody)
 	if err != nil {
-		return fmt.Errorf("marshal sso response: %w", err)
+		return fmt.Errorf("marshal identity provider response: %w", err)
 	}
-	var api ssoApiBody
+	var api identityProviderApiBody
 	if err := json.Unmarshal(raw, &api); err != nil {
-		return fmt.Errorf("unmarshal sso response: %w", err)
+		return fmt.Errorf("unmarshal identity provider response: %w", err)
 	}
 
 	target.ID = types.StringValue(api.Id)
@@ -171,26 +170,26 @@ func mapSsoProviderResponse(rawBody any, target *SsoProviderResourceModel, popul
 	target.UserID = stringValueOrNull(api.UserId)
 
 	if api.OidcConfig != nil {
-		target.OidcConfig = mapSsoOidcConfig(api.OidcConfig)
+		target.OidcConfig = mapIdentityProviderOidcConfig(api.OidcConfig)
 	} else {
 		target.OidcConfig = nil
 	}
 
 	if api.SamlConfig != nil {
-		target.SamlConfig = mapSsoSamlConfig(api.SamlConfig)
+		target.SamlConfig = mapIdentityProviderSamlConfig(api.SamlConfig)
 	} else {
 		target.SamlConfig = nil
 	}
 
 	if populateRoleMapping && api.RoleMapping != nil {
-		target.RoleMapping = mapSsoRoleMapping(api.RoleMapping)
+		target.RoleMapping = mapIdentityProviderRoleMapping(api.RoleMapping)
 	} else if populateRoleMapping {
 		target.RoleMapping = nil
 	}
 	// else: leave target.RoleMapping untouched (user didn't opt into managing it)
 
 	if populateTeamSync && api.TeamSyncConfig != nil {
-		target.TeamSyncConfig = mapSsoTeamSyncConfig(api.TeamSyncConfig)
+		target.TeamSyncConfig = mapIdentityProviderTeamSyncConfig(api.TeamSyncConfig)
 	} else if populateTeamSync {
 		target.TeamSyncConfig = nil
 	}
@@ -199,7 +198,7 @@ func mapSsoProviderResponse(rawBody any, target *SsoProviderResourceModel, popul
 	return nil
 }
 
-func mapSsoOidcConfig(o *ssoApiOidc) *OidcConfigModel {
+func mapIdentityProviderOidcConfig(o *identityProviderApiOidc) *OidcConfigModel {
 	out := &OidcConfigModel{
 		Issuer:                      types.StringValue(o.Issuer),
 		DiscoveryEndpoint:           types.StringValue(o.DiscoveryEndpoint),
@@ -250,7 +249,7 @@ func mapSsoOidcConfig(o *ssoApiOidc) *OidcConfigModel {
 	return out
 }
 
-func mapSsoSamlConfig(s *ssoApiSaml) *SamlConfigModel {
+func mapIdentityProviderSamlConfig(s *identityProviderApiSaml) *SamlConfigModel {
 	out := &SamlConfigModel{
 		Issuer:               types.StringValue(s.Issuer),
 		EntryPoint:           types.StringValue(s.EntryPoint),
@@ -317,7 +316,7 @@ func mapSsoSamlConfig(s *ssoApiSaml) *SamlConfigModel {
 	return out
 }
 
-func mapSsoRoleMapping(r *ssoApiRoleMapping) *RoleMappingModel {
+func mapIdentityProviderRoleMapping(r *identityProviderApiRoleMapping) *RoleMappingModel {
 	out := &RoleMappingModel{
 		DefaultRole:  stringValueOrNull(r.DefaultRole),
 		SkipRoleSync: boolValueOrNull(r.SkipRoleSync),
@@ -336,18 +335,9 @@ func mapSsoRoleMapping(r *ssoApiRoleMapping) *RoleMappingModel {
 	return out
 }
 
-func mapSsoTeamSyncConfig(t *ssoApiTeamSyncConfig) *TeamSyncConfigModel {
+func mapIdentityProviderTeamSyncConfig(t *identityProviderApiTeamSyncConfig) *TeamSyncConfigModel {
 	return &TeamSyncConfigModel{
 		Enabled:          boolValueOrNull(t.Enabled),
 		GroupsExpression: stringValueOrNull(t.GroupsExpression),
 	}
 }
-
-// encodeAdditionalParamsMap normalizes a polymorphic-key map into the
-// jsontypes.Normalized HCL-side representation. Mirrors encodeAdditionalParams
-// but takes the JSON-roundtripped pointer directly.
-//
-// Returns a null Normalized when the input is nil; otherwise marshals the
-// map into a stable JSON string. (Note: encodeAdditionalParams already
-// performs this; this signature is kept for future use.)
-var _ = jsontypes.Normalized{}

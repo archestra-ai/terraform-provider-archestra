@@ -1,7 +1,7 @@
 # HashiCorp Vault in dev mode for BYOS acceptance tests.
 #
 # Required by tests behind ARCHESTRA_READONLY_VAULT_ENABLED=true (the
-# `archestra_chat_llm_provider_api_key` BYOS suite and the
+# `archestra_llm_provider_api_key` BYOS suite and the
 # `TestAccMcpRegistryCatalogItemResourceWithVaultRefs` catalog test).
 #
 # WARNING: Dev mode disables auth and persists nothing — DO NOT use this

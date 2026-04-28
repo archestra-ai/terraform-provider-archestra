@@ -1,10 +1,10 @@
 package provider
 
-// chatLlmProviderApiKeyAttrSpec covers the LLM provider API key body for both
+// llmProviderApiKeyAttrSpec covers the LLM provider API key body for both
 // CreateLlmProviderApiKey and UpdateLlmProviderApiKey. `llm_provider` is
 // RequiresReplace — Update never sees it change, but it ships in the Create
 // body as `provider`.
-var chatLlmProviderApiKeyAttrSpec = []AttrSpec{
+var llmProviderApiKeyAttrSpec = []AttrSpec{
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "llm_provider", JSONName: "provider", Kind: Scalar},
 	{TFName: "api_key", JSONName: "apiKey", Kind: Scalar, Sensitive: true},
@@ -16,6 +16,6 @@ var chatLlmProviderApiKeyAttrSpec = []AttrSpec{
 	{TFName: "vault_secret_key", JSONName: "vaultSecretKey", Kind: Scalar},
 }
 
-func (r *ChatLLMProviderApiKeyResource) AttrSpecs() []AttrSpec {
-	return chatLlmProviderApiKeyAttrSpec
+func (r *LLMProviderApiKeyResource) AttrSpecs() []AttrSpec {
+	return llmProviderApiKeyAttrSpec
 }

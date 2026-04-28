@@ -9,9 +9,9 @@ resource "archestra_mcp_gateway" "default" {
   ]
 }
 
-# Same gateway, but requiring inbound JWTs validated against an SSO provider.
+# Same gateway, but requiring inbound JWTs validated against an identity provider.
 resource "archestra_mcp_gateway" "authenticated" {
   name                 = "secure-mcp"
   description          = "MCP gateway behind JWT auth."
-  identity_provider_id = archestra_sso_provider.oidc.id
+  identity_provider_id = archestra_identity_provider.oidc.id
 }

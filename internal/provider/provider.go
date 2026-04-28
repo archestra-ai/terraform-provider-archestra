@@ -161,9 +161,9 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewOptimizationRuleResource,
 		NewOrganizationSettingsResource,
 		NewTeamExternalGroupResource,
-		NewChatLLMProviderApiKeyResource,
+		NewLLMProviderApiKeyResource,
 		NewAgentToolResource,
-		NewSsoProviderResource,
+		NewIdentityProviderResource,
 		// NewPromptResource, // TODO: Prompts are now inline on agents (systemPrompt field). No standalone prompt API exists.
 	}
 }

@@ -83,7 +83,7 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 			},
 			"identity_provider_id": schema.StringAttribute{
 				Optional:            true,
-				MarkdownDescription: "Identity provider used to validate inbound JWTs. Reference an `archestra_sso_provider`. Omit to disable JWT auth.",
+				MarkdownDescription: "Identity provider used to validate inbound JWTs. Reference an `archestra_identity_provider`. Omit to disable JWT auth.",
 			},
 			"consider_context_untrusted": schema.BoolAttribute{
 				Optional:            true,
