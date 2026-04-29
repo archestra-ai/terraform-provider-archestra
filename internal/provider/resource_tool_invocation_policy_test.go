@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
@@ -182,6 +183,28 @@ func TestAccToolInvocationPolicyResource_RegexOperator(t *testing.T) {
 						}),
 					),
 				},
+			},
+		},
+	})
+}
+
+func TestAccToolInvocationPolicyResource_InvalidToolID(t *testing.T) {
+	// Pure plan-time schema validation; does not hit the backend.
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_tool_invocation_policy" "invalid" {
+  tool_id = "not-a-uuid"
+  conditions = [
+    { key = "path", operator = "contains", value = "/etc/" },
+  ]
+  action = "block_always"
+}
+`,
+				ExpectError: regexp.MustCompile(`tool_id must be a UUID`),
 			},
 		},
 	})

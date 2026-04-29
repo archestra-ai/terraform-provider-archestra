@@ -423,6 +423,89 @@ resource "archestra_mcp_registry_catalog_item" "test_docker_env" {
 `, name)
 }
 
+// TestAccMcpRegistryCatalogItemResourceWithEnvDefaults exercises the
+// `local_config.environment[].default` round-trip across all three scalar
+// types (plain_text, number, boolean). Regression coverage for the codegen
+// patcher fix in c62a2f1: before the patcher rewrote `envVar.Default` to
+// `interface{}`, the inline `z.union([string, number, boolean])` produced a
+// broken Go union with an unexported field, so json.Marshal returned `"{}"`
+// and Catalog Read wrote `"{}"` into state — causing permanent plan diffs
+// for any env var with a default. The second step re-applies the same
+// Config so the framework's plan-no-drift assertion catches any state
+// divergence between Create and Read.
+func TestAccMcpRegistryCatalogItemResourceWithEnvDefaults(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create + Read: assert each default round-trips to its bare
+			// HCL form, NOT the broken `"{}"` value.
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithEnvDefaults("test-env-defaults-item"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_env_defaults",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-env-defaults-item"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_env_defaults",
+						tfjsonpath.New("local_config").AtMapKey("environment"),
+						knownvalue.SetExact([]knownvalue.Check{
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":     knownvalue.StringExact("GREETING"),
+								"type":    knownvalue.StringExact("plain_text"),
+								"default": knownvalue.StringExact("hello"),
+							}),
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":     knownvalue.StringExact("MAX_RETRIES"),
+								"type":    knownvalue.StringExact("number"),
+								"default": knownvalue.StringExact("42"),
+							}),
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":     knownvalue.StringExact("ENABLE_CACHE"),
+								"type":    knownvalue.StringExact("boolean"),
+								"default": knownvalue.StringExact("true"),
+							}),
+						}),
+					),
+				},
+			},
+			// Re-apply identical Config: the framework runs an internal
+			// `terraform plan` and fails if state drifted between Create
+			// and Read (which is exactly what the `"{}"` bug produced).
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithEnvDefaults("test-env-defaults-item"),
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_mcp_registry_catalog_item.test_env_defaults",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigWithEnvDefaults(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "test_env_defaults" {
+  name        = %[1]q
+  description = "Test MCP server with polymorphic environment defaults"
+
+  local_config = {
+    docker_image = "mcp/grafana"
+    arguments    = ["-t", "stdio"]
+    environment = [
+      { key = "GREETING",     type = "plain_text", default = "hello" },
+      { key = "MAX_RETRIES",  type = "number",     default = "42" },
+      { key = "ENABLE_CACHE", type = "boolean",    default = "true" },
+    ]
+  }
+}
+`, name)
+}
+
 func TestAccMcpRegistryCatalogItemResourceWithLabelsAndEnvFrom(t *testing.T) {
 	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
 

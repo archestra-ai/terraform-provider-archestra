@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
@@ -10,6 +11,29 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
+
+func TestAccTrustedDataPolicyResource_InvalidToolID(t *testing.T) {
+	// Pure plan-time schema validation; does not hit the backend.
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_trusted_data_policy" "invalid" {
+  tool_id = "not-a-uuid"
+  description = "should fail validation"
+  conditions = [
+    { key = "url", operator = "contains", value = "example.com" },
+  ]
+  action = "mark_as_trusted"
+}
+`,
+				ExpectError: regexp.MustCompile(`tool_id must be a UUID`),
+			},
+		},
+	})
+}
 
 func TestAccTrustedDataPolicyResource(t *testing.T) {
 	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)

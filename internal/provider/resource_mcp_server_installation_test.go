@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -98,6 +99,37 @@ func TestAccMCPServerInstallationResource(t *testing.T) {
 						"archestra_mcp_server_installation.test",
 						tfjsonpath.New("tools").AtSliceIndex(0).AtMapKey("name"),
 						knownvalue.NotNull(),
+					),
+					// parameters is a JSON-encoded JSON Schema string. The
+					// filesystem MCP server's tools all advertise parameters,
+					// so this must be non-null and shaped like a JSON object
+					// (starts with "{" and ends with "}").
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("tools").AtSliceIndex(0).AtMapKey("parameters"),
+						knownvalue.NotNull(),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("tools").AtSliceIndex(0).AtMapKey("parameters"),
+						knownvalue.StringRegexp(regexp.MustCompile(`^\{.*\}$`)),
+					),
+					// Fresh install: nobody has assigned this tool to an agent yet.
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("tools").AtSliceIndex(0).AtMapKey("assigned_agent_count"),
+						knownvalue.Int64Exact(0),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("tools").AtSliceIndex(0).AtMapKey("assigned_agents"),
+						knownvalue.ListSizeExact(0),
+					),
+					// created_at is RFC 3339; assert the date+time prefix.
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("tools").AtSliceIndex(0).AtMapKey("created_at"),
+						knownvalue.StringRegexp(regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}`)),
 					),
 				},
 			},

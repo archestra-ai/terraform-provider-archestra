@@ -529,13 +529,18 @@ func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID str
 		ready := !flat.IsNull() && len(flat.Elements()) > 0
 		return flat, ready, nil
 	})
+	// On every non-success path, substitute a properly-typed null list:
+	// `RetryUntilFound` returns the zero value of T (here: `types.List{}`
+	// with no element type) on err / exhaustion, and a zero-valued
+	// `types.List` round-trips as `tftypes.List[DynamicPseudoType]` which
+	// the framework rejects with a "MISSING TYPE" value-conversion error.
 	if err != nil {
 		diags.AddWarning("Tools fetch failed", err.Error())
-		return tools, diags
+		return types.ListNull(mcpServerToolObjectType), diags
 	}
 	if !found {
 		diags.AddWarning("Tools not ready", "timeout waiting for MCP server tools to be ready")
-		return tools, diags
+		return types.ListNull(mcpServerToolObjectType), diags
 	}
 	return tools, diags
 }
