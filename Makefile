@@ -13,7 +13,18 @@ generate:
 	cd tools; go generate ./...
 
 codegen-api-client:
-	go tool oapi-codegen -config oapi-config.yaml http://localhost:9000/openapi.json
+	@# Spec is normalized through tools/oapi-patch first to repair two
+	@# upstream patterns that oapi-codegen mishandles (inline
+	@# collapsing-arm numeric unions and inline mixed-primitive unions).
+	@# See tools/oapi-patch/main.go for details; long term, fix the
+	@# platform-side zod schemas to emit named/annotated unions and drop
+	@# this step.
+	@mkdir -p .codegen
+	curl -fsS http://localhost:9000/openapi.json -o .codegen/openapi.raw.json
+	cd tools && go run ./oapi-patch \
+	  -in ../.codegen/openapi.raw.json \
+	  -out ../.codegen/openapi.patched.json
+	go tool oapi-codegen -config oapi-config.yaml .codegen/openapi.patched.json
 
 fmt:
 	gofmt -s -w -e .

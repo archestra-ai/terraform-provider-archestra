@@ -546,19 +546,11 @@ const (
 	GetLlmModelsParamsProviderZhipuai    GetLlmModelsParamsProvider = "zhipuai"
 )
 
-// Defines values for UpdateModelJSONBodyEmbeddingDimensions0.
+// Defines values for UpdateModelJSONBodyEmbeddingDimensions.
 const (
-	N3072 UpdateModelJSONBodyEmbeddingDimensions0 = 3072
-)
-
-// Defines values for UpdateModelJSONBodyEmbeddingDimensions1.
-const (
-	N1536 UpdateModelJSONBodyEmbeddingDimensions1 = 1536
-)
-
-// Defines values for UpdateModelJSONBodyEmbeddingDimensions2.
-const (
-	N768 UpdateModelJSONBodyEmbeddingDimensions2 = 768
+	N1536 UpdateModelJSONBodyEmbeddingDimensions = 1536
+	N3072 UpdateModelJSONBodyEmbeddingDimensions = 3072
+	N768  UpdateModelJSONBodyEmbeddingDimensions = 768
 )
 
 // Defines values for UpdateModelJSONBodyInputModalities.
@@ -1033,38 +1025,10 @@ type UserConfigField struct {
 type UserConfigFieldType string
 
 // UserConfigFieldDefault defines model for UserConfigFieldDefault.
-type UserConfigFieldDefault struct {
-	union json.RawMessage
-}
-
-// UserConfigFieldDefault0 defines model for .
-type UserConfigFieldDefault0 = string
-
-// UserConfigFieldDefault1 defines model for .
-type UserConfigFieldDefault1 = float32
-
-// UserConfigFieldDefault2 defines model for .
-type UserConfigFieldDefault2 = bool
-
-// UserConfigFieldDefault3 defines model for .
-type UserConfigFieldDefault3 = []string
+type UserConfigFieldDefault = interface{}
 
 // UserConfigFieldDefaultInput defines model for UserConfigFieldDefaultInput.
-type UserConfigFieldDefaultInput struct {
-	union json.RawMessage
-}
-
-// UserConfigFieldDefaultInput0 defines model for .
-type UserConfigFieldDefaultInput0 = string
-
-// UserConfigFieldDefaultInput1 defines model for .
-type UserConfigFieldDefaultInput1 = float32
-
-// UserConfigFieldDefaultInput2 defines model for .
-type UserConfigFieldDefaultInput2 = bool
-
-// UserConfigFieldDefaultInput3 defines model for .
-type UserConfigFieldDefaultInput3 = []string
+type UserConfigFieldDefaultInput = interface{}
 
 // UserConfigFieldInput defines model for UserConfigFieldInput.
 type UserConfigFieldInput struct {
@@ -1722,14 +1686,14 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 			Type   CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType `json:"type"`
 		} `json:"envFrom,omitempty"`
 		Environment *[]struct {
-			Default              *CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
-			Description          *string                                                               `json:"description,omitempty"`
-			Key                  string                                                                `json:"key"`
-			Mounted              *bool                                                                 `json:"mounted,omitempty"`
-			PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-			Required             *bool                                                                 `json:"required,omitempty"`
-			Type                 CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
-			Value                *string                                                               `json:"value,omitempty"`
+			Default              interface{}                                                    `json:"default,omitempty"`
+			Description          *string                                                        `json:"description,omitempty"`
+			Key                  string                                                         `json:"key"`
+			Mounted              *bool                                                          `json:"mounted,omitempty"`
+			PromptOnInstallation bool                                                           `json:"promptOnInstallation"`
+			Required             *bool                                                          `json:"required,omitempty"`
+			Type                 CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
+			Value                *string                                                        `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath         *string                                                                   `json:"httpPath,omitempty"`
 		HttpPort         *float32                                                                  `json:"httpPort,omitempty"`
@@ -1796,20 +1760,6 @@ type CreateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMo
 
 // CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType string
-
-// CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault0 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault0 = string
-
-// CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault1 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault1 = float32
-
-// CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault2 defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault2 = bool
-
-// CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default defines parameters for CreateInternalMcpCatalogItem.
-type CreateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 
 // CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType string
@@ -1912,14 +1862,14 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 			Type   UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType `json:"type"`
 		} `json:"envFrom,omitempty"`
 		Environment *[]struct {
-			Default              *UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default `json:"default,omitempty"`
-			Description          *string                                                               `json:"description,omitempty"`
-			Key                  string                                                                `json:"key"`
-			Mounted              *bool                                                                 `json:"mounted,omitempty"`
-			PromptOnInstallation bool                                                                  `json:"promptOnInstallation"`
-			Required             *bool                                                                 `json:"required,omitempty"`
-			Type                 UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType        `json:"type"`
-			Value                *string                                                               `json:"value,omitempty"`
+			Default              interface{}                                                    `json:"default,omitempty"`
+			Description          *string                                                        `json:"description,omitempty"`
+			Key                  string                                                         `json:"key"`
+			Mounted              *bool                                                          `json:"mounted,omitempty"`
+			PromptOnInstallation bool                                                           `json:"promptOnInstallation"`
+			Required             *bool                                                          `json:"required,omitempty"`
+			Type                 UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType `json:"type"`
+			Value                *string                                                        `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath         *string                                                                   `json:"httpPath,omitempty"`
 		HttpPort         *float32                                                                  `json:"httpPort,omitempty"`
@@ -1986,20 +1936,6 @@ type UpdateInternalMcpCatalogItemJSONBodyEnterpriseManagedConfigTokenInjectionMo
 
 // UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvFromType string
-
-// UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault0 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault0 = string
-
-// UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault1 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault1 = float32
-
-// UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault2 defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentDefault2 = bool
-
-// UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default defines parameters for UpdateInternalMcpCatalogItem.
-type UpdateInternalMcpCatalogItemJSONBody_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 
 // UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType string
@@ -2103,27 +2039,16 @@ type GetLlmModelsParamsProvider string
 
 // UpdateModelJSONBody defines parameters for UpdateModel.
 type UpdateModelJSONBody struct {
-	CustomPricePerMillionInput  *string                                  `json:"customPricePerMillionInput"`
-	CustomPricePerMillionOutput *string                                  `json:"customPricePerMillionOutput"`
-	EmbeddingDimensions         *UpdateModelJSONBody_EmbeddingDimensions `json:"embeddingDimensions"`
-	Ignored                     *bool                                    `json:"ignored,omitempty"`
-	InputModalities             *[]UpdateModelJSONBodyInputModalities    `json:"inputModalities"`
-	OutputModalities            *[]UpdateModelJSONBodyOutputModalities   `json:"outputModalities"`
+	CustomPricePerMillionInput  *string                                 `json:"customPricePerMillionInput"`
+	CustomPricePerMillionOutput *string                                 `json:"customPricePerMillionOutput"`
+	EmbeddingDimensions         *UpdateModelJSONBodyEmbeddingDimensions `json:"embeddingDimensions"`
+	Ignored                     *bool                                   `json:"ignored,omitempty"`
+	InputModalities             *[]UpdateModelJSONBodyInputModalities   `json:"inputModalities"`
+	OutputModalities            *[]UpdateModelJSONBodyOutputModalities  `json:"outputModalities"`
 }
 
-// UpdateModelJSONBodyEmbeddingDimensions0 defines parameters for UpdateModel.
-type UpdateModelJSONBodyEmbeddingDimensions0 float32
-
-// UpdateModelJSONBodyEmbeddingDimensions1 defines parameters for UpdateModel.
-type UpdateModelJSONBodyEmbeddingDimensions1 float32
-
-// UpdateModelJSONBodyEmbeddingDimensions2 defines parameters for UpdateModel.
-type UpdateModelJSONBodyEmbeddingDimensions2 float32
-
-// UpdateModelJSONBody_EmbeddingDimensions defines parameters for UpdateModel.
-type UpdateModelJSONBody_EmbeddingDimensions struct {
-	union json.RawMessage
-}
+// UpdateModelJSONBodyEmbeddingDimensions defines parameters for UpdateModel.
+type UpdateModelJSONBodyEmbeddingDimensions int
 
 // UpdateModelJSONBodyInputModalities defines parameters for UpdateModel.
 type UpdateModelJSONBodyInputModalities string
@@ -2319,14 +2244,14 @@ type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
 			Type   CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvFromType `json:"type"`
 		} `json:"envFrom,omitempty"`
 		Environment *[]struct {
-			Default              *CreateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
-			Description          *string                                                                                          `json:"description,omitempty"`
-			Key                  string                                                                                           `json:"key"`
-			Mounted              *bool                                                                                            `json:"mounted,omitempty"`
-			PromptOnInstallation bool                                                                                             `json:"promptOnInstallation"`
-			Required             *bool                                                                                            `json:"required,omitempty"`
-			Type                 CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType          `json:"type"`
-			Value                *string                                                                                          `json:"value,omitempty"`
+			Default              interface{}                                                                             `json:"default,omitempty"`
+			Description          *string                                                                                 `json:"description,omitempty"`
+			Key                  string                                                                                  `json:"key"`
+			Mounted              *bool                                                                                   `json:"mounted,omitempty"`
+			PromptOnInstallation bool                                                                                    `json:"promptOnInstallation"`
+			Required             *bool                                                                                   `json:"required,omitempty"`
+			Type                 CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType `json:"type"`
+			Value                *string                                                                                 `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath         *string                                                                                              `json:"httpPath,omitempty"`
 		HttpPort         *float32                                                                                             `json:"httpPort,omitempty"`
@@ -2343,20 +2268,6 @@ type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
 
 // CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvFromType defines parameters for CreateMcpServerInstallationRequest.
 type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvFromType string
-
-// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault0 defines parameters for CreateMcpServerInstallationRequest.
-type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault0 = string
-
-// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault1 defines parameters for CreateMcpServerInstallationRequest.
-type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault1 = float32
-
-// CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault2 defines parameters for CreateMcpServerInstallationRequest.
-type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault2 = bool
-
-// CreateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default defines parameters for CreateMcpServerInstallationRequest.
-type CreateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 
 // CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType defines parameters for CreateMcpServerInstallationRequest.
 type CreateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType string
@@ -2474,14 +2385,14 @@ type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
 			Type   UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvFromType `json:"type"`
 		} `json:"envFrom,omitempty"`
 		Environment *[]struct {
-			Default              *UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
-			Description          *string                                                                                          `json:"description,omitempty"`
-			Key                  string                                                                                           `json:"key"`
-			Mounted              *bool                                                                                            `json:"mounted,omitempty"`
-			PromptOnInstallation bool                                                                                             `json:"promptOnInstallation"`
-			Required             *bool                                                                                            `json:"required,omitempty"`
-			Type                 UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType          `json:"type"`
-			Value                *string                                                                                          `json:"value,omitempty"`
+			Default              interface{}                                                                             `json:"default,omitempty"`
+			Description          *string                                                                                 `json:"description,omitempty"`
+			Key                  string                                                                                  `json:"key"`
+			Mounted              *bool                                                                                   `json:"mounted,omitempty"`
+			PromptOnInstallation bool                                                                                    `json:"promptOnInstallation"`
+			Required             *bool                                                                                   `json:"required,omitempty"`
+			Type                 UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType `json:"type"`
+			Value                *string                                                                                 `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath         *string                                                                                              `json:"httpPath,omitempty"`
 		HttpPort         *float32                                                                                             `json:"httpPort,omitempty"`
@@ -2498,20 +2409,6 @@ type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1 struct {
 
 // UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvFromType defines parameters for UpdateMcpServerInstallationRequest.
 type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvFromType string
-
-// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault0 defines parameters for UpdateMcpServerInstallationRequest.
-type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault0 = string
-
-// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault1 defines parameters for UpdateMcpServerInstallationRequest.
-type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault1 = float32
-
-// UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault2 defines parameters for UpdateMcpServerInstallationRequest.
-type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentDefault2 = bool
-
-// UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default defines parameters for UpdateMcpServerInstallationRequest.
-type UpdateMcpServerInstallationRequestJSONBody_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 
 // UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType defines parameters for UpdateMcpServerInstallationRequest.
 type UpdateMcpServerInstallationRequestJSONBodyCustomServerConfig1LocalConfigEnvironmentType string
@@ -3029,234 +2926,6 @@ type BulkUpsertDefaultResultPolicyJSONRequestBody BulkUpsertDefaultResultPolicyJ
 
 // UpdateTrustedDataPolicyJSONRequestBody defines body for UpdateTrustedDataPolicy for application/json ContentType.
 type UpdateTrustedDataPolicyJSONRequestBody UpdateTrustedDataPolicyJSONBody
-
-// AsUserConfigFieldDefault0 returns the union data inside the UserConfigFieldDefault as a UserConfigFieldDefault0
-func (t UserConfigFieldDefault) AsUserConfigFieldDefault0() (UserConfigFieldDefault0, error) {
-	var body UserConfigFieldDefault0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromUserConfigFieldDefault0 overwrites any union data inside the UserConfigFieldDefault as the provided UserConfigFieldDefault0
-func (t *UserConfigFieldDefault) FromUserConfigFieldDefault0(v UserConfigFieldDefault0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeUserConfigFieldDefault0 performs a merge with any union data inside the UserConfigFieldDefault, using the provided UserConfigFieldDefault0
-func (t *UserConfigFieldDefault) MergeUserConfigFieldDefault0(v UserConfigFieldDefault0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsUserConfigFieldDefault1 returns the union data inside the UserConfigFieldDefault as a UserConfigFieldDefault1
-func (t UserConfigFieldDefault) AsUserConfigFieldDefault1() (UserConfigFieldDefault1, error) {
-	var body UserConfigFieldDefault1
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromUserConfigFieldDefault1 overwrites any union data inside the UserConfigFieldDefault as the provided UserConfigFieldDefault1
-func (t *UserConfigFieldDefault) FromUserConfigFieldDefault1(v UserConfigFieldDefault1) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeUserConfigFieldDefault1 performs a merge with any union data inside the UserConfigFieldDefault, using the provided UserConfigFieldDefault1
-func (t *UserConfigFieldDefault) MergeUserConfigFieldDefault1(v UserConfigFieldDefault1) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsUserConfigFieldDefault2 returns the union data inside the UserConfigFieldDefault as a UserConfigFieldDefault2
-func (t UserConfigFieldDefault) AsUserConfigFieldDefault2() (UserConfigFieldDefault2, error) {
-	var body UserConfigFieldDefault2
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromUserConfigFieldDefault2 overwrites any union data inside the UserConfigFieldDefault as the provided UserConfigFieldDefault2
-func (t *UserConfigFieldDefault) FromUserConfigFieldDefault2(v UserConfigFieldDefault2) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeUserConfigFieldDefault2 performs a merge with any union data inside the UserConfigFieldDefault, using the provided UserConfigFieldDefault2
-func (t *UserConfigFieldDefault) MergeUserConfigFieldDefault2(v UserConfigFieldDefault2) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsUserConfigFieldDefault3 returns the union data inside the UserConfigFieldDefault as a UserConfigFieldDefault3
-func (t UserConfigFieldDefault) AsUserConfigFieldDefault3() (UserConfigFieldDefault3, error) {
-	var body UserConfigFieldDefault3
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromUserConfigFieldDefault3 overwrites any union data inside the UserConfigFieldDefault as the provided UserConfigFieldDefault3
-func (t *UserConfigFieldDefault) FromUserConfigFieldDefault3(v UserConfigFieldDefault3) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeUserConfigFieldDefault3 performs a merge with any union data inside the UserConfigFieldDefault, using the provided UserConfigFieldDefault3
-func (t *UserConfigFieldDefault) MergeUserConfigFieldDefault3(v UserConfigFieldDefault3) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t UserConfigFieldDefault) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *UserConfigFieldDefault) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsUserConfigFieldDefaultInput0 returns the union data inside the UserConfigFieldDefaultInput as a UserConfigFieldDefaultInput0
-func (t UserConfigFieldDefaultInput) AsUserConfigFieldDefaultInput0() (UserConfigFieldDefaultInput0, error) {
-	var body UserConfigFieldDefaultInput0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromUserConfigFieldDefaultInput0 overwrites any union data inside the UserConfigFieldDefaultInput as the provided UserConfigFieldDefaultInput0
-func (t *UserConfigFieldDefaultInput) FromUserConfigFieldDefaultInput0(v UserConfigFieldDefaultInput0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeUserConfigFieldDefaultInput0 performs a merge with any union data inside the UserConfigFieldDefaultInput, using the provided UserConfigFieldDefaultInput0
-func (t *UserConfigFieldDefaultInput) MergeUserConfigFieldDefaultInput0(v UserConfigFieldDefaultInput0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsUserConfigFieldDefaultInput1 returns the union data inside the UserConfigFieldDefaultInput as a UserConfigFieldDefaultInput1
-func (t UserConfigFieldDefaultInput) AsUserConfigFieldDefaultInput1() (UserConfigFieldDefaultInput1, error) {
-	var body UserConfigFieldDefaultInput1
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromUserConfigFieldDefaultInput1 overwrites any union data inside the UserConfigFieldDefaultInput as the provided UserConfigFieldDefaultInput1
-func (t *UserConfigFieldDefaultInput) FromUserConfigFieldDefaultInput1(v UserConfigFieldDefaultInput1) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeUserConfigFieldDefaultInput1 performs a merge with any union data inside the UserConfigFieldDefaultInput, using the provided UserConfigFieldDefaultInput1
-func (t *UserConfigFieldDefaultInput) MergeUserConfigFieldDefaultInput1(v UserConfigFieldDefaultInput1) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsUserConfigFieldDefaultInput2 returns the union data inside the UserConfigFieldDefaultInput as a UserConfigFieldDefaultInput2
-func (t UserConfigFieldDefaultInput) AsUserConfigFieldDefaultInput2() (UserConfigFieldDefaultInput2, error) {
-	var body UserConfigFieldDefaultInput2
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromUserConfigFieldDefaultInput2 overwrites any union data inside the UserConfigFieldDefaultInput as the provided UserConfigFieldDefaultInput2
-func (t *UserConfigFieldDefaultInput) FromUserConfigFieldDefaultInput2(v UserConfigFieldDefaultInput2) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeUserConfigFieldDefaultInput2 performs a merge with any union data inside the UserConfigFieldDefaultInput, using the provided UserConfigFieldDefaultInput2
-func (t *UserConfigFieldDefaultInput) MergeUserConfigFieldDefaultInput2(v UserConfigFieldDefaultInput2) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsUserConfigFieldDefaultInput3 returns the union data inside the UserConfigFieldDefaultInput as a UserConfigFieldDefaultInput3
-func (t UserConfigFieldDefaultInput) AsUserConfigFieldDefaultInput3() (UserConfigFieldDefaultInput3, error) {
-	var body UserConfigFieldDefaultInput3
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromUserConfigFieldDefaultInput3 overwrites any union data inside the UserConfigFieldDefaultInput as the provided UserConfigFieldDefaultInput3
-func (t *UserConfigFieldDefaultInput) FromUserConfigFieldDefaultInput3(v UserConfigFieldDefaultInput3) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeUserConfigFieldDefaultInput3 performs a merge with any union data inside the UserConfigFieldDefaultInput, using the provided UserConfigFieldDefaultInput3
-func (t *UserConfigFieldDefaultInput) MergeUserConfigFieldDefaultInput3(v UserConfigFieldDefaultInput3) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t UserConfigFieldDefaultInput) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *UserConfigFieldDefaultInput) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -12770,13 +12439,24 @@ type GetAllAgentToolsResponse struct {
 			Id                       openapi_types.UUID                              `json:"id"`
 			McpServerId              *openapi_types.UUID                             `json:"mcpServerId"`
 			Tool                     struct {
-				CatalogId   *string                                    `json:"catalogId"`
-				CreatedAt   time.Time                                  `json:"createdAt"`
-				Description *string                                    `json:"description"`
-				Id          string                                     `json:"id"`
-				Name        string                                     `json:"name"`
-				Parameters  *GetAllAgentTools_200_Data_Tool_Parameters `json:"parameters,omitempty"`
-				UpdatedAt   time.Time                                  `json:"updatedAt"`
+				CatalogId   *string   `json:"catalogId"`
+				CreatedAt   time.Time `json:"createdAt"`
+				Description *string   `json:"description"`
+				Id          string    `json:"id"`
+				Name        string    `json:"name"`
+
+				// Parameters
+				//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+				//
+				//     The parameters the functions accepts, described as a JSON Schema object. See the
+				//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+				//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+				//     documentation about the format.
+				//
+				//     Omitting parameters defines a function with an empty parameter list.
+				//
+				Parameters *map[string]interface{} `json:"parameters,omitempty"`
+				UpdatedAt  time.Time               `json:"updatedAt"`
 			} `json:"tool"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		} `json:"data"`
@@ -12827,10 +12507,6 @@ type GetAllAgentToolsResponse struct {
 	}
 }
 type GetAllAgentTools200DataCredentialResolutionMode string
-type GetAllAgentTools200DataToolParameters0 map[string]interface{}
-type GetAllAgentTools_200_Data_Tool_Parameters struct {
-	union json.RawMessage
-}
 type GetAllAgentTools400ErrorType string
 type GetAllAgentTools401ErrorType string
 type GetAllAgentTools403ErrorType string
@@ -13050,20 +12726,31 @@ type GetAgentsResponse struct {
 				Name string `json:"name"`
 			} `json:"teams"`
 			Tools []struct {
-				AgentId                          *openapi_types.UUID                  `json:"agentId"`
-				CatalogId                        *openapi_types.UUID                  `json:"catalogId"`
-				CreatedAt                        time.Time                            `json:"createdAt"`
-				DelegateToAgentId                *openapi_types.UUID                  `json:"delegateToAgentId"`
-				Description                      *string                              `json:"description"`
-				Id                               openapi_types.UUID                   `json:"id"`
-				Meta                             *GetAgents_200_Data_Tools_Meta       `json:"meta"`
-				Name                             string                               `json:"name"`
-				Parameters                       *GetAgents_200_Data_Tools_Parameters `json:"parameters,omitempty"`
-				PoliciesAutoConfiguredAt         *time.Time                           `json:"policiesAutoConfiguredAt"`
-				PoliciesAutoConfiguredModel      *string                              `json:"policiesAutoConfiguredModel"`
-				PoliciesAutoConfiguredReasoning  *string                              `json:"policiesAutoConfiguredReasoning"`
-				PoliciesAutoConfiguringStartedAt *time.Time                           `json:"policiesAutoConfiguringStartedAt"`
-				UpdatedAt                        time.Time                            `json:"updatedAt"`
+				AgentId           *openapi_types.UUID `json:"agentId"`
+				CatalogId         *openapi_types.UUID `json:"catalogId"`
+				CreatedAt         time.Time           `json:"createdAt"`
+				DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+				Description       *string             `json:"description"`
+				Id                openapi_types.UUID  `json:"id"`
+				Meta              interface{}         `json:"meta"`
+				Name              string              `json:"name"`
+
+				// Parameters
+				//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+				//
+				//     The parameters the functions accepts, described as a JSON Schema object. See the
+				//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+				//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+				//     documentation about the format.
+				//
+				//     Omitting parameters defines a function with an empty parameter list.
+				//
+				Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+				PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+				PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+				UpdatedAt                        time.Time               `json:"updatedAt"`
 			} `json:"tools"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		} `json:"data"`
@@ -13133,22 +12820,6 @@ type GetAgents_200_Data_BuiltInAgentConfig struct {
 }
 type GetAgents200DataIncomingEmailSecurityMode string
 type GetAgents200DataScope string
-type GetAgents200DataToolsMeta0 struct {
-	union json.RawMessage
-}
-type GetAgents200DataToolsMeta00 = string
-type GetAgents200DataToolsMeta01 = float32
-type GetAgents200DataToolsMeta02 = bool
-type GetAgents200DataToolsMeta03 string
-type GetAgents200DataToolsMeta1 map[string]interface{}
-type GetAgents200DataToolsMeta2 = []interface{}
-type GetAgents_200_Data_Tools_Meta struct {
-	union json.RawMessage
-}
-type GetAgents200DataToolsParameters0 map[string]interface{}
-type GetAgents_200_Data_Tools_Parameters struct {
-	union json.RawMessage
-}
 type GetAgents400ErrorType string
 type GetAgents401ErrorType string
 type GetAgents403ErrorType string
@@ -13216,20 +12887,31 @@ type CreateAgentResponse struct {
 			Name string `json:"name"`
 		} `json:"teams"`
 		Tools []struct {
-			AgentId                          *openapi_types.UUID               `json:"agentId"`
-			CatalogId                        *openapi_types.UUID               `json:"catalogId"`
-			CreatedAt                        time.Time                         `json:"createdAt"`
-			DelegateToAgentId                *openapi_types.UUID               `json:"delegateToAgentId"`
-			Description                      *string                           `json:"description"`
-			Id                               openapi_types.UUID                `json:"id"`
-			Meta                             *CreateAgent_200_Tools_Meta       `json:"meta"`
-			Name                             string                            `json:"name"`
-			Parameters                       *CreateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-			PoliciesAutoConfiguredAt         *time.Time                        `json:"policiesAutoConfiguredAt"`
-			PoliciesAutoConfiguredModel      *string                           `json:"policiesAutoConfiguredModel"`
-			PoliciesAutoConfiguredReasoning  *string                           `json:"policiesAutoConfiguredReasoning"`
-			PoliciesAutoConfiguringStartedAt *time.Time                        `json:"policiesAutoConfiguringStartedAt"`
-			UpdatedAt                        time.Time                         `json:"updatedAt"`
+			AgentId           *openapi_types.UUID `json:"agentId"`
+			CatalogId         *openapi_types.UUID `json:"catalogId"`
+			CreatedAt         time.Time           `json:"createdAt"`
+			DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+			Description       *string             `json:"description"`
+			Id                openapi_types.UUID  `json:"id"`
+			Meta              interface{}         `json:"meta"`
+			Name              string              `json:"name"`
+
+			// Parameters
+			//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+			//
+			//     The parameters the functions accepts, described as a JSON Schema object. See the
+			//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+			//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+			//     documentation about the format.
+			//
+			//     Omitting parameters defines a function with an empty parameter list.
+			//
+			Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+			PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+			UpdatedAt                        time.Time               `json:"updatedAt"`
 		} `json:"tools"`
 		UpdatedAt time.Time `json:"updatedAt"`
 	}
@@ -13290,22 +12972,6 @@ type CreateAgent_200_BuiltInAgentConfig struct {
 }
 type CreateAgent200IncomingEmailSecurityMode string
 type CreateAgent200Scope string
-type CreateAgent200ToolsMeta0 struct {
-	union json.RawMessage
-}
-type CreateAgent200ToolsMeta00 = string
-type CreateAgent200ToolsMeta01 = float32
-type CreateAgent200ToolsMeta02 = bool
-type CreateAgent200ToolsMeta03 string
-type CreateAgent200ToolsMeta1 map[string]interface{}
-type CreateAgent200ToolsMeta2 = []interface{}
-type CreateAgent_200_Tools_Meta struct {
-	union json.RawMessage
-}
-type CreateAgent200ToolsParameters0 map[string]interface{}
-type CreateAgent_200_Tools_Parameters struct {
-	union json.RawMessage
-}
 type CreateAgent400ErrorType string
 type CreateAgent401ErrorType string
 type CreateAgent403ErrorType string
@@ -13373,20 +13039,31 @@ type GetAllAgentsResponse struct {
 			Name string `json:"name"`
 		} `json:"teams"`
 		Tools []struct {
-			AgentId                          *openapi_types.UUID                `json:"agentId"`
-			CatalogId                        *openapi_types.UUID                `json:"catalogId"`
-			CreatedAt                        time.Time                          `json:"createdAt"`
-			DelegateToAgentId                *openapi_types.UUID                `json:"delegateToAgentId"`
-			Description                      *string                            `json:"description"`
-			Id                               openapi_types.UUID                 `json:"id"`
-			Meta                             *GetAllAgents_200_Tools_Meta       `json:"meta"`
-			Name                             string                             `json:"name"`
-			Parameters                       *GetAllAgents_200_Tools_Parameters `json:"parameters,omitempty"`
-			PoliciesAutoConfiguredAt         *time.Time                         `json:"policiesAutoConfiguredAt"`
-			PoliciesAutoConfiguredModel      *string                            `json:"policiesAutoConfiguredModel"`
-			PoliciesAutoConfiguredReasoning  *string                            `json:"policiesAutoConfiguredReasoning"`
-			PoliciesAutoConfiguringStartedAt *time.Time                         `json:"policiesAutoConfiguringStartedAt"`
-			UpdatedAt                        time.Time                          `json:"updatedAt"`
+			AgentId           *openapi_types.UUID `json:"agentId"`
+			CatalogId         *openapi_types.UUID `json:"catalogId"`
+			CreatedAt         time.Time           `json:"createdAt"`
+			DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+			Description       *string             `json:"description"`
+			Id                openapi_types.UUID  `json:"id"`
+			Meta              interface{}         `json:"meta"`
+			Name              string              `json:"name"`
+
+			// Parameters
+			//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+			//
+			//     The parameters the functions accepts, described as a JSON Schema object. See the
+			//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+			//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+			//     documentation about the format.
+			//
+			//     Omitting parameters defines a function with an empty parameter list.
+			//
+			Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+			PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+			UpdatedAt                        time.Time               `json:"updatedAt"`
 		} `json:"tools"`
 		UpdatedAt time.Time `json:"updatedAt"`
 	}
@@ -13447,22 +13124,6 @@ type GetAllAgents_200_BuiltInAgentConfig struct {
 }
 type GetAllAgents200IncomingEmailSecurityMode string
 type GetAllAgents200Scope string
-type GetAllAgents200ToolsMeta0 struct {
-	union json.RawMessage
-}
-type GetAllAgents200ToolsMeta00 = string
-type GetAllAgents200ToolsMeta01 = float32
-type GetAllAgents200ToolsMeta02 = bool
-type GetAllAgents200ToolsMeta03 string
-type GetAllAgents200ToolsMeta1 map[string]interface{}
-type GetAllAgents200ToolsMeta2 = []interface{}
-type GetAllAgents_200_Tools_Meta struct {
-	union json.RawMessage
-}
-type GetAllAgents200ToolsParameters0 map[string]interface{}
-type GetAllAgents_200_Tools_Parameters struct {
-	union json.RawMessage
-}
 type GetAllAgents400ErrorType string
 type GetAllAgents401ErrorType string
 type GetAllAgents403ErrorType string
@@ -13969,22 +13630,33 @@ type GetAgentToolsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
-		AgentId                          *openapi_types.UUID                      `json:"agentId"`
-		CatalogId                        *openapi_types.UUID                      `json:"catalogId"`
-		CreatedAt                        time.Time                                `json:"createdAt"`
-		CredentialResolutionMode         GetAgentTools200CredentialResolutionMode `json:"credentialResolutionMode"`
-		DelegateToAgentId                *openapi_types.UUID                      `json:"delegateToAgentId"`
-		Description                      *string                                  `json:"description"`
-		Id                               openapi_types.UUID                       `json:"id"`
-		McpServerId                      *openapi_types.UUID                      `json:"mcpServerId"`
-		Meta                             *GetAgentTools_200_Meta                  `json:"meta"`
-		Name                             string                                   `json:"name"`
-		Parameters                       *GetAgentTools_200_Parameters            `json:"parameters,omitempty"`
-		PoliciesAutoConfiguredAt         *time.Time                               `json:"policiesAutoConfiguredAt"`
-		PoliciesAutoConfiguredModel      *string                                  `json:"policiesAutoConfiguredModel"`
-		PoliciesAutoConfiguredReasoning  *string                                  `json:"policiesAutoConfiguredReasoning"`
-		PoliciesAutoConfiguringStartedAt *time.Time                               `json:"policiesAutoConfiguringStartedAt"`
-		UpdatedAt                        time.Time                                `json:"updatedAt"`
+		AgentId                  *openapi_types.UUID                      `json:"agentId"`
+		CatalogId                *openapi_types.UUID                      `json:"catalogId"`
+		CreatedAt                time.Time                                `json:"createdAt"`
+		CredentialResolutionMode GetAgentTools200CredentialResolutionMode `json:"credentialResolutionMode"`
+		DelegateToAgentId        *openapi_types.UUID                      `json:"delegateToAgentId"`
+		Description              *string                                  `json:"description"`
+		Id                       openapi_types.UUID                       `json:"id"`
+		McpServerId              *openapi_types.UUID                      `json:"mcpServerId"`
+		Meta                     interface{}                              `json:"meta"`
+		Name                     string                                   `json:"name"`
+
+		// Parameters
+		//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+		//
+		//     The parameters the functions accepts, described as a JSON Schema object. See the
+		//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+		//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+		//     documentation about the format.
+		//
+		//     Omitting parameters defines a function with an empty parameter list.
+		//
+		Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+		PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+		PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+		PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+		PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+		UpdatedAt                        time.Time               `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -14024,22 +13696,6 @@ type GetAgentToolsResponse struct {
 	}
 }
 type GetAgentTools200CredentialResolutionMode string
-type GetAgentTools200Meta0 struct {
-	union json.RawMessage
-}
-type GetAgentTools200Meta00 = string
-type GetAgentTools200Meta01 = float32
-type GetAgentTools200Meta02 = bool
-type GetAgentTools200Meta03 string
-type GetAgentTools200Meta1 map[string]interface{}
-type GetAgentTools200Meta2 = []interface{}
-type GetAgentTools_200_Meta struct {
-	union json.RawMessage
-}
-type GetAgentTools200Parameters0 map[string]interface{}
-type GetAgentTools_200_Parameters struct {
-	union json.RawMessage
-}
 type GetAgentTools400ErrorType string
 type GetAgentTools401ErrorType string
 type GetAgentTools403ErrorType string
@@ -14305,20 +13961,31 @@ type GetAgentResponse struct {
 			Name string `json:"name"`
 		} `json:"teams"`
 		Tools []struct {
-			AgentId                          *openapi_types.UUID            `json:"agentId"`
-			CatalogId                        *openapi_types.UUID            `json:"catalogId"`
-			CreatedAt                        time.Time                      `json:"createdAt"`
-			DelegateToAgentId                *openapi_types.UUID            `json:"delegateToAgentId"`
-			Description                      *string                        `json:"description"`
-			Id                               openapi_types.UUID             `json:"id"`
-			Meta                             *GetAgent_200_Tools_Meta       `json:"meta"`
-			Name                             string                         `json:"name"`
-			Parameters                       *GetAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-			PoliciesAutoConfiguredAt         *time.Time                     `json:"policiesAutoConfiguredAt"`
-			PoliciesAutoConfiguredModel      *string                        `json:"policiesAutoConfiguredModel"`
-			PoliciesAutoConfiguredReasoning  *string                        `json:"policiesAutoConfiguredReasoning"`
-			PoliciesAutoConfiguringStartedAt *time.Time                     `json:"policiesAutoConfiguringStartedAt"`
-			UpdatedAt                        time.Time                      `json:"updatedAt"`
+			AgentId           *openapi_types.UUID `json:"agentId"`
+			CatalogId         *openapi_types.UUID `json:"catalogId"`
+			CreatedAt         time.Time           `json:"createdAt"`
+			DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+			Description       *string             `json:"description"`
+			Id                openapi_types.UUID  `json:"id"`
+			Meta              interface{}         `json:"meta"`
+			Name              string              `json:"name"`
+
+			// Parameters
+			//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+			//
+			//     The parameters the functions accepts, described as a JSON Schema object. See the
+			//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+			//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+			//     documentation about the format.
+			//
+			//     Omitting parameters defines a function with an empty parameter list.
+			//
+			Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+			PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+			UpdatedAt                        time.Time               `json:"updatedAt"`
 		} `json:"tools"`
 		UpdatedAt time.Time `json:"updatedAt"`
 	}
@@ -14379,22 +14046,6 @@ type GetAgent_200_BuiltInAgentConfig struct {
 }
 type GetAgent200IncomingEmailSecurityMode string
 type GetAgent200Scope string
-type GetAgent200ToolsMeta0 struct {
-	union json.RawMessage
-}
-type GetAgent200ToolsMeta00 = string
-type GetAgent200ToolsMeta01 = float32
-type GetAgent200ToolsMeta02 = bool
-type GetAgent200ToolsMeta03 string
-type GetAgent200ToolsMeta1 map[string]interface{}
-type GetAgent200ToolsMeta2 = []interface{}
-type GetAgent_200_Tools_Meta struct {
-	union json.RawMessage
-}
-type GetAgent200ToolsParameters0 map[string]interface{}
-type GetAgent_200_Tools_Parameters struct {
-	union json.RawMessage
-}
 type GetAgent400ErrorType string
 type GetAgent401ErrorType string
 type GetAgent403ErrorType string
@@ -14462,20 +14113,31 @@ type UpdateAgentResponse struct {
 			Name string `json:"name"`
 		} `json:"teams"`
 		Tools []struct {
-			AgentId                          *openapi_types.UUID               `json:"agentId"`
-			CatalogId                        *openapi_types.UUID               `json:"catalogId"`
-			CreatedAt                        time.Time                         `json:"createdAt"`
-			DelegateToAgentId                *openapi_types.UUID               `json:"delegateToAgentId"`
-			Description                      *string                           `json:"description"`
-			Id                               openapi_types.UUID                `json:"id"`
-			Meta                             *UpdateAgent_200_Tools_Meta       `json:"meta"`
-			Name                             string                            `json:"name"`
-			Parameters                       *UpdateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-			PoliciesAutoConfiguredAt         *time.Time                        `json:"policiesAutoConfiguredAt"`
-			PoliciesAutoConfiguredModel      *string                           `json:"policiesAutoConfiguredModel"`
-			PoliciesAutoConfiguredReasoning  *string                           `json:"policiesAutoConfiguredReasoning"`
-			PoliciesAutoConfiguringStartedAt *time.Time                        `json:"policiesAutoConfiguringStartedAt"`
-			UpdatedAt                        time.Time                         `json:"updatedAt"`
+			AgentId           *openapi_types.UUID `json:"agentId"`
+			CatalogId         *openapi_types.UUID `json:"catalogId"`
+			CreatedAt         time.Time           `json:"createdAt"`
+			DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+			Description       *string             `json:"description"`
+			Id                openapi_types.UUID  `json:"id"`
+			Meta              interface{}         `json:"meta"`
+			Name              string              `json:"name"`
+
+			// Parameters
+			//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+			//
+			//     The parameters the functions accepts, described as a JSON Schema object. See the
+			//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+			//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+			//     documentation about the format.
+			//
+			//     Omitting parameters defines a function with an empty parameter list.
+			//
+			Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+			PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+			UpdatedAt                        time.Time               `json:"updatedAt"`
 		} `json:"tools"`
 		UpdatedAt time.Time `json:"updatedAt"`
 	}
@@ -14536,22 +14198,6 @@ type UpdateAgent_200_BuiltInAgentConfig struct {
 }
 type UpdateAgent200IncomingEmailSecurityMode string
 type UpdateAgent200Scope string
-type UpdateAgent200ToolsMeta0 struct {
-	union json.RawMessage
-}
-type UpdateAgent200ToolsMeta00 = string
-type UpdateAgent200ToolsMeta01 = float32
-type UpdateAgent200ToolsMeta02 = bool
-type UpdateAgent200ToolsMeta03 string
-type UpdateAgent200ToolsMeta1 map[string]interface{}
-type UpdateAgent200ToolsMeta2 = []interface{}
-type UpdateAgent_200_Tools_Meta struct {
-	union json.RawMessage
-}
-type UpdateAgent200ToolsParameters0 map[string]interface{}
-type UpdateAgent_200_Tools_Parameters struct {
-	union json.RawMessage
-}
 type UpdateAgent400ErrorType string
 type UpdateAgent401ErrorType string
 type UpdateAgent403ErrorType string
@@ -16301,14 +15947,14 @@ type GetInternalMcpCatalogResponse struct {
 				Type   GetInternalMcpCatalog200LocalConfigEnvFromType `json:"type"`
 			} `json:"envFrom,omitempty"`
 			Environment *[]struct {
-				Default              *GetInternalMcpCatalog_200_LocalConfig_Environment_Default `json:"default,omitempty"`
-				Description          *string                                                    `json:"description,omitempty"`
-				Key                  string                                                     `json:"key"`
-				Mounted              *bool                                                      `json:"mounted,omitempty"`
-				PromptOnInstallation bool                                                       `json:"promptOnInstallation"`
-				Required             *bool                                                      `json:"required,omitempty"`
-				Type                 GetInternalMcpCatalog200LocalConfigEnvironmentType         `json:"type"`
-				Value                *string                                                    `json:"value,omitempty"`
+				Default              interface{}                                        `json:"default,omitempty"`
+				Description          *string                                            `json:"description,omitempty"`
+				Key                  string                                             `json:"key"`
+				Mounted              *bool                                              `json:"mounted,omitempty"`
+				PromptOnInstallation bool                                               `json:"promptOnInstallation"`
+				Required             *bool                                              `json:"required,omitempty"`
+				Type                 GetInternalMcpCatalog200LocalConfigEnvironmentType `json:"type"`
+				Value                *string                                            `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath         *string                                                        `json:"httpPath,omitempty"`
 			HttpPort         *float32                                                       `json:"httpPort,omitempty"`
@@ -16401,29 +16047,20 @@ type GetInternalMcpCatalog200EnterpriseManagedConfigRequestedCredentialType stri
 type GetInternalMcpCatalog200EnterpriseManagedConfigResourceType string
 type GetInternalMcpCatalog200EnterpriseManagedConfigTokenInjectionMode string
 type GetInternalMcpCatalog200LocalConfigEnvFromType string
-type GetInternalMcpCatalog200LocalConfigEnvironmentDefault0 = string
-type GetInternalMcpCatalog200LocalConfigEnvironmentDefault1 = float32
-type GetInternalMcpCatalog200LocalConfigEnvironmentDefault2 = bool
-type GetInternalMcpCatalog_200_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 type GetInternalMcpCatalog200LocalConfigEnvironmentType string
 type GetInternalMcpCatalog200LocalConfigImagePullSecrets0 struct {
-	union json.RawMessage
+	Name   string                                                     `json:"name"`
+	Source GetInternalMcpCatalog200LocalConfigImagePullSecrets0Source `json:"source"`
 }
-type GetInternalMcpCatalog200LocalConfigImagePullSecrets00 struct {
-	Name   string                                                      `json:"name"`
-	Source GetInternalMcpCatalog200LocalConfigImagePullSecrets00Source `json:"source"`
+type GetInternalMcpCatalog200LocalConfigImagePullSecrets0Source string
+type GetInternalMcpCatalog200LocalConfigImagePullSecrets1 struct {
+	Email    *string                                                    `json:"email,omitempty"`
+	Password *string                                                    `json:"password,omitempty"`
+	Server   string                                                     `json:"server"`
+	Source   GetInternalMcpCatalog200LocalConfigImagePullSecrets1Source `json:"source"`
+	Username string                                                     `json:"username"`
 }
-type GetInternalMcpCatalog200LocalConfigImagePullSecrets00Source string
-type GetInternalMcpCatalog200LocalConfigImagePullSecrets01 struct {
-	Email    *string                                                     `json:"email,omitempty"`
-	Password *string                                                     `json:"password,omitempty"`
-	Server   string                                                      `json:"server"`
-	Source   GetInternalMcpCatalog200LocalConfigImagePullSecrets01Source `json:"source"`
-	Username string                                                      `json:"username"`
-}
-type GetInternalMcpCatalog200LocalConfigImagePullSecrets01Source string
+type GetInternalMcpCatalog200LocalConfigImagePullSecrets1Source string
 type GetInternalMcpCatalog_200_LocalConfig_ImagePullSecrets_Item struct {
 	union json.RawMessage
 }
@@ -16509,14 +16146,14 @@ type CreateInternalMcpCatalogItemResponse struct {
 				Type   CreateInternalMcpCatalogItem200LocalConfigEnvFromType `json:"type"`
 			} `json:"envFrom,omitempty"`
 			Environment *[]struct {
-				Default              *CreateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
-				Description          *string                                                           `json:"description,omitempty"`
-				Key                  string                                                            `json:"key"`
-				Mounted              *bool                                                             `json:"mounted,omitempty"`
-				PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
-				Required             *bool                                                             `json:"required,omitempty"`
-				Type                 CreateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
-				Value                *string                                                           `json:"value,omitempty"`
+				Default              interface{}                                               `json:"default,omitempty"`
+				Description          *string                                                   `json:"description,omitempty"`
+				Key                  string                                                    `json:"key"`
+				Mounted              *bool                                                     `json:"mounted,omitempty"`
+				PromptOnInstallation bool                                                      `json:"promptOnInstallation"`
+				Required             *bool                                                     `json:"required,omitempty"`
+				Type                 CreateInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
+				Value                *string                                                   `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath         *string                                                               `json:"httpPath,omitempty"`
 			HttpPort         *float32                                                              `json:"httpPort,omitempty"`
@@ -16609,29 +16246,20 @@ type CreateInternalMcpCatalogItem200EnterpriseManagedConfigRequestedCredentialTy
 type CreateInternalMcpCatalogItem200EnterpriseManagedConfigResourceType string
 type CreateInternalMcpCatalogItem200EnterpriseManagedConfigTokenInjectionMode string
 type CreateInternalMcpCatalogItem200LocalConfigEnvFromType string
-type CreateInternalMcpCatalogItem200LocalConfigEnvironmentDefault0 = string
-type CreateInternalMcpCatalogItem200LocalConfigEnvironmentDefault1 = float32
-type CreateInternalMcpCatalogItem200LocalConfigEnvironmentDefault2 = bool
-type CreateInternalMcpCatalogItem_200_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 type CreateInternalMcpCatalogItem200LocalConfigEnvironmentType string
 type CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets0 struct {
-	union json.RawMessage
+	Name   string                                                            `json:"name"`
+	Source CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets0Source `json:"source"`
 }
-type CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets00 struct {
-	Name   string                                                             `json:"name"`
-	Source CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets00Source `json:"source"`
+type CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets0Source string
+type CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets1 struct {
+	Email    *string                                                           `json:"email,omitempty"`
+	Password *string                                                           `json:"password,omitempty"`
+	Server   string                                                            `json:"server"`
+	Source   CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets1Source `json:"source"`
+	Username string                                                            `json:"username"`
 }
-type CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets00Source string
-type CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets01 struct {
-	Email    *string                                                            `json:"email,omitempty"`
-	Password *string                                                            `json:"password,omitempty"`
-	Server   string                                                             `json:"server"`
-	Source   CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets01Source `json:"source"`
-	Username string                                                             `json:"username"`
-}
-type CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets01Source string
+type CreateInternalMcpCatalogItem200LocalConfigImagePullSecrets1Source string
 type CreateInternalMcpCatalogItem_200_LocalConfig_ImagePullSecrets_Item struct {
 	union json.RawMessage
 }
@@ -17045,14 +16673,14 @@ type GetInternalMcpCatalogItemResponse struct {
 				Type   GetInternalMcpCatalogItem200LocalConfigEnvFromType `json:"type"`
 			} `json:"envFrom,omitempty"`
 			Environment *[]struct {
-				Default              *GetInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
-				Description          *string                                                        `json:"description,omitempty"`
-				Key                  string                                                         `json:"key"`
-				Mounted              *bool                                                          `json:"mounted,omitempty"`
-				PromptOnInstallation bool                                                           `json:"promptOnInstallation"`
-				Required             *bool                                                          `json:"required,omitempty"`
-				Type                 GetInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
-				Value                *string                                                        `json:"value,omitempty"`
+				Default              interface{}                                            `json:"default,omitempty"`
+				Description          *string                                                `json:"description,omitempty"`
+				Key                  string                                                 `json:"key"`
+				Mounted              *bool                                                  `json:"mounted,omitempty"`
+				PromptOnInstallation bool                                                   `json:"promptOnInstallation"`
+				Required             *bool                                                  `json:"required,omitempty"`
+				Type                 GetInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
+				Value                *string                                                `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath         *string                                                            `json:"httpPath,omitempty"`
 			HttpPort         *float32                                                           `json:"httpPort,omitempty"`
@@ -17145,29 +16773,20 @@ type GetInternalMcpCatalogItem200EnterpriseManagedConfigRequestedCredentialType 
 type GetInternalMcpCatalogItem200EnterpriseManagedConfigResourceType string
 type GetInternalMcpCatalogItem200EnterpriseManagedConfigTokenInjectionMode string
 type GetInternalMcpCatalogItem200LocalConfigEnvFromType string
-type GetInternalMcpCatalogItem200LocalConfigEnvironmentDefault0 = string
-type GetInternalMcpCatalogItem200LocalConfigEnvironmentDefault1 = float32
-type GetInternalMcpCatalogItem200LocalConfigEnvironmentDefault2 = bool
-type GetInternalMcpCatalogItem_200_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 type GetInternalMcpCatalogItem200LocalConfigEnvironmentType string
 type GetInternalMcpCatalogItem200LocalConfigImagePullSecrets0 struct {
-	union json.RawMessage
+	Name   string                                                         `json:"name"`
+	Source GetInternalMcpCatalogItem200LocalConfigImagePullSecrets0Source `json:"source"`
 }
-type GetInternalMcpCatalogItem200LocalConfigImagePullSecrets00 struct {
-	Name   string                                                          `json:"name"`
-	Source GetInternalMcpCatalogItem200LocalConfigImagePullSecrets00Source `json:"source"`
+type GetInternalMcpCatalogItem200LocalConfigImagePullSecrets0Source string
+type GetInternalMcpCatalogItem200LocalConfigImagePullSecrets1 struct {
+	Email    *string                                                        `json:"email,omitempty"`
+	Password *string                                                        `json:"password,omitempty"`
+	Server   string                                                         `json:"server"`
+	Source   GetInternalMcpCatalogItem200LocalConfigImagePullSecrets1Source `json:"source"`
+	Username string                                                         `json:"username"`
 }
-type GetInternalMcpCatalogItem200LocalConfigImagePullSecrets00Source string
-type GetInternalMcpCatalogItem200LocalConfigImagePullSecrets01 struct {
-	Email    *string                                                         `json:"email,omitempty"`
-	Password *string                                                         `json:"password,omitempty"`
-	Server   string                                                          `json:"server"`
-	Source   GetInternalMcpCatalogItem200LocalConfigImagePullSecrets01Source `json:"source"`
-	Username string                                                          `json:"username"`
-}
-type GetInternalMcpCatalogItem200LocalConfigImagePullSecrets01Source string
+type GetInternalMcpCatalogItem200LocalConfigImagePullSecrets1Source string
 type GetInternalMcpCatalogItem_200_LocalConfig_ImagePullSecrets_Item struct {
 	union json.RawMessage
 }
@@ -17253,14 +16872,14 @@ type UpdateInternalMcpCatalogItemResponse struct {
 				Type   UpdateInternalMcpCatalogItem200LocalConfigEnvFromType `json:"type"`
 			} `json:"envFrom,omitempty"`
 			Environment *[]struct {
-				Default              *UpdateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
-				Description          *string                                                           `json:"description,omitempty"`
-				Key                  string                                                            `json:"key"`
-				Mounted              *bool                                                             `json:"mounted,omitempty"`
-				PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
-				Required             *bool                                                             `json:"required,omitempty"`
-				Type                 UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
-				Value                *string                                                           `json:"value,omitempty"`
+				Default              interface{}                                               `json:"default,omitempty"`
+				Description          *string                                                   `json:"description,omitempty"`
+				Key                  string                                                    `json:"key"`
+				Mounted              *bool                                                     `json:"mounted,omitempty"`
+				PromptOnInstallation bool                                                      `json:"promptOnInstallation"`
+				Required             *bool                                                     `json:"required,omitempty"`
+				Type                 UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
+				Value                *string                                                   `json:"value,omitempty"`
 			} `json:"environment,omitempty"`
 			HttpPath         *string                                                               `json:"httpPath,omitempty"`
 			HttpPort         *float32                                                              `json:"httpPort,omitempty"`
@@ -17353,29 +16972,20 @@ type UpdateInternalMcpCatalogItem200EnterpriseManagedConfigRequestedCredentialTy
 type UpdateInternalMcpCatalogItem200EnterpriseManagedConfigResourceType string
 type UpdateInternalMcpCatalogItem200EnterpriseManagedConfigTokenInjectionMode string
 type UpdateInternalMcpCatalogItem200LocalConfigEnvFromType string
-type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentDefault0 = string
-type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentDefault1 = float32
-type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentDefault2 = bool
-type UpdateInternalMcpCatalogItem_200_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 type UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType string
 type UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets0 struct {
-	union json.RawMessage
+	Name   string                                                            `json:"name"`
+	Source UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets0Source `json:"source"`
 }
-type UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets00 struct {
-	Name   string                                                             `json:"name"`
-	Source UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets00Source `json:"source"`
+type UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets0Source string
+type UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets1 struct {
+	Email    *string                                                           `json:"email,omitempty"`
+	Password *string                                                           `json:"password,omitempty"`
+	Server   string                                                            `json:"server"`
+	Source   UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets1Source `json:"source"`
+	Username string                                                            `json:"username"`
 }
-type UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets00Source string
-type UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets01 struct {
-	Email    *string                                                            `json:"email,omitempty"`
-	Password *string                                                            `json:"password,omitempty"`
-	Server   string                                                             `json:"server"`
-	Source   UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets01Source `json:"source"`
-	Username string                                                             `json:"username"`
-}
-type UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets01Source string
+type UpdateInternalMcpCatalogItem200LocalConfigImagePullSecrets1Source string
 type UpdateInternalMcpCatalogItem_200_LocalConfig_ImagePullSecrets_Item struct {
 	union json.RawMessage
 }
@@ -18074,31 +17684,31 @@ type GetModelsWithApiKeysResponse struct {
 			Provider string             `json:"provider"`
 			Scope    string             `json:"scope"`
 		} `json:"apiKeys"`
-		CompletionPricePerToken     *string                                       `json:"completionPricePerToken"`
-		ContextLength               *int                                          `json:"contextLength"`
-		CreatedAt                   time.Time                                     `json:"createdAt"`
-		CustomPricePerMillionInput  *string                                       `json:"customPricePerMillionInput"`
-		CustomPricePerMillionOutput *string                                       `json:"customPricePerMillionOutput"`
-		Description                 *string                                       `json:"description"`
-		DiscoveredViaLlmProxy       bool                                          `json:"discoveredViaLlmProxy"`
-		EmbeddingDimensions         *GetModelsWithApiKeys_200_EmbeddingDimensions `json:"embeddingDimensions"`
-		ExternalId                  string                                        `json:"externalId"`
-		Id                          openapi_types.UUID                            `json:"id"`
-		Ignored                     bool                                          `json:"ignored"`
-		InputModalities             *[]GetModelsWithApiKeys200InputModalities     `json:"inputModalities"`
-		IsBest                      bool                                          `json:"isBest"`
-		IsCustomPrice               bool                                          `json:"isCustomPrice"`
-		IsFastest                   bool                                          `json:"isFastest"`
-		LastSyncedAt                time.Time                                     `json:"lastSyncedAt"`
-		ModelId                     string                                        `json:"modelId"`
-		OutputModalities            *[]GetModelsWithApiKeys200OutputModalities    `json:"outputModalities"`
-		PricePerMillionInput        *string                                       `json:"pricePerMillionInput"`
-		PricePerMillionOutput       *string                                       `json:"pricePerMillionOutput"`
-		PriceSource                 GetModelsWithApiKeys200PriceSource            `json:"priceSource"`
-		PromptPricePerToken         *string                                       `json:"promptPricePerToken"`
-		Provider                    GetModelsWithApiKeys200Provider               `json:"provider"`
-		SupportsToolCalling         *bool                                         `json:"supportsToolCalling"`
-		UpdatedAt                   time.Time                                     `json:"updatedAt"`
+		CompletionPricePerToken     *string                                     `json:"completionPricePerToken"`
+		ContextLength               *int                                        `json:"contextLength"`
+		CreatedAt                   time.Time                                   `json:"createdAt"`
+		CustomPricePerMillionInput  *string                                     `json:"customPricePerMillionInput"`
+		CustomPricePerMillionOutput *string                                     `json:"customPricePerMillionOutput"`
+		Description                 *string                                     `json:"description"`
+		DiscoveredViaLlmProxy       bool                                        `json:"discoveredViaLlmProxy"`
+		EmbeddingDimensions         *GetModelsWithApiKeys200EmbeddingDimensions `json:"embeddingDimensions"`
+		ExternalId                  string                                      `json:"externalId"`
+		Id                          openapi_types.UUID                          `json:"id"`
+		Ignored                     bool                                        `json:"ignored"`
+		InputModalities             *[]GetModelsWithApiKeys200InputModalities   `json:"inputModalities"`
+		IsBest                      bool                                        `json:"isBest"`
+		IsCustomPrice               bool                                        `json:"isCustomPrice"`
+		IsFastest                   bool                                        `json:"isFastest"`
+		LastSyncedAt                time.Time                                   `json:"lastSyncedAt"`
+		ModelId                     string                                      `json:"modelId"`
+		OutputModalities            *[]GetModelsWithApiKeys200OutputModalities  `json:"outputModalities"`
+		PricePerMillionInput        *string                                     `json:"pricePerMillionInput"`
+		PricePerMillionOutput       *string                                     `json:"pricePerMillionOutput"`
+		PriceSource                 GetModelsWithApiKeys200PriceSource          `json:"priceSource"`
+		PromptPricePerToken         *string                                     `json:"promptPricePerToken"`
+		Provider                    GetModelsWithApiKeys200Provider             `json:"provider"`
+		SupportsToolCalling         *bool                                       `json:"supportsToolCalling"`
+		UpdatedAt                   time.Time                                   `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -18137,12 +17747,7 @@ type GetModelsWithApiKeysResponse struct {
 		} `json:"error"`
 	}
 }
-type GetModelsWithApiKeys200EmbeddingDimensions0 float32
-type GetModelsWithApiKeys200EmbeddingDimensions1 float32
-type GetModelsWithApiKeys200EmbeddingDimensions2 float32
-type GetModelsWithApiKeys_200_EmbeddingDimensions struct {
-	union json.RawMessage
-}
+type GetModelsWithApiKeys200EmbeddingDimensions int
 type GetModelsWithApiKeys200InputModalities string
 type GetModelsWithApiKeys200OutputModalities string
 type GetModelsWithApiKeys200PriceSource string
@@ -18184,13 +17789,13 @@ type GetLlmModelsResponse struct {
 			PriceSource           GetLlmModels200CapabilitiesPriceSource         `json:"priceSource"`
 			SupportsToolCalling   *bool                                          `json:"supportsToolCalling"`
 		} `json:"capabilities,omitempty"`
-		CreatedAt           *string                               `json:"createdAt,omitempty"`
-		DisplayName         string                                `json:"displayName"`
-		EmbeddingDimensions *GetLlmModels_200_EmbeddingDimensions `json:"embeddingDimensions"`
-		Id                  string                                `json:"id"`
-		IsBest              *bool                                 `json:"isBest,omitempty"`
-		IsFastest           *bool                                 `json:"isFastest,omitempty"`
-		Provider            GetLlmModels200Provider               `json:"provider"`
+		CreatedAt           *string                             `json:"createdAt,omitempty"`
+		DisplayName         string                              `json:"displayName"`
+		EmbeddingDimensions *GetLlmModels200EmbeddingDimensions `json:"embeddingDimensions"`
+		Id                  string                              `json:"id"`
+		IsBest              *bool                               `json:"isBest,omitempty"`
+		IsFastest           *bool                               `json:"isFastest,omitempty"`
+		Provider            GetLlmModels200Provider             `json:"provider"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -18232,12 +17837,7 @@ type GetLlmModelsResponse struct {
 type GetLlmModels200CapabilitiesInputModalities string
 type GetLlmModels200CapabilitiesOutputModalities string
 type GetLlmModels200CapabilitiesPriceSource string
-type GetLlmModels200EmbeddingDimensions0 float32
-type GetLlmModels200EmbeddingDimensions1 float32
-type GetLlmModels200EmbeddingDimensions2 float32
-type GetLlmModels_200_EmbeddingDimensions struct {
-	union json.RawMessage
-}
+type GetLlmModels200EmbeddingDimensions int
 type GetLlmModels200Provider string
 type GetLlmModels400ErrorType string
 type GetLlmModels401ErrorType string
@@ -18332,25 +17932,25 @@ type UpdateModelResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		CompletionPricePerToken     *string                              `json:"completionPricePerToken"`
-		ContextLength               *int                                 `json:"contextLength"`
-		CreatedAt                   time.Time                            `json:"createdAt"`
-		CustomPricePerMillionInput  *string                              `json:"customPricePerMillionInput"`
-		CustomPricePerMillionOutput *string                              `json:"customPricePerMillionOutput"`
-		Description                 *string                              `json:"description"`
-		DiscoveredViaLlmProxy       bool                                 `json:"discoveredViaLlmProxy"`
-		EmbeddingDimensions         *UpdateModel_200_EmbeddingDimensions `json:"embeddingDimensions"`
-		ExternalId                  string                               `json:"externalId"`
-		Id                          openapi_types.UUID                   `json:"id"`
-		Ignored                     bool                                 `json:"ignored"`
-		InputModalities             *[]UpdateModel200InputModalities     `json:"inputModalities"`
-		LastSyncedAt                time.Time                            `json:"lastSyncedAt"`
-		ModelId                     string                               `json:"modelId"`
-		OutputModalities            *[]UpdateModel200OutputModalities    `json:"outputModalities"`
-		PromptPricePerToken         *string                              `json:"promptPricePerToken"`
-		Provider                    UpdateModel200Provider               `json:"provider"`
-		SupportsToolCalling         *bool                                `json:"supportsToolCalling"`
-		UpdatedAt                   time.Time                            `json:"updatedAt"`
+		CompletionPricePerToken     *string                            `json:"completionPricePerToken"`
+		ContextLength               *int                               `json:"contextLength"`
+		CreatedAt                   time.Time                          `json:"createdAt"`
+		CustomPricePerMillionInput  *string                            `json:"customPricePerMillionInput"`
+		CustomPricePerMillionOutput *string                            `json:"customPricePerMillionOutput"`
+		Description                 *string                            `json:"description"`
+		DiscoveredViaLlmProxy       bool                               `json:"discoveredViaLlmProxy"`
+		EmbeddingDimensions         *UpdateModel200EmbeddingDimensions `json:"embeddingDimensions"`
+		ExternalId                  string                             `json:"externalId"`
+		Id                          openapi_types.UUID                 `json:"id"`
+		Ignored                     bool                               `json:"ignored"`
+		InputModalities             *[]UpdateModel200InputModalities   `json:"inputModalities"`
+		LastSyncedAt                time.Time                          `json:"lastSyncedAt"`
+		ModelId                     string                             `json:"modelId"`
+		OutputModalities            *[]UpdateModel200OutputModalities  `json:"outputModalities"`
+		PromptPricePerToken         *string                            `json:"promptPricePerToken"`
+		Provider                    UpdateModel200Provider             `json:"provider"`
+		SupportsToolCalling         *bool                              `json:"supportsToolCalling"`
+		UpdatedAt                   time.Time                          `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -18389,12 +17989,7 @@ type UpdateModelResponse struct {
 		} `json:"error"`
 	}
 }
-type UpdateModel200EmbeddingDimensions0 float32
-type UpdateModel200EmbeddingDimensions1 float32
-type UpdateModel200EmbeddingDimensions2 float32
-type UpdateModel_200_EmbeddingDimensions struct {
-	union json.RawMessage
-}
+type UpdateModel200EmbeddingDimensions int
 type UpdateModel200InputModalities string
 type UpdateModel200OutputModalities string
 type UpdateModel200Provider string
@@ -19778,14 +19373,14 @@ type GetMcpServerInstallationRequests200CustomServerConfig1 struct {
 			Type   GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvFromType `json:"type"`
 		} `json:"envFrom,omitempty"`
 		Environment *[]struct {
-			Default              *GetMcpServerInstallationRequests_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
-			Description          *string                                                                                    `json:"description,omitempty"`
-			Key                  string                                                                                     `json:"key"`
-			Mounted              *bool                                                                                      `json:"mounted,omitempty"`
-			PromptOnInstallation bool                                                                                       `json:"promptOnInstallation"`
-			Required             *bool                                                                                      `json:"required,omitempty"`
-			Type                 GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
-			Value                *string                                                                                    `json:"value,omitempty"`
+			Default              interface{}                                                                      `json:"default,omitempty"`
+			Description          *string                                                                          `json:"description,omitempty"`
+			Key                  string                                                                           `json:"key"`
+			Mounted              *bool                                                                            `json:"mounted,omitempty"`
+			PromptOnInstallation bool                                                                             `json:"promptOnInstallation"`
+			Required             *bool                                                                            `json:"required,omitempty"`
+			Type                 GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
+			Value                *string                                                                          `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath         *string                                                                                        `json:"httpPath,omitempty"`
 		HttpPort         *float32                                                                                       `json:"httpPort,omitempty"`
@@ -19800,12 +19395,6 @@ type GetMcpServerInstallationRequests200CustomServerConfig1 struct {
 	Version    *string                                                          `json:"version,omitempty"`
 }
 type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvFromType string
-type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
-type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
-type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
-type GetMcpServerInstallationRequests_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigEnvironmentType string
 type GetMcpServerInstallationRequests200CustomServerConfig1LocalConfigImagePullSecrets0 struct {
 	Name   string                                                                                   `json:"name"`
@@ -19962,14 +19551,14 @@ type CreateMcpServerInstallationRequest200CustomServerConfig1 struct {
 			Type   CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvFromType `json:"type"`
 		} `json:"envFrom,omitempty"`
 		Environment *[]struct {
-			Default              *CreateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
-			Description          *string                                                                                      `json:"description,omitempty"`
-			Key                  string                                                                                       `json:"key"`
-			Mounted              *bool                                                                                        `json:"mounted,omitempty"`
-			PromptOnInstallation bool                                                                                         `json:"promptOnInstallation"`
-			Required             *bool                                                                                        `json:"required,omitempty"`
-			Type                 CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
-			Value                *string                                                                                      `json:"value,omitempty"`
+			Default              interface{}                                                                        `json:"default,omitempty"`
+			Description          *string                                                                            `json:"description,omitempty"`
+			Key                  string                                                                             `json:"key"`
+			Mounted              *bool                                                                              `json:"mounted,omitempty"`
+			PromptOnInstallation bool                                                                               `json:"promptOnInstallation"`
+			Required             *bool                                                                              `json:"required,omitempty"`
+			Type                 CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
+			Value                *string                                                                            `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath         *string                                                                                          `json:"httpPath,omitempty"`
 		HttpPort         *float32                                                                                         `json:"httpPort,omitempty"`
@@ -19984,12 +19573,6 @@ type CreateMcpServerInstallationRequest200CustomServerConfig1 struct {
 	Version    *string                                                            `json:"version,omitempty"`
 }
 type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvFromType string
-type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
-type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
-type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
-type CreateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type CreateMcpServerInstallationRequest200CustomServerConfig1LocalConfigImagePullSecrets0 struct {
 	Name   string                                                                                     `json:"name"`
@@ -20212,14 +19795,14 @@ type GetMcpServerInstallationRequest200CustomServerConfig1 struct {
 			Type   GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvFromType `json:"type"`
 		} `json:"envFrom,omitempty"`
 		Environment *[]struct {
-			Default              *GetMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
-			Description          *string                                                                                   `json:"description,omitempty"`
-			Key                  string                                                                                    `json:"key"`
-			Mounted              *bool                                                                                     `json:"mounted,omitempty"`
-			PromptOnInstallation bool                                                                                      `json:"promptOnInstallation"`
-			Required             *bool                                                                                     `json:"required,omitempty"`
-			Type                 GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
-			Value                *string                                                                                   `json:"value,omitempty"`
+			Default              interface{}                                                                     `json:"default,omitempty"`
+			Description          *string                                                                         `json:"description,omitempty"`
+			Key                  string                                                                          `json:"key"`
+			Mounted              *bool                                                                           `json:"mounted,omitempty"`
+			PromptOnInstallation bool                                                                            `json:"promptOnInstallation"`
+			Required             *bool                                                                           `json:"required,omitempty"`
+			Type                 GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
+			Value                *string                                                                         `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath         *string                                                                                       `json:"httpPath,omitempty"`
 		HttpPort         *float32                                                                                      `json:"httpPort,omitempty"`
@@ -20234,12 +19817,6 @@ type GetMcpServerInstallationRequest200CustomServerConfig1 struct {
 	Version    *string                                                         `json:"version,omitempty"`
 }
 type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvFromType string
-type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
-type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
-type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
-type GetMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type GetMcpServerInstallationRequest200CustomServerConfig1LocalConfigImagePullSecrets0 struct {
 	Name   string                                                                                  `json:"name"`
@@ -20396,14 +19973,14 @@ type UpdateMcpServerInstallationRequest200CustomServerConfig1 struct {
 			Type   UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvFromType `json:"type"`
 		} `json:"envFrom,omitempty"`
 		Environment *[]struct {
-			Default              *UpdateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
-			Description          *string                                                                                      `json:"description,omitempty"`
-			Key                  string                                                                                       `json:"key"`
-			Mounted              *bool                                                                                        `json:"mounted,omitempty"`
-			PromptOnInstallation bool                                                                                         `json:"promptOnInstallation"`
-			Required             *bool                                                                                        `json:"required,omitempty"`
-			Type                 UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
-			Value                *string                                                                                      `json:"value,omitempty"`
+			Default              interface{}                                                                        `json:"default,omitempty"`
+			Description          *string                                                                            `json:"description,omitempty"`
+			Key                  string                                                                             `json:"key"`
+			Mounted              *bool                                                                              `json:"mounted,omitempty"`
+			PromptOnInstallation bool                                                                               `json:"promptOnInstallation"`
+			Required             *bool                                                                              `json:"required,omitempty"`
+			Type                 UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
+			Value                *string                                                                            `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath         *string                                                                                          `json:"httpPath,omitempty"`
 		HttpPort         *float32                                                                                         `json:"httpPort,omitempty"`
@@ -20418,12 +19995,6 @@ type UpdateMcpServerInstallationRequest200CustomServerConfig1 struct {
 	Version    *string                                                            `json:"version,omitempty"`
 }
 type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvFromType string
-type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
-type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
-type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
-type UpdateMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type UpdateMcpServerInstallationRequest200CustomServerConfig1LocalConfigImagePullSecrets0 struct {
 	Name   string                                                                                     `json:"name"`
@@ -20580,14 +20151,14 @@ type ApproveMcpServerInstallationRequest200CustomServerConfig1 struct {
 			Type   ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvFromType `json:"type"`
 		} `json:"envFrom,omitempty"`
 		Environment *[]struct {
-			Default              *ApproveMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
-			Description          *string                                                                                       `json:"description,omitempty"`
-			Key                  string                                                                                        `json:"key"`
-			Mounted              *bool                                                                                         `json:"mounted,omitempty"`
-			PromptOnInstallation bool                                                                                          `json:"promptOnInstallation"`
-			Required             *bool                                                                                         `json:"required,omitempty"`
-			Type                 ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
-			Value                *string                                                                                       `json:"value,omitempty"`
+			Default              interface{}                                                                         `json:"default,omitempty"`
+			Description          *string                                                                             `json:"description,omitempty"`
+			Key                  string                                                                              `json:"key"`
+			Mounted              *bool                                                                               `json:"mounted,omitempty"`
+			PromptOnInstallation bool                                                                                `json:"promptOnInstallation"`
+			Required             *bool                                                                               `json:"required,omitempty"`
+			Type                 ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
+			Value                *string                                                                             `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath         *string                                                                                           `json:"httpPath,omitempty"`
 		HttpPort         *float32                                                                                          `json:"httpPort,omitempty"`
@@ -20602,12 +20173,6 @@ type ApproveMcpServerInstallationRequest200CustomServerConfig1 struct {
 	Version    *string                                                             `json:"version,omitempty"`
 }
 type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvFromType string
-type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
-type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
-type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
-type ApproveMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type ApproveMcpServerInstallationRequest200CustomServerConfig1LocalConfigImagePullSecrets0 struct {
 	Name   string                                                                                      `json:"name"`
@@ -20764,14 +20329,14 @@ type DeclineMcpServerInstallationRequest200CustomServerConfig1 struct {
 			Type   DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvFromType `json:"type"`
 		} `json:"envFrom,omitempty"`
 		Environment *[]struct {
-			Default              *DeclineMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
-			Description          *string                                                                                       `json:"description,omitempty"`
-			Key                  string                                                                                        `json:"key"`
-			Mounted              *bool                                                                                         `json:"mounted,omitempty"`
-			PromptOnInstallation bool                                                                                          `json:"promptOnInstallation"`
-			Required             *bool                                                                                         `json:"required,omitempty"`
-			Type                 DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
-			Value                *string                                                                                       `json:"value,omitempty"`
+			Default              interface{}                                                                         `json:"default,omitempty"`
+			Description          *string                                                                             `json:"description,omitempty"`
+			Key                  string                                                                              `json:"key"`
+			Mounted              *bool                                                                               `json:"mounted,omitempty"`
+			PromptOnInstallation bool                                                                                `json:"promptOnInstallation"`
+			Required             *bool                                                                               `json:"required,omitempty"`
+			Type                 DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
+			Value                *string                                                                             `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath         *string                                                                                           `json:"httpPath,omitempty"`
 		HttpPort         *float32                                                                                          `json:"httpPort,omitempty"`
@@ -20786,12 +20351,6 @@ type DeclineMcpServerInstallationRequest200CustomServerConfig1 struct {
 	Version    *string                                                             `json:"version,omitempty"`
 }
 type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvFromType string
-type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
-type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
-type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
-type DeclineMcpServerInstallationRequest_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigEnvironmentType string
 type DeclineMcpServerInstallationRequest200CustomServerConfig1LocalConfigImagePullSecrets0 struct {
 	Name   string                                                                                      `json:"name"`
@@ -20948,14 +20507,14 @@ type AddMcpServerInstallationRequestNote200CustomServerConfig1 struct {
 			Type   AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvFromType `json:"type"`
 		} `json:"envFrom,omitempty"`
 		Environment *[]struct {
-			Default              *AddMcpServerInstallationRequestNote_200_CustomServerConfig_1_LocalConfig_Environment_Default `json:"default,omitempty"`
-			Description          *string                                                                                       `json:"description,omitempty"`
-			Key                  string                                                                                        `json:"key"`
-			Mounted              *bool                                                                                         `json:"mounted,omitempty"`
-			PromptOnInstallation bool                                                                                          `json:"promptOnInstallation"`
-			Required             *bool                                                                                         `json:"required,omitempty"`
-			Type                 AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentType           `json:"type"`
-			Value                *string                                                                                       `json:"value,omitempty"`
+			Default              interface{}                                                                         `json:"default,omitempty"`
+			Description          *string                                                                             `json:"description,omitempty"`
+			Key                  string                                                                              `json:"key"`
+			Mounted              *bool                                                                               `json:"mounted,omitempty"`
+			PromptOnInstallation bool                                                                                `json:"promptOnInstallation"`
+			Required             *bool                                                                               `json:"required,omitempty"`
+			Type                 AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentType `json:"type"`
+			Value                *string                                                                             `json:"value,omitempty"`
 		} `json:"environment,omitempty"`
 		HttpPath         *string                                                                                           `json:"httpPath,omitempty"`
 		HttpPort         *float32                                                                                          `json:"httpPort,omitempty"`
@@ -20970,12 +20529,6 @@ type AddMcpServerInstallationRequestNote200CustomServerConfig1 struct {
 	Version    *string                                                             `json:"version,omitempty"`
 }
 type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvFromType string
-type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentDefault0 = string
-type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentDefault1 = float32
-type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentDefault2 = bool
-type AddMcpServerInstallationRequestNote_200_CustomServerConfig_1_LocalConfig_Environment_Default struct {
-	union json.RawMessage
-}
 type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigEnvironmentType string
 type AddMcpServerInstallationRequestNote200CustomServerConfig1LocalConfigImagePullSecrets0 struct {
 	Name   string                                                                                      `json:"name"`
@@ -23693,10 +23246,10 @@ type CreateScheduleTriggerRunConversationResponse struct {
 			Id         openapi_types.UUID                                     `json:"id"`
 			Visibility CreateScheduleTriggerRunConversation200ShareVisibility `json:"visibility"`
 		} `json:"share"`
-		Title     *string                                            `json:"title"`
-		TodoList  *CreateScheduleTriggerRunConversation_200_TodoList `json:"todoList"`
-		UpdatedAt time.Time                                          `json:"updatedAt"`
-		UserId    string                                             `json:"userId"`
+		Title     *string     `json:"title"`
+		TodoList  interface{} `json:"todoList"`
+		UpdatedAt time.Time   `json:"updatedAt"`
+		UserId    string      `json:"userId"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -23738,18 +23291,6 @@ type CreateScheduleTriggerRunConversationResponse struct {
 type CreateScheduleTriggerRunConversation200AgentAgentType string
 type CreateScheduleTriggerRunConversation200SelectedProvider string
 type CreateScheduleTriggerRunConversation200ShareVisibility string
-type CreateScheduleTriggerRunConversation200TodoList0 struct {
-	union json.RawMessage
-}
-type CreateScheduleTriggerRunConversation200TodoList00 = string
-type CreateScheduleTriggerRunConversation200TodoList01 = float32
-type CreateScheduleTriggerRunConversation200TodoList02 = bool
-type CreateScheduleTriggerRunConversation200TodoList03 string
-type CreateScheduleTriggerRunConversation200TodoList1 map[string]interface{}
-type CreateScheduleTriggerRunConversation200TodoList2 = []interface{}
-type CreateScheduleTriggerRunConversation_200_TodoList struct {
-	union json.RawMessage
-}
 type CreateScheduleTriggerRunConversation400ErrorType string
 type CreateScheduleTriggerRunConversation401ErrorType string
 type CreateScheduleTriggerRunConversation403ErrorType string
@@ -24890,19 +24431,30 @@ type GetToolsResponse struct {
 			Id   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"catalog"`
-		CatalogId                        *openapi_types.UUID      `json:"catalogId"`
-		CreatedAt                        time.Time                `json:"createdAt"`
-		DelegateToAgentId                *openapi_types.UUID      `json:"delegateToAgentId"`
-		Description                      *string                  `json:"description"`
-		Id                               openapi_types.UUID       `json:"id"`
-		Meta                             *GetTools_200_Meta       `json:"meta"`
-		Name                             string                   `json:"name"`
-		Parameters                       *GetTools_200_Parameters `json:"parameters,omitempty"`
-		PoliciesAutoConfiguredAt         *time.Time               `json:"policiesAutoConfiguredAt"`
-		PoliciesAutoConfiguredModel      *string                  `json:"policiesAutoConfiguredModel"`
-		PoliciesAutoConfiguredReasoning  *string                  `json:"policiesAutoConfiguredReasoning"`
-		PoliciesAutoConfiguringStartedAt *time.Time               `json:"policiesAutoConfiguringStartedAt"`
-		UpdatedAt                        time.Time                `json:"updatedAt"`
+		CatalogId         *openapi_types.UUID `json:"catalogId"`
+		CreatedAt         time.Time           `json:"createdAt"`
+		DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+		Description       *string             `json:"description"`
+		Id                openapi_types.UUID  `json:"id"`
+		Meta              interface{}         `json:"meta"`
+		Name              string              `json:"name"`
+
+		// Parameters
+		//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+		//
+		//     The parameters the functions accepts, described as a JSON Schema object. See the
+		//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+		//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+		//     documentation about the format.
+		//
+		//     Omitting parameters defines a function with an empty parameter list.
+		//
+		Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+		PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+		PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+		PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+		PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+		UpdatedAt                        time.Time               `json:"updatedAt"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -24940,22 +24492,6 @@ type GetToolsResponse struct {
 			Type    GetTools500ErrorType `json:"type"`
 		} `json:"error"`
 	}
-}
-type GetTools200Meta0 struct {
-	union json.RawMessage
-}
-type GetTools200Meta00 = string
-type GetTools200Meta01 = float32
-type GetTools200Meta02 = bool
-type GetTools200Meta03 string
-type GetTools200Meta1 map[string]interface{}
-type GetTools200Meta2 = []interface{}
-type GetTools_200_Meta struct {
-	union json.RawMessage
-}
-type GetTools200Parameters0 map[string]interface{}
-type GetTools_200_Parameters struct {
-	union json.RawMessage
 }
 type GetTools400ErrorType string
 type GetTools401ErrorType string
@@ -24997,16 +24533,27 @@ type GetToolsWithAssignmentsResponse struct {
 				ExecutionOwnerEmail      *string                                                           `json:"executionOwnerEmail"`
 				McpServerId              *string                                                           `json:"mcpServerId"`
 			} `json:"assignments"`
-			CatalogId                       *string                                      `json:"catalogId"`
-			CreatedAt                       time.Time                                    `json:"createdAt"`
-			Description                     *string                                      `json:"description"`
-			Id                              string                                       `json:"id"`
-			Name                            string                                       `json:"name"`
-			Parameters                      *GetToolsWithAssignments_200_Data_Parameters `json:"parameters,omitempty"`
-			PoliciesAutoConfiguredAt        *time.Time                                   `json:"policiesAutoConfiguredAt"`
-			PoliciesAutoConfiguredModel     *string                                      `json:"policiesAutoConfiguredModel"`
-			PoliciesAutoConfiguredReasoning *string                                      `json:"policiesAutoConfiguredReasoning"`
-			UpdatedAt                       time.Time                                    `json:"updatedAt"`
+			CatalogId   *string   `json:"catalogId"`
+			CreatedAt   time.Time `json:"createdAt"`
+			Description *string   `json:"description"`
+			Id          string    `json:"id"`
+			Name        string    `json:"name"`
+
+			// Parameters
+			//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+			//
+			//     The parameters the functions accepts, described as a JSON Schema object. See the
+			//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+			//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+			//     documentation about the format.
+			//
+			//     Omitting parameters defines a function with an empty parameter list.
+			//
+			Parameters                      *map[string]interface{} `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt        *time.Time              `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredModel     *string                 `json:"policiesAutoConfiguredModel"`
+			PoliciesAutoConfiguredReasoning *string                 `json:"policiesAutoConfiguredReasoning"`
+			UpdatedAt                       time.Time               `json:"updatedAt"`
 		} `json:"data"`
 		Pagination struct {
 			CurrentPage int  `json:"currentPage"`
@@ -25055,10 +24602,6 @@ type GetToolsWithAssignmentsResponse struct {
 	}
 }
 type GetToolsWithAssignments200DataAssignmentsCredentialResolutionMode string
-type GetToolsWithAssignments200DataParameters0 map[string]interface{}
-type GetToolsWithAssignments_200_Data_Parameters struct {
-	union json.RawMessage
-}
 type GetToolsWithAssignments400ErrorType string
 type GetToolsWithAssignments401ErrorType string
 type GetToolsWithAssignments403ErrorType string
@@ -27429,13 +26972,24 @@ func ParseGetAllAgentToolsResponse(rsp *http.Response) (*GetAllAgentToolsRespons
 				Id                       openapi_types.UUID                              `json:"id"`
 				McpServerId              *openapi_types.UUID                             `json:"mcpServerId"`
 				Tool                     struct {
-					CatalogId   *string                                    `json:"catalogId"`
-					CreatedAt   time.Time                                  `json:"createdAt"`
-					Description *string                                    `json:"description"`
-					Id          string                                     `json:"id"`
-					Name        string                                     `json:"name"`
-					Parameters  *GetAllAgentTools_200_Data_Tool_Parameters `json:"parameters,omitempty"`
-					UpdatedAt   time.Time                                  `json:"updatedAt"`
+					CatalogId   *string   `json:"catalogId"`
+					CreatedAt   time.Time `json:"createdAt"`
+					Description *string   `json:"description"`
+					Id          string    `json:"id"`
+					Name        string    `json:"name"`
+
+					// Parameters
+					//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+					//
+					//     The parameters the functions accepts, described as a JSON Schema object. See the
+					//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+					//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+					//     documentation about the format.
+					//
+					//     Omitting parameters defines a function with an empty parameter list.
+					//
+					Parameters *map[string]interface{} `json:"parameters,omitempty"`
+					UpdatedAt  time.Time               `json:"updatedAt"`
 				} `json:"tool"`
 				UpdatedAt time.Time `json:"updatedAt"`
 			} `json:"data"`
@@ -27803,20 +27357,31 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 					Name string `json:"name"`
 				} `json:"teams"`
 				Tools []struct {
-					AgentId                          *openapi_types.UUID                  `json:"agentId"`
-					CatalogId                        *openapi_types.UUID                  `json:"catalogId"`
-					CreatedAt                        time.Time                            `json:"createdAt"`
-					DelegateToAgentId                *openapi_types.UUID                  `json:"delegateToAgentId"`
-					Description                      *string                              `json:"description"`
-					Id                               openapi_types.UUID                   `json:"id"`
-					Meta                             *GetAgents_200_Data_Tools_Meta       `json:"meta"`
-					Name                             string                               `json:"name"`
-					Parameters                       *GetAgents_200_Data_Tools_Parameters `json:"parameters,omitempty"`
-					PoliciesAutoConfiguredAt         *time.Time                           `json:"policiesAutoConfiguredAt"`
-					PoliciesAutoConfiguredModel      *string                              `json:"policiesAutoConfiguredModel"`
-					PoliciesAutoConfiguredReasoning  *string                              `json:"policiesAutoConfiguredReasoning"`
-					PoliciesAutoConfiguringStartedAt *time.Time                           `json:"policiesAutoConfiguringStartedAt"`
-					UpdatedAt                        time.Time                            `json:"updatedAt"`
+					AgentId           *openapi_types.UUID `json:"agentId"`
+					CatalogId         *openapi_types.UUID `json:"catalogId"`
+					CreatedAt         time.Time           `json:"createdAt"`
+					DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+					Description       *string             `json:"description"`
+					Id                openapi_types.UUID  `json:"id"`
+					Meta              interface{}         `json:"meta"`
+					Name              string              `json:"name"`
+
+					// Parameters
+					//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+					//
+					//     The parameters the functions accepts, described as a JSON Schema object. See the
+					//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+					//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+					//     documentation about the format.
+					//
+					//     Omitting parameters defines a function with an empty parameter list.
+					//
+					Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+					PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+					PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+					PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+					PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+					UpdatedAt                        time.Time               `json:"updatedAt"`
 				} `json:"tools"`
 				UpdatedAt time.Time `json:"updatedAt"`
 			} `json:"data"`
@@ -27967,20 +27532,31 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 				Name string `json:"name"`
 			} `json:"teams"`
 			Tools []struct {
-				AgentId                          *openapi_types.UUID               `json:"agentId"`
-				CatalogId                        *openapi_types.UUID               `json:"catalogId"`
-				CreatedAt                        time.Time                         `json:"createdAt"`
-				DelegateToAgentId                *openapi_types.UUID               `json:"delegateToAgentId"`
-				Description                      *string                           `json:"description"`
-				Id                               openapi_types.UUID                `json:"id"`
-				Meta                             *CreateAgent_200_Tools_Meta       `json:"meta"`
-				Name                             string                            `json:"name"`
-				Parameters                       *CreateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-				PoliciesAutoConfiguredAt         *time.Time                        `json:"policiesAutoConfiguredAt"`
-				PoliciesAutoConfiguredModel      *string                           `json:"policiesAutoConfiguredModel"`
-				PoliciesAutoConfiguredReasoning  *string                           `json:"policiesAutoConfiguredReasoning"`
-				PoliciesAutoConfiguringStartedAt *time.Time                        `json:"policiesAutoConfiguringStartedAt"`
-				UpdatedAt                        time.Time                         `json:"updatedAt"`
+				AgentId           *openapi_types.UUID `json:"agentId"`
+				CatalogId         *openapi_types.UUID `json:"catalogId"`
+				CreatedAt         time.Time           `json:"createdAt"`
+				DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+				Description       *string             `json:"description"`
+				Id                openapi_types.UUID  `json:"id"`
+				Meta              interface{}         `json:"meta"`
+				Name              string              `json:"name"`
+
+				// Parameters
+				//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+				//
+				//     The parameters the functions accepts, described as a JSON Schema object. See the
+				//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+				//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+				//     documentation about the format.
+				//
+				//     Omitting parameters defines a function with an empty parameter list.
+				//
+				Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+				PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+				PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+				UpdatedAt                        time.Time               `json:"updatedAt"`
 			} `json:"tools"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		}
@@ -28122,20 +27698,31 @@ func ParseGetAllAgentsResponse(rsp *http.Response) (*GetAllAgentsResponse, error
 				Name string `json:"name"`
 			} `json:"teams"`
 			Tools []struct {
-				AgentId                          *openapi_types.UUID                `json:"agentId"`
-				CatalogId                        *openapi_types.UUID                `json:"catalogId"`
-				CreatedAt                        time.Time                          `json:"createdAt"`
-				DelegateToAgentId                *openapi_types.UUID                `json:"delegateToAgentId"`
-				Description                      *string                            `json:"description"`
-				Id                               openapi_types.UUID                 `json:"id"`
-				Meta                             *GetAllAgents_200_Tools_Meta       `json:"meta"`
-				Name                             string                             `json:"name"`
-				Parameters                       *GetAllAgents_200_Tools_Parameters `json:"parameters,omitempty"`
-				PoliciesAutoConfiguredAt         *time.Time                         `json:"policiesAutoConfiguredAt"`
-				PoliciesAutoConfiguredModel      *string                            `json:"policiesAutoConfiguredModel"`
-				PoliciesAutoConfiguredReasoning  *string                            `json:"policiesAutoConfiguredReasoning"`
-				PoliciesAutoConfiguringStartedAt *time.Time                         `json:"policiesAutoConfiguringStartedAt"`
-				UpdatedAt                        time.Time                          `json:"updatedAt"`
+				AgentId           *openapi_types.UUID `json:"agentId"`
+				CatalogId         *openapi_types.UUID `json:"catalogId"`
+				CreatedAt         time.Time           `json:"createdAt"`
+				DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+				Description       *string             `json:"description"`
+				Id                openapi_types.UUID  `json:"id"`
+				Meta              interface{}         `json:"meta"`
+				Name              string              `json:"name"`
+
+				// Parameters
+				//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+				//
+				//     The parameters the functions accepts, described as a JSON Schema object. See the
+				//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+				//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+				//     documentation about the format.
+				//
+				//     Omitting parameters defines a function with an empty parameter list.
+				//
+				Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+				PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+				PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+				UpdatedAt                        time.Time               `json:"updatedAt"`
 			} `json:"tools"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		}
@@ -28953,22 +28540,33 @@ func ParseGetAgentToolsResponse(rsp *http.Response) (*GetAgentToolsResponse, err
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
-			AgentId                          *openapi_types.UUID                      `json:"agentId"`
-			CatalogId                        *openapi_types.UUID                      `json:"catalogId"`
-			CreatedAt                        time.Time                                `json:"createdAt"`
-			CredentialResolutionMode         GetAgentTools200CredentialResolutionMode `json:"credentialResolutionMode"`
-			DelegateToAgentId                *openapi_types.UUID                      `json:"delegateToAgentId"`
-			Description                      *string                                  `json:"description"`
-			Id                               openapi_types.UUID                       `json:"id"`
-			McpServerId                      *openapi_types.UUID                      `json:"mcpServerId"`
-			Meta                             *GetAgentTools_200_Meta                  `json:"meta"`
-			Name                             string                                   `json:"name"`
-			Parameters                       *GetAgentTools_200_Parameters            `json:"parameters,omitempty"`
-			PoliciesAutoConfiguredAt         *time.Time                               `json:"policiesAutoConfiguredAt"`
-			PoliciesAutoConfiguredModel      *string                                  `json:"policiesAutoConfiguredModel"`
-			PoliciesAutoConfiguredReasoning  *string                                  `json:"policiesAutoConfiguredReasoning"`
-			PoliciesAutoConfiguringStartedAt *time.Time                               `json:"policiesAutoConfiguringStartedAt"`
-			UpdatedAt                        time.Time                                `json:"updatedAt"`
+			AgentId                  *openapi_types.UUID                      `json:"agentId"`
+			CatalogId                *openapi_types.UUID                      `json:"catalogId"`
+			CreatedAt                time.Time                                `json:"createdAt"`
+			CredentialResolutionMode GetAgentTools200CredentialResolutionMode `json:"credentialResolutionMode"`
+			DelegateToAgentId        *openapi_types.UUID                      `json:"delegateToAgentId"`
+			Description              *string                                  `json:"description"`
+			Id                       openapi_types.UUID                       `json:"id"`
+			McpServerId              *openapi_types.UUID                      `json:"mcpServerId"`
+			Meta                     interface{}                              `json:"meta"`
+			Name                     string                                   `json:"name"`
+
+			// Parameters
+			//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+			//
+			//     The parameters the functions accepts, described as a JSON Schema object. See the
+			//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+			//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+			//     documentation about the format.
+			//
+			//     Omitting parameters defines a function with an empty parameter list.
+			//
+			Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+			PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+			UpdatedAt                        time.Time               `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -29408,20 +29006,31 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 				Name string `json:"name"`
 			} `json:"teams"`
 			Tools []struct {
-				AgentId                          *openapi_types.UUID            `json:"agentId"`
-				CatalogId                        *openapi_types.UUID            `json:"catalogId"`
-				CreatedAt                        time.Time                      `json:"createdAt"`
-				DelegateToAgentId                *openapi_types.UUID            `json:"delegateToAgentId"`
-				Description                      *string                        `json:"description"`
-				Id                               openapi_types.UUID             `json:"id"`
-				Meta                             *GetAgent_200_Tools_Meta       `json:"meta"`
-				Name                             string                         `json:"name"`
-				Parameters                       *GetAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-				PoliciesAutoConfiguredAt         *time.Time                     `json:"policiesAutoConfiguredAt"`
-				PoliciesAutoConfiguredModel      *string                        `json:"policiesAutoConfiguredModel"`
-				PoliciesAutoConfiguredReasoning  *string                        `json:"policiesAutoConfiguredReasoning"`
-				PoliciesAutoConfiguringStartedAt *time.Time                     `json:"policiesAutoConfiguringStartedAt"`
-				UpdatedAt                        time.Time                      `json:"updatedAt"`
+				AgentId           *openapi_types.UUID `json:"agentId"`
+				CatalogId         *openapi_types.UUID `json:"catalogId"`
+				CreatedAt         time.Time           `json:"createdAt"`
+				DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+				Description       *string             `json:"description"`
+				Id                openapi_types.UUID  `json:"id"`
+				Meta              interface{}         `json:"meta"`
+				Name              string              `json:"name"`
+
+				// Parameters
+				//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+				//
+				//     The parameters the functions accepts, described as a JSON Schema object. See the
+				//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+				//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+				//     documentation about the format.
+				//
+				//     Omitting parameters defines a function with an empty parameter list.
+				//
+				Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+				PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+				PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+				UpdatedAt                        time.Time               `json:"updatedAt"`
 			} `json:"tools"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		}
@@ -29563,20 +29172,31 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 				Name string `json:"name"`
 			} `json:"teams"`
 			Tools []struct {
-				AgentId                          *openapi_types.UUID               `json:"agentId"`
-				CatalogId                        *openapi_types.UUID               `json:"catalogId"`
-				CreatedAt                        time.Time                         `json:"createdAt"`
-				DelegateToAgentId                *openapi_types.UUID               `json:"delegateToAgentId"`
-				Description                      *string                           `json:"description"`
-				Id                               openapi_types.UUID                `json:"id"`
-				Meta                             *UpdateAgent_200_Tools_Meta       `json:"meta"`
-				Name                             string                            `json:"name"`
-				Parameters                       *UpdateAgent_200_Tools_Parameters `json:"parameters,omitempty"`
-				PoliciesAutoConfiguredAt         *time.Time                        `json:"policiesAutoConfiguredAt"`
-				PoliciesAutoConfiguredModel      *string                           `json:"policiesAutoConfiguredModel"`
-				PoliciesAutoConfiguredReasoning  *string                           `json:"policiesAutoConfiguredReasoning"`
-				PoliciesAutoConfiguringStartedAt *time.Time                        `json:"policiesAutoConfiguringStartedAt"`
-				UpdatedAt                        time.Time                         `json:"updatedAt"`
+				AgentId           *openapi_types.UUID `json:"agentId"`
+				CatalogId         *openapi_types.UUID `json:"catalogId"`
+				CreatedAt         time.Time           `json:"createdAt"`
+				DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+				Description       *string             `json:"description"`
+				Id                openapi_types.UUID  `json:"id"`
+				Meta              interface{}         `json:"meta"`
+				Name              string              `json:"name"`
+
+				// Parameters
+				//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+				//
+				//     The parameters the functions accepts, described as a JSON Schema object. See the
+				//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+				//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+				//     documentation about the format.
+				//
+				//     Omitting parameters defines a function with an empty parameter list.
+				//
+				Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+				PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+				PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+				UpdatedAt                        time.Time               `json:"updatedAt"`
 			} `json:"tools"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		}
@@ -31953,14 +31573,14 @@ func ParseGetInternalMcpCatalogResponse(rsp *http.Response) (*GetInternalMcpCata
 					Type   GetInternalMcpCatalog200LocalConfigEnvFromType `json:"type"`
 				} `json:"envFrom,omitempty"`
 				Environment *[]struct {
-					Default              *GetInternalMcpCatalog_200_LocalConfig_Environment_Default `json:"default,omitempty"`
-					Description          *string                                                    `json:"description,omitempty"`
-					Key                  string                                                     `json:"key"`
-					Mounted              *bool                                                      `json:"mounted,omitempty"`
-					PromptOnInstallation bool                                                       `json:"promptOnInstallation"`
-					Required             *bool                                                      `json:"required,omitempty"`
-					Type                 GetInternalMcpCatalog200LocalConfigEnvironmentType         `json:"type"`
-					Value                *string                                                    `json:"value,omitempty"`
+					Default              interface{}                                        `json:"default,omitempty"`
+					Description          *string                                            `json:"description,omitempty"`
+					Key                  string                                             `json:"key"`
+					Mounted              *bool                                              `json:"mounted,omitempty"`
+					PromptOnInstallation bool                                               `json:"promptOnInstallation"`
+					Required             *bool                                              `json:"required,omitempty"`
+					Type                 GetInternalMcpCatalog200LocalConfigEnvironmentType `json:"type"`
+					Value                *string                                            `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
 				HttpPath         *string                                                        `json:"httpPath,omitempty"`
 				HttpPort         *float32                                                       `json:"httpPort,omitempty"`
@@ -32159,14 +31779,14 @@ func ParseCreateInternalMcpCatalogItemResponse(rsp *http.Response) (*CreateInter
 					Type   CreateInternalMcpCatalogItem200LocalConfigEnvFromType `json:"type"`
 				} `json:"envFrom,omitempty"`
 				Environment *[]struct {
-					Default              *CreateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
-					Description          *string                                                           `json:"description,omitempty"`
-					Key                  string                                                            `json:"key"`
-					Mounted              *bool                                                             `json:"mounted,omitempty"`
-					PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
-					Required             *bool                                                             `json:"required,omitempty"`
-					Type                 CreateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
-					Value                *string                                                           `json:"value,omitempty"`
+					Default              interface{}                                               `json:"default,omitempty"`
+					Description          *string                                                   `json:"description,omitempty"`
+					Key                  string                                                    `json:"key"`
+					Mounted              *bool                                                     `json:"mounted,omitempty"`
+					PromptOnInstallation bool                                                      `json:"promptOnInstallation"`
+					Required             *bool                                                     `json:"required,omitempty"`
+					Type                 CreateInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
+					Value                *string                                                   `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
 				HttpPath         *string                                                               `json:"httpPath,omitempty"`
 				HttpPort         *float32                                                              `json:"httpPort,omitempty"`
@@ -32863,14 +32483,14 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 					Type   GetInternalMcpCatalogItem200LocalConfigEnvFromType `json:"type"`
 				} `json:"envFrom,omitempty"`
 				Environment *[]struct {
-					Default              *GetInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
-					Description          *string                                                        `json:"description,omitempty"`
-					Key                  string                                                         `json:"key"`
-					Mounted              *bool                                                          `json:"mounted,omitempty"`
-					PromptOnInstallation bool                                                           `json:"promptOnInstallation"`
-					Required             *bool                                                          `json:"required,omitempty"`
-					Type                 GetInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
-					Value                *string                                                        `json:"value,omitempty"`
+					Default              interface{}                                            `json:"default,omitempty"`
+					Description          *string                                                `json:"description,omitempty"`
+					Key                  string                                                 `json:"key"`
+					Mounted              *bool                                                  `json:"mounted,omitempty"`
+					PromptOnInstallation bool                                                   `json:"promptOnInstallation"`
+					Required             *bool                                                  `json:"required,omitempty"`
+					Type                 GetInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
+					Value                *string                                                `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
 				HttpPath         *string                                                            `json:"httpPath,omitempty"`
 				HttpPort         *float32                                                           `json:"httpPort,omitempty"`
@@ -33069,14 +32689,14 @@ func ParseUpdateInternalMcpCatalogItemResponse(rsp *http.Response) (*UpdateInter
 					Type   UpdateInternalMcpCatalogItem200LocalConfigEnvFromType `json:"type"`
 				} `json:"envFrom,omitempty"`
 				Environment *[]struct {
-					Default              *UpdateInternalMcpCatalogItem_200_LocalConfig_Environment_Default `json:"default,omitempty"`
-					Description          *string                                                           `json:"description,omitempty"`
-					Key                  string                                                            `json:"key"`
-					Mounted              *bool                                                             `json:"mounted,omitempty"`
-					PromptOnInstallation bool                                                              `json:"promptOnInstallation"`
-					Required             *bool                                                             `json:"required,omitempty"`
-					Type                 UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType         `json:"type"`
-					Value                *string                                                           `json:"value,omitempty"`
+					Default              interface{}                                               `json:"default,omitempty"`
+					Description          *string                                                   `json:"description,omitempty"`
+					Key                  string                                                    `json:"key"`
+					Mounted              *bool                                                     `json:"mounted,omitempty"`
+					PromptOnInstallation bool                                                      `json:"promptOnInstallation"`
+					Required             *bool                                                     `json:"required,omitempty"`
+					Type                 UpdateInternalMcpCatalogItem200LocalConfigEnvironmentType `json:"type"`
+					Value                *string                                                   `json:"value,omitempty"`
 				} `json:"environment,omitempty"`
 				HttpPath         *string                                                               `json:"httpPath,omitempty"`
 				HttpPort         *float32                                                              `json:"httpPort,omitempty"`
@@ -34186,31 +33806,31 @@ func ParseGetModelsWithApiKeysResponse(rsp *http.Response) (*GetModelsWithApiKey
 				Provider string             `json:"provider"`
 				Scope    string             `json:"scope"`
 			} `json:"apiKeys"`
-			CompletionPricePerToken     *string                                       `json:"completionPricePerToken"`
-			ContextLength               *int                                          `json:"contextLength"`
-			CreatedAt                   time.Time                                     `json:"createdAt"`
-			CustomPricePerMillionInput  *string                                       `json:"customPricePerMillionInput"`
-			CustomPricePerMillionOutput *string                                       `json:"customPricePerMillionOutput"`
-			Description                 *string                                       `json:"description"`
-			DiscoveredViaLlmProxy       bool                                          `json:"discoveredViaLlmProxy"`
-			EmbeddingDimensions         *GetModelsWithApiKeys_200_EmbeddingDimensions `json:"embeddingDimensions"`
-			ExternalId                  string                                        `json:"externalId"`
-			Id                          openapi_types.UUID                            `json:"id"`
-			Ignored                     bool                                          `json:"ignored"`
-			InputModalities             *[]GetModelsWithApiKeys200InputModalities     `json:"inputModalities"`
-			IsBest                      bool                                          `json:"isBest"`
-			IsCustomPrice               bool                                          `json:"isCustomPrice"`
-			IsFastest                   bool                                          `json:"isFastest"`
-			LastSyncedAt                time.Time                                     `json:"lastSyncedAt"`
-			ModelId                     string                                        `json:"modelId"`
-			OutputModalities            *[]GetModelsWithApiKeys200OutputModalities    `json:"outputModalities"`
-			PricePerMillionInput        *string                                       `json:"pricePerMillionInput"`
-			PricePerMillionOutput       *string                                       `json:"pricePerMillionOutput"`
-			PriceSource                 GetModelsWithApiKeys200PriceSource            `json:"priceSource"`
-			PromptPricePerToken         *string                                       `json:"promptPricePerToken"`
-			Provider                    GetModelsWithApiKeys200Provider               `json:"provider"`
-			SupportsToolCalling         *bool                                         `json:"supportsToolCalling"`
-			UpdatedAt                   time.Time                                     `json:"updatedAt"`
+			CompletionPricePerToken     *string                                     `json:"completionPricePerToken"`
+			ContextLength               *int                                        `json:"contextLength"`
+			CreatedAt                   time.Time                                   `json:"createdAt"`
+			CustomPricePerMillionInput  *string                                     `json:"customPricePerMillionInput"`
+			CustomPricePerMillionOutput *string                                     `json:"customPricePerMillionOutput"`
+			Description                 *string                                     `json:"description"`
+			DiscoveredViaLlmProxy       bool                                        `json:"discoveredViaLlmProxy"`
+			EmbeddingDimensions         *GetModelsWithApiKeys200EmbeddingDimensions `json:"embeddingDimensions"`
+			ExternalId                  string                                      `json:"externalId"`
+			Id                          openapi_types.UUID                          `json:"id"`
+			Ignored                     bool                                        `json:"ignored"`
+			InputModalities             *[]GetModelsWithApiKeys200InputModalities   `json:"inputModalities"`
+			IsBest                      bool                                        `json:"isBest"`
+			IsCustomPrice               bool                                        `json:"isCustomPrice"`
+			IsFastest                   bool                                        `json:"isFastest"`
+			LastSyncedAt                time.Time                                   `json:"lastSyncedAt"`
+			ModelId                     string                                      `json:"modelId"`
+			OutputModalities            *[]GetModelsWithApiKeys200OutputModalities  `json:"outputModalities"`
+			PricePerMillionInput        *string                                     `json:"pricePerMillionInput"`
+			PricePerMillionOutput       *string                                     `json:"pricePerMillionOutput"`
+			PriceSource                 GetModelsWithApiKeys200PriceSource          `json:"priceSource"`
+			PromptPricePerToken         *string                                     `json:"promptPricePerToken"`
+			Provider                    GetModelsWithApiKeys200Provider             `json:"provider"`
+			SupportsToolCalling         *bool                                       `json:"supportsToolCalling"`
+			UpdatedAt                   time.Time                                   `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -34320,13 +33940,13 @@ func ParseGetLlmModelsResponse(rsp *http.Response) (*GetLlmModelsResponse, error
 				PriceSource           GetLlmModels200CapabilitiesPriceSource         `json:"priceSource"`
 				SupportsToolCalling   *bool                                          `json:"supportsToolCalling"`
 			} `json:"capabilities,omitempty"`
-			CreatedAt           *string                               `json:"createdAt,omitempty"`
-			DisplayName         string                                `json:"displayName"`
-			EmbeddingDimensions *GetLlmModels_200_EmbeddingDimensions `json:"embeddingDimensions"`
-			Id                  string                                `json:"id"`
-			IsBest              *bool                                 `json:"isBest,omitempty"`
-			IsFastest           *bool                                 `json:"isFastest,omitempty"`
-			Provider            GetLlmModels200Provider               `json:"provider"`
+			CreatedAt           *string                             `json:"createdAt,omitempty"`
+			DisplayName         string                              `json:"displayName"`
+			EmbeddingDimensions *GetLlmModels200EmbeddingDimensions `json:"embeddingDimensions"`
+			Id                  string                              `json:"id"`
+			IsBest              *bool                               `json:"isBest,omitempty"`
+			IsFastest           *bool                               `json:"isFastest,omitempty"`
+			Provider            GetLlmModels200Provider             `json:"provider"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -34526,25 +34146,25 @@ func ParseUpdateModelResponse(rsp *http.Response) (*UpdateModelResponse, error) 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			CompletionPricePerToken     *string                              `json:"completionPricePerToken"`
-			ContextLength               *int                                 `json:"contextLength"`
-			CreatedAt                   time.Time                            `json:"createdAt"`
-			CustomPricePerMillionInput  *string                              `json:"customPricePerMillionInput"`
-			CustomPricePerMillionOutput *string                              `json:"customPricePerMillionOutput"`
-			Description                 *string                              `json:"description"`
-			DiscoveredViaLlmProxy       bool                                 `json:"discoveredViaLlmProxy"`
-			EmbeddingDimensions         *UpdateModel_200_EmbeddingDimensions `json:"embeddingDimensions"`
-			ExternalId                  string                               `json:"externalId"`
-			Id                          openapi_types.UUID                   `json:"id"`
-			Ignored                     bool                                 `json:"ignored"`
-			InputModalities             *[]UpdateModel200InputModalities     `json:"inputModalities"`
-			LastSyncedAt                time.Time                            `json:"lastSyncedAt"`
-			ModelId                     string                               `json:"modelId"`
-			OutputModalities            *[]UpdateModel200OutputModalities    `json:"outputModalities"`
-			PromptPricePerToken         *string                              `json:"promptPricePerToken"`
-			Provider                    UpdateModel200Provider               `json:"provider"`
-			SupportsToolCalling         *bool                                `json:"supportsToolCalling"`
-			UpdatedAt                   time.Time                            `json:"updatedAt"`
+			CompletionPricePerToken     *string                            `json:"completionPricePerToken"`
+			ContextLength               *int                               `json:"contextLength"`
+			CreatedAt                   time.Time                          `json:"createdAt"`
+			CustomPricePerMillionInput  *string                            `json:"customPricePerMillionInput"`
+			CustomPricePerMillionOutput *string                            `json:"customPricePerMillionOutput"`
+			Description                 *string                            `json:"description"`
+			DiscoveredViaLlmProxy       bool                               `json:"discoveredViaLlmProxy"`
+			EmbeddingDimensions         *UpdateModel200EmbeddingDimensions `json:"embeddingDimensions"`
+			ExternalId                  string                             `json:"externalId"`
+			Id                          openapi_types.UUID                 `json:"id"`
+			Ignored                     bool                               `json:"ignored"`
+			InputModalities             *[]UpdateModel200InputModalities   `json:"inputModalities"`
+			LastSyncedAt                time.Time                          `json:"lastSyncedAt"`
+			ModelId                     string                             `json:"modelId"`
+			OutputModalities            *[]UpdateModel200OutputModalities  `json:"outputModalities"`
+			PromptPricePerToken         *string                            `json:"promptPricePerToken"`
+			Provider                    UpdateModel200Provider             `json:"provider"`
+			SupportsToolCalling         *bool                              `json:"supportsToolCalling"`
+			UpdatedAt                   time.Time                          `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -40878,10 +40498,10 @@ func ParseCreateScheduleTriggerRunConversationResponse(rsp *http.Response) (*Cre
 				Id         openapi_types.UUID                                     `json:"id"`
 				Visibility CreateScheduleTriggerRunConversation200ShareVisibility `json:"visibility"`
 			} `json:"share"`
-			Title     *string                                            `json:"title"`
-			TodoList  *CreateScheduleTriggerRunConversation_200_TodoList `json:"todoList"`
-			UpdatedAt time.Time                                          `json:"updatedAt"`
-			UserId    string                                             `json:"userId"`
+			Title     *string     `json:"title"`
+			TodoList  interface{} `json:"todoList"`
+			UpdatedAt time.Time   `json:"updatedAt"`
+			UserId    string      `json:"userId"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -42604,19 +42224,30 @@ func ParseGetToolsResponse(rsp *http.Response) (*GetToolsResponse, error) {
 				Id   string `json:"id"`
 				Name string `json:"name"`
 			} `json:"catalog"`
-			CatalogId                        *openapi_types.UUID      `json:"catalogId"`
-			CreatedAt                        time.Time                `json:"createdAt"`
-			DelegateToAgentId                *openapi_types.UUID      `json:"delegateToAgentId"`
-			Description                      *string                  `json:"description"`
-			Id                               openapi_types.UUID       `json:"id"`
-			Meta                             *GetTools_200_Meta       `json:"meta"`
-			Name                             string                   `json:"name"`
-			Parameters                       *GetTools_200_Parameters `json:"parameters,omitempty"`
-			PoliciesAutoConfiguredAt         *time.Time               `json:"policiesAutoConfiguredAt"`
-			PoliciesAutoConfiguredModel      *string                  `json:"policiesAutoConfiguredModel"`
-			PoliciesAutoConfiguredReasoning  *string                  `json:"policiesAutoConfiguredReasoning"`
-			PoliciesAutoConfiguringStartedAt *time.Time               `json:"policiesAutoConfiguringStartedAt"`
-			UpdatedAt                        time.Time                `json:"updatedAt"`
+			CatalogId         *openapi_types.UUID `json:"catalogId"`
+			CreatedAt         time.Time           `json:"createdAt"`
+			DelegateToAgentId *openapi_types.UUID `json:"delegateToAgentId"`
+			Description       *string             `json:"description"`
+			Id                openapi_types.UUID  `json:"id"`
+			Meta              interface{}         `json:"meta"`
+			Name              string              `json:"name"`
+
+			// Parameters
+			//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+			//
+			//     The parameters the functions accepts, described as a JSON Schema object. See the
+			//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+			//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+			//     documentation about the format.
+			//
+			//     Omitting parameters defines a function with an empty parameter list.
+			//
+			Parameters                       *map[string]interface{} `json:"parameters,omitempty"`
+			PoliciesAutoConfiguredAt         *time.Time              `json:"policiesAutoConfiguredAt"`
+			PoliciesAutoConfiguredModel      *string                 `json:"policiesAutoConfiguredModel"`
+			PoliciesAutoConfiguredReasoning  *string                 `json:"policiesAutoConfiguredReasoning"`
+			PoliciesAutoConfiguringStartedAt *time.Time              `json:"policiesAutoConfiguringStartedAt"`
+			UpdatedAt                        time.Time               `json:"updatedAt"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -42729,16 +42360,27 @@ func ParseGetToolsWithAssignmentsResponse(rsp *http.Response) (*GetToolsWithAssi
 					ExecutionOwnerEmail      *string                                                           `json:"executionOwnerEmail"`
 					McpServerId              *string                                                           `json:"mcpServerId"`
 				} `json:"assignments"`
-				CatalogId                       *string                                      `json:"catalogId"`
-				CreatedAt                       time.Time                                    `json:"createdAt"`
-				Description                     *string                                      `json:"description"`
-				Id                              string                                       `json:"id"`
-				Name                            string                                       `json:"name"`
-				Parameters                      *GetToolsWithAssignments_200_Data_Parameters `json:"parameters,omitempty"`
-				PoliciesAutoConfiguredAt        *time.Time                                   `json:"policiesAutoConfiguredAt"`
-				PoliciesAutoConfiguredModel     *string                                      `json:"policiesAutoConfiguredModel"`
-				PoliciesAutoConfiguredReasoning *string                                      `json:"policiesAutoConfiguredReasoning"`
-				UpdatedAt                       time.Time                                    `json:"updatedAt"`
+				CatalogId   *string   `json:"catalogId"`
+				CreatedAt   time.Time `json:"createdAt"`
+				Description *string   `json:"description"`
+				Id          string    `json:"id"`
+				Name        string    `json:"name"`
+
+				// Parameters
+				//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+				//
+				//     The parameters the functions accepts, described as a JSON Schema object. See the
+				//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+				//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+				//     documentation about the format.
+				//
+				//     Omitting parameters defines a function with an empty parameter list.
+				//
+				Parameters                      *map[string]interface{} `json:"parameters,omitempty"`
+				PoliciesAutoConfiguredAt        *time.Time              `json:"policiesAutoConfiguredAt"`
+				PoliciesAutoConfiguredModel     *string                 `json:"policiesAutoConfiguredModel"`
+				PoliciesAutoConfiguredReasoning *string                 `json:"policiesAutoConfiguredReasoning"`
+				UpdatedAt                       time.Time               `json:"updatedAt"`
 			} `json:"data"`
 			Pagination struct {
 				CurrentPage int  `json:"currentPage"`

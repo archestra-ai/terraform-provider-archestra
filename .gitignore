@@ -41,3 +41,6 @@ terraform-provider-archestra
 .terraform.lock.hcl
 *.tfvars
 .sessions/
+
+# Intermediate artifacts from `make codegen-api-client`.
+.codegen/

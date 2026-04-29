@@ -34,7 +34,13 @@ func testAccGetFirstModelID(t *testing.T) string {
 	}
 
 	resp, err := c.GetModelsWithApiKeysWithResponse(t.Context())
-	if err != nil || resp.JSON200 == nil || len(*resp.JSON200) == 0 {
+	if err != nil {
+		t.Fatalf("GetModelsWithApiKeys failed: %s — likely a generated-client/spec mismatch; regenerate via `make codegen-api-client` after backend bumps", err)
+	}
+	if resp.StatusCode() != 200 {
+		t.Fatalf("GetModelsWithApiKeys returned %d: %s", resp.StatusCode(), string(resp.Body))
+	}
+	if resp.JSON200 == nil || len(*resp.JSON200) == 0 {
 		t.Fatal("No LLM models available in the backend — TestAccLlmModelResource requires at least one model. Configure an LLM provider on the backend and re-run.")
 	}
 
