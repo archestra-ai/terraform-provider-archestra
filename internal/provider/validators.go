@@ -9,11 +9,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )
 
-// uuidRegexp matches RFC 4122-style UUIDs (lowercase hex). The backend's
-// generated IDs always lowercase, so we don't accept mixed case — a
-// non-matching value is almost always a copy-paste of a different
-// identifier (composite assignment ID, name string, etc.).
-var uuidRegexp = regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$`)
+// uuidRegexp matches RFC 4122-style UUIDs in either case. The backend
+// emits lowercase, but values copy-pasted from a browser UI may be
+// uppercase, and Go's `uuid.Parse` is case-insensitive too — so the
+// validator should be lenient about the case it accepts.
+var uuidRegexp = regexp.MustCompile(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)
 
 // jsonObject is a validator.String that fails plan when the configured value,
 // parsed as JSON, is not a JSON object. Null/unknown values are ignored so it

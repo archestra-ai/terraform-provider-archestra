@@ -140,7 +140,10 @@ func (r *ToolInvocationPolicyDefaultResource) Update(ctx context.Context, req re
 		resp.Diagnostics.AddError("API Error", err.Error())
 		return
 	}
-	plan.ID = types.StringValue(syntheticToolSetID(tools, plan.Action.ValueString()))
+	// Preserve the ID from prior state — recomputing from plan tools/action
+	// would break Terraform's "id is stable across the resource's
+	// lifetime" invariant when `tool_ids` or `action` changes in-place.
+	plan.ID = state.ID
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 

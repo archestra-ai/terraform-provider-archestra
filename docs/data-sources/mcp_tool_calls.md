@@ -65,13 +65,15 @@ output "blocked_tool_calls" {
 
 - `agent_id` (String) Optional. Filter to calls made by this agent (UUID).
 - `end_date` (String) Optional. RFC 3339 / ISO 8601 timestamp; only return calls created at or before this instant.
+- `max_records` (Number) Optional. Hard cap on records pulled into Terraform state, regardless of how many the backend's filter matches. Defaults to 1000. Set higher only if you know the filter is narrow enough — `total` will tell you the unfiltered backend count, `truncated` flips to `true` when the cap kicked in.
 - `search` (String) Optional. Free-text, case-insensitive substring matched against MCP server name, tool name, and arguments JSON.
 - `start_date` (String) Optional. RFC 3339 / ISO 8601 timestamp; only return calls created at or after this instant.
 
 ### Read-Only
 
 - `calls` (Attributes List) Matching tool-call records, oldest-first within each page (server's default sort: `createdAt desc` per page, but pages are aggregated in fetch order). (see [below for nested schema](#nestedatt--calls))
-- `total` (Number) Total number of calls matching the filter (across all pages, before any local truncation).
+- `total` (Number) Total number of calls matching the filter on the backend, ignoring `max_records`. Compare against `length(calls)` to detect that you've truncated.
+- `truncated` (Boolean) True when `max_records` cut off pagination before the backend was exhausted. Re-run with a higher cap or narrower filter to see all matches.
 
 <a id="nestedatt--calls"></a>
 ### Nested Schema for `calls`

@@ -53,11 +53,13 @@ resource "archestra_agent_tool_batch" "support_agent_filesystem" {
 
 - `agent_id` (String) Agent UUID. Pass the `id` from `archestra_agent` / `archestra_llm_proxy` / `archestra_mcp_gateway`.
 - `mcp_server_id` (String) MCP server installation UUID. Pass `archestra_mcp_server_installation.<n>.id`.
-- `tool_ids` (Set of String) Set of bare tool UUIDs to assign. Typically `[for t in archestra_mcp_server_installation.<n>.tools : t.id]`. Adding to the set assigns more tools; removing unassigns them.
+- `tool_ids` (Set of String) Set of bare tool UUIDs to assign. Typically `[for t in archestra_mcp_server_installation.<n>.tools : t.id]`. Adding members triggers a bulk-assign on the new ones only; removing members unassigns each individually. **Patched in-place — does not force replacement.**
 
 ### Optional
 
-- `credential_resolution_mode` (String) How the agent resolves credentials when calling tools in this batch. Same semantics as `archestra_agent_tool.credential_resolution_mode`. Defaults to `static`. Changing forces replacement.
+- `credential_resolution_mode` (String) How the agent resolves credentials when calling tools in this batch. Same semantics as `archestra_agent_tool.credential_resolution_mode`. Defaults to `static`.
+
+~> **Asymmetric replacement.** Changing this value forces the resource to be replaced (drops every assignment and recreates), because the credential mode is per-assignment metadata that the bulk endpoint can't patch in place. Adding/removing entries in `tool_ids` is patched in-place — only this attribute, `agent_id`, and `mcp_server_id` trigger replacement.
 
 ### Read-Only
 

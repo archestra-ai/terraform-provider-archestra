@@ -122,8 +122,9 @@ func (r *TrustedDataPolicyDefaultResource) Read(ctx context.Context, req resourc
 }
 
 func (r *TrustedDataPolicyDefaultResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan TrustedDataPolicyDefaultResourceModel
+	var plan, state TrustedDataPolicyDefaultResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -135,7 +136,9 @@ func (r *TrustedDataPolicyDefaultResource) Update(ctx context.Context, req resou
 		resp.Diagnostics.AddError("API Error", err.Error())
 		return
 	}
-	plan.ID = types.StringValue(syntheticToolSetID(tools, plan.Action.ValueString()))
+	// Preserve the ID from prior state — see same comment in
+	// resource_tool_invocation_policy_default.go.
+	plan.ID = state.ID
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 

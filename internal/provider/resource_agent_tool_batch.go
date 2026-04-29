@@ -1,9 +1,7 @@
 package provider
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -92,7 +90,7 @@ func (r *AgentToolBatchResource) Schema(_ context.Context, _ resource.SchemaRequ
 				},
 			},
 			"tool_ids": schema.SetAttribute{
-				MarkdownDescription: "Set of bare tool UUIDs to assign. Typically `[for t in archestra_mcp_server_installation.<n>.tools : t.id]`. Adding to the set assigns more tools; removing unassigns them.",
+				MarkdownDescription: "Set of bare tool UUIDs to assign. Typically `[for t in archestra_mcp_server_installation.<n>.tools : t.id]`. Adding members triggers a bulk-assign on the new ones only; removing members unassigns each individually. **Patched in-place — does not force replacement.**",
 				Required:            true,
 				ElementType:         types.StringType,
 				Validators: []validator.Set{
@@ -100,10 +98,11 @@ func (r *AgentToolBatchResource) Schema(_ context.Context, _ resource.SchemaRequ
 				},
 			},
 			"credential_resolution_mode": schema.StringAttribute{
-				MarkdownDescription: "How the agent resolves credentials when calling tools in this batch. Same semantics as `archestra_agent_tool.credential_resolution_mode`. Defaults to `static`. Changing forces replacement.",
-				Optional:            true,
-				Computed:            true,
-				Default:             stringdefault.StaticString("static"),
+				MarkdownDescription: "How the agent resolves credentials when calling tools in this batch. Same semantics as `archestra_agent_tool.credential_resolution_mode`. Defaults to `static`.\n\n" +
+					"~> **Asymmetric replacement.** Changing this value forces the resource to be replaced (drops every assignment and recreates), because the credential mode is per-assignment metadata that the bulk endpoint can't patch in place. Adding/removing entries in `tool_ids` is patched in-place — only this attribute, `agent_id`, and `mcp_server_id` trigger replacement.",
+				Optional: true,
+				Computed: true,
+				Default:  stringdefault.StaticString("static"),
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -309,45 +308,53 @@ func (r *AgentToolBatchResource) parsePlan(
 
 func (r *AgentToolBatchResource) bulkAssign(
 	ctx context.Context,
-	agentUUID, mcpUUID openapi_types.UUID,
+	agentUUID openapi_types.UUID,
+	mcpUUID openapi_types.UUID,
 	toolIDs []openapi_types.UUID,
 	credentialMode string,
 ) error {
 	if len(toolIDs) == 0 {
 		return nil
 	}
-	// Hand-build the body: the typed JSONRequestBody contains an
-	// inline anonymous struct that's painful to construct in Go without
-	// a helper. Wire shape is small and stable.
-	type asgn struct {
-		AgentID                  string  `json:"agentId"`
-		ToolID                   string  `json:"toolId"`
-		McpServerID              *string `json:"mcpServerId"`
-		CredentialResolutionMode *string `json:"credentialResolutionMode,omitempty"`
-	}
+
 	mcpStr := mcpUUID.String()
-	credPtr := &credentialMode
-	if credentialMode == "" {
-		credPtr = nil
+	var credPtr *client.BulkAssignToolsJSONBodyAssignmentsCredentialResolutionMode
+	if credentialMode != "" {
+		c := client.BulkAssignToolsJSONBodyAssignmentsCredentialResolutionMode(credentialMode)
+		credPtr = &c
 	}
-	body := struct {
-		Assignments []asgn `json:"assignments"`
-	}{
-		Assignments: make([]asgn, 0, len(toolIDs)),
+
+	// Build the typed body. The element shape is the inline anonymous
+	// struct on `BulkAssignToolsJSONBody.Assignments` — Go lets us
+	// initialise it via a struct literal because the anonymous fields are
+	// in the same package.
+	body := client.BulkAssignToolsJSONRequestBody{
+		Assignments: make([]struct {
+			AgentId                  openapi_types.UUID                                                 `json:"agentId"`
+			CredentialResolutionMode *client.BulkAssignToolsJSONBodyAssignmentsCredentialResolutionMode `json:"credentialResolutionMode,omitempty"`
+			McpServerId              *openapi_types.UUID                                                `json:"mcpServerId"`
+			ResolveAtCallTime        *bool                                                              `json:"resolveAtCallTime,omitempty"`
+			ToolId                   openapi_types.UUID                                                 `json:"toolId"`
+		}, 0, len(toolIDs)),
 	}
+	mcpUUIDPtr := openapi_types.UUID(mcpUUID)
+	_ = mcpStr // kept for diagnostics readability; not used now
 	for _, t := range toolIDs {
-		body.Assignments = append(body.Assignments, asgn{
-			AgentID:                  agentUUID.String(),
-			ToolID:                   t.String(),
-			McpServerID:              &mcpStr,
+		body.Assignments = append(body.Assignments, struct {
+			AgentId                  openapi_types.UUID                                                 `json:"agentId"`
+			CredentialResolutionMode *client.BulkAssignToolsJSONBodyAssignmentsCredentialResolutionMode `json:"credentialResolutionMode,omitempty"`
+			McpServerId              *openapi_types.UUID                                                `json:"mcpServerId"`
+			ResolveAtCallTime        *bool                                                              `json:"resolveAtCallTime,omitempty"`
+			ToolId                   openapi_types.UUID                                                 `json:"toolId"`
+		}{
+			AgentId:                  agentUUID,
+			ToolId:                   t,
+			McpServerId:              &mcpUUIDPtr,
 			CredentialResolutionMode: credPtr,
 		})
 	}
-	raw, err := json.Marshal(body)
-	if err != nil {
-		return fmt.Errorf("marshal bulk-assign body: %w", err)
-	}
-	resp, err := r.client.BulkAssignToolsWithBodyWithResponse(ctx, "application/json", bytes.NewReader(raw))
+
+	resp, err := r.client.BulkAssignToolsWithResponse(ctx, body)
 	if err != nil {
 		return err
 	}

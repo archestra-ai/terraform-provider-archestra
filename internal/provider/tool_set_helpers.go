@@ -2,8 +2,11 @@ package provider
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -34,22 +37,26 @@ func parseUUIDSet(ctx context.Context, set types.Set, diags *diag.Diagnostics, f
 }
 
 // syntheticToolSetID hashes the (sorted tool_ids, action) tuple into a
-// stable resource ID. Two resources with the same set + action collide,
-// which is fine — they're idempotent.
+// fixed-length, opaque resource ID. The result is stable across
+// invocations and bounded in length regardless of tool set size, which
+// matters because some Terraform tooling truncates long IDs in displays.
+//
+// Two resources with the same `(tool_ids, action)` produce the same ID
+// — a Terraform-state collision that surfaces as "id already exists" on
+// the second apply. That's the right outcome: writing the same default
+// policy twice is a configuration mistake, and one ID per logical
+// configuration makes it impossible to silently shadow.
 func syntheticToolSetID(tools []openapi_types.UUID, action string) string {
-	if len(tools) == 0 {
-		return action
-	}
 	strs := make([]string, len(tools))
 	for i, t := range tools {
 		strs[i] = t.String()
 	}
 	sort.Strings(strs)
-	h := strs[0]
-	for _, s := range strs[1:] {
-		h += "," + s
-	}
-	return action + ":" + h
+	h := sha256.New()
+	h.Write([]byte(action))
+	h.Write([]byte{0})
+	h.Write([]byte(strings.Join(strs, ",")))
+	return action + ":" + hex.EncodeToString(h.Sum(nil))
 }
 
 // diffUUIDSets returns the elements to add (in want, not in have) and to

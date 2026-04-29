@@ -210,8 +210,14 @@ func (r *ToolPolicyAutoConfigResource) Update(_ context.Context, _ resource.Upda
 		"All `archestra_tool_policy_auto_config` inputs require replacement. This call should never have happened.")
 }
 
-func (r *ToolPolicyAutoConfigResource) Delete(_ context.Context, _ resource.DeleteRequest, _ *resource.DeleteResponse) {
+func (r *ToolPolicyAutoConfigResource) Delete(_ context.Context, _ resource.DeleteRequest, resp *resource.DeleteResponse) {
 	// No-op: the policies the LLM wrote are persisted backend-side and
-	// outlive this resource. Document this clearly on the schema (see
-	// the schema's MarkdownDescription).
+	// outlive this resource. We surface this at the moment it matters so
+	// `terraform destroy` output isn't silently misleading.
+	resp.Diagnostics.AddWarning(
+		"Backend policies persist",
+		"Default invocation + trusted-data policies the LLM wrote remain on the backend after this resource is destroyed. "+
+			"Manage their lifecycle via `archestra_tool_invocation_policy_default` / `archestra_trusted_data_policy_default`, "+
+			"or import them into individual `archestra_tool_invocation_policy` / `archestra_trusted_data_policy` resources for finer control.",
+	)
 }

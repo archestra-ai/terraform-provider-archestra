@@ -29,13 +29,24 @@ type McpToolCallsDataSource struct {
 }
 
 type McpToolCallsDataSourceModel struct {
-	AgentID   types.String `tfsdk:"agent_id"`
-	StartDate types.String `tfsdk:"start_date"`
-	EndDate   types.String `tfsdk:"end_date"`
-	Search    types.String `tfsdk:"search"`
-	Calls     types.List   `tfsdk:"calls"`
-	Total     types.Int64  `tfsdk:"total"`
+	AgentID    types.String `tfsdk:"agent_id"`
+	StartDate  types.String `tfsdk:"start_date"`
+	EndDate    types.String `tfsdk:"end_date"`
+	Search     types.String `tfsdk:"search"`
+	MaxRecords types.Int64  `tfsdk:"max_records"`
+	Calls      types.List   `tfsdk:"calls"`
+	Total      types.Int64  `tfsdk:"total"`
+	Truncated  types.Bool   `tfsdk:"truncated"`
 }
+
+// defaultMcpToolCallsMaxRecords caps how many records the data source
+// will pull into Terraform state when the caller doesn't set
+// `max_records` explicitly. Backend audit logs grow unboundedly; pulling
+// every match into state on a misconfigured filter (e.g. `start_date`
+// one year ago, no agent filter) can blow up state size and apply time.
+// Callers who genuinely need everything can set `max_records` to a
+// large explicit value.
+const defaultMcpToolCallsMaxRecords int64 = 1000
 
 // mcpToolCallObjectType is the per-element shape of `calls`. Mirrors the
 // wire as closely as is HCL-friendly: arguments and result come back as
@@ -96,8 +107,16 @@ func (d *McpToolCallsDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				MarkdownDescription: "Optional. Free-text, case-insensitive substring matched against MCP server name, tool name, and arguments JSON.",
 				Optional:            true,
 			},
+			"max_records": schema.Int64Attribute{
+				MarkdownDescription: fmt.Sprintf("Optional. Hard cap on records pulled into Terraform state, regardless of how many the backend's filter matches. Defaults to %d. Set higher only if you know the filter is narrow enough — `total` will tell you the unfiltered backend count, `truncated` flips to `true` when the cap kicked in.", defaultMcpToolCallsMaxRecords),
+				Optional:            true,
+			},
 			"total": schema.Int64Attribute{
-				MarkdownDescription: "Total number of calls matching the filter (across all pages, before any local truncation).",
+				MarkdownDescription: "Total number of calls matching the filter on the backend, ignoring `max_records`. Compare against `length(calls)` to detect that you've truncated.",
+				Computed:            true,
+			},
+			"truncated": schema.BoolAttribute{
+				MarkdownDescription: "True when `max_records` cut off pagination before the backend was exhausted. Re-run with a higher cap or narrower filter to see all matches.",
 				Computed:            true,
 			},
 			"calls": schema.ListNestedAttribute{
@@ -175,6 +194,15 @@ func (d *McpToolCallsDataSource) Read(ctx context.Context, req datasource.ReadRe
 		params.Search = &s
 	}
 
+	maxRecords := defaultMcpToolCallsMaxRecords
+	if !data.MaxRecords.IsNull() && !data.MaxRecords.IsUnknown() {
+		maxRecords = data.MaxRecords.ValueInt64()
+		if maxRecords <= 0 {
+			resp.Diagnostics.AddError("Invalid max_records", "max_records must be > 0")
+			return
+		}
+	}
+
 	limit := 100
 	offset := 0
 	params.Limit = &limit
@@ -182,6 +210,7 @@ func (d *McpToolCallsDataSource) Read(ctx context.Context, req datasource.ReadRe
 
 	var collected []attr.Value
 	var total int64
+	truncated := false
 
 	for {
 		callsResp, err := d.client.GetMcpToolCallsWithResponse(ctx, params)
@@ -199,6 +228,10 @@ func (d *McpToolCallsDataSource) Read(ctx context.Context, req datasource.ReadRe
 		total = int64(callsResp.JSON200.Pagination.Total)
 
 		for i := range callsResp.JSON200.Data {
+			if int64(len(collected)) >= maxRecords {
+				truncated = true
+				break
+			}
 			c := &callsResp.JSON200.Data[i]
 			obj, diags := flattenMcpToolCall(c)
 			resp.Diagnostics.Append(diags...)
@@ -208,11 +241,16 @@ func (d *McpToolCallsDataSource) Read(ctx context.Context, req datasource.ReadRe
 			collected = append(collected, obj)
 		}
 
-		if !callsResp.JSON200.Pagination.HasNext {
+		if truncated || !callsResp.JSON200.Pagination.HasNext {
 			break
 		}
 		offset += limit
 		params.Offset = &offset
+	}
+	if !truncated && total > int64(len(collected)) {
+		// Defensive: backend reported more records than we collected
+		// without `HasNext` being true. Treat as truncated for safety.
+		truncated = true
 	}
 
 	listValue, diags := types.ListValue(mcpToolCallObjectType, collected)
@@ -222,6 +260,7 @@ func (d *McpToolCallsDataSource) Read(ctx context.Context, req datasource.ReadRe
 	}
 	data.Calls = listValue
 	data.Total = types.Int64Value(total)
+	data.Truncated = types.BoolValue(truncated)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
