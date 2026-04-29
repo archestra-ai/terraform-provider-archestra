@@ -38,17 +38,23 @@ func (p *ArchestraProvider) Metadata(ctx context.Context, req provider.MetadataR
 
 func (p *ArchestraProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The Archestra provider is used to interact with Archestra resources. " +
-			"The provider needs to be configured with the proper credentials before it can be used.",
+		MarkdownDescription: "The Archestra provider lets you manage Archestra resources " +
+			"(agents, MCP servers, identity providers, teams, LLM keys, security " +
+			"policies, organization settings) as code. Both configuration values " +
+			"can — and should — be supplied via environment variables so secrets " +
+			"never enter HCL.",
 		Attributes: map[string]schema.Attribute{
 			"base_url": schema.StringAttribute{
-				MarkdownDescription: "The base URL for the Archestra API. May also be provided via the ARCHESTRA_BASE_URL environment variable.",
-				Optional:            true,
+				MarkdownDescription: "Base URL of the Archestra API (for example, `https://archestra.your-company.example`). " +
+					"Defaults to `http://localhost:9000` if neither this attribute nor `ARCHESTRA_BASE_URL` is set. " +
+					"Also reads from the `ARCHESTRA_BASE_URL` environment variable.",
+				Optional: true,
 			},
 			"api_key": schema.StringAttribute{
-				MarkdownDescription: "The API key for authentication. May also be provided via the ARCHESTRA_API_KEY environment variable.",
-				Optional:            true,
-				Sensitive:           true,
+				MarkdownDescription: "**Required for any operation that talks to the Archestra API.** Marked Optional in the schema only so the value can be supplied via the `ARCHESTRA_API_KEY` environment variable instead of inline HCL — prefer the env var to keep secrets out of source control. " +
+					"Mint a key in the Archestra UI under Settings → API Keys (the value starts with `arch_`).",
+				Optional:  true,
+				Sensitive: true,
 			},
 		},
 	}

@@ -209,27 +209,27 @@ func mapIdentityProviderResponse(rawBody any, target *IdentityProviderResourceMo
 
 func mapIdentityProviderOidcConfig(o *identityProviderApiOidc) *OidcConfigModel {
 	out := &OidcConfigModel{
-		Issuer:                      types.StringValue(o.Issuer),
-		DiscoveryEndpoint:           types.StringValue(o.DiscoveryEndpoint),
-		ClientID:                    types.StringValue(o.ClientId),
+		Issuer:            types.StringValue(o.Issuer),
+		DiscoveryEndpoint: types.StringValue(o.DiscoveryEndpoint),
+		ClientID:          types.StringValue(o.ClientId),
 		// ClientSecret: backend's GET returns the plaintext value — not redacted.
 		// If that ever changes (truncation, `***`, or omission), this overwrites
 		// the user's secret on every refresh. Switch to PreserveOnNil with the
 		// prior state value at that point.
-		ClientSecret: types.StringValue(o.ClientSecret),
-		Pkce:                        types.BoolValue(o.Pkce),
-		AuthorizationEndpoint:       stringValueOrNull(o.AuthorizationEndpoint),
-		TokenEndpoint:               stringValueOrNull(o.TokenEndpoint),
-		UserInfoEndpoint:            stringValueOrNull(o.UserInfoEndpoint),
-		JwksEndpoint:                stringValueOrNull(o.JwksEndpoint),
+		ClientSecret:          types.StringValue(o.ClientSecret),
+		Pkce:                  types.BoolValue(o.Pkce),
+		AuthorizationEndpoint: stringValueOrNull(o.AuthorizationEndpoint),
+		TokenEndpoint:         stringValueOrNull(o.TokenEndpoint),
+		UserInfoEndpoint:      stringValueOrNull(o.UserInfoEndpoint),
+		JwksEndpoint:          stringValueOrNull(o.JwksEndpoint),
 		// override_user_info / skip_discovery / enable_rp_initiated_logout:
 		// API field is `*bool, omitempty` and may be absent. Schema declares
 		// `Default: booldefault.StaticBool(false)` for each — materialize
 		// that here so import round-trips against the Default plan modifier.
 		// Keep these literals in sync with the Schema declaration.
-		OverrideUserInfo:        boolValueOrDefault(o.OverrideUserInfo, false),
-		SkipDiscovery:           boolValueOrDefault(o.SkipDiscovery, false),
-		EnableRpInitiatedLogout: boolValueOrDefault(o.EnableRpInitiatedLogout, false),
+		OverrideUserInfo:            boolValueOrDefault(o.OverrideUserInfo, false),
+		SkipDiscovery:               boolValueOrDefault(o.SkipDiscovery, false),
+		EnableRpInitiatedLogout:     boolValueOrDefault(o.EnableRpInitiatedLogout, false),
 		Hd:                          stringValueOrNull(o.Hd),
 		TokenEndpointAuthentication: stringValueOrNull(o.TokenEndpointAuthentication),
 	}
@@ -245,9 +245,9 @@ func mapIdentityProviderOidcConfig(o *identityProviderApiOidc) *OidcConfigModel 
 			Email:         stringValueOrNull(o.Mapping.Email),
 			EmailVerified: stringValueOrNull(o.Mapping.EmailVerified),
 			ExtraFields:   mapStringToTypes(o.Mapping.ExtraFields),
-			ID:    stringValueOrDefault(o.Mapping.Id, oidcMappingIDDefault),
-			Image: stringValueOrNull(o.Mapping.Image),
-			Name:  stringValueOrNull(o.Mapping.Name),
+			ID:            stringValueOrDefault(o.Mapping.Id, oidcMappingIDDefault),
+			Image:         stringValueOrNull(o.Mapping.Image),
+			Name:          stringValueOrNull(o.Mapping.Name),
 		}
 	}
 	if o.EnterpriseManagedCredentials != nil {
@@ -326,9 +326,9 @@ func mapIdentityProviderSamlConfig(s *identityProviderApiSaml) *SamlConfigModel 
 			EmailVerified: stringValueOrNull(s.Mapping.EmailVerified),
 			ExtraFields:   mapStringToTypes(s.Mapping.ExtraFields),
 			FirstName:     stringValueOrNull(s.Mapping.FirstName),
-			ID:        stringValueOrDefault(s.Mapping.Id, samlMappingIDDefault),
-			LastName:  stringValueOrNull(s.Mapping.LastName),
-			Name:      stringValueOrNull(s.Mapping.Name),
+			ID:            stringValueOrDefault(s.Mapping.Id, samlMappingIDDefault),
+			LastName:      stringValueOrNull(s.Mapping.LastName),
+			Name:          stringValueOrNull(s.Mapping.Name),
 		}
 	}
 	return out
