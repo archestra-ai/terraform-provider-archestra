@@ -3,12 +3,15 @@
 page_title: "archestra_mcp_server_tool Data Source - archestra"
 subcategory: ""
 description: |-
-  Fetches a tool from an MCP server by MCP server ID and tool name. This data source is useful for looking up tools provided by MCP servers.
+  Fetches a tool from an MCP server by MCP server ID and tool name.
+  ~> Prefer the install resource's tool_id_by_name map when the install is managed by Terraform — archestra_mcp_server_installation.<n>.tool_id_by_name["<server>__<short>"] returns the same UUID without the extra data-source plumbing or the implicit depends_on. This data source is the right choice only when the install is not managed by Terraform (e.g. you're attaching a policy to an install someone else created via the UI).
 ---
 
 # archestra_mcp_server_tool (Data Source)
 
-Fetches a tool from an MCP server by MCP server ID and tool name. This data source is useful for looking up tools provided by MCP servers.
+Fetches a tool from an MCP server by MCP server ID and tool name.
+
+~> **Prefer the install resource's `tool_id_by_name` map** when the install is managed by Terraform — `archestra_mcp_server_installation.<n>.tool_id_by_name["<server>__<short>"]` returns the same UUID without the extra data-source plumbing or the implicit `depends_on`. This data source is the right choice only when the install is **not** managed by Terraform (e.g. you're attaching a policy to an install someone else created via the UI).
 
 ## Example Usage
 

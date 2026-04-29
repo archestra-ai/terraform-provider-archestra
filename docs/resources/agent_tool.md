@@ -33,15 +33,13 @@ resource "archestra_mcp_server_installation" "filesystem" {
   catalog_id = archestra_mcp_registry_catalog_item.filesystem.id
 }
 
-data "archestra_mcp_server_tool" "read_text_file" {
-  mcp_server_id = archestra_mcp_server_installation.filesystem.id
-  name          = "${archestra_mcp_registry_catalog_item.filesystem.name}__read_text_file"
-}
-
+# Look up the tool's UUID by name in one line.
+# `tool_id_by_name` is keyed by the wire name `<server>__<short>`,
+# so the lookup composes cleanly from the catalog item's name.
 resource "archestra_agent_tool" "read_text_file" {
   agent_id      = archestra_mcp_gateway.demo.id
-  tool_id       = data.archestra_mcp_server_tool.read_text_file.id
   mcp_server_id = archestra_mcp_server_installation.filesystem.id
+  tool_id       = archestra_mcp_server_installation.filesystem.tool_id_by_name["${archestra_mcp_registry_catalog_item.filesystem.name}__read_text_file"]
 }
 ```
 

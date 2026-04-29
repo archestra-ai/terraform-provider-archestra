@@ -58,6 +58,13 @@ type MCPServerResourceModel struct {
 	// the plan-time "unknown" marker the framework needs before Create
 	// runs, so this stays a types.List wrapping mcpServerToolObjectType.
 	Tools types.List `tfsdk:"tools"`
+	// ToolIDByName is a name→UUID lookup table — same data as `tools`
+	// but indexed for the common case of "I need this specific tool's
+	// id." Lets users write
+	// `archestra_mcp_server_installation.<n>.tool_id_by_name["<full-name>"]`
+	// instead of either a `data "archestra_mcp_server_tool"` block or a
+	// `for/if` HCL expression over the list.
+	ToolIDByName types.Map `tfsdk:"tool_id_by_name"`
 }
 
 // mcpServerToolObjectType is the per-element shape of the `tools`
@@ -234,6 +241,21 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					},
 				},
 			},
+			"tool_id_by_name": schema.MapAttribute{
+				MarkdownDescription: "Lookup table mapping each tool's wire name (`<server_name>__<short_name>`, e.g. `filesystem__read_text_file`) to its bare tool UUID. Same data as `tools[*].id` but indexed for the common case — drop the `data \"archestra_mcp_server_tool\"` plumbing and just write:\n\n" +
+					"```hcl\n" +
+					"resource \"archestra_agent_tool\" \"read_text_file\" {\n" +
+					"  agent_id      = archestra_agent.support.id\n" +
+					"  mcp_server_id = archestra_mcp_server_installation.filesystem.id\n" +
+					"  tool_id       = archestra_mcp_server_installation.filesystem.tool_id_by_name[\"filesystem__read_text_file\"]\n" +
+					"}\n" +
+					"```\n\n" +
+					"Populated from the same `GetMcpServerTools` fetch as `tools`. Refreshes on every Read; on a transient fetch failure the last-known map is preserved (with a warning) rather than blanked. " +
+					"`null` while tools are still being discovered (first apply before the readiness probe sees any tools) or if the backend is unreachable. " +
+					"Empty map (`{}`, distinguishable from null with `length(...) == 0`) when the install has fully booted but the server advertises no tools.",
+				Computed:    true,
+				ElementType: types.StringType,
+			},
 		},
 	}
 }
@@ -363,9 +385,10 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
 	}
 
-	tools, toolsDiags := r.waitForServerTools(ctx, apiResp.JSON200.Id.String())
+	tools, toolIDsByName, toolsDiags := r.waitForServerTools(ctx, apiResp.JSON200.Id.String())
 	resp.Diagnostics.Append(toolsDiags...)
 	data.Tools = tools
+	data.ToolIDByName = toolIDsByName
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -443,10 +466,11 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 			fmt.Sprintf("GetMcpServerTools returned status %d for server %s. Using last-known state.", toolsResp.StatusCode(), serverID),
 		)
 	default:
-		flat, flatDiags := flattenMcpServerTools(*toolsResp.JSON200)
-		resp.Diagnostics.Append(flatDiags...)
-		if !flatDiags.HasError() {
+		flat, byName, projectDiags := projectMcpServerTools(*toolsResp.JSON200)
+		resp.Diagnostics.Append(projectDiags...)
+		if !projectDiags.HasError() {
 			data.Tools = flat
+			data.ToolIDByName = byName
 		}
 	}
 
@@ -499,59 +523,80 @@ func (r *MCPServerResource) ImportState(ctx context.Context, req resource.Import
 }
 
 // waitForServerTools polls until the backend has finished scanning the
-// installed MCP server and its tool list is non-empty, then returns the
-// flattened tool list for the resource's `tools` Computed attribute.
-// On timeout/error it returns whatever's been seen so far (often a null
-// list) alongside the error — callers downgrade to a warning so a slow
-// scan doesn't fail the apply, the tools just appear on the next refresh.
-func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID string) (types.List, diag.Diagnostics) {
+// installed MCP server and its tool list is non-empty, then returns:
+//
+//   - `tools` — the flattened tool list (Computed `tools` attribute).
+//   - `toolIDsByName` — name→uuid map (Computed `tool_id_by_name`),
+//     same data, indexed for the common "look up this specific tool's
+//     id" case. Both are populated from the same fetch so they can't
+//     drift relative to each other.
+//
+// On timeout/error it returns properly-typed null values alongside a
+// warning — callers downgrade so a slow scan doesn't fail the apply,
+// the tools just appear on the next refresh.
+func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID string) (types.List, types.Map, diag.Diagnostics) {
 	var diags diag.Diagnostics
+	nullList := types.ListNull(mcpServerToolObjectType)
+	nullMap := types.MapNull(types.StringType)
+
 	serverUUID, err := uuid.Parse(serverID)
 	if err != nil {
 		diags.AddError("Invalid Server ID", fmt.Sprintf("failed to parse server ID: %s", err))
-		return types.ListNull(mcpServerToolObjectType), diags
+		return nullList, nullMap, diags
 	}
 
-	tools, found, err := RetryUntilFound(ctx, mcpServerRetryConfig, func() (types.List, bool, error) {
+	type toolsResult struct {
+		list   types.List
+		byName types.Map
+	}
+	res, found, err := RetryUntilFound(ctx, mcpServerRetryConfig, func() (toolsResult, bool, error) {
 		toolsResp, err := r.client.GetMcpServerToolsWithResponse(ctx, serverUUID)
 		if err != nil {
-			return types.ListNull(mcpServerToolObjectType), false, fmt.Errorf("failed to get server tools: %w", err)
+			return toolsResult{nullList, nullMap}, false, fmt.Errorf("failed to get server tools: %w", err)
 		}
 		if toolsResp.JSON200 == nil {
-			return types.ListNull(mcpServerToolObjectType), false, fmt.Errorf("unexpected response status: %d", toolsResp.StatusCode())
+			return toolsResult{nullList, nullMap}, false, fmt.Errorf("unexpected response status: %d", toolsResp.StatusCode())
 		}
-		flat, flatDiags := flattenMcpServerTools(*toolsResp.JSON200)
-		if flatDiags.HasError() {
-			return types.ListNull(mcpServerToolObjectType), false, fmt.Errorf("failed to flatten tools: %s", flatDiags)
+		flat, byName, projectDiags := projectMcpServerTools(*toolsResp.JSON200)
+		if projectDiags.HasError() {
+			return toolsResult{nullList, nullMap}, false, fmt.Errorf("failed to project tools: %s", projectDiags)
 		}
 		// Treat empty list as "not yet ready" — the install just landed and
 		// the MCP server hasn't responded to tools/list yet.
 		ready := !flat.IsNull() && len(flat.Elements()) > 0
-		return flat, ready, nil
+		return toolsResult{flat, byName}, ready, nil
 	})
-	// On every non-success path, substitute a properly-typed null list:
-	// `RetryUntilFound` returns the zero value of T (here: `types.List{}`
-	// with no element type) on err / exhaustion, and a zero-valued
-	// `types.List` round-trips as `tftypes.List[DynamicPseudoType]` which
-	// the framework rejects with a "MISSING TYPE" value-conversion error.
+	// On every non-success path, substitute properly-typed null values:
+	// `RetryUntilFound` returns the zero value of T on err / exhaustion,
+	// and a zero-valued `types.List` / `types.Map` round-trips as
+	// `tftypes.List[DynamicPseudoType]` etc. which the framework rejects
+	// with a "MISSING TYPE" value-conversion error.
 	if err != nil {
 		diags.AddWarning("Tools fetch failed", err.Error())
-		return types.ListNull(mcpServerToolObjectType), diags
+		return nullList, nullMap, diags
 	}
 	if !found {
 		diags.AddWarning("Tools not ready", "timeout waiting for MCP server tools to be ready")
-		return types.ListNull(mcpServerToolObjectType), diags
+		return nullList, nullMap, diags
 	}
-	return tools, diags
+	return res.list, res.byName, diags
 }
 
-// flattenMcpServerTools projects the GetMcpServerTools response items
-// onto the resource's `tools` schema. Surfaces every wire field useful
-// in HCL: id/name/description for `for_each` keying, `parameters`
-// (JSON-encoded as a string for jsondecode introspection),
-// `assigned_agents`/`assigned_agent_count` to see existing assignments
-// without a separate data source, and `created_at` for stable sort.
-func flattenMcpServerTools(apiTools []struct {
+// projectMcpServerTools projects the `GetMcpServerTools` response onto
+// both Computed attributes in one walk: the rich `tools` ListNested and
+// the flat `tool_id_by_name` lookup map. Single function so the two
+// can't drift relative to each other (same input, same iteration order).
+//
+// The list element exposes every wire field useful in HCL — id, name,
+// description, JSON-encoded `parameters`, assigned-agent summary, and
+// `created_at`. The map is just `name → id` for the common one-line
+// lookup case.
+//
+// Duplicate wire-`name`s would silently collapse map entries; warn so
+// users know data was lost. Backend convention is `<server>__<short>`
+// which should be unique per install, but defending against future
+// looseness is cheap.
+func projectMcpServerTools(apiTools []struct {
 	AssignedAgentCount float32 `json:"assignedAgentCount"`
 	AssignedAgents     []struct {
 		Id   string `json:"id"`
@@ -562,8 +607,11 @@ func flattenMcpServerTools(apiTools []struct {
 	Id          string                 `json:"id"`
 	Name        string                 `json:"name"`
 	Parameters  map[string]interface{} `json:"parameters"`
-}) (types.List, diag.Diagnostics) {
-	elements := make([]attr.Value, len(apiTools))
+}) (types.List, types.Map, diag.Diagnostics) {
+	var diags diag.Diagnostics
+	listElements := make([]attr.Value, len(apiTools))
+	mapEntries := make(map[string]attr.Value, len(apiTools))
+
 	for i, t := range apiTools {
 		desc := types.StringNull()
 		if t.Description != nil {
@@ -587,14 +635,16 @@ func flattenMcpServerTools(apiTools []struct {
 				"id":   types.StringValue(a.Id),
 				"name": types.StringValue(a.Name),
 			})
+			diags.Append(d...)
 			if d.HasError() {
-				return types.ListNull(mcpServerToolObjectType), d
+				return types.ListNull(mcpServerToolObjectType), types.MapNull(types.StringType), diags
 			}
 			agentElems[j] = ao
 		}
 		assignedAgents, d := types.ListValue(mcpServerToolAssignedAgentObjectType, agentElems)
+		diags.Append(d...)
 		if d.HasError() {
-			return types.ListNull(mcpServerToolObjectType), d
+			return types.ListNull(mcpServerToolObjectType), types.MapNull(types.StringType), diags
 		}
 
 		obj, d := types.ObjectValue(mcpServerToolObjectType.AttrTypes, map[string]attr.Value{
@@ -606,10 +656,30 @@ func flattenMcpServerTools(apiTools []struct {
 			"assigned_agents":      assignedAgents,
 			"created_at":           types.StringValue(t.CreatedAt.Format(time.RFC3339)),
 		})
+		diags.Append(d...)
 		if d.HasError() {
-			return types.ListNull(mcpServerToolObjectType), d
+			return types.ListNull(mcpServerToolObjectType), types.MapNull(types.StringType), diags
 		}
-		elements[i] = obj
+		listElements[i] = obj
+
+		if _, exists := mapEntries[t.Name]; exists {
+			diags.AddWarning(
+				"Duplicate tool name",
+				fmt.Sprintf("`tool_id_by_name` collapsed two tools with the same name %q; the second overwrote the first. The full list at `tools` still shows both.", t.Name),
+			)
+		}
+		mapEntries[t.Name] = types.StringValue(t.Id)
 	}
-	return types.ListValue(mcpServerToolObjectType, elements)
+
+	listValue, d := types.ListValue(mcpServerToolObjectType, listElements)
+	diags.Append(d...)
+	if d.HasError() {
+		return types.ListNull(mcpServerToolObjectType), types.MapNull(types.StringType), diags
+	}
+	mapValue, d := types.MapValue(types.StringType, mapEntries)
+	diags.Append(d...)
+	if d.HasError() {
+		return types.ListNull(mcpServerToolObjectType), types.MapNull(types.StringType), diags
+	}
+	return listValue, mapValue, diags
 }

@@ -71,8 +71,9 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"tool_id": schema.StringAttribute{
-				MarkdownDescription: "ID of the tool this policy applies to. This is the bare tool UUID — use `archestra_mcp_server_installation.<n>.tools[*].id`, `data.archestra_mcp_server_tool.<n>.id`, or `archestra_agent_tool.<n>.tool_id`. **Not** the agent-tool assignment composite ID.",
-				Required:            true,
+				MarkdownDescription: "Bare tool UUID this policy applies to. **Not** the agent-tool assignment composite ID.\n\n" +
+					"Preferred lookup is `archestra_mcp_server_installation.<n>.tool_id_by_name[\"<server>__<short>\"]` — one line, no extra data source. Fallbacks: `archestra_agent_tool.<n>.tool_id` (when the assignment is also Terraform-managed) or `data.archestra_mcp_server_tool.<n>.id` (for installs not managed by Terraform).",
+				Required: true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(uuidRegexp, "tool_id must be a UUID (use a tool data source's `id` or `tool_id` field, not the agent-tool assignment ID)"),
 				},

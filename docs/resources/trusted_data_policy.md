@@ -13,13 +13,23 @@ Manages an Archestra trusted data policy. A single policy may carry multiple con
 ## Example Usage
 
 ```terraform
-data "archestra_agent_tool" "fetch_url" {
-  agent_id  = "00000000-0000-0000-0000-000000000000"
-  tool_name = "fetch_url"
+resource "archestra_mcp_registry_catalog_item" "fetch" {
+  name        = "fetch"
+  description = "URL-fetching MCP server"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-fetch"]
+  }
+}
+
+resource "archestra_mcp_server_installation" "fetch" {
+  name       = "fetch"
+  catalog_id = archestra_mcp_registry_catalog_item.fetch.id
 }
 
 resource "archestra_trusted_data_policy" "trust_company_api" {
-  tool_id     = data.archestra_agent_tool.fetch_url.id
+  tool_id     = archestra_mcp_server_installation.fetch.tool_id_by_name["${archestra_mcp_registry_catalog_item.fetch.name}__fetch"]
   description = "Mark data from company API as trusted"
   conditions = [
     { key = "url", operator = "contains", value = "api.company.com" },
@@ -35,7 +45,9 @@ resource "archestra_trusted_data_policy" "trust_company_api" {
 
 - `conditions` (Attributes List) Conditions evaluated against the data attribute. ALL must match for `action` to fire. Use `key` for the JSON path of the attribute being matched. (see [below for nested schema](#nestedatt--conditions))
 - `description` (String) Description of the policy
-- `tool_id` (String) ID of the tool this policy applies to. This is the bare tool UUID — use `archestra_mcp_server_installation.<n>.tools[*].id`, `data.archestra_mcp_server_tool.<n>.id`, or `archestra_agent_tool.<n>.tool_id`. **Not** the agent-tool assignment composite ID.
+- `tool_id` (String) Bare tool UUID this policy applies to. **Not** the agent-tool assignment composite ID.
+
+Preferred lookup is `archestra_mcp_server_installation.<n>.tool_id_by_name["<server>__<short>"]` — one line, no extra data source. Fallbacks: `archestra_agent_tool.<n>.tool_id` (when the assignment is also Terraform-managed) or `data.archestra_mcp_server_tool.<n>.id` (for installs not managed by Terraform).
 
 ### Optional
 

@@ -131,6 +131,16 @@ func TestAccMCPServerInstallationResource(t *testing.T) {
 						tfjsonpath.New("tools").AtSliceIndex(0).AtMapKey("created_at"),
 						knownvalue.StringRegexp(regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}`)),
 					),
+					// tool_id_by_name carries the same data indexed for
+					// the lookup-by-name flow. Asserting it's non-null is
+					// enough — the per-key lookup is exercised by examples
+					// and the bulk-resource acceptance tests via
+					// `archestra_mcp_server_installation.<n>.tool_id_by_name[...]`.
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("tool_id_by_name"),
+						knownvalue.NotNull(),
+					),
 				},
 			},
 			// ImportState testing - skip verify on `name` (import doesn't restore
@@ -138,9 +148,13 @@ func TestAccMCPServerInstallationResource(t *testing.T) {
 			// whose ordering and exact contents depend on when the read fires
 			// relative to the MCP server's tool-discovery cycle).
 			{
-				ResourceName:            "archestra_mcp_server_installation.test",
-				ImportState:             true,
-				ImportStateVerify:       true,
+				ResourceName:      "archestra_mcp_server_installation.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				// `tool_id_by_name` is keyed on stable tool names — order-
+				// independent — and round-trips cleanly. Only `tools`
+				// (list ordering non-deterministic) and `name` (import
+				// can't recover the user's configured name) need ignoring.
 				ImportStateVerifyIgnore: []string{"name", "tools"},
 			},
 			// Delete testing automatically occurs in TestCase

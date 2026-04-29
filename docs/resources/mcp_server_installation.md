@@ -62,6 +62,17 @@ resource "archestra_mcp_server_installation" "example" {
 
 - `display_name` (String) The actual name of the MCP server installation as returned by the API. The API may append a suffix to ensure uniqueness.
 - `id` (String) MCP server identifier
+- `tool_id_by_name` (Map of String) Lookup table mapping each tool's wire name (`<server_name>__<short_name>`, e.g. `filesystem__read_text_file`) to its bare tool UUID. Same data as `tools[*].id` but indexed for the common case — drop the `data "archestra_mcp_server_tool"` plumbing and just write:
+
+```hcl
+resource "archestra_agent_tool" "read_text_file" {
+  agent_id      = archestra_agent.support.id
+  mcp_server_id = archestra_mcp_server_installation.filesystem.id
+  tool_id       = archestra_mcp_server_installation.filesystem.tool_id_by_name["filesystem__read_text_file"]
+}
+```
+
+Populated from the same `GetMcpServerTools` fetch as `tools`. Refreshes on every Read; on a transient fetch failure the last-known map is preserved (with a warning) rather than blanked. `null` while tools are still being discovered (first apply before the readiness probe sees any tools) or if the backend is unreachable. Empty map (`{}`, distinguishable from null with `length(...) == 0`) when the install has fully booted but the server advertises no tools.
 - `tools` (Attributes List) Tools exposed by the installed MCP server. Populated after install (and refreshed on read) so you can fan out per-tool resources without separate `data "archestra_mcp_server_tool"` lookups:
 
 ```hcl

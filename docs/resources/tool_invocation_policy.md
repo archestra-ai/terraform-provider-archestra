@@ -13,13 +13,29 @@ Manages an Archestra tool invocation policy. A single policy may carry multiple 
 ## Example Usage
 
 ```terraform
-data "archestra_agent_tool" "file_write" {
-  agent_id  = "00000000-0000-0000-0000-000000000000"
-  tool_name = "write_file"
+resource "archestra_mcp_registry_catalog_item" "filesystem" {
+  name        = "filesystem"
+  description = "Filesystem MCP server"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+}
+
+resource "archestra_mcp_server_installation" "filesystem" {
+  name       = "filesystem"
+  catalog_id = archestra_mcp_registry_catalog_item.filesystem.id
+}
+
+# One-line tool-id lookup via the install's `tool_id_by_name` map —
+# no `data "archestra_mcp_server_tool"` plumbing required.
+locals {
+  file_write_tool_id = archestra_mcp_server_installation.filesystem.tool_id_by_name["${archestra_mcp_registry_catalog_item.filesystem.name}__write_file"]
 }
 
 resource "archestra_tool_invocation_policy" "block_system_paths" {
-  tool_id = data.archestra_agent_tool.file_write.id
+  tool_id = local.file_write_tool_id
   conditions = [
     { key = "path", operator = "contains", value = "/etc/" },
   ]
@@ -29,7 +45,7 @@ resource "archestra_tool_invocation_policy" "block_system_paths" {
 
 # Multi-condition policy — ALL conditions must match for `action` to fire.
 resource "archestra_tool_invocation_policy" "block_dotfiles_in_home" {
-  tool_id = data.archestra_agent_tool.file_write.id
+  tool_id = local.file_write_tool_id
   conditions = [
     { key = "path", operator = "startsWith", value = "/home/" },
     { key = "path", operator = "contains", value = "/." },
@@ -46,7 +62,9 @@ resource "archestra_tool_invocation_policy" "block_dotfiles_in_home" {
 
 - `action` (String) Action to take when the policy matches. One of `allow_when_context_is_untrusted`, `block_when_context_is_untrusted`, `block_always`, `require_approval`.
 - `conditions` (Attributes List) Conditions evaluated against tool-call arguments. ALL must match for `action` to fire. (see [below for nested schema](#nestedatt--conditions))
-- `tool_id` (String) ID of the tool this policy applies to. This is the bare tool UUID — use `archestra_mcp_server_installation.<n>.tools[*].id`, `data.archestra_mcp_server_tool.<n>.id`, or `archestra_agent_tool.<n>.tool_id`. **Not** the agent-tool assignment composite ID.
+- `tool_id` (String) Bare tool UUID this policy applies to. **Not** the agent-tool assignment composite ID.
+
+Preferred lookup is `archestra_mcp_server_installation.<n>.tool_id_by_name["<server>__<short>"]` — one line, no extra data source. Fallbacks: `archestra_agent_tool.<n>.tool_id` (when the assignment is also Terraform-managed) or `data.archestra_mcp_server_tool.<n>.id` (for installs not managed by Terraform).
 
 ### Optional
 
