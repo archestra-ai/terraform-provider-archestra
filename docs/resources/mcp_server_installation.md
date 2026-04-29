@@ -62,3 +62,17 @@ resource "archestra_mcp_server_installation" "example" {
 
 - `display_name` (String) The actual name of the MCP server installation as returned by the API. The API may append a suffix to ensure uniqueness.
 - `id` (String) MCP server identifier
+- `tools` (Attributes List) Tools exposed by the installed MCP server. Populated after install (and refreshed on read) so you can fan out per-tool resources without separate `data "archestra_mcp_server_tool"` lookups:
+
+```hcl
+for_each = { for t in archestra_mcp_server_installation.<name>.tools : t.name => t }
+``` (see [below for nested schema](#nestedatt--tools))
+
+<a id="nestedatt--tools"></a>
+### Nested Schema for `tools`
+
+Read-Only:
+
+- `description` (String) Human-readable description as advertised by the MCP server. May be null.
+- `id` (String) Tool UUID. Use as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.
+- `name` (String) Tool name (the MCP server's own identifier — stable across installs of the same catalog item).

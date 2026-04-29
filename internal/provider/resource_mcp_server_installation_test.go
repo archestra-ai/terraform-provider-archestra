@@ -79,14 +79,37 @@ func TestAccMCPServerInstallationResource(t *testing.T) {
 						tfjsonpath.New("display_name"),
 						knownvalue.NotNull(),
 					),
+					// tools is populated post-install. The filesystem MCP
+					// server advertises read_file/write_file/etc.; we don't
+					// pin specific names or counts because the upstream
+					// server is free to add/remove. Indexing AtSliceIndex(0)
+					// implicitly asserts the list has at least one element.
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("tools"),
+						knownvalue.NotNull(),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("tools").AtSliceIndex(0).AtMapKey("id"),
+						knownvalue.NotNull(),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("tools").AtSliceIndex(0).AtMapKey("name"),
+						knownvalue.NotNull(),
+					),
 				},
 			},
-			// ImportState testing - skip verify since import doesn't restore the user's name
+			// ImportState testing - skip verify on `name` (import doesn't restore
+			// the user's configured name) and on `tools` (server-managed list
+			// whose ordering and exact contents depend on when the read fires
+			// relative to the MCP server's tool-discovery cycle).
 			{
 				ResourceName:            "archestra_mcp_server_installation.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"name"},
+				ImportStateVerifyIgnore: []string{"name", "tools"},
 			},
 			// Delete testing automatically occurs in TestCase
 			// Note: Update test removed since name change triggers replacement

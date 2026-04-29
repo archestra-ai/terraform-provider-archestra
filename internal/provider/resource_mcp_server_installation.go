@@ -8,6 +8,8 @@ import (
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -51,7 +53,21 @@ type MCPServerResourceModel struct {
 	ServiceAccount    types.String `tfsdk:"service_account"`
 	IsByosVault       types.Bool   `tfsdk:"is_byos_vault"`
 	AgentIDs          types.List   `tfsdk:"agent_ids"`
+	// Tools is a Computed list — the slice form ([]struct) can't represent
+	// the plan-time "unknown" marker the framework needs before Create
+	// runs, so this stays a types.List wrapping mcpServerToolObjectType.
+	Tools types.List `tfsdk:"tools"`
 }
+
+// mcpServerToolObjectType is the per-element shape of the `tools`
+// Computed list. Kept narrow on purpose ({id, name, description}); the
+// backend returns more (parameters, assignedAgents, …) but those drive
+// separate resources or are debug-only.
+var mcpServerToolObjectType = types.ObjectType{AttrTypes: map[string]attr.Type{
+	"id":          types.StringType,
+	"name":        types.StringType,
+	"description": types.StringType,
+}}
 
 func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_mcp_server_installation"
@@ -152,6 +168,29 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				ElementType:         types.StringType,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplace(),
+				},
+			},
+			"tools": schema.ListNestedAttribute{
+				MarkdownDescription: "Tools exposed by the installed MCP server. Populated after install (and refreshed on read) so you can fan out per-tool resources without separate `data \"archestra_mcp_server_tool\"` lookups:\n\n" +
+					"```hcl\n" +
+					"for_each = { for t in archestra_mcp_server_installation.<name>.tools : t.name => t }\n" +
+					"```",
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							MarkdownDescription: "Tool UUID. Use as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.",
+							Computed:            true,
+						},
+						"name": schema.StringAttribute{
+							MarkdownDescription: "Tool name (the MCP server's own identifier — stable across installs of the same catalog item).",
+							Computed:            true,
+						},
+						"description": schema.StringAttribute{
+							MarkdownDescription: "Human-readable description as advertised by the MCP server. May be null.",
+							Computed:            true,
+						},
+					},
 				},
 			},
 		},
@@ -283,12 +322,9 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
 	}
 
-	if err := r.waitForServerTools(ctx, apiResp.JSON200.Id.String()); err != nil {
-		resp.Diagnostics.AddWarning(
-			"MCP Server Not Fully Ready",
-			fmt.Sprintf("Server created successfully but tools are not yet available. They may appear shortly. Error: %s", err),
-		)
-	}
+	tools, toolsDiags := r.waitForServerTools(ctx, apiResp.JSON200.Id.String())
+	resp.Diagnostics.Append(toolsDiags...)
+	data.Tools = tools
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -349,6 +385,30 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	// EnvironmentValues, UserConfigValues, and AccessToken are write-only;
 	// preserve from prior state to avoid spurious diffs.
 
+	// Refresh tools — drift-honest per A7. The MCP server can advertise
+	// new/removed tools at runtime; surfacing the change in plan is the
+	// point. On fetch failure, fall back to prior state so a transient
+	// backend hiccup doesn't blank the list.
+	toolsResp, toolsErr := r.client.GetMcpServerToolsWithResponse(ctx, serverID)
+	switch {
+	case toolsErr != nil:
+		resp.Diagnostics.AddWarning(
+			"Tools Refresh Failed",
+			fmt.Sprintf("Could not refresh tools list for MCP server %s: %s. Using last-known state.", serverID, toolsErr),
+		)
+	case toolsResp.JSON200 == nil:
+		resp.Diagnostics.AddWarning(
+			"Tools Refresh Returned Non-200",
+			fmt.Sprintf("GetMcpServerTools returned status %d for server %s. Using last-known state.", toolsResp.StatusCode(), serverID),
+		)
+	default:
+		flat, flatDiags := flattenMcpServerTools(*toolsResp.JSON200)
+		resp.Diagnostics.Append(flatDiags...)
+		if !flatDiags.HasError() {
+			data.Tools = flat
+		}
+	}
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -397,28 +457,79 @@ func (r *MCPServerResource) ImportState(ctx context.Context, req resource.Import
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID string) error {
+// waitForServerTools polls until the backend has finished scanning the
+// installed MCP server and its tool list is non-empty, then returns the
+// flattened tool list for the resource's `tools` Computed attribute.
+// On timeout/error it returns whatever's been seen so far (often a null
+// list) alongside the error — callers downgrade to a warning so a slow
+// scan doesn't fail the apply, the tools just appear on the next refresh.
+func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID string) (types.List, diag.Diagnostics) {
+	var diags diag.Diagnostics
 	serverUUID, err := uuid.Parse(serverID)
 	if err != nil {
-		return fmt.Errorf("failed to parse server ID: %w", err)
+		diags.AddError("Invalid Server ID", fmt.Sprintf("failed to parse server ID: %s", err))
+		return types.ListNull(mcpServerToolObjectType), diags
 	}
 
-	_, found, err := RetryUntilFound(ctx, mcpServerRetryConfig, func() (bool, bool, error) {
+	tools, found, err := RetryUntilFound(ctx, mcpServerRetryConfig, func() (types.List, bool, error) {
 		toolsResp, err := r.client.GetMcpServerToolsWithResponse(ctx, serverUUID)
 		if err != nil {
-			return false, false, fmt.Errorf("failed to get server tools: %w", err)
+			return types.ListNull(mcpServerToolObjectType), false, fmt.Errorf("failed to get server tools: %w", err)
 		}
 		if toolsResp.JSON200 == nil {
-			return false, false, fmt.Errorf("unexpected response status: %d", toolsResp.StatusCode())
+			return types.ListNull(mcpServerToolObjectType), false, fmt.Errorf("unexpected response status: %d", toolsResp.StatusCode())
 		}
-		ready := len(*toolsResp.JSON200) > 0
-		return ready, ready, nil
+		flat, flatDiags := flattenMcpServerTools(*toolsResp.JSON200)
+		if flatDiags.HasError() {
+			return types.ListNull(mcpServerToolObjectType), false, fmt.Errorf("failed to flatten tools: %s", flatDiags)
+		}
+		// Treat empty list as "not yet ready" — the install just landed and
+		// the MCP server hasn't responded to tools/list yet.
+		ready := !flat.IsNull() && len(flat.Elements()) > 0
+		return flat, ready, nil
 	})
 	if err != nil {
-		return err
+		diags.AddWarning("Tools fetch failed", err.Error())
+		return tools, diags
 	}
 	if !found {
-		return fmt.Errorf("timeout waiting for MCP server tools to be ready")
+		diags.AddWarning("Tools not ready", "timeout waiting for MCP server tools to be ready")
+		return tools, diags
 	}
-	return nil
+	return tools, diags
+}
+
+// flattenMcpServerTools projects the GetMcpServerTools response items
+// onto the resource's `tools` schema. Kept narrow to {id, name,
+// description}: that's enough to drive the documented `for_each` pattern.
+// Adding fields later is non-breaking; removing them is.
+func flattenMcpServerTools(apiTools []struct {
+	AssignedAgentCount float32 `json:"assignedAgentCount"`
+	AssignedAgents     []struct {
+		Id   string `json:"id"`
+		Name string `json:"name"`
+	} `json:"assignedAgents"`
+	CreatedAt   time.Time              `json:"createdAt"`
+	Description *string                `json:"description"`
+	Id          string                 `json:"id"`
+	Name        string                 `json:"name"`
+	Parameters  map[string]interface{} `json:"parameters"`
+}) (types.List, diag.Diagnostics) {
+	elements := make([]attr.Value, len(apiTools))
+	for i, t := range apiTools {
+		desc := types.StringNull()
+		if t.Description != nil {
+			desc = types.StringValue(*t.Description)
+		}
+		obj, d := types.ObjectValue(mcpServerToolObjectType.AttrTypes, map[string]attr.Value{
+			"id":          types.StringValue(t.Id),
+			"name":        types.StringValue(t.Name),
+			"description": desc,
+		})
+		if d.HasError() {
+			return types.ListNull(mcpServerToolObjectType), d
+		}
+		elements[i] = obj
+	}
+	return types.ListValue(mcpServerToolObjectType, elements)
 }
