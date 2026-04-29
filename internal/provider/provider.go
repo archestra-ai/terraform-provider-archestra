@@ -178,6 +178,7 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewAgentToolDataSource,
 		NewAgentToolsDataSource,
 		NewMCPServerToolDataSource,
+		NewMcpToolCallsDataSource,
 		NewTeamExternalGroupsDataSource,
 	}
 }

@@ -24,7 +24,7 @@ output-options:
     - Invitation
     - Knowledge Bases
     # LLM Models - included for archestra_llm_model resource
-    - MCP Tool Call
+    # MCP Tool Call - included for data.archestra_mcp_tool_calls data source
     - Member
     - Members
     - OAuth

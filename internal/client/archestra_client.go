@@ -646,6 +646,20 @@ const (
 	UpdateLlmProviderApiKeyJSONBodyScopeTeam     UpdateLlmProviderApiKeyJSONBodyScope = "team"
 )
 
+// Defines values for GetMcpToolCallsParamsSortBy.
+const (
+	GetMcpToolCallsParamsSortByAgentId       GetMcpToolCallsParamsSortBy = "agentId"
+	GetMcpToolCallsParamsSortByCreatedAt     GetMcpToolCallsParamsSortBy = "createdAt"
+	GetMcpToolCallsParamsSortByMcpServerName GetMcpToolCallsParamsSortBy = "mcpServerName"
+	GetMcpToolCallsParamsSortByMethod        GetMcpToolCallsParamsSortBy = "method"
+)
+
+// Defines values for GetMcpToolCallsParamsSortDirection.
+const (
+	GetMcpToolCallsParamsSortDirectionAsc  GetMcpToolCallsParamsSortDirection = "asc"
+	GetMcpToolCallsParamsSortDirectionDesc GetMcpToolCallsParamsSortDirection = "desc"
+)
+
 // Defines values for GetMcpServersParamsAssignmentScope.
 const (
 	GetMcpServersParamsAssignmentScopeOrg      GetMcpServersParamsAssignmentScope = "org"
@@ -948,16 +962,16 @@ const (
 
 // Defines values for GetToolsWithAssignmentsParamsSortBy.
 const (
-	AssignmentCount GetToolsWithAssignmentsParamsSortBy = "assignmentCount"
-	CreatedAt       GetToolsWithAssignmentsParamsSortBy = "createdAt"
-	Name            GetToolsWithAssignmentsParamsSortBy = "name"
-	Origin          GetToolsWithAssignmentsParamsSortBy = "origin"
+	GetToolsWithAssignmentsParamsSortByAssignmentCount GetToolsWithAssignmentsParamsSortBy = "assignmentCount"
+	GetToolsWithAssignmentsParamsSortByCreatedAt       GetToolsWithAssignmentsParamsSortBy = "createdAt"
+	GetToolsWithAssignmentsParamsSortByName            GetToolsWithAssignmentsParamsSortBy = "name"
+	GetToolsWithAssignmentsParamsSortByOrigin          GetToolsWithAssignmentsParamsSortBy = "origin"
 )
 
 // Defines values for GetToolsWithAssignmentsParamsSortDirection.
 const (
-	Asc  GetToolsWithAssignmentsParamsSortDirection = "asc"
-	Desc GetToolsWithAssignmentsParamsSortDirection = "desc"
+	GetToolsWithAssignmentsParamsSortDirectionAsc  GetToolsWithAssignmentsParamsSortDirection = "asc"
+	GetToolsWithAssignmentsParamsSortDirectionDesc GetToolsWithAssignmentsParamsSortDirection = "desc"
 )
 
 // Defines values for CreateTrustedDataPolicyJSONBodyAction.
@@ -2108,6 +2122,31 @@ type UpdateLlmProviderApiKeyJSONBody struct {
 // UpdateLlmProviderApiKeyJSONBodyScope defines parameters for UpdateLlmProviderApiKey.
 type UpdateLlmProviderApiKeyJSONBodyScope string
 
+// GetMcpToolCallsParams defines parameters for GetMcpToolCalls.
+type GetMcpToolCallsParams struct {
+	// AgentId Filter by agent ID
+	AgentId *openapi_types.UUID `form:"agentId,omitempty" json:"agentId,omitempty"`
+
+	// StartDate Filter by start date (ISO 8601 format)
+	StartDate *time.Time `form:"startDate,omitempty" json:"startDate,omitempty"`
+
+	// EndDate Filter by end date (ISO 8601 format)
+	EndDate *time.Time `form:"endDate,omitempty" json:"endDate,omitempty"`
+
+	// Search Free-text search across MCP server name, tool name, and arguments (case-insensitive)
+	Search        *string                             `form:"search,omitempty" json:"search,omitempty"`
+	Limit         *int                                `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset        *int                                `form:"offset,omitempty" json:"offset,omitempty"`
+	SortBy        *GetMcpToolCallsParamsSortBy        `form:"sortBy,omitempty" json:"sortBy,omitempty"`
+	SortDirection *GetMcpToolCallsParamsSortDirection `form:"sortDirection,omitempty" json:"sortDirection,omitempty"`
+}
+
+// GetMcpToolCallsParamsSortBy defines parameters for GetMcpToolCalls.
+type GetMcpToolCallsParamsSortBy string
+
+// GetMcpToolCallsParamsSortDirection defines parameters for GetMcpToolCalls.
+type GetMcpToolCallsParamsSortDirection string
+
 // GetMcpServersParams defines parameters for GetMcpServers.
 type GetMcpServersParams struct {
 	CatalogId         *string                             `form:"catalogId,omitempty" json:"catalogId,omitempty"`
@@ -3234,6 +3273,12 @@ type ClientInterface interface {
 	UpdateLlmProviderApiKeyWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateLlmProviderApiKey(ctx context.Context, id openapi_types.UUID, body UpdateLlmProviderApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMcpToolCalls request
+	GetMcpToolCalls(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMcpToolCall request
+	GetMcpToolCall(ctx context.Context, mcpToolCallId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetMcpServers request
 	GetMcpServers(ctx context.Context, params *GetMcpServersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4523,6 +4568,30 @@ func (c *Client) UpdateLlmProviderApiKeyWithBody(ctx context.Context, id openapi
 
 func (c *Client) UpdateLlmProviderApiKey(ctx context.Context, id openapi_types.UUID, body UpdateLlmProviderApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateLlmProviderApiKeyRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMcpToolCalls(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMcpToolCallsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMcpToolCall(ctx context.Context, mcpToolCallId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMcpToolCallRequest(c.Server, mcpToolCallId)
 	if err != nil {
 		return nil, err
 	}
@@ -8686,6 +8755,201 @@ func NewUpdateLlmProviderApiKeyRequestWithBody(server string, id openapi_types.U
 	return req, nil
 }
 
+// NewGetMcpToolCallsRequest generates requests for GetMcpToolCalls
+func NewGetMcpToolCallsRequest(server string, params *GetMcpToolCallsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp-tool-calls")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.AgentId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "agentId", runtime.ParamLocationQuery, *params.AgentId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.StartDate != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "startDate", runtime.ParamLocationQuery, *params.StartDate); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.EndDate != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "endDate", runtime.ParamLocationQuery, *params.EndDate); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SortBy != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sortBy", runtime.ParamLocationQuery, *params.SortBy); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SortDirection != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sortDirection", runtime.ParamLocationQuery, *params.SortDirection); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetMcpToolCallRequest generates requests for GetMcpToolCall
+func NewGetMcpToolCallRequest(server string, mcpToolCallId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "mcpToolCallId", runtime.ParamLocationPath, mcpToolCallId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/mcp-tool-calls/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetMcpServersRequest generates requests for GetMcpServers
 func NewGetMcpServersRequest(server string, params *GetMcpServersParams) (*http.Request, error) {
 	var err error
@@ -12068,6 +12332,12 @@ type ClientWithResponsesInterface interface {
 	UpdateLlmProviderApiKeyWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateLlmProviderApiKeyResponse, error)
 
 	UpdateLlmProviderApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateLlmProviderApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateLlmProviderApiKeyResponse, error)
+
+	// GetMcpToolCallsWithResponse request
+	GetMcpToolCallsWithResponse(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*GetMcpToolCallsResponse, error)
+
+	// GetMcpToolCallWithResponse request
+	GetMcpToolCallWithResponse(ctx context.Context, mcpToolCallId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpToolCallResponse, error)
 
 	// GetMcpServersWithResponse request
 	GetMcpServersWithResponse(ctx context.Context, params *GetMcpServersParams, reqEditors ...RequestEditorFn) (*GetMcpServersResponse, error)
@@ -18500,6 +18770,180 @@ func (r UpdateLlmProviderApiKeyResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateLlmProviderApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetMcpToolCallsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			AgentId       *openapi_types.UUID               `json:"agentId"`
+			AuthMethod    *GetMcpToolCalls200DataAuthMethod `json:"authMethod"`
+			CreatedAt     time.Time                         `json:"createdAt"`
+			Id            openapi_types.UUID                `json:"id"`
+			McpServerName string                            `json:"mcpServerName"`
+			Method        string                            `json:"method"`
+
+			// ToolCall Represents a tool call in a provider-agnostic way
+			ToolCall *struct {
+				Arguments map[string]interface{} `json:"arguments"`
+				Id        string                 `json:"id"`
+				Name      string                 `json:"name"`
+			} `json:"toolCall"`
+			ToolResult interface{} `json:"toolResult"`
+			UserId     *string     `json:"userId"`
+			UserName   *string     `json:"userName"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetMcpToolCalls400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetMcpToolCalls401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetMcpToolCalls403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetMcpToolCalls404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetMcpToolCalls409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetMcpToolCalls500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetMcpToolCalls200DataAuthMethod string
+type GetMcpToolCalls400ErrorType string
+type GetMcpToolCalls401ErrorType string
+type GetMcpToolCalls403ErrorType string
+type GetMcpToolCalls404ErrorType string
+type GetMcpToolCalls409ErrorType string
+type GetMcpToolCalls500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetMcpToolCallsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMcpToolCallsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetMcpToolCallResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AgentId       *openapi_types.UUID          `json:"agentId"`
+		AuthMethod    *GetMcpToolCall200AuthMethod `json:"authMethod"`
+		CreatedAt     time.Time                    `json:"createdAt"`
+		Id            openapi_types.UUID           `json:"id"`
+		McpServerName string                       `json:"mcpServerName"`
+		Method        string                       `json:"method"`
+
+		// ToolCall Represents a tool call in a provider-agnostic way
+		ToolCall *struct {
+			Arguments map[string]interface{} `json:"arguments"`
+			Id        string                 `json:"id"`
+			Name      string                 `json:"name"`
+		} `json:"toolCall"`
+		ToolResult interface{} `json:"toolResult"`
+		UserId     *string     `json:"userId"`
+		UserName   *string     `json:"userName"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetMcpToolCall400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetMcpToolCall401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetMcpToolCall403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetMcpToolCall404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetMcpToolCall409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                     `json:"message"`
+			Type    GetMcpToolCall500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetMcpToolCall200AuthMethod string
+type GetMcpToolCall400ErrorType string
+type GetMcpToolCall401ErrorType string
+type GetMcpToolCall403ErrorType string
+type GetMcpToolCall404ErrorType string
+type GetMcpToolCall409ErrorType string
+type GetMcpToolCall500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetMcpToolCallResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMcpToolCallResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -25944,6 +26388,24 @@ func (c *ClientWithResponses) UpdateLlmProviderApiKeyWithResponse(ctx context.Co
 		return nil, err
 	}
 	return ParseUpdateLlmProviderApiKeyResponse(rsp)
+}
+
+// GetMcpToolCallsWithResponse request returning *GetMcpToolCallsResponse
+func (c *ClientWithResponses) GetMcpToolCallsWithResponse(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*GetMcpToolCallsResponse, error) {
+	rsp, err := c.GetMcpToolCalls(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMcpToolCallsResponse(rsp)
+}
+
+// GetMcpToolCallWithResponse request returning *GetMcpToolCallResponse
+func (c *ClientWithResponses) GetMcpToolCallWithResponse(ctx context.Context, mcpToolCallId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpToolCallResponse, error) {
+	rsp, err := c.GetMcpToolCall(ctx, mcpToolCallId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMcpToolCallResponse(rsp)
 }
 
 // GetMcpServersWithResponse request returning *GetMcpServersResponse
@@ -34917,6 +35379,246 @@ func ParseUpdateLlmProviderApiKeyResponse(rsp *http.Response) (*UpdateLlmProvide
 			Error struct {
 				Message string                              `json:"message"`
 				Type    UpdateLlmProviderApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMcpToolCallsResponse parses an HTTP response from a GetMcpToolCallsWithResponse call
+func ParseGetMcpToolCallsResponse(rsp *http.Response) (*GetMcpToolCallsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMcpToolCallsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				AgentId       *openapi_types.UUID               `json:"agentId"`
+				AuthMethod    *GetMcpToolCalls200DataAuthMethod `json:"authMethod"`
+				CreatedAt     time.Time                         `json:"createdAt"`
+				Id            openapi_types.UUID                `json:"id"`
+				McpServerName string                            `json:"mcpServerName"`
+				Method        string                            `json:"method"`
+
+				// ToolCall Represents a tool call in a provider-agnostic way
+				ToolCall *struct {
+					Arguments map[string]interface{} `json:"arguments"`
+					Id        string                 `json:"id"`
+					Name      string                 `json:"name"`
+				} `json:"toolCall"`
+				ToolResult interface{} `json:"toolResult"`
+				UserId     *string     `json:"userId"`
+				UserName   *string     `json:"userName"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetMcpToolCalls400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetMcpToolCalls401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetMcpToolCalls403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetMcpToolCalls404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetMcpToolCalls409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetMcpToolCalls500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMcpToolCallResponse parses an HTTP response from a GetMcpToolCallWithResponse call
+func ParseGetMcpToolCallResponse(rsp *http.Response) (*GetMcpToolCallResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMcpToolCallResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AgentId       *openapi_types.UUID          `json:"agentId"`
+			AuthMethod    *GetMcpToolCall200AuthMethod `json:"authMethod"`
+			CreatedAt     time.Time                    `json:"createdAt"`
+			Id            openapi_types.UUID           `json:"id"`
+			McpServerName string                       `json:"mcpServerName"`
+			Method        string                       `json:"method"`
+
+			// ToolCall Represents a tool call in a provider-agnostic way
+			ToolCall *struct {
+				Arguments map[string]interface{} `json:"arguments"`
+				Id        string                 `json:"id"`
+				Name      string                 `json:"name"`
+			} `json:"toolCall"`
+			ToolResult interface{} `json:"toolResult"`
+			UserId     *string     `json:"userId"`
+			UserName   *string     `json:"userName"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetMcpToolCall400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetMcpToolCall401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetMcpToolCall403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetMcpToolCall404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetMcpToolCall409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                     `json:"message"`
+				Type    GetMcpToolCall500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
