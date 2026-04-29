@@ -53,7 +53,7 @@ func (r *LimitResource) Metadata(ctx context.Context, req resource.MetadataReque
 
 func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages usage limits in Archestra.",
+		MarkdownDescription: "Usage limit on tokens or call counts, scoped per organization, team, or agent. See `limit_type` below for the three modes.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

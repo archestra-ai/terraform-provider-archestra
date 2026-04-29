@@ -209,7 +209,7 @@ func (r *MCPServerRegistryResource) Metadata(ctx context.Context, req resource.M
 
 func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an MCP server in the Private MCP Registry. This allows you to register local MCP servers that can then be installed by profiles.",
+		MarkdownDescription: "Catalog entry / template for an MCP server in the Private MCP Registry. The catalog item alone doesn't run anything; pair it with `archestra_mcp_server_installation` to run an instance.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

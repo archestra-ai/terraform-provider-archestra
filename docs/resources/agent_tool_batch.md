@@ -3,15 +3,12 @@
 page_title: "archestra_agent_tool_batch Resource - archestra"
 subcategory: ""
 description: |-
-  Assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip. The right default for fanning out an entire install onto an agent.
-  ~> Authoritative over (agent_id, mcp_server_id). Mixing this resource with archestra_agent_tool agent_tool for the same (agent_id, mcp_server_id) makes them fight on every plan — pick one model. Multiple batches targeting the same agent but different installs coexist cleanly.
+  Bulk-assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip. Authoritative over (agent_id, mcp_server_id) — don't mix with archestra_agent_tool for the same pair.
 ---
 
 # archestra_agent_tool_batch (Resource)
 
-Assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip. The right default for fanning out an entire install onto an agent.
-
-~> **Authoritative over `(agent_id, mcp_server_id)`.** Mixing this resource with [`archestra_agent_tool`](agent_tool) for the same `(agent_id, mcp_server_id)` makes them fight on every plan — pick one model. Multiple batches targeting the same agent but different installs coexist cleanly.
+Bulk-assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip. Authoritative over `(agent_id, mcp_server_id)` — don't mix with `archestra_agent_tool` for the same pair.
 
 ## Example Usage
 

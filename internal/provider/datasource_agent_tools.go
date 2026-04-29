@@ -50,8 +50,7 @@ func (d *AgentToolsDataSource) Metadata(_ context.Context, req datasource.Metada
 
 func (d *AgentToolsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Lists every tool currently assigned to an agent. Use to fan out resources per assigned tool with `for_each` instead of looking up each one individually.\n\n" +
-			"~> **Looking up one tool by name?** Use [`data.archestra_agent_tool`](agent_tool) (singular) — takes `agent_id` + `tool_name`.",
+		MarkdownDescription: "Lists every tool currently assigned to an agent.",
 
 		Attributes: map[string]schema.Attribute{
 			"agent_id": schema.StringAttribute{

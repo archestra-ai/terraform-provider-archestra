@@ -3,31 +3,41 @@
 page_title: "archestra_mcp_server_tool Data Source - archestra"
 subcategory: ""
 description: |-
-  Fetches a tool from an MCP server by MCP server ID and tool name.
-  ~> Prefer the install resource's tool_id_by_name map when the install is managed by Terraform — archestra_mcp_server_installation.<n>.tool_id_by_name["<server>__<short>"] returns the same UUID without the extra data-source plumbing or the implicit depends_on. This data source is the right choice only when the install is not managed by Terraform (e.g. you're attaching a policy to an install someone else created via the UI).
+  Fetches a tool from an MCP server by name. When the install is Terraform-managed, prefer archestra_mcp_server_installation.<n>.tool_id_by_name[<name>] — same UUID without the extra data-source dependency.
 ---
 
 # archestra_mcp_server_tool (Data Source)
 
-Fetches a tool from an MCP server by MCP server ID and tool name.
-
-~> **Prefer the install resource's `tool_id_by_name` map** when the install is managed by Terraform — `archestra_mcp_server_installation.<n>.tool_id_by_name["<server>__<short>"]` returns the same UUID without the extra data-source plumbing or the implicit `depends_on`. This data source is the right choice only when the install is **not** managed by Terraform (e.g. you're attaching a policy to an install someone else created via the UI).
+Fetches a tool from an MCP server by name. When the install is Terraform-managed, prefer `archestra_mcp_server_installation.<n>.tool_id_by_name[<name>]` — same UUID without the extra data-source dependency.
 
 ## Example Usage
 
 ```terraform
-data "archestra_mcp_server_tool" "example" {
-  mcp_server_id = "mcp-server-id-here"
-  name          = "read_file"
+# Look up a single MCP server tool by name — the bare-UUID equivalent of the
+# `archestra_mcp_server_installation.tool_id_by_name` map. Use when you need
+# the data-source dependency edge instead of an attribute reference.
+data "archestra_mcp_server_tool" "filesystem_read_text_file" {
+  mcp_server_id = archestra_mcp_server_installation.filesystem.id
+  name          = "filesystem__read_text_file"
+}
+
+# Drive a tool-invocation policy off the lookup.
+resource "archestra_tool_invocation_policy" "no_etc_reads" {
+  tool_id = data.archestra_mcp_server_tool.filesystem_read_text_file.id
+  conditions = [
+    { key = "path", operator = "startsWith", value = "/etc/" },
+  ]
+  action = "block_always"
+  reason = "Block reads under /etc/"
 }
 
 output "tool_id" {
-  value       = data.archestra_mcp_server_tool.example.id
-  description = "The tool ID"
+  value       = data.archestra_mcp_server_tool.filesystem_read_text_file.id
+  description = "Bare tool UUID — pass to policy resources' tool_id."
 }
 
 output "tool_description" {
-  value = data.archestra_mcp_server_tool.example.description
+  value = data.archestra_mcp_server_tool.filesystem_read_text_file.description
 }
 ```
 

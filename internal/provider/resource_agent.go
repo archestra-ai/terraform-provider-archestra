@@ -62,7 +62,7 @@ func (r *AgentResource) Metadata(_ context.Context, req resource.MetadataRequest
 
 func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an Archestra internal agent — a chat agent backed by an LLM, optionally augmented by knowledge bases, connectors, and email triggers.",
+		MarkdownDescription: "Internal chat agent — system prompt + LLM, optionally augmented with knowledge bases, connectors, and email triggers.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,

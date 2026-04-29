@@ -95,11 +95,7 @@ func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataR
 
 func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an Archestra MCP server installation.\n\n" +
-			"~> **Note:** The `ownerId` and `userId` fields on the underlying API are derived " +
-			"from the authenticated caller and cannot be set declaratively. Any value sent in " +
-			"the request body is overwritten by the backend with the API key's user ID, so " +
-			"these fields are intentionally not exposed on this resource.",
+		MarkdownDescription: "Running instance of an MCP server, pulled from an `archestra_mcp_registry_catalog_item` template via `catalog_id`.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -242,10 +238,9 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"tool_id_by_name": schema.MapAttribute{
-				MarkdownDescription: "Lookup table from each tool's wire name (`<server>__<short>`, e.g. `filesystem__read_text_file`) to its bare tool UUID. Same data as `tools[*].id`, indexed for the `tool_id = ...tool_id_by_name[\"<name>\"]` one-liner pattern (see the `archestra_agent_tool` example). " +
-					"`null` while tools are still being discovered or the backend is unreachable; empty map `{}` when the install has booted but advertises no tools.",
-				Computed:    true,
-				ElementType: types.StringType,
+				MarkdownDescription: "Lookup table from each tool's wire name (`<server>__<short>`) to its bare tool UUID — same data as `tools[*].id` but keyed for one-line lookups. Null while tools are still being discovered.",
+				Computed:            true,
+				ElementType:         types.StringType,
 			},
 		},
 	}

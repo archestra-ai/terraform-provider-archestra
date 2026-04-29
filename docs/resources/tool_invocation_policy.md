@@ -3,15 +3,12 @@
 page_title: "archestra_tool_invocation_policy Resource - archestra"
 subcategory: ""
 description: |-
-  Conditional tool-invocation policy — fires action when ALL of conditions match the tool-call arguments. Maps to the Add Policy button in the Guardrails UI's Tool Call Policies section.
-  ~> For the UI's DEFAULT row (the unconditional fall-through), use archestra_tool_invocation_policy_default tool_invocation_policy_default instead. This resource requires non-empty conditions.
+  Conditional tool-invocation policy — fires action when ALL of conditions match the tool-call arguments. conditions must be non-empty; for the unconditional default, use archestra_tool_invocation_policy_default.
 ---
 
 # archestra_tool_invocation_policy (Resource)
 
-Conditional tool-invocation policy — fires `action` when ALL of `conditions` match the tool-call arguments. Maps to the **Add Policy** button in the Guardrails UI's Tool Call Policies section.
-
-~> **For the UI's `DEFAULT` row** (the unconditional fall-through), use [`archestra_tool_invocation_policy_default`](tool_invocation_policy_default) instead. This resource requires non-empty `conditions`.
+Conditional tool-invocation policy — fires `action` when ALL of `conditions` match the tool-call arguments. `conditions` must be non-empty; for the unconditional default, use `archestra_tool_invocation_policy_default`.
 
 ## Example Usage
 

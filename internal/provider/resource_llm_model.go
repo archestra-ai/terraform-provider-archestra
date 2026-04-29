@@ -53,10 +53,7 @@ func (r *LlmModelResource) Metadata(ctx context.Context, req resource.MetadataRe
 
 func (r *LlmModelResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an LLM model's custom pricing and settings in Archestra. " +
-			"Models are discovered automatically from configured LLM provider API keys. " +
-			"This resource adopts an existing model by `model_id` and allows customizing its pricing. " +
-			"Destroying this resource only removes it from Terraform state — the model remains in Archestra.",
+		MarkdownDescription: "Pricing and settings override for an LLM model auto-discovered from an `archestra_llm_provider_api_key`. Adopt-only — `terraform destroy` reverts the override; the model itself is never deleted.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

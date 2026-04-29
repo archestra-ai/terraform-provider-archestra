@@ -3,15 +3,12 @@
 page_title: "archestra_agent_tool Resource - archestra"
 subcategory: ""
 description: |-
-  Assigns one tool to one agent and configures its per-assignment execution settings.
-  ~> Assigning many tools to one agent? Use archestra_agent_tool_batch agent_tool_batch — it hits the bulk-assign endpoint and applies in O(1) API calls regardless of how many tools.
+  Assigns one tool to one agent. For bulk assignment of every tool from an install, use archestra_agent_tool_batch (one API call regardless of count).
 ---
 
 # archestra_agent_tool (Resource)
 
-Assigns one tool to one agent and configures its per-assignment execution settings.
-
-~> **Assigning many tools to one agent?** Use [`archestra_agent_tool_batch`](agent_tool_batch) — it hits the bulk-assign endpoint and applies in `O(1)` API calls regardless of how many tools.
+Assigns one tool to one agent. For bulk assignment of every tool from an install, use `archestra_agent_tool_batch` (one API call regardless of count).
 
 ## Example Usage
 

@@ -3,20 +3,23 @@
 page_title: "archestra_agent Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an Archestra internal agent — a chat agent backed by an LLM, optionally augmented by knowledge bases, connectors, and email triggers.
+  Internal chat agent — system prompt + LLM, optionally augmented with knowledge bases, connectors, and email triggers.
 ---
 
 # archestra_agent (Resource)
 
-Manages an Archestra internal agent — a chat agent backed by an LLM, optionally augmented by knowledge bases, connectors, and email triggers.
+Internal chat agent — system prompt + LLM, optionally augmented with knowledge bases, connectors, and email triggers.
 
 ## Example Usage
 
 ```terraform
+# Customer-support agent — the most common shape: a system prompt, an LLM,
+# a couple of suggested prompts, and a few labels for filtering in the UI.
 resource "archestra_agent" "support" {
   name          = "customer-support"
   description   = "Tier-1 customer support agent"
-  system_prompt = "You are a friendly customer-support agent."
+  icon          = "headphones"
+  system_prompt = "You are a friendly customer-support agent. Be concise."
   llm_model     = "gpt-4o"
   scope         = "org"
 
@@ -24,12 +27,47 @@ resource "archestra_agent" "support" {
     {
       summary_title = "Refund a charge"
       prompt        = "Help me refund a customer charge."
-    }
+    },
+    {
+      summary_title = "Look up an order"
+      prompt        = "Find the most recent order for customer {{email}}."
+    },
   ]
 
   labels = [
-    { key = "team", value = "support" }
+    { key = "team", value = "support" },
+    { key = "tier", value = "1" },
   ]
+}
+
+# Team-scoped agent — visible only to members of the listed teams. The
+# `archestra_team` reference enforces ordering so the team exists first.
+resource "archestra_agent" "engineering_qa" {
+  name          = "eng-qa"
+  description   = "Engineering QA assistant"
+  system_prompt = "You triage bug reports against the eng playbook."
+  llm_model     = "claude-sonnet-4-5"
+  scope         = "team"
+  teams         = [archestra_team.engineering.id]
+
+  # Wire a specific provider key (e.g. an Anthropic key from BYOS Vault) instead
+  # of relying on the org-wide default.
+  llm_api_key_id = archestra_llm_provider_api_key.vault_backed.id
+}
+
+# Email-triggered agent — receive new chats via incoming email. The agent
+# accepts mail from anyone in `acme.com` thanks to `internal` security mode.
+resource "archestra_agent" "intake" {
+  name          = "support-intake"
+  description   = "Routes incoming email into chats"
+  system_prompt = "Triage incoming customer emails into the right team."
+  llm_model     = "gpt-4o-mini"
+
+  incoming_email_enabled        = true
+  incoming_email_security_mode  = "internal"
+  incoming_email_allowed_domain = "acme.com"
+
+  consider_context_untrusted = true # Treat email content as untrusted by default.
 }
 ```
 

@@ -3,15 +3,12 @@
 page_title: "archestra_trusted_data_policy Resource - archestra"
 subcategory: ""
 description: |-
-  Conditional trusted-data policy — fires action when ALL of conditions match the tool's result. Maps to the Add Tool Result Policy button in the Guardrails UI's Tool Result Policies section.
-  ~> For the UI's DEFAULT row under "Tool Result Policies", use archestra_trusted_data_policy_default trusted_data_policy_default instead. This resource requires non-empty conditions.
+  Conditional trusted-data policy — fires action when ALL of conditions match the tool's result. conditions must be non-empty; for the unconditional default, use archestra_trusted_data_policy_default.
 ---
 
 # archestra_trusted_data_policy (Resource)
 
-Conditional trusted-data policy — fires `action` when ALL of `conditions` match the tool's *result*. Maps to the **Add Tool Result Policy** button in the Guardrails UI's Tool Result Policies section.
-
-~> **For the UI's `DEFAULT` row** under "Tool Result Policies", use [`archestra_trusted_data_policy_default`](trusted_data_policy_default) instead. This resource requires non-empty `conditions`.
+Conditional trusted-data policy — fires `action` when ALL of `conditions` match the tool's *result*. `conditions` must be non-empty; for the unconditional default, use `archestra_trusted_data_policy_default`.
 
 ## Example Usage
 

@@ -48,8 +48,7 @@ func (r *AgentToolResource) Metadata(_ context.Context, req resource.MetadataReq
 
 func (r *AgentToolResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Assigns one tool to one agent and configures its per-assignment execution settings.\n\n" +
-			"~> **Assigning many tools to one agent?** Use [`archestra_agent_tool_batch`](agent_tool_batch) — it hits the bulk-assign endpoint and applies in `O(1)` API calls regardless of how many tools.",
+		MarkdownDescription: "Assigns one tool to one agent. For bulk assignment of every tool from an install, use `archestra_agent_tool_batch` (one API call regardless of count).",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

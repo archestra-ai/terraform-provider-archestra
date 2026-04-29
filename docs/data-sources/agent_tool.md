@@ -3,30 +3,37 @@
 page_title: "archestra_agent_tool Data Source - archestra"
 subcategory: ""
 description: |-
-  Fetches one agent-tool assignment by agent ID and tool name.
-  ~> Listing every tool assigned to an agent? Use data.archestra_agent_tools agent_tools (plural) — returns the full list in one call.
-  ~> Picking the right ID for policies. archestra_tool_invocation_policy.tool_id and archestra_trusted_data_policy.tool_id expect the bare tool UUID (tool_id field below) — not the assignment composite (id field below).
+  Fetches one agent-tool assignment by agent ID and tool name. Policy resources' tool_id expects the bare tool UUID (field tool_id below), not the assignment composite (field id below).
 ---
 
 # archestra_agent_tool (Data Source)
 
-Fetches one agent-tool assignment by agent ID and tool name.
-
-~> **Listing every tool assigned to an agent?** Use [`data.archestra_agent_tools`](agent_tools) (plural) — returns the full list in one call.
-
-~> **Picking the right ID for policies.** `archestra_tool_invocation_policy.tool_id` and `archestra_trusted_data_policy.tool_id` expect the bare tool UUID (`tool_id` field below) — not the assignment composite (`id` field below).
+Fetches one agent-tool assignment by agent ID and tool name. Policy resources' `tool_id` expects the bare tool UUID (field `tool_id` below), not the assignment composite (field `id` below).
 
 ## Example Usage
 
 ```terraform
-data "archestra_agent_tool" "example" {
-  agent_id  = "00000000-0000-0000-0000-000000000000"
+# Look up an agent's bound tool by name. Useful when the tool was assigned
+# outside Terraform (UI, API) and you need its UUID to attach a policy.
+data "archestra_agent_tool" "support_read_text_file" {
+  agent_id  = archestra_agent.support.id
   tool_name = "read_text_file"
 }
 
-output "agent_tool_id" {
-  description = "Use this in agent_tool_id on policy resources"
-  value       = data.archestra_agent_tool.example.id
+# Drive a tool-invocation policy off the lookup. `tool_id` on the policy
+# resource is the bare UUID — not the agent-tool composite ID.
+resource "archestra_tool_invocation_policy" "block_etc" {
+  tool_id = data.archestra_agent_tool.support_read_text_file.tool_id
+  conditions = [
+    { key = "path", operator = "startsWith", value = "/etc/" },
+  ]
+  action = "block_always"
+  reason = "Block reads from /etc/ regardless of trust level"
+}
+
+output "agent_tool_assignment_id" {
+  description = "Composite agent-tool ID — useful in audit logs."
+  value       = data.archestra_agent_tool.support_read_text_file.id
 }
 ```
 

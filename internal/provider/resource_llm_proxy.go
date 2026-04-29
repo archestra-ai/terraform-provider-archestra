@@ -56,7 +56,7 @@ func (r *LlmProxyResource) Metadata(_ context.Context, req resource.MetadataRequ
 
 func (r *LlmProxyResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an Archestra LLM proxy — a front-door to an upstream LLM provider, with optional inbound JWT auth via `identity_provider_id`.",
+		MarkdownDescription: "Passthrough proxy to an upstream LLM provider, with optional inbound JWT auth via `identity_provider_id`.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,

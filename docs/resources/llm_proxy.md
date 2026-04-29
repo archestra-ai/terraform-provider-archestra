@@ -3,32 +3,51 @@
 page_title: "archestra_llm_proxy Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an Archestra LLM proxy — a front-door to an upstream LLM provider, with optional inbound JWT auth via identity_provider_id.
+  Passthrough proxy to an upstream LLM provider, with optional inbound JWT auth via identity_provider_id.
 ---
 
 # archestra_llm_proxy (Resource)
 
-Manages an Archestra LLM proxy — a front-door to an upstream LLM provider, with optional inbound JWT auth via `identity_provider_id`.
+Passthrough proxy to an upstream LLM provider, with optional inbound JWT auth via `identity_provider_id`.
 
 ## Example Usage
 
 ```terraform
+# Org-wide LLM proxy — fronts an upstream model so apps can hit Archestra
+# instead of talking to OpenAI directly. Headers in `passthrough_headers`
+# survive the hop, which is how downstream services see request IDs / tenants.
 resource "archestra_llm_proxy" "shared" {
   name        = "shared-openai"
   description = "Shared org-wide proxy for OpenAI traffic."
+  llm_model   = "gpt-4o"
 
   passthrough_headers = ["x-correlation-id", "x-tenant-id"]
 
   labels = [
-    { key = "team", value = "platform" }
+    { key = "team", value = "platform" },
+    { key = "environment", value = "production" },
   ]
 }
 
-# Same proxy, but requiring inbound JWTs validated against an identity provider.
+# Authenticated proxy — requires inbound JWTs validated against the configured
+# identity provider. Useful for exposing the proxy outside the cluster.
 resource "archestra_llm_proxy" "authenticated" {
   name                 = "secure-openai"
   description          = "OpenAI proxy behind JWT auth."
+  llm_model            = "gpt-4o"
   identity_provider_id = archestra_identity_provider.oidc.id
+
+  # Use a dedicated provider key so this proxy's spend is attributable.
+  llm_api_key_id = archestra_llm_provider_api_key.inline.id
+}
+
+# Team-scoped proxy — only visible inside the listed teams.
+resource "archestra_llm_proxy" "engineering" {
+  name        = "engineering-claude"
+  description = "Claude proxy for the engineering org"
+  llm_model   = "claude-sonnet-4-5"
+  scope       = "team"
+  teams       = [archestra_team.engineering.id]
 }
 ```
 

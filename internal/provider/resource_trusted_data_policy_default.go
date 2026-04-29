@@ -41,8 +41,7 @@ func (r *TrustedDataPolicyDefaultResource) Metadata(_ context.Context, req resou
 
 func (r *TrustedDataPolicyDefaultResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Sets the default trusted-data action for a set of tools — controls how each tool's *result* flows back into the LLM context. Maps to the **`DEFAULT` row** in the Guardrails UI's Tool Result Policies section (Sensitive / Trusted / Sanitize / Block).\n\n" +
-			"~> **For per-tool conditional rules** (the UI's \"Add Tool Result Policy\" button), use [`archestra_trusted_data_policy`](trusted_data_policy). They layer: conditional rules fire first; this default fires when none match.",
+		MarkdownDescription: "Sets the unconditional default trusted-data action for a set of tools (mark trusted / untrusted / sanitize / block). For conditional rules layered on top, use `archestra_trusted_data_policy`.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

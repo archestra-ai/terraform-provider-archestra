@@ -54,8 +54,7 @@ func (r *AgentToolBatchResource) Metadata(_ context.Context, req resource.Metada
 
 func (r *AgentToolBatchResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip. The right default for fanning out an entire install onto an agent.\n\n" +
-			"~> **Authoritative over `(agent_id, mcp_server_id)`.** Mixing this resource with [`archestra_agent_tool`](agent_tool) for the same `(agent_id, mcp_server_id)` makes them fight on every plan — pick one model. Multiple batches targeting the same agent but different installs coexist cleanly.",
+		MarkdownDescription: "Bulk-assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip. Authoritative over `(agent_id, mcp_server_id)` — don't mix with `archestra_agent_tool` for the same pair.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

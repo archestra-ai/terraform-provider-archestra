@@ -3,15 +3,12 @@
 page_title: "archestra_agent_tools Data Source - archestra"
 subcategory: ""
 description: |-
-  Lists every tool currently assigned to an agent. Use to fan out resources per assigned tool with for_each instead of looking up each one individually.
-  ~> Looking up one tool by name? Use data.archestra_agent_tool agent_tool (singular) — takes agent_id + tool_name.
+  Lists every tool currently assigned to an agent.
 ---
 
 # archestra_agent_tools (Data Source)
 
-Lists every tool currently assigned to an agent. Use to fan out resources per assigned tool with `for_each` instead of looking up each one individually.
-
-~> **Looking up one tool by name?** Use [`data.archestra_agent_tool`](agent_tool) (singular) — takes `agent_id` + `tool_name`.
+Lists every tool currently assigned to an agent.
 
 ## Example Usage
 

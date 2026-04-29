@@ -60,8 +60,7 @@ func (r *ToolInvocationPolicyResource) Metadata(ctx context.Context, req resourc
 
 func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Conditional tool-invocation policy — fires `action` when ALL of `conditions` match the tool-call arguments. Maps to the **Add Policy** button in the Guardrails UI's Tool Call Policies section.\n\n" +
-			"~> **For the UI's `DEFAULT` row** (the unconditional fall-through), use [`archestra_tool_invocation_policy_default`](tool_invocation_policy_default) instead. This resource requires non-empty `conditions`.",
+		MarkdownDescription: "Conditional tool-invocation policy — fires `action` when ALL of `conditions` match the tool-call arguments. `conditions` must be non-empty; for the unconditional default, use `archestra_tool_invocation_policy_default`.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

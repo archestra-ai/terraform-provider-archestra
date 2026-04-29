@@ -34,9 +34,7 @@ func (d *MCPServerToolDataSource) Metadata(ctx context.Context, req datasource.M
 
 func (d *MCPServerToolDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Fetches a tool from an MCP server by MCP server ID and tool name.\n\n" +
-			"~> **Prefer the install resource's `tool_id_by_name` map** when the install is managed by Terraform — `archestra_mcp_server_installation.<n>.tool_id_by_name[\"<server>__<short>\"]` returns the same UUID without the extra data-source plumbing or the implicit `depends_on`. " +
-			"This data source is the right choice only when the install is **not** managed by Terraform (e.g. you're attaching a policy to an install someone else created via the UI).",
+		MarkdownDescription: "Fetches a tool from an MCP server by name. When the install is Terraform-managed, prefer `archestra_mcp_server_installation.<n>.tool_id_by_name[<name>]` — same UUID without the extra data-source dependency.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

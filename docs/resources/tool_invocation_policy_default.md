@@ -3,15 +3,12 @@
 page_title: "archestra_tool_invocation_policy_default Resource - archestra"
 subcategory: ""
 description: |-
-  Sets the default invocation action for a set of tools. Maps to the DEFAULT row in the Guardrails UI's Tool Call Policies section (allow / allow-in-safe-context / require-approval / block).
-  ~> For per-tool conditional rules (the UI's "Add Policy" button), use archestra_tool_invocation_policy tool_invocation_policy. That sibling resource layers on top of this one — conditional rules evaluate first, this default fires when none match.
+  Sets the unconditional default invocation action for a set of tools (allow / allow-in-safe-context / require-approval / block). For conditional rules layered on top, use archestra_tool_invocation_policy.
 ---
 
 # archestra_tool_invocation_policy_default (Resource)
 
-Sets the default invocation action for a set of tools. Maps to the **`DEFAULT` row** in the Guardrails UI's Tool Call Policies section (allow / allow-in-safe-context / require-approval / block).
-
-~> **For per-tool conditional rules** (the UI's "Add Policy" button), use [`archestra_tool_invocation_policy`](tool_invocation_policy). That sibling resource layers on top of this one — conditional rules evaluate first, this default fires when none match.
+Sets the unconditional default invocation action for a set of tools (allow / allow-in-safe-context / require-approval / block). For conditional rules layered on top, use `archestra_tool_invocation_policy`.
 
 ## Example Usage
 

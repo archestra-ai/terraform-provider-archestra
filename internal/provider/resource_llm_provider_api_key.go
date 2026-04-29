@@ -51,7 +51,7 @@ func (r *LLMProviderApiKeyResource) Metadata(ctx context.Context, req resource.M
 
 func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages LLM Provider API keys in Archestra.",
+		MarkdownDescription: "API key for an LLM provider (OpenAI, Anthropic, etc.). Models are auto-discovered after creation.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

@@ -41,8 +41,7 @@ func (r *ToolInvocationPolicyDefaultResource) Metadata(_ context.Context, req re
 
 func (r *ToolInvocationPolicyDefaultResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Sets the default invocation action for a set of tools. Maps to the **`DEFAULT` row** in the Guardrails UI's Tool Call Policies section (allow / allow-in-safe-context / require-approval / block).\n\n" +
-			"~> **For per-tool conditional rules** (the UI's \"Add Policy\" button), use [`archestra_tool_invocation_policy`](tool_invocation_policy). That sibling resource layers on top of this one — conditional rules evaluate first, this default fires when none match.",
+		MarkdownDescription: "Sets the unconditional default invocation action for a set of tools (allow / allow-in-safe-context / require-approval / block). For conditional rules layered on top, use `archestra_tool_invocation_policy`.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

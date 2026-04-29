@@ -34,9 +34,7 @@ func (d *AgentToolDataSource) Metadata(_ context.Context, req datasource.Metadat
 
 func (d *AgentToolDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Fetches one agent-tool assignment by agent ID and tool name.\n\n" +
-			"~> **Listing every tool assigned to an agent?** Use [`data.archestra_agent_tools`](agent_tools) (plural) — returns the full list in one call.\n\n" +
-			"~> **Picking the right ID for policies.** `archestra_tool_invocation_policy.tool_id` and `archestra_trusted_data_policy.tool_id` expect the bare tool UUID (`tool_id` field below) — not the assignment composite (`id` field below).",
+		MarkdownDescription: "Fetches one agent-tool assignment by agent ID and tool name. Policy resources' `tool_id` expects the bare tool UUID (field `tool_id` below), not the assignment composite (field `id` below).",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
