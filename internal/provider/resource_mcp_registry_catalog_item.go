@@ -766,7 +766,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 	}
 
 	serverName := data.Name.ValueString()
-	finalizeCatalogItemPatch(ctx, patch, plan, prior, serverName, &resp.Diagnostics)
+	finalizeCatalogItemPatch(patch, plan, prior, serverName, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -1417,7 +1417,7 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 	}
 
 	serverName := data.Name.ValueString()
-	finalizeCatalogItemPatch(ctx, patch, plan, prior, serverName, &resp.Diagnostics)
+	finalizeCatalogItemPatch(patch, plan, prior, serverName, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}

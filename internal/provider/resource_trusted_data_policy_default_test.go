@@ -37,7 +37,7 @@ func TestAccTrustedDataPolicyDefaultResource(t *testing.T) {
 					),
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					captureAttr("archestra_trusted_data_policy_default.test", "id", &capturedID),
+					captureID("archestra_trusted_data_policy_default.test", &capturedID),
 				),
 			},
 			{
@@ -51,7 +51,7 @@ func TestAccTrustedDataPolicyDefaultResource(t *testing.T) {
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					assertAttrEquals("archestra_trusted_data_policy_default.test", "id", &capturedID),
+					assertIDEquals("archestra_trusted_data_policy_default.test", &capturedID),
 				),
 			},
 			{
@@ -65,7 +65,7 @@ func TestAccTrustedDataPolicyDefaultResource(t *testing.T) {
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					assertAttrEquals("archestra_trusted_data_policy_default.test", "id", &capturedID),
+					assertIDEquals("archestra_trusted_data_policy_default.test", &capturedID),
 				),
 			},
 			{

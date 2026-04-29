@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 
@@ -197,7 +196,6 @@ func decodePolymorphicDefault(s, fieldType string, multiple bool) (value any, ke
 // `serverName` per backend requirement); and several JSONB sub-trees need
 // per-entry post-encoding (polymorphic defaults, image-pull-secret discriminator).
 func finalizeCatalogItemPatch(
-	ctx context.Context,
 	patch map[string]any,
 	plan, prior tftypes.Value,
 	serverName string,
@@ -205,7 +203,7 @@ func finalizeCatalogItemPatch(
 ) {
 	finalizeLocalConfigInPatch(patch, diags)
 	finalizeUserConfigInPatch(patch, diags)
-	finalizeRemoteConfigInPatch(ctx, patch, plan, prior, serverName, diags)
+	finalizeRemoteConfigInPatch(patch, plan, prior, serverName, diags)
 }
 
 func finalizeUserConfigInPatch(patch map[string]any, diags *diag.Diagnostics) {
@@ -333,7 +331,6 @@ func normalizeImagePullSecret(entry map[string]any) map[string]string {
 // AtomicObject (any sub-field change emits the whole thing) and uses
 // snake_case wire keys per the backend's catalog item OAuth schema.
 func finalizeRemoteConfigInPatch(
-	ctx context.Context,
 	patch map[string]any,
 	plan, prior tftypes.Value,
 	serverName string,

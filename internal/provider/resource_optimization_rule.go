@@ -274,7 +274,7 @@ func (r *OptimizationRuleResource) Read(ctx context.Context, req resource.ReadRe
 	data.TargetModel = types.StringValue(result.TargetModel)
 	data.Enabled = types.BoolValue(result.Enabled)
 
-	condList, condDiags := flattenOptimizationConditions(ctx, result.RawConditions)
+	condList, condDiags := flattenOptimizationConditions(result.RawConditions)
 	resp.Diagnostics.Append(condDiags...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -289,7 +289,7 @@ func (r *OptimizationRuleResource) Read(ctx context.Context, req resource.ReadRe
 // zod union — see platform/backend/src/types/optimization-rule.ts:14-24); we
 // produce one HCL row per wire entry with the matching field set and the
 // other field null.
-func flattenOptimizationConditions(ctx context.Context, raw json.RawMessage) (types.List, diag.Diagnostics) {
+func flattenOptimizationConditions(raw json.RawMessage) (types.List, diag.Diagnostics) {
 	objType := types.ObjectType{AttrTypes: map[string]attr.Type{
 		"max_length": types.Int64Type,
 		"has_tools":  types.BoolType,

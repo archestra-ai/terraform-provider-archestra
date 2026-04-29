@@ -47,7 +47,7 @@ func TestAccToolInvocationPolicyDefaultResource(t *testing.T) {
 					),
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					captureAttr("archestra_tool_invocation_policy_default.test", "id", &capturedID),
+					captureID("archestra_tool_invocation_policy_default.test", &capturedID),
 				),
 			},
 			{
@@ -62,7 +62,7 @@ func TestAccToolInvocationPolicyDefaultResource(t *testing.T) {
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					assertAttrEquals("archestra_tool_invocation_policy_default.test", "id", &capturedID),
+					assertIDEquals("archestra_tool_invocation_policy_default.test", &capturedID),
 				),
 			},
 			{
@@ -77,7 +77,7 @@ func TestAccToolInvocationPolicyDefaultResource(t *testing.T) {
 					},
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					assertAttrEquals("archestra_tool_invocation_policy_default.test", "id", &capturedID),
+					assertIDEquals("archestra_tool_invocation_policy_default.test", &capturedID),
 				),
 			},
 			{

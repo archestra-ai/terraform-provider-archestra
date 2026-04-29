@@ -326,7 +326,6 @@ func (r *AgentToolBatchResource) bulkAssign(
 			ToolId                   openapi_types.UUID                                                 `json:"toolId"`
 		}, 0, len(toolIDs)),
 	}
-	mcpUUIDPtr := openapi_types.UUID(mcpUUID)
 	_ = mcpStr // kept for diagnostics readability; not used now
 	for _, t := range toolIDs {
 		body.Assignments = append(body.Assignments, struct {
@@ -338,7 +337,7 @@ func (r *AgentToolBatchResource) bulkAssign(
 		}{
 			AgentId:                  agentUUID,
 			ToolId:                   t,
-			McpServerId:              &mcpUUIDPtr,
+			McpServerId:              &mcpUUID,
 			CredentialResolutionMode: credPtr,
 		})
 	}

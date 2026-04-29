@@ -10,7 +10,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -46,12 +45,6 @@ type PolicyConditionModel struct {
 	Key      types.String `tfsdk:"key"`
 	Operator types.String `tfsdk:"operator"`
 	Value    types.String `tfsdk:"value"`
-}
-
-var policyConditionAttrTypes = map[string]attr.Type{
-	"key":      types.StringType,
-	"operator": types.StringType,
-	"value":    types.StringType,
 }
 
 func (r *ToolInvocationPolicyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
