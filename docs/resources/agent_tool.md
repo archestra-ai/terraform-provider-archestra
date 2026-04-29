@@ -55,7 +55,11 @@ resource "archestra_agent_tool" "read_text_file" {
 
 ### Optional
 
-- `credential_resolution_mode` (String) How credentials are resolved for this tool. One of `static`, `dynamic`, `enterprise_managed`.
+- `credential_resolution_mode` (String) How the agent resolves the credential it uses to call this tool:
+
+- `static` (default) — the credential set at assignment time is reused for every call. Pair with `mcp_server_id` pointing at a connected `archestra_mcp_server_installation` so a concrete credential exists.
+- `dynamic` — the agent resolves a fresh credential at every call (the legacy `resolve_at_call_time = true` behaviour). Use when the same logical tool is fronted by per-user credentials.
+- `enterprise_managed` — the agent uses the credential that the org's enterprise IdP issued for the tool. Requires the catalog item to have `enterprise_managed_config` set up.
 - `mcp_server_id` (String) ID of the MCP Server instance associated with this tool
 
 ### Read-Only

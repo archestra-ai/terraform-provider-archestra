@@ -35,7 +35,7 @@ resource "archestra_trusted_data_policy" "trust_company_api" {
 
 - `conditions` (Attributes List) Conditions evaluated against the data attribute. ALL must match for `action` to fire. Use `key` for the JSON path of the attribute being matched. (see [below for nested schema](#nestedatt--conditions))
 - `description` (String) Description of the policy
-- `tool_id` (String) ID of the tool this policy applies to. This is the bare tool UUID — use `data.archestra_mcp_server_tool.<name>.id` or `archestra_agent_tool.<name>.tool_id`.
+- `tool_id` (String) ID of the tool this policy applies to. This is the bare tool UUID — use `archestra_mcp_server_installation.<n>.tools[*].id`, `data.archestra_mcp_server_tool.<n>.id`, or `archestra_agent_tool.<n>.tool_id`. **Not** the agent-tool assignment composite ID.
 
 ### Optional
 

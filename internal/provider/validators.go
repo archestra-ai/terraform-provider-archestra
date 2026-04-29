@@ -4,9 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"regexp"
 
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )
+
+// uuidRegexp matches RFC 4122-style UUIDs (lowercase hex). The backend's
+// generated IDs always lowercase, so we don't accept mixed case — a
+// non-matching value is almost always a copy-paste of a different
+// identifier (composite assignment ID, name string, etc.).
+var uuidRegexp = regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$`)
 
 // jsonObject is a validator.String that fails plan when the configured value,
 // parsed as JSON, is not a JSON object. Null/unknown values are ignored so it

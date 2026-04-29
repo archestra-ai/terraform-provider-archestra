@@ -73,6 +73,18 @@ for_each = { for t in archestra_mcp_server_installation.<name>.tools : t.name =>
 
 Read-Only:
 
+- `assigned_agent_count` (Number) Number of agents this tool is currently assigned to. Quick visibility without fetching the full assignment list.
+- `assigned_agents` (Attributes List) Agents this tool is currently assigned to. Lets you see which agents already use a tool without a separate `data "archestra_agent_tool"` lookup per assignment. (see [below for nested schema](#nestedatt--tools--assigned_agents))
+- `created_at` (String) RFC 3339 timestamp of when the tool was first registered with the backend. Useful as a stable sort key.
 - `description` (String) Human-readable description as advertised by the MCP server. May be null.
 - `id` (String) Tool UUID. Use as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.
 - `name` (String) Tool name (the MCP server's own identifier — stable across installs of the same catalog item).
+- `parameters` (String) JSON Schema for the tool's input parameters, encoded as a JSON string. Use `jsondecode(t.parameters)` to introspect required fields, types, etc. for validation or downstream codegen.
+
+<a id="nestedatt--tools--assigned_agents"></a>
+### Nested Schema for `tools.assigned_agents`
+
+Read-Only:
+
+- `id` (String) Agent UUID.
+- `name` (String) Agent name (the agent's `name` field on `archestra_agent` / `archestra_llm_proxy` / `archestra_mcp_gateway`).

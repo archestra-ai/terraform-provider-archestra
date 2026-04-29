@@ -3,12 +3,15 @@
 page_title: "archestra_agent_tool Data Source - archestra"
 subcategory: ""
 description: |-
-  Fetches an agent-tool assignment by agent ID and tool name. Useful for looking up the assignment ID needed to create trusted-data and tool-invocation policies.
+  Fetches an agent-tool assignment by agent ID and tool name.
+  ~> Picking the right ID for policies. archestra_tool_invocation_policy.tool_id and archestra_trusted_data_policy.tool_id expect the bare tool UUID (tool_id field below) — not the assignment composite (id field below). The backend stores toolId directly on the policies table; passing the assignment ID will 400 at apply.
 ---
 
 # archestra_agent_tool (Data Source)
 
-Fetches an agent-tool assignment by agent ID and tool name. Useful for looking up the assignment ID needed to create trusted-data and tool-invocation policies.
+Fetches an agent-tool assignment by agent ID and tool name.
+
+~> **Picking the right ID for policies.** `archestra_tool_invocation_policy.tool_id` and `archestra_trusted_data_policy.tool_id` expect the **bare tool UUID** (`tool_id` field below) — not the assignment composite (`id` field below). The backend stores `toolId` directly on the policies table; passing the assignment ID will 400 at apply.
 
 ## Example Usage
 
@@ -34,5 +37,5 @@ output "agent_tool_id" {
 
 ### Read-Only
 
-- `id` (String) Agent-tool assignment identifier (composite of agent + tool). For `tool_id` on policy resources, use `tool_id` from this datasource instead.
-- `tool_id` (String) The tool ID
+- `id` (String) Agent-tool assignment composite UUID. **Not** what `archestra_tool_invocation_policy.tool_id` / `archestra_trusted_data_policy.tool_id` expect — use the `tool_id` field below for those.
+- `tool_id` (String) The bare tool UUID. Pass this as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.

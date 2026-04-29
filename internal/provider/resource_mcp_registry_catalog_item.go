@@ -173,28 +173,27 @@ type RemoteConfigModel struct {
 }
 
 type OAuthConfigModel struct {
-	ClientID                 types.String  `tfsdk:"client_id"`
-	ClientSecret             types.String  `tfsdk:"client_secret"`
-	RedirectURIs             types.List    `tfsdk:"redirect_uris"`
-	Scopes                   types.List    `tfsdk:"scopes"`
-	DefaultScopes            types.List    `tfsdk:"default_scopes"`
-	SupportsResourceMetadata types.Bool    `tfsdk:"supports_resource_metadata"`
-	AuthorizationEndpoint    types.String  `tfsdk:"authorization_endpoint"`
-	TokenEndpoint            types.String  `tfsdk:"token_endpoint"`
-	AuthServerURL            types.String  `tfsdk:"auth_server_url"`
-	ResourceMetadataURL      types.String  `tfsdk:"resource_metadata_url"`
-	WellKnownURL             types.String  `tfsdk:"well_known_url"`
-	GrantType                types.String  `tfsdk:"grant_type"`
-	Audience                 types.String  `tfsdk:"audience"`
-	AccessTokenEnvVar        types.String  `tfsdk:"access_token_env_var"`
-	BrowserAuth              types.Bool    `tfsdk:"browser_auth"`
-	GenericOauth             types.Bool    `tfsdk:"generic_oauth"`
-	RequiresProxy            types.Bool    `tfsdk:"requires_proxy"`
-	ProviderName             types.String  `tfsdk:"provider_name"`
-	StreamableHTTPURL        types.String  `tfsdk:"streamable_http_url"`
-	StreamableHTTPPort       types.Int64   `tfsdk:"streamable_http_port"`
+	ClientID                 types.String `tfsdk:"client_id"`
+	ClientSecret             types.String `tfsdk:"client_secret"`
+	RedirectURIs             types.List   `tfsdk:"redirect_uris"`
+	Scopes                   types.List   `tfsdk:"scopes"`
+	DefaultScopes            types.List   `tfsdk:"default_scopes"`
+	SupportsResourceMetadata types.Bool   `tfsdk:"supports_resource_metadata"`
+	AuthorizationEndpoint    types.String `tfsdk:"authorization_endpoint"`
+	TokenEndpoint            types.String `tfsdk:"token_endpoint"`
+	AuthServerURL            types.String `tfsdk:"auth_server_url"`
+	ResourceMetadataURL      types.String `tfsdk:"resource_metadata_url"`
+	WellKnownURL             types.String `tfsdk:"well_known_url"`
+	GrantType                types.String `tfsdk:"grant_type"`
+	Audience                 types.String `tfsdk:"audience"`
+	AccessTokenEnvVar        types.String `tfsdk:"access_token_env_var"`
+	BrowserAuth              types.Bool   `tfsdk:"browser_auth"`
+	GenericOauth             types.Bool   `tfsdk:"generic_oauth"`
+	RequiresProxy            types.Bool   `tfsdk:"requires_proxy"`
+	ProviderName             types.String `tfsdk:"provider_name"`
+	StreamableHTTPURL        types.String `tfsdk:"streamable_http_url"`
+	StreamableHTTPPort       types.Int64  `tfsdk:"streamable_http_port"`
 }
-
 
 type AuthFieldModel struct {
 	Name        types.String `tfsdk:"name"`

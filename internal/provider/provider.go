@@ -163,7 +163,11 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewTeamExternalGroupResource,
 		NewLLMProviderApiKeyResource,
 		NewAgentToolResource,
+		NewAgentToolBatchResource,
 		NewIdentityProviderResource,
+		NewToolInvocationPolicyDefaultResource,
+		NewTrustedDataPolicyDefaultResource,
+		NewToolPolicyAutoConfigResource,
 	}
 }
 
@@ -172,6 +176,7 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewTeamDataSource,
 		NewToolDataSource,
 		NewAgentToolDataSource,
+		NewAgentToolsDataSource,
 		NewMCPServerToolDataSource,
 		NewTeamExternalGroupsDataSource,
 	}

@@ -46,7 +46,7 @@ resource "archestra_tool_invocation_policy" "block_dotfiles_in_home" {
 
 - `action` (String) Action to take when the policy matches. One of `allow_when_context_is_untrusted`, `block_when_context_is_untrusted`, `block_always`, `require_approval`.
 - `conditions` (Attributes List) Conditions evaluated against tool-call arguments. ALL must match for `action` to fire. (see [below for nested schema](#nestedatt--conditions))
-- `tool_id` (String) ID of the tool this policy applies to. This is the bare tool UUID — use `data.archestra_mcp_server_tool.<name>.id` or `archestra_agent_tool.<name>.tool_id`.
+- `tool_id` (String) ID of the tool this policy applies to. This is the bare tool UUID — use `archestra_mcp_server_installation.<n>.tools[*].id`, `data.archestra_mcp_server_tool.<n>.id`, or `archestra_agent_tool.<n>.tool_id`. **Not** the agent-tool assignment composite ID.
 
 ### Optional
 

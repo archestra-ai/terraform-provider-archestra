@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"time"
@@ -60,13 +61,25 @@ type MCPServerResourceModel struct {
 }
 
 // mcpServerToolObjectType is the per-element shape of the `tools`
-// Computed list. Kept narrow on purpose ({id, name, description}); the
-// backend returns more (parameters, assignedAgents, …) but those drive
-// separate resources or are debug-only.
+// Computed list. Surfaces every field the GetMcpServerTools wire returns
+// that's useful in HCL: the {id, name, description} core for `for_each`,
+// the JSON Schema `parameters` blob (as a string for dynamic-typed input
+// validation in user code), the `assigned_agents` summary so users can
+// see which agents already use the tool without a separate data source,
+// and `created_at` for stable ordering.
+var mcpServerToolAssignedAgentObjectType = types.ObjectType{AttrTypes: map[string]attr.Type{
+	"id":   types.StringType,
+	"name": types.StringType,
+}}
+
 var mcpServerToolObjectType = types.ObjectType{AttrTypes: map[string]attr.Type{
-	"id":          types.StringType,
-	"name":        types.StringType,
-	"description": types.StringType,
+	"id":                   types.StringType,
+	"name":                 types.StringType,
+	"description":          types.StringType,
+	"parameters":           types.StringType,
+	"assigned_agent_count": types.Int64Type,
+	"assigned_agents":      types.ListType{ElemType: mcpServerToolAssignedAgentObjectType},
+	"created_at":           types.StringType,
 }}
 
 func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -188,6 +201,34 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 						},
 						"description": schema.StringAttribute{
 							MarkdownDescription: "Human-readable description as advertised by the MCP server. May be null.",
+							Computed:            true,
+						},
+						"parameters": schema.StringAttribute{
+							MarkdownDescription: "JSON Schema for the tool's input parameters, encoded as a JSON string. Use `jsondecode(t.parameters)` to introspect required fields, types, etc. for validation or downstream codegen.",
+							Computed:            true,
+						},
+						"assigned_agent_count": schema.Int64Attribute{
+							MarkdownDescription: "Number of agents this tool is currently assigned to. Quick visibility without fetching the full assignment list.",
+							Computed:            true,
+						},
+						"assigned_agents": schema.ListNestedAttribute{
+							MarkdownDescription: "Agents this tool is currently assigned to. Lets you see which agents already use a tool without a separate `data \"archestra_agent_tool\"` lookup per assignment.",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"id": schema.StringAttribute{
+										MarkdownDescription: "Agent UUID.",
+										Computed:            true,
+									},
+									"name": schema.StringAttribute{
+										MarkdownDescription: "Agent name (the agent's `name` field on `archestra_agent` / `archestra_llm_proxy` / `archestra_mcp_gateway`).",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"created_at": schema.StringAttribute{
+							MarkdownDescription: "RFC 3339 timestamp of when the tool was first registered with the backend. Useful as a stable sort key.",
 							Computed:            true,
 						},
 					},
@@ -500,9 +541,11 @@ func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID str
 }
 
 // flattenMcpServerTools projects the GetMcpServerTools response items
-// onto the resource's `tools` schema. Kept narrow to {id, name,
-// description}: that's enough to drive the documented `for_each` pattern.
-// Adding fields later is non-breaking; removing them is.
+// onto the resource's `tools` schema. Surfaces every wire field useful
+// in HCL: id/name/description for `for_each` keying, `parameters`
+// (JSON-encoded as a string for jsondecode introspection),
+// `assigned_agents`/`assigned_agent_count` to see existing assignments
+// without a separate data source, and `created_at` for stable sort.
 func flattenMcpServerTools(apiTools []struct {
 	AssignedAgentCount float32 `json:"assignedAgentCount"`
 	AssignedAgents     []struct {
@@ -521,10 +564,42 @@ func flattenMcpServerTools(apiTools []struct {
 		if t.Description != nil {
 			desc = types.StringValue(*t.Description)
 		}
+
+		// Parameters is JSON Schema; emit as a JSON string so HCL can
+		// jsondecode() it. Empty / nil map → null, not "{}", to keep
+		// state honest.
+		params := types.StringNull()
+		if len(t.Parameters) > 0 {
+			if b, err := json.Marshal(t.Parameters); err == nil {
+				params = types.StringValue(string(b))
+			}
+		}
+
+		// Assigned agents — flat list of {id, name}.
+		agentElems := make([]attr.Value, len(t.AssignedAgents))
+		for j, a := range t.AssignedAgents {
+			ao, d := types.ObjectValue(mcpServerToolAssignedAgentObjectType.AttrTypes, map[string]attr.Value{
+				"id":   types.StringValue(a.Id),
+				"name": types.StringValue(a.Name),
+			})
+			if d.HasError() {
+				return types.ListNull(mcpServerToolObjectType), d
+			}
+			agentElems[j] = ao
+		}
+		assignedAgents, d := types.ListValue(mcpServerToolAssignedAgentObjectType, agentElems)
+		if d.HasError() {
+			return types.ListNull(mcpServerToolObjectType), d
+		}
+
 		obj, d := types.ObjectValue(mcpServerToolObjectType.AttrTypes, map[string]attr.Value{
-			"id":          types.StringValue(t.Id),
-			"name":        types.StringValue(t.Name),
-			"description": desc,
+			"id":                   types.StringValue(t.Id),
+			"name":                 types.StringValue(t.Name),
+			"description":          desc,
+			"parameters":           params,
+			"assigned_agent_count": types.Int64Value(int64(t.AssignedAgentCount)),
+			"assigned_agents":      assignedAgents,
+			"created_at":           types.StringValue(t.CreatedAt.Format(time.RFC3339)),
 		})
 		if d.HasError() {
 			return types.ListNull(mcpServerToolObjectType), d

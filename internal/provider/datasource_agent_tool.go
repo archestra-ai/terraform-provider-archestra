@@ -34,11 +34,12 @@ func (d *AgentToolDataSource) Metadata(_ context.Context, req datasource.Metadat
 
 func (d *AgentToolDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Fetches an agent-tool assignment by agent ID and tool name. Useful for looking up the assignment ID needed to create trusted-data and tool-invocation policies.",
+		MarkdownDescription: "Fetches an agent-tool assignment by agent ID and tool name.\n\n" +
+			"~> **Picking the right ID for policies.** `archestra_tool_invocation_policy.tool_id` and `archestra_trusted_data_policy.tool_id` expect the **bare tool UUID** (`tool_id` field below) — not the assignment composite (`id` field below). The backend stores `toolId` directly on the policies table; passing the assignment ID will 400 at apply.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				MarkdownDescription: "Agent-tool assignment identifier (composite of agent + tool). For `tool_id` on policy resources, use `tool_id` from this datasource instead.",
+				MarkdownDescription: "Agent-tool assignment composite UUID. **Not** what `archestra_tool_invocation_policy.tool_id` / `archestra_trusted_data_policy.tool_id` expect — use the `tool_id` field below for those.",
 				Computed:            true,
 			},
 			"agent_id": schema.StringAttribute{
@@ -50,7 +51,7 @@ func (d *AgentToolDataSource) Schema(_ context.Context, _ datasource.SchemaReque
 				Required:            true,
 			},
 			"tool_id": schema.StringAttribute{
-				MarkdownDescription: "The tool ID",
+				MarkdownDescription: "The bare tool UUID. Pass this as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.",
 				Computed:            true,
 			},
 		},

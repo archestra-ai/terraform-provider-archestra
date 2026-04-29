@@ -27,23 +27,23 @@ type identityProviderApiBody struct {
 }
 
 type identityProviderApiOidc struct {
-	Issuer                       string                  `json:"issuer"`
-	DiscoveryEndpoint            string                  `json:"discoveryEndpoint"`
-	ClientId                     string                  `json:"clientId"`
-	ClientSecret                 string                  `json:"clientSecret"`
-	AuthorizationEndpoint        *string                 `json:"authorizationEndpoint,omitempty"`
-	TokenEndpoint                *string                 `json:"tokenEndpoint,omitempty"`
-	UserInfoEndpoint             *string                 `json:"userInfoEndpoint,omitempty"`
-	JwksEndpoint                 *string                 `json:"jwksEndpoint,omitempty"`
-	Scopes                       *[]string               `json:"scopes,omitempty"`
-	Pkce                         bool                    `json:"pkce"`
-	OverrideUserInfo             *bool                   `json:"overrideUserInfo,omitempty"`
-	SkipDiscovery                *bool                   `json:"skipDiscovery,omitempty"`
-	EnableRpInitiatedLogout      *bool                   `json:"enableRpInitiatedLogout,omitempty"`
-	Hd                           *string                 `json:"hd,omitempty"`
-	TokenEndpointAuthentication  *string                 `json:"tokenEndpointAuthentication,omitempty"`
-	Mapping                      *identityProviderApiOidcMapping      `json:"mapping,omitempty"`
-	EnterpriseManagedCredentials *identityProviderApiEmcCredentials   `json:"enterpriseManagedCredentials,omitempty"`
+	Issuer                       string                             `json:"issuer"`
+	DiscoveryEndpoint            string                             `json:"discoveryEndpoint"`
+	ClientId                     string                             `json:"clientId"`
+	ClientSecret                 string                             `json:"clientSecret"`
+	AuthorizationEndpoint        *string                            `json:"authorizationEndpoint,omitempty"`
+	TokenEndpoint                *string                            `json:"tokenEndpoint,omitempty"`
+	UserInfoEndpoint             *string                            `json:"userInfoEndpoint,omitempty"`
+	JwksEndpoint                 *string                            `json:"jwksEndpoint,omitempty"`
+	Scopes                       *[]string                          `json:"scopes,omitempty"`
+	Pkce                         bool                               `json:"pkce"`
+	OverrideUserInfo             *bool                              `json:"overrideUserInfo,omitempty"`
+	SkipDiscovery                *bool                              `json:"skipDiscovery,omitempty"`
+	EnableRpInitiatedLogout      *bool                              `json:"enableRpInitiatedLogout,omitempty"`
+	Hd                           *string                            `json:"hd,omitempty"`
+	TokenEndpointAuthentication  *string                            `json:"tokenEndpointAuthentication,omitempty"`
+	Mapping                      *identityProviderApiOidcMapping    `json:"mapping,omitempty"`
+	EnterpriseManagedCredentials *identityProviderApiEmcCredentials `json:"enterpriseManagedCredentials,omitempty"`
 }
 
 type identityProviderApiOidcMapping struct {
@@ -68,35 +68,35 @@ type identityProviderApiEmcCredentials struct {
 }
 
 type identityProviderApiSaml struct {
-	Issuer               string                  `json:"issuer"`
-	EntryPoint           string                  `json:"entryPoint"`
-	CallbackUrl          string                  `json:"callbackUrl"`
-	Cert                 string                  `json:"cert"`
-	Audience             *string                 `json:"audience,omitempty"`
-	DigestAlgorithm      *string                 `json:"digestAlgorithm,omitempty"`
-	IdentifierFormat     *string                 `json:"identifierFormat,omitempty"`
-	DecryptionPvk        *string                 `json:"decryptionPvk,omitempty"`
-	PrivateKey           *string                 `json:"privateKey,omitempty"`
-	SignatureAlgorithm   *string                 `json:"signatureAlgorithm,omitempty"`
-	WantAssertionsSigned *bool                   `json:"wantAssertionsSigned,omitempty"`
-	IdpMetadata          *identityProviderApiIdpMetadata      `json:"idpMetadata,omitempty"`
-	SpMetadata           *identityProviderApiSpMetadata       `json:"spMetadata,omitempty"`
-	Mapping              *identityProviderApiSamlMapping      `json:"mapping,omitempty"`
-	AdditionalParams     *map[string]interface{} `json:"additionalParams,omitempty"`
+	Issuer               string                          `json:"issuer"`
+	EntryPoint           string                          `json:"entryPoint"`
+	CallbackUrl          string                          `json:"callbackUrl"`
+	Cert                 string                          `json:"cert"`
+	Audience             *string                         `json:"audience,omitempty"`
+	DigestAlgorithm      *string                         `json:"digestAlgorithm,omitempty"`
+	IdentifierFormat     *string                         `json:"identifierFormat,omitempty"`
+	DecryptionPvk        *string                         `json:"decryptionPvk,omitempty"`
+	PrivateKey           *string                         `json:"privateKey,omitempty"`
+	SignatureAlgorithm   *string                         `json:"signatureAlgorithm,omitempty"`
+	WantAssertionsSigned *bool                           `json:"wantAssertionsSigned,omitempty"`
+	IdpMetadata          *identityProviderApiIdpMetadata `json:"idpMetadata,omitempty"`
+	SpMetadata           *identityProviderApiSpMetadata  `json:"spMetadata,omitempty"`
+	Mapping              *identityProviderApiSamlMapping `json:"mapping,omitempty"`
+	AdditionalParams     *map[string]interface{}         `json:"additionalParams,omitempty"`
 }
 
 type identityProviderApiIdpMetadata struct {
-	Cert                 *string                `json:"cert,omitempty"`
-	EncPrivateKey        *string                `json:"encPrivateKey,omitempty"`
-	EncPrivateKeyPass    *string                `json:"encPrivateKeyPass,omitempty"`
-	EntityID             *string                `json:"entityID,omitempty"`
-	EntityURL            *string                `json:"entityURL,omitempty"`
-	IsAssertionEncrypted *bool                  `json:"isAssertionEncrypted,omitempty"`
-	Metadata             *string                `json:"metadata,omitempty"`
-	PrivateKey           *string                `json:"privateKey,omitempty"`
-	PrivateKeyPass       *string                `json:"privateKeyPass,omitempty"`
-	RedirectURL          *string                `json:"redirectURL,omitempty"`
-	SingleSignOnService  *[]identityProviderApiSsoService    `json:"singleSignOnService,omitempty"`
+	Cert                 *string                          `json:"cert,omitempty"`
+	EncPrivateKey        *string                          `json:"encPrivateKey,omitempty"`
+	EncPrivateKeyPass    *string                          `json:"encPrivateKeyPass,omitempty"`
+	EntityID             *string                          `json:"entityID,omitempty"`
+	EntityURL            *string                          `json:"entityURL,omitempty"`
+	IsAssertionEncrypted *bool                            `json:"isAssertionEncrypted,omitempty"`
+	Metadata             *string                          `json:"metadata,omitempty"`
+	PrivateKey           *string                          `json:"privateKey,omitempty"`
+	PrivateKeyPass       *string                          `json:"privateKeyPass,omitempty"`
+	RedirectURL          *string                          `json:"redirectURL,omitempty"`
+	SingleSignOnService  *[]identityProviderApiSsoService `json:"singleSignOnService,omitempty"`
 }
 
 type identityProviderApiSsoService struct {
@@ -126,10 +126,10 @@ type identityProviderApiSamlMapping struct {
 }
 
 type identityProviderApiRoleMapping struct {
-	DefaultRole  *string             `json:"defaultRole,omitempty"`
-	SkipRoleSync *bool               `json:"skipRoleSync,omitempty"`
-	StrictMode   *bool               `json:"strictMode,omitempty"`
-	Rules        *[]identityProviderApiRoleRule   `json:"rules,omitempty"`
+	DefaultRole  *string                        `json:"defaultRole,omitempty"`
+	SkipRoleSync *bool                          `json:"skipRoleSync,omitempty"`
+	StrictMode   *bool                          `json:"strictMode,omitempty"`
+	Rules        *[]identityProviderApiRoleRule `json:"rules,omitempty"`
 }
 
 type identityProviderApiRoleRule struct {

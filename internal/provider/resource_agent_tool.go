@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -80,12 +81,13 @@ func (r *AgentToolResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				},
 			},
 			"credential_resolution_mode": schema.StringAttribute{
-				MarkdownDescription: "How credentials are resolved for this tool. One of `static`, `dynamic`, `enterprise_managed`.",
-				Optional:            true,
-				Computed:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
+				MarkdownDescription: "How the agent resolves the credential it uses to call this tool:\n\n" +
+					"- `static` (default) — the credential set at assignment time is reused for every call. Pair with `mcp_server_id` pointing at a connected `archestra_mcp_server_installation` so a concrete credential exists.\n" +
+					"- `dynamic` — the agent resolves a fresh credential at every call (the legacy `resolve_at_call_time = true` behaviour). Use when the same logical tool is fronted by per-user credentials.\n" +
+					"- `enterprise_managed` — the agent uses the credential that the org's enterprise IdP issued for the tool. Requires the catalog item to have `enterprise_managed_config` set up.",
+				Optional: true,
+				Computed: true,
+				Default:  stringdefault.StaticString("static"),
 				Validators: []validator.String{
 					stringvalidator.OneOf("static", "dynamic", "enterprise_managed"),
 				},

@@ -33,11 +33,11 @@ type ToolInvocationPolicyResource struct {
 }
 
 type ToolInvocationPolicyResourceModel struct {
-	ID         types.String                  `tfsdk:"id"`
-	ToolID     types.String                  `tfsdk:"tool_id"`
-	Conditions []PolicyConditionModel        `tfsdk:"conditions"`
-	Action     types.String                  `tfsdk:"action"`
-	Reason     types.String                  `tfsdk:"reason"`
+	ID         types.String           `tfsdk:"id"`
+	ToolID     types.String           `tfsdk:"tool_id"`
+	Conditions []PolicyConditionModel `tfsdk:"conditions"`
+	Action     types.String           `tfsdk:"action"`
+	Reason     types.String           `tfsdk:"reason"`
 }
 
 // PolicyConditionModel mirrors the wire `{key, operator, value}` triple shared
@@ -71,8 +71,11 @@ func (r *ToolInvocationPolicyResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"tool_id": schema.StringAttribute{
-				MarkdownDescription: "ID of the tool this policy applies to. This is the bare tool UUID — use `data.archestra_mcp_server_tool.<name>.id` or `archestra_agent_tool.<name>.tool_id`.",
+				MarkdownDescription: "ID of the tool this policy applies to. This is the bare tool UUID — use `archestra_mcp_server_installation.<n>.tools[*].id`, `data.archestra_mcp_server_tool.<n>.id`, or `archestra_agent_tool.<n>.tool_id`. **Not** the agent-tool assignment composite ID.",
 				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(uuidRegexp, "tool_id must be a UUID (use a tool data source's `id` or `tool_id` field, not the agent-tool assignment ID)"),
+				},
 			},
 			"conditions": schema.ListNestedAttribute{
 				MarkdownDescription: "Conditions evaluated against tool-call arguments. ALL must match for `action` to fire.",
