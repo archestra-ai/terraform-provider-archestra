@@ -170,7 +170,7 @@ Optional:
 - `email` (String)
 - `email_verified` (String)
 - `extra_fields` (Map of String)
-- `id` (String) OIDC claim that maps to the user identity. Defaults to `"sub"` (the better-auth OIDC library treats this as required and the backend silently fills it in).
+- `id` (String) OIDC claim mapped to the user identity. Defaults to `"sub"`.
 - `image` (String)
 - `name` (String)
 

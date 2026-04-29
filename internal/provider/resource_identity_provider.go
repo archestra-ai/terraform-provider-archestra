@@ -236,7 +236,7 @@ func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.Sche
 								Optional:            true,
 								Computed:            true,
 								Default:             stringdefault.StaticString("sub"),
-								MarkdownDescription: "OIDC claim that maps to the user identity. Defaults to `\"sub\"` (the better-auth OIDC library treats this as required and the backend silently fills it in).",
+								MarkdownDescription: "OIDC claim mapped to the user identity. Defaults to `\"sub\"`.",
 							},
 							"image": schema.StringAttribute{Optional: true},
 							"name":  schema.StringAttribute{Optional: true},

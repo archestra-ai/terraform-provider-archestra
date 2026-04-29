@@ -23,8 +23,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-var _ resource.Resource = &AgentResource{}
-var _ resource.ResourceWithImportState = &AgentResource{}
+var (
+	_ resource.Resource                   = &AgentResource{}
+	_ resource.ResourceWithImportState    = &AgentResource{}
+	_ resource.ResourceWithValidateConfig = &AgentResource{}
+)
 
 func NewAgentResource() resource.Resource { return &AgentResource{} }
 
@@ -363,6 +366,51 @@ func (r *AgentResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 
 func (r *AgentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+}
+
+// ValidateConfig enforces cross-field constraints the schema can't
+// express on its own — `scope = "team"` must come with a non-empty
+// `teams` list, and `incoming_email_security_mode = "internal"` must
+// come with `incoming_email_allowed_domain`. Both used to fail at
+// apply with a backend 400; this catches them at plan.
+func (r *AgentResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var data AgentResourceModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	if !data.Scope.IsNull() && !data.Scope.IsUnknown() && data.Scope.ValueString() == "team" {
+		if data.Teams.IsNull() || data.Teams.IsUnknown() {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("teams"),
+				"Missing Required Attribute",
+				`teams must be set when scope = "team"`,
+			)
+		} else {
+			var teams []string
+			resp.Diagnostics.Append(data.Teams.ElementsAs(ctx, &teams, false)...)
+			if !resp.Diagnostics.HasError() && len(teams) == 0 {
+				resp.Diagnostics.AddAttributeError(
+					path.Root("teams"),
+					"Invalid Attribute Value",
+					`teams must contain at least one team ID when scope = "team"`,
+				)
+			}
+		}
+	}
+
+	if !data.IncomingEmailSecurityMode.IsNull() && !data.IncomingEmailSecurityMode.IsUnknown() &&
+		data.IncomingEmailSecurityMode.ValueString() == "internal" {
+		if data.IncomingEmailAllowedDomain.IsNull() || data.IncomingEmailAllowedDomain.IsUnknown() ||
+			data.IncomingEmailAllowedDomain.ValueString() == "" {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("incoming_email_allowed_domain"),
+				"Missing Required Attribute",
+				`incoming_email_allowed_domain must be set when incoming_email_security_mode = "internal"`,
+			)
+		}
+	}
 }
 
 // flattenAgentResponse maps an agent API response (decoded from the raw body

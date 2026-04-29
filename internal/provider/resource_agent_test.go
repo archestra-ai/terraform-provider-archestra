@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
@@ -146,4 +147,50 @@ resource "archestra_agent" "builtin" {
   }
 }
 `, name, maxRounds)
+}
+
+// TestAccAgentResource_TeamScopeMissingTeams pins the cross-field
+// validator from ValidateConfig: scope = "team" without a teams list
+// must error at plan time, not 400 at apply.
+func TestAccAgentResource_TeamScopeMissingTeams(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_agent" "test" {
+  name          = "tf-acc-agent-team-scope-missing"
+  system_prompt = "You are a helpful agent."
+  scope         = "team"
+}
+`,
+				ExpectError: regexp.MustCompile(`teams must be set`),
+			},
+		},
+	})
+}
+
+// TestAccAgentResource_InternalEmailMissingDomain pins the other arm
+// of the cross-field validator: incoming_email_security_mode =
+// "internal" without incoming_email_allowed_domain must error at
+// plan time.
+func TestAccAgentResource_InternalEmailMissingDomain(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_agent" "test" {
+  name                          = "tf-acc-agent-internal-email-missing"
+  system_prompt                 = "You are a helpful agent."
+  incoming_email_enabled        = true
+  incoming_email_security_mode  = "internal"
+}
+`,
+				ExpectError: regexp.MustCompile(`incoming_email_allowed_domain must be set`),
+			},
+		},
+	})
 }
