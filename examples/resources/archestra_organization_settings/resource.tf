@@ -42,7 +42,7 @@ resource "archestra_organization_settings" "main" {
   global_tool_policy = "restrictive" # or "permissive"
 
   # --- Compression / TOON ---
-  compression_scope            = "organization" # one of: organization, team, agent
+  compression_scope            = "organization" # one of: organization, team
   convert_tool_results_to_toon = true
 
   # --- Cost / limit cleanup ---
