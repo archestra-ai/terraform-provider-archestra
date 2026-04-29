@@ -3,38 +3,15 @@
 page_title: "archestra_agent_tools Data Source - archestra"
 subcategory: ""
 description: |-
-  Lists every tool currently assigned to an agent. Use this when you need to fan out resources per assigned tool — e.g. apply a archestra_tool_invocation_policy to every tool the agent has, without hardcoding tool names:
-  
-  data "archestra_agent_tools" "all" {
-    agent_id = archestra_agent.support.id
-  }
-  
-  resource "archestra_tool_invocation_policy" "block_unsafe" {
-    for_each = { for t in data.archestra_agent_tools.all.tools : t.tool_id => t }
-    tool_id  = each.value.tool_id
-    description = "Block ${each.value.name} when the request originates from untrusted context"
-    conditions  = [{ key = "context", operator = "equal", value = "untrusted" }]
-    action      = "block_when_context_is_untrusted"
-  }
+  Lists every tool currently assigned to an agent. Use to fan out resources per assigned tool with for_each instead of looking up each one individually.
+  ~> Looking up one tool by name? Use data.archestra_agent_tool agent_tool (singular) — takes agent_id + tool_name.
 ---
 
 # archestra_agent_tools (Data Source)
 
-Lists every tool currently assigned to an agent. Use this when you need to fan out resources per assigned tool — e.g. apply a `archestra_tool_invocation_policy` to every tool the agent has, without hardcoding tool names:
+Lists every tool currently assigned to an agent. Use to fan out resources per assigned tool with `for_each` instead of looking up each one individually.
 
-```hcl
-data "archestra_agent_tools" "all" {
-  agent_id = archestra_agent.support.id
-}
-
-resource "archestra_tool_invocation_policy" "block_unsafe" {
-  for_each = { for t in data.archestra_agent_tools.all.tools : t.tool_id => t }
-  tool_id  = each.value.tool_id
-  description = "Block ${each.value.name} when the request originates from untrusted context"
-  conditions  = [{ key = "context", operator = "equal", value = "untrusted" }]
-  action      = "block_when_context_is_untrusted"
-}
-```
+~> **Looking up one tool by name?** Use [`data.archestra_agent_tool`](agent_tool) (singular) — takes `agent_id` + `tool_name`.
 
 ## Example Usage
 

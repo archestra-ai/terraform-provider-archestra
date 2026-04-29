@@ -3,15 +3,18 @@
 page_title: "archestra_agent_tool Data Source - archestra"
 subcategory: ""
 description: |-
-  Fetches an agent-tool assignment by agent ID and tool name.
-  ~> Picking the right ID for policies. archestra_tool_invocation_policy.tool_id and archestra_trusted_data_policy.tool_id expect the bare tool UUID (tool_id field below) — not the assignment composite (id field below). The backend stores toolId directly on the policies table; passing the assignment ID will 400 at apply.
+  Fetches one agent-tool assignment by agent ID and tool name.
+  ~> Listing every tool assigned to an agent? Use data.archestra_agent_tools agent_tools (plural) — returns the full list in one call.
+  ~> Picking the right ID for policies. archestra_tool_invocation_policy.tool_id and archestra_trusted_data_policy.tool_id expect the bare tool UUID (tool_id field below) — not the assignment composite (id field below).
 ---
 
 # archestra_agent_tool (Data Source)
 
-Fetches an agent-tool assignment by agent ID and tool name.
+Fetches one agent-tool assignment by agent ID and tool name.
 
-~> **Picking the right ID for policies.** `archestra_tool_invocation_policy.tool_id` and `archestra_trusted_data_policy.tool_id` expect the **bare tool UUID** (`tool_id` field below) — not the assignment composite (`id` field below). The backend stores `toolId` directly on the policies table; passing the assignment ID will 400 at apply.
+~> **Listing every tool assigned to an agent?** Use [`data.archestra_agent_tools`](agent_tools) (plural) — returns the full list in one call.
+
+~> **Picking the right ID for policies.** `archestra_tool_invocation_policy.tool_id` and `archestra_trusted_data_policy.tool_id` expect the bare tool UUID (`tool_id` field below) — not the assignment composite (`id` field below).
 
 ## Example Usage
 

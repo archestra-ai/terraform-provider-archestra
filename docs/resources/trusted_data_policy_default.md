@@ -3,33 +3,27 @@
 page_title: "archestra_trusted_data_policy_default Resource - archestra"
 subcategory: ""
 description: |-
-  Sets the default (unconditional) trusted-data policy for a set of tools in a single API call. The trusted-data policy controls how the tool's result is treated as it flows back into the LLM context — verbose, summarised, sanitised, or blocked.
-  Equivalent to writing N archestra_trusted_data_policy resources with empty conditions = [], but uses the bulk-default upsert endpoint.
-  
-  resource "archestra_trusted_data_policy_default" "sanitise_filesystem" {
-    tool_ids = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])
-    action   = "sanitize_with_dual_llm"
-  }
+  Sets the default trusted-data action for a set of tools — controls how each tool's result flows back into the LLM context. Maps to the DEFAULT row in the Guardrails UI's Tool Result Policies section (Sensitive / Trusted / Sanitize / Block).
+  ~> For per-tool conditional rules (the UI's "Add Tool Result Policy" button), use archestra_trusted_data_policy trusted_data_policy. They layer: conditional rules fire first; this default fires when none match.
 ---
 
 # archestra_trusted_data_policy_default (Resource)
 
-Sets the **default** (unconditional) trusted-data policy for a set of tools in a single API call. The trusted-data policy controls how the tool's *result* is treated as it flows back into the LLM context — verbose, summarised, sanitised, or blocked.
+Sets the default trusted-data action for a set of tools — controls how each tool's *result* flows back into the LLM context. Maps to the **`DEFAULT` row** in the Guardrails UI's Tool Result Policies section (Sensitive / Trusted / Sanitize / Block).
 
-Equivalent to writing `N` `archestra_trusted_data_policy` resources with empty `conditions = []`, but uses the `bulk-default` upsert endpoint.
-
-```hcl
-resource "archestra_trusted_data_policy_default" "sanitise_filesystem" {
-  tool_ids = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])
-  action   = "sanitize_with_dual_llm"
-}
-```
+~> **For per-tool conditional rules** (the UI's "Add Tool Result Policy" button), use [`archestra_trusted_data_policy`](trusted_data_policy). They layer: conditional rules fire first; this default fires when none match.
 
 ## Example Usage
 
 ```terraform
-# Sanitise the result of every filesystem tool call through the dual-LLM
-# sanitiser before flowing it back into the agent's context.
+# Single-tool default — matches the UI's per-row "Results are" dropdown.
+# `mark_as_untrusted` is the wire name behind the UI's "Sensitive" label.
+resource "archestra_trusted_data_policy_default" "echo_sensitive" {
+  tool_ids = [archestra_mcp_server_installation.internal_test.tool_id_by_name["internal_test__echo"]]
+  action   = "mark_as_untrusted"
+}
+
+# Bulk: sanitise every filesystem tool's result through the dual-LLM sanitiser.
 resource "archestra_trusted_data_policy_default" "sanitize_filesystem" {
   tool_ids = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])
   action   = "sanitize_with_dual_llm"

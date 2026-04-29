@@ -46,7 +46,8 @@ func (r *TrustedDataPolicyResource) Metadata(ctx context.Context, req resource.M
 
 func (r *TrustedDataPolicyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an Archestra trusted data policy. A single policy may carry multiple conditions; ALL must match for the action to fire.",
+		MarkdownDescription: "Conditional trusted-data policy — fires `action` when ALL of `conditions` match the tool's *result*. Maps to the **Add Tool Result Policy** button in the Guardrails UI's Tool Result Policies section.\n\n" +
+			"~> **For the UI's `DEFAULT` row** under \"Tool Result Policies\", use [`archestra_trusted_data_policy_default`](trusted_data_policy_default) instead. This resource requires non-empty `conditions`.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

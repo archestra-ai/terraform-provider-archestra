@@ -50,21 +50,8 @@ func (d *AgentToolsDataSource) Metadata(_ context.Context, req datasource.Metada
 
 func (d *AgentToolsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Lists every tool currently assigned to an agent. Use this when you need to fan out resources " +
-			"per assigned tool — e.g. apply a `archestra_tool_invocation_policy` to every tool the agent has, without " +
-			"hardcoding tool names:\n\n" +
-			"```hcl\n" +
-			"data \"archestra_agent_tools\" \"all\" {\n" +
-			"  agent_id = archestra_agent.support.id\n" +
-			"}\n\n" +
-			"resource \"archestra_tool_invocation_policy\" \"block_unsafe\" {\n" +
-			"  for_each = { for t in data.archestra_agent_tools.all.tools : t.tool_id => t }\n" +
-			"  tool_id  = each.value.tool_id\n" +
-			"  description = \"Block ${each.value.name} when the request originates from untrusted context\"\n" +
-			"  conditions  = [{ key = \"context\", operator = \"equal\", value = \"untrusted\" }]\n" +
-			"  action      = \"block_when_context_is_untrusted\"\n" +
-			"}\n" +
-			"```",
+		MarkdownDescription: "Lists every tool currently assigned to an agent. Use to fan out resources per assigned tool with `for_each` instead of looking up each one individually.\n\n" +
+			"~> **Looking up one tool by name?** Use [`data.archestra_agent_tool`](agent_tool) (singular) — takes `agent_id` + `tool_name`.",
 
 		Attributes: map[string]schema.Attribute{
 			"agent_id": schema.StringAttribute{

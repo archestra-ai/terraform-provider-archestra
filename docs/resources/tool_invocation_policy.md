@@ -3,12 +3,15 @@
 page_title: "archestra_tool_invocation_policy Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an Archestra tool invocation policy. A single policy may carry multiple conditions; ALL must match for the action to fire.
+  Conditional tool-invocation policy — fires action when ALL of conditions match the tool-call arguments. Maps to the Add Policy button in the Guardrails UI's Tool Call Policies section.
+  ~> For the UI's DEFAULT row (the unconditional fall-through), use archestra_tool_invocation_policy_default tool_invocation_policy_default instead. This resource requires non-empty conditions.
 ---
 
 # archestra_tool_invocation_policy (Resource)
 
-Manages an Archestra tool invocation policy. A single policy may carry multiple conditions; ALL must match for the action to fire.
+Conditional tool-invocation policy — fires `action` when ALL of `conditions` match the tool-call arguments. Maps to the **Add Policy** button in the Guardrails UI's Tool Call Policies section.
+
+~> **For the UI's `DEFAULT` row** (the unconditional fall-through), use [`archestra_tool_invocation_policy_default`](tool_invocation_policy_default) instead. This resource requires non-empty `conditions`.
 
 ## Example Usage
 

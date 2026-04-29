@@ -3,33 +3,15 @@
 page_title: "archestra_agent_tool_batch Resource - archestra"
 subcategory: ""
 description: |-
-  Assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip.
-  Equivalent to writing N separate archestra_agent_tool resources, but uses the bulk-assign endpoint and so plans/applies in O(1) API calls regardless of N.
-  
-  resource "archestra_agent_tool_batch" "support_agent_filesystem" {
-    agent_id      = archestra_agent.support.id
-    mcp_server_id = archestra_mcp_server_installation.filesystem.id
-    tool_ids      = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])
-  }
-  
-  ~> Ownership. This resource is authoritative over all assignments matching (agent_id, mcp_server_id). Two archestra_agent_tool_batch resources targeting the same agent_id with different mcp_server_ids coexist cleanly. Mixing this resource with archestra_agent_tool resources for the same (agent_id, mcp_server_id) causes the two to fight on every plan — pick one model.
+  Assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip. The right default for fanning out an entire install onto an agent.
+  ~> Authoritative over (agent_id, mcp_server_id). Mixing this resource with archestra_agent_tool agent_tool for the same (agent_id, mcp_server_id) makes them fight on every plan — pick one model. Multiple batches targeting the same agent but different installs coexist cleanly.
 ---
 
 # archestra_agent_tool_batch (Resource)
 
-Assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip.
+Assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip. The right default for fanning out an entire install onto an agent.
 
-Equivalent to writing `N` separate `archestra_agent_tool` resources, but uses the bulk-assign endpoint and so plans/applies in `O(1)` API calls regardless of `N`.
-
-```hcl
-resource "archestra_agent_tool_batch" "support_agent_filesystem" {
-  agent_id      = archestra_agent.support.id
-  mcp_server_id = archestra_mcp_server_installation.filesystem.id
-  tool_ids      = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])
-}
-```
-
-~> **Ownership.** This resource is authoritative over all assignments matching `(agent_id, mcp_server_id)`. Two `archestra_agent_tool_batch` resources targeting the same `agent_id` with different `mcp_server_id`s coexist cleanly. Mixing this resource with `archestra_agent_tool` resources for the same `(agent_id, mcp_server_id)` causes the two to fight on every plan — pick one model.
+~> **Authoritative over `(agent_id, mcp_server_id)`.** Mixing this resource with [`archestra_agent_tool`](agent_tool) for the same `(agent_id, mcp_server_id)` makes them fight on every plan — pick one model. Multiple batches targeting the same agent but different installs coexist cleanly.
 
 ## Example Usage
 

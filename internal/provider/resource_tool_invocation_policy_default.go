@@ -41,15 +41,8 @@ func (r *ToolInvocationPolicyDefaultResource) Metadata(_ context.Context, req re
 
 func (r *ToolInvocationPolicyDefaultResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Sets the **default** (unconditional) invocation policy for a set of tools in a single API call. Equivalent to writing `N` `archestra_tool_invocation_policy` resources with empty `conditions = []`, but uses the `bulk-default` upsert endpoint and so plans/applies in one round-trip regardless of `N`.\n\n" +
-			"Use this when you want to apply the same blanket rule (block, allow, require approval) across many tools — e.g. lock down every filesystem tool on a managed install:\n\n" +
-			"```hcl\n" +
-			"resource \"archestra_tool_invocation_policy_default\" \"filesystem_blocked\" {\n" +
-			"  tool_ids = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])\n" +
-			"  action   = \"block_always\"\n" +
-			"}\n" +
-			"```\n\n" +
-			"~> **Coexistence with conditional policies.** This resource sets the *default* (no-conditions) policy for each tool — it doesn't displace conditional `archestra_tool_invocation_policy` resources targeting the same tool. The backend evaluates conditional policies first and falls through to the default when none match.",
+		MarkdownDescription: "Sets the default invocation action for a set of tools. Maps to the **`DEFAULT` row** in the Guardrails UI's Tool Call Policies section (allow / allow-in-safe-context / require-approval / block).\n\n" +
+			"~> **For per-tool conditional rules** (the UI's \"Add Policy\" button), use [`archestra_tool_invocation_policy`](tool_invocation_policy). That sibling resource layers on top of this one — conditional rules evaluate first, this default fires when none match.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

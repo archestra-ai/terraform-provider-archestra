@@ -54,18 +54,8 @@ func (r *AgentToolBatchResource) Metadata(_ context.Context, req resource.Metada
 
 func (r *AgentToolBatchResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip.\n\n" +
-			"Equivalent to writing `N` separate `archestra_agent_tool` resources, but uses the bulk-assign endpoint and so plans/applies in `O(1)` API calls regardless of `N`.\n\n" +
-			"```hcl\n" +
-			"resource \"archestra_agent_tool_batch\" \"support_agent_filesystem\" {\n" +
-			"  agent_id      = archestra_agent.support.id\n" +
-			"  mcp_server_id = archestra_mcp_server_installation.filesystem.id\n" +
-			"  tool_ids      = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])\n" +
-			"}\n" +
-			"```\n\n" +
-			"~> **Ownership.** This resource is authoritative over all assignments matching `(agent_id, mcp_server_id)`. " +
-			"Two `archestra_agent_tool_batch` resources targeting the same `agent_id` with different `mcp_server_id`s coexist cleanly. " +
-			"Mixing this resource with `archestra_agent_tool` resources for the same `(agent_id, mcp_server_id)` causes the two to fight on every plan — pick one model.",
+		MarkdownDescription: "Assigns a set of tools from one MCP server installation onto one agent in a single backend round-trip. The right default for fanning out an entire install onto an agent.\n\n" +
+			"~> **Authoritative over `(agent_id, mcp_server_id)`.** Mixing this resource with [`archestra_agent_tool`](agent_tool) for the same `(agent_id, mcp_server_id)` makes them fight on every plan — pick one model. Multiple batches targeting the same agent but different installs coexist cleanly.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

@@ -3,39 +3,26 @@
 page_title: "archestra_tool_invocation_policy_default Resource - archestra"
 subcategory: ""
 description: |-
-  Sets the default (unconditional) invocation policy for a set of tools in a single API call. Equivalent to writing N archestra_tool_invocation_policy resources with empty conditions = [], but uses the bulk-default upsert endpoint and so plans/applies in one round-trip regardless of N.
-  Use this when you want to apply the same blanket rule (block, allow, require approval) across many tools — e.g. lock down every filesystem tool on a managed install:
-  
-  resource "archestra_tool_invocation_policy_default" "filesystem_blocked" {
-    tool_ids = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])
-    action   = "block_always"
-  }
-  
-  ~> Coexistence with conditional policies. This resource sets the default (no-conditions) policy for each tool — it doesn't displace conditional archestra_tool_invocation_policy resources targeting the same tool. The backend evaluates conditional policies first and falls through to the default when none match.
+  Sets the default invocation action for a set of tools. Maps to the DEFAULT row in the Guardrails UI's Tool Call Policies section (allow / allow-in-safe-context / require-approval / block).
+  ~> For per-tool conditional rules (the UI's "Add Policy" button), use archestra_tool_invocation_policy tool_invocation_policy. That sibling resource layers on top of this one — conditional rules evaluate first, this default fires when none match.
 ---
 
 # archestra_tool_invocation_policy_default (Resource)
 
-Sets the **default** (unconditional) invocation policy for a set of tools in a single API call. Equivalent to writing `N` `archestra_tool_invocation_policy` resources with empty `conditions = []`, but uses the `bulk-default` upsert endpoint and so plans/applies in one round-trip regardless of `N`.
+Sets the default invocation action for a set of tools. Maps to the **`DEFAULT` row** in the Guardrails UI's Tool Call Policies section (allow / allow-in-safe-context / require-approval / block).
 
-Use this when you want to apply the same blanket rule (block, allow, require approval) across many tools — e.g. lock down every filesystem tool on a managed install:
-
-```hcl
-resource "archestra_tool_invocation_policy_default" "filesystem_blocked" {
-  tool_ids = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])
-  action   = "block_always"
-}
-```
-
-~> **Coexistence with conditional policies.** This resource sets the *default* (no-conditions) policy for each tool — it doesn't displace conditional `archestra_tool_invocation_policy` resources targeting the same tool. The backend evaluates conditional policies first and falls through to the default when none match.
+~> **For per-tool conditional rules** (the UI's "Add Policy" button), use [`archestra_tool_invocation_policy`](tool_invocation_policy). That sibling resource layers on top of this one — conditional rules evaluate first, this default fires when none match.
 
 ## Example Usage
 
 ```terraform
-# Lock down every filesystem tool with a single resource. The bulk-default
-# endpoint upserts the unconditional default policy for each tool_id; any
-# conditional `archestra_tool_invocation_policy` resources targeting the
-# same tools are evaluated first and fall through to this default.
+# Single-tool default — matches the UI's per-row dropdown.
+resource "archestra_tool_invocation_policy_default" "echo_require_approval" {
+  tool_ids = [archestra_mcp_server_installation.internal_test.tool_id_by_name["internal_test__echo"]]
+  action   = "require_approval"
+}
+
+# Bulk default across every tool from one install.
 resource "archestra_tool_invocation_policy_default" "filesystem_blocked" {
   tool_ids = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])
   action   = "block_always"
