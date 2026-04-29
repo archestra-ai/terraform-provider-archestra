@@ -194,6 +194,31 @@ func TestPatch_DiscriminatorPreserved(t *testing.T) {
 	}
 }
 
+// TestPatch_MixedRefAndPrimitiveArmBecomesFreeForm pins behavior for the
+// pathological-but-possible case of a union mixing a $ref arm with a
+// primitive arm. allRefs is false (one arm has no $ref), allSamePrimitive
+// is false (the $ref arm has no `type`), and allObject is false (same
+// reason). Expectation: free-form to *interface{} so the JSON
+// round-trips, rather than emitting a broken oapi-codegen union.
+func TestPatch_MixedRefAndPrimitiveArmBecomesFreeForm(t *testing.T) {
+	in := `{
+		"anyOf": [
+			{"$ref": "#/components/schemas/Cat"},
+			{"type": "string"}
+		]
+	}`
+	got, stats := runPatch(t, in)
+	if stats.freeFormed != 1 {
+		t.Errorf("freeFormed=%d want 1", stats.freeFormed)
+	}
+	if _, hasAnyOf := got["anyOf"]; hasAnyOf {
+		t.Errorf("anyOf should be removed")
+	}
+	if _, hasType := got["type"]; hasType {
+		t.Errorf("type should be stripped to allow *interface{}, got %v", got["type"])
+	}
+}
+
 func TestPatch_SingleArmUnwraps(t *testing.T) {
 	in := `{"anyOf": [{"type": "string", "enum": ["only"]}]}`
 	got, stats := runPatch(t, in)

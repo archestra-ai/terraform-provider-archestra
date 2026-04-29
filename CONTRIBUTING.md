@@ -20,7 +20,26 @@ internal/
 examples/                  # HCL examples — `make generate` renders these into docs/
 docs/                      # generated; do NOT edit by hand
 scripts/                   # CI + local bootstrap (api-key, vault, IdP, full stack)
+tools/oapi-patch/          # workaround for oapi-codegen union mishandling — see below
 ```
+
+### `tools/oapi-patch` is a workaround, not permanent infrastructure
+
+`make codegen-api-client` runs the OpenAPI spec through `tools/oapi-patch`
+before invoking `oapi-codegen`. The patcher rewrites inline polymorphic
+`anyOf`/`oneOf` schemas that `oapi-codegen` mishandles (it emits structs
+with an unexported `union json.RawMessage` field that has no
+Marshal/Unmarshal helpers, causing runtime crashes on numeric arms and
+silent data loss on object arms).
+
+The root cause is upstream in the platform repo: inline anonymous
+`z.union(...)` schemas without `.openapi({...})` annotations. Once the
+backend names + annotates these schemas (so the spec emits a `$ref`
+instead of an inline anonymous union), `oapi-patch` becomes unnecessary
+and should be removed. See the TODO at the top of
+[tools/oapi-patch/main.go](tools/oapi-patch/main.go) for the removal
+criterion. Don't add features to the patcher — fix the upstream zod
+schemas instead.
 
 ## Architecture: merge-patch + AttrSpec
 

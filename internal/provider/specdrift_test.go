@@ -64,14 +64,21 @@ func TestSpecDrift(t *testing.T) {
 				t.Errorf("AttrSpec entry %q has no matching schema attribute", name)
 			}
 
-			// Sensitive disagreement.
-			for _, name := range schemaSensitive {
-				if !contains(specSensitive, name) {
+			// Sensitive disagreement (top-level + nested via dotted path).
+			syntheticTops := syntheticAttrSpecTops(spec.AttrSpecs())
+			nestedSchemaSensitive := nestedSensitiveSchemaPaths(schemaResp.Schema, syntheticTops)
+			nestedSpecSensitive := nestedSensitiveAttrSpecPaths(spec.AttrSpecs())
+
+			allSchemaSensitive := append(append([]string{}, schemaSensitive...), nestedSchemaSensitive...)
+			allSpecSensitive := append(append([]string{}, specSensitive...), nestedSpecSensitive...)
+
+			for _, name := range allSchemaSensitive {
+				if !contains(allSpecSensitive, name) {
 					t.Errorf("schema attribute %q has Sensitive: true but AttrSpec entry is not marked Sensitive", name)
 				}
 			}
-			for _, name := range specSensitive {
-				if !contains(schemaSensitive, name) {
+			for _, name := range allSpecSensitive {
+				if !contains(allSchemaSensitive, name) {
 					t.Errorf("AttrSpec entry %q is marked Sensitive but schema attribute is not", name)
 				}
 			}
@@ -131,6 +138,145 @@ func attrSpecSensitiveTFNames(specs []AttrSpec) []string {
 	}
 	sort.Strings(out)
 	return out
+}
+
+// nestedSensitiveSchemaPaths walks the schema's nested attributes
+// (Single/List/Set/Map NestedAttribute) and Blocks (Single/List/Set
+// NestedBlock) and returns dotted paths of every nested attribute marked
+// `Sensitive: true`. Top-level attributes are NOT included — those are
+// handled by topLevelSensitiveAttrNames.
+//
+// Synthetic AttrSpec subtrees are excluded: synthetic resources like
+// `remote_config` on archestra_mcp_registry_catalog_item handle their
+// own wire encoding and live outside the merge-patch system, so the
+// AttrSpec deliberately omits the children.
+func nestedSensitiveSchemaPaths(s rschema.Schema, syntheticTops map[string]struct{}) []string {
+	var out []string
+	for name, a := range s.Attributes {
+		if _, skip := syntheticTops[name]; skip {
+			continue
+		}
+		walkSchemaAttrForSensitive(name, a, &out)
+	}
+	for name, b := range s.Blocks {
+		if _, skip := syntheticTops[name]; skip {
+			continue
+		}
+		walkSchemaBlockForSensitive(name, b, &out)
+	}
+	sort.Strings(out)
+	return out
+}
+
+func walkSchemaAttrForSensitive(prefix string, a rschema.Attribute, out *[]string) {
+	switch v := a.(type) {
+	case rschema.SingleNestedAttribute:
+		for childName, child := range v.Attributes {
+			path := prefix + "." + childName
+			if child.IsSensitive() {
+				*out = append(*out, path)
+			}
+			walkSchemaAttrForSensitive(path, child, out)
+		}
+	case rschema.ListNestedAttribute:
+		for childName, child := range v.NestedObject.Attributes {
+			path := prefix + "." + childName
+			if child.IsSensitive() {
+				*out = append(*out, path)
+			}
+			walkSchemaAttrForSensitive(path, child, out)
+		}
+	case rschema.SetNestedAttribute:
+		for childName, child := range v.NestedObject.Attributes {
+			path := prefix + "." + childName
+			if child.IsSensitive() {
+				*out = append(*out, path)
+			}
+			walkSchemaAttrForSensitive(path, child, out)
+		}
+	case rschema.MapNestedAttribute:
+		for childName, child := range v.NestedObject.Attributes {
+			path := prefix + "." + childName
+			if child.IsSensitive() {
+				*out = append(*out, path)
+			}
+			walkSchemaAttrForSensitive(path, child, out)
+		}
+	}
+}
+
+func walkSchemaBlockForSensitive(prefix string, b rschema.Block, out *[]string) {
+	switch v := b.(type) {
+	case rschema.SingleNestedBlock:
+		for childName, child := range v.Attributes {
+			path := prefix + "." + childName
+			if child.IsSensitive() {
+				*out = append(*out, path)
+			}
+			walkSchemaAttrForSensitive(path, child, out)
+		}
+		for childName, child := range v.Blocks {
+			walkSchemaBlockForSensitive(prefix+"."+childName, child, out)
+		}
+	case rschema.ListNestedBlock:
+		for childName, child := range v.NestedObject.Attributes {
+			path := prefix + "." + childName
+			if child.IsSensitive() {
+				*out = append(*out, path)
+			}
+			walkSchemaAttrForSensitive(path, child, out)
+		}
+		for childName, child := range v.NestedObject.Blocks {
+			walkSchemaBlockForSensitive(prefix+"."+childName, child, out)
+		}
+	case rschema.SetNestedBlock:
+		for childName, child := range v.NestedObject.Attributes {
+			path := prefix + "." + childName
+			if child.IsSensitive() {
+				*out = append(*out, path)
+			}
+			walkSchemaAttrForSensitive(path, child, out)
+		}
+		for childName, child := range v.NestedObject.Blocks {
+			walkSchemaBlockForSensitive(prefix+"."+childName, child, out)
+		}
+	}
+}
+
+// syntheticAttrSpecTops returns the set of top-level AttrSpec entries
+// whose Kind is Synthetic — these subtrees are intentionally not walked
+// for sensitive comparison because the resource handles wire encoding
+// outside the merge-patch path.
+func syntheticAttrSpecTops(specs []AttrSpec) map[string]struct{} {
+	out := map[string]struct{}{}
+	for _, s := range specs {
+		if s.Kind == Synthetic {
+			out[s.TFName] = struct{}{}
+		}
+	}
+	return out
+}
+
+// nestedSensitiveAttrSpecPaths returns dotted paths of every nested
+// AttrSpec entry marked `Sensitive: true`. Top-level entries are NOT
+// included — those are handled by attrSpecSensitiveTFNames.
+func nestedSensitiveAttrSpecPaths(specs []AttrSpec) []string {
+	var out []string
+	for _, s := range specs {
+		walkAttrSpecForSensitive(s.TFName, s.Children, &out)
+	}
+	sort.Strings(out)
+	return out
+}
+
+func walkAttrSpecForSensitive(prefix string, children []AttrSpec, out *[]string) {
+	for _, c := range children {
+		path := prefix + "." + c.TFName
+		if c.Sensitive {
+			*out = append(*out, path)
+		}
+		walkAttrSpecForSensitive(path, c.Children, out)
+	}
 }
 
 // diff returns elements in `a` that are not in `b`.

@@ -22,8 +22,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-var _ resource.Resource = &IdentityProviderResource{}
-var _ resource.ResourceWithImportState = &IdentityProviderResource{}
+var (
+	_ resource.Resource                   = &IdentityProviderResource{}
+	_ resource.ResourceWithImportState    = &IdentityProviderResource{}
+	_ resource.ResourceWithValidateConfig = &IdentityProviderResource{}
+)
 
 func NewIdentityProviderResource() resource.Resource {
 	return &IdentityProviderResource{}
@@ -235,7 +238,7 @@ func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.Sche
 							"id": schema.StringAttribute{
 								Optional:            true,
 								Computed:            true,
-								Default:             stringdefault.StaticString("sub"),
+								Default:             stringdefault.StaticString(oidcMappingIDDefault),
 								MarkdownDescription: "OIDC claim mapped to the user identity. Defaults to `\"sub\"`.",
 							},
 							"image": schema.StringAttribute{Optional: true},
@@ -330,7 +333,7 @@ func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.Sche
 							"id": schema.StringAttribute{
 								Optional:            true,
 								Computed:            true,
-								Default:             stringdefault.StaticString("sub"),
+								Default:             stringdefault.StaticString(samlMappingIDDefault),
 								MarkdownDescription: "SAML attribute that maps to the user identity. Defaults to `\"sub\"` (the better-auth SAML library treats this as required).",
 							},
 							"last_name": schema.StringAttribute{Optional: true},
@@ -386,11 +389,6 @@ func (r *IdentityProviderResource) Create(ctx context.Context, req resource.Crea
 	var data IdentityProviderResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	if err := validateIdentityProviderConfigChoice(data.OidcConfig, data.SamlConfig); err != nil {
-		resp.Diagnostics.AddError("Invalid configuration", err.Error())
 		return
 	}
 
@@ -490,11 +488,6 @@ func (r *IdentityProviderResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	if err := validateIdentityProviderConfigChoice(plan.OidcConfig, plan.SamlConfig); err != nil {
-		resp.Diagnostics.AddError("Invalid configuration", err.Error())
-		return
-	}
-
 	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, identityProviderAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
@@ -552,38 +545,73 @@ func (r *IdentityProviderResource) ImportState(ctx context.Context, req resource
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-// Helpers
-
-func isOidcConfigSet(cfg *OidcConfigModel) bool {
-	if cfg == nil {
-		return false
+// ValidateConfig enforces the oidc_config XOR saml_config constraint at
+// plan time so users see the error before apply. When sentinel fields
+// reference computed outputs (Unknown at plan), the check defers — the
+// framework re-validates on subsequent plans once values resolve.
+func (r *IdentityProviderResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var data IdentityProviderResourceModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	return !cfg.Issuer.IsNull() ||
-		!cfg.DiscoveryEndpoint.IsNull() ||
-		!cfg.ClientID.IsNull() ||
-		!cfg.ClientSecret.IsNull()
-}
-func isSamlConfigSet(cfg *SamlConfigModel) bool {
-	if cfg == nil {
-		return false
-	}
-	return !cfg.Issuer.IsNull() ||
-		!cfg.EntryPoint.IsNull() ||
-		!cfg.CallbackURL.IsNull() ||
-		!cfg.Cert.IsNull()
-}
 
-func validateIdentityProviderConfigChoice(oidc *OidcConfigModel, saml *SamlConfigModel) error {
-	oidcSet := isOidcConfigSet(oidc)
-	samlSet := isSamlConfigSet(saml)
+	oidcSet, oidcUnknown := classifyOidcConfig(data.OidcConfig)
+	samlSet, samlUnknown := classifySamlConfig(data.SamlConfig)
+
+	if oidcUnknown || samlUnknown {
+		return
+	}
 
 	if !oidcSet && !samlSet {
-		return fmt.Errorf("exactly one of oidc_config or saml_config must be set")
+		resp.Diagnostics.AddError(
+			"Missing Required Configuration",
+			"exactly one of oidc_config or saml_config must be set",
+		)
+		return
 	}
 	if oidcSet && samlSet {
-		return fmt.Errorf("only one of oidc_config or saml_config can be set at a time")
+		resp.Diagnostics.AddError(
+			"Conflicting Configuration",
+			"only one of oidc_config or saml_config can be set at a time",
+		)
 	}
-	return nil
+}
+
+// Helpers
+
+// classifyOidcConfig returns (set, unknown). `set` is true when at least
+// one sentinel field is a known non-null value. `unknown` is true when
+// any sentinel field is Unknown — caller should defer the XOR check.
+func classifyOidcConfig(cfg *OidcConfigModel) (set, unknown bool) {
+	if cfg == nil {
+		return false, false
+	}
+	for _, f := range []types.String{cfg.Issuer, cfg.DiscoveryEndpoint, cfg.ClientID, cfg.ClientSecret} {
+		if f.IsUnknown() {
+			unknown = true
+		}
+		if !f.IsNull() && !f.IsUnknown() {
+			set = true
+		}
+	}
+	return set, unknown
+}
+
+// classifySamlConfig mirrors classifyOidcConfig for SAML sentinel fields.
+func classifySamlConfig(cfg *SamlConfigModel) (set, unknown bool) {
+	if cfg == nil {
+		return false, false
+	}
+	for _, f := range []types.String{cfg.Issuer, cfg.EntryPoint, cfg.CallbackURL, cfg.Cert} {
+		if f.IsUnknown() {
+			unknown = true
+		}
+		if !f.IsNull() && !f.IsUnknown() {
+			set = true
+		}
+	}
+	return set, unknown
 }
 
 func encodeAdditionalParams(m *map[string]interface{}) jsontypes.Normalized {
@@ -604,9 +632,29 @@ func stringValueOrNull(ptr *string) types.String {
 	return types.StringValue(*ptr)
 }
 
+// stringValueOrDefault returns the pointed-to string when non-nil, else
+// the supplied default. Use this when the schema declares a `Default`
+// plan modifier so Read materializes that default instead of leaving
+// state null on a nil-from-API response (which would produce a
+// perpetual import-verify mismatch).
+func stringValueOrDefault(ptr *string, def string) types.String {
+	if ptr == nil {
+		return types.StringValue(def)
+	}
+	return types.StringValue(*ptr)
+}
+
 func boolValueOrNull(ptr *bool) types.Bool {
 	if ptr == nil {
 		return types.BoolNull()
+	}
+	return types.BoolValue(*ptr)
+}
+
+// boolValueOrDefault — see stringValueOrDefault.
+func boolValueOrDefault(ptr *bool, def bool) types.Bool {
+	if ptr == nil {
+		return types.BoolValue(def)
 	}
 	return types.BoolValue(*ptr)
 }

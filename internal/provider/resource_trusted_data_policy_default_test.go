@@ -68,6 +68,13 @@ func TestAccTrustedDataPolicyDefaultResource(t *testing.T) {
 					assertAttrEquals("archestra_trusted_data_policy_default.test", "id", &capturedID),
 				),
 			},
+			{
+				// Import: action name as ID; Read reconciles tool_ids.
+				ResourceName:      "archestra_trusted_data_policy_default.test",
+				ImportState:       true,
+				ImportStateId:     "sanitize_with_dual_llm",
+				ImportStateVerify: true,
+			},
 		},
 	})
 }

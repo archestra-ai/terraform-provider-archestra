@@ -25,8 +25,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-var _ resource.Resource = &MCPServerRegistryResource{}
-var _ resource.ResourceWithImportState = &MCPServerRegistryResource{}
+var (
+	_ resource.Resource                   = &MCPServerRegistryResource{}
+	_ resource.ResourceWithImportState    = &MCPServerRegistryResource{}
+	_ resource.ResourceWithValidateConfig = &MCPServerRegistryResource{}
+)
 
 func NewMCPServerRegistryResource() resource.Resource {
 	return &MCPServerRegistryResource{}
@@ -755,35 +758,6 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	if !data.LocalConfig.IsNull() && !data.RemoteConfig.IsNull() {
-		resp.Diagnostics.AddError(
-			"Invalid Configuration",
-			"Only one of 'local_config' or 'remote_config' can be specified, not both.",
-		)
-		return
-	}
-	if data.LocalConfig.IsNull() && data.RemoteConfig.IsNull() {
-		resp.Diagnostics.AddError(
-			"Invalid Configuration",
-			"One of 'local_config' or 'remote_config' must be specified.",
-		)
-		return
-	}
-	if !data.LocalConfig.IsNull() {
-		var lc LocalConfigModel
-		resp.Diagnostics.Append(data.LocalConfig.As(ctx, &lc, basetypes.ObjectAsOptions{})...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		if lc.Command.IsNull() && lc.DockerImage.IsNull() {
-			resp.Diagnostics.AddError(
-				"Invalid Configuration",
-				"Either 'command' or 'docker_image' must be specified in 'local_config'.",
-			)
-			return
-		}
-	}
-
 	plan := req.Plan.Raw
 	prior := tftypes.NewValue(plan.Type(), nil)
 	patch := MergePatch(ctx, plan, prior, catalogItemAttrSpec, &resp.Diagnostics)
@@ -1429,35 +1403,6 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	if !data.LocalConfig.IsNull() && !data.RemoteConfig.IsNull() {
-		resp.Diagnostics.AddError(
-			"Invalid Configuration",
-			"Only one of 'local_config' or 'remote_config' can be specified, not both.",
-		)
-		return
-	}
-	if data.LocalConfig.IsNull() && data.RemoteConfig.IsNull() {
-		resp.Diagnostics.AddError(
-			"Invalid Configuration",
-			"One of 'local_config' or 'remote_config' must be specified.",
-		)
-		return
-	}
-	if !data.LocalConfig.IsNull() {
-		var lc LocalConfigModel
-		resp.Diagnostics.Append(data.LocalConfig.As(ctx, &lc, basetypes.ObjectAsOptions{})...)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-		if lc.Command.IsNull() && lc.DockerImage.IsNull() {
-			resp.Diagnostics.AddError(
-				"Invalid Configuration",
-				"Either 'command' or 'docker_image' must be specified in 'local_config'.",
-			)
-			return
-		}
-	}
-
 	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
@@ -1551,6 +1496,56 @@ func (r *MCPServerRegistryResource) Delete(ctx context.Context, req resource.Del
 
 func (r *MCPServerRegistryResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+}
+
+// ValidateConfig enforces the local_config XOR remote_config constraint
+// (and the inner command XOR docker_image inside local_config) at plan
+// time so users see the error before apply rather than mid-API-call.
+func (r *MCPServerRegistryResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var data MCPServerRegistryResourceModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	localKnown := !data.LocalConfig.IsUnknown()
+	remoteKnown := !data.RemoteConfig.IsUnknown()
+	localSet := localKnown && !data.LocalConfig.IsNull()
+	remoteSet := remoteKnown && !data.RemoteConfig.IsNull()
+
+	if localSet && remoteSet {
+		resp.Diagnostics.AddError(
+			"Conflicting Configuration",
+			"only one of local_config or remote_config can be set at a time",
+		)
+		return
+	}
+	if localKnown && remoteKnown && !localSet && !remoteSet {
+		resp.Diagnostics.AddError(
+			"Missing Required Configuration",
+			"exactly one of local_config or remote_config must be set",
+		)
+		return
+	}
+
+	if localSet {
+		var lc LocalConfigModel
+		resp.Diagnostics.Append(data.LocalConfig.As(ctx, &lc, basetypes.ObjectAsOptions{})...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		commandKnown := !lc.Command.IsUnknown()
+		dockerKnown := !lc.DockerImage.IsUnknown()
+		commandSet := commandKnown && !lc.Command.IsNull()
+		dockerSet := dockerKnown && !lc.DockerImage.IsNull()
+		if commandKnown && dockerKnown && !commandSet && !dockerSet {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("local_config"),
+				"Missing Required Attribute",
+				"either command or docker_image must be set inside local_config",
+			)
+		}
+	}
 }
 
 // strOrNull returns a null Terraform string for empty go strings, otherwise a string value.

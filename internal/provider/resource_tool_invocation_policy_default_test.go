@@ -80,6 +80,14 @@ func TestAccToolInvocationPolicyDefaultResource(t *testing.T) {
 					assertAttrEquals("archestra_tool_invocation_policy_default.test", "id", &capturedID),
 				),
 			},
+			{
+				// Import: use the action name as the ID; Read reconciles
+				// tool_ids from the live policies table.
+				ResourceName:      "archestra_tool_invocation_policy_default.test",
+				ImportState:       true,
+				ImportStateId:     "require_approval",
+				ImportStateVerify: true,
+			},
 		},
 	})
 }

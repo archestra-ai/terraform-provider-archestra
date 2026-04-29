@@ -3,10 +3,12 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -105,13 +107,52 @@ func (r *TrustedDataPolicyDefaultResource) Create(ctx context.Context, req resou
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
+// Read reconciles state's `tool_ids` against the live trusted-data
+// policies table — same drift-detection model as
+// resource_tool_invocation_policy_default. See that file's Read for the
+// detailed contract.
 func (r *TrustedDataPolicyDefaultResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	// Same fire-and-forget rationale as the call-policy default resource:
-	// the bulk-upsert endpoint is one-way, so we don't try to reconcile
-	// from the policies table.
-	var data TrustedDataPolicyDefaultResourceModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	var state TrustedDataPolicyDefaultResourceModel
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	stateTools := parseUUIDSet(ctx, state.ToolIDs, &resp.Diagnostics, "tool_ids")
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	apiResp, err := r.client.GetTrustedDataPoliciesWithResponse(ctx)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list trusted data policies: %s", err))
+		return
+	}
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("List trusted data policies returned status %d: %s", apiResp.StatusCode(), string(apiResp.Body)))
+		return
+	}
+
+	defaults := map[openapi_types.UUID]string{}
+	for _, p := range *apiResp.JSON200 {
+		if len(p.Conditions) == 0 {
+			defaults[p.ToolId] = string(p.Action)
+		}
+	}
+
+	kept := reconcileDefaultPolicyTools(stateTools, state.Action.ValueString(), defaults)
+	if len(kept) == 0 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
+	keptSet, d := uuidsToStringSet(kept)
+	resp.Diagnostics.Append(d...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	state.ToolIDs = keptSet
+	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
 func (r *TrustedDataPolicyDefaultResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -135,27 +176,113 @@ func (r *TrustedDataPolicyDefaultResource) Update(ctx context.Context, req resou
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
+// Delete removes the per-tool default trusted-data policy rows this
+// resource owns by listing policies, filtering to (tool_id, action,
+// conditions=[]) matches, and DELETEing each by ID. Errors surface as
+// `AddError` — silent leftover rows would be a security inconsistency.
 func (r *TrustedDataPolicyDefaultResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	// Reset to mark_as_trusted on delete — matches the implicit
-	// permissive behaviour when no default trusted-data policy exists.
 	var data TrustedDataPolicyDefaultResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	tools := parseUUIDSet(ctx, data.ToolIDs, &resp.Diagnostics, "tool_ids")
+	stateTools := parseUUIDSet(ctx, data.ToolIDs, &resp.Diagnostics, "tool_ids")
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if err := r.upsert(ctx, tools, "mark_as_trusted"); err != nil {
-		resp.Diagnostics.AddWarning("Default policy reset failed",
-			fmt.Sprintf("Could not reset default trusted-data policies on delete: %s. Remove via `archestra_trusted_data_policy` or directly via the API.", err))
+	stateAction := data.Action.ValueString()
+
+	listResp, err := r.client.GetTrustedDataPoliciesWithResponse(ctx)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list trusted data policies for delete: %s", err))
+		return
+	}
+	if listResp.JSON200 == nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("List trusted data policies returned status %d: %s", listResp.StatusCode(), string(listResp.Body)))
+		return
+	}
+
+	managed := map[openapi_types.UUID]struct{}{}
+	for _, t := range stateTools {
+		managed[t] = struct{}{}
+	}
+	for _, p := range *listResp.JSON200 {
+		if len(p.Conditions) != 0 {
+			continue
+		}
+		if string(p.Action) != stateAction {
+			continue
+		}
+		if _, ok := managed[p.ToolId]; !ok {
+			continue
+		}
+		delResp, err := r.client.DeleteTrustedDataPolicyWithResponse(ctx, p.Id)
+		if err != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Failed to delete trusted data policy %s: %s", p.Id, err))
+			return
+		}
+		// Tolerate 404 — row already gone (race, manual cleanup,
+		// concurrent destroy). Anything else is a real failure.
+		if delResp.JSON200 == nil && delResp.StatusCode() != 404 {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Delete trusted data policy %s returned status %d: %s", p.Id, delResp.StatusCode(), string(delResp.Body)))
+			return
+		}
 	}
 }
 
-func (r *TrustedDataPolicyDefaultResource) ImportState(_ context.Context, _ resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.AddError("Import not supported",
-		"`archestra_trusted_data_policy_default` cannot be imported because the bulk-default endpoint is upsert-only. Recreate the resource in HCL and run `terraform apply`.")
+// ImportState accepts either the bare action name (manual import) or
+// the synthetic `<action>:<hash>` ID (round-trip during test framework
+// import-verify). Read fills in `tool_ids` on the next refresh by
+// listing policies and selecting those whose unconditional default
+// matches the imported action.
+func (r *TrustedDataPolicyDefaultResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	action := req.ID
+	if i := strings.Index(action, ":"); i >= 0 {
+		action = action[:i]
+	}
+	switch action {
+	case "mark_as_trusted", "mark_as_untrusted", "block_always", "sanitize_with_dual_llm":
+	default:
+		resp.Diagnostics.AddError(
+			"Invalid Import ID",
+			fmt.Sprintf("Expected one of mark_as_trusted | mark_as_untrusted | block_always | sanitize_with_dual_llm (optionally followed by `:<hash>`), got %q.", req.ID),
+		)
+		return
+	}
+
+	listResp, err := r.client.GetTrustedDataPoliciesWithResponse(ctx)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list trusted data policies for import: %s", err))
+		return
+	}
+	if listResp.JSON200 == nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("List trusted data policies returned status %d: %s", listResp.StatusCode(), string(listResp.Body)))
+		return
+	}
+
+	tools := []openapi_types.UUID{}
+	for _, p := range *listResp.JSON200 {
+		if len(p.Conditions) == 0 && string(p.Action) == action {
+			tools = append(tools, p.ToolId)
+		}
+	}
+	if len(tools) == 0 {
+		resp.Diagnostics.AddError(
+			"No matching policies",
+			fmt.Sprintf("No tools have %q as their unconditional default trusted-data policy on the backend; nothing to import.", action),
+		)
+		return
+	}
+
+	toolSet, d := uuidsToStringSet(tools)
+	resp.Diagnostics.Append(d...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.State.SetAttribute(ctx, path.Root("id"), types.StringValue(syntheticToolSetID(tools, action)))
+	resp.State.SetAttribute(ctx, path.Root("action"), types.StringValue(action))
+	resp.State.SetAttribute(ctx, path.Root("tool_ids"), toolSet)
 }
 
 func (r *TrustedDataPolicyDefaultResource) upsert(ctx context.Context, tools []openapi_types.UUID, action string) error {

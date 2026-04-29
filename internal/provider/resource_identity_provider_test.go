@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -27,15 +28,13 @@ var (
 		"saml_config.0.sp_metadata.0.private_key_pass",
 	}
 
-	// identityProviderAPIDefaultFields contains fields where API returns defaults that may differ from config.
-	identityProviderAPIDefaultFields = []string{
-		"oidc_config.0.override_user_info",
-		"oidc_config.0.mapping.0.id",
-		"oidc_config.override_user_info",
-		"oidc_config.mapping.id",
-		"saml_config.0.mapping.0.id",
-		"saml_config.mapping.id",
-	}
+	// identityProviderAPIDefaultFields used to ignore fields where the
+	// API echoed null instead of the schema default (override_user_info,
+	// mapping.id). The flatteners now materialize the declared default
+	// when the API omits the field, so import round-trips cleanly. Kept
+	// as an empty slice so the append at identityProviderImportStateVerifyIgnore
+	// stays a no-op without churning that line.
+	identityProviderAPIDefaultFields = []string{}
 
 	// identityProviderTeamSyncFields contains team sync config fields (optional, may not be returned).
 	identityProviderTeamSyncFields = []string{
@@ -390,4 +389,60 @@ resource "archestra_identity_provider" "test" {
   }
 }
 `, providerID, domain, providerID)
+}
+
+// TestAccIdentityProviderResource_BothConfigsSet pins the ValidateConfig
+// XOR check: oidc_config and saml_config must be mutually exclusive at
+// plan time, not apply time.
+func TestAccIdentityProviderResource_BothConfigsSet(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_identity_provider" "test" {
+  provider_id = "tf-acc-idp-both"
+  domain      = "example.com"
+  issuer      = "https://example.com"
+
+  oidc_config {
+    issuer        = "https://example.com"
+    client_id     = "client-id"
+    client_secret = "client-secret"
+  }
+
+  saml_config {
+    issuer       = "https://example.com"
+    entry_point  = "https://idp.example.com/saml/sso"
+    callback_url = "https://archestra.example.com/cb"
+    cert         = "x"
+  }
+}
+`,
+				ExpectError: regexp.MustCompile(`only one of oidc_config or saml_config`),
+			},
+		},
+	})
+}
+
+// TestAccIdentityProviderResource_NeitherConfigSet pins the other arm of
+// the XOR — at least one config block must be present.
+func TestAccIdentityProviderResource_NeitherConfigSet(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_identity_provider" "test" {
+  provider_id = "tf-acc-idp-neither"
+  domain      = "example.com"
+  issuer      = "https://example.com"
+}
+`,
+				ExpectError: regexp.MustCompile(`exactly one of oidc_config or saml_config`),
+			},
+		},
+	})
 }

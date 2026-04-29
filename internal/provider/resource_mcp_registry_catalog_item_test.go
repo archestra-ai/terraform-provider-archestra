@@ -3,6 +3,7 @@ package provider
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
@@ -973,4 +974,78 @@ resource "archestra_mcp_registry_catalog_item" "emc" {
   }
 }
 `, name, idpID)
+}
+
+// TestAccMcpRegistryCatalogItemResource_BothConfigsSet pins the
+// ValidateConfig XOR — local_config and remote_config must be mutually
+// exclusive at plan time.
+func TestAccMcpRegistryCatalogItemResource_BothConfigsSet(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_mcp_registry_catalog_item" "test" {
+  name        = "tf-acc-catalog-both"
+  description = "x"
+
+  local_config = {
+    command   = "node"
+    arguments = ["server.js"]
+  }
+
+  remote_config = {
+    url = "https://example.com/mcp"
+  }
+}
+`,
+				ExpectError: regexp.MustCompile(`only one of local_config or remote_config`),
+			},
+		},
+	})
+}
+
+// TestAccMcpRegistryCatalogItemResource_NeitherConfigSet pins the other
+// arm — at least one of local_config or remote_config must be present.
+func TestAccMcpRegistryCatalogItemResource_NeitherConfigSet(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_mcp_registry_catalog_item" "test" {
+  name        = "tf-acc-catalog-neither"
+  description = "x"
+}
+`,
+				ExpectError: regexp.MustCompile(`exactly one of local_config or remote_config`),
+			},
+		},
+	})
+}
+
+// TestAccMcpRegistryCatalogItemResource_LocalConfigEmpty pins the
+// inner XOR — local_config must contain command or docker_image.
+func TestAccMcpRegistryCatalogItemResource_LocalConfigEmpty(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_mcp_registry_catalog_item" "test" {
+  name        = "tf-acc-catalog-empty-local"
+  description = "x"
+
+  local_config = {
+    arguments = ["x"]
+  }
+}
+`,
+				ExpectError: regexp.MustCompile(`either command or docker_image must be set`),
+			},
+		},
+	})
 }

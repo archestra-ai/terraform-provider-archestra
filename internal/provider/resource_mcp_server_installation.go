@@ -597,6 +597,7 @@ func projectMcpServerTools(apiTools []struct {
 	var diags diag.Diagnostics
 	listElements := make([]attr.Value, len(apiTools))
 	mapEntries := make(map[string]attr.Value, len(apiTools))
+	ambiguousNames := map[string]struct{}{}
 
 	for i, t := range apiTools {
 		desc := types.StringNull()
@@ -648,13 +649,24 @@ func projectMcpServerTools(apiTools []struct {
 		}
 		listElements[i] = obj
 
+		// On name collision, drop both entries from `tool_id_by_name`
+		// so the map never silently maps a name to the wrong UUID.
+		// Downstream HCL referencing the absent key gets a clear
+		// "key not found" error from Terraform; users can fall back
+		// to the full `tools` list (filter by id). Warn-and-skip
+		// instead of erroring keeps `terraform refresh` and
+		// `terraform destroy` unblocked if the backend ever returns
+		// duplicates transiently.
 		if _, exists := mapEntries[t.Name]; exists {
+			ambiguousNames[t.Name] = struct{}{}
+			delete(mapEntries, t.Name)
 			diags.AddWarning(
 				"Duplicate tool name",
-				fmt.Sprintf("`tool_id_by_name` collapsed two tools with the same name %q; the second overwrote the first. The full list at `tools` still shows both.", t.Name),
+				fmt.Sprintf("Two tools share the name %q. Removed from `tool_id_by_name` to avoid mapping it to the wrong UUID; both still appear in `tools`.", t.Name),
 			)
+		} else if _, ambiguous := ambiguousNames[t.Name]; !ambiguous {
+			mapEntries[t.Name] = types.StringValue(t.Id)
 		}
-		mapEntries[t.Name] = types.StringValue(t.Id)
 	}
 
 	listValue, d := types.ListValue(mcpServerToolObjectType, listElements)

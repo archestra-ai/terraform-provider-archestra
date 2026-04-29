@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	openapi_types "github.com/oapi-codegen/runtime/types"
@@ -57,6 +58,43 @@ func syntheticToolSetID(tools []openapi_types.UUID, action string) string {
 	h.Write([]byte{0})
 	h.Write([]byte(strings.Join(strs, ",")))
 	return action + ":" + hex.EncodeToString(h.Sum(nil))
+}
+
+// reconcileDefaultPolicyTools intersects the state's managed `tool_ids`
+// with the subset whose unconditional backend default still matches
+// `stateAction`. Used by the bulk-default policy resources to drift-
+// detect on Read.
+//
+// Behaviour mirrors aws_iam_role_policy_attachment: tools whose backend
+// default has been changed out-of-band (or whose tool was deleted)
+// fall out of state, surfacing as a `+ tool_id` diff on the next plan.
+// Apply re-asserts the configured action by calling the bulk-upsert
+// endpoint with the full HCL set.
+//
+// `defaults` is the per-tool action map for entries where conditions=[];
+// callers build it once from the list endpoint and pass it in. If two
+// rows for the same tool exist (shouldn't happen — bulk-upsert should
+// keep one per (tool, kind)), the later entry wins which is fine for
+// drift detection purposes.
+func reconcileDefaultPolicyTools(stateTools []openapi_types.UUID, stateAction string, defaults map[openapi_types.UUID]string) []openapi_types.UUID {
+	kept := make([]openapi_types.UUID, 0, len(stateTools))
+	for _, t := range stateTools {
+		if defaults[t] == stateAction {
+			kept = append(kept, t)
+		}
+	}
+	return kept
+}
+
+// uuidsToStringSet builds a `types.Set` of strings from a UUID slice for
+// writing back into Terraform state. Empty input produces an empty
+// (non-null) set.
+func uuidsToStringSet(uuids []openapi_types.UUID) (types.Set, diag.Diagnostics) {
+	elems := make([]attr.Value, len(uuids))
+	for i, u := range uuids {
+		elems[i] = types.StringValue(u.String())
+	}
+	return types.SetValue(types.StringType, elems)
 }
 
 // diffUUIDSets returns the elements to add (in want, not in have) and to

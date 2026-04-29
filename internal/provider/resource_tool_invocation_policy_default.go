@@ -3,10 +3,12 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -105,16 +107,55 @@ func (r *ToolInvocationPolicyDefaultResource) Create(ctx context.Context, req re
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
+// Read reconciles state's `tool_ids` against the live policies table.
+// For every tool in state.tool_ids whose unconditional default action
+// (conditions=[]) no longer matches state.action — or whose row is gone
+// — the tool is dropped from state. The next plan surfaces the
+// difference and `terraform apply` re-asserts via the bulk-upsert
+// endpoint. If the entire managed set drifts away, the resource is
+// removed from state so Terraform plans a clean recreate.
 func (r *ToolInvocationPolicyDefaultResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	// Default policies are stored on the backend as conditions=[] entries
-	// in the tool-invocation-policies table. Round-tripping the exact set
-	// would require listing all policies and filtering — and the bulk-
-	// default endpoint is upsert-only, so any out-of-band manual change
-	// can't be reliably reconciled. Treat the resource as fire-and-forget
-	// for UX simplicity: trust state, never drift.
-	var data ToolInvocationPolicyDefaultResourceModel
-	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	var state ToolInvocationPolicyDefaultResourceModel
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	stateTools := parseUUIDSet(ctx, state.ToolIDs, &resp.Diagnostics, "tool_ids")
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	apiResp, err := r.client.GetToolInvocationPoliciesWithResponse(ctx)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list tool invocation policies: %s", err))
+		return
+	}
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("List tool invocation policies returned status %d: %s", apiResp.StatusCode(), string(apiResp.Body)))
+		return
+	}
+
+	defaults := map[openapi_types.UUID]string{}
+	for _, p := range *apiResp.JSON200 {
+		if len(p.Conditions) == 0 {
+			defaults[p.ToolId] = string(p.Action)
+		}
+	}
+
+	kept := reconcileDefaultPolicyTools(stateTools, state.Action.ValueString(), defaults)
+	if len(kept) == 0 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
+	keptSet, d := uuidsToStringSet(kept)
+	resp.Diagnostics.Append(d...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	state.ToolIDs = keptSet
+	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
 }
 
 func (r *ToolInvocationPolicyDefaultResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -139,31 +180,114 @@ func (r *ToolInvocationPolicyDefaultResource) Update(ctx context.Context, req re
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
+// Delete removes the per-tool default policy rows this resource owns by
+// listing policies, filtering to entries whose (tool_id, action,
+// conditions=[]) match this resource's state, and DELETEing each by ID.
+// Errors are surfaced as `AddError` — leaving rows behind silently would
+// be a security-relevant inconsistency for a policy resource.
 func (r *ToolInvocationPolicyDefaultResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	// Resetting to allow_when_context_is_untrusted is the most permissive
-	// fallback and matches the implicit behaviour the platform applies
-	// when no default policy is defined. We deliberately avoid hunting
-	// down and DELETEing the per-tool default rows by ID — the bulk
-	// endpoint is upsert-only, and matching individual policy IDs back
-	// would require a list+filter dance with no atomicity guarantees.
 	var data ToolInvocationPolicyDefaultResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	tools := parseUUIDSet(ctx, data.ToolIDs, &resp.Diagnostics, "tool_ids")
+	stateTools := parseUUIDSet(ctx, data.ToolIDs, &resp.Diagnostics, "tool_ids")
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if err := r.upsert(ctx, tools, "allow_when_context_is_untrusted"); err != nil {
-		resp.Diagnostics.AddWarning("Default policy reset failed",
-			fmt.Sprintf("Could not reset default invocation policies on delete: %s. The policies may still exist in the backend; remove them via `archestra_tool_invocation_policy` or directly via the API.", err))
+	stateAction := data.Action.ValueString()
+
+	listResp, err := r.client.GetToolInvocationPoliciesWithResponse(ctx)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list tool invocation policies for delete: %s", err))
+		return
+	}
+	if listResp.JSON200 == nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("List tool invocation policies returned status %d: %s", listResp.StatusCode(), string(listResp.Body)))
+		return
+	}
+
+	managed := map[openapi_types.UUID]struct{}{}
+	for _, t := range stateTools {
+		managed[t] = struct{}{}
+	}
+	for _, p := range *listResp.JSON200 {
+		if len(p.Conditions) != 0 {
+			continue
+		}
+		if string(p.Action) != stateAction {
+			continue
+		}
+		if _, ok := managed[p.ToolId]; !ok {
+			continue
+		}
+		delResp, err := r.client.DeleteToolInvocationPolicyWithResponse(ctx, p.Id)
+		if err != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Failed to delete tool invocation policy %s: %s", p.Id, err))
+			return
+		}
+		// Tolerate 404 — row already gone (race, manual cleanup,
+		// concurrent destroy). Anything else is a real failure.
+		if delResp.JSON200 == nil && delResp.StatusCode() != 404 {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Delete tool invocation policy %s returned status %d: %s", p.Id, delResp.StatusCode(), string(delResp.Body)))
+			return
+		}
 	}
 }
 
+// ImportState accepts either the bare action name (manual import) or
+// the synthetic `<action>:<hash>` ID (round-trip during test framework
+// import-verify). Read fills in `tool_ids` on the next refresh by
+// listing policies and selecting those whose unconditional default
+// matches the imported action.
 func (r *ToolInvocationPolicyDefaultResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.AddError("Import not supported",
-		"`archestra_tool_invocation_policy_default` cannot be imported because the bulk-default endpoint is upsert-only. Recreate the resource in HCL with the desired tool_ids and action, then run `terraform apply`.")
+	action := req.ID
+	if i := strings.Index(action, ":"); i >= 0 {
+		action = action[:i]
+	}
+	switch action {
+	case "allow_when_context_is_untrusted", "block_when_context_is_untrusted", "block_always", "require_approval":
+	default:
+		resp.Diagnostics.AddError(
+			"Invalid Import ID",
+			fmt.Sprintf("Expected one of allow_when_context_is_untrusted | block_when_context_is_untrusted | block_always | require_approval (optionally followed by `:<hash>`), got %q.", req.ID),
+		)
+		return
+	}
+
+	listResp, err := r.client.GetToolInvocationPoliciesWithResponse(ctx)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list tool invocation policies for import: %s", err))
+		return
+	}
+	if listResp.JSON200 == nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("List tool invocation policies returned status %d: %s", listResp.StatusCode(), string(listResp.Body)))
+		return
+	}
+
+	tools := []openapi_types.UUID{}
+	for _, p := range *listResp.JSON200 {
+		if len(p.Conditions) == 0 && string(p.Action) == action {
+			tools = append(tools, p.ToolId)
+		}
+	}
+	if len(tools) == 0 {
+		resp.Diagnostics.AddError(
+			"No matching policies",
+			fmt.Sprintf("No tools have %q as their unconditional default invocation policy on the backend; nothing to import.", action),
+		)
+		return
+	}
+
+	toolSet, d := uuidsToStringSet(tools)
+	resp.Diagnostics.Append(d...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.State.SetAttribute(ctx, path.Root("id"), types.StringValue(syntheticToolSetID(tools, action)))
+	resp.State.SetAttribute(ctx, path.Root("action"), types.StringValue(action))
+	resp.State.SetAttribute(ctx, path.Root("tool_ids"), toolSet)
 }
 
 func (r *ToolInvocationPolicyDefaultResource) upsert(ctx context.Context, tools []openapi_types.UUID, action string) error {
