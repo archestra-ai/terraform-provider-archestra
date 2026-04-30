@@ -103,6 +103,87 @@ var userConfigAttrTypes = map[string]attr.Type{
 	"prompt_on_installation": types.BoolType,
 }
 
+var labelAttrTypes = map[string]attr.Type{
+	"key":   types.StringType,
+	"value": types.StringType,
+}
+
+var envFromAttrTypes = map[string]attr.Type{
+	"type":   types.StringType,
+	"name":   types.StringType,
+	"prefix": types.StringType,
+}
+
+var envVariableAttrTypes = map[string]attr.Type{
+	"key":                    types.StringType,
+	"type":                   types.StringType,
+	"value":                  types.StringType,
+	"prompt_on_installation": types.BoolType,
+	"required":               types.BoolType,
+	"description":            types.StringType,
+	"default":                types.StringType,
+	"mounted":                types.BoolType,
+}
+
+var ipSecretAttrTypes = map[string]attr.Type{
+	"source":   types.StringType,
+	"name":     types.StringType,
+	"server":   types.StringType,
+	"username": types.StringType,
+	"password": types.StringType,
+	"email":    types.StringType,
+}
+
+var oauthConfigAttrTypes = map[string]attr.Type{
+	"client_id":                  types.StringType,
+	"client_secret":              types.StringType,
+	"redirect_uris":              types.ListType{ElemType: types.StringType},
+	"scopes":                     types.ListType{ElemType: types.StringType},
+	"default_scopes":             types.ListType{ElemType: types.StringType},
+	"supports_resource_metadata": types.BoolType,
+	"authorization_endpoint":     types.StringType,
+	"token_endpoint":             types.StringType,
+	"auth_server_url":            types.StringType,
+	"resource_metadata_url":      types.StringType,
+	"well_known_url":             types.StringType,
+	"grant_type":                 types.StringType,
+	"audience":                   types.StringType,
+	"access_token_env_var":       types.StringType,
+	"browser_auth":               types.BoolType,
+	"generic_oauth":              types.BoolType,
+	"requires_proxy":             types.BoolType,
+	"provider_name":              types.StringType,
+	"streamable_http_url":        types.StringType,
+	"streamable_http_port":       types.Int64Type,
+}
+
+var remoteConfigAttrTypes = map[string]attr.Type{
+	"url":          types.StringType,
+	"oauth_config": types.ObjectType{AttrTypes: oauthConfigAttrTypes},
+}
+
+var authFieldAttrTypes = map[string]attr.Type{
+	"name":        types.StringType,
+	"label":       types.StringType,
+	"type":        types.StringType,
+	"required":    types.BoolType,
+	"description": types.StringType,
+}
+
+var localConfigAttrTypes = map[string]attr.Type{
+	"command":            types.StringType,
+	"arguments":          types.ListType{ElemType: types.StringType},
+	"environment":        types.SetType{ElemType: types.ObjectType{AttrTypes: envVariableAttrTypes}},
+	"env_from":           types.ListType{ElemType: types.ObjectType{AttrTypes: envFromAttrTypes}},
+	"docker_image":       types.StringType,
+	"transport_type":     types.StringType,
+	"http_port":          types.Int64Type,
+	"http_path":          types.StringType,
+	"service_account":    types.StringType,
+	"node_port":          types.Int64Type,
+	"image_pull_secrets": types.ListType{ElemType: types.ObjectType{AttrTypes: ipSecretAttrTypes}},
+}
+
 // EnterpriseManagedConfigModel mirrors the enterpriseManagedConfig object for catalog items
 // with identity-provider-managed credentials.
 type EnterpriseManagedConfigModel struct {
@@ -822,534 +903,386 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 }
 
 func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, data *MCPServerRegistryResourceModel, apiResp *client.GetInternalMcpCatalogItemResponse, diags *diag.Diagnostics) {
-	// Map response to Terraform state
-	data.Name = types.StringValue(apiResp.JSON200.Name)
+	j := apiResp.JSON200
 
-	if apiResp.JSON200.Description != nil {
-		data.Description = types.StringValue(*apiResp.JSON200.Description)
-	} else {
-		data.Description = types.StringNull()
-	}
+	data.Name = types.StringValue(j.Name)
+	data.Description = stringValueOrNull(j.Description)
+	data.DocsURL = stringValueOrNull(j.DocsUrl)
+	data.InstallationCommand = stringValueOrNull(j.InstallationCommand)
+	data.AuthDescription = stringValueOrNull(j.AuthDescription)
+	data.Version = stringValueOrNull(j.Version)
+	data.Repository = stringValueOrNull(j.Repository)
+	data.Instructions = stringValueOrNull(j.Instructions)
+	data.Icon = stringValueOrNull(j.Icon)
+	data.RequiresAuth = types.BoolValue(j.RequiresAuth)
+	data.DeploymentSpecYaml = stringValueOrNull(j.DeploymentSpecYaml)
+	data.Scope = types.StringValue(string(j.Scope))
 
-	if apiResp.JSON200.DocsUrl != nil {
-		data.DocsURL = types.StringValue(*apiResp.JSON200.DocsUrl)
-	} else {
-		data.DocsURL = types.StringNull()
-	}
-
-	if apiResp.JSON200.InstallationCommand != nil {
-		data.InstallationCommand = types.StringValue(*apiResp.JSON200.InstallationCommand)
-	} else {
-		data.InstallationCommand = types.StringNull()
-	}
-
-	if apiResp.JSON200.AuthDescription != nil {
-		data.AuthDescription = types.StringValue(*apiResp.JSON200.AuthDescription)
-	} else {
-		data.AuthDescription = types.StringNull()
-	}
-
-	if apiResp.JSON200.Version != nil {
-		data.Version = types.StringValue(*apiResp.JSON200.Version)
-	} else {
-		data.Version = types.StringNull()
-	}
-
-	if apiResp.JSON200.Repository != nil {
-		data.Repository = types.StringValue(*apiResp.JSON200.Repository)
-	} else {
-		data.Repository = types.StringNull()
-	}
-
-	if apiResp.JSON200.Instructions != nil {
-		data.Instructions = types.StringValue(*apiResp.JSON200.Instructions)
-	} else {
-		data.Instructions = types.StringNull()
-	}
-
-	if apiResp.JSON200.Icon != nil {
-		data.Icon = types.StringValue(*apiResp.JSON200.Icon)
-	} else {
-		data.Icon = types.StringNull()
-	}
-
-	data.RequiresAuth = types.BoolValue(apiResp.JSON200.RequiresAuth)
-
-	if apiResp.JSON200.DeploymentSpecYaml != nil {
-		data.DeploymentSpecYaml = types.StringValue(*apiResp.JSON200.DeploymentSpecYaml)
-	} else {
-		data.DeploymentSpecYaml = types.StringNull()
-	}
-
-	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
-
-	if apiResp.JSON200.ClientSecretId != nil {
-		data.ClientSecretId = types.StringValue(apiResp.JSON200.ClientSecretId.String())
+	if j.ClientSecretId != nil {
+		data.ClientSecretId = types.StringValue(j.ClientSecretId.String())
 	} else {
 		data.ClientSecretId = types.StringNull()
 	}
-	if apiResp.JSON200.LocalConfigSecretId != nil {
-		data.LocalConfigSecretId = types.StringValue(apiResp.JSON200.LocalConfigSecretId.String())
+	if j.LocalConfigSecretId != nil {
+		data.LocalConfigSecretId = types.StringValue(j.LocalConfigSecretId.String())
 	} else {
 		data.LocalConfigSecretId = types.StringNull()
 	}
 	// Vault key/path are write-only on the backend; preserve whatever is already in state.
 
-	if apiResp.JSON200.EnterpriseManagedConfig != nil {
-		emc := apiResp.JSON200.EnterpriseManagedConfig
-		model := &EnterpriseManagedConfigModel{
-			IdentityProviderId: stringValueOrNull(emc.IdentityProviderId),
-			ResourceIdentifier: stringValueOrNull(emc.ResourceIdentifier),
-			RequestedIssuer:    stringValueOrNull(emc.RequestedIssuer),
-			Audience:           stringValueOrNull(emc.Audience),
-			ClientIdOverride:   stringValueOrNull(emc.ClientIdOverride),
-			HeaderName:         stringValueOrNull(emc.HeaderName),
-			EnvVarName:         stringValueOrNull(emc.EnvVarName),
-			BodyFieldName:      stringValueOrNull(emc.BodyFieldName),
-			ResponseFieldPath:  stringValueOrNull(emc.ResponseFieldPath),
-		}
-		if emc.ResourceType != nil {
-			model.ResourceType = types.StringValue(string(*emc.ResourceType))
-		} else {
-			model.ResourceType = types.StringNull()
-		}
-		if emc.RequestedCredentialType != nil {
-			model.RequestedCredentialType = types.StringValue(string(*emc.RequestedCredentialType))
-		} else {
-			model.RequestedCredentialType = types.StringNull()
-		}
-		if emc.TokenInjectionMode != nil {
-			model.TokenInjectionMode = types.StringValue(string(*emc.TokenInjectionMode))
-		} else {
-			model.TokenInjectionMode = types.StringNull()
-		}
-		if emc.AssertionMode != nil {
-			model.AssertionMode = types.StringValue(string(*emc.AssertionMode))
-		} else {
-			model.AssertionMode = types.StringNull()
-		}
-		if emc.FallbackMode != nil {
-			model.FallbackMode = types.StringValue(string(*emc.FallbackMode))
-		} else {
-			model.FallbackMode = types.StringNull()
-		}
-		if emc.CacheTtlSeconds != nil {
-			model.CacheTtlSeconds = types.Int64Value(int64(*emc.CacheTtlSeconds))
-		} else {
-			model.CacheTtlSeconds = types.Int64Null()
-		}
-		if emc.Scopes != nil {
-			list, _ := types.ListValueFrom(context.Background(), types.StringType, *emc.Scopes)
-			model.Scopes = list
-		} else {
-			model.Scopes = types.ListNull(types.StringType)
-		}
-		data.EnterpriseManagedConfig = model
-	} else {
-		data.EnterpriseManagedConfig = nil
-	}
+	data.EnterpriseManagedConfig = mapCatalogEnterpriseManagedConfig(apiResp)
 
-	// Map UserConfig. All callers pass a non-nil diags, so marshal/unmarshal
-	// errors always surface on the response.
-	if apiResp.JSON200.UserConfig != nil {
-		uc, ucDiags := flattenUserConfig(apiResp.JSON200.UserConfig)
+	// All callers pass a non-nil diags, so marshal/unmarshal errors always surface.
+	if j.UserConfig != nil {
+		uc, ucDiags := flattenUserConfig(j.UserConfig)
 		diags.Append(ucDiags...)
 		data.UserConfig = uc
 	} else {
 		data.UserConfig = types.MapNull(types.ObjectType{AttrTypes: userConfigAttrTypes})
 	}
 
-	// Map Teams from API response
-	if len(apiResp.JSON200.Teams) > 0 {
-		teamValues := make([]attr.Value, len(apiResp.JSON200.Teams))
-		for i, team := range apiResp.JSON200.Teams {
-			teamValues[i] = types.StringValue(team.Id)
-		}
-		data.Teams, _ = types.ListValue(types.StringType, teamValues)
+	data.Teams = mapCatalogTeams(apiResp)
+	data.Labels = mapCatalogLabels(apiResp)
+	data.LocalConfig = mapCatalogLocalConfig(ctx, apiResp, data.LocalConfig)
+	data.RemoteConfig = mapCatalogRemoteConfig(apiResp)
+	data.AuthFields = mapCatalogAuthFields(apiResp)
+}
+
+func mapCatalogEnterpriseManagedConfig(apiResp *client.GetInternalMcpCatalogItemResponse) *EnterpriseManagedConfigModel {
+	emc := apiResp.JSON200.EnterpriseManagedConfig
+	if emc == nil {
+		return nil
+	}
+	model := &EnterpriseManagedConfigModel{
+		IdentityProviderId: stringValueOrNull(emc.IdentityProviderId),
+		ResourceIdentifier: stringValueOrNull(emc.ResourceIdentifier),
+		RequestedIssuer:    stringValueOrNull(emc.RequestedIssuer),
+		Audience:           stringValueOrNull(emc.Audience),
+		ClientIdOverride:   stringValueOrNull(emc.ClientIdOverride),
+		HeaderName:         stringValueOrNull(emc.HeaderName),
+		EnvVarName:         stringValueOrNull(emc.EnvVarName),
+		BodyFieldName:      stringValueOrNull(emc.BodyFieldName),
+		ResponseFieldPath:  stringValueOrNull(emc.ResponseFieldPath),
+	}
+	if emc.ResourceType != nil {
+		model.ResourceType = types.StringValue(string(*emc.ResourceType))
 	} else {
-		data.Teams = types.ListNull(types.StringType)
+		model.ResourceType = types.StringNull()
 	}
-
-	// Map Labels from API response
-	labelAttrTypes := map[string]attr.Type{
-		"key":   types.StringType,
-		"value": types.StringType,
-	}
-	labelObjectType := types.ObjectType{AttrTypes: labelAttrTypes}
-	if len(apiResp.JSON200.Labels) > 0 {
-		labelValues := make([]attr.Value, len(apiResp.JSON200.Labels))
-		for i, label := range apiResp.JSON200.Labels {
-			labelValues[i], _ = types.ObjectValue(labelAttrTypes, map[string]attr.Value{
-				"key":   types.StringValue(label.Key),
-				"value": types.StringValue(label.Value),
-			})
-		}
-		data.Labels, _ = types.ListValue(labelObjectType, labelValues)
+	if emc.RequestedCredentialType != nil {
+		model.RequestedCredentialType = types.StringValue(string(*emc.RequestedCredentialType))
 	} else {
-		data.Labels = types.ListNull(labelObjectType)
+		model.RequestedCredentialType = types.StringNull()
 	}
-
-	// Map LocalConfig from API response if present
-	envFromAttrTypes := map[string]attr.Type{
-		"type":   types.StringType,
-		"name":   types.StringType,
-		"prefix": types.StringType,
-	}
-	envFromObjectType := types.ObjectType{AttrTypes: envFromAttrTypes}
-
-	ipSecretAttrTypes := map[string]attr.Type{
-		"source":   types.StringType,
-		"name":     types.StringType,
-		"server":   types.StringType,
-		"username": types.StringType,
-		"password": types.StringType,
-		"email":    types.StringType,
-	}
-	ipSecretObjectType := types.ObjectType{AttrTypes: ipSecretAttrTypes}
-
-	envVariableAttrTypes := map[string]attr.Type{
-		"key":                    types.StringType,
-		"type":                   types.StringType,
-		"value":                  types.StringType,
-		"prompt_on_installation": types.BoolType,
-		"required":               types.BoolType,
-		"description":            types.StringType,
-		"default":                types.StringType,
-		"mounted":                types.BoolType,
-	}
-	envVariableObjectType := types.ObjectType{AttrTypes: envVariableAttrTypes}
-
-	if apiResp.JSON200.LocalConfig != nil {
-		localConfigObj := map[string]attr.Value{
-			"command":            types.StringNull(),
-			"arguments":          types.ListNull(types.StringType),
-			"environment":        types.SetNull(envVariableObjectType),
-			"env_from":           types.ListNull(envFromObjectType),
-			"docker_image":       types.StringNull(),
-			"transport_type":     types.StringNull(),
-			"http_port":          types.Int64Null(),
-			"http_path":          types.StringNull(),
-			"service_account":    types.StringNull(),
-			"node_port":          types.Int64Null(),
-			"image_pull_secrets": types.ListNull(ipSecretObjectType),
-		}
-
-		// Command
-		if apiResp.JSON200.LocalConfig.Command != nil {
-			localConfigObj["command"] = types.StringValue(*apiResp.JSON200.LocalConfig.Command)
-		}
-
-		// Arguments
-		if apiResp.JSON200.LocalConfig.Arguments != nil && len(*apiResp.JSON200.LocalConfig.Arguments) > 0 {
-			argValues := make([]attr.Value, len(*apiResp.JSON200.LocalConfig.Arguments))
-			for i, arg := range *apiResp.JSON200.LocalConfig.Arguments {
-				argValues[i] = types.StringValue(arg)
-			}
-			localConfigObj["arguments"], _ = types.ListValue(types.StringType, argValues)
-		}
-
-		if apiResp.JSON200.LocalConfig.Environment != nil && len(*apiResp.JSON200.LocalConfig.Environment) > 0 {
-			envValues := make([]attr.Value, 0, len(*apiResp.JSON200.LocalConfig.Environment))
-			for _, envVar := range *apiResp.JSON200.LocalConfig.Environment {
-				fields := map[string]attr.Value{
-					"key":                    types.StringValue(envVar.Key),
-					"type":                   types.StringValue(string(envVar.Type)),
-					"value":                  types.StringNull(),
-					"prompt_on_installation": types.BoolValue(envVar.PromptOnInstallation),
-					"required":               types.BoolNull(),
-					"description":            types.StringNull(),
-					"default":                types.StringNull(),
-					"mounted":                types.BoolNull(),
-				}
-				if envVar.Value != nil {
-					fields["value"] = types.StringValue(*envVar.Value)
-				}
-				if envVar.Required != nil {
-					fields["required"] = types.BoolValue(*envVar.Required)
-				}
-				if envVar.Description != nil {
-					fields["description"] = types.StringValue(*envVar.Description)
-				}
-				if envVar.Default != nil {
-					if encoded, err := json.Marshal(envVar.Default); err == nil {
-						// Strings round-trip with surrounding quotes; collapse to bare value.
-						if s, isStr := stringFromJSONScalar(encoded); isStr {
-							fields["default"] = types.StringValue(s)
-						} else {
-							fields["default"] = types.StringValue(string(encoded))
-						}
-					}
-				}
-				if envVar.Mounted != nil {
-					fields["mounted"] = types.BoolValue(*envVar.Mounted)
-				}
-				obj, _ := types.ObjectValue(envVariableAttrTypes, fields)
-				envValues = append(envValues, obj)
-			}
-			localConfigObj["environment"], _ = types.SetValue(envVariableObjectType, envValues)
-		}
-
-		// Optional fields
-		if apiResp.JSON200.LocalConfig.DockerImage != nil {
-			localConfigObj["docker_image"] = types.StringValue(*apiResp.JSON200.LocalConfig.DockerImage)
-		}
-		if apiResp.JSON200.LocalConfig.HttpPath != nil {
-			localConfigObj["http_path"] = types.StringValue(*apiResp.JSON200.LocalConfig.HttpPath)
-		}
-		if apiResp.JSON200.LocalConfig.HttpPort != nil {
-			localConfigObj["http_port"] = types.Int64Value(int64(*apiResp.JSON200.LocalConfig.HttpPort))
-		}
-		if apiResp.JSON200.LocalConfig.TransportType != nil {
-			localConfigObj["transport_type"] = types.StringValue(string(*apiResp.JSON200.LocalConfig.TransportType))
-		}
-		if apiResp.JSON200.LocalConfig.ServiceAccount != nil {
-			localConfigObj["service_account"] = types.StringValue(*apiResp.JSON200.LocalConfig.ServiceAccount)
-		}
-		if apiResp.JSON200.LocalConfig.NodePort != nil {
-			localConfigObj["node_port"] = types.Int64Value(int64(*apiResp.JSON200.LocalConfig.NodePort))
-		}
-
-		// ImagePullSecrets — parse from raw response body; the generated union type has unexported fields.
-		{
-			var rawResp struct {
-				LocalConfig *struct {
-					ImagePullSecrets *[]struct {
-						Source   string `json:"source"`
-						Name     string `json:"name,omitempty"`
-						Server   string `json:"server,omitempty"`
-						Username string `json:"username,omitempty"`
-						Password string `json:"password,omitempty"`
-						Email    string `json:"email,omitempty"`
-					} `json:"imagePullSecrets,omitempty"`
-				} `json:"localConfig"`
-			}
-			if parseErr := json.Unmarshal(apiResp.Body, &rawResp); parseErr == nil &&
-				rawResp.LocalConfig != nil && rawResp.LocalConfig.ImagePullSecrets != nil &&
-				len(*rawResp.LocalConfig.ImagePullSecrets) > 0 {
-				// The backend never echoes passwords back; preserve from prior state
-				// keyed by server|username to keep sensitive-value consistency on apply.
-				priorPasswords := make(map[string]types.String)
-				if !data.LocalConfig.IsNull() && !data.LocalConfig.IsUnknown() {
-					var priorLC LocalConfigModel
-					if d := data.LocalConfig.As(ctx, &priorLC, basetypes.ObjectAsOptions{}); !d.HasError() && !priorLC.ImagePullSecrets.IsNull() && !priorLC.ImagePullSecrets.IsUnknown() {
-						var priorIPS []ImagePullSecretModel
-						if d := priorLC.ImagePullSecrets.ElementsAs(ctx, &priorIPS, false); !d.HasError() {
-							for _, p := range priorIPS {
-								key := p.Server.ValueString() + "|" + p.Username.ValueString()
-								priorPasswords[key] = p.Password
-							}
-						}
-					}
-				}
-
-				ipsValues := make([]attr.Value, 0, len(*rawResp.LocalConfig.ImagePullSecrets))
-				for _, ips := range *rawResp.LocalConfig.ImagePullSecrets {
-					password := types.StringNull()
-					if prev, ok := priorPasswords[ips.Server+"|"+ips.Username]; ok && !prev.IsNull() {
-						password = prev
-					}
-					fields := map[string]attr.Value{
-						"source":   types.StringValue(ips.Source),
-						"name":     strOrNull(ips.Name),
-						"server":   strOrNull(ips.Server),
-						"username": strOrNull(ips.Username),
-						"password": password,
-						"email":    strOrNull(ips.Email),
-					}
-					obj, _ := types.ObjectValue(ipSecretAttrTypes, fields)
-					ipsValues = append(ipsValues, obj)
-				}
-				localConfigObj["image_pull_secrets"], _ = types.ListValue(ipSecretObjectType, ipsValues)
-			}
-		}
-
-		// EnvFrom
-		if apiResp.JSON200.LocalConfig.EnvFrom != nil && len(*apiResp.JSON200.LocalConfig.EnvFrom) > 0 {
-			envFromValues := make([]attr.Value, len(*apiResp.JSON200.LocalConfig.EnvFrom))
-			for i, ef := range *apiResp.JSON200.LocalConfig.EnvFrom {
-				efMap := map[string]attr.Value{
-					"type":   types.StringValue(string(ef.Type)),
-					"name":   types.StringValue(ef.Name),
-					"prefix": types.StringNull(),
-				}
-				if ef.Prefix != nil {
-					efMap["prefix"] = types.StringValue(*ef.Prefix)
-				}
-				envFromValues[i], _ = types.ObjectValue(envFromAttrTypes, efMap)
-			}
-			localConfigObj["env_from"], _ = types.ListValue(envFromObjectType, envFromValues)
-		}
-
-		localConfigAttrTypes := map[string]attr.Type{
-			"command":            types.StringType,
-			"arguments":          types.ListType{ElemType: types.StringType},
-			"environment":        types.SetType{ElemType: envVariableObjectType},
-			"env_from":           types.ListType{ElemType: envFromObjectType},
-			"docker_image":       types.StringType,
-			"transport_type":     types.StringType,
-			"http_port":          types.Int64Type,
-			"http_path":          types.StringType,
-			"service_account":    types.StringType,
-			"node_port":          types.Int64Type,
-			"image_pull_secrets": types.ListType{ElemType: ipSecretObjectType},
-		}
-
-		data.LocalConfig, _ = types.ObjectValue(localConfigAttrTypes, localConfigObj)
+	if emc.TokenInjectionMode != nil {
+		model.TokenInjectionMode = types.StringValue(string(*emc.TokenInjectionMode))
 	} else {
-		data.LocalConfig = types.ObjectNull(map[string]attr.Type{
-			"command":            types.StringType,
-			"arguments":          types.ListType{ElemType: types.StringType},
-			"environment":        types.SetType{ElemType: envVariableObjectType},
-			"env_from":           types.ListType{ElemType: envFromObjectType},
-			"docker_image":       types.StringType,
-			"transport_type":     types.StringType,
-			"http_port":          types.Int64Type,
-			"http_path":          types.StringType,
-			"service_account":    types.StringType,
-			"node_port":          types.Int64Type,
-			"image_pull_secrets": types.ListType{ElemType: ipSecretObjectType},
+		model.TokenInjectionMode = types.StringNull()
+	}
+	if emc.AssertionMode != nil {
+		model.AssertionMode = types.StringValue(string(*emc.AssertionMode))
+	} else {
+		model.AssertionMode = types.StringNull()
+	}
+	if emc.FallbackMode != nil {
+		model.FallbackMode = types.StringValue(string(*emc.FallbackMode))
+	} else {
+		model.FallbackMode = types.StringNull()
+	}
+	if emc.CacheTtlSeconds != nil {
+		model.CacheTtlSeconds = types.Int64Value(int64(*emc.CacheTtlSeconds))
+	} else {
+		model.CacheTtlSeconds = types.Int64Null()
+	}
+	if emc.Scopes != nil {
+		list, _ := types.ListValueFrom(context.Background(), types.StringType, *emc.Scopes)
+		model.Scopes = list
+	} else {
+		model.Scopes = types.ListNull(types.StringType)
+	}
+	return model
+}
+
+func mapCatalogTeams(apiResp *client.GetInternalMcpCatalogItemResponse) types.List {
+	teams := apiResp.JSON200.Teams
+	if len(teams) == 0 {
+		return types.ListNull(types.StringType)
+	}
+	values := make([]attr.Value, len(teams))
+	for i, team := range teams {
+		values[i] = types.StringValue(team.Id)
+	}
+	out, _ := types.ListValue(types.StringType, values)
+	return out
+}
+
+func mapCatalogLabels(apiResp *client.GetInternalMcpCatalogItemResponse) types.List {
+	labels := apiResp.JSON200.Labels
+	objType := types.ObjectType{AttrTypes: labelAttrTypes}
+	if len(labels) == 0 {
+		return types.ListNull(objType)
+	}
+	values := make([]attr.Value, len(labels))
+	for i, label := range labels {
+		values[i], _ = types.ObjectValue(labelAttrTypes, map[string]attr.Value{
+			"key":   types.StringValue(label.Key),
+			"value": types.StringValue(label.Value),
 		})
 	}
+	out, _ := types.ListValue(objType, values)
+	return out
+}
 
-	// Map RemoteConfig from API response if server type is remote
-	oauthConfigAttrTypes := map[string]attr.Type{
-		"client_id":                  types.StringType,
-		"client_secret":              types.StringType,
-		"redirect_uris":              types.ListType{ElemType: types.StringType},
-		"scopes":                     types.ListType{ElemType: types.StringType},
-		"default_scopes":             types.ListType{ElemType: types.StringType},
-		"supports_resource_metadata": types.BoolType,
-		"authorization_endpoint":     types.StringType,
-		"token_endpoint":             types.StringType,
-		"auth_server_url":            types.StringType,
-		"resource_metadata_url":      types.StringType,
-		"well_known_url":             types.StringType,
-		"grant_type":                 types.StringType,
-		"audience":                   types.StringType,
-		"access_token_env_var":       types.StringType,
-		"browser_auth":               types.BoolType,
-		"generic_oauth":              types.BoolType,
-		"requires_proxy":             types.BoolType,
-		"provider_name":              types.StringType,
-		"streamable_http_url":        types.StringType,
-		"streamable_http_port":       types.Int64Type,
+func mapCatalogAuthFields(apiResp *client.GetInternalMcpCatalogItemResponse) types.List {
+	objType := types.ObjectType{AttrTypes: authFieldAttrTypes}
+	af := apiResp.JSON200.AuthFields
+	if af == nil || len(*af) == 0 {
+		return types.ListNull(objType)
 	}
-
-	remoteConfigAttrTypes := map[string]attr.Type{
-		"url":          types.StringType,
-		"oauth_config": types.ObjectType{AttrTypes: oauthConfigAttrTypes},
-	}
-
-	if string(apiResp.JSON200.ServerType) == "remote" && apiResp.JSON200.ServerUrl != nil {
-		remoteConfigObj := map[string]attr.Value{
-			"url": types.StringValue(*apiResp.JSON200.ServerUrl),
+	values := make([]attr.Value, len(*af))
+	for i, f := range *af {
+		fields := map[string]attr.Value{
+			"name":        types.StringValue(f.Name),
+			"label":       types.StringValue(f.Label),
+			"type":        types.StringValue(f.Type),
+			"required":    types.BoolValue(f.Required),
+			"description": stringValueOrNull(f.Description),
 		}
+		values[i], _ = types.ObjectValue(authFieldAttrTypes, fields)
+	}
+	out, _ := types.ListValue(objType, values)
+	return out
+}
 
-		// client_secret round-trips via the secret manager: on write it's
-		// extracted to `clientSecretId`, on read the backend rehydrates it
-		// into oauthConfig.client_secret. So GET is a faithful source.
-		if apiResp.JSON200.OauthConfig != nil {
-			oc := apiResp.JSON200.OauthConfig
-			oauthConfigObj := map[string]attr.Value{
-				"client_id":                  types.StringValue(oc.ClientId),
-				"client_secret":              stringValueOrNull(oc.ClientSecret),
-				"redirect_uris":              types.ListNull(types.StringType),
-				"scopes":                     types.ListNull(types.StringType),
-				"default_scopes":             types.ListNull(types.StringType),
-				"supports_resource_metadata": types.BoolValue(oc.SupportsResourceMetadata),
-				"authorization_endpoint":     stringValueOrNull(oc.AuthorizationEndpoint),
-				"token_endpoint":             stringValueOrNull(oc.TokenEndpoint),
-				"auth_server_url":            stringValueOrNull(oc.AuthServerUrl),
-				"resource_metadata_url":      stringValueOrNull(oc.ResourceMetadataUrl),
-				"well_known_url":             stringValueOrNull(oc.WellKnownUrl),
-				"audience":                   stringValueOrNull(oc.Audience),
-				"access_token_env_var":       stringValueOrNull(oc.AccessTokenEnvVar),
-				"browser_auth":               boolValueOrNull(oc.BrowserAuth),
-				"generic_oauth":              boolValueOrNull(oc.GenericOauth),
-				"requires_proxy":             boolValueOrNull(oc.RequiresProxy),
-				"provider_name":              stringValueOrNull(oc.ProviderName),
-				"streamable_http_url":        stringValueOrNull(oc.StreamableHttpUrl),
-				"streamable_http_port":       types.Int64Null(),
-				"grant_type":                 types.StringNull(),
-			}
-			if oc.GrantType != nil {
-				oauthConfigObj["grant_type"] = types.StringValue(string(*oc.GrantType))
-			}
-			if oc.StreamableHttpPort != nil {
-				oauthConfigObj["streamable_http_port"] = types.Int64Value(int64(*oc.StreamableHttpPort))
-			}
+func mapCatalogLocalConfig(ctx context.Context, apiResp *client.GetInternalMcpCatalogItemResponse, prior types.Object) types.Object {
+	envVarObjType := types.ObjectType{AttrTypes: envVariableAttrTypes}
+	envFromObjType := types.ObjectType{AttrTypes: envFromAttrTypes}
+	ipsObjType := types.ObjectType{AttrTypes: ipSecretAttrTypes}
 
-			// Redirect URIs
-			if len(oc.RedirectUris) > 0 {
-				redirectValues := make([]attr.Value, len(oc.RedirectUris))
-				for i, uri := range oc.RedirectUris {
-					redirectValues[i] = types.StringValue(uri)
+	lc := apiResp.JSON200.LocalConfig
+	if lc == nil {
+		return types.ObjectNull(localConfigAttrTypes)
+	}
+
+	obj := map[string]attr.Value{
+		"command":            types.StringNull(),
+		"arguments":          types.ListNull(types.StringType),
+		"environment":        types.SetNull(envVarObjType),
+		"env_from":           types.ListNull(envFromObjType),
+		"docker_image":       types.StringNull(),
+		"transport_type":     types.StringNull(),
+		"http_port":          types.Int64Null(),
+		"http_path":          types.StringNull(),
+		"service_account":    types.StringNull(),
+		"node_port":          types.Int64Null(),
+		"image_pull_secrets": types.ListNull(ipsObjType),
+	}
+
+	if lc.Command != nil {
+		obj["command"] = types.StringValue(*lc.Command)
+	}
+	if lc.Arguments != nil && len(*lc.Arguments) > 0 {
+		argValues := make([]attr.Value, len(*lc.Arguments))
+		for i, arg := range *lc.Arguments {
+			argValues[i] = types.StringValue(arg)
+		}
+		obj["arguments"], _ = types.ListValue(types.StringType, argValues)
+	}
+	if lc.Environment != nil && len(*lc.Environment) > 0 {
+		envValues := make([]attr.Value, 0, len(*lc.Environment))
+		for _, envVar := range *lc.Environment {
+			fields := map[string]attr.Value{
+				"key":                    types.StringValue(envVar.Key),
+				"type":                   types.StringValue(string(envVar.Type)),
+				"value":                  stringValueOrNull(envVar.Value),
+				"prompt_on_installation": types.BoolValue(envVar.PromptOnInstallation),
+				"required":               boolValueOrNull(envVar.Required),
+				"description":            stringValueOrNull(envVar.Description),
+				"default":                types.StringNull(),
+				"mounted":                boolValueOrNull(envVar.Mounted),
+			}
+			if envVar.Default != nil {
+				if encoded, err := json.Marshal(envVar.Default); err == nil {
+					// Strings round-trip with surrounding quotes; collapse to bare value.
+					if s, isStr := stringFromJSONScalar(encoded); isStr {
+						fields["default"] = types.StringValue(s)
+					} else {
+						fields["default"] = types.StringValue(string(encoded))
+					}
 				}
-				oauthConfigObj["redirect_uris"], _ = types.ListValue(types.StringType, redirectValues)
 			}
-
-			// Scopes
-			if len(oc.Scopes) > 0 {
-				scopeValues := make([]attr.Value, len(oc.Scopes))
-				for i, scope := range oc.Scopes {
-					scopeValues[i] = types.StringValue(scope)
-				}
-				oauthConfigObj["scopes"], _ = types.ListValue(types.StringType, scopeValues)
-			}
-
-			// Default scopes
-			if len(oc.DefaultScopes) > 0 {
-				dsValues := make([]attr.Value, len(oc.DefaultScopes))
-				for i, s := range oc.DefaultScopes {
-					dsValues[i] = types.StringValue(s)
-				}
-				oauthConfigObj["default_scopes"], _ = types.ListValue(types.StringType, dsValues)
-			}
-
-			remoteConfigObj["oauth_config"], _ = types.ObjectValue(oauthConfigAttrTypes, oauthConfigObj)
-		} else {
-			remoteConfigObj["oauth_config"] = types.ObjectNull(oauthConfigAttrTypes)
+			elem, _ := types.ObjectValue(envVariableAttrTypes, fields)
+			envValues = append(envValues, elem)
 		}
-
-		data.RemoteConfig, _ = types.ObjectValue(remoteConfigAttrTypes, remoteConfigObj)
-	} else {
-		data.RemoteConfig = types.ObjectNull(remoteConfigAttrTypes)
+		obj["environment"], _ = types.SetValue(envVarObjType, envValues)
+	}
+	if lc.DockerImage != nil {
+		obj["docker_image"] = types.StringValue(*lc.DockerImage)
+	}
+	if lc.HttpPath != nil {
+		obj["http_path"] = types.StringValue(*lc.HttpPath)
+	}
+	if lc.HttpPort != nil {
+		obj["http_port"] = types.Int64Value(int64(*lc.HttpPort))
+	}
+	if lc.TransportType != nil {
+		obj["transport_type"] = types.StringValue(string(*lc.TransportType))
+	}
+	if lc.ServiceAccount != nil {
+		obj["service_account"] = types.StringValue(*lc.ServiceAccount)
+	}
+	if lc.NodePort != nil {
+		obj["node_port"] = types.Int64Value(int64(*lc.NodePort))
+	}
+	if lc.EnvFrom != nil && len(*lc.EnvFrom) > 0 {
+		efValues := make([]attr.Value, len(*lc.EnvFrom))
+		for i, ef := range *lc.EnvFrom {
+			efMap := map[string]attr.Value{
+				"type":   types.StringValue(string(ef.Type)),
+				"name":   types.StringValue(ef.Name),
+				"prefix": stringValueOrNull(ef.Prefix),
+			}
+			efValues[i], _ = types.ObjectValue(envFromAttrTypes, efMap)
+		}
+		obj["env_from"], _ = types.ListValue(envFromObjType, efValues)
 	}
 
-	// Map AuthFields from API response if present
-	if apiResp.JSON200.AuthFields != nil && len(*apiResp.JSON200.AuthFields) > 0 {
-		authFieldValues := make([]attr.Value, len(*apiResp.JSON200.AuthFields))
-		authFieldAttrTypes := map[string]attr.Type{
-			"name":        types.StringType,
-			"label":       types.StringType,
-			"type":        types.StringType,
-			"required":    types.BoolType,
-			"description": types.StringType,
-		}
+	obj["image_pull_secrets"] = mapCatalogImagePullSecrets(ctx, apiResp.Body, prior)
 
-		for i, af := range *apiResp.JSON200.AuthFields {
-			authFieldMap := map[string]attr.Value{
-				"name":        types.StringValue(af.Name),
-				"label":       types.StringValue(af.Label),
-				"type":        types.StringValue(af.Type),
-				"required":    types.BoolValue(af.Required),
-				"description": types.StringNull(),
-			}
-			if af.Description != nil {
-				authFieldMap["description"] = types.StringValue(*af.Description)
-			}
-			authFieldValues[i], _ = types.ObjectValue(authFieldAttrTypes, authFieldMap)
-		}
-		data.AuthFields, _ = types.ListValue(types.ObjectType{AttrTypes: authFieldAttrTypes}, authFieldValues)
-	} else {
-		data.AuthFields = types.ListNull(types.ObjectType{AttrTypes: map[string]attr.Type{
-			"name":        types.StringType,
-			"label":       types.StringType,
-			"type":        types.StringType,
-			"required":    types.BoolType,
-			"description": types.StringType,
-		}})
+	out, _ := types.ObjectValue(localConfigAttrTypes, obj)
+	return out
+}
+
+// mapCatalogImagePullSecrets parses imagePullSecrets from the raw response
+// body (the generated union type has unexported fields), and preserves
+// passwords from prior state — the backend never echoes them back.
+func mapCatalogImagePullSecrets(ctx context.Context, body []byte, prior types.Object) types.List {
+	objType := types.ObjectType{AttrTypes: ipSecretAttrTypes}
+
+	var rawResp struct {
+		LocalConfig *struct {
+			ImagePullSecrets *[]struct {
+				Source   string `json:"source"`
+				Name     string `json:"name,omitempty"`
+				Server   string `json:"server,omitempty"`
+				Username string `json:"username,omitempty"`
+				Password string `json:"password,omitempty"`
+				Email    string `json:"email,omitempty"`
+			} `json:"imagePullSecrets,omitempty"`
+		} `json:"localConfig"`
 	}
+	if err := json.Unmarshal(body, &rawResp); err != nil ||
+		rawResp.LocalConfig == nil ||
+		rawResp.LocalConfig.ImagePullSecrets == nil ||
+		len(*rawResp.LocalConfig.ImagePullSecrets) == 0 {
+		return types.ListNull(objType)
+	}
+
+	priorPasswords := make(map[string]types.String)
+	if !prior.IsNull() && !prior.IsUnknown() {
+		var priorLC LocalConfigModel
+		if d := prior.As(ctx, &priorLC, basetypes.ObjectAsOptions{}); !d.HasError() && !priorLC.ImagePullSecrets.IsNull() && !priorLC.ImagePullSecrets.IsUnknown() {
+			var priorIPS []ImagePullSecretModel
+			if d := priorLC.ImagePullSecrets.ElementsAs(ctx, &priorIPS, false); !d.HasError() {
+				for _, p := range priorIPS {
+					priorPasswords[p.Server.ValueString()+"|"+p.Username.ValueString()] = p.Password
+				}
+			}
+		}
+	}
+
+	values := make([]attr.Value, 0, len(*rawResp.LocalConfig.ImagePullSecrets))
+	for _, ips := range *rawResp.LocalConfig.ImagePullSecrets {
+		password := types.StringNull()
+		if prev, ok := priorPasswords[ips.Server+"|"+ips.Username]; ok && !prev.IsNull() {
+			password = prev
+		}
+		fields := map[string]attr.Value{
+			"source":   types.StringValue(ips.Source),
+			"name":     strOrNull(ips.Name),
+			"server":   strOrNull(ips.Server),
+			"username": strOrNull(ips.Username),
+			"password": password,
+			"email":    strOrNull(ips.Email),
+		}
+		elem, _ := types.ObjectValue(ipSecretAttrTypes, fields)
+		values = append(values, elem)
+	}
+	out, _ := types.ListValue(objType, values)
+	return out
+}
+
+func mapCatalogRemoteConfig(apiResp *client.GetInternalMcpCatalogItemResponse) types.Object {
+	if string(apiResp.JSON200.ServerType) != "remote" || apiResp.JSON200.ServerUrl == nil {
+		return types.ObjectNull(remoteConfigAttrTypes)
+	}
+	obj := map[string]attr.Value{
+		"url":          types.StringValue(*apiResp.JSON200.ServerUrl),
+		"oauth_config": mapCatalogOauthConfig(apiResp),
+	}
+	out, _ := types.ObjectValue(remoteConfigAttrTypes, obj)
+	return out
+}
+
+// mapCatalogOauthConfig flattens the OAuth sub-object. client_secret is
+// faithfully echoed by the backend on read (extracted to clientSecretId on
+// write, then rehydrated), so GET is the source of truth.
+func mapCatalogOauthConfig(apiResp *client.GetInternalMcpCatalogItemResponse) types.Object {
+	oc := apiResp.JSON200.OauthConfig
+	if oc == nil {
+		return types.ObjectNull(oauthConfigAttrTypes)
+	}
+	obj := map[string]attr.Value{
+		"client_id":                  types.StringValue(oc.ClientId),
+		"client_secret":              stringValueOrNull(oc.ClientSecret),
+		"redirect_uris":              types.ListNull(types.StringType),
+		"scopes":                     types.ListNull(types.StringType),
+		"default_scopes":             types.ListNull(types.StringType),
+		"supports_resource_metadata": types.BoolValue(oc.SupportsResourceMetadata),
+		"authorization_endpoint":     stringValueOrNull(oc.AuthorizationEndpoint),
+		"token_endpoint":             stringValueOrNull(oc.TokenEndpoint),
+		"auth_server_url":            stringValueOrNull(oc.AuthServerUrl),
+		"resource_metadata_url":      stringValueOrNull(oc.ResourceMetadataUrl),
+		"well_known_url":             stringValueOrNull(oc.WellKnownUrl),
+		"audience":                   stringValueOrNull(oc.Audience),
+		"access_token_env_var":       stringValueOrNull(oc.AccessTokenEnvVar),
+		"browser_auth":               boolValueOrNull(oc.BrowserAuth),
+		"generic_oauth":              boolValueOrNull(oc.GenericOauth),
+		"requires_proxy":             boolValueOrNull(oc.RequiresProxy),
+		"provider_name":              stringValueOrNull(oc.ProviderName),
+		"streamable_http_url":        stringValueOrNull(oc.StreamableHttpUrl),
+		"streamable_http_port":       types.Int64Null(),
+		"grant_type":                 types.StringNull(),
+	}
+	if oc.GrantType != nil {
+		obj["grant_type"] = types.StringValue(string(*oc.GrantType))
+	}
+	if oc.StreamableHttpPort != nil {
+		obj["streamable_http_port"] = types.Int64Value(int64(*oc.StreamableHttpPort))
+	}
+	if len(oc.RedirectUris) > 0 {
+		v := make([]attr.Value, len(oc.RedirectUris))
+		for i, uri := range oc.RedirectUris {
+			v[i] = types.StringValue(uri)
+		}
+		obj["redirect_uris"], _ = types.ListValue(types.StringType, v)
+	}
+	if len(oc.Scopes) > 0 {
+		v := make([]attr.Value, len(oc.Scopes))
+		for i, s := range oc.Scopes {
+			v[i] = types.StringValue(s)
+		}
+		obj["scopes"], _ = types.ListValue(types.StringType, v)
+	}
+	if len(oc.DefaultScopes) > 0 {
+		v := make([]attr.Value, len(oc.DefaultScopes))
+		for i, s := range oc.DefaultScopes {
+			v[i] = types.StringValue(s)
+		}
+		obj["default_scopes"], _ = types.ListValue(types.StringType, v)
+	}
+	out, _ := types.ObjectValue(oauthConfigAttrTypes, obj)
+	return out
 }
 
 func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
