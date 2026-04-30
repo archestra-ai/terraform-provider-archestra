@@ -73,7 +73,7 @@ func (r *AgentToolResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				},
 			},
 			"mcp_server_id": schema.StringAttribute{
-				MarkdownDescription: "ID of the MCP Server instance associated with this tool",
+				MarkdownDescription: "ID of the MCP server instance backing this tool's credentials. **Sticky** — once set on Create, removing the attribute from configuration preserves the prior value (it does not clear the binding). Change `mcp_server_id` to a different install to rebind, or recreate the resource to drop the binding entirely.",
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
@@ -200,6 +200,12 @@ func (r *AgentToolResource) Read(ctx context.Context, req resource.ReadRequest, 
 		resp.Diagnostics.AddError("Invalid Tool ID", fmt.Sprintf("Unable to parse tool ID: %s", err))
 		return
 	}
+
+	// Write back agent_id / tool_id so post-import state matches the user's
+	// HCL — both are Required+RequiresReplace; left null after Read, the
+	// next plan diffs them and triggers destroy+recreate.
+	data.AgentID = types.StringValue(agentUUID.String())
+	data.ToolID = types.StringValue(toolUUID.String())
 
 	if _, found := r.findAndReadState(ctx, agentUUID, toolUUID, &data, &resp.Diagnostics); !found {
 		if !resp.Diagnostics.HasError() {

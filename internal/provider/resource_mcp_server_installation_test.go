@@ -7,7 +7,9 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
@@ -80,6 +82,17 @@ func TestAccMCPServerInstallationResource(t *testing.T) {
 						tfjsonpath.New("display_name"),
 						knownvalue.NotNull(),
 					),
+					// secret_id must settle to a known value after Create —
+					// without an explicit assignment in Create, the planned
+					// Unknown leaks into state and Plugin Framework rejects
+					// with "provider still indicated an unknown value".
+					// Bug 7's UseStateForUnknown only fires on Update, so
+					// Create needs to mirror Read's null-or-value handling.
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("secret_id"),
+						knownvalue.Null(),
+					),
 					// tools is populated post-install. The filesystem MCP
 					// server advertises read_file/write_file/etc.; we don't
 					// pin specific names or counts because the upstream
@@ -143,19 +156,33 @@ func TestAccMCPServerInstallationResource(t *testing.T) {
 					),
 				},
 			},
-			// ImportState testing - skip verify on `name` (import doesn't restore
-			// the user's configured name) and on `tools` (server-managed list
-			// whose ordering and exact contents depend on when the read fires
-			// relative to the MCP server's tool-discovery cycle).
+			// Re-apply with identical config — pins the `tools` list-ordering
+			// stability invariant. Without the sort in projectMcpServerTools,
+			// the backend's non-deterministic order surfaces here as a
+			// spurious positional-list diff.
+			{
+				Config: testAccMCPServerInstallationResourceConfig("test-installation"),
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectEmptyPlan(),
+					},
+				},
+			},
+			// ImportState testing — composite `<uuid>:<name>` round-trips
+			// fully (Bug 11 fix). Without the composite, `name` would be
+			// null after Read and the next plan would diff and force
+			// destroy+recreate.
 			{
 				ResourceName:      "archestra_mcp_server_installation.test",
 				ImportState:       true,
 				ImportStateVerify: true,
-				// `tool_id_by_name` is keyed on stable tool names — order-
-				// independent — and round-trips cleanly. Only `tools`
-				// (list ordering non-deterministic) and `name` (import
-				// can't recover the user's configured name) need ignoring.
-				ImportStateVerifyIgnore: []string{"name", "tools"},
+				ImportStateIdFunc: func(s *terraform.State) (string, error) {
+					rs, ok := s.RootModule().Resources["archestra_mcp_server_installation.test"]
+					if !ok {
+						return "", fmt.Errorf("resource not found in state")
+					}
+					return rs.Primary.Attributes["id"] + ":" + rs.Primary.Attributes["name"], nil
+				},
 			},
 			// Delete testing automatically occurs in TestCase
 			// Note: Update test removed since name change triggers replacement
@@ -211,6 +238,75 @@ resource "archestra_mcp_registry_catalog_item" "dependency" {
 resource "archestra_mcp_server_installation" "test" {
   name          = %[1]q
   catalog_id = archestra_mcp_registry_catalog_item.dependency.id
+}
+`, name)
+}
+
+// TestAccMCPServerInstallationResource_UserConfigValuesIdempotent pins the
+// secret_id-roundtrip invariant. When user_config_values is set without an
+// explicit secret_id, the backend auto-creates a secret and returns its
+// UUID; previously the schema declared secret_id as Optional-only (not
+// Computed), so the next plan diffed config-null vs state-non-null and
+// triggered a spurious destroy+recreate. Optional+Computed+UseStateForUnknown
+// preserves the backend-assigned UUID across plans.
+func TestAccMCPServerInstallationResource_UserConfigValuesIdempotent(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccMCPServerInstallationUserConfigConfig("tf-acc-msi-uc"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("secret_id"),
+						knownvalue.NotNull(),
+					),
+				},
+			},
+			// Re-apply identical config — must be a no-op. Without the
+			// Computed flag on secret_id, this would diff `secret_id =
+			// "<uuid>" -> null # forces replacement`.
+			{
+				Config: testAccMCPServerInstallationUserConfigConfig("tf-acc-msi-uc"),
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectEmptyPlan(),
+					},
+				},
+			},
+		},
+	})
+}
+
+func testAccMCPServerInstallationUserConfigConfig(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "test" {
+  name        = "%[1]s-cat"
+  description = "user_config catalog for secret_id idempotency test"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem"]
+  }
+
+  user_config = {
+    workspace = {
+      title       = "Workspace path"
+      description = "Absolute path the server is allowed to read."
+      type        = "string"
+      required    = true
+    }
+  }
+}
+
+resource "archestra_mcp_server_installation" "test" {
+  name       = "%[1]s-install"
+  catalog_id = archestra_mcp_registry_catalog_item.test.id
+
+  user_config_values = {
+    workspace = jsonencode("/tmp")
+  }
 }
 `, name)
 }

@@ -177,6 +177,15 @@ func (r *AgentToolBatchResource) Read(ctx context.Context, req resource.ReadRequ
 	}
 	data.ToolIDs = set
 
+	// Populate credential_resolution_mode from the live assignments —
+	// per-assignment metadata that's the same across the batch by
+	// construction. Without this, post-import state has the field null
+	// while the schema's Default("static") plans "static", and the
+	// resulting diff triggers RequiresReplace.
+	if len(live) > 0 {
+		data.CredentialResolutionMode = types.StringValue(live[0].credentialResolutionMode)
+	}
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -360,7 +369,8 @@ func (r *AgentToolBatchResource) bulkAssign(
 }
 
 type liveAssignment struct {
-	toolID openapi_types.UUID
+	toolID                   openapi_types.UUID
+	credentialResolutionMode string
 }
 
 func (r *AgentToolBatchResource) listAssignments(
@@ -391,7 +401,10 @@ func (r *AgentToolBatchResource) listAssignments(
 			if err != nil {
 				continue
 			}
-			out = append(out, liveAssignment{toolID: toolUUID})
+			out = append(out, liveAssignment{
+				toolID:                   toolUUID,
+				credentialResolutionMode: string(at.CredentialResolutionMode),
+			})
 		}
 		if !resp.JSON200.Pagination.HasNext {
 			break

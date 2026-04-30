@@ -57,15 +57,14 @@ func TestAccAgentToolBatchResource(t *testing.T) {
 					},
 				},
 			},
+			// Bug 11 round-trip pin — `credential_resolution_mode` is
+			// populated from the live assignments by Read, so the
+			// framework verifies the full state including this field.
 			{
 				ResourceName:                         "archestra_agent_tool_batch.test",
 				ImportState:                          true,
 				ImportStateVerify:                    true,
 				ImportStateVerifyIdentifierAttribute: "id",
-				// `tool_ids` is read live so it round-trips; we don't
-				// pre-seed `credential_resolution_mode` from the import
-				// ID so the framework reconstructs it from defaults.
-				ImportStateVerifyIgnore: []string{"credential_resolution_mode"},
 			},
 		},
 	})

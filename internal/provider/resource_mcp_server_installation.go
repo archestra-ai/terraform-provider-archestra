@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sort"
+	"strings"
 
 	"time"
 
@@ -150,9 +152,11 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"secret_id": schema.StringAttribute{
-				MarkdownDescription: "Pre-created secret UUID for the MCP server installation",
+				MarkdownDescription: "Secret UUID for the MCP server installation. Set explicitly to reference a pre-created secret; otherwise the backend creates one when `user_config_values` is set and writes the resulting UUID back here.",
 				Optional:            true,
+				Computed:            true,
 				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
@@ -231,7 +235,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 							},
 						},
 						"created_at": schema.StringAttribute{
-							MarkdownDescription: "RFC 3339 timestamp of when the tool was first registered with the backend. Useful as a stable sort key.",
+							MarkdownDescription: "RFC 3339 timestamp of when the tool was first registered with the backend.",
 							Computed:            true,
 						},
 					},
@@ -371,6 +375,17 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
 	}
 
+	// Mirror Read's secret_id handling — Computed fields must settle to a
+	// known value after Create. Without this, installs with no
+	// user_config_values / is_byos_vault leave the planned Unknown in state
+	// and Plugin Framework rejects with "provider still indicated an
+	// unknown value". UseStateForUnknown only fires on Update.
+	if apiResp.JSON200.SecretId != nil {
+		data.SecretID = types.StringValue(apiResp.JSON200.SecretId.String())
+	} else {
+		data.SecretID = types.StringNull()
+	}
+
 	tools, toolIDsByName, toolsDiags := r.waitForServerTools(ctx, apiResp.JSON200.Id.String())
 	resp.Diagnostics.Append(toolsDiags...)
 	data.Tools = tools
@@ -504,8 +519,16 @@ func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteReque
 	}
 }
 
+// ImportState accepts `<uuid>:<name>`. The bare-uuid form is also
+// accepted but leaves `name` null, which conflicts with the user's
+// `name = "..."` HCL on the next plan and triggers RequiresReplace.
+// Format mirrors `archestra_agent_tool_batch`.
 func (r *MCPServerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	parts := strings.SplitN(req.ID, ":", 2)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), parts[0])...)
+	if len(parts) == 2 {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), parts[1])...)
+	}
 }
 
 // waitForServerTools polls until the backend has finished scanning the
@@ -595,6 +618,14 @@ func projectMcpServerTools(apiTools []struct {
 	Parameters  map[string]interface{} `json:"parameters"`
 }) (types.List, types.Map, diag.Diagnostics) {
 	var diags diag.Diagnostics
+
+	// Sort for stable list ordering — backend `GetMcpServerTools` doesn't
+	// guarantee order, so without this the Computed `tools` list shuffles
+	// across reads. TODO(backend): add `ORDER BY name` server-side.
+	sort.SliceStable(apiTools, func(i, j int) bool {
+		return apiTools[i].Name < apiTools[j].Name
+	})
+
 	listElements := make([]attr.Value, len(apiTools))
 	mapEntries := make(map[string]attr.Value, len(apiTools))
 	ambiguousNames := map[string]struct{}{}

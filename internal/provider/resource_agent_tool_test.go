@@ -21,6 +21,14 @@ func TestAccAgentToolResource(t *testing.T) {
 					statecheck.ExpectKnownValue("archestra_agent_tool.test", tfjsonpath.New("credential_resolution_mode"), knownvalue.StringExact("static")),
 				},
 			},
+			// Bug 11 round-trip pin — id format is `<agent_id>:<tool_id>`,
+			// Read writes both back to state so the next plan after import
+			// doesn't diff agent_id/tool_id and trigger destroy+recreate.
+			{
+				ResourceName:      "archestra_agent_tool.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
 		},
 	})
 }

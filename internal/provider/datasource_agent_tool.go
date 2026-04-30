@@ -46,7 +46,7 @@ func (d *AgentToolDataSource) Schema(_ context.Context, _ datasource.SchemaReque
 				Required:            true,
 			},
 			"tool_name": schema.StringAttribute{
-				MarkdownDescription: "The name of the tool",
+				MarkdownDescription: "Slugified tool name (`<prefix>__<raw>`) as stored on the backend — read directly from `archestra_mcp_server_installation.<n>.tools[*].name`.",
 				Required:            true,
 			},
 			"tool_id": schema.StringAttribute{
@@ -146,7 +146,10 @@ func (d *AgentToolDataSource) Read(ctx context.Context, req datasource.ReadReque
 	}
 
 	if !found {
-		resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Tool '%s' not found for agent %s", targetToolName, targetAgentID))
+		resp.Diagnostics.AddError(
+			"Not Found",
+			fmt.Sprintf("Tool '%s' not found for agent %s. If the tool/agent come from resources in the same module (`archestra_mcp_server_installation`, `archestra_agent_tool` / `archestra_agent_tool_batch`), add `depends_on = [...]` on this data source — string-name references don't create an implicit dependency.", targetToolName, targetAgentID),
+		)
 		return
 	}
 

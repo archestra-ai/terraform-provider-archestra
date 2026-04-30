@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -64,7 +63,7 @@ func (r *LlmModelResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"model_id": schema.StringAttribute{
-				MarkdownDescription: "The model identifier (e.g., `gpt-4o`, `claude-sonnet-4-20250514`). Used to look up the model on create.",
+				MarkdownDescription: "The model identifier (e.g., `gpt-4o`, `claude-sonnet-4-20250514`). Must match a model the platform has discovered via a configured `archestra_llm_provider_api_key` — the backend rejects IDs that aren't in any provider's discovered model list. Check the UI's model picker for the live set.",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -99,21 +98,21 @@ func (r *LlmModelResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:            true,
 			},
 			"input_modalities": schema.ListAttribute{
-				MarkdownDescription: "Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`",
+				MarkdownDescription: "Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.",
 				Optional:            true,
 				Computed:            true,
 				ElementType:         types.StringType,
 				PlanModifiers: []planmodifier.List{
-					listplanmodifier.UseStateForUnknown(),
+					RemoveOnConfigNullList(),
 				},
 			},
 			"output_modalities": schema.ListAttribute{
-				MarkdownDescription: "Output modality overrides. Valid values: `text`, `image`, `audio`",
+				MarkdownDescription: "Output modality overrides. Valid values: `text`, `image`, `audio`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.",
 				Optional:            true,
 				Computed:            true,
 				ElementType:         types.StringType,
 				PlanModifiers: []planmodifier.List{
-					listplanmodifier.UseStateForUnknown(),
+					RemoveOnConfigNullList(),
 				},
 			},
 			"price_per_million_input": schema.StringAttribute{

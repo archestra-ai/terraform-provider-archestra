@@ -425,14 +425,24 @@ func (r *IdentityProviderResource) Create(ctx context.Context, req resource.Crea
 	state.Domain = types.StringValue(apiResp.JSON200.Domain)
 	state.Issuer = types.StringValue(apiResp.JSON200.Issuer)
 
+	// Computed fields must settle to a known value after Create — without
+	// the explicit null else-branch the planned Unknown leaks into state
+	// and Plugin Framework rejects with "provider still indicated an
+	// unknown value" (UseStateForUnknown only fires on Update).
 	if apiResp.JSON200.DomainVerified != nil {
 		state.DomainVerified = types.BoolValue(*apiResp.JSON200.DomainVerified)
+	} else {
+		state.DomainVerified = types.BoolNull()
 	}
 	if apiResp.JSON200.OrganizationId != nil {
 		state.OrganizationID = types.StringValue(*apiResp.JSON200.OrganizationId)
+	} else {
+		state.OrganizationID = types.StringNull()
 	}
 	if apiResp.JSON200.UserId != nil {
 		state.UserID = types.StringValue(*apiResp.JSON200.UserId)
+	} else {
+		state.UserID = types.StringNull()
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
