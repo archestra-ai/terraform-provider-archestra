@@ -13,6 +13,14 @@ Running instance of an MCP server, pulled from an `archestra_mcp_registry_catalo
 ## Example Usage
 
 ```terraform
+# Variables (declare in your variables.tf): github_pat (string, sensitive).
+# Externals (declare elsewhere): archestra_team.engineering, archestra_agent.support.
+#
+# Bare-apply caveats: the GitHub install spawns `npx @modelcontextprotocol/server-github`
+# which calls GitHub's API — needs a real PAT or tool-discovery fails. The BYOS install
+# (`github_vault`) needs `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` plus a seeded Vault
+# entry. See [BYOS Vault guide](../../../docs/guides/byos-vault.md).
+
 # Step 1: register the MCP server in the private catalog. The catalog item
 # captures *how* to run the server; the install captures *that* it runs.
 resource "archestra_mcp_registry_catalog_item" "filesystem" {
@@ -65,8 +73,42 @@ resource "archestra_mcp_server_installation" "github" {
   access_token = var.github_pat # Secret — pass via TF_VAR_github_pat or a vault data source.
 }
 
-# Team-scoped install + per-install user_config_values for catalog items that
-# expose `user_config`. Maps go through jsonencode so types round-trip.
+# Catalog item that exposes `user_config` so installs can pass per-team
+# values. The map keys here are the field names the installer must
+# supply via `user_config_values` on the install below.
+resource "archestra_mcp_registry_catalog_item" "with_user_config" {
+  name        = "configurable-fs"
+  description = "Filesystem MCP server with installer-supplied workspace + tuning"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem"]
+  }
+
+  user_config = {
+    workspace = {
+      title       = "Workspace path"
+      description = "Absolute path the server is allowed to read."
+      type        = "string"
+      required    = true
+    }
+    max_results = {
+      title       = "Max results"
+      description = "Cap on results returned per call."
+      type        = "number"
+      default     = jsonencode(50)
+    }
+    enable_cache = {
+      title       = "Enable cache"
+      description = "Whether to cache directory listings between calls."
+      type        = "boolean"
+      default     = jsonencode(true)
+    }
+  }
+}
+
+# Team-scoped install + per-install user_config_values for catalog items
+# that expose `user_config`. Maps go through jsonencode so types round-trip.
 resource "archestra_mcp_server_installation" "filesystem_team" {
   name       = "filesystem-eng"
   catalog_id = archestra_mcp_registry_catalog_item.with_user_config.id
@@ -82,13 +124,17 @@ resource "archestra_mcp_server_installation" "filesystem_team" {
   agent_ids = [archestra_agent.support.id]
 }
 
-# BYOS install — point the backend at a Vault path instead of inlining the
-# token. Requires `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` on the backend.
+# BYOS install — `is_byos_vault = true` tells the backend to treat
+# `environment_values` (and `user_config_values`) as Vault references
+# instead of raw secrets. Requires `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT`
+# on the backend AND a Vault entry seeded at the path below.
 resource "archestra_mcp_server_installation" "github_vault" {
   name          = "github-vault"
   catalog_id    = archestra_mcp_registry_catalog_item.github.id
   is_byos_vault = true
-  secret_id     = "secret/data/archestra/mcp/github" # Vault path, not raw token.
+  environment_values = {
+    GITHUB_TOKEN = "secret/data/archestra/mcp/github"
+  }
 }
 ```
 
@@ -106,7 +152,7 @@ resource "archestra_mcp_server_installation" "github_vault" {
 - `agent_ids` (List of String) Agent IDs to auto-assign tools to on install
 - `environment_values` (Map of String) Environment variable values for the MCP server installation
 - `is_byos_vault` (Boolean) When true, environment_values and user_config_values are treated as vault references
-- `secret_id` (String) Pre-created secret UUID for the MCP server installation
+- `secret_id` (String) Secret UUID for the MCP server installation. Set explicitly to reference a pre-created secret; otherwise the backend creates one when `user_config_values` is set and writes the resulting UUID back here.
 - `service_account` (String) Kubernetes service account override for the MCP server pod
 - `team_id` (String) Team ID for team-scoped installations
 - `user_config_values` (Map of String) User configuration field values for the MCP server installation
@@ -129,7 +175,7 @@ Read-Only:
 
 - `assigned_agent_count` (Number) Number of agents this tool is currently assigned to. Quick visibility without fetching the full assignment list.
 - `assigned_agents` (Attributes List) Agents this tool is currently assigned to. Lets you see which agents already use a tool without a separate `data "archestra_agent_tool"` lookup per assignment. (see [below for nested schema](#nestedatt--tools--assigned_agents))
-- `created_at` (String) RFC 3339 timestamp of when the tool was first registered with the backend. Useful as a stable sort key.
+- `created_at` (String) RFC 3339 timestamp of when the tool was first registered with the backend.
 - `description` (String) Human-readable description as advertised by the MCP server. May be null.
 - `id` (String) Tool UUID. Use as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.
 - `name` (String) Tool name (the MCP server's own identifier — stable across installs of the same catalog item).
@@ -142,3 +188,16 @@ Read-Only:
 
 - `id` (String) Agent UUID.
 - `name` (String) Agent name (the agent's `name` field on `archestra_agent` / `archestra_llm_proxy` / `archestra_mcp_gateway`).
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+# Composite ID: <uuid>:<name>. Bare UUID also accepted but leaves
+# `name` null, which conflicts with HCL `name = "..."` and triggers
+# destroy+recreate on the next plan.
+terraform import archestra_mcp_server_installation.example 00000000-0000-0000-0000-000000000000:my-install-name
+```

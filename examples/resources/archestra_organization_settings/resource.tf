@@ -1,3 +1,12 @@
+# --- External references this example assumes exist in your module ---
+#
+#   archestra_llm_provider_api_key.inline   (used by default_llm_api_key_id, embedding_chat_api_key_id)
+#   archestra_llm_provider_api_key.cohere   (used by reranker_chat_api_key_id)
+#   archestra_agent.support                 (used by default_agent_id)
+#
+# See examples/resources/archestra_llm_provider_api_key/ and
+# examples/resources/archestra_agent/ for matching declarations.
+
 # Singleton resource — exactly one row exists per organization. `terraform
 # destroy` only drops the local state; the backend keeps whatever values were
 # last applied.
@@ -9,9 +18,11 @@ resource "archestra_organization_settings" "main" {
   footer_text = "© 2026 Acme Inc."
 
   # Inline base64 logos. Use `filebase64()` so updates churn cleanly.
-  logo      = filebase64("${path.module}/assets/logo.png")
-  logo_dark = filebase64("${path.module}/assets/logo-dark.png")
-  favicon   = filebase64("${path.module}/assets/favicon.png")
+  # Drop your own PNGs into `assets/` alongside this file and uncomment;
+  # leaving them out keeps the platform's defaults.
+  # logo      = filebase64("${path.module}/assets/logo.png")
+  # logo_dark = filebase64("${path.module}/assets/logo-dark.png")
+  # favicon   = filebase64("${path.module}/assets/favicon.png")
 
   # --- Chat UX ---
   chat_placeholders         = ["What can I help with?", "Ask anything…"]

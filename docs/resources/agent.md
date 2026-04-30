@@ -13,6 +13,15 @@ Internal chat agent — system prompt + LLM, optionally augmented with knowledge
 ## Example Usage
 
 ```terraform
+# Externals (declare elsewhere): archestra_team.engineering, archestra_llm_provider_api_key.vault_backed.
+
+# NOTE: `llm_model` is the model_id you'd pass to the upstream LLM API
+# (e.g. "gpt-4o" for OpenAI, "claude-sonnet-4-5" for Anthropic). The
+# platform auto-discovers models from your `archestra_llm_provider_api_key`,
+# so the corresponding key resource must exist for the chosen provider.
+# Use `archestra_llm_model` only when you need to override pricing or
+# per-model settings on a discovered model.
+
 # Customer-support agent — the most common shape: a system prompt, an LLM,
 # a couple of suggested prompts, and a few labels for filtering in the UI.
 resource "archestra_agent" "support" {
@@ -96,7 +105,7 @@ resource "archestra_agent" "intake" {
 - `scope` (String) Ownership scope: `personal`, `team`, or `org` (default: `org`).
 - `suggested_prompts` (Attributes List) Suggested prompts surfaced to users in the chat UI (see [below for nested schema](#nestedatt--suggested_prompts))
 - `system_prompt` (String) System prompt that frames the agent's behavior
-- `teams` (List of String) Team IDs this agent is assigned to. Required when `scope = "team"`.
+- `teams` (List of String) Team IDs this agent is assigned to. Required when `scope = "team"`. Removing from configuration clears the assignment on next apply.
 
 ### Read-Only
 
@@ -128,3 +137,13 @@ Required:
 
 - `prompt` (String) Prompt text
 - `summary_title` (String) Title shown above the prompt
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_agent.example 00000000-0000-0000-0000-000000000000
+```

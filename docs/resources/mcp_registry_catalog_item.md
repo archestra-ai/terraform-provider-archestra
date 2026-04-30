@@ -13,6 +13,8 @@ Catalog entry / template for an MCP server in the Private MCP Registry. The cata
 ## Example Usage
 
 ```terraform
+# Variables (declare in your variables.tf): registry_username (string), registry_password (string, sensitive), postgres_password (string, sensitive), oauth_client_secret (string, sensitive).
+
 # Local MCP server with stdio transport (default)
 resource "archestra_mcp_registry_catalog_item" "filesystem" {
   name        = "filesystem-mcp-server"
@@ -440,3 +442,13 @@ Optional:
 - `prompt_on_installation` (Boolean) Whether to prompt the user for this value during installation.
 - `required` (Boolean) Whether the installer must supply this field.
 - `sensitive` (Boolean) If true, the value is redacted in logs and UI.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_mcp_registry_catalog_item.example 00000000-0000-0000-0000-000000000000
+```

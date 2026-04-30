@@ -1,3 +1,6 @@
+# Variables (declare in your variables.tf): organization_id (string).
+# Externals (declare elsewhere): archestra_team.support, archestra_agent.support.
+
 # Org-wide rule — anything under 500 tokens is cheap enough that gpt-4o-mini
 # handles it. The rule fires when ALL `conditions` blocks match (logical AND
 # across the array; logical OR within a single block's keys).

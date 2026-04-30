@@ -1,3 +1,5 @@
+# Variables (declare in your variables.tf): engineering_idp_groups (list(string)) — IdP group names/IDs to map onto the team.
+
 # Step 1: the team that the IdP group will sync into.
 resource "archestra_team" "engineering" {
   name        = "Engineering"

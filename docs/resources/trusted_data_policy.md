@@ -65,3 +65,13 @@ Required:
 - `key` (String) Attribute path to match (e.g., `payload.role`).
 - `operator` (String) Comparison operator. One of `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`.
 - `value` (String) Value to compare against.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_trusted_data_policy.example 00000000-0000-0000-0000-000000000000
+```

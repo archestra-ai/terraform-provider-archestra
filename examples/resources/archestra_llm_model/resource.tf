@@ -15,10 +15,11 @@ resource "archestra_llm_model" "deprecated_3_5" {
   ignored  = true
 }
 
-# Annotate Claude with custom rates and a description visible in the picker.
+# Override Claude with enterprise-contract pricing. The model's own
+# `description` is read-only (carried from the provider catalog); only
+# pricing, ignored, and modality overrides are settable on this resource.
 resource "archestra_llm_model" "claude_sonnet" {
-  model_id    = "claude-sonnet-4-5"
-  description = "Default for engineering — uses our enterprise contract pricing."
+  model_id = "claude-sonnet-4-5"
 
   custom_price_per_million_input  = "2.40"
   custom_price_per_million_output = "12.00"

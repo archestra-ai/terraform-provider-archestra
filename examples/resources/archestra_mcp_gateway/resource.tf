@@ -1,3 +1,5 @@
+# Externals (declare elsewhere): archestra_team.engineering, archestra_identity_provider.oidc.
+
 # Org-wide MCP gateway — clients (Claude Desktop, Cursor, etc.) point at
 # this endpoint and Archestra federates the tools from every install behind it.
 resource "archestra_mcp_gateway" "default" {

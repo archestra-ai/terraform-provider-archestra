@@ -13,6 +13,9 @@ Manages cost optimization rules in Archestra.
 ## Example Usage
 
 ```terraform
+# Variables (declare in your variables.tf): organization_id (string).
+# Externals (declare elsewhere): archestra_team.support, archestra_agent.support.
+
 # Org-wide rule — anything under 500 tokens is cheap enough that gpt-4o-mini
 # handles it. The rule fires when ALL `conditions` blocks match (logical AND
 # across the array; logical OR within a single block's keys).
@@ -101,7 +104,7 @@ resource "archestra_optimization_rule" "snapshot_paused" {
 - `conditions` (Attributes List) Conditions that trigger the optimization (see [below for nested schema](#nestedatt--conditions))
 - `entity_id` (String) Entity ID this rule applies to
 - `entity_type` (String) Entity type: organization, team, or agent
-- `llm_provider` (String) LLM provider: openai, anthropic, or gemini
+- `llm_provider` (String) LLM provider this rule routes against. Must match a provider you have configured via `archestra_llm_provider_api_key.llm_provider` — the same 17-provider enum the backend accepts (anthropic, azure, bedrock, cerebras, cohere, deepseek, gemini, groq, minimax, mistral, ollama, openai, openrouter, perplexity, vllm, xai, zhipuai). The provider does **not** verify a key exists for the value you set; mismatches surface at LLM-call time, not at apply.
 - `target_model` (String) Target model to switch to
 
 ### Optional
@@ -119,3 +122,13 @@ Optional:
 
 - `has_tools` (Boolean) Whether tools are present
 - `max_length` (Number) Maximum token length threshold. Must be at least 1.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_optimization_rule.example 00000000-0000-0000-0000-000000000000
+```

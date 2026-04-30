@@ -1,3 +1,5 @@
+# Externals (declare elsewhere): archestra_agent.support, archestra_mcp_server_installation.filesystem.
+
 # Assigns every tool from the filesystem MCP install onto the support agent
 # in one round-trip. Equivalent to N `archestra_agent_tool` resources but
 # uses the `bulk-assign` endpoint so plan/apply scales O(1) in N.

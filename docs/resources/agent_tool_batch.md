@@ -13,6 +13,8 @@ Bulk-assigns a set of tools from one MCP server installation onto one agent in a
 ## Example Usage
 
 ```terraform
+# Externals (declare elsewhere): archestra_agent.support, archestra_mcp_server_installation.filesystem.
+
 # Assigns every tool from the filesystem MCP install onto the support agent
 # in one round-trip. Equivalent to N `archestra_agent_tool` resources but
 # uses the `bulk-assign` endpoint so plan/apply scales O(1) in N.
@@ -43,3 +45,14 @@ resource "archestra_agent_tool_batch" "support_agent_filesystem" {
 ### Read-Only
 
 - `id` (String) Composite identifier `<agent_id>:<mcp_server_id>` — purely a Terraform-state token; not a backend resource ID.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+# Composite ID: <agent_id>:<mcp_server_id>
+terraform import archestra_agent_tool_batch.example 00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111
+```

@@ -38,6 +38,8 @@ output "filesystem_policy_reasoning" {
 ## Example Usage
 
 ```terraform
+# Externals (declare elsewhere): archestra_mcp_server_installation.filesystem.
+
 # Run the platform's LLM-driven policy generator over every filesystem
 # tool. The backend writes default invocation + trusted-data policies and
 # returns a per-tool reasoning string; the resource captures the analysis

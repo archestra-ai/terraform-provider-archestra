@@ -30,10 +30,11 @@ resource "archestra_llm_model" "deprecated_3_5" {
   ignored  = true
 }
 
-# Annotate Claude with custom rates and a description visible in the picker.
+# Override Claude with enterprise-contract pricing. The model's own
+# `description` is read-only (carried from the provider catalog); only
+# pricing, ignored, and modality overrides are settable on this resource.
 resource "archestra_llm_model" "claude_sonnet" {
-  model_id    = "claude-sonnet-4-5"
-  description = "Default for engineering — uses our enterprise contract pricing."
+  model_id = "claude-sonnet-4-5"
 
   custom_price_per_million_input  = "2.40"
   custom_price_per_million_output = "12.00"
@@ -55,15 +56,15 @@ output "gpt4o_price_source" {
 
 ### Required
 
-- `model_id` (String) The model identifier (e.g., `gpt-4o`, `claude-sonnet-4-20250514`). Used to look up the model on create.
+- `model_id` (String) The model identifier (e.g., `gpt-4o`, `claude-sonnet-4-20250514`). Must match a model the platform has discovered via a configured `archestra_llm_provider_api_key` — the backend rejects IDs that aren't in any provider's discovered model list. Check the UI's model picker for the live set.
 
 ### Optional
 
 - `custom_price_per_million_input` (String) Custom price per million input tokens (overrides provider pricing)
 - `custom_price_per_million_output` (String) Custom price per million output tokens (overrides provider pricing)
 - `ignored` (Boolean) Whether the model is ignored (hidden from model selection)
-- `input_modalities` (List of String) Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`
-- `output_modalities` (List of String) Output modality overrides. Valid values: `text`, `image`, `audio`
+- `input_modalities` (List of String) Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.
+- `output_modalities` (List of String) Output modality overrides. Valid values: `text`, `image`, `audio`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.
 
 ### Read-Only
 
@@ -75,3 +76,14 @@ output "gpt4o_price_source" {
 - `price_per_million_input` (String) Effective price per million input tokens (computed from custom or provider pricing)
 - `price_per_million_output` (String) Effective price per million output tokens (computed from custom or provider pricing)
 - `price_source` (String) Source of the current pricing: `custom`, `models_dev`, or `default`
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+# Import by upstream model_id (e.g. "gpt-4o"), not UUID.
+terraform import archestra_llm_model.example gpt-4o
+```

@@ -1,3 +1,6 @@
+# Variables (declare in your variables.tf): organization_id (string).
+# Externals (declare elsewhere): archestra_team.engineering, archestra_agent.support, archestra_mcp_server_installation.github.
+
 # Token-cost limit at the org level — caps cumulative input+output token spend
 # (in micro-USD, so 500_000 = $0.50). `model` is a list because a single limit
 # can apply to several models simultaneously.

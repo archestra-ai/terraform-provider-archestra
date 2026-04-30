@@ -13,6 +13,9 @@ Usage limit on tokens or call counts, scoped per organization, team, or agent. S
 ## Example Usage
 
 ```terraform
+# Variables (declare in your variables.tf): organization_id (string).
+# Externals (declare elsewhere): archestra_team.engineering, archestra_agent.support, archestra_mcp_server_installation.github.
+
 # Token-cost limit at the org level — caps cumulative input+output token spend
 # (in micro-USD, so 500_000 = $0.50). `model` is a list because a single limit
 # can apply to several models simultaneously.
@@ -79,3 +82,13 @@ resource "archestra_limit" "claude_family_budget" {
 ### Read-Only
 
 - `id` (String) Limit identifier
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_limit.example 00000000-0000-0000-0000-000000000000
+```

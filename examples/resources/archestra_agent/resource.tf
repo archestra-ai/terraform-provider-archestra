@@ -1,3 +1,12 @@
+# Externals (declare elsewhere): archestra_team.engineering, archestra_llm_provider_api_key.vault_backed.
+
+# NOTE: `llm_model` is the model_id you'd pass to the upstream LLM API
+# (e.g. "gpt-4o" for OpenAI, "claude-sonnet-4-5" for Anthropic). The
+# platform auto-discovers models from your `archestra_llm_provider_api_key`,
+# so the corresponding key resource must exist for the chosen provider.
+# Use `archestra_llm_model` only when you need to override pricing or
+# per-model settings on a discovered model.
+
 # Customer-support agent — the most common shape: a system prompt, an LLM,
 # a couple of suggested prompts, and a few labels for filtering in the UI.
 resource "archestra_agent" "support" {

@@ -1,3 +1,10 @@
+# Externals (declare elsewhere): archestra_llm_provider_api_key.inline, archestra_team.engineering, archestra_identity_provider.oidc.
+
+# NOTE: `llm_model` is the model_id from the upstream LLM API. The platform
+# auto-discovers models from `archestra_llm_provider_api_key`, so the key
+# resource for the chosen provider must exist. `archestra_llm_model` is
+# only for overriding pricing / per-model settings on a discovered model.
+
 # Org-wide LLM proxy — fronts an upstream model so apps can hit Archestra
 # instead of talking to OpenAI directly. Headers in `passthrough_headers`
 # survive the hop, which is how downstream services see request IDs / tenants.

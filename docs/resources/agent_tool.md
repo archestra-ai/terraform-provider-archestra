@@ -58,8 +58,19 @@ resource "archestra_agent_tool" "read_text_file" {
 - `static` (default) — the credential set at assignment time is reused for every call. Pair with `mcp_server_id` pointing at a connected `archestra_mcp_server_installation` so a concrete credential exists.
 - `dynamic` — the agent resolves a fresh credential at every call (the legacy `resolve_at_call_time = true` behaviour). Use when the same logical tool is fronted by per-user credentials.
 - `enterprise_managed` — the agent uses the credential that the org's enterprise IdP issued for the tool. Requires the catalog item to have `enterprise_managed_config` set up.
-- `mcp_server_id` (String) ID of the MCP Server instance associated with this tool
+- `mcp_server_id` (String) ID of the MCP server instance backing this tool's credentials. **Sticky** — once set on Create, removing the attribute from configuration preserves the prior value (it does not clear the binding). Change `mcp_server_id` to a different install to rebind, or recreate the resource to drop the binding entirely.
 
 ### Read-Only
 
 - `id` (String) Composite ID of the agent-tool assignment (`agent_id:tool_id`)
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+# Composite ID: <agent_id>:<tool_id> (the format Create assigns to id).
+terraform import archestra_agent_tool.example 00000000-0000-0000-0000-000000000000:11111111-1111-1111-1111-111111111111
+```

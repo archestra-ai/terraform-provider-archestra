@@ -13,17 +13,23 @@ Manages Archestra identity providers (OIDC or SAML). Exactly one of oidc_config 
 ## Example Usage
 
 ```terraform
+# --- Placeholders to replace before applying ---
+# All `*.example.com` URLs, `client_id`/`client_secret`, the SAML `cert`,
+# and the inline IdP/SP metadata XML below are illustrative shapes only.
+# Replace each with values from your real IdP before `terraform apply`.
+# Pass `client_secret` and any private keys via TF variables, not literals.
+
 # OIDC provider example (Keycloak / Generic OAuth)
 resource "archestra_identity_provider" "oidc" {
   provider_id = "Keycloak"
-  domain      = "example.com"
-  issuer      = "https://keycloak.example.com/realms/main"
+  domain      = "example.com"                              # Replace with your verified domain
+  issuer      = "https://keycloak.example.com/realms/main" # Replace with your IdP issuer
 
   oidc_config {
     issuer             = "https://keycloak.example.com/realms/main"
     discovery_endpoint = "https://keycloak.example.com/realms/main/.well-known/openid-configuration"
     client_id          = "archestra"
-    client_secret      = "changeme"
+    client_secret      = var.oidc_client_secret # Declare: variable "oidc_client_secret" { sensitive = true }
     scopes             = ["openid", "email", "profile"]
     pkce               = false
 
@@ -55,10 +61,12 @@ resource "archestra_identity_provider" "saml" {
   issuer      = "https://example.com"
 
   saml_config {
-    issuer            = "https://example.com"
-    entry_point       = "https://okta.example.com/app/sso/saml"
-    callback_url      = "https://archestra.example.com/api/auth/sso/saml2/sp/acs/OktaSAML"
-    cert              = "-----BEGIN CERTIFICATE-----\nMIICiTCCAg+gAwIBAgIJAJ8l4HnPq7F8MAOGA1UEBhMCVVMxCzAJBgNVBAgTAkNB\nMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMRowGAYDVQQKExFPcGVuQU1QIFNhbXBs\nZSBDb21wYW55IENBMRYwFAYDVQQDEx1vcGVuYW1wLmV4YW1wbGUuY29tMB4XDTE0\nMDgxOTE2MjQyNVoXDTIyMDgxODE2MjQyNVowdTELMAkGA1UEBhMCVVMxCzAJBgNV\nBAgTAkNBMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMRowGAYDVQQKExFPcGVuQU1Q\nIFNhbXBsZSBDb21wYW55IENBMRYwFAYDVQQDEx1vcGVuYW1wLmV4YW1wbGUuY29t\nMFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANgOqCbLsKv5CF+vGmJ9Vq5PJKKuiU8+\nLpqtHKHC9q3mRWxHF8dlE8j9D6Kz+N+CK+qGzFjWNBT3UVFzU5GJUYCAwEAAaNQ\nME4wHQYDVR0OBBYEFG7CJM9GjHn7Lqt8kJc8W5proUwWMB8GA1UdIwQYMBaAFG7C\nJM9GjHn7Lqt8kJc8W5proUwWMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQAD\nggEBABYIUUUeWDJ+wZF0lZ+mJnRnGZpXL2fKe3+KGjNM8xJfPf2YvqU4mgdMxgJn\n-----END CERTIFICATE-----"
+    issuer       = "https://example.com"
+    entry_point  = "https://okta.example.com/app/sso/saml"
+    callback_url = "https://archestra.example.com/api/auth/sso/saml2/sp/acs/OktaSAML"
+    # PLACEHOLDER — replace with your IdP's signing certificate (PEM).
+    # Pass via a variable: variable "saml_cert" { type = string }
+    cert              = var.saml_cert
     audience          = "https://archestra.example.com"
     digest_algorithm  = "sha256"
     identifier_format = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"
@@ -72,7 +80,10 @@ resource "archestra_identity_provider" "saml" {
 
     idp_metadata {
       entity_id = "https://okta.example.com"
-      metadata  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\" entityID=\"https://okta.example.com\"><IDPSSODescriptor protocolSupportEnumeration=\"urn:oasis:names:tc:SAML:2.0:protocol\"><SingleSignOnService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect\" Location=\"https://okta.example.com/app/sso/saml\"/></IDPSSODescriptor></EntityDescriptor>"
+      # IdPs typically distribute metadata as an .xml file. Inlining the
+      # string keeps this example self-contained, but in real modules:
+      #   metadata = file("${path.module}/idp-metadata.xml")
+      metadata = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\" entityID=\"https://okta.example.com\"><IDPSSODescriptor protocolSupportEnumeration=\"urn:oasis:names:tc:SAML:2.0:protocol\"><SingleSignOnService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect\" Location=\"https://okta.example.com/app/sso/saml\"/></IDPSSODescriptor></EntityDescriptor>"
 
       single_sign_on_service {
         binding  = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
@@ -82,7 +93,8 @@ resource "archestra_identity_provider" "saml" {
 
     sp_metadata {
       entity_id = "https://archestra.example.com"
-      metadata  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\" entityID=\"https://archestra.example.com\"><SPSSODescriptor protocolSupportEnumeration=\"urn:oasis:names:tc:SAML:2.0:protocol\"><AssertionConsumerService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST\" Location=\"https://archestra.example.com/api/auth/sso/saml2/sp/acs/OktaSAML\" index=\"0\" isDefault=\"true\"/></SPSSODescriptor></EntityDescriptor>"
+      # Or: metadata = file("${path.module}/sp-metadata.xml")
+      metadata = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\" entityID=\"https://archestra.example.com\"><SPSSODescriptor protocolSupportEnumeration=\"urn:oasis:names:tc:SAML:2.0:protocol\"><AssertionConsumerService Binding=\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST\" Location=\"https://archestra.example.com/api/auth/sso/saml2/sp/acs/OktaSAML\" index=\"0\" isDefault=\"true\"/></SPSSODescriptor></EntityDescriptor>"
     }
 
     mapping {
@@ -281,3 +293,13 @@ Optional:
 
 - `enabled` (Boolean)
 - `groups_expression` (String)
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_identity_provider.example 00000000-0000-0000-0000-000000000000
+```

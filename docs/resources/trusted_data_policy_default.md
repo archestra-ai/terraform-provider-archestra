@@ -13,6 +13,8 @@ Sets the unconditional default trusted-data action for a set of tools (mark trus
 ## Example Usage
 
 ```terraform
+# Externals (declare elsewhere): archestra_mcp_server_installation.internal_test, archestra_mcp_server_installation.filesystem.
+
 # Single-tool default — matches the UI's per-row "Results are" dropdown.
 # `mark_as_untrusted` is the wire name behind the UI's "Sensitive" label.
 resource "archestra_trusted_data_policy_default" "echo_sensitive" {
@@ -43,3 +45,14 @@ resource "archestra_trusted_data_policy_default" "sanitize_filesystem" {
 ### Read-Only
 
 - `id` (String) Synthetic resource ID. Not a backend identifier.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+# Import by `action` string. Tool IDs are reconciled from the backend on Read.
+terraform import archestra_trusted_data_policy_default.example mark_as_trusted
+```

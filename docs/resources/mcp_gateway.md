@@ -13,6 +13,8 @@ Unified MCP endpoint that aggregates installed tools and (optionally) knowledge 
 ## Example Usage
 
 ```terraform
+# Externals (declare elsewhere): archestra_team.engineering, archestra_identity_provider.oidc.
+
 # Org-wide MCP gateway — clients (Claude Desktop, Cursor, etc.) point at
 # this endpoint and Archestra federates the tools from every install behind it.
 resource "archestra_mcp_gateway" "default" {
@@ -67,7 +69,7 @@ resource "archestra_mcp_gateway" "engineering" {
 - `labels` (Attributes Set) Key/value labels for organizing gateways (see [below for nested schema](#nestedatt--labels))
 - `passthrough_headers` (List of String) Allowlist of HTTP header names to forward from gateway requests to downstream MCP servers
 - `scope` (String) Ownership scope: `personal`, `team`, or `org` (default: `org`).
-- `teams` (List of String) Team IDs this gateway is assigned to. Required when `scope = "team"`.
+- `teams` (List of String) Team IDs this gateway is assigned to. Required when `scope = "team"`. Removing from configuration clears the assignment on next apply.
 
 ### Read-Only
 
@@ -80,3 +82,13 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_mcp_gateway.example 00000000-0000-0000-0000-000000000000
+```

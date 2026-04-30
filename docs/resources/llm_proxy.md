@@ -13,6 +13,13 @@ Passthrough proxy to an upstream LLM provider, with optional inbound JWT auth vi
 ## Example Usage
 
 ```terraform
+# Externals (declare elsewhere): archestra_llm_provider_api_key.inline, archestra_team.engineering, archestra_identity_provider.oidc.
+
+# NOTE: `llm_model` is the model_id from the upstream LLM API. The platform
+# auto-discovers models from `archestra_llm_provider_api_key`, so the key
+# resource for the chosen provider must exist. `archestra_llm_model` is
+# only for overriding pricing / per-model settings on a discovered model.
+
 # Org-wide LLM proxy — fronts an upstream model so apps can hit Archestra
 # instead of talking to OpenAI directly. Headers in `passthrough_headers`
 # survive the hop, which is how downstream services see request IDs / tenants.
@@ -70,7 +77,7 @@ resource "archestra_llm_proxy" "engineering" {
 - `llm_model` (String) Upstream LLM model ID
 - `passthrough_headers` (List of String) Allowlist of HTTP header names to forward from proxy requests to the upstream LLM
 - `scope` (String) Ownership scope: `personal`, `team`, or `org` (default: `org`).
-- `teams` (List of String) Team IDs this proxy is assigned to. Required when `scope = "team"`.
+- `teams` (List of String) Team IDs this proxy is assigned to. Required when `scope = "team"`. Removing from configuration clears the assignment on next apply.
 
 ### Read-Only
 
@@ -83,3 +90,13 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_llm_proxy.example 00000000-0000-0000-0000-000000000000
+```

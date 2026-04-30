@@ -3,16 +3,35 @@
 page_title: "archestra_organization_settings Resource - archestra"
 subcategory: ""
 description: |-
-  Manages organization settings in Archestra. This is a singleton resource - only one instance can exist per organization. Note: Running terraform destroy will only remove this resource from Terraform state; the organization settings will remain unchanged on the server.
+  Manages organization settings in Archestra. This is a singleton resource — only one instance can exist per organization.
+  Lifecycle semantics depend on whether the field has a Default:.
+  Fields with a documented default (font, color_theme, compression_scope, convert_tool_results_to_toon): omitting the field from your .tf resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is sticky — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.
+  terraform destroy only removes this resource from Terraform state; backend settings are never deleted. To stop managing the entire resource without touching the backend, run terraform state rm archestra_organization_settings.<n>.
 ---
 
 # archestra_organization_settings (Resource)
 
-Manages organization settings in Archestra. This is a singleton resource - only one instance can exist per organization. Note: Running `terraform destroy` will only remove this resource from Terraform state; the organization settings will remain unchanged on the server.
+Manages organization settings in Archestra. This is a singleton resource — only one instance can exist per organization.
+
+**Lifecycle semantics depend on whether the field has a `Default:`.**
+
+- Fields with a documented default (`font`, `color_theme`, `compression_scope`, `convert_tool_results_to_toon`): omitting the field from your `.tf` resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.
+- Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is *sticky* — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.
+
+`terraform destroy` only removes this resource from Terraform state; backend settings are never deleted. To stop managing the entire resource without touching the backend, run `terraform state rm archestra_organization_settings.<n>`.
 
 ## Example Usage
 
 ```terraform
+# --- External references this example assumes exist in your module ---
+#
+#   archestra_llm_provider_api_key.inline   (used by default_llm_api_key_id, embedding_chat_api_key_id)
+#   archestra_llm_provider_api_key.cohere   (used by reranker_chat_api_key_id)
+#   archestra_agent.support                 (used by default_agent_id)
+#
+# See examples/resources/archestra_llm_provider_api_key/ and
+# examples/resources/archestra_agent/ for matching declarations.
+
 # Singleton resource — exactly one row exists per organization. `terraform
 # destroy` only drops the local state; the backend keeps whatever values were
 # last applied.
@@ -24,9 +43,11 @@ resource "archestra_organization_settings" "main" {
   footer_text = "© 2026 Acme Inc."
 
   # Inline base64 logos. Use `filebase64()` so updates churn cleanly.
-  logo      = filebase64("${path.module}/assets/logo.png")
-  logo_dark = filebase64("${path.module}/assets/logo-dark.png")
-  favicon   = filebase64("${path.module}/assets/favicon.png")
+  # Drop your own PNGs into `assets/` alongside this file and uncomment;
+  # leaving them out keeps the platform's defaults.
+  # logo      = filebase64("${path.module}/assets/logo.png")
+  # logo_dark = filebase64("${path.module}/assets/logo-dark.png")
+  # favicon   = filebase64("${path.module}/assets/favicon.png")
 
   # --- Chat UX ---
   chat_placeholders         = ["What can I help with?", "Ask anything…"]
@@ -127,3 +148,13 @@ Required:
 
 - `label` (String) Display label for the chat link
 - `url` (String) URL for the chat link
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_organization_settings.example 00000000-0000-0000-0000-000000000000
+```

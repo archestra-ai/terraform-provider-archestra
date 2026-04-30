@@ -13,6 +13,8 @@ Sets the unconditional default invocation action for a set of tools (allow / all
 ## Example Usage
 
 ```terraform
+# Externals (declare elsewhere): archestra_mcp_server_installation.internal_test, archestra_mcp_server_installation.filesystem.
+
 # Single-tool default — matches the UI's per-row dropdown.
 resource "archestra_tool_invocation_policy_default" "echo_require_approval" {
   tool_ids = [archestra_mcp_server_installation.internal_test.tool_id_by_name["internal_test__echo"]]
@@ -42,3 +44,14 @@ resource "archestra_tool_invocation_policy_default" "filesystem_blocked" {
 ### Read-Only
 
 - `id` (String) Synthetic resource ID. Not a backend identifier.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+# Import by `action` string. Tool IDs are reconciled from the backend on Read.
+terraform import archestra_tool_invocation_policy_default.example block_always
+```

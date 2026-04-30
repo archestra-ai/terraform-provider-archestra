@@ -1,3 +1,5 @@
+# Variables (declare in your variables.tf): registry_username (string), registry_password (string, sensitive), postgres_password (string, sensitive), oauth_client_secret (string, sensitive).
+
 # Local MCP server with stdio transport (default)
 resource "archestra_mcp_registry_catalog_item" "filesystem" {
   name        = "filesystem-mcp-server"

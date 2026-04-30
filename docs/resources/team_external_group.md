@@ -13,6 +13,8 @@ Maps an external identity-provider group onto an Archestra team's membership.
 ## Example Usage
 
 ```terraform
+# Variables (declare in your variables.tf): engineering_idp_groups (list(string)) — IdP group names/IDs to map onto the team.
+
 # Step 1: the team that the IdP group will sync into.
 resource "archestra_team" "engineering" {
   name        = "Engineering"
@@ -59,3 +61,14 @@ resource "archestra_team_external_group" "engineering_extra" {
 ### Read-Only
 
 - `id` (String) The ID of this resource.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+# Composite ID: <team_id>/<mapping_id>
+terraform import archestra_team_external_group.example 00000000-0000-0000-0000-000000000000/11111111-1111-1111-1111-111111111111
+```
