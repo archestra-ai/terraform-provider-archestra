@@ -1,8 +1,149 @@
 # Contributing to terraform-provider-archestra
 
-This guide is for contributors and reviewers. For setup, building, and testing,
-see [README.md](README.md). This document covers the **internal architecture**
-and the **conventions a new resource needs to follow**.
+This guide is for contributors and reviewers — people modifying the
+provider itself. If you're a *user* of the provider, see
+[README.md](README.md) instead.
+
+## Prerequisites
+
+- [Go](https://golang.org/doc/install) >= 1.25
+- [Terraform](https://www.terraform.io/downloads.html) — [`tenv`](https://github.com/tofuutils/tenv) recommended for managing versions
+- `make` (for the helper targets in [Makefile](Makefile))
+- `golangci-lint` v2 ([install](https://golangci-lint.run/docs/welcome/install/))
+
+## Local development with `dev_overrides`
+
+To point Terraform at a locally-built provider binary, configure
+`~/.terraformrc`:
+
+```hcl
+provider_installation {
+  dev_overrides {
+    "archestra-ai/archestra" = "<absolute-path-to-this-repo>"
+  }
+
+  direct {}
+}
+```
+
+Then `make install` and run `terraform plan` / `apply` from any HCL
+directory. Note: `dev_overrides` skips `terraform init` — Terraform
+prints a warning each run reminding you that override is in effect.
+That warning is normal during local development; remove the override
+before testing release behaviour.
+
+## Building
+
+```bash
+make build      # build the provider binary
+make install    # build and install into $GOPATH/bin for dev_overrides
+```
+
+## Testing
+
+### Unit tests
+
+```bash
+make test
+```
+
+### Acceptance tests
+
+Acceptance tests run against a real Archestra backend at
+`http://localhost:9000` (or wherever `ARCHESTRA_BASE_URL` points). The
+`scripts/` directory ships helper bootstrappers that mirror exactly
+what CI runs.
+
+**For the full suite, prefer the one-shot wrapper** documented under
+[Local stack for full testacc](#local-stack-for-full-testacc) below —
+it bundles every script into a single `bootstrap-local-stack.sh` call
+plus an `eval` of its env output. The step-by-step path here is for
+when you want to run a subset of the suite or understand what each
+piece does.
+
+**Minimum setup:**
+
+```bash
+export ARCHESTRA_BASE_URL="http://localhost:9000"
+export ARCHESTRA_API_KEY=$(./scripts/bootstrap-api-key.sh)  # uses seeded admin@example.com / password by default
+make testacc
+```
+
+**Full suite (BYOS / Vault / EMC subsets):**
+
+```bash
+export ARCHESTRA_TEST_IDP_ID=$(./scripts/bootstrap-test-idp.sh)  # OIDC IdP for the EMC test
+./scripts/bootstrap-ollama-mock.sh                                # kind-cluster only
+./scripts/bootstrap-vault.sh                                      # kind-cluster only
+export ARCHESTRA_READONLY_VAULT_ENABLED=true
+make testacc
+```
+
+The Vault and Ollama-mock scripts apply manifests under
+[`scripts/k8s/`](scripts/k8s/) against your current `kubectl` context;
+they assume the Helm chart is deployed in a Kind cluster (the same
+shape CI uses). For local-only Docker setups, skip them and run the
+non-BYOS subset.
+
+Test gates worth knowing:
+
+- `ARCHESTRA_READONLY_VAULT_ENABLED=true` — gates the vault-ref test suite (`TestAccMcpRegistryCatalogItemResourceWithVaultRefs` and all `TestAccLLMProviderApiKeyResource*`). Backend must run with `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` + an enterprise license.
+- `ARCHESTRA_TEST_IDP_ID=<uuid>` — gates `TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig`. `bootstrap-test-idp.sh` provisions one and prints its UUID.
+
+CI invokes the same `scripts/bootstrap-*.sh` helpers — see
+[`.github/workflows/on-pull-request.yml`](.github/workflows/on-pull-request.yml).
+
+## Codegen
+
+### Terraform docs
+
+```bash
+make generate
+```
+
+Renders `examples/**/*.tf` into `docs/` via `tfplugindocs`. Run this
+after any schema or example change.
+
+### Archestra API client
+
+The API client is generated from the platform's OpenAPI spec and pinned
+to a specific platform version. To bump:
+
+1. Run the platform locally at the desired version:
+
+   ```bash
+   docker run -p 9000:9000 -p 3000:3000 \
+     -e ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true \
+     -v archestra-postgres-data:/var/lib/postgresql/data \
+     -v archestra-app-data:/app/data \
+     archestra/platform:<version-tag>
+   ```
+
+   The `ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true` flag is required so
+   the OpenAPI spec includes all routes and types. See the [platform quickstart](https://archestra.ai/docs/platform-quickstart).
+
+2. Regenerate from the running platform's spec at <http://localhost:9000/openapi.json>:
+
+   ```bash
+   make codegen-api-client
+   ```
+
+3. Update `ARCHESTRA_VERSION` in `.github/workflows/on-pull-request.yml`
+   so CI runs against the same backend version.
+
+## Code style
+
+- `gofmt -s -w` + `terraform fmt` (run via `make fmt`).
+- `golangci-lint v2` (run via `make lint`).
+- Comments only when WHY is non-obvious. Don't comment WHAT — well-named identifiers do that. Don't reference current-task or fix-history in comments — that belongs in the commit message and rots otherwise.
+- Don't add error handling, fallbacks, or validation for scenarios that can't happen. Trust internal code and framework guarantees. Validate at system boundaries (user input, external APIs).
+
+## Release process
+
+Releases are automated via GitHub Actions using
+[`release-please`](https://github.com/googleapis/release-please).
+Conventional-commit messages drive version bumps and changelog
+generation.
 
 ## Repo layout
 
@@ -16,163 +157,20 @@ internal/
     specdrift_test.go      # schema ↔ AttrSpec drift check
     apicoverage_test.go    # API ↔ schema coverage check
     resource_<name>.go     # one resource per file
-    <name>_shared.go       # AttrSpec + opt-in interface methods (when split out)
+    <name>_helpers.go      # split-out helpers for a SINGLE resource (AttrSpec, response mappers, etc.)
+    <name>_shared.go       # ONLY when consumed by 2+ resource files (e.g. agent_shared.go feeds agent/llm_proxy/mcp_gateway)
 examples/                  # HCL examples — `make generate` renders these into docs/
 docs/                      # generated; do NOT edit by hand
 scripts/                   # CI + local bootstrap (api-key, vault, IdP, full stack)
-tools/oapi-patch/          # workaround for oapi-codegen union mishandling — see below
+tools/oapi-patch/          # OpenAPI-spec normalizer run before oapi-codegen; see the file header in tools/oapi-patch/main.go for what it rewrites and the removal criterion.
 ```
 
-### `tools/oapi-patch` is a workaround, not permanent infrastructure
+## Architecture
 
-`make codegen-api-client` runs the OpenAPI spec through `tools/oapi-patch`
-before invoking `oapi-codegen`. The patcher rewrites inline polymorphic
-`anyOf`/`oneOf` schemas that `oapi-codegen` mishandles (it emits structs
-with an unexported `union json.RawMessage` field that has no
-Marshal/Unmarshal helpers, causing runtime crashes on numeric arms and
-silent data loss on object arms).
-
-The root cause is upstream in the platform repo: inline anonymous
-`z.union(...)` schemas without `.openapi({...})` annotations. Once the
-backend names + annotates these schemas (so the spec emits a `$ref`
-instead of an inline anonymous union), `oapi-patch` becomes unnecessary
-and should be removed. See the TODO at the top of
-[tools/oapi-patch/main.go](tools/oapi-patch/main.go) for the removal
-criterion. Don't add features to the patcher — fix the upstream zod
-schemas instead.
-
-## Architecture: merge-patch + AttrSpec
-
-Every mutable resource sends Update bodies via JSON Merge Patch (RFC 7396).
-The merge-patch is computed from a plan-vs-prior-state diff using a per-resource
-`AttrSpec` table. This pattern closes four bug classes simultaneously:
-
-- Sensitive fields (passwords, secrets) never leave the user's machine unless
-  changed.
-- Empty collections (`labels = []`, `teams = []`) aren't sent on every Update,
-  preventing wipes of out-of-band changes.
-- JSONB columns can be field-level diffed (`RecursiveObject`) or replaced
-  wholesale (`AtomicObject`) depending on backend storage semantics.
-- Backend defaults (computed values like `id = "sub"` for OIDC mapping) don't
-  get clobbered by re-sending the user-omitted field as null.
-
-### The `AttrSpec` declaration
-
-Each resource declares a `<resource>AttrSpec` slice describing every wire field
-it manages. Example from [identity_provider_shared.go](internal/provider/identity_provider_shared.go):
-
-```go
-var identityProviderAttrSpec = []AttrSpec{
-    {TFName: "provider_id",  JSONName: "providerId",  Kind: Scalar},
-    {TFName: "domain",       JSONName: "domain",      Kind: Scalar},
-    {
-        TFName: "oidc_config", JSONName: "oidcConfig", Kind: AtomicObject, OmitOnNull: true,
-        Children: []AttrSpec{
-            {TFName: "client_id",     JSONName: "clientId",     Kind: Scalar},
-            {TFName: "client_secret", JSONName: "clientSecret", Kind: Scalar, Sensitive: true},
-            // …
-        },
-    },
-}
-```
-
-Fields:
-
-| Field        | Purpose                                                                                                                                                                                       |
-|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `TFName`     | snake_case Terraform attribute name (matches the schema's `tfsdk` tag).                                                                                                                       |
-| `JSONName`   | camelCase wire field name (matches the backend's zod / OpenAPI spec).                                                                                                                         |
-| `Kind`       | See "Kinds" below.                                                                                                                                                                            |
-| `Sensitive`  | Mask in `LogPatch` debug output. Should match the schema's `Sensitive: true`.                                                                                                                 |
-| `OmitOnNull` | When the plan value is null, omit the field instead of emitting `null`. Use when the backend zod is `.optional()` rather than `.nullable()` — sending null gets rejected with a 400.          |
-| `Encoder`    | Post-encode value transform (function `func(any) any`). Used for polymorphic unions, JSON-string round-trips, paginated wrappers, anything that doesn't map cleanly through the generic walker. |
-| `Children`   | Nested AttrSpec for `AtomicObject`/`RecursiveObject`/`List`/`Set`/`Map`-of-objects.                                                                                                           |
-
-### Kinds
-
-| Kind              | When to use                                                                                                                                                                                                                                                                                                                         |
-|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Scalar`          | Strings, numbers, booleans.                                                                                                                                                                                                                                                                                                         |
-| `List` / `Set`    | Ordered / unordered collections of scalars or objects (use `Children` for objects).                                                                                                                                                                                                                                                 |
-| `Map`             | `Map<string, T>`. Use `Children` for `Map<string, object>`.                                                                                                                                                                                                                                                                         |
-| `AtomicObject`    | A nested object stored as a single JSONB column (Drizzle `text(...)` serialized to JSON, or `jsonb`). Replaced wholesale on update — merge-patch emits the full nested object on any change.                                                                                                                                        |
-| `RecursiveObject` | A nested object backed by multiple top-level columns where each sub-field can be patched independently. Rare. Use only when the backend explicitly supports field-level updates within the nested structure.                                                                                                                        |
-| `Synthetic`       | A schema attribute that has no wire field — typical examples: URL-path values like `agent_id` / `tool_id` (RequiresReplace), Create-time-only lookup keys, or HCL-only ergonomic groupings (catalog_item's `remote_config` block decomposes into top-level `serverUrl` / `oauthConfig` on the wire). MergePatch skips Synthetic entries. |
-
-### Update flow
-
-1. `MergePatch(ctx, plan.Raw, prior.Raw, spec, &diags)` walks `plan` and `prior` in parallel, emitting only the changed fields per the spec.
-2. The patch is `json.Marshal`'d.
-3. Resource Update sends the patch via the generated client's `*WithBodyWithResponse` method.
-4. `LogPatch` writes the patch to `tflog.Debug` with sensitive values masked.
-
-### Receive flow (Read)
-
-Reads are **drift-honest**: state is set from the API response, not preferred from prior state. This surfaces out-of-band changes as a plan diff so users can decide. The exception is **write-only fields** (e.g. `image_pull_secrets[].password`) where the backend strips the value on write and never echoes it back; those preserve from prior state.
-
-For nested objects with separate Get/Create/Update generated response types, write a single mapping helper (`mapXxxResponse`) that takes a JSON-roundtrip type bridging the three. See [identity_provider_shared.go](internal/provider/identity_provider_shared.go) for the canonical example.
-
-## Drift-check tests
-
-Two unit tests enforce the alignment between schema, AttrSpec, and the API. They run as part of `make test` (no TF_ACC needed) and gate every PR.
-
-### `TestSpecDrift` (schema ↔ AttrSpec)
-
-Source: [specdrift_test.go](internal/provider/specdrift_test.go).
-
-Asserts:
-
-- Every Schema attribute (top-level) on a migrated resource has a matching `AttrSpec` entry, *unless* it's Computed-only.
-- Every `AttrSpec` entry has a matching Schema attribute (catches typos and stale entries).
-- Every `Sensitive: true` schema attribute is also `Sensitive: true` on its `AttrSpec` entry.
-
-A resource opts in by implementing `resourceWithAttrSpec`:
-
-```go
-func (r *FooResource) AttrSpecs() []AttrSpec { return fooAttrSpec }
-```
-
-### `TestApiCoverage` (API ↔ schema)
-
-Source: [apicoverage_test.go](internal/provider/apicoverage_test.go).
-
-Asserts: every wire field returned by the resource's `Get` endpoint is covered by either:
-
-1. a Schema attribute (snake-case roundtrip of the JSON name matches a `TFName`), OR
-2. an `AttrSpec.JSONName` mapping (catches intentional renames like `customFont ↔ font`, `theme ↔ color_theme`), OR
-3. a `KnownIntentionallySkipped()` entry on the resource with a justification comment.
-
-Catches the silent-drift class of bug: backend adds a field, provider keeps shipping without exposing it, users get no plan-time signal and can't read the field via Terraform.
-
-A resource opts in by implementing `resourceWithAPIShape`:
-
-```go
-func (r *FooResource) APIShape() any                       { return client.GetFooResponse{} }
-func (r *FooResource) KnownIntentionallySkipped() []string { return []string{"createdAt", "updatedAt"} }
-```
-
-The walker handles three response shapes:
-
-- `JSON200 *struct{...}` (single record).
-- `JSON200 *[]struct{...}` (list endpoint).
-- `JSON200 *struct{Data []struct{...}, Pagination ...}` (paginated envelope).
-
-## Convention: schema attr vs. skip-list
-
-When `TestApiCoverage` flags a wire field, you have two choices:
-
-**Add a Computed-only schema attribute** — preferred when the field has user value (drift visibility, debug visibility, or terraform-output usefulness). Example: `created_at`, `slug`, `secret_id`.
-
-**Add to `KnownIntentionallySkipped()`** with a Why-comment — preferred when the field belongs to a different conceptual domain or is duplicated elsewhere. Acceptable categories:
-
-- Audit timestamps you've decided not to surface yet (`createdAt`, `updatedAt`).
-- Discriminators the provider uses internally (e.g. `agentType` to split one backend table into three resources).
-- Backend bookkeeping (`limit.lastCleanup` cleanup-scheduler state).
-- Synthetic-wrapper decomposition (e.g. catalog_item's `oauthConfig` is wire top-level but HCL-nested under `remote_config`).
-- m2m-relationship duplicates (e.g. `agent.tools` is managed by `archestra_agent_tool`; surfacing it on the agent would create phantom diffs).
-- TFName↔JSONName renames where the AttrSpec doesn't include it (because the field is Computed-only with no merge-patch involvement).
-
-The skip-list comment matters. A future maintainer reading it should be able to decide whether the original reasoning still holds.
+The wire-shape strategy (merge-patch + per-resource `AttrSpec`), the
+drift-check tests that gate every PR, and the schema-attr-vs-skip-list
+convention are documented in [ARCHITECTURE.md](ARCHITECTURE.md). Read
+that before adding or modifying a resource.
 
 ## Adding a new resource — checklist
 
@@ -221,13 +219,39 @@ scripts/bootstrap-local-stack.sh --down               # tear down
 
 Brings up the platform image + dev Vault + Ollama mock + EE license + provisioned IdP. `ARCHESTRA_VERSION` is pulled from `.github/workflows/on-pull-request.yml` so local tracks CI without re-hardcoding.
 
-## Code style
+## Manual smoke testing with `examples/complete/`
 
-- `gofmt -s -w` + `terraform fmt` (run via `make fmt`).
-- `golangci-lint v2` (run via `make lint`).
-- Comments only when WHY is non-obvious. Don't comment WHAT — well-named identifiers do that. Don't reference current-task or fix-history in comments — that belongs in the commit message and rots otherwise.
-- Don't add error handling, fallbacks, or validation for scenarios that can't happen. Trust internal code and framework guarantees. Validate at system boundaries (user input, external APIs).
+For PR reviewers and contributors who want to *see* a change in action
+without writing their own Terraform module, [examples/complete/](examples/complete/)
+ships a runnable root module that wires the full bring-up chain. Apply
+it against the local stack to verify behavior end-to-end:
 
-## Where decisions live
+```bash
+scripts/bootstrap-local-stack.sh
+eval "$(scripts/bootstrap-local-stack.sh --print-env)"
 
-Project-wide conventions (merge-patch as the wire-shape strategy, drift-honest reads, hand-curated AttrSpec, no deprecation aliases, etc.) are decided once and applied across resources. If you're considering deviating, raise it in the PR.
+cd examples/complete
+cp terraform.tfvars.example terraform.tfvars         # fill in real keys / IdP IDs as needed
+terraform init
+terraform apply
+
+# poke around at $ARCHESTRA_BASE_URL in a browser, exercise the resources
+
+terraform destroy
+cd -
+scripts/bootstrap-local-stack.sh --down
+```
+
+Use this for "does my schema change still apply cleanly against a real
+backend?" and "does the user-visible flow still feel right?" The
+acceptance tests verify resource correctness in isolation; the demo
+verifies the connected story.
+
+Two CI implications worth knowing:
+
+- A failing `make generate` after touching schemas usually surfaces in
+  the demo first — `terraform validate` against `examples/complete/` is the
+  cheapest fast-feedback check (no backend required).
+- Schema renames or breaking attribute changes will break the demo.
+  Update it in the same PR; reviewers shouldn't have to fix the demo
+  themselves to test your change.

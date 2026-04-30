@@ -40,7 +40,12 @@ terraform.tfstate
 terraform-provider-archestra
 .terraform.lock.hcl
 *.tfvars
+
+# Sessions for Claude.
 .sessions/
+
+# Playwright MCP server for testing.
+.playwright-mcp
 
 # Intermediate artifacts from `make codegen-api-client`.
 .codegen/
