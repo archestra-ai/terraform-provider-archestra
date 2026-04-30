@@ -4,6 +4,10 @@
 
 ### ⚠ BREAKING CHANGES
 
+* **`archestra_profile` replaced by three type-specific resources.** Backend collapses `agent`, `llm_proxy`, and `mcp_gateway` onto a single `agents` table with an `agentType` discriminator; the previous single `archestra_profile` mixed every variant's fields and required mode-aware validation in HCL. No deprecation alias.
+
+  Migration: split each `resource "archestra_profile" "..."` block into one of `archestra_agent`, `archestra_llm_proxy`, or `archestra_mcp_gateway` (matching the original `agent_type`), then run `terraform state mv archestra_profile.<n> archestra_<new_type>.<n>` for each. The agent-tool resource and data source were renamed in the same pass: `archestra_profile_tool` → `archestra_agent_tool`, `data.archestra_profile_tool` → `data.archestra_agent_tool`, with `profile_id` → `agent_id`. The `tool_id` attribute on `archestra_tool_invocation_policy` and `archestra_trusted_data_policy` was renamed from `profile_tool_id` (was a misnomer — the backend stores a bare `toolId` referencing `tools.id`, not an agent-tool assignment ID).
+
 * **resources renamed to match backend + frontend naming.** No deprecation aliases; HCL must migrate.
 
   * `archestra_sso_provider` → `archestra_identity_provider`. Backend table is `identity_providers`, route is `/api/identity-providers`, frontend page is `/settings/identity-providers/`. The legacy `sso_provider` name is the provider-side outlier.
@@ -15,7 +19,36 @@
 
 * **Policy `conditions`** on `archestra_tool_invocation_policy` and `archestra_trusted_data_policy` changed from scalar fan-out (`argument_name` / `attribute_path` / `operator` / `value`) to `conditions = [{ key, operator, value }, ...]` matching the backend's array semantics. Single-condition policies must be wrapped in a one-element list; multi-condition policies (previously impossible) are now supported.
 
+* **`archestra_mcp_server_installation` import requires composite ID `<uuid>:<name>`.** The backend rewrites `name` on insert (local installs get an `-<ownerId|teamId>` suffix), so the user's original base name can't be recovered from the API response. Bare-UUID import is rejected with an actionable error pointing at the composite format.
+
 * **Validators tightened** — plan-time `OneOf`/`Between`/numeric-bounds added across enum and numeric attributes. Mainly catches typos earlier; configurations that previously round-tripped values the backend would 400 on now fail at plan time. **Type tightening**: `local_config.node_port` and `oauth_config.streamable_http_port` are now `Int64` (were `Float64`); fractional values are no longer accepted.
+
+### Features
+
+* **JSON Merge Patch architecture.** Update emits only fields whose plan value differs from state; sensitive sub-fields are masked in debug logs. Closes the structural class of bugs where unchanged values were re-sent on every Update — sensitive fields no longer leak back onto the wire, and `labels` / `teams` no longer clobber backend defaults or external edits. Documented in the new `ARCHITECTURE.md`.
+* **New resources:** `archestra_agent_tool_batch` (bulk-assign N tools onto an agent in one round-trip), `archestra_tool_invocation_policy_default` and `archestra_trusted_data_policy_default` (the UI's `DEFAULT` row, with drift-detecting Read), `archestra_tool_policy_auto_config` (LLM-driven policy generator), `archestra_llm_model` (replaces the removed `archestra_token_price`).
+* **New data sources:** `data.archestra_agent_tools` (plural), `data.archestra_mcp_tool_calls` (audit log), `data.archestra_tool` (lookup any tool by name).
+* **`archestra_mcp_server_installation.tools`** is now a Computed list with `{id, name, description, parameters, assigned_agent_count, assigned_agents, created_at}` per element — `for_each` over an install's tools without separate data-source blocks.
+* **`archestra_mcp_server_installation.tool_id_by_name`** is now a Computed map for one-line tool-id lookups (`installation.tool_id_by_name["<server>__<short>"]`).
+* **5 Registry guides**: Getting Started, Authentication, Resource Bring-up Order, BYOS Vault, Common Issues. Plus a Support block on the Registry index page.
+* **Per-resource `import.sh`** — every importable resource auto-renders an `## Import` section in its docs page.
+* **`scripts/bootstrap-local-stack.sh`** — one-command full-suite local setup with EE license + BYOS Vault + Ollama mock.
+
+### Bug Fixes
+
+* **`archestra_llm_model` apply crashed with `cannot unmarshal number into Go struct field .embeddingDimensions`** when the backend had any embedding model configured. Worked around at the OpenAPI patcher (`tools/oapi-patch`); the backend zod is being fixed upstream so the patcher can be removed.
+* **`archestra_mcp_server_installation` Create halted with "Provider returned invalid result object after apply"** on every install regardless of config — Create never assigned `secret_id` from the API response. Defensive same-shape fix applied to `archestra_identity_provider` (`domain_verified` / `organization_id` / `user_id`).
+* **`archestra_mcp_server_installation.secret_id` non-idempotent on Update** — schema was `Optional`-only; the backend auto-creates a secret on installs with `user_config_values` / `is_byos_vault`, and the next plan diffed `secret_id = "<uuid>" -> null` and triggered destroy+recreate. Schema is now `Optional + Computed + UseStateForUnknown + RequiresReplace`.
+* **`archestra_organization_settings` produced "non-refresh plan was not empty" failures** on any apply against a populated singleton — 26 `Optional+Computed` fields lacked `UseStateForUnknown`. Plan modifiers added; the documented sticky-from-state contract is now enforced by the schema.
+* **`terraform import` round-trip** on `archestra_agent_tool` and `archestra_agent_tool_batch` now restores `agent_id` / `tool_id` and `credential_resolution_mode` from state correctly (previously triggered destroy+recreate on the next plan).
+* **`archestra_team.convert_tool_results_to_toon`** now pre-flights the org-level `compression_scope` at plan time and fails with an actionable error rather than producing partial state via the framework's "inconsistent result after apply".
+* **`archestra_limit.ValidateConfig`** no longer fires false-positive "X is required when X is set" errors when required-when fields reference another resource's value (Unknown at plan time).
+* **`archestra_optimization_rule.llm_provider`** enum widened from 3 values to the backend's full 17-provider list.
+* **`archestra_optimization_rule.conditions`** Read now parses the response back into typed conditions; out-of-band edits were previously invisible to Terraform.
+* **`archestra_agent.labels`** preserves the empty-vs-null distinction across read; backend `[]` no longer becomes a perma-diff against HCL `labels = []`.
+* **`data.archestra_tool`** now retries when the tool isn't found yet, eliminating a race against `archestra_mcp_server_installation` tool registration in the same plan.
+* **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
+* **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
 
 ## [0.6.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.5.0...v0.6.0) (2026-04-23)
 
