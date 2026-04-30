@@ -2,8 +2,10 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -13,6 +15,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+// 2m is a backstop, not a throttle: the retry helper tops out near 100s of
+// cumulative wait, so this leaves headroom without papering over a hung backend.
+const defaultHTTPTimeout = 2 * time.Minute
+
+const envHTTPTimeout = "ARCHESTRA_HTTP_TIMEOUT"
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ provider.Provider = &ArchestraProvider{}
@@ -127,9 +135,16 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 		return
 	}
 
+	httpClient, err := buildHTTPClient()
+	if err != nil {
+		resp.Diagnostics.AddError("Invalid "+envHTTPTimeout, err.Error())
+		return
+	}
+
 	// Create a new Archestra client using the configuration values
 	apiClient, err := client.NewClientWithResponses(
 		baseURL,
+		client.WithHTTPClient(httpClient),
 		client.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
 			req.Header.Set("Authorization", apiKey)
 			return nil
@@ -195,4 +210,46 @@ func New(version string) func() provider.Provider {
 			version: version,
 		}
 	}
+}
+
+func buildHTTPClient() (*http.Client, error) {
+	timeout, err := resolveHTTPTimeout(os.Getenv(envHTTPTimeout))
+	if err != nil {
+		return nil, err
+	}
+	return &http.Client{
+		Timeout:   timeout,
+		Transport: newHTTPTransport(),
+	}, nil
+}
+
+// http.Client treats Timeout == 0 as "no timeout" — the exact failure mode
+// this setting exists to prevent — so reject zero and negatives.
+func resolveHTTPTimeout(raw string) (time.Duration, error) {
+	if raw == "" {
+		return defaultHTTPTimeout, nil
+	}
+	d, err := time.ParseDuration(raw)
+	if err != nil {
+		return 0, fmt.Errorf("%s=%q is not a valid Go duration (e.g. \"30s\", \"5m\"): %w", envHTTPTimeout, raw, err)
+	}
+	if d <= 0 {
+		return 0, fmt.Errorf("%s=%q must be positive; zero disables the timeout", envHTTPTimeout, raw)
+	}
+	return d, nil
+}
+
+// Cloning DefaultTransport (vs. zeroing one) is load-bearing: it preserves
+// Proxy, DialContext, and idle-connection settings. &http.Transport{} silently
+// breaks HTTPS_PROXY.
+func newHTTPTransport() *http.Transport {
+	base, ok := http.DefaultTransport.(*http.Transport)
+	if !ok {
+		// http.DefaultTransport is always *http.Transport in stdlib;
+		// branch exists for the forcetypeassert linter.
+		base = &http.Transport{}
+	}
+	t := base.Clone()
+	t.TLSHandshakeTimeout = 10 * time.Second
+	return t
 }

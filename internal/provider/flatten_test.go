@@ -106,7 +106,7 @@ func TestFlattenStringMap(t *testing.T) {
 func TestPreserveOnNil(t *testing.T) {
 	t.Parallel()
 
-	encode := func(s string) types.String { return types.StringValue(s) }
+	encode := types.StringValue
 
 	t.Run("api nil → keep prior", func(t *testing.T) {
 		prior := types.StringValue("kept")
