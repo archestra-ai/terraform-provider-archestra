@@ -35,8 +35,8 @@ import (
 //     LLM call; the cost/cost-control split is documented on the
 //     resource.
 func TestAccToolPolicyAutoConfigResource(t *testing.T) {
-	if os.Getenv("ARCHESTRA_TEST_LLM_BUDGET_OK") != "true" && os.Getenv("TF_ACC") != "" {
-		t.Fatal("requires ARCHESTRA_TEST_LLM_BUDGET_OK=true — this test calls /api/agent-tools/auto-configure-policies which spends LLM tokens. Set the env var to opt in.")
+	if os.Getenv("ARCHESTRA_TEST_LLM_BUDGET_OK") != "true" {
+		t.Skip("skipping: set ARCHESTRA_TEST_LLM_BUDGET_OK=true to run — calls /api/agent-tools/auto-configure-policies which spends LLM tokens. Cost-gated tests opt in explicitly; the env var being unset is the intended CI default.")
 	}
 
 	resource.Test(t, resource.TestCase{
