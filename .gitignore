@@ -49,3 +49,6 @@ terraform-provider-archestra
 
 # Intermediate artifacts from `make codegen-api-client`.
 .codegen/
+
+# Compiled oapi-patch binary (build via `cd tools/oapi-patch && go build`).
+/tools/oapi-patch/oapi-patch
