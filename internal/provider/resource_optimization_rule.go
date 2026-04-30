@@ -81,11 +81,41 @@ func (r *OptimizationRuleResource) Schema(ctx context.Context, req resource.Sche
 				MarkdownDescription: "Entity ID this rule applies to",
 				Required:            true,
 			},
+			// TODO(backend): the OneOf below only validates that the value
+			// is in the platform's accepted enum — it doesn't check that
+			// the user actually has a configured key for that provider.
+			// A rule for `anthropic` on a backend with zero anthropic
+			// credentials creates successfully and fails silently at
+			// LLM-call time. Right fix is in the platform repo: reject
+			// `POST /optimization-rules` with a 4xx when no provider key
+			// exists for the requested provider. A provider-side
+			// ModifyPlan pre-flight (mirroring resource_team.go's TOON
+			// guard) is the alternative if the backend can't change.
+			// Until either lands, the MarkdownDescription warns users
+			// that mismatches surface at runtime, not at apply.
 			"llm_provider": schema.StringAttribute{
-				MarkdownDescription: "LLM provider: openai, anthropic, or gemini",
+				MarkdownDescription: "LLM provider this rule routes against. Must match a provider you have configured via `archestra_llm_provider_api_key.llm_provider` — the same 17-provider enum the backend accepts (anthropic, azure, bedrock, cerebras, cohere, deepseek, gemini, groq, minimax, mistral, ollama, openai, openrouter, perplexity, vllm, xai, zhipuai). The provider does **not** verify a key exists for the value you set; mismatches surface at LLM-call time, not at apply.",
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("openai", "anthropic", "gemini"),
+					stringvalidator.OneOf(
+						string(client.CreateOptimizationRuleJSONBodyProviderAnthropic),
+						string(client.CreateOptimizationRuleJSONBodyProviderAzure),
+						string(client.CreateOptimizationRuleJSONBodyProviderBedrock),
+						string(client.CreateOptimizationRuleJSONBodyProviderCerebras),
+						string(client.CreateOptimizationRuleJSONBodyProviderCohere),
+						string(client.CreateOptimizationRuleJSONBodyProviderDeepseek),
+						string(client.CreateOptimizationRuleJSONBodyProviderGemini),
+						string(client.CreateOptimizationRuleJSONBodyProviderGroq),
+						string(client.CreateOptimizationRuleJSONBodyProviderMinimax),
+						string(client.CreateOptimizationRuleJSONBodyProviderMistral),
+						string(client.CreateOptimizationRuleJSONBodyProviderOllama),
+						string(client.CreateOptimizationRuleJSONBodyProviderOpenai),
+						string(client.CreateOptimizationRuleJSONBodyProviderOpenrouter),
+						string(client.CreateOptimizationRuleJSONBodyProviderPerplexity),
+						string(client.CreateOptimizationRuleJSONBodyProviderVllm),
+						string(client.CreateOptimizationRuleJSONBodyProviderXai),
+						string(client.CreateOptimizationRuleJSONBodyProviderZhipuai),
+					),
 				},
 			},
 			"target_model": schema.StringAttribute{
@@ -195,9 +225,18 @@ func (r *OptimizationRuleResource) Read(ctx context.Context, req resource.ReadRe
 
 	ruleID := data.ID.ValueString()
 
-	// The API only has GetOptimizationRules (list), not GetOptimizationRule (single).
-	// We need to list all rules and find the one matching our ID.
-	// Use retry logic for eventual consistency - the rule may not appear immediately after creation.
+	// TODO(backend): expose `GET /api/optimization-rules/{id}` so Read
+	// can fetch a single rule by ID instead of listing-and-filtering.
+	// Non-idempotent reads have been reported in some self-hosted
+	// environments (apply succeeds, then plan refresh removes the rule
+	// from state), with three plausible causes none reproduced in CI:
+	// (1) the list endpoint returns a scoped subset that excludes some
+	// entity_type scopes; (2) implicit pagination caps the response;
+	// (3) backend create-vs-list eventual-consistency exceeds the
+	// 20-retry / ~80s budget below. The not-found warning at the
+	// bottom of this function captures last list size + sample IDs so
+	// the next failure tells us which it is. Once the GET-by-id
+	// endpoint lands, drop the list-and-filter loop entirely.
 	retryConfig := DefaultRetryConfig(fmt.Sprintf("Optimization rule %s", ruleID))
 
 	type optimizationRuleResult struct {
@@ -208,6 +247,12 @@ func (r *OptimizationRuleResource) Read(ctx context.Context, req resource.ReadRe
 		Enabled       bool
 		RawConditions json.RawMessage
 	}
+	// returnedIDs captures the IDs the last List call observed, so the
+	// not-found diagnostic below can show whether the list was empty
+	// (likely scoping/pagination) or non-empty without our ID (likely
+	// case mismatch / backend bug).
+	var returnedIDs []string
+	var lastListSize int
 
 	// The generated `Conditions []GetOptimizationRules_200_Conditions_Item`
 	// type wraps the union members in an unexported `json.RawMessage`, so
@@ -239,6 +284,11 @@ func (r *OptimizationRuleResource) Read(ctx context.Context, req resource.ReadRe
 		}
 
 		rules := *apiResp.JSON200
+		lastListSize = len(rules)
+		returnedIDs = returnedIDs[:0]
+		for _, rule := range rules {
+			returnedIDs = append(returnedIDs, rule.Id.String())
+		}
 		tflog.Debug(ctx, fmt.Sprintf("Looking for rule %s in %d rules returned by API", ruleID, len(rules)))
 
 		for _, rule := range rules {
@@ -263,8 +313,30 @@ func (r *OptimizationRuleResource) Read(ctx context.Context, req resource.ReadRe
 	}
 
 	if !found {
-		tflog.Warn(ctx, fmt.Sprintf("Rule %s not found in API response after retries, removing from state", ruleID))
-		resp.State.RemoveResource(ctx)
+		sample := returnedIDs
+		if len(sample) > 5 {
+			sample = sample[:5]
+		}
+		// Keep the state intact rather than RemoveResource: list-absence
+		// is a weak signal (the list endpoint may be scoped or paginated,
+		// see TODO above), and removing-then-recreating would create an
+		// orphan row on every apply when the rule actually still exists.
+		// A plan-time warning is loud enough that users notice; if the
+		// rule was legitimately deleted out-of-band, `terraform state rm`
+		// is the explicit recovery path.
+		resp.Diagnostics.AddWarning(
+			"Optimization rule not found in list response",
+			fmt.Sprintf(
+				"Rule %s wasn't returned by GET /api/optimization-rules after %d retries "+
+					"(last list size=%d, sample IDs=%v). State is preserved — recreating would "+
+					"orphan the existing backend row. If the rule still exists (run `terraform "+
+					"state show <addr>` and check the UI), this is the known non-idempotent-Read "+
+					"bug; the platform fix is `GET /api/optimization-rules/{id}` (see TODO in "+
+					"resource_optimization_rule.go Read). If the rule was deleted out-of-band, "+
+					"run `terraform state rm <addr>` to drop it from state, then re-apply.",
+				ruleID, retryConfig.MaxRetries, lastListSize, sample,
+			),
+		)
 		return
 	}
 

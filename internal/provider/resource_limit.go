@@ -114,91 +114,89 @@ func (r *LimitResource) ValidateConfig(ctx context.Context, req resource.Validat
 		return
 	}
 
-	// Skip validation if limit_type is unknown (e.g., during plan with variables)
 	if data.LimitType.IsUnknown() {
 		return
 	}
 
 	limitType := data.LimitType.ValueString()
 
+	// Required-when checks below skip Unknown values: when a field is
+	// referenced from another resource (e.g.,
+	// `mcp_server_name = archestra_mcp_server_installation.foo.name`),
+	// the value is Unknown at plan-time until the referenced resource
+	// finalizes. Erroring on Unknown produces a false "X is required"
+	// even though X is set — the framework re-validates after Unknowns
+	// resolve.
 	switch limitType {
 	case "token_cost":
-		// model must be set and non-empty
-		if data.Model.IsNull() || data.Model.IsUnknown() {
+		if data.Model.IsNull() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("model"),
 				"Missing Required Attribute",
-				"model is required when limit_type is 'token_cost'",
+				"limit_type = 'token_cost' requires `model`. Set `model = [\"<model-id>\", ...]` or change `limit_type`.",
 			)
-		} else {
+		} else if !data.Model.IsUnknown() {
 			var models []string
 			data.Model.ElementsAs(ctx, &models, false)
 			if len(models) == 0 {
 				resp.Diagnostics.AddAttributeError(
 					path.Root("model"),
 					"Invalid Attribute Value",
-					"model must contain at least one value when limit_type is 'token_cost'",
+					"`model` must contain at least one value when limit_type = 'token_cost'.",
 				)
 			}
 		}
-		// mcp_server_name must NOT be set
 		if !data.MCPServerName.IsNull() && !data.MCPServerName.IsUnknown() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("mcp_server_name"),
 				"Invalid Attribute Combination",
-				"mcp_server_name must not be set when limit_type is 'token_cost'",
+				"`mcp_server_name` must not be set when limit_type = 'token_cost'.",
 			)
 		}
-		// tool_name must NOT be set
 		if !data.ToolName.IsNull() && !data.ToolName.IsUnknown() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("tool_name"),
 				"Invalid Attribute Combination",
-				"tool_name must not be set when limit_type is 'token_cost'",
+				"`tool_name` must not be set when limit_type = 'token_cost'.",
 			)
 		}
 
 	case "mcp_server_calls":
-		// mcp_server_name is required
-		if data.MCPServerName.IsNull() || data.MCPServerName.IsUnknown() {
+		if data.MCPServerName.IsNull() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("mcp_server_name"),
 				"Missing Required Attribute",
-				"mcp_server_name is required when limit_type is 'mcp_server_calls'",
+				"limit_type = 'mcp_server_calls' requires `mcp_server_name`. Set `mcp_server_name = \"<server>\"` or change `limit_type`.",
 			)
 		}
-		// model must NOT be set
 		if !data.Model.IsNull() && !data.Model.IsUnknown() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("model"),
 				"Invalid Attribute Combination",
-				"model must not be set when limit_type is 'mcp_server_calls'",
+				"`model` must not be set when limit_type = 'mcp_server_calls'.",
 			)
 		}
 
 	case "tool_calls":
-		// mcp_server_name is required
-		if data.MCPServerName.IsNull() || data.MCPServerName.IsUnknown() {
+		if data.MCPServerName.IsNull() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("mcp_server_name"),
 				"Missing Required Attribute",
-				"mcp_server_name is required when limit_type is 'tool_calls'",
+				"limit_type = 'tool_calls' requires `mcp_server_name`. Set `mcp_server_name = \"<server>\"` or change `limit_type`.",
 			)
 		}
-		// tool_name is required
-		if data.ToolName.IsNull() || data.ToolName.IsUnknown() {
+		if data.ToolName.IsNull() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("tool_name"),
 				"Missing Required Attribute",
-				"tool_name is required when limit_type is 'tool_calls'",
+				"limit_type = 'tool_calls' requires `tool_name`. Set `tool_name = \"<tool>\"` or change `limit_type`.",
 			)
 		}
-		// model must NOT be set
 		if !data.Model.IsNull() && !data.Model.IsUnknown() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("model"),
 				"Invalid Attribute Combination",
-				"model must not be set when limit_type is 'tool_calls'",
+				"`model` must not be set when limit_type = 'tool_calls'.",
 			)
 		}
 	}

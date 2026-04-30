@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -106,8 +105,8 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				Optional:            true,
 				Computed:            true,
 				ElementType:         types.StringType,
-				MarkdownDescription: "Team IDs this gateway is assigned to. Required when `scope = \"team\"`.",
-				PlanModifiers:       []planmodifier.List{listplanmodifier.UseStateForUnknown()},
+				MarkdownDescription: "Team IDs this gateway is assigned to. Required when `scope = \"team\"`. Removing from configuration clears the assignment on next apply.",
+				PlanModifiers:       []planmodifier.List{EmptyListOnConfigNull()},
 			},
 			"labels": schema.SetNestedAttribute{
 				Optional:            true,
@@ -312,7 +311,7 @@ func (r *McpGatewayResource) flatten(ctx context.Context, data *McpGatewayResour
 	data.ConsiderContextUntrusted = types.BoolValue(resp.ConsiderContextUntrusted)
 	data.IsDefault = types.BoolValue(resp.IsDefault)
 	data.Scope = types.StringValue(resp.Scope)
-	data.Teams = teamsListFromAPI(ctx, resp.Teams, diags)
+	data.Teams = teamsListFromAPI(ctx, data.Teams, resp.Teams, diags)
 
 	data.Labels = flattenAgentLabels(data.Labels, resp.Labels)
 }

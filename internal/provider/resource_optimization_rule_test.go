@@ -140,3 +140,26 @@ resource "archestra_optimization_rule" "test" {
 }
 `, provider, targetModel, maxLength)
 }
+
+// TestAccOptimizationRuleResource_OllamaProvider pins that the
+// `llm_provider` validator accepts the full backend enum, not just the
+// three providers it was originally hardcoded with (openai / anthropic
+// / gemini). Ollama specifically is the most common self-hosted path;
+// rejecting it broke any consumer routing optimization rules through a
+// local Ollama backend.
+func TestAccOptimizationRuleResource_OllamaProvider(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccOptimizationRuleResourceConfig("ollama", "qwen2.5:7b", 500),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "llm_provider", "ollama"),
+					resource.TestCheckResourceAttr("archestra_optimization_rule.test", "target_model", "qwen2.5:7b"),
+					resource.TestCheckResourceAttrSet("archestra_optimization_rule.test", "id"),
+				),
+			},
+		},
+	})
+}

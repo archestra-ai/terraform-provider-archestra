@@ -121,10 +121,15 @@ func stringListFromAPI(ctx context.Context, target *types.List, apiValues []stri
 }
 
 // teamsListFromAPI builds a list of team IDs from the API agent response.
-func teamsListFromAPI(ctx context.Context, teams []struct {
+// `prior` preserves the null-vs-[] distinction across refresh — see
+// flattenAgentLabels for the rationale.
+func teamsListFromAPI(ctx context.Context, prior types.List, teams []struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
 }, diags *diag.Diagnostics) types.List {
+	if len(teams) == 0 && prior.IsNull() {
+		return types.ListNull(types.StringType)
+	}
 	ids := make([]string, len(teams))
 	for i, t := range teams {
 		ids[i] = t.Id

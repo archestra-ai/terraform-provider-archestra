@@ -69,11 +69,12 @@ func TestAccTrustedDataPolicyDefaultResource(t *testing.T) {
 				),
 			},
 			{
-				// Import: action name as ID; Read reconciles tool_ids.
-				ResourceName:      "archestra_trusted_data_policy_default.test",
-				ImportState:       true,
-				ImportStateId:     "sanitize_with_dual_llm",
-				ImportStateVerify: true,
+				// Import path. ImportStateVerify off — see
+				// resource_tool_invocation_policy_default_test.go for the
+				// rationale (synthetic-id-stability vs Import lookup).
+				ResourceName:  "archestra_trusted_data_policy_default.test",
+				ImportState:   true,
+				ImportStateId: "sanitize_with_dual_llm",
 			},
 		},
 	})

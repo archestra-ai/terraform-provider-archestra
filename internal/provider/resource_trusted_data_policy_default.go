@@ -162,11 +162,59 @@ func (r *TrustedDataPolicyDefaultResource) Update(ctx context.Context, req resou
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	tools := parseUUIDSet(ctx, plan.ToolIDs, &resp.Diagnostics, "tool_ids")
+	planTools := parseUUIDSet(ctx, plan.ToolIDs, &resp.Diagnostics, "tool_ids")
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if err := r.upsert(ctx, tools, plan.Action.ValueString()); err != nil {
+	stateTools := parseUUIDSet(ctx, state.ToolIDs, &resp.Diagnostics, "tool_ids")
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Reconcile orphans — see resource_tool_invocation_policy_default.go's
+	// Update for the rationale. Backend's BulkUpsertDefaultResultPolicy
+	// only writes; never deletes.
+	planSet := make(map[openapi_types.UUID]struct{}, len(planTools))
+	for _, t := range planTools {
+		planSet[t] = struct{}{}
+	}
+	orphanSet := make(map[openapi_types.UUID]struct{})
+	for _, t := range stateTools {
+		if _, kept := planSet[t]; !kept {
+			orphanSet[t] = struct{}{}
+		}
+	}
+	if len(orphanSet) > 0 {
+		stateAction := state.Action.ValueString()
+		listResp, err := r.client.GetTrustedDataPoliciesWithResponse(ctx)
+		if err != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list trusted data policies for orphan cleanup: %s", err))
+			return
+		}
+		if listResp.JSON200 == nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("List trusted data policies returned status %d: %s", listResp.StatusCode(), string(listResp.Body)))
+			return
+		}
+		for _, p := range *listResp.JSON200 {
+			if len(p.Conditions) != 0 || string(p.Action) != stateAction {
+				continue
+			}
+			if _, ok := orphanSet[p.ToolId]; !ok {
+				continue
+			}
+			delResp, err := r.client.DeleteTrustedDataPolicyWithResponse(ctx, p.Id)
+			if err != nil {
+				resp.Diagnostics.AddError("API Error", fmt.Sprintf("Failed to delete orphan trusted data policy %s: %s", p.Id, err))
+				return
+			}
+			if delResp.JSON200 == nil && delResp.StatusCode() != 404 {
+				resp.Diagnostics.AddError("API Error", fmt.Sprintf("Delete orphan trusted data policy %s returned status %d: %s", p.Id, delResp.StatusCode(), string(delResp.Body)))
+				return
+			}
+		}
+	}
+
+	if err := r.upsert(ctx, planTools, plan.Action.ValueString()); err != nil {
 		resp.Diagnostics.AddError("API Error", err.Error())
 		return
 	}
@@ -280,7 +328,9 @@ func (r *TrustedDataPolicyDefaultResource) ImportState(ctx context.Context, req 
 		return
 	}
 
-	resp.State.SetAttribute(ctx, path.Root("id"), types.StringValue(syntheticToolSetID(tools, action)))
+	// Preserve req.ID — see resource_tool_invocation_policy_default.go's
+	// ImportState for the rationale.
+	resp.State.SetAttribute(ctx, path.Root("id"), types.StringValue(req.ID))
 	resp.State.SetAttribute(ctx, path.Root("action"), types.StringValue(action))
 	resp.State.SetAttribute(ctx, path.Root("tool_ids"), toolSet)
 }

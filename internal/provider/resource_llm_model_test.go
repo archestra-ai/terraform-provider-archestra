@@ -9,6 +9,9 @@ import (
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
+	"github.com/hashicorp/terraform-plugin-testing/statecheck"
+	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
 // testAccGetFirstModelID discovers the first available LLM model from the backend.
@@ -130,6 +133,57 @@ func TestAccLlmModelResourceClearPricing(t *testing.T) {
 			},
 		},
 	})
+}
+
+// TestAccLlmModelResource_ModalitiesRemoveCycle pins RemoveOnConfigNullList
+// on the modality fields. Per backend models/model.ts:402-407, sending null
+// stores null on the row (cleared); a later periodic provider sync may
+// repopulate via COALESCE, but the immediate post-apply state is null.
+func TestAccLlmModelResource_ModalitiesRemoveCycle(t *testing.T) {
+	modelID := testAccGetFirstModelID(t)
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccLlmModelResourceConfigWithModalities(modelID, []string{"text"}, []string{"text"}),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("archestra_llm_model.test", "input_modalities.#", "1"),
+					resource.TestCheckResourceAttr("archestra_llm_model.test", "input_modalities.0", "text"),
+					resource.TestCheckResourceAttr("archestra_llm_model.test", "output_modalities.#", "1"),
+					resource.TestCheckResourceAttr("archestra_llm_model.test", "output_modalities.0", "text"),
+				),
+			},
+			{
+				Config: testAccLlmModelResourceNoPricingConfig(modelID),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("archestra_llm_model.test", tfjsonpath.New("input_modalities"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("archestra_llm_model.test", tfjsonpath.New("output_modalities"), knownvalue.Null()),
+				},
+			},
+		},
+	})
+}
+
+func testAccLlmModelResourceConfigWithModalities(modelID string, in, out []string) string {
+	quoted := func(xs []string) string {
+		s := ""
+		for i, x := range xs {
+			if i > 0 {
+				s += ", "
+			}
+			s += fmt.Sprintf("%q", x)
+		}
+		return s
+	}
+	return fmt.Sprintf(`
+resource "archestra_llm_model" "test" {
+  model_id          = %[1]q
+  input_modalities  = [%[2]s]
+  output_modalities = [%[3]s]
+}
+`, modelID, quoted(in), quoted(out))
 }
 
 func testAccLlmModelResourceNoPricingConfig(modelID string) string {

@@ -165,11 +165,62 @@ func (r *ToolInvocationPolicyDefaultResource) Update(ctx context.Context, req re
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	tools := parseUUIDSet(ctx, plan.ToolIDs, &resp.Diagnostics, "tool_ids")
+	planTools := parseUUIDSet(ctx, plan.ToolIDs, &resp.Diagnostics, "tool_ids")
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if err := r.upsert(ctx, tools, plan.Action.ValueString()); err != nil {
+	stateTools := parseUUIDSet(ctx, state.ToolIDs, &resp.Diagnostics, "tool_ids")
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Reconcile orphans: tools that were managed under state.action but no
+	// longer appear in plan.tool_ids must have their default-policy rows
+	// deleted. The backend's bulk-upsert (BulkUpsertDefaultCallPolicy) only
+	// writes for the listed tools — it never deletes — so without this we
+	// leak default policies on every shrink, which surfaces as a
+	// list-vs-state mismatch on Read and an ImportStateVerify hash drift.
+	planSet := make(map[openapi_types.UUID]struct{}, len(planTools))
+	for _, t := range planTools {
+		planSet[t] = struct{}{}
+	}
+	orphanSet := make(map[openapi_types.UUID]struct{})
+	for _, t := range stateTools {
+		if _, kept := planSet[t]; !kept {
+			orphanSet[t] = struct{}{}
+		}
+	}
+	if len(orphanSet) > 0 {
+		stateAction := state.Action.ValueString()
+		listResp, err := r.client.GetToolInvocationPoliciesWithResponse(ctx)
+		if err != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list tool invocation policies for orphan cleanup: %s", err))
+			return
+		}
+		if listResp.JSON200 == nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("List tool invocation policies returned status %d: %s", listResp.StatusCode(), string(listResp.Body)))
+			return
+		}
+		for _, p := range *listResp.JSON200 {
+			if len(p.Conditions) != 0 || string(p.Action) != stateAction {
+				continue
+			}
+			if _, ok := orphanSet[p.ToolId]; !ok {
+				continue
+			}
+			delResp, err := r.client.DeleteToolInvocationPolicyWithResponse(ctx, p.Id)
+			if err != nil {
+				resp.Diagnostics.AddError("API Error", fmt.Sprintf("Failed to delete orphan tool invocation policy %s: %s", p.Id, err))
+				return
+			}
+			if delResp.JSON200 == nil && delResp.StatusCode() != 404 {
+				resp.Diagnostics.AddError("API Error", fmt.Sprintf("Delete orphan tool invocation policy %s returned status %d: %s", p.Id, delResp.StatusCode(), string(delResp.Body)))
+				return
+			}
+		}
+	}
+
+	if err := r.upsert(ctx, planTools, plan.Action.ValueString()); err != nil {
 		resp.Diagnostics.AddError("API Error", err.Error())
 		return
 	}
@@ -285,7 +336,11 @@ func (r *ToolInvocationPolicyDefaultResource) ImportState(ctx context.Context, r
 		return
 	}
 
-	resp.State.SetAttribute(ctx, path.Root("id"), types.StringValue(syntheticToolSetID(tools, action)))
+	// Preserve the imported ID verbatim. The framework's ImportStateVerify
+	// looks up the imported resource in the prior state by ID; recomputing
+	// the synthetic hash here would break that lookup whenever tool_ids
+	// has changed between Create and Import.
+	resp.State.SetAttribute(ctx, path.Root("id"), types.StringValue(req.ID))
 	resp.State.SetAttribute(ctx, path.Root("action"), types.StringValue(action))
 	resp.State.SetAttribute(ctx, path.Root("tool_ids"), toolSet)
 }

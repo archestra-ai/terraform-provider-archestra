@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -144,8 +143,8 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				Optional:            true,
 				Computed:            true,
 				ElementType:         types.StringType,
-				MarkdownDescription: "Team IDs this agent is assigned to. Required when `scope = \"team\"`.",
-				PlanModifiers:       []planmodifier.List{listplanmodifier.UseStateForUnknown()},
+				MarkdownDescription: "Team IDs this agent is assigned to. Required when `scope = \"team\"`. Removing from configuration clears the assignment on next apply.",
+				PlanModifiers:       []planmodifier.List{EmptyListOnConfigNull()},
 			},
 			"suggested_prompts": schema.ListNestedAttribute{
 				Optional:            true,
@@ -387,16 +386,12 @@ func (r *AgentResource) ValidateConfig(ctx context.Context, req resource.Validat
 				"Missing Required Attribute",
 				`teams must be set when scope = "team"`,
 			)
-		} else {
-			var teams []string
-			resp.Diagnostics.Append(data.Teams.ElementsAs(ctx, &teams, false)...)
-			if !resp.Diagnostics.HasError() && len(teams) == 0 {
-				resp.Diagnostics.AddAttributeError(
-					path.Root("teams"),
-					"Invalid Attribute Value",
-					`teams must contain at least one team ID when scope = "team"`,
-				)
-			}
+		} else if len(data.Teams.Elements()) == 0 {
+			resp.Diagnostics.AddAttributeError(
+				path.Root("teams"),
+				"Invalid Attribute Value",
+				`teams must contain at least one team ID when scope = "team"`,
+			)
 		}
 	}
 
@@ -440,7 +435,7 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 	data.ConsiderContextUntrusted = types.BoolValue(resp.ConsiderContextUntrusted)
 	data.IsDefault = types.BoolValue(resp.IsDefault)
 	data.Scope = types.StringValue(resp.Scope)
-	data.Teams = teamsListFromAPI(ctx, resp.Teams, diags)
+	data.Teams = teamsListFromAPI(ctx, data.Teams, resp.Teams, diags)
 
 	data.SuggestedPrompts = suggestedPromptsFromAPI(resp.SuggestedPrompts)
 	stringListFromAPI(ctx, &data.KnowledgeBaseIds, resp.KnowledgeBaseIds, diags)
