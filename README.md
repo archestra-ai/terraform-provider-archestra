@@ -37,9 +37,25 @@ terraform init && terraform apply
 
 Full walkthrough in the [Getting Started guide](docs/guides/getting-started.md).
 
-## Contributing
+## Development
 
-If you're modifying the provider itself, see
-[CONTRIBUTING.md](CONTRIBUTING.md). It covers prerequisites, the
-merge-patch + AttrSpec architecture, the drift-check tests, and the
-new-resource checklist.
+```bash
+make build       # build the provider binary
+make install     # build + install into $GOPATH/bin (for dev_overrides)
+make test        # unit tests + drift checks
+make testacc     # acceptance tests against $ARCHESTRA_BASE_URL
+make generate    # regenerate docs/ from schema + examples
+make lint        # golangci-lint v2
+```
+
+Prerequisites, `dev_overrides` setup, the merge-patch + AttrSpec
+architecture, drift-check tests, the new-resource checklist, and the
+acceptance-test env gates (`ARCHESTRA_READONLY_VAULT_ENABLED`,
+`ARCHESTRA_TEST_IDP_ID`) live in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Releases
+
+Automated via GitHub Actions using
+[`release-please`](https://github.com/googleapis/release-please) —
+conventional-commit messages drive version bumps and
+[CHANGELOG.md](CHANGELOG.md) entries.
