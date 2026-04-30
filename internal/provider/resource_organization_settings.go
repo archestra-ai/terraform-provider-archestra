@@ -189,7 +189,7 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 						string(client.N1m),
 					),
 				},
-				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"compression_scope": schema.StringAttribute{
 				MarkdownDescription: "Scope for tool results compression",
@@ -282,7 +282,7 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 						},
 					},
 				},
-				PlanModifiers:       []planmodifier.List{listplanmodifier.UseStateForUnknown()},
+				PlanModifiers: []planmodifier.List{listplanmodifier.UseStateForUnknown()},
 			},
 			"animate_chat_placeholders": schema.BoolAttribute{
 				MarkdownDescription: "Whether to animate chat placeholders in the UI",
@@ -311,7 +311,7 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Validators: []validator.String{
 					stringvalidator.OneOf("permissive", "restrictive"),
 				},
-				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"allow_chat_file_uploads": schema.BoolAttribute{
 				MarkdownDescription: "Whether to allow file uploads in chat",
@@ -352,7 +352,7 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 						string(client.CreateLlmProviderApiKeyJSONBodyProviderZhipuai),
 					),
 				},
-				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
+				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"default_llm_api_key_id": schema.StringAttribute{
 				MarkdownDescription: "Default LLM API key ID for the organization",
@@ -375,7 +375,7 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 				},
-				PlanModifiers:       []planmodifier.Int64{int64planmodifier.UseStateForUnknown()},
+				PlanModifiers: []planmodifier.Int64{int64planmodifier.UseStateForUnknown()},
 			},
 
 			// Knowledge settings

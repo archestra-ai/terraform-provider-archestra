@@ -196,8 +196,10 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-# Composite ID: <uuid>:<name>. Bare UUID also accepted but leaves
-# `name` null, which conflicts with HCL `name = "..."` and triggers
-# destroy+recreate on the next plan.
+# Composite ID: <uuid>:<name>. The backend stores the constructed
+# `<baseName>-<ownerId|teamId>` for local installs (the suffix can't
+# be recovered on import), so the composite carries the
+# user-configured `<name>` through. Bare UUID is rejected — the
+# error message points at this format.
 terraform import archestra_mcp_server_installation.example 00000000-0000-0000-0000-000000000000:my-install-name
 ```

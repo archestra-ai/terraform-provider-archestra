@@ -2,14 +2,11 @@
 page_title: "archestra Provider"
 description: |-
   The Archestra provider lets you manage Archestra resources (agents, MCP servers, identity providers, teams, LLM keys, security policies, organization settings) as code. Both configuration values can — and should — be supplied via environment variables so secrets never enter HCL.
-  Per-request HTTP timeout defaults to 2 minutes; override via the ARCHESTRA_HTTP_TIMEOUT environment variable using Go duration syntax (e.g. 30s, 5m). The value must be positive — the timeout cannot be disabled.
 ---
 
 # archestra Provider
 
 The Archestra provider lets you manage Archestra resources (agents, MCP servers, identity providers, teams, LLM keys, security policies, organization settings) as code. Both configuration values can — and should — be supplied via environment variables so secrets never enter HCL.
-
-Per-request HTTP timeout defaults to 2 minutes; override via the `ARCHESTRA_HTTP_TIMEOUT` environment variable using Go duration syntax (e.g. `30s`, `5m`). The value must be positive — the timeout cannot be disabled.
 
 ## Support
 
