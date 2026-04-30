@@ -1,0 +1,16 @@
+# Real values for the variables declared in variables.tf — keep your IdP
+# secrets and other private config out of source. Copy from
+# terraform.tfvars.example, then edit.
+terraform.tfvars
+
+# Local Terraform state and plan artifacts. The root .gitignore already
+# excludes most of these, but list them here too so the demo is self-contained.
+*.tfstate
+*.tfstate.*
+*.tfplan
+.terraform/
+
+# Re-include .terraform.lock.hcl for this demo only — the root .gitignore
+# excludes it globally, but committing the lock here gives every consumer
+# of the demo the same provider version selection.
+!.terraform.lock.hcl
