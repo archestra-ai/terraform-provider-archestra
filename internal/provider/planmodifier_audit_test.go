@@ -34,6 +34,50 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 	"archestra_mcp_server_installation": {
 		"secret_id": "computed when the backend auto-creates a secret to hold inline `user_config_values` / `environment_values`; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
 	},
+	"archestra_organization_settings": stickyOrgSettings(
+		// Documented contract: omitting one of these fields is sticky —
+		// the merge-patch sends nothing for it and the backend value is
+		// preserved (per the resource MarkdownDescription). The whole
+		// org-settings surface follows that semantic; listed individually
+		// to keep the allowlist explicit per the audit's convention.
+		"allow_chat_file_uploads",
+		"animate_chat_placeholders",
+		"app_name",
+		"chat_error_support_message",
+		"chat_links",
+		"chat_placeholders",
+		"default_agent_id",
+		"default_llm_api_key_id",
+		"default_llm_model",
+		"default_llm_provider",
+		"embedding_chat_api_key_id",
+		"embedding_model",
+		"favicon",
+		"footer_text",
+		"global_tool_policy",
+		"icon_logo",
+		"limit_cleanup_interval",
+		"logo",
+		"logo_dark",
+		"mcp_oauth_access_token_lifetime_seconds",
+		"og_description",
+		"onboarding_complete",
+		"reranker_chat_api_key_id",
+		"reranker_model",
+		"show_two_factor",
+		"slim_chat_error_ui",
+	),
+}
+
+// stickyOrgSettings builds an allowlist sub-map sharing the same
+// "sticky-from-state" reason for every passed-in attribute name.
+func stickyOrgSettings(names ...string) map[string]string {
+	const reason = "documented sticky-from-state field on archestra_organization_settings — omitting from HCL preserves the backend value via the merge-patch (per resource MarkdownDescription)."
+	out := make(map[string]string, len(names))
+	for _, n := range names {
+		out[n] = reason
+	}
+	return out
 }
 
 // TestUseStateForUnknownAudit fails when an Optional+Computed schema attribute

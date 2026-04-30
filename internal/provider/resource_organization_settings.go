@@ -18,7 +18,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -171,6 +174,7 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: "Base64 encoded logo image for the organization",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"limit_cleanup_interval": schema.StringAttribute{
 				MarkdownDescription: "Interval for cleaning up usage limits. Valid values: 1h, 12h, 24h, 1w, 1m. Set to null to disable.",
@@ -185,6 +189,7 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 						string(client.N1m),
 					),
 				},
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"compression_scope": schema.StringAttribute{
 				MarkdownDescription: "Scope for tool results compression",
@@ -202,6 +207,7 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: "Whether organization onboarding is complete. This is a one-way flag — once set to `true`, it cannot be reverted to `false`.",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
 			},
 			"convert_tool_results_to_toon": schema.BoolAttribute{
 				MarkdownDescription: "Whether to convert tool results to TOON format for compression",
@@ -215,42 +221,50 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: "Base64 encoded dark mode logo image for the organization",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"favicon": schema.StringAttribute{
 				MarkdownDescription: "Base64 encoded favicon image for the organization",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"icon_logo": schema.StringAttribute{
 				MarkdownDescription: "Base64 encoded icon logo image for the organization",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"app_name": schema.StringAttribute{
 				MarkdownDescription: "Custom application name displayed in the UI",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"footer_text": schema.StringAttribute{
 				MarkdownDescription: "Custom footer text displayed in the UI",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"og_description": schema.StringAttribute{
 				MarkdownDescription: "OG meta description for the organization, max 500 characters",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"chat_error_support_message": schema.StringAttribute{
 				MarkdownDescription: "Custom error support message displayed in the chat UI",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"chat_placeholders": schema.ListAttribute{
 				MarkdownDescription: "Chat placeholder texts displayed in the chat input",
 				Optional:            true,
 				Computed:            true,
 				ElementType:         types.StringType,
+				PlanModifiers:       []planmodifier.List{listplanmodifier.UseStateForUnknown()},
 			},
 			"chat_links": schema.ListNestedAttribute{
 				MarkdownDescription: "Chat links displayed in the chat UI",
@@ -268,21 +282,25 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 						},
 					},
 				},
+				PlanModifiers:       []planmodifier.List{listplanmodifier.UseStateForUnknown()},
 			},
 			"animate_chat_placeholders": schema.BoolAttribute{
 				MarkdownDescription: "Whether to animate chat placeholders in the UI",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
 			},
 			"show_two_factor": schema.BoolAttribute{
 				MarkdownDescription: "Whether to show two-factor authentication options",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
 			},
 			"slim_chat_error_ui": schema.BoolAttribute{
 				MarkdownDescription: "When enabled, renders a compact error UI in chat views.",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
 			},
 
 			// Security settings
@@ -293,11 +311,13 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Validators: []validator.String{
 					stringvalidator.OneOf("permissive", "restrictive"),
 				},
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"allow_chat_file_uploads": schema.BoolAttribute{
 				MarkdownDescription: "Whether to allow file uploads in chat",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
 			},
 
 			// Agent settings
@@ -305,6 +325,7 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: "Default LLM model for the organization",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"default_llm_provider": schema.StringAttribute{
 				MarkdownDescription: "Default LLM provider for the organization. One of the providers supported by `archestra_llm_provider_api_key.llm_provider`.",
@@ -331,16 +352,19 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 						string(client.CreateLlmProviderApiKeyJSONBodyProviderZhipuai),
 					),
 				},
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"default_llm_api_key_id": schema.StringAttribute{
 				MarkdownDescription: "Default LLM API key ID for the organization",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"default_agent_id": schema.StringAttribute{
 				MarkdownDescription: "Default agent (profile) ID for the organization",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 
 			// MCP settings
@@ -351,6 +375,7 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 				},
+				PlanModifiers:       []planmodifier.Int64{int64planmodifier.UseStateForUnknown()},
 			},
 
 			// Knowledge settings
@@ -358,21 +383,25 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: "Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"embedding_chat_api_key_id": schema.StringAttribute{
 				MarkdownDescription: "API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"reranker_model": schema.StringAttribute{
 				MarkdownDescription: "Reranker model for knowledge base",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"reranker_chat_api_key_id": schema.StringAttribute{
 				MarkdownDescription: "API key ID for the reranker model",
 				Optional:            true,
 				Computed:            true,
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 
 			// Read-only org-identity / metadata. These come back from
