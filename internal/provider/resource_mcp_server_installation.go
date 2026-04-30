@@ -430,7 +430,7 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
-	// Map response to Terraform state
+	// Map response to Terraform state.
 	// Note: Keep user's configured name, set display_name to the API-returned name
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
 	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
@@ -519,16 +519,23 @@ func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteReque
 	}
 }
 
-// ImportState accepts `<uuid>:<name>`. The bare-uuid form is also
-// accepted but leaves `name` null, which conflicts with the user's
-// `name = "..."` HCL on the next plan and triggers RequiresReplace.
-// Format mirrors `archestra_agent_tool_batch`.
+// ImportState requires the composite `<uuid>:<name>` so the user-
+// configured `name` round-trips cleanly. `name` is Required +
+// RequiresReplace and isn't stored separately by the backend (only
+// `display_name` is, with a possible uniqueness suffix), so bare-UUID
+// import would leave `name` null and force destroy+recreate on the
+// next plan. The composite carries the user's intended name explicitly.
 func (r *MCPServerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	parts := strings.SplitN(req.ID, ":", 2)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), parts[0])...)
-	if len(parts) == 2 {
-		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), parts[1])...)
+	if len(parts) != 2 {
+		resp.Diagnostics.AddError(
+			"Invalid Import ID",
+			"Expected `<uuid>:<name>` — bare UUID isn't supported because the backend doesn't echo the user-configured `name` (only `display_name`, which may carry a uniqueness suffix). Run `terraform import archestra_mcp_server_installation.<addr> <uuid>:<name>` or set `id = \"<uuid>:<name>\"` in the import block, where `<name>` matches the `name` attribute in your HCL.",
+		)
+		return
 	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), parts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), parts[1])...)
 }
 
 // waitForServerTools polls until the backend has finished scanning the

@@ -169,9 +169,10 @@ func TestAccMCPServerInstallationResource(t *testing.T) {
 				},
 			},
 			// ImportState testing — composite `<uuid>:<name>` round-trips
-			// fully (Bug 11 fix). Without the composite, `name` would be
-			// null after Read and the next plan would diff and force
-			// destroy+recreate.
+			// fully (Bug 11 fix). Backend's `name` column stores the
+			// constructed `<baseName>-<ownerId|teamId>` for local installs,
+			// so the user-configured base name can't be recovered from the
+			// API response — composite carries it through import.
 			{
 				ResourceName:      "archestra_mcp_server_installation.test",
 				ImportState:       true,
