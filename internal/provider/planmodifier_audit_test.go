@@ -27,12 +27,12 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 	"archestra_agent": {
 		"built_in_agent_config.max_rounds": "nested in an AtomicObject JSONB block; the parent block governs the diff, not the leaf.",
 	},
-	"archestra_mcp_registry_catalog_item": {
-		"client_secret_id":       "computed when the backend auto-creates a BYOS vault reference for an inline `oauth_config.client_secret`; sticky once issued so removing the inline secret doesn't accidentally drop the stored reference.", //nolint:gosec // schema attribute name, not a credential
-		"local_config_secret_id": "computed when the backend auto-creates a BYOS vault reference for inline `local_config` env values; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",       //nolint:gosec // schema attribute name, not a credential
+	"archestra_mcp_registry_catalog_item": { //nolint:gosec // G101 false-positive — nested keys are schema attribute names.
+		"client_secret_id":       "computed when the backend auto-creates a BYOS vault reference for an inline `oauth_config.client_secret`; sticky once issued so removing the inline secret doesn't accidentally drop the stored reference.",
+		"local_config_secret_id": "computed when the backend auto-creates a BYOS vault reference for inline `local_config` env values; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
 	},
-	"archestra_mcp_server_installation": {
-		"secret_id": "computed when the backend auto-creates a secret to hold inline `user_config_values` / `environment_values`; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.", //nolint:gosec // schema attribute name, not a credential
+	"archestra_mcp_server_installation": { //nolint:gosec // G101 false-positive — schema attribute name.
+		"secret_id": "computed when the backend auto-creates a secret to hold inline `user_config_values` / `environment_values`; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
 	},
 	"archestra_organization_settings": stickyOrgSettings(
 		// Documented contract: omitting one of these fields is sticky —
