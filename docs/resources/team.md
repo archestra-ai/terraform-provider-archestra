@@ -19,24 +19,19 @@ resource "archestra_team" "engineering" {
   description = "Engineering team for production systems"
 }
 
-# Support team. The `convert_tool_results_to_toon` line is commented out
-# because it requires a precondition the example can't see — see TODO below.
+# Support team. To enable per-team TOON tool-result compression, also set
+# `archestra_organization_settings.compression_scope = "team"` and add a
+# `depends_on` on this team so org_settings applies before the team in
+# the same pass — backend silently ignores team-level writes otherwise.
 #
-# TODO(backend): team-level `convert_tool_results_to_toon` is silently
-# ignored by the backend unless `archestra_organization_settings.compression_scope = "team"`.
-# When ignored, the backend echoes `false` and Terraform errors with
-# "Provider produced inconsistent result after apply". The provider
-# pre-flights GetOrganization on Create/Update and refuses with a clear
-# precondition error, but a fresh paste (without org_settings declared yet)
-# would still trip the pre-flight. Uncomment the line below after applying
-# `archestra_organization_settings { compression_scope = "team" }`. Once
-# the backend honors the team-level flag regardless of scope (or rejects
-# team-level writes with a 4xx when scope != "team"), drop the pre-flight
-# check in resource_team.go and uncomment by default.
+# TODO(backend): drop the `depends_on` requirement once the platform's
+# `CreateTeamBodySchema` accepts `convertToolResultsToToon` and the team
+# endpoint honors the flag regardless of org scope.
 resource "archestra_team" "support" {
   name        = "Support"
   description = "Customer support team"
   # convert_tool_results_to_toon = true
+  # depends_on                   = [archestra_organization_settings.main]
 }
 
 # Once a team exists, downstream resources can scope to it:
@@ -57,7 +52,7 @@ output "engineering_team_id" {
 
 ### Optional
 
-- `convert_tool_results_to_toon` (Boolean) Per-team TOON tool-result compression. **Active only when `archestra_organization_settings.compression_scope = "team"`** — otherwise the backend silently ignores the value. The provider pre-flights this precondition on Create/Update and surfaces a clear error if violated, instead of letting the framework throw "Provider produced inconsistent result after apply".
+- `convert_tool_results_to_toon` (Boolean) Per-team TOON tool-result compression. **Requires `archestra_organization_settings.compression_scope = "team"`** — backend silently ignores team-level writes otherwise. When applying both in the same pass, also set `depends_on = [archestra_organization_settings.<n>]` on this team so org_settings applies first. Provider checks the precondition at apply time and surfaces a clear error if violated.
 - `description` (String) Description of the team
 - `members` (Attributes List) List of team members (see [below for nested schema](#nestedatt--members))
 
