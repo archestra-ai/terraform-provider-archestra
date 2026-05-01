@@ -34,6 +34,19 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 	"archestra_mcp_server_installation": { //nolint:gosec // G101 false-positive — schema attribute name.
 		"secret_id": "computed when the backend auto-creates a secret to hold inline `user_config_values` / `environment_values`; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
 	},
+	"archestra_identity_provider": stickyOidcDerivedEndpoints(
+		// Auto-derived from `discovery_endpoint` on the backend when omitted
+		// from config. Sticky-from-state matches the backend semantic — the
+		// values are server-authoritative, the user can override but doesn't
+		// have to. Without UseStateForUnknown, every refresh would surface
+		// the API-populated values as "remove from config" drift.
+		"oidc_config.authorization_endpoint",
+		"oidc_config.token_endpoint",
+		"oidc_config.user_info_endpoint",
+		"oidc_config.jwks_endpoint",
+		"oidc_config.token_endpoint_authentication",
+		"oidc_config.skip_discovery",
+	),
 	"archestra_organization_settings": stickyOrgSettings(
 		// Documented contract: omitting one of these fields is sticky —
 		// the merge-patch sends nothing for it and the backend value is
@@ -73,6 +86,18 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 // "sticky-from-state" reason for every passed-in attribute name.
 func stickyOrgSettings(names ...string) map[string]string {
 	const reason = "documented sticky-from-state field on archestra_organization_settings — omitting from HCL preserves the backend value via the merge-patch (per resource MarkdownDescription)."
+	out := make(map[string]string, len(names))
+	for _, n := range names {
+		out[n] = reason
+	}
+	return out
+}
+
+// stickyOidcDerivedEndpoints builds an allowlist sub-map for the OIDC
+// fields the backend auto-derives from `discovery_endpoint` — sticky from
+// state matches the server-authoritative semantic.
+func stickyOidcDerivedEndpoints(names ...string) map[string]string {
+	const reason = "auto-derived from `oidc_config.discovery_endpoint` on the backend when omitted; sticky-from-state captures the API value without surfacing it as remove-from-config drift on refresh."
 	out := make(map[string]string, len(names))
 	for _, n := range names {
 		out[n] = reason

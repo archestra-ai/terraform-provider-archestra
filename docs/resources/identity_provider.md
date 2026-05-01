@@ -140,7 +140,7 @@ resource "archestra_identity_provider" "saml" {
 
 Optional:
 
-- `authorization_endpoint` (String) Override authorization endpoint.
+- `authorization_endpoint` (String) Override authorization endpoint. Auto-derived from `discovery_endpoint` when omitted.
 - `client_id` (String) OIDC client ID.
 - `client_secret` (String, Sensitive) OIDC client secret.
 - `discovery_endpoint` (String) Discovery endpoint (.well-known).
@@ -148,15 +148,15 @@ Optional:
 - `enterprise_managed_credentials` (Block, Optional) Enterprise-managed credentials for token exchange flows. (see [below for nested schema](#nestedblock--oidc_config--enterprise_managed_credentials))
 - `hd` (String) Google Hosted Domain restriction (e.g., `example.com`). Only allows users from this domain.
 - `issuer` (String) OIDC issuer URL.
-- `jwks_endpoint` (String) Override JWKS endpoint.
+- `jwks_endpoint` (String) Override JWKS endpoint. Auto-derived from `discovery_endpoint` when omitted.
 - `mapping` (Block, Optional) Attribute mapping for user fields. The `id` field is required by the better-auth OIDC library; defaults to `"sub"` if unset. (see [below for nested schema](#nestedblock--oidc_config--mapping))
 - `override_user_info` (Boolean) Use token claims instead of userinfo when true.
 - `pkce` (Boolean) Enable PKCE.
 - `scopes` (List of String) OAuth scopes to request.
-- `skip_discovery` (Boolean) Skip OIDC discovery endpoint validation.
-- `token_endpoint` (String) Override token endpoint.
-- `token_endpoint_authentication` (String) Token endpoint auth method (client_secret_basic or client_secret_post).
-- `user_info_endpoint` (String) Override user info endpoint.
+- `skip_discovery` (Boolean) Skip OIDC discovery endpoint validation. Backend toggles based on whether `discovery_endpoint` is set; sticky from state when omitted from config.
+- `token_endpoint` (String) Override token endpoint. Auto-derived from `discovery_endpoint` when omitted.
+- `token_endpoint_authentication` (String) Token endpoint auth method (client_secret_basic or client_secret_post). Auto-derived from `discovery_endpoint` when omitted.
+- `user_info_endpoint` (String) Override user info endpoint. Auto-derived from `discovery_endpoint` when omitted.
 
 <a id="nestedblock--oidc_config--enterprise_managed_credentials"></a>
 ### Nested Schema for `oidc_config.enterprise_managed_credentials`

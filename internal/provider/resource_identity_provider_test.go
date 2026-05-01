@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
@@ -49,6 +50,61 @@ var (
 	// identityProviderImportStateVerifyIgnore is the combined list of all fields to ignore during import verification.
 	identityProviderImportStateVerifyIgnore = append(append(append([]string{}, identityProviderSensitiveFields...), identityProviderAPIDefaultFields...), identityProviderTeamSyncFields...)
 )
+
+// TestAccIdentityProviderResource_oidcAutoDerivedEndpointsIdempotent pins
+// the sticky-from-state contract on the OIDC fields the backend auto-derives
+// from `discovery_endpoint`. Without UseStateForUnknown on those fields, the
+// post-Create Read populates state from the API, and the next plan surfaces
+// every auto-derived value as `state value -> null` drift.
+//
+// HCL deliberately omits authorization_endpoint / token_endpoint /
+// jwks_endpoint / user_info_endpoint / token_endpoint_authentication /
+// skip_discovery — so the only way step 2's ExpectEmptyPlan passes is if
+// the schema captures the API value and treats config-null as preserve.
+func TestAccIdentityProviderResource_oidcAutoDerivedEndpointsIdempotent(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccIdentityProviderOIDCMinimalConfig("oidc-auto-derive"),
+			},
+			{
+				Config: testAccIdentityProviderOIDCMinimalConfig("oidc-auto-derive"),
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()},
+				},
+			},
+		},
+	})
+}
+
+func testAccIdentityProviderOIDCMinimalConfig(providerID string) string {
+	return fmt.Sprintf(`
+resource "archestra_identity_provider" "test" {
+  provider_id = %q
+  domain      = "auto-derive.example.com"
+  issuer      = "https://accounts.google.com"
+
+  oidc_config {
+    issuer             = "https://accounts.google.com"
+    discovery_endpoint = "https://accounts.google.com/.well-known/openid-configuration"
+    client_id          = "terraform-client"
+    client_secret      = "terraform-secret"
+    scopes             = ["openid", "email", "profile"]
+
+    mapping {
+      email = "email"
+      name  = "name"
+    }
+  }
+
+  role_mapping {
+    default_role = "member"
+  }
+}
+`, providerID)
+}
 
 func TestAccIdentityProviderResource_oidc(t *testing.T) {
 	resource.Test(t, resource.TestCase{

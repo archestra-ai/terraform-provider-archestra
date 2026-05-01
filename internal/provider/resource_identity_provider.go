@@ -212,21 +212,26 @@ func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.Sche
 			"oidc_config": schema.SingleNestedBlock{
 				MarkdownDescription: "OIDC configuration (cannot be set with saml_config).",
 				Attributes: map[string]schema.Attribute{
-					"issuer":                        schema.StringAttribute{Optional: true, MarkdownDescription: "OIDC issuer URL."},
-					"discovery_endpoint":            schema.StringAttribute{Optional: true, MarkdownDescription: "Discovery endpoint (.well-known)."},
-					"client_id":                     schema.StringAttribute{Optional: true, MarkdownDescription: "OIDC client ID."},
-					"client_secret":                 schema.StringAttribute{Optional: true, Sensitive: true, MarkdownDescription: "OIDC client secret."},
-					"authorization_endpoint":        schema.StringAttribute{Optional: true, MarkdownDescription: "Override authorization endpoint."},
-					"token_endpoint":                schema.StringAttribute{Optional: true, MarkdownDescription: "Override token endpoint."},
-					"user_info_endpoint":            schema.StringAttribute{Optional: true, MarkdownDescription: "Override user info endpoint."},
-					"jwks_endpoint":                 schema.StringAttribute{Optional: true, MarkdownDescription: "Override JWKS endpoint."},
+					"issuer":             schema.StringAttribute{Optional: true, MarkdownDescription: "OIDC issuer URL."},
+					"discovery_endpoint": schema.StringAttribute{Optional: true, MarkdownDescription: "Discovery endpoint (.well-known)."},
+					"client_id":          schema.StringAttribute{Optional: true, MarkdownDescription: "OIDC client ID."},
+					"client_secret":      schema.StringAttribute{Optional: true, Sensitive: true, MarkdownDescription: "OIDC client secret."},
+					// Backend auto-derives the four endpoints + skip_discovery /
+					// token_endpoint_authentication from the discovery URL when the
+					// user doesn't override. Optional+Computed+UseStateForUnknown so
+					// state captures the auto-derived value without producing
+					// "config null vs state populated" drift on subsequent plans.
+					"authorization_endpoint":        schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Override authorization endpoint. Auto-derived from `discovery_endpoint` when omitted."},
+					"token_endpoint":                schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Override token endpoint. Auto-derived from `discovery_endpoint` when omitted."},
+					"user_info_endpoint":            schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Override user info endpoint. Auto-derived from `discovery_endpoint` when omitted."},
+					"jwks_endpoint":                 schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Override JWKS endpoint. Auto-derived from `discovery_endpoint` when omitted."},
 					"scopes":                        schema.ListAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "OAuth scopes to request."},
 					"pkce":                          schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Enable PKCE."},
 					"override_user_info":            schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Use token claims instead of userinfo when true."},
-					"skip_discovery":                schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Skip OIDC discovery endpoint validation."},
+					"skip_discovery":                schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Skip OIDC discovery endpoint validation. Backend toggles based on whether `discovery_endpoint` is set; sticky from state when omitted from config."},
 					"enable_rp_initiated_logout":    schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Enable RP-initiated logout."},
 					"hd":                            schema.StringAttribute{Optional: true, MarkdownDescription: "Google Hosted Domain restriction (e.g., `example.com`). Only allows users from this domain."},
-					"token_endpoint_authentication": schema.StringAttribute{Optional: true, MarkdownDescription: "Token endpoint auth method (client_secret_basic or client_secret_post)."},
+					"token_endpoint_authentication": schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Token endpoint auth method (client_secret_basic or client_secret_post). Auto-derived from `discovery_endpoint` when omitted."},
 				},
 				Blocks: map[string]schema.Block{
 					"mapping": schema.SingleNestedBlock{
@@ -419,30 +424,13 @@ func (r *IdentityProviderResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
+	// Same Read-mapper used on refresh — covers every Computed field
+	// (auto-derived OIDC endpoints, audit fields, nested blocks) so the
+	// post-Create state has no Unknown values left over from plan-time.
 	state := data
-	state.ID = types.StringValue(apiResp.JSON200.Id)
-	state.ProviderID = types.StringValue(apiResp.JSON200.ProviderId)
-	state.Domain = types.StringValue(apiResp.JSON200.Domain)
-	state.Issuer = types.StringValue(apiResp.JSON200.Issuer)
-
-	// Computed fields must settle to a known value after Create — without
-	// the explicit null else-branch the planned Unknown leaks into state
-	// and Plugin Framework rejects with "provider still indicated an
-	// unknown value" (UseStateForUnknown only fires on Update).
-	if apiResp.JSON200.DomainVerified != nil {
-		state.DomainVerified = types.BoolValue(*apiResp.JSON200.DomainVerified)
-	} else {
-		state.DomainVerified = types.BoolNull()
-	}
-	if apiResp.JSON200.OrganizationId != nil {
-		state.OrganizationID = types.StringValue(*apiResp.JSON200.OrganizationId)
-	} else {
-		state.OrganizationID = types.StringNull()
-	}
-	if apiResp.JSON200.UserId != nil {
-		state.UserID = types.StringValue(*apiResp.JSON200.UserId)
-	} else {
-		state.UserID = types.StringNull()
+	if err := mapIdentityProviderResponse(apiResp.JSON200, &state, state.RoleMapping != nil, state.TeamSyncConfig != nil); err != nil {
+		resp.Diagnostics.AddError("Failed to map identity provider response", err.Error())
+		return
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
