@@ -1,5 +1,5 @@
 resource "archestra_identity_provider" "oidc" {
-  provider_id = "DemoOIDC"
+  provider_id = "DemoOIDC-${random_id.demo_suffix.hex}"
   domain      = var.oidc_domain
   issuer      = var.oidc_issuer
 
@@ -39,7 +39,7 @@ resource "archestra_identity_provider" "oidc" {
 }
 
 resource "archestra_identity_provider" "saml" {
-  provider_id = "DemoSAML"
+  provider_id = "DemoSAML-${random_id.demo_suffix.hex}"
   domain      = "demo-saml.example.com"
   issuer      = "https://saml.example.com"
 
@@ -97,12 +97,15 @@ resource "archestra_team" "engineering" {
   description = "Engineering team for production systems"
 }
 
-# Support team with TOON tool-result compression enabled. The team-level flag
-# overrides the org default from `archestra_organization_settings`.
+# Support team with TOON tool-result compression enabled. Requires
+# `archestra_organization_settings.compression_scope = "team"`; the
+# explicit `depends_on` ensures org_settings applies before this team
+# in the same pass so the backend accepts the team-level flag.
 resource "archestra_team" "support" {
   name                         = "Support"
   description                  = "Customer support team"
   convert_tool_results_to_toon = true
+  depends_on                   = [archestra_organization_settings.main]
 }
 
 resource "archestra_team_external_group" "engineers_oidc" {

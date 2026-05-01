@@ -223,7 +223,8 @@ data "archestra_mcp_server_tool" "filesystem_write" {
 }
 
 data "archestra_tool" "filesystem_write_global" {
-  name = "filesystem__write_file"
+  name       = "filesystem__write_file"
+  depends_on = [archestra_mcp_server_installation.filesystem]
 }
 
 data "archestra_agent_tools" "support_lookup" {

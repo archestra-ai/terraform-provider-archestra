@@ -4,7 +4,19 @@ terraform {
       source  = "archestra-ai/archestra"
       version = "~> 0.6.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.6"
+    }
   }
+}
+
+# Per-apply random suffix for IdP provider_ids. Ensures successive applies
+# (or re-runs after a partial failure) don't collide with orphan IdPs left
+# on the backend. Stored in state, so `apply` is idempotent within one
+# demo lifecycle; `destroy` clears it.
+resource "random_id" "demo_suffix" {
+  byte_length = 4 # 8 hex chars
 }
 
 provider "archestra" {
