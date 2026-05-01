@@ -25,11 +25,33 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
-var mcpServerRetryConfig = RetryConfig{
-	MaxRetries:     30,
-	InitialBackoff: 1 * time.Second,
-	MaxBackoff:     2 * time.Second,
-	Description:    "MCP server tools",
+// Backend's K8s readiness budget alone is 120s (`waitForDeploymentReady(60, 2000)`
+// in platform `routes/mcp-server.ts`); 5 min covers slow nodes + image pulls.
+const (
+	mcpServerInstallTimeout = 5 * time.Minute
+	mcpServerInstallPoll    = 2 * time.Second
+)
+
+// installStatusDecision classifies a `localInstallationStatus` value into the
+// three outcomes the poller acts on. Pure function so the state machine is
+// testable without a backend.
+type installStatusDecision int
+
+const (
+	installStatusWait installStatusDecision = iota
+	installStatusDone
+	installStatusFailed
+)
+
+func decideInstallStatus(s string) installStatusDecision {
+	switch s {
+	case "success":
+		return installStatusDone
+	case "error":
+		return installStatusFailed
+	default: // idle, pending, discovering-tools, "", or anything else
+		return installStatusWait
+	}
 }
 
 var _ resource.Resource = &MCPServerResource{}
@@ -538,18 +560,10 @@ func (r *MCPServerResource) ImportState(ctx context.Context, req resource.Import
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), parts[1])...)
 }
 
-// waitForServerTools polls until the backend has finished scanning the
-// installed MCP server and its tool list is non-empty, then returns:
-//
-//   - `tools` — the flattened tool list (Computed `tools` attribute).
-//   - `toolIDsByName` — name→uuid map (Computed `tool_id_by_name`),
-//     same data, indexed for the common "look up this specific tool's
-//     id" case. Both are populated from the same fetch so they can't
-//     drift relative to each other.
-//
-// On timeout/error it returns properly-typed null values alongside a
-// warning — callers downgrade so a slow scan doesn't fail the apply,
-// the tools just appear on the next refresh.
+// waitForServerTools polls `/installation-status` until terminal, then
+// fetches tools once. Backend flips status to `success` only after tool
+// rows are persisted, so a single GET after `success` is race-free.
+// `error` surfaces `localInstallationError` instead of a silent warning.
 func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID string) (types.List, types.Map, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	nullList := types.ListNull(mcpServerToolObjectType)
@@ -561,41 +575,58 @@ func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID str
 		return nullList, nullMap, diags
 	}
 
-	type toolsResult struct {
-		list   types.List
-		byName types.Map
-	}
-	res, found, err := RetryUntilFound(ctx, mcpServerRetryConfig, func() (toolsResult, bool, error) {
-		toolsResp, err := r.client.GetMcpServerToolsWithResponse(ctx, serverUUID)
+	deadline := time.Now().Add(mcpServerInstallTimeout)
+	for {
+		statusResp, err := r.client.GetMcpServerInstallationStatusWithResponse(ctx, serverUUID)
 		if err != nil {
-			return toolsResult{nullList, nullMap}, false, fmt.Errorf("failed to get server tools: %w", err)
+			diags.AddWarning("Installation status fetch failed", err.Error())
+			return nullList, nullMap, diags
 		}
-		if toolsResp.JSON200 == nil {
-			return toolsResult{nullList, nullMap}, false, fmt.Errorf("unexpected response status: %d", toolsResp.StatusCode())
+		if statusResp.JSON200 == nil {
+			diags.AddWarning("Installation status fetch failed", fmt.Sprintf("unexpected response status %d: %s", statusResp.StatusCode(), string(statusResp.Body)))
+			return nullList, nullMap, diags
 		}
-		flat, byName, projectDiags := projectMcpServerTools(*toolsResp.JSON200)
-		if projectDiags.HasError() {
-			return toolsResult{nullList, nullMap}, false, fmt.Errorf("failed to project tools: %s", projectDiags)
+
+		switch decideInstallStatus(string(statusResp.JSON200.LocalInstallationStatus)) {
+		case installStatusDone:
+			toolsResp, err := r.client.GetMcpServerToolsWithResponse(ctx, serverUUID)
+			if err != nil {
+				diags.AddWarning("Tools fetch failed", err.Error())
+				return nullList, nullMap, diags
+			}
+			if toolsResp.JSON200 == nil {
+				diags.AddWarning("Tools fetch failed", fmt.Sprintf("unexpected response status %d: %s", toolsResp.StatusCode(), string(toolsResp.Body)))
+				return nullList, nullMap, diags
+			}
+			flat, byName, projectDiags := projectMcpServerTools(*toolsResp.JSON200)
+			diags.Append(projectDiags...)
+			if projectDiags.HasError() {
+				return nullList, nullMap, diags
+			}
+			return flat, byName, diags
+
+		case installStatusFailed:
+			msg := "MCP server installation failed on the backend."
+			if statusResp.JSON200.LocalInstallationError != nil {
+				msg = *statusResp.JSON200.LocalInstallationError
+			}
+			diags.AddError("MCP server installation failed", msg)
+			return nullList, nullMap, diags
 		}
-		// Treat empty list as "not yet ready" — the install just landed and
-		// the MCP server hasn't responded to tools/list yet.
-		ready := !flat.IsNull() && len(flat.Elements()) > 0
-		return toolsResult{flat, byName}, ready, nil
-	})
-	// On every non-success path, substitute properly-typed null values:
-	// `RetryUntilFound` returns the zero value of T on err / exhaustion,
-	// and a zero-valued `types.List` / `types.Map` round-trips as
-	// `tftypes.List[DynamicPseudoType]` etc. which the framework rejects
-	// with a "MISSING TYPE" value-conversion error.
-	if err != nil {
-		diags.AddWarning("Tools fetch failed", err.Error())
-		return nullList, nullMap, diags
+
+		if time.Now().After(deadline) {
+			diags.AddWarning("Tools not ready",
+				fmt.Sprintf("timeout after %s waiting for MCP server installation to reach success/error (last status: %q). Tools will appear on the next refresh.",
+					mcpServerInstallTimeout, statusResp.JSON200.LocalInstallationStatus))
+			return nullList, nullMap, diags
+		}
+		select {
+		case <-ctx.Done():
+			diags.AddError("Context cancelled", ctx.Err().Error())
+			return nullList, nullMap, diags
+		case <-time.After(mcpServerInstallPoll):
+		}
 	}
-	if !found {
-		diags.AddWarning("Tools not ready", "timeout waiting for MCP server tools to be ready")
-		return nullList, nullMap, diags
-	}
-	return res.list, res.byName, diags
 }
 
 // projectMcpServerTools projects the `GetMcpServerTools` response onto

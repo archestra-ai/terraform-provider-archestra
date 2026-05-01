@@ -250,6 +250,28 @@ resource "archestra_mcp_server_installation" "test" {
 // Computed), so the next plan diffed config-null vs state-non-null and
 // triggered a spurious destroy+recreate. Optional+Computed+UseStateForUnknown
 // preserves the backend-assigned UUID across plans.
+// TestDecideInstallStatus pins the install state-machine contract used by
+// waitForServerTools — `success` is the only "done" state, `error` is the
+// only failure, every other value (including unknown) keeps polling.
+func TestDecideInstallStatus(t *testing.T) {
+	for _, tc := range []struct {
+		in   string
+		want installStatusDecision
+	}{
+		{"success", installStatusDone},
+		{"error", installStatusFailed},
+		{"idle", installStatusWait},
+		{"pending", installStatusWait},
+		{"discovering-tools", installStatusWait},
+		{"", installStatusWait},                           // initial-state race window
+		{"unrecognized-future-status", installStatusWait}, // forward-compat: keep polling
+	} {
+		if got := decideInstallStatus(tc.in); got != tc.want {
+			t.Errorf("decideInstallStatus(%q) = %d, want %d", tc.in, got, tc.want)
+		}
+	}
+}
+
 func TestAccMCPServerInstallationResource_UserConfigValuesIdempotent(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
