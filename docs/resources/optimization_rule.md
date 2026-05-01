@@ -13,38 +13,44 @@ Manages cost optimization rules in Archestra.
 ## Example Usage
 
 ```terraform
-# Switch to cheaper model for short prompts
+# Variables (declare in your variables.tf): organization_id (string).
+# Externals (declare elsewhere): archestra_team.support, archestra_agent.support.
+
+# Org-wide rule — anything under 500 tokens is cheap enough that gpt-4o-mini
+# handles it. The rule fires when ALL `conditions` blocks match (logical AND
+# across the array; logical OR within a single block's keys).
 resource "archestra_optimization_rule" "short_prompts" {
   entity_type  = "organization"
-  entity_id    = "your-organization-id"
+  entity_id    = var.organization_id
   llm_provider = "openai"
   target_model = "gpt-4o-mini"
   enabled      = true
 
   conditions = [
     {
-      max_length = 500 # Use cheaper model for prompts under 500 tokens
+      max_length = 500
     }
   ]
 }
 
-# Use cheaper model when no tools are needed
-resource "archestra_optimization_rule" "no_tools" {
+# Tool-free traffic doesn't need Claude Sonnet — route to Haiku.
+resource "archestra_optimization_rule" "no_tools_to_haiku" {
   entity_type  = "organization"
-  entity_id    = "your-organization-id"
+  entity_id    = var.organization_id
   llm_provider = "anthropic"
-  target_model = "claude-3-haiku-20240307"
+  target_model = "claude-haiku-4-5"
   enabled      = true
 
   conditions = [
     {
-      has_tools = false # Use cheaper model when no tools are present
+      has_tools = false
     }
   ]
 }
 
-# Team-specific optimization rule
-resource "archestra_optimization_rule" "team_optimization" {
+# Team-scoped rule — only applies when the requesting agent belongs to the
+# support team. Combines a length AND tool-presence check.
+resource "archestra_optimization_rule" "support_short_no_tools" {
   entity_type  = "team"
   entity_id    = archestra_team.support.id
   llm_provider = "openai"
@@ -54,25 +60,38 @@ resource "archestra_optimization_rule" "team_optimization" {
   conditions = [
     {
       max_length = 1000
+      has_tools  = false
     }
   ]
 }
 
-# Profile-specific optimization with multiple conditions
-resource "archestra_optimization_rule" "profile_optimization" {
-  entity_type  = "profile"
-  entity_id    = archestra_profile.chatbot.id
+# Agent-scoped rule with multiple condition blocks (logical AND between them).
+# Triggers when the prompt is short OR (in a separate condition entry) has no
+# tools — both must hold for the rule to fire.
+resource "archestra_optimization_rule" "support_agent_aggressive" {
+  entity_type  = "agent"
+  entity_id    = archestra_agent.support.id
   llm_provider = "openai"
   target_model = "gpt-4o-mini"
   enabled      = true
 
   conditions = [
-    {
-      max_length = 200
-    },
-    {
-      has_tools = false
-    }
+    { max_length = 200 },
+    { has_tools = false },
+  ]
+}
+
+# Disabled rule kept around for audit — flip `enabled` back on without
+# losing the configuration.
+resource "archestra_optimization_rule" "snapshot_paused" {
+  entity_type  = "organization"
+  entity_id    = var.organization_id
+  llm_provider = "openai"
+  target_model = "gpt-4o-mini"
+  enabled      = false
+
+  conditions = [
+    { max_length = 100 },
   ]
 }
 ```
@@ -84,8 +103,8 @@ resource "archestra_optimization_rule" "profile_optimization" {
 
 - `conditions` (Attributes List) Conditions that trigger the optimization (see [below for nested schema](#nestedatt--conditions))
 - `entity_id` (String) Entity ID this rule applies to
-- `entity_type` (String) Entity type: organization, team, or profile
-- `llm_provider` (String) LLM provider: openai, anthropic, or gemini
+- `entity_type` (String) Entity type: organization, team, or agent
+- `llm_provider` (String) LLM provider this rule routes against. Must match a provider you have configured via `archestra_llm_provider_api_key.llm_provider` — the same 17-provider enum the backend accepts (anthropic, azure, bedrock, cerebras, cohere, deepseek, gemini, groq, minimax, mistral, ollama, openai, openrouter, perplexity, vllm, xai, zhipuai). The provider does **not** verify a key exists for the value you set; mismatches surface at LLM-call time, not at apply.
 - `target_model` (String) Target model to switch to
 
 ### Optional
@@ -102,4 +121,14 @@ resource "archestra_optimization_rule" "profile_optimization" {
 Optional:
 
 - `has_tools` (Boolean) Whether tools are present
-- `max_length` (Number) Maximum token length threshold
+- `max_length` (Number) Maximum token length threshold. Must be at least 1.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_optimization_rule.example 00000000-0000-0000-0000-000000000000
+```

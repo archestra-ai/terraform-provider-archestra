@@ -3,19 +3,43 @@
 page_title: "archestra_team Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an Archestra team with members.
+  Archestra team with member assignments.
 ---
 
 # archestra_team (Resource)
 
-Manages an Archestra team with members.
+Archestra team with member assignments.
 
 ## Example Usage
 
 ```terraform
-resource "archestra_team" "example" {
-  name        = "Engineering Team"
+# Engineering team — the simplest case: name + description.
+resource "archestra_team" "engineering" {
+  name        = "Engineering"
   description = "Engineering team for production systems"
+}
+
+# Support team. To enable per-team TOON tool-result compression, also set
+# `archestra_organization_settings.compression_scope = "team"` and add a
+# `depends_on` on this team so org_settings applies before the team in
+# the same pass — backend silently ignores team-level writes otherwise.
+#
+# TODO(backend): drop the `depends_on` requirement once the platform's
+# `CreateTeamBodySchema` accepts `convertToolResultsToToon` and the team
+# endpoint honors the flag regardless of org scope.
+resource "archestra_team" "support" {
+  name        = "Support"
+  description = "Customer support team"
+  # convert_tool_results_to_toon = true
+  # depends_on                   = [archestra_organization_settings.main]
+}
+
+# Once a team exists, downstream resources can scope to it:
+#   - archestra_agent.scope = "team", teams = [archestra_team.engineering.id]
+#   - archestra_llm_provider_api_key.scope = "team", team_id = ...
+#   - archestra_team_external_group.team_id = archestra_team.engineering.id
+output "engineering_team_id" {
+  value = archestra_team.engineering.id
 }
 ```
 
@@ -28,7 +52,7 @@ resource "archestra_team" "example" {
 
 ### Optional
 
-- `convert_tool_results_to_toon` (Boolean) Team-level TOON compression setting
+- `convert_tool_results_to_toon` (Boolean) Per-team TOON tool-result compression. **Requires `archestra_organization_settings.compression_scope = "team"`** — backend silently ignores team-level writes otherwise. When applying both in the same pass, also set `depends_on = [archestra_organization_settings.<n>]` on this team so org_settings applies first. Provider checks the precondition at apply time and surfaces a clear error if violated.
 - `description` (String) Description of the team
 - `members` (Attributes List) List of team members (see [below for nested schema](#nestedatt--members))
 
@@ -48,3 +72,13 @@ Required:
 Optional:
 
 - `role` (String) Role of the team member (default: member)
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_team.example 00000000-0000-0000-0000-000000000000
+```

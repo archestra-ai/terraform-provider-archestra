@@ -76,31 +76,52 @@ func (d *ToolDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	toolsResp, err := d.client.GetToolsWithResponse(ctx)
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read tools, got error: %s", err))
-		return
-	}
-
-	if toolsResp.JSON200 == nil {
-		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", toolsResp.StatusCode()))
-		return
-	}
-
 	targetName := data.Name.ValueString()
 
-	for _, tool := range *toolsResp.JSON200 {
-		if tool.Name == targetName {
-			data.ID = types.StringValue(tool.Id.String())
-			if tool.Description != nil {
-				data.Description = types.StringValue(*tool.Description)
-			} else {
-				data.Description = types.StringNull()
-			}
-			resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
-			return
+	// Retry to bridge the race between this data source running and a
+	// sibling `archestra_mcp_server_installation` registering its tools
+	// in the same plan. Tool names are referenced by string in HCL —
+	// Terraform's dep graph can't infer the edge automatically, so the
+	// data source can otherwise return "not found" before tools are
+	// registered. Mirrors the pattern in datasource_agent_tool.
+	type toolResult struct {
+		ID          string
+		Description *string
+	}
+	retryConfig := DefaultRetryConfig(fmt.Sprintf("Tool '%s'", targetName))
+	result, found, err := RetryUntilFound(ctx, retryConfig, func() (toolResult, bool, error) {
+		toolsResp, err := d.client.GetToolsWithResponse(ctx)
+		if err != nil {
+			return toolResult{}, false, fmt.Errorf("unable to read tools: %w", err)
 		}
+		if toolsResp.JSON200 == nil {
+			return toolResult{}, false, fmt.Errorf("expected 200 OK, got status %d", toolsResp.StatusCode())
+		}
+		for _, tool := range *toolsResp.JSON200 {
+			if tool.Name == targetName {
+				return toolResult{ID: tool.Id.String(), Description: tool.Description}, true, nil
+			}
+		}
+		return toolResult{}, false, nil
+	})
+
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", err.Error())
+		return
+	}
+	if !found {
+		resp.Diagnostics.AddError(
+			"Not Found",
+			fmt.Sprintf("Tool '%s' not found after retry. If the tool comes from an `archestra_mcp_server_installation` resource in the same module, add `depends_on = [archestra_mcp_server_installation.<n>]` on this data source — string-name references don't create an implicit dependency.", targetName),
+		)
+		return
 	}
 
-	resp.Diagnostics.AddError("Not Found", fmt.Sprintf("Tool '%s' not found", targetName))
+	data.ID = types.StringValue(result.ID)
+	if result.Description != nil {
+		data.Description = types.StringValue(*result.Description)
+	} else {
+		data.Description = types.StringNull()
+	}
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

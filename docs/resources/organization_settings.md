@@ -3,23 +3,96 @@
 page_title: "archestra_organization_settings Resource - archestra"
 subcategory: ""
 description: |-
-  Manages organization settings in Archestra. This is a singleton resource - only one instance can exist per organization. Note: Running terraform destroy will only remove this resource from Terraform state; the organization settings will remain unchanged on the server.
+  Manages organization settings in Archestra. This is a singleton resource — only one instance can exist per organization.
+  Lifecycle semantics depend on whether the field has a Default:.
+  Fields with a documented default (font, color_theme, compression_scope, convert_tool_results_to_toon): omitting the field from your .tf resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is sticky — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.
+  terraform destroy only removes this resource from Terraform state; backend settings are never deleted. To stop managing the entire resource without touching the backend, run terraform state rm archestra_organization_settings.<n>.
 ---
 
 # archestra_organization_settings (Resource)
 
-Manages organization settings in Archestra. This is a singleton resource - only one instance can exist per organization. Note: Running `terraform destroy` will only remove this resource from Terraform state; the organization settings will remain unchanged on the server.
+Manages organization settings in Archestra. This is a singleton resource — only one instance can exist per organization.
+
+**Lifecycle semantics depend on whether the field has a `Default:`.**
+
+- Fields with a documented default (`font`, `color_theme`, `compression_scope`, `convert_tool_results_to_toon`): omitting the field from your `.tf` resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.
+- Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is *sticky* — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.
+
+`terraform destroy` only removes this resource from Terraform state; backend settings are never deleted. To stop managing the entire resource without touching the backend, run `terraform state rm archestra_organization_settings.<n>`.
 
 ## Example Usage
 
 ```terraform
-resource "archestra_organization_settings" "example" {
-  font                         = "inter"
-  color_theme                  = "modern-minimal"
-  compression_scope            = "organization"
-  onboarding_complete          = true
+# --- External references this example assumes exist in your module ---
+#
+#   archestra_llm_provider_api_key.inline   (used by default_llm_api_key_id, embedding_chat_api_key_id)
+#   archestra_llm_provider_api_key.cohere   (used by reranker_chat_api_key_id)
+#   archestra_agent.support                 (used by default_agent_id)
+#
+# See examples/resources/archestra_llm_provider_api_key/ and
+# examples/resources/archestra_agent/ for matching declarations.
+
+# Singleton resource — exactly one row exists per organization. `terraform
+# destroy` only drops the local state; the backend keeps whatever values were
+# last applied.
+resource "archestra_organization_settings" "main" {
+  # --- Appearance ---
+  font        = "inter"
+  color_theme = "modern-minimal"
+  app_name    = "Acme Copilot"
+  footer_text = "© 2026 Acme Inc."
+
+  # Inline base64 logos. Use `filebase64()` so updates churn cleanly.
+  # Drop your own PNGs into `assets/` alongside this file and uncomment;
+  # leaving them out keeps the platform's defaults.
+  # logo      = filebase64("${path.module}/assets/logo.png")
+  # logo_dark = filebase64("${path.module}/assets/logo-dark.png")
+  # favicon   = filebase64("${path.module}/assets/favicon.png")
+
+  # --- Chat UX ---
+  chat_placeholders         = ["What can I help with?", "Ask anything…"]
+  animate_chat_placeholders = true
+  chat_links = [
+    { label = "Docs", url = "https://docs.acme.com" },
+    { label = "Status", url = "https://status.acme.com" },
+  ]
+  chat_error_support_message = "Something went wrong. Email support@acme.com."
+  slim_chat_error_ui         = false
+  allow_chat_file_uploads    = true
+
+  # --- LLM defaults ---
+  default_llm_provider   = "openai"
+  default_llm_model      = "gpt-4o"
+  default_llm_api_key_id = archestra_llm_provider_api_key.inline.id
+  default_agent_id       = archestra_agent.support.id
+
+  # --- Knowledge / RAG ---
+  # WARNING: embedding_* fields are write-once. Pick carefully — changing them
+  # later requires dropping the embedding config server-side first.
+  embedding_model           = "text-embedding-3-small"
+  embedding_chat_api_key_id = archestra_llm_provider_api_key.inline.id
+  reranker_model            = "rerank-english-v3.0"
+  reranker_chat_api_key_id  = archestra_llm_provider_api_key.cohere.id
+
+  # --- Tool / context security ---
+  global_tool_policy = "restrictive" # or "permissive"
+
+  # --- Compression / TOON ---
+  compression_scope            = "organization" # one of: organization, team
   convert_tool_results_to_toon = true
-  limit_cleanup_interval       = "24h"
+
+  # --- Cost / limit cleanup ---
+  limit_cleanup_interval = "24h" # 1h | 12h | 24h | 1w | 1m
+
+  # --- MCP OAuth tuning ---
+  mcp_oauth_access_token_lifetime_seconds = 3600
+
+  # --- Auth UX ---
+  show_two_factor = true
+
+  # One-way flag — once set to true on the backend, attempts to flip back
+  # to false are rejected. Leave commented until you've verified the org.
+  # onboarding_complete = true
 }
 ```
 
@@ -40,7 +113,7 @@ resource "archestra_organization_settings" "example" {
 - `default_agent_id` (String) Default agent (profile) ID for the organization
 - `default_llm_api_key_id` (String) Default LLM API key ID for the organization
 - `default_llm_model` (String) Default LLM model for the organization
-- `default_llm_provider` (String) Default LLM provider for the organization
+- `default_llm_provider` (String) Default LLM provider for the organization. One of the providers supported by `archestra_llm_provider_api_key.llm_provider`.
 - `embedding_chat_api_key_id` (String) API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `embedding_model` (String) Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `favicon` (String) Base64 encoded favicon image for the organization
@@ -51,7 +124,7 @@ resource "archestra_organization_settings" "example" {
 - `limit_cleanup_interval` (String) Interval for cleaning up usage limits. Valid values: 1h, 12h, 24h, 1w, 1m. Set to null to disable.
 - `logo` (String) Base64 encoded logo image for the organization
 - `logo_dark` (String) Base64 encoded dark mode logo image for the organization
-- `mcp_oauth_access_token_lifetime_seconds` (Number) Lifetime in seconds for MCP OAuth access tokens
+- `mcp_oauth_access_token_lifetime_seconds` (Number) Lifetime in seconds for MCP OAuth access tokens. Must be at least 1 second.
 - `og_description` (String) OG meta description for the organization, max 500 characters
 - `onboarding_complete` (Boolean) Whether organization onboarding is complete. This is a one-way flag — once set to `true`, it cannot be reverted to `false`.
 - `reranker_chat_api_key_id` (String) API key ID for the reranker model
@@ -61,7 +134,12 @@ resource "archestra_organization_settings" "example" {
 
 ### Read-Only
 
+- `created_at` (String) RFC3339 timestamp the organization was created.
+- `embedding_dimensions` (Number, Deprecated) Configured embedding model output dimensions. **Deprecated** — the backend is migrating this to `models.embeddingDimensions` (per-model rather than per-org). Exposed here only so existing organizations whose dimensions are still pinned at the org level can read the value via Terraform.
 - `id` (String) Organization identifier
+- `metadata` (String) Free-form metadata blob attached to the organization (text; the auth layer typically stores JSON-encoded data here). Read-only on this resource — set by the auth layer.
+- `name` (String) Organization display name. Read-only — set at organization creation time and managed by the auth layer; this resource cannot update it.
+- `slug` (String) Unique URL-safe organization slug. Read-only — set at organization creation time and managed by the auth layer; this resource cannot update it.
 
 <a id="nestedatt--chat_links"></a>
 ### Nested Schema for `chat_links`
@@ -70,3 +148,13 @@ Required:
 
 - `label` (String) Display label for the chat link
 - `url` (String) URL for the chat link
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_organization_settings.example 00000000-0000-0000-0000-000000000000
+```

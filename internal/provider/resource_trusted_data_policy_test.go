@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
@@ -10,6 +11,29 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
+
+func TestAccTrustedDataPolicyResource_InvalidToolID(t *testing.T) {
+	// Pure plan-time schema validation; does not hit the backend.
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_trusted_data_policy" "invalid" {
+  tool_id = "not-a-uuid"
+  description = "should fail validation"
+  conditions = [
+    { key = "url", operator = "contains", value = "example.com" },
+  ]
+  action = "mark_as_trusted"
+}
+`,
+				ExpectError: regexp.MustCompile(`tool_id must be a UUID`),
+			},
+		},
+	})
+}
 
 func TestAccTrustedDataPolicyResource(t *testing.T) {
 	rName := acctest.RandStringFromCharSet(8, acctest.CharSetAlphaNum)
@@ -28,18 +52,14 @@ func TestAccTrustedDataPolicyResource(t *testing.T) {
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("attribute_path"),
-						knownvalue.StringExact("url"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("operator"),
-						knownvalue.StringExact("contains"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("value"),
-						knownvalue.StringExact("api.internal.example.com"),
+						tfjsonpath.New("conditions"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"key":      knownvalue.StringExact("url"),
+								"operator": knownvalue.StringExact("contains"),
+								"value":    knownvalue.StringExact("api.internal.example.com"),
+							}),
+						}),
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
@@ -65,18 +85,14 @@ func TestAccTrustedDataPolicyResource(t *testing.T) {
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("attribute_path"),
-						knownvalue.StringExact("source"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("operator"),
-						knownvalue.StringExact("notContains"),
-					),
-					statecheck.ExpectKnownValue(
-						"archestra_trusted_data_policy.test",
-						tfjsonpath.New("value"),
-						knownvalue.StringExact("example.com"),
+						tfjsonpath.New("conditions"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"key":      knownvalue.StringExact("source"),
+								"operator": knownvalue.StringExact("notContains"),
+								"value":    knownvalue.StringExact("example.com"),
+							}),
+						}),
 					),
 					statecheck.ExpectKnownValue(
 						"archestra_trusted_data_policy.test",
@@ -113,7 +129,7 @@ func TestAccTrustedDataPolicyResource_SanitizeAction(t *testing.T) {
 
 func testAccTrustedDataPolicyResourceConfig(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_profile" "test" {
+resource "archestra_mcp_gateway" "test" {
   name = "tdp-test-profile-%[1]s"
 }
 
@@ -135,32 +151,32 @@ data "archestra_mcp_server_tool" "test" {
   name          = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
 }
 
-resource "archestra_profile_tool" "test" {
-  profile_id    = archestra_profile.test.id
+resource "archestra_agent_tool" "test" {
+  agent_id    = archestra_mcp_gateway.test.id
   tool_id       = data.archestra_mcp_server_tool.test.id
   mcp_server_id = archestra_mcp_server_installation.test.id
 }
 
-data "archestra_profile_tool" "test" {
-  profile_id = archestra_profile.test.id
+data "archestra_agent_tool" "test" {
+  agent_id = archestra_mcp_gateway.test.id
   tool_name  = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
-  depends_on = [archestra_profile_tool.test]
+  depends_on = [archestra_agent_tool.test]
 }
 
 resource "archestra_trusted_data_policy" "test" {
-  profile_tool_id = data.archestra_mcp_server_tool.test.id
-  description     = "Trust internal API responses"
-  attribute_path = "url"
-  operator       = "contains"
-  value          = "api.internal.example.com"
-  action         = "mark_as_trusted"
+  tool_id = data.archestra_mcp_server_tool.test.id
+  description = "Trust internal API responses"
+  conditions = [
+    { key = "url", operator = "contains", value = "api.internal.example.com" },
+  ]
+  action = "mark_as_trusted"
 }
 `, rName)
 }
 
 func testAccTrustedDataPolicyResourceConfigUpdated(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_profile" "test" {
+resource "archestra_mcp_gateway" "test" {
   name = "tdp-test-profile-%[1]s"
 }
 
@@ -182,32 +198,32 @@ data "archestra_mcp_server_tool" "test" {
   name          = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
 }
 
-resource "archestra_profile_tool" "test" {
-  profile_id    = archestra_profile.test.id
+resource "archestra_agent_tool" "test" {
+  agent_id    = archestra_mcp_gateway.test.id
   tool_id       = data.archestra_mcp_server_tool.test.id
   mcp_server_id = archestra_mcp_server_installation.test.id
 }
 
-data "archestra_profile_tool" "test" {
-  profile_id = archestra_profile.test.id
+data "archestra_agent_tool" "test" {
+  agent_id = archestra_mcp_gateway.test.id
   tool_name  = "${archestra_mcp_registry_catalog_item.test.name}__list_directory"
-  depends_on = [archestra_profile_tool.test]
+  depends_on = [archestra_agent_tool.test]
 }
 
 resource "archestra_trusted_data_policy" "test" {
-  profile_tool_id = data.archestra_mcp_server_tool.test.id
-  description     = "Block untrusted external data"
-  attribute_path = "source"
-  operator       = "notContains"
-  value          = "example.com"
-  action         = "block_always"
+  tool_id = data.archestra_mcp_server_tool.test.id
+  description = "Block untrusted external data"
+  conditions = [
+    { key = "source", operator = "notContains", value = "example.com" },
+  ]
+  action = "block_always"
 }
 `, rName)
 }
 
 func testAccTrustedDataPolicyResourceConfigSanitize(rName string) string {
 	return fmt.Sprintf(`
-resource "archestra_profile" "sanitize" {
+resource "archestra_mcp_gateway" "sanitize" {
   name = "tdp-sanitize-profile-%[1]s"
 }
 
@@ -229,25 +245,25 @@ data "archestra_mcp_server_tool" "sanitize" {
   name          = "${archestra_mcp_registry_catalog_item.sanitize.name}__list_directory"
 }
 
-resource "archestra_profile_tool" "sanitize" {
-  profile_id    = archestra_profile.sanitize.id
+resource "archestra_agent_tool" "sanitize" {
+  agent_id    = archestra_mcp_gateway.sanitize.id
   tool_id       = data.archestra_mcp_server_tool.sanitize.id
   mcp_server_id = archestra_mcp_server_installation.sanitize.id
 }
 
-data "archestra_profile_tool" "sanitize" {
-  profile_id = archestra_profile.sanitize.id
+data "archestra_agent_tool" "sanitize" {
+  agent_id = archestra_mcp_gateway.sanitize.id
   tool_name  = "${archestra_mcp_registry_catalog_item.sanitize.name}__list_directory"
-  depends_on = [archestra_profile_tool.sanitize]
+  depends_on = [archestra_agent_tool.sanitize]
 }
 
 resource "archestra_trusted_data_policy" "sanitize" {
-  profile_tool_id = data.archestra_mcp_server_tool.sanitize.id
-  description     = "Sanitize user input with dual LLM"
-  attribute_path = "user_input"
-  operator       = "regex"
-  value          = ".*"
-  action         = "sanitize_with_dual_llm"
+  tool_id = data.archestra_mcp_server_tool.sanitize.id
+  description = "Sanitize user input with dual LLM"
+  conditions = [
+    { key = "user_input", operator = "regex", value = ".*" },
+  ]
+  action = "sanitize_with_dual_llm"
 }
 `, rName)
 }

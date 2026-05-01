@@ -1,17 +1,23 @@
-data "archestra_profile" "test" {
-  profile_id = "profile-id-here"
+resource "archestra_mcp_registry_catalog_item" "fetch" {
+  name        = "fetch"
+  description = "URL-fetching MCP server"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-fetch"]
+  }
 }
 
-data "archestra_profile_tool" "fetch_url" {
-  profile_id = data.archestra_profile.test.id
-  tool_name  = "fetch_url"
+resource "archestra_mcp_server_installation" "fetch" {
+  name       = "fetch"
+  catalog_id = archestra_mcp_registry_catalog_item.fetch.id
 }
 
 resource "archestra_trusted_data_policy" "trust_company_api" {
-  profile_tool_id = data.archestra_profile_tool.fetch_url.id
-  description     = "Mark data from company API as trusted"
-  attribute_path  = "url"
-  operator        = "contains"
-  value           = "api.company.com"
-  action          = "mark_as_trusted"
+  tool_id     = archestra_mcp_server_installation.fetch.tool_id_by_name["${archestra_mcp_registry_catalog_item.fetch.name}__fetch"]
+  description = "Mark data from company API as trusted"
+  conditions = [
+    { key = "url", operator = "contains", value = "api.company.com" },
+  ]
+  action = "mark_as_trusted"
 }

@@ -21,6 +21,13 @@ func TestAccOrganizationSettingsResource(t *testing.T) {
 					resource.TestCheckResourceAttr("archestra_organization_settings.test", "onboarding_complete", "true"),
 					resource.TestCheckResourceAttr("archestra_organization_settings.test", "convert_tool_results_to_toon", "false"),
 					resource.TestCheckResourceAttrSet("archestra_organization_settings.test", "id"),
+					// Read-only org-identity fields. The backend declares
+					// name/slug/created_at as NOT NULL so these must
+					// populate after every Read; if a future refactor drops
+					// the Read mapping, this catches it.
+					resource.TestCheckResourceAttrSet("archestra_organization_settings.test", "name"),
+					resource.TestCheckResourceAttrSet("archestra_organization_settings.test", "slug"),
+					resource.TestCheckResourceAttrSet("archestra_organization_settings.test", "created_at"),
 				),
 			},
 			{

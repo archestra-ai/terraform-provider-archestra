@@ -3,39 +3,138 @@
 page_title: "archestra_mcp_server_installation Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an Archestra MCP server installation.
-  ~> Note: The ownerId and userId fields on the underlying API are derived from the authenticated caller and cannot be set declaratively. Any value sent in the request body is overwritten by the backend with the API key's user ID, so these fields are intentionally not exposed on this resource.
+  Running instance of an MCP server, pulled from an archestra_mcp_registry_catalog_item template via catalog_id.
 ---
 
 # archestra_mcp_server_installation (Resource)
 
-Manages an Archestra MCP server installation.
-
-~> **Note:** The `ownerId` and `userId` fields on the underlying API are derived from the authenticated caller and cannot be set declaratively. Any value sent in the request body is overwritten by the backend with the API key's user ID, so these fields are intentionally not exposed on this resource.
+Running instance of an MCP server, pulled from an `archestra_mcp_registry_catalog_item` template via `catalog_id`.
 
 ## Example Usage
 
 ```terraform
-# First, register an MCP server in the private MCP registry
+# Variables (declare in your variables.tf): github_pat (string, sensitive).
+# Externals (declare elsewhere): archestra_team.engineering, archestra_agent.support.
+#
+# Bare-apply caveats: the GitHub install spawns `npx @modelcontextprotocol/server-github`
+# which calls GitHub's API — needs a real PAT or tool-discovery fails. The BYOS install
+# (`github_vault`) needs `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` plus a seeded Vault
+# entry. See [BYOS Vault guide](../../../docs/guides/byos-vault.md).
+
+# Step 1: register the MCP server in the private catalog. The catalog item
+# captures *how* to run the server; the install captures *that* it runs.
 resource "archestra_mcp_registry_catalog_item" "filesystem" {
-  name        = "filesystem-mcp-server"
-  description = "MCP server for filesystem operations"
+  name        = "filesystem"
+  description = "Read-only filesystem MCP server"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem"
 
   local_config = {
     command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/home/user"]
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
 
-    environment = {
-      NODE_ENV = "production"
+    environment = [
+      { key = "NODE_ENV", type = "plain_text", value = "production" },
+    ]
+  }
+}
+
+# Step 2: install it. Tools are discovered asynchronously; once the install
+# settles, `tool_id_by_name` is populated for one-line lookups elsewhere.
+resource "archestra_mcp_server_installation" "filesystem" {
+  name       = "filesystem"
+  catalog_id = archestra_mcp_registry_catalog_item.filesystem.id
+}
+
+# Install with auth fields supplied — the catalog item declared `auth_fields`
+# so the install must pass values via `access_token` (or environment values).
+resource "archestra_mcp_registry_catalog_item" "github" {
+  name             = "github"
+  description      = "GitHub MCP server"
+  auth_description = "Requires a GitHub PAT"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-github"]
+  }
+
+  auth_fields = [
+    {
+      name     = "GITHUB_TOKEN"
+      label    = "GitHub PAT"
+      type     = "password"
+      required = true
+    }
+  ]
+}
+
+resource "archestra_mcp_server_installation" "github" {
+  name         = "github"
+  catalog_id   = archestra_mcp_registry_catalog_item.github.id
+  access_token = var.github_pat # Secret — pass via TF_VAR_github_pat or a vault data source.
+}
+
+# Catalog item that exposes `user_config` so installs can pass per-team
+# values. The map keys here are the field names the installer must
+# supply via `user_config_values` on the install below.
+resource "archestra_mcp_registry_catalog_item" "with_user_config" {
+  name        = "configurable-fs"
+  description = "Filesystem MCP server with installer-supplied workspace + tuning"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem"]
+  }
+
+  user_config = {
+    workspace = {
+      title       = "Workspace path"
+      description = "Absolute path the server is allowed to read."
+      type        = "string"
+      required    = true
+    }
+    max_results = {
+      title       = "Max results"
+      description = "Cap on results returned per call."
+      type        = "number"
+      default     = jsonencode(50)
+    }
+    enable_cache = {
+      title       = "Enable cache"
+      description = "Whether to cache directory listings between calls."
+      type        = "boolean"
+      default     = jsonencode(true)
     }
   }
 }
 
-# Then, install the MCP server from the private registry
-resource "archestra_mcp_server_installation" "example" {
-  name       = "my-filesystem-server"
-  catalog_id = archestra_mcp_registry_catalog_item.filesystem.id
+# Team-scoped install + per-install user_config_values for catalog items
+# that expose `user_config`. Maps go through jsonencode so types round-trip.
+resource "archestra_mcp_server_installation" "filesystem_team" {
+  name       = "filesystem-eng"
+  catalog_id = archestra_mcp_registry_catalog_item.with_user_config.id
+  team_id    = archestra_team.engineering.id
+
+  user_config_values = {
+    workspace    = jsonencode("/home/eng")
+    max_results  = jsonencode(100)
+    enable_cache = jsonencode(false)
+  }
+
+  # Pre-bind the install to a list of agents so they can see its tools.
+  agent_ids = [archestra_agent.support.id]
+}
+
+# BYOS install — `is_byos_vault = true` tells the backend to treat
+# `environment_values` (and `user_config_values`) as Vault references
+# instead of raw secrets. Requires `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT`
+# on the backend AND a Vault entry seeded at the path below.
+resource "archestra_mcp_server_installation" "github_vault" {
+  name          = "github-vault"
+  catalog_id    = archestra_mcp_registry_catalog_item.github.id
+  is_byos_vault = true
+  environment_values = {
+    GITHUB_TOKEN = "secret/data/archestra/mcp/github"
+  }
 }
 ```
 
@@ -53,7 +152,7 @@ resource "archestra_mcp_server_installation" "example" {
 - `agent_ids` (List of String) Agent IDs to auto-assign tools to on install
 - `environment_values` (Map of String) Environment variable values for the MCP server installation
 - `is_byos_vault` (Boolean) When true, environment_values and user_config_values are treated as vault references
-- `secret_id` (String) Pre-created secret UUID for the MCP server installation
+- `secret_id` (String) Secret UUID for the MCP server installation. Set explicitly to reference a pre-created secret; otherwise the backend creates one when `user_config_values` is set and writes the resulting UUID back here.
 - `service_account` (String) Kubernetes service account override for the MCP server pod
 - `team_id` (String) Team ID for team-scoped installations
 - `user_config_values` (Map of String) User configuration field values for the MCP server installation
@@ -62,3 +161,45 @@ resource "archestra_mcp_server_installation" "example" {
 
 - `display_name` (String) The actual name of the MCP server installation as returned by the API. The API may append a suffix to ensure uniqueness.
 - `id` (String) MCP server identifier
+- `tool_id_by_name` (Map of String) Lookup table from each tool's wire name (`<server>__<short>`) to its bare tool UUID — same data as `tools[*].id` but keyed for one-line lookups. Null while tools are still being discovered.
+- `tools` (Attributes List) Tools exposed by the installed MCP server. Populated after install (and refreshed on read) so you can fan out per-tool resources without separate `data "archestra_mcp_server_tool"` lookups:
+
+```hcl
+for_each = { for t in archestra_mcp_server_installation.<name>.tools : t.name => t }
+``` (see [below for nested schema](#nestedatt--tools))
+
+<a id="nestedatt--tools"></a>
+### Nested Schema for `tools`
+
+Read-Only:
+
+- `assigned_agent_count` (Number) Number of agents this tool is currently assigned to. Quick visibility without fetching the full assignment list.
+- `assigned_agents` (Attributes List) Agents this tool is currently assigned to. Lets you see which agents already use a tool without a separate `data "archestra_agent_tool"` lookup per assignment. (see [below for nested schema](#nestedatt--tools--assigned_agents))
+- `created_at` (String) RFC 3339 timestamp of when the tool was first registered with the backend.
+- `description` (String) Human-readable description as advertised by the MCP server. May be null.
+- `id` (String) Tool UUID. Use as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.
+- `name` (String) Tool name (the MCP server's own identifier — stable across installs of the same catalog item).
+- `parameters` (String) JSON Schema for the tool's input parameters, encoded as a JSON string. Use `jsondecode(t.parameters)` to introspect required fields, types, etc. for validation or downstream codegen.
+
+<a id="nestedatt--tools--assigned_agents"></a>
+### Nested Schema for `tools.assigned_agents`
+
+Read-Only:
+
+- `id` (String) Agent UUID.
+- `name` (String) Agent name (the agent's `name` field on `archestra_agent` / `archestra_llm_proxy` / `archestra_mcp_gateway`).
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+# Composite ID: <uuid>:<name>. The backend stores the constructed
+# `<baseName>-<ownerId|teamId>` for local installs (the suffix can't
+# be recovered on import), so the composite carries the
+# user-configured `<name>` through. Bare UUID is rejected — the
+# error message points at this format.
+terraform import archestra_mcp_server_installation.example 00000000-0000-0000-0000-000000000000:my-install-name
+```
