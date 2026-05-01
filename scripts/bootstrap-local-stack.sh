@@ -1,23 +1,27 @@
 #!/usr/bin/env bash
 #
-# Brings up the full Archestra dev stack as Docker containers (NOT k8s/Tilt)
-# pinned to ARCHESTRA_VERSION. Result: every testacc — including the BYOS
-# vault, EMC, and SSO subsets — passes locally without any TF_ACC gating.
+# Brings up the full Archestra dev stack the same way CI does — kind cluster,
+# helm-installed platform chart, ollama mock + dev Vault deployed as K8s
+# manifests under the same kubectl context. Pinned to ARCHESTRA_VERSION.
 #
-# This is the one-shot reproduction of the manual setup that took ~30
-# minutes the first time around. Re-run is idempotent (containers are
-# stopped/recreated, the vault secret is re-seeded).
+# Why this shape: the platform's local MCP server installer (`MCPServerRuntimeManager`)
+# expects a real K8s API to create deployments. The previous "single docker
+# container with docker.sock mounted" version couldn't reliably deploy MCP
+# servers, surfacing as `waitForServerTools` timeouts on cold starts.
 #
-# Required tools: docker, curl, jq, kubectl IS NOT NEEDED.
+# Required tools: docker, kind, kubectl, helm, curl, jq.
+#
+# Re-run is idempotent: cluster reused if present, helm uses upgrade --install,
+# kubectl apply is idempotent for the manifests.
 #
 # After it exits successfully:
 #   eval "$(scripts/bootstrap-local-stack.sh --print-env)"
 #   make testacc
 #
-# Print the env-var snippet without touching containers:
+# Print the env-var snippet without touching the cluster:
 #   scripts/bootstrap-local-stack.sh --print-env
 #
-# Tear it all down:
+# Tear it all down (deletes the kind cluster):
 #   scripts/bootstrap-local-stack.sh --down
 
 set -euo pipefail
@@ -25,13 +29,17 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-NETWORK="${NETWORK:-archestra-net}"
-VAULT_TOKEN="${VAULT_TOKEN:-root}"
+KIND_CLUSTER="${KIND_CLUSTER:-archestra-ci-cluster}"
+KIND_CONFIG="${REPO_ROOT}/.github/kind.yaml"
+HELM_VALUES="${REPO_ROOT}/.github/values-ci.yaml"
+HELM_RELEASE="${HELM_RELEASE:-archestra-platform}"
+HELM_CHART_OCI="${HELM_CHART_OCI:-oci://europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/helm-charts/archestra-platform}"
+
+log() { printf '%s\n' "$*" >&2; }
 
 # resolve_version reads ARCHESTRA_VERSION from CI's source of truth so local
 # tracks CI without re-hardcoding a tag here. Only called on the `up` path —
-# --down and --print-env don't need it, and shouldn't fail if the workflow
-# file is moved.
+# --down and --print-env don't need it.
 resolve_version() {
   if [ -n "${ARCHESTRA_VERSION:-}" ]; then
     return
@@ -40,12 +48,23 @@ resolve_version() {
     "${REPO_ROOT}/.github/workflows/on-pull-request.yml" 2>/dev/null \
     | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
   if [ -z "$ARCHESTRA_VERSION" ]; then
-    echo "Could not resolve ARCHESTRA_VERSION (set it explicitly or fix .github/workflows/on-pull-request.yml)" >&2
+    log "Could not resolve ARCHESTRA_VERSION (set it explicitly or fix .github/workflows/on-pull-request.yml)"
     exit 1
   fi
 }
 
-log() { printf '%s\n' "$*" >&2; }
+require_tool() {
+  command -v "$1" >/dev/null 2>&1 || {
+    log "Missing required tool: $1. Install instructions:"
+    case "$1" in
+      kind) log "  https://kind.sigs.k8s.io/docs/user/quick-start/#installation" ;;
+      helm) log "  https://helm.sh/docs/intro/install/" ;;
+      kubectl) log "  https://kubernetes.io/docs/tasks/tools/" ;;
+      *) log "  ($1)" ;;
+    esac
+    exit 1
+  }
+}
 
 print_env() {
   cat <<EOF
@@ -58,9 +77,8 @@ EOF
 }
 
 down() {
-  log "Stopping containers..."
-  docker rm -f archestra-platform archestra-vault ollama-mock 2>/dev/null || true
-  docker network rm "$NETWORK" 2>/dev/null || true
+  log "Deleting kind cluster ${KIND_CLUSTER}..."
+  kind delete cluster --name "$KIND_CLUSTER" 2>/dev/null || true
   log "Down."
 }
 
@@ -69,70 +87,67 @@ case "${1:-}" in
   --down) down; exit 0 ;;
 esac
 
+require_tool docker
+require_tool kind
+require_tool kubectl
+require_tool helm
+require_tool curl
+require_tool jq
+
 resolve_version
-log "Bringing up Archestra ${ARCHESTRA_VERSION} local stack..."
+log "Bringing up Archestra ${ARCHESTRA_VERSION} local stack on kind..."
 
-# 1. Shared docker network so platform/mock/vault can resolve each other by name.
-docker network inspect "$NETWORK" >/dev/null 2>&1 || docker network create "$NETWORK" >/dev/null
+# 1. Kind cluster — reuse if already present (matches CI's name + ports).
+if ! kind get clusters 2>/dev/null | grep -qx "$KIND_CLUSTER"; then
+  log "Creating kind cluster ${KIND_CLUSTER}..."
+  kind create cluster --config "$KIND_CONFIG" --name "$KIND_CLUSTER"
+else
+  log "Kind cluster ${KIND_CLUSTER} already exists, reusing."
+fi
 
-# 2. Ollama mock — backend's testProviderApiKey hits /v1/models on Ollama.
-#    hashicorp/http-echo serves a static OpenAI-shaped model list.
-docker rm -f ollama-mock >/dev/null 2>&1 || true
-docker run -d --name ollama-mock --network "$NETWORK" \
-  hashicorp/http-echo:1.0.0 \
-  -listen=:8080 \
-  -text='{"object":"list","data":[{"id":"llama3","object":"model","created":1700000000,"owned_by":"local-stub"}]}' >/dev/null
+# Switch kubectl context to the kind cluster so subsequent kubectl/helm
+# commands target the right cluster regardless of the user's previous context.
+kubectl config use-context "kind-${KIND_CLUSTER}" >/dev/null
 
-# 3. Vault dev — required for ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT mode.
-docker rm -f archestra-vault >/dev/null 2>&1 || true
-docker run -d --name archestra-vault --network "$NETWORK" \
-  --cap-add IPC_LOCK \
-  -e VAULT_DEV_ROOT_TOKEN_ID="$VAULT_TOKEN" \
-  -e VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200 \
-  hashicorp/vault:1.18 >/dev/null
+# 2. Pull platform image into the local Docker daemon and load into kind.
+PLATFORM_IMAGE="archestra/platform:${ARCHESTRA_VERSION}"
+if ! docker image inspect "$PLATFORM_IMAGE" >/dev/null 2>&1; then
+  log "Pulling ${PLATFORM_IMAGE}..."
+  docker pull "$PLATFORM_IMAGE" >/dev/null
+fi
+log "Loading ${PLATFORM_IMAGE} into kind..."
+kind load docker-image "$PLATFORM_IMAGE" --name "$KIND_CLUSTER" >/dev/null
 
-# Wait for vault then seed the test secret used by chat_llm_provider_api_key
-# and catalog_item WithVaultRefs tests.
-log "Waiting for vault..."
-deadline=$(($(date +%s) + 30))
-until docker exec -e VAULT_TOKEN="$VAULT_TOKEN" -e VAULT_ADDR=http://127.0.0.1:8200 \
-        archestra-vault vault status >/dev/null 2>&1; do
-  [ "$(date +%s)" -lt "$deadline" ] || { log "vault never came up"; exit 1; }
-  sleep 1
-done
-docker exec -e VAULT_TOKEN="$VAULT_TOKEN" -e VAULT_ADDR=http://127.0.0.1:8200 \
-  archestra-vault vault kv put secret/test/ollama api_key=test-api-key-value >/dev/null
+# 3. Helm install/upgrade the platform chart with the same values CI uses.
+log "Helm installing ${HELM_RELEASE} (chart ${ARCHESTRA_VERSION})..."
+helm upgrade --install "$HELM_RELEASE" "$HELM_CHART_OCI" \
+  --version "$ARCHESTRA_VERSION" \
+  --values "$HELM_VALUES" \
+  --set "archestra.image=${PLATFORM_IMAGE}" \
+  --atomic --timeout=5m >/dev/null
 
-# 4. Platform — EE license toggled on, secrets manager pointed at the dev vault,
-#    Ollama base URL pointed at the mock so testProviderApiKey passes without
-#    a real Ollama. Volumes pin postgres + app data so re-runs are idempotent.
-docker rm -f archestra-platform >/dev/null 2>&1 || true
-docker run -d --name archestra-platform --network "$NETWORK" \
-  -p 9000:9000 -p 3000:3000 \
-  -e ARCHESTRA_QUICKSTART=true \
-  -e ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true \
-  -e ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT \
-  -e ARCHESTRA_HASHICORP_VAULT_ADDR=http://archestra-vault:8200 \
-  -e ARCHESTRA_HASHICORP_VAULT_TOKEN="$VAULT_TOKEN" \
-  -e ARCHESTRA_OLLAMA_BASE_URL=http://ollama-mock:8080/v1 \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v archestra-postgres-data:/var/lib/postgresql/data \
-  -v archestra-app-data:/app/data \
-  "archestra/platform:${ARCHESTRA_VERSION}" >/dev/null
+# 4. Wait for platform pods to be ready before deploying the dependencies
+#    that the platform's healthcheck doesn't gate on.
+log "Waiting for platform pods..."
+kubectl wait --for=condition=Ready pods -l app.kubernetes.io/name=archestra-platform --timeout=120s >/dev/null
 
-# 5. Health-gate the platform. /api/health 200/401 means the API is serving;
-#    docker's health=starting is its own slower probe, ignore it.
-log "Waiting for platform..."
+# 5. Ollama mock + dev Vault — same manifests CI applies post-platform.
+"${SCRIPT_DIR}/bootstrap-ollama-mock.sh"
+"${SCRIPT_DIR}/bootstrap-vault.sh"
+
+# 6. Backend health gate — kind's NodePort 30000 is mapped to host 9000 by
+#    .github/kind.yaml. /api/health returning 200 or 401 means the API is up.
+log "Waiting for backend at http://localhost:9000..."
 deadline=$(($(date +%s) + 120))
 while :; do
   c=$(curl -sS --connect-timeout 2 --max-time 3 -o /dev/null -w '%{http_code}' \
         http://localhost:9000/api/health 2>/dev/null || echo "")
   case "$c" in 200|401) break ;; esac
-  [ "$(date +%s)" -lt "$deadline" ] || { log "platform never came up"; exit 1; }
+  [ "$(date +%s)" -lt "$deadline" ] || { log "backend never became reachable"; exit 1; }
   sleep 2
 done
 
-# 6. Seed an Ollama provider key so the LLM model tests find at least one model.
+# 7. Seed an Ollama provider key so the LLM model tests find at least one model.
 api_key=$("${SCRIPT_DIR}/bootstrap-api-key.sh")
 existing=$(curl -sS --connect-timeout 5 --max-time 10 -H "Authorization: $api_key" \
   http://localhost:9000/api/llm-provider-api-keys \
@@ -144,7 +159,7 @@ if [ -z "$existing" ]; then
     -d '{"name":"local-stack-ollama","provider":"ollama","vaultSecretPath":"secret/data/test/ollama","vaultSecretKey":"api_key","scope":"org"}' >/dev/null
 fi
 
-# 7. Provision the EMC test IdP.
+# 8. Provision the EMC test IdP.
 ARCHESTRA_API_KEY="$api_key" "${SCRIPT_DIR}/bootstrap-test-idp.sh" >/dev/null
 
 log "Stack ready."
