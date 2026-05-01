@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"context"
 	"testing"
 
 	"github.com/google/uuid"
@@ -91,4 +92,74 @@ func TestReconcileDefaultPolicyTools(t *testing.T) {
 			}
 		})
 	}
+}
+
+// TestReconcileDefaultPolicyToolsWithRetry — visibility-lag recovery vs real-drift prune.
+func TestReconcileDefaultPolicyToolsWithRetry(t *testing.T) {
+	a := uuid.MustParse("00000000-0000-0000-0000-000000000001")
+	b := uuid.MustParse("00000000-0000-0000-0000-000000000002")
+	c := uuid.MustParse("00000000-0000-0000-0000-000000000003")
+
+	t.Run("transient lag — first GET misses one tool, second GET sees it, no prune", func(t *testing.T) {
+		state := []openapi_types.UUID{a, b, c}
+		calls := 0
+		listDefaults := func(_ context.Context) (map[openapi_types.UUID]string, error) {
+			calls++
+			if calls == 1 {
+				return map[openapi_types.UUID]string{a: "block_always", c: "block_always"}, nil
+			}
+			return map[openapi_types.UUID]string{a: "block_always", b: "block_always", c: "block_always"}, nil
+		}
+
+		got, err := reconcileDefaultPolicyToolsWithRetry(t.Context(), state, "block_always", listDefaults)
+		if err != nil {
+			t.Fatalf("unexpected error: %s", err)
+		}
+		if len(got) != 3 {
+			t.Errorf("expected full set kept after retry, got %v", got)
+		}
+		if calls != 2 {
+			t.Errorf("expected exactly 2 GETs (fast path on second), got %d", calls)
+		}
+	})
+
+	t.Run("steady state — first GET satisfies, no retry", func(t *testing.T) {
+		state := []openapi_types.UUID{a, b}
+		calls := 0
+		listDefaults := func(_ context.Context) (map[openapi_types.UUID]string, error) {
+			calls++
+			return map[openapi_types.UUID]string{a: "block_always", b: "block_always"}, nil
+		}
+
+		got, err := reconcileDefaultPolicyToolsWithRetry(t.Context(), state, "block_always", listDefaults)
+		if err != nil {
+			t.Fatalf("unexpected error: %s", err)
+		}
+		if len(got) != 2 {
+			t.Errorf("expected full set, got %v", got)
+		}
+		if calls != 1 {
+			t.Errorf("expected exactly 1 GET on the fast path, got %d", calls)
+		}
+	})
+
+	t.Run("real drift — retries exhausted, prune wins", func(t *testing.T) {
+		state := []openapi_types.UUID{a, b, c}
+		calls := 0
+		listDefaults := func(_ context.Context) (map[openapi_types.UUID]string, error) {
+			calls++
+			return map[openapi_types.UUID]string{a: "block_always", c: "block_always"}, nil
+		}
+
+		got, err := reconcileDefaultPolicyToolsWithRetry(t.Context(), state, "block_always", listDefaults)
+		if err != nil {
+			t.Fatalf("unexpected error: %s", err)
+		}
+		if len(got) != 2 {
+			t.Errorf("expected pruned set [a, c], got %v", got)
+		}
+		if calls != 4 {
+			t.Errorf("expected exactly 4 GETs (full retry budget), got %d", calls)
+		}
+	})
 }

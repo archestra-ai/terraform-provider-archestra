@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -84,6 +85,50 @@ func reconcileDefaultPolicyTools(stateTools []openapi_types.UUID, stateAction st
 		}
 	}
 	return kept
+}
+
+// reconcileDefaultPolicyToolsWithRetry retries the GET when reconciliation
+// would prune — guards against post-apply backend write-visibility lag where
+// just-written rows aren't in the next GET. Fast-path on first GET when no
+// prune is needed; bounded retry budget so real drift still prunes.
+func reconcileDefaultPolicyToolsWithRetry(
+	ctx context.Context,
+	stateTools []openapi_types.UUID,
+	stateAction string,
+	listDefaults func(context.Context) (map[openapi_types.UUID]string, error),
+) ([]openapi_types.UUID, error) {
+	const (
+		maxAttempts = 4
+		initialWait = 250 * time.Millisecond
+		maxWait     = 1 * time.Second
+	)
+
+	var lastKept []openapi_types.UUID
+	wait := initialWait
+	for attempt := 0; attempt < maxAttempts; attempt++ {
+		defaults, err := listDefaults(ctx)
+		if err != nil {
+			return nil, err
+		}
+		kept := reconcileDefaultPolicyTools(stateTools, stateAction, defaults)
+		lastKept = kept
+		if len(kept) == len(stateTools) {
+			return kept, nil
+		}
+		if attempt == maxAttempts-1 {
+			break
+		}
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		case <-time.After(wait):
+		}
+		wait *= 2
+		if wait > maxWait {
+			wait = maxWait
+		}
+	}
+	return lastKept, nil
 }
 
 // uuidsToStringSet builds a `types.Set` of strings from a UUID slice for

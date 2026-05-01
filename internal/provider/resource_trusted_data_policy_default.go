@@ -123,24 +123,28 @@ func (r *TrustedDataPolicyDefaultResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	apiResp, err := r.client.GetTrustedDataPoliciesWithResponse(ctx)
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list trusted data policies: %s", err))
-		return
-	}
-	if apiResp.JSON200 == nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("List trusted data policies returned status %d: %s", apiResp.StatusCode(), string(apiResp.Body)))
-		return
-	}
-
-	defaults := map[openapi_types.UUID]string{}
-	for _, p := range *apiResp.JSON200 {
-		if len(p.Conditions) == 0 {
-			defaults[p.ToolId] = string(p.Action)
+	listDefaults := func(ctx context.Context) (map[openapi_types.UUID]string, error) {
+		apiResp, err := r.client.GetTrustedDataPoliciesWithResponse(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("unable to list trusted data policies: %w", err)
 		}
+		if apiResp.JSON200 == nil {
+			return nil, fmt.Errorf("list trusted data policies returned status %d: %s", apiResp.StatusCode(), string(apiResp.Body))
+		}
+		defaults := map[openapi_types.UUID]string{}
+		for _, p := range *apiResp.JSON200 {
+			if len(p.Conditions) == 0 {
+				defaults[p.ToolId] = string(p.Action)
+			}
+		}
+		return defaults, nil
 	}
 
-	kept := reconcileDefaultPolicyTools(stateTools, state.Action.ValueString(), defaults)
+	kept, err := reconcileDefaultPolicyToolsWithRetry(ctx, stateTools, state.Action.ValueString(), listDefaults)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", err.Error())
+		return
+	}
 	if len(kept) == 0 {
 		resp.State.RemoveResource(ctx)
 		return
