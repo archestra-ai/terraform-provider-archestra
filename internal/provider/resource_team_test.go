@@ -98,6 +98,34 @@ func TestAccTeamResourceWithToonCompression(t *testing.T) {
 	})
 }
 
+// TestAccTeamResource_CreateWithToonTrue pins the create-time TOON
+// path. Backend's `CreateTeamBodySchema` is missing
+// `convertToolResultsToToon` (only `UpdateTeamBodySchema` has it), so
+// the field used to be silently stripped from the Create body and the
+// response echoed `false` — surfacing as "Provider produced
+// inconsistent result after apply". Provider workaround: post-Create
+// follow-up Update. This test covers Create-with-TOON-true in a single
+// step; the pre-existing TestAccTeamResourceWithToonCompression only
+// exercised Update.
+func TestAccTeamResource_CreateWithToonTrue(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccTeamResourceConfigWithToon("test-team-create-toon", "Create-time TOON regression pin", true),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_team.test",
+						tfjsonpath.New("convert_tool_results_to_toon"),
+						knownvalue.Bool(true),
+					),
+				},
+			},
+		},
+	})
+}
+
 func testAccTeamResourceConfigOrgTeamScope(name, description string) string {
 	return fmt.Sprintf(`
 resource "archestra_organization_settings" "test" {

@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -20,7 +21,6 @@ import (
 var (
 	_ resource.Resource                = &TeamResource{}
 	_ resource.ResourceWithImportState = &TeamResource{}
-	_ resource.ResourceWithModifyPlan  = &TeamResource{}
 )
 
 func NewTeamResource() resource.Resource {
@@ -85,7 +85,7 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"convert_tool_results_to_toon": schema.BoolAttribute{
-				MarkdownDescription: "Per-team TOON tool-result compression. **Active only when `archestra_organization_settings.compression_scope = \"team\"`** — otherwise the backend silently ignores the value. The provider pre-flights this precondition on Create/Update and surfaces a clear error if violated, instead of letting the framework throw \"Provider produced inconsistent result after apply\".",
+				MarkdownDescription: "Per-team TOON tool-result compression. **Requires `archestra_organization_settings.compression_scope = \"team\"`** — backend silently ignores team-level writes otherwise. When applying both in the same pass, also set `depends_on = [archestra_organization_settings.<n>]` on this team so org_settings applies first. Provider checks the precondition at apply time and surfaces a clear error if violated.",
 				Optional:            true,
 				Computed:            true,
 			},
@@ -128,53 +128,32 @@ func (r *TeamResource) Configure(ctx context.Context, req resource.ConfigureRequ
 	r.client = client
 }
 
-// ModifyPlan guards against the backend bug where team-level
-// `convert_tool_results_to_toon` is silently ignored when
-// `archestra_organization_settings.compression_scope != "team"`.
-// Without this check, the Create/Update API call appears to succeed,
-// but Read returns false and the Plugin Framework rejects the apply
-// with "Provider produced inconsistent result after apply" — leaving
-// the user stuck in a destroy/recreate loop that can't fix the drift.
+// validateTeamToonPrecondition checks org `compression_scope == "team"`
+// at apply time when the user wants `convert_tool_results_to_toon = true`.
+// Apply-time (not ModifyPlan) so dependency-ordered same-pass applies work:
+// when `archestra_organization_settings` is in the same plan and the team
+// declares `depends_on`, org_settings's apply runs first and the GET here
+// reads the freshly-written scope. ModifyPlan-time would always see the
+// pre-apply backend state and force a `-target` workaround.
 //
-// Running this in ModifyPlan (instead of Create/Update) means Terraform
-// fails the plan before any sibling resources are created, so the user
-// never lands in partial-state recovery.
-//
-// TODO(backend): the right fix is in the platform repo — either honor
-// the team-level flag regardless of scope, or reject team-level writes
-// with a 4xx when scope != "team". Once that lands, drop this method
-// and the ResourceWithModifyPlan marker assertion above.
-func (r *TeamResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-	if req.Plan.Raw.IsNull() {
-		return // destroy plan; nothing to validate
-	}
-	if r.client == nil {
-		return // resource not yet configured (e.g., provider validation phase)
-	}
-
-	var data TeamResourceModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	if data.ConvertToolResultsToToon.IsNull() || data.ConvertToolResultsToToon.IsUnknown() || !data.ConvertToolResultsToToon.ValueBool() {
-		return
-	}
-
+// TODO(backend): platform should either honor the team-level flag
+// regardless of scope or 4xx team-level writes when scope != "team".
+// Once that lands, drop this helper and both call sites.
+func (r *TeamResource) validateTeamToonPrecondition(ctx context.Context, diags *diag.Diagnostics) {
 	orgResp, err := r.client.GetOrganizationWithResponse(ctx)
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("convert_tool_results_to_toon pre-flight: unable to fetch organization settings: %s", err))
+		diags.AddError("API Error", fmt.Sprintf("convert_tool_results_to_toon pre-flight: unable to fetch organization settings: %s", err))
 		return
 	}
 	if orgResp.JSON200 == nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("convert_tool_results_to_toon pre-flight: GetOrganization returned status %d: %s", orgResp.StatusCode(), string(orgResp.Body)))
+		diags.AddError("API Error", fmt.Sprintf("convert_tool_results_to_toon pre-flight: GetOrganization returned status %d: %s", orgResp.StatusCode(), string(orgResp.Body)))
 		return
 	}
 	if string(orgResp.JSON200.CompressionScope) != string(client.Team) {
-		resp.Diagnostics.AddAttributeError(
+		diags.AddAttributeError(
 			path.Root("convert_tool_results_to_toon"),
 			"Precondition Not Met",
-			fmt.Sprintf("`convert_tool_results_to_toon = true` on a team requires `archestra_organization_settings.compression_scope = \"team\"`. Current org scope is %q. Apply `archestra_organization_settings { compression_scope = \"team\" }` first (in a separate apply or via `-target`), then re-plan. (Guard exists because the backend silently ignores team-level writes when scope != \"team\", which would otherwise surface as Terraform's \"Provider produced inconsistent result after apply\" mid-apply, leaving partial state.)",
+			fmt.Sprintf("`convert_tool_results_to_toon = true` on a team requires `archestra_organization_settings.compression_scope = \"team\"`. Current org scope is %q. Either set the scope first, or add `depends_on = [archestra_organization_settings.<n>]` on the team so org_settings applies before the team in the same pass. (Backend silently ignores team-level writes when scope != \"team\".)",
 				string(orgResp.JSON200.CompressionScope)),
 		)
 	}
@@ -192,6 +171,25 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	// TODO(backend): platform's `CreateTeamBodySchema` (backend/src/types/team.ts:25)
+	// is missing `convertToolResultsToToon` — `UpdateTeamBodySchema` has it. Until
+	// it's added on the create endpoint, fastify-zod silently strips the field
+	// from the Create body, the team is created with the column default (false),
+	// and the response echoes false → "Provider produced inconsistent result
+	// after apply". Workaround: strip the field here, then issue a follow-up
+	// Update if the user wants it true. Drop both this block and the post-Create
+	// Update once the backend create schema accepts the field.
+	wantToon := !data.ConvertToolResultsToToon.IsNull() && !data.ConvertToolResultsToToon.IsUnknown() && data.ConvertToolResultsToToon.ValueBool()
+	delete(patch, "convertToolResultsToToon")
+
+	if wantToon {
+		r.validateTeamToonPrecondition(ctx, &resp.Diagnostics)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+	}
+
 	LogPatch(ctx, "archestra_team Create", patch, teamAttrSpec)
 
 	body, err := json.Marshal(patch)
@@ -223,6 +221,23 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 		data.Description = types.StringValue(*apiResp.JSON200.Description)
 	}
 	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
+
+	// Follow-up Update to set TOON when requested — see TODO(backend) above.
+	if wantToon {
+		toon := true
+		updateResp, err := r.client.UpdateTeamWithResponse(ctx, apiResp.JSON200.Id, client.UpdateTeamJSONRequestBody{
+			ConvertToolResultsToToon: &toon,
+		})
+		if err != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to set convert_tool_results_to_toon after team Create, got error: %s", err))
+			return
+		}
+		if updateResp.JSON200 == nil {
+			resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Update after Create returned status %d: %s", updateResp.StatusCode(), string(updateResp.Body)))
+			return
+		}
+		data.ConvertToolResultsToToon = types.BoolValue(updateResp.JSON200.ConvertToolResultsToToon)
+	}
 
 	// Add team members
 	if len(data.Members) > 0 {
@@ -338,6 +353,15 @@ func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	// Apply-time precondition check — see validateTeamToonPrecondition.
+	if !data.ConvertToolResultsToToon.IsNull() && !data.ConvertToolResultsToToon.IsUnknown() && data.ConvertToolResultsToToon.ValueBool() {
+		r.validateTeamToonPrecondition(ctx, &resp.Diagnostics)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+	}
+
 	LogPatch(ctx, "archestra_team Update", patch, teamAttrSpec)
 
 	body, err := json.Marshal(patch)
