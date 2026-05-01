@@ -313,6 +313,14 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update agent: %s", err))
 		return
 	}
+	if IsNotFound(apiResp) {
+		resp.Diagnostics.AddError(
+			"Resource Deleted Outside Terraform",
+			"The resource was deleted on the backend between refresh and apply. "+
+				"Re-run `terraform apply` — the next refresh drops it from state and the plan recreates it.",
+		)
+		return
+	}
 	if apiResp.JSON200 == nil {
 		resp.Diagnostics.AddError(
 			"Unexpected API Response",

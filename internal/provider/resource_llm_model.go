@@ -210,6 +210,10 @@ func (r *LlmModelResource) Create(ctx context.Context, req resource.CreateReques
 			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update model pricing: %s", err))
 			return
 		}
+		if IsNotFound(updateResp) {
+			resp.State.RemoveResource(ctx)
+			return
+		}
 		if updateResp.JSON200 == nil {
 			resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d: %s", updateResp.StatusCode(), string(updateResp.Body)))
 			return
@@ -273,6 +277,14 @@ func (r *LlmModelResource) Update(ctx context.Context, req resource.UpdateReques
 	updateResp, err := r.client.UpdateModelWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(bodyBytes))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update model: %s", err))
+		return
+	}
+	if IsNotFound(updateResp) {
+		resp.Diagnostics.AddError(
+			"Resource Deleted Outside Terraform",
+			"The resource was deleted on the backend between refresh and apply. "+
+				"Re-run `terraform apply` — the next refresh drops it from state and the plan recreates it.",
+		)
 		return
 	}
 

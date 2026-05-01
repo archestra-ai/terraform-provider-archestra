@@ -262,6 +262,14 @@ func (r *AgentToolResource) Update(ctx context.Context, req resource.UpdateReque
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update agent tool, got error: %s", err))
 		return
 	}
+	if IsNotFound(updateResp) {
+		resp.Diagnostics.AddError(
+			"Resource Deleted Outside Terraform",
+			"The resource was deleted on the backend between refresh and apply. "+
+				"Re-run `terraform apply` — the next refresh drops it from state and the plan recreates it.",
+		)
+		return
+	}
 
 	if updateResp.JSON200 == nil {
 		resp.Diagnostics.AddError(
