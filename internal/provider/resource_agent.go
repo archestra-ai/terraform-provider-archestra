@@ -256,6 +256,10 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		return
 	}
 
+	if data.ID.IsNull() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	id, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse agent ID: %s", err))
