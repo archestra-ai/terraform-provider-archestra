@@ -1,7 +1,0 @@
-apiVersion: meta.pkg.crossplane.io/v1
-kind: Provider
-metadata:
-  name: provider-archestra
-spec:
-  capabilities:
-    - SafeStart
