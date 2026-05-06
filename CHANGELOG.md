@@ -50,6 +50,28 @@
 * **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
 * **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
 
+## [1.0.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.6.0...v1.0.0) (2026-05-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* merge-patch architecture, 11 bug fixes, UX hardening (v1.2.20) ([#87](https://github.com/archestra-ai/terraform-provider-archestra/issues/87))
+
+### Features
+
+* merge-patch architecture, 11 bug fixes, UX hardening (v1.2.20) ([#87](https://github.com/archestra-ai/terraform-provider-archestra/issues/87)) ([a263c9c](https://github.com/archestra-ai/terraform-provider-archestra/commit/a263c9cfe08cb34e06e618e08c8e28f684cb534b))
+
+
+### Bug Fixes
+
+* **test:** silence staticcheck SA5011 after t.Fatal nil-check ([#90](https://github.com/archestra-ai/terraform-provider-archestra/issues/90)) ([272017c](https://github.com/archestra-ai/terraform-provider-archestra/commit/272017cea2d2e2e8e2632c96c81308473e9da005))
+
+
+### Dependencies
+
+* **terraform:** bump the terraform-go-dependencies group across 1 directory with 2 updates ([#89](https://github.com/archestra-ai/terraform-provider-archestra/issues/89)) ([7e5d841](https://github.com/archestra-ai/terraform-provider-archestra/commit/7e5d841508cc11ba3512556d568d0df202afe91e))
+* **terraform:** bump the terraform-go-dependencies group across 1 directory with 5 updates ([#80](https://github.com/archestra-ai/terraform-provider-archestra/issues/80)) ([39f2051](https://github.com/archestra-ai/terraform-provider-archestra/commit/39f205199e902d8288ab7e45f067989b0676d7ea))
+
 ## [0.6.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v0.5.0...v0.6.0) (2026-04-23)
 
 
