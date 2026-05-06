@@ -1,15 +1,21 @@
 # SPDX-FileCopyrightText: 2025 The Crossplane Authors <https://crossplane.io>
-#
 # SPDX-License-Identifier: CC0-1.0
-
-name: End to End Testing
+#
+# Comment-driven E2E for the Crossplane subfolder. Trigger with
+# `/test-examples="examples/cluster/foo,examples/namespaced/bar"` on a PR.
+# Paths in the comment are relative to the crossplane/ working dir.
+name: Crossplane E2E
 
 on:
   issue_comment:
     types: [created]
 
+defaults:
+  run:
+    working-directory: crossplane
+
 env:
-  GO_VERSION: "1.24"
+  GO_VERSION: "1.25"
 
 jobs:
   check-permissions:
@@ -20,18 +26,11 @@ jobs:
       - name: Get Commenter Permissions
         id: check-permissions
         run: |
-          echo "Trigger keyword: '/test-examples'"
-          echo "Go version: ${{ env.GO_VERSION }}"
-
           REPO=${{ github.repository }}
           COMMENTER=${{ github.event.comment.user.login }}
-
-          # Fetch the commenter's repo-level permission grant
           GRANTED=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$REPO/collaborators/$COMMENTER/permission" | jq -r .permission)
-
-          # Make it accessible in the workflow via a job output -- cannot use env
           echo "User $COMMENTER has $GRANTED permissions"
           echo "permission=$GRANTED" >> "$GITHUB_OUTPUT"
 
@@ -42,7 +41,6 @@ jobs:
     outputs:
       example_list: ${{ steps.get-example-list-name.outputs.example-list }}
       example_hash: ${{ steps.get-example-list-name.outputs.example-hash }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -59,7 +57,6 @@ jobs:
           OUTPUT=$(git log -1 --format='%H')
           echo "commit-sha=$OUTPUT" >> $GITHUB_OUTPUT
 
-
       - name: Prepare The Example List
         env:
           COMMENT: ${{ github.event.comment.body }}
@@ -68,17 +65,11 @@ jobs:
           PATHS=$(echo $COMMENT | sed 's/^.*\/test-examples="//g' | cut -d '"' -f 1 | sed 's/,/ /g')
           EXAMPLE_LIST=""
           for P in $PATHS; do EXAMPLE_LIST="${EXAMPLE_LIST},$(find $P -name '*.yaml' | tr '\n' ',')"; done
-
           sudo apt-get -y install coreutils
           COUNT=$(echo ${EXAMPLE_LIST:1} | grep -o ".yaml" | wc -l)
           if [ $COUNT -gt 1 ]; then EXAMPLE_HASH=$(echo ${EXAMPLE_LIST} | md5sum | cut -f1 -d" "); else EXAMPLE_HASH=$(echo ${EXAMPLE_LIST:1} | sed 's/.$//'); fi
-
-          echo "Examples: ${EXAMPLE_LIST:1}"
-          echo "Example Hash: ${EXAMPLE_HASH}"
-
           echo "example-list=${EXAMPLE_LIST:1}" >> $GITHUB_OUTPUT
           echo "example-hash=${EXAMPLE_HASH}" >> $GITHUB_OUTPUT
-
 
       - name: Create Pending Status Check
         env:
@@ -99,7 +90,6 @@ jobs:
       - get-example-list
     if: ${{ (needs.check-permissions.outputs.permission == 'admin' || needs.check-permissions.outputs.permission == 'write') && github.event.issue.pull_request != null && contains(github.event.comment.body, '/test-examples')}}
     runs-on: ubuntu-latest
-
     steps:
       - name: Cleanup Disk
         uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
@@ -132,7 +122,6 @@ jobs:
           OUTPUT=$(git log -1 --format='%H')
           echo "commit-sha=$OUTPUT" >> $GITHUB_OUTPUT
 
-
       - name: Vendor Dependencies
         run: make vendor vendor.check
 
@@ -148,7 +137,6 @@ jobs:
           mkdir -p .work && echo "${{ secrets.UPTEST_DATASOURCE }}" > .work/uptest-datasource.yaml
           make e2e
 
-
       - name: Create Successful Status Check
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -163,26 +151,22 @@ jobs:
             -f description='Passed' \
             -f context="Uptest-${EXAMPLE_HASH}"
 
-
       - name: Collect Cluster Dump
         if: always()
-        run: |
-          make controlplane.dump
-
+        run: make controlplane.dump
 
       - name: Upload Cluster Dump
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: controlplane-dump
-          path: ./_output/controlplane-dump
+          path: crossplane/_output/controlplane-dump
 
       - name: Cleanup
         if: always()
         run: |
           eval $(make --no-print-directory build.vars)
           ${KUBECTL} delete managed --all || true
-
 
       - name: Create Unsuccessful Status Check
         if: failure()
