@@ -2,15 +2,20 @@ version: "2"
 linters:
   default: none
   enable:
+    - bodyclose
     - copyloopvar
     - durationcheck
     - errcheck
     - forcetypeassert
+    - gocritic
     - godot
+    - gosec
+    - govet
     - ineffassign
     - makezero
     - misspell
     - nilerr
+    - noctx
     - predeclared
     - staticcheck
     - unconvert

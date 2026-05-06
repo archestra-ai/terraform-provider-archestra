@@ -114,106 +114,17 @@ jobs:
           build-platform-image: "false"
           platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}
 
-      # Stub /v1/models so backend's testProviderApiKey passes without a real Ollama.
+      # Stub /v1/models so backend's testProviderApiKey passes without a real
+      # Ollama. Manifest + apply logic shared with local development via
+      # scripts/bootstrap-ollama-mock.sh and scripts/k8s/ollama-mock.yaml.
       - name: Deploy Ollama mock
-        run: |
-          kubectl apply -f - <<'EOF'
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            name: ollama-mock
-            namespace: default
-          spec:
-            replicas: 1
-            selector:
-              matchLabels:
-                app: ollama-mock
-            template:
-              metadata:
-                labels:
-                  app: ollama-mock
-              spec:
-                containers:
-                  - name: http-echo
-                    image: hashicorp/http-echo:1.0.0
-                    args:
-                      - "-listen=:11434"
-                      - '-text={"object":"list","data":[{"id":"llama3","object":"model","created":1700000000,"owned_by":"ci-stub"}]}'
-                    ports:
-                      - containerPort: 11434
-          ---
-          apiVersion: v1
-          kind: Service
-          metadata:
-            name: ollama-mock
-            namespace: default
-          spec:
-            selector:
-              app: ollama-mock
-            ports:
-              - port: 11434
-                targetPort: 11434
-          EOF
+        run: ./scripts/bootstrap-ollama-mock.sh
 
-          kubectl rollout status deployment/ollama-mock --namespace default --timeout=60s
-
-      # Dev-mode Vault for BYOS tests. Ephemeral; do not mirror outside CI.
+      # Dev-mode Vault + secret seed for BYOS tests. Ephemeral; do not mirror
+      # outside CI. Shared with local via scripts/bootstrap-vault.sh and
+      # scripts/k8s/vault-dev.yaml.
       - name: Deploy Vault (dev mode)
-        run: |
-          kubectl apply -f - <<'EOF'
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            name: vault
-            namespace: default
-          spec:
-            replicas: 1
-            selector:
-              matchLabels:
-                app: vault
-            template:
-              metadata:
-                labels:
-                  app: vault
-              spec:
-                containers:
-                  - name: vault
-                    image: hashicorp/vault:1.17
-                    args: ["server", "-dev", "-dev-root-token-id=root", "-dev-listen-address=0.0.0.0:8200"]
-                    ports:
-                      - containerPort: 8200
-                    readinessProbe:
-                      httpGet:
-                        path: /v1/sys/health
-                        port: 8200
-                      initialDelaySeconds: 2
-                      periodSeconds: 2
-          ---
-          apiVersion: v1
-          kind: Service
-          metadata:
-            name: vault
-            namespace: default
-          spec:
-            selector:
-              app: vault
-            ports:
-              - port: 8200
-                targetPort: 8200
-          EOF
-
-          kubectl rollout status deployment/vault --namespace default --timeout=120s
-
-          # Seed the vault secret referenced by the LLM provider API key tests.
-          kubectl run vault-seed --rm -i --restart=Never --image=curlimages/curl:8.10.1 -- \
-            curl -sS -X POST "http://vault.default.svc.cluster.local:8200/v1/secret/data/test/ollama" \
-              -H "X-Vault-Token: root" \
-              -H "Content-Type: application/json" \
-              -d '{"data":{"api_key":"test-api-key-value"}}'
-
-          # Restart the archestra backend so it picks up a reachable Vault at startup.
-          kubectl rollout restart deployment --namespace archestra --selector=app.kubernetes.io/name=archestra-platform
-          kubectl rollout status deployment --namespace archestra --selector=app.kubernetes.io/name=archestra-platform --timeout=180s
+        run: ./scripts/bootstrap-vault.sh
 
       - name: Check for codegen'd API client changes
         run: |
@@ -224,50 +135,17 @@ jobs:
             exit 1
           fi
 
-      # Login with default credentials and create an API key for acceptance tests
-      # Default credentials: admin@example.com / password
+      # Sign in with default seeded credentials (admin@example.com / password)
+      # and create a fresh API key. Logic is shared with local development via
+      # scripts/bootstrap-api-key.sh — keep the script and this step in sync.
       - name: Obtain API Key
         id: api-key
+        env:
+          ARCHESTRA_BASE_URL: http://localhost:9000
         run: |
-          BACKEND_URL="http://localhost:9000"
-
-          echo "Logging in with default credentials..."
-          # Sign in and capture cookies
-          LOGIN_RESPONSE=$(curl -s -c cookies.txt -b cookies.txt \
-            -X POST "${BACKEND_URL}/api/auth/sign-in/email" \
-            -H "Content-Type: application/json" \
-            -H "Origin: http://localhost:3000" \
-            -d '{"email":"admin@example.com","password":"password"}')
-
-          echo "Login response: ${LOGIN_RESPONSE}"
-
-          # Create an API key using better-auth API key plugin
-          echo "Creating API key..."
-          API_KEY_RESPONSE=$(curl -s -b cookies.txt \
-            -X POST "${BACKEND_URL}/api/auth/api-key/create" \
-            -H "Content-Type: application/json" \
-            -H "Origin: http://localhost:3000" \
-            -d '{"name":"terraform-acceptance-tests","expiresIn":604800}')
-
-          echo "API key response: ${API_KEY_RESPONSE}"
-
-          # Extract the key from the response
-          API_KEY=$(echo "${API_KEY_RESPONSE}" | jq -r '.key')
-
-          if [ -z "${API_KEY}" ] || [ "${API_KEY}" = "null" ]; then
-            echo "Failed to create API key"
-            echo "Response: ${API_KEY_RESPONSE}"
-            exit 1
-          fi
-
-          echo "Successfully created API key"
-
-          # Mask the API key in logs and set as output
+          API_KEY=$(./scripts/bootstrap-api-key.sh)
           echo "::add-mask::${API_KEY}"
-          echo "api-key=${API_KEY}" >> $GITHUB_OUTPUT
-
-          # Cleanup
-          rm -f cookies.txt
+          echo "api-key=${API_KEY}" >> "$GITHUB_OUTPUT"
 
       # Provision a throwaway OIDC identity provider so the enterprise_managed_config
       # acceptance test can exercise the full EMC round-trip. The test skips gracefully
@@ -275,40 +153,11 @@ jobs:
       - name: Provision test Identity Provider
         id: test-idp
         env:
-          API_KEY: ${{ steps.api-key.outputs.api-key }}
+          ARCHESTRA_BASE_URL: http://localhost:9000
+          ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
         run: |
-          BACKEND_URL="http://localhost:9000"
-
-          echo "Creating throwaway OIDC identity provider for EMC acceptance test..."
-          IDP_RESPONSE=$(curl -s -X POST "${BACKEND_URL}/api/identity-providers" \
-            -H "Authorization: ${API_KEY}" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "providerId": "ci-test-emc",
-              "domain": "ci.emc.test",
-              "issuer": "https://idp.ci.example.com",
-              "oidcConfig": {
-                "issuer": "https://idp.ci.example.com",
-                "discoveryEndpoint": "https://idp.ci.example.com/.well-known/openid-configuration",
-                "clientId": "ci-test",
-                "clientSecret": "ci-secret",
-                "pkce": false,
-                "skipDiscovery": true
-              }
-            }')
-
-          echo "IdP response: ${IDP_RESPONSE}"
-
-          IDP_ID=$(echo "${IDP_RESPONSE}" | jq -r '.id')
-
-          if [ -z "${IDP_ID}" ] || [ "${IDP_ID}" = "null" ]; then
-            echo "Failed to create identity provider"
-            echo "Response: ${IDP_RESPONSE}"
-            exit 1
-          fi
-
-          echo "Successfully provisioned IdP with id ${IDP_ID}"
-          echo "idp-id=${IDP_ID}" >> $GITHUB_OUTPUT
+          IDP_ID=$(./scripts/bootstrap-test-idp.sh)
+          echo "idp-id=${IDP_ID}" >> "$GITHUB_OUTPUT"
 
       - name: Run Acceptance Tests
         run: make testacc

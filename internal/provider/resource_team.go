@@ -1,10 +1,13 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -12,10 +15,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-var _ resource.Resource = &TeamResource{}
-var _ resource.ResourceWithImportState = &TeamResource{}
+var (
+	_ resource.Resource                = &TeamResource{}
+	_ resource.ResourceWithImportState = &TeamResource{}
+)
 
 func NewTeamResource() resource.Resource {
 	return &TeamResource{}
@@ -46,7 +52,7 @@ func (r *TeamResource) Metadata(ctx context.Context, req resource.MetadataReques
 
 func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an Archestra team with members.",
+		MarkdownDescription: "Archestra team with member assignments.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -79,7 +85,7 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"convert_tool_results_to_toon": schema.BoolAttribute{
-				MarkdownDescription: "Team-level TOON compression setting",
+				MarkdownDescription: "Per-team TOON tool-result compression. **Requires `archestra_organization_settings.compression_scope = \"team\"`** — backend silently ignores team-level writes otherwise. When applying both in the same pass, also set `depends_on = [archestra_organization_settings.<n>]` on this team so org_settings applies first. Provider checks the precondition at apply time and surfaces a clear error if violated.",
 				Optional:            true,
 				Computed:            true,
 			},
@@ -122,6 +128,37 @@ func (r *TeamResource) Configure(ctx context.Context, req resource.ConfigureRequ
 	r.client = client
 }
 
+// validateTeamToonPrecondition checks org `compression_scope == "team"`
+// at apply time when the user wants `convert_tool_results_to_toon = true`.
+// Apply-time (not ModifyPlan) so dependency-ordered same-pass applies work:
+// when `archestra_organization_settings` is in the same plan and the team
+// declares `depends_on`, org_settings's apply runs first and the GET here
+// reads the freshly-written scope. ModifyPlan-time would always see the
+// pre-apply backend state and force a `-target` workaround.
+//
+// TODO(backend): platform should either honor the team-level flag
+// regardless of scope or 4xx team-level writes when scope != "team".
+// Once that lands, drop this helper and both call sites.
+func (r *TeamResource) validateTeamToonPrecondition(ctx context.Context, diags *diag.Diagnostics) {
+	orgResp, err := r.client.GetOrganizationWithResponse(ctx)
+	if err != nil {
+		diags.AddError("API Error", fmt.Sprintf("convert_tool_results_to_toon pre-flight: unable to fetch organization settings: %s", err))
+		return
+	}
+	if orgResp.JSON200 == nil {
+		diags.AddError("API Error", fmt.Sprintf("convert_tool_results_to_toon pre-flight: GetOrganization returned status %d: %s", orgResp.StatusCode(), string(orgResp.Body)))
+		return
+	}
+	if string(orgResp.JSON200.CompressionScope) != string(client.Team) {
+		diags.AddAttributeError(
+			path.Root("convert_tool_results_to_toon"),
+			"Precondition Not Met",
+			fmt.Sprintf("`convert_tool_results_to_toon = true` on a team requires `archestra_organization_settings.compression_scope = \"team\"`. Current org scope is %q. Either set the scope first, or add `depends_on = [archestra_organization_settings.<n>]` on the team so org_settings applies before the team in the same pass. (Backend silently ignores team-level writes when scope != \"team\".)",
+				string(orgResp.JSON200.CompressionScope)),
+		)
+	}
+}
+
 func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data TeamResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -129,18 +166,38 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
-	// Create request body using generated type
-	requestBody := client.CreateTeamJSONRequestBody{
-		Name: data.Name.ValueString(),
+	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, prior, teamAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
 	}
 
-	if !data.Description.IsNull() {
-		desc := data.Description.ValueString()
-		requestBody.Description = &desc
+	// TODO(backend): platform's `CreateTeamBodySchema` (backend/src/types/team.ts:25)
+	// is missing `convertToolResultsToToon` — `UpdateTeamBodySchema` has it. Until
+	// it's added on the create endpoint, fastify-zod silently strips the field
+	// from the Create body, the team is created with the column default (false),
+	// and the response echoes false → "Provider produced inconsistent result
+	// after apply". Workaround: strip the field here, then issue a follow-up
+	// Update if the user wants it true. Drop both this block and the post-Create
+	// Update once the backend create schema accepts the field.
+	wantToon := !data.ConvertToolResultsToToon.IsNull() && !data.ConvertToolResultsToToon.IsUnknown() && data.ConvertToolResultsToToon.ValueBool()
+	delete(patch, "convertToolResultsToToon")
+
+	if wantToon {
+		r.validateTeamToonPrecondition(ctx, &resp.Diagnostics)
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 
-	// Call API
-	apiResp, err := r.client.CreateTeamWithResponse(ctx, requestBody)
+	LogPatch(ctx, "archestra_team Create", patch, teamAttrSpec)
+
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
+	}
+	apiResp, err := r.client.CreateTeamWithBodyWithResponse(ctx, "application/json", bytes.NewReader(body))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create team, got error: %s", err))
 		return
@@ -164,6 +221,23 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 		data.Description = types.StringValue(*apiResp.JSON200.Description)
 	}
 	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
+
+	// Follow-up Update to set TOON when requested — see TODO(backend) above.
+	if wantToon {
+		toon := true
+		updateResp, err := r.client.UpdateTeamWithResponse(ctx, apiResp.JSON200.Id, client.UpdateTeamJSONRequestBody{
+			ConvertToolResultsToToon: &toon,
+		})
+		if err != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to set convert_tool_results_to_toon after team Create, got error: %s", err))
+			return
+		}
+		if updateResp.JSON200 == nil {
+			resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Update after Create returned status %d: %s", updateResp.StatusCode(), string(updateResp.Body)))
+			return
+		}
+		data.ConvertToolResultsToToon = types.BoolValue(updateResp.JSON200.ConvertToolResultsToToon)
+	}
 
 	// Add team members
 	if len(data.Members) > 0 {
@@ -270,33 +344,42 @@ func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 
 func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data TeamResourceModel
-	var state TeamResourceModel
-
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Create request body using generated type
-	name := data.Name.ValueString()
-	requestBody := client.UpdateTeamJSONRequestBody{
-		Name: &name,
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, teamAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
 	}
 
-	if !data.Description.IsNull() {
-		desc := data.Description.ValueString()
-		requestBody.Description = &desc
-	}
-	if !data.ConvertToolResultsToToon.IsNull() && !data.ConvertToolResultsToToon.IsUnknown() {
-		v := data.ConvertToolResultsToToon.ValueBool()
-		requestBody.ConvertToolResultsToToon = &v
+	// Apply-time precondition check — see validateTeamToonPrecondition.
+	if !data.ConvertToolResultsToToon.IsNull() && !data.ConvertToolResultsToToon.IsUnknown() && data.ConvertToolResultsToToon.ValueBool() {
+		r.validateTeamToonPrecondition(ctx, &resp.Diagnostics)
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 
-	// Call API
-	apiResp, err := r.client.UpdateTeamWithResponse(ctx, data.ID.ValueString(), requestBody)
+	LogPatch(ctx, "archestra_team Update", patch, teamAttrSpec)
+
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
+	}
+	apiResp, err := r.client.UpdateTeamWithBodyWithResponse(ctx, data.ID.ValueString(), "application/json", bytes.NewReader(body))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update team, got error: %s", err))
+		return
+	}
+	if IsNotFound(apiResp) {
+		resp.Diagnostics.AddError(
+			"Resource Deleted Outside Terraform",
+			"The resource was deleted on the backend between refresh and apply. "+
+				"Re-run `terraform apply` — the next refresh drops it from state and the plan recreates it.",
+		)
 		return
 	}
 

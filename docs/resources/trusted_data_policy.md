@@ -3,32 +3,38 @@
 page_title: "archestra_trusted_data_policy Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an Archestra trusted data policy.
+  Conditional trusted-data policy — fires action when ALL of conditions match the tool's result. conditions must be non-empty; for the unconditional default, use archestra_trusted_data_policy_default.
 ---
 
 # archestra_trusted_data_policy (Resource)
 
-Manages an Archestra trusted data policy.
+Conditional trusted-data policy — fires `action` when ALL of `conditions` match the tool's *result*. `conditions` must be non-empty; for the unconditional default, use `archestra_trusted_data_policy_default`.
 
 ## Example Usage
 
 ```terraform
-data "archestra_profile" "test" {
-  profile_id = "profile-id-here"
+resource "archestra_mcp_registry_catalog_item" "fetch" {
+  name        = "fetch"
+  description = "URL-fetching MCP server"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-fetch"]
+  }
 }
 
-data "archestra_profile_tool" "fetch_url" {
-  profile_id = data.archestra_profile.test.id
-  tool_name  = "fetch_url"
+resource "archestra_mcp_server_installation" "fetch" {
+  name       = "fetch"
+  catalog_id = archestra_mcp_registry_catalog_item.fetch.id
 }
 
 resource "archestra_trusted_data_policy" "trust_company_api" {
-  profile_tool_id = data.archestra_profile_tool.fetch_url.id
-  description     = "Mark data from company API as trusted"
-  attribute_path  = "url"
-  operator        = "contains"
-  value           = "api.company.com"
-  action          = "mark_as_trusted"
+  tool_id     = archestra_mcp_server_installation.fetch.tool_id_by_name["${archestra_mcp_registry_catalog_item.fetch.name}__fetch"]
+  description = "Mark data from company API as trusted"
+  conditions = [
+    { key = "url", operator = "contains", value = "api.company.com" },
+  ]
+  action = "mark_as_trusted"
 }
 ```
 
@@ -37,16 +43,35 @@ resource "archestra_trusted_data_policy" "trust_company_api" {
 
 ### Required
 
-- `attribute_path` (String) The attribute path to match
+- `conditions` (Attributes List) Conditions evaluated against the data attribute. ALL must match for `action` to fire. Use `key` for the JSON path of the attribute being matched. (see [below for nested schema](#nestedatt--conditions))
 - `description` (String) Description of the policy
-- `operator` (String) The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`
-- `profile_tool_id` (String) The profile tool ID this policy applies to
-- `value` (String) The value to compare against
+- `tool_id` (String) Bare tool UUID this policy applies to. **Not** the agent-tool assignment composite ID.
+
+Preferred lookup is `archestra_mcp_server_installation.<n>.tool_id_by_name["<server>__<short>"]` — one line, no extra data source. Fallbacks: `archestra_agent_tool.<n>.tool_id` (when the assignment is also Terraform-managed) or `data.archestra_mcp_server_tool.<n>.id` (for installs not managed by Terraform).
 
 ### Optional
 
-- `action` (String) The action to take when the policy matches. Valid values: `mark_as_trusted`, `mark_as_untrusted`, `block_always`, `sanitize_with_dual_llm` (default: `mark_as_trusted`)
+- `action` (String) Action to take when the policy matches. One of `mark_as_trusted`, `mark_as_untrusted`, `block_always`, `sanitize_with_dual_llm`. Default `mark_as_trusted`.
 
 ### Read-Only
 
 - `id` (String) Policy identifier
+
+<a id="nestedatt--conditions"></a>
+### Nested Schema for `conditions`
+
+Required:
+
+- `key` (String) Attribute path to match (e.g., `payload.role`).
+- `operator` (String) Comparison operator. One of `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`.
+- `value` (String) Value to compare against.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_trusted_data_policy.example 00000000-0000-0000-0000-000000000000
+```

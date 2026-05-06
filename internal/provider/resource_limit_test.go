@@ -150,3 +150,48 @@ resource "archestra_limit" "test" {
 }
 `, entityID, entityType, limitValue, mcpServerName, toolName)
 }
+
+// TestAccLimitResource_McpServerNameReference pins the ValidateConfig
+// IsUnknown handling. When a user wires `mcp_server_name` from another
+// resource (e.g., `archestra_mcp_server_installation.foo.name`), the
+// value is Unknown at plan-time until that resource is created. The
+// validator must defer (skip the required-when check) rather than
+// erroring "mcp_server_name is required when limit_type is
+// 'mcp_server_calls'" on a value that *is* set.
+func TestAccLimitResource_McpServerNameReference(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_mcp_registry_catalog_item" "test" {
+  name        = "tf-acc-limit-ref"
+  description = "Limit IsUnknown reference test"
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+}
+
+resource "archestra_mcp_server_installation" "test" {
+  name       = "tf-acc-limit-ref"
+  catalog_id = archestra_mcp_registry_catalog_item.test.id
+}
+
+resource "archestra_limit" "test" {
+  entity_id       = "tf-acc-limit-ref-org"
+  entity_type     = "organization"
+  limit_type      = "mcp_server_calls"
+  limit_value     = "1000"
+  mcp_server_name = archestra_mcp_server_installation.test.name
+}
+`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrSet("archestra_limit.test", "mcp_server_name"),
+					resource.TestCheckResourceAttr("archestra_limit.test", "limit_type", "mcp_server_calls"),
+				),
+			},
+		},
+	})
+}

@@ -1,7 +1,9 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
@@ -10,10 +12,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 var _ resource.Resource = &LlmModelResource{}
@@ -50,10 +52,7 @@ func (r *LlmModelResource) Metadata(ctx context.Context, req resource.MetadataRe
 
 func (r *LlmModelResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an LLM model's custom pricing and settings in Archestra. " +
-			"Models are discovered automatically from configured LLM provider API keys. " +
-			"This resource adopts an existing model by `model_id` and allows customizing its pricing. " +
-			"Destroying this resource only removes it from Terraform state — the model remains in Archestra.",
+		MarkdownDescription: "Pricing and settings override for an LLM model auto-discovered from an `archestra_llm_provider_api_key`. Adopt-only — `terraform destroy` reverts the override; the model itself is never deleted.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -64,7 +63,7 @@ func (r *LlmModelResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"model_id": schema.StringAttribute{
-				MarkdownDescription: "The model identifier (e.g., `gpt-4o`, `claude-sonnet-4-20250514`). Used to look up the model on create.",
+				MarkdownDescription: "The model identifier (e.g., `gpt-4o`, `claude-sonnet-4-20250514`). Must match a model the platform has discovered via a configured `archestra_llm_provider_api_key` — the backend rejects IDs that aren't in any provider's discovered model list. Check the UI's model picker for the live set.",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -99,21 +98,21 @@ func (r *LlmModelResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:            true,
 			},
 			"input_modalities": schema.ListAttribute{
-				MarkdownDescription: "Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`",
+				MarkdownDescription: "Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.",
 				Optional:            true,
 				Computed:            true,
 				ElementType:         types.StringType,
 				PlanModifiers: []planmodifier.List{
-					listplanmodifier.UseStateForUnknown(),
+					RemoveOnConfigNullList(),
 				},
 			},
 			"output_modalities": schema.ListAttribute{
-				MarkdownDescription: "Output modality overrides. Valid values: `text`, `image`, `audio`",
+				MarkdownDescription: "Output modality overrides. Valid values: `text`, `image`, `audio`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.",
 				Optional:            true,
 				Computed:            true,
 				ElementType:         types.StringType,
 				PlanModifiers: []planmodifier.List{
-					listplanmodifier.UseStateForUnknown(),
+					RemoveOnConfigNullList(),
 				},
 			},
 			"price_per_million_input": schema.StringAttribute{
@@ -194,44 +193,25 @@ func (r *LlmModelResource) Create(ctx context.Context, req resource.CreateReques
 
 	data.ID = types.StringValue(foundID.String())
 
-	// Apply custom pricing if set
-	if !data.CustomPricePerMillionInput.IsNull() || !data.CustomPricePerMillionOutput.IsNull() || !data.Ignored.IsNull() || !data.InputModalities.IsNull() || !data.OutputModalities.IsNull() {
-		updateBody := client.UpdateModelJSONRequestBody{}
-
-		if !data.CustomPricePerMillionInput.IsNull() && !data.CustomPricePerMillionInput.IsUnknown() {
-			v := data.CustomPricePerMillionInput.ValueString()
-			updateBody.CustomPricePerMillionInput = &v
+	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, prior, llmModelAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if len(patch) > 0 {
+		LogPatch(ctx, "archestra_llm_model Create", patch, llmModelAttrSpec)
+		bodyBytes, err := json.Marshal(patch)
+		if err != nil {
+			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+			return
 		}
-		if !data.CustomPricePerMillionOutput.IsNull() && !data.CustomPricePerMillionOutput.IsUnknown() {
-			v := data.CustomPricePerMillionOutput.ValueString()
-			updateBody.CustomPricePerMillionOutput = &v
-		}
-		if !data.Ignored.IsNull() && !data.Ignored.IsUnknown() {
-			v := data.Ignored.ValueBool()
-			updateBody.Ignored = &v
-		}
-		if !data.InputModalities.IsNull() && !data.InputModalities.IsUnknown() {
-			var vals []string
-			data.InputModalities.ElementsAs(ctx, &vals, false)
-			modalities := make([]client.UpdateModelJSONBodyInputModalities, len(vals))
-			for i, v := range vals {
-				modalities[i] = client.UpdateModelJSONBodyInputModalities(v)
-			}
-			updateBody.InputModalities = &modalities
-		}
-		if !data.OutputModalities.IsNull() && !data.OutputModalities.IsUnknown() {
-			var vals []string
-			data.OutputModalities.ElementsAs(ctx, &vals, false)
-			modalities := make([]client.UpdateModelJSONBodyOutputModalities, len(vals))
-			for i, v := range vals {
-				modalities[i] = client.UpdateModelJSONBodyOutputModalities(v)
-			}
-			updateBody.OutputModalities = &modalities
-		}
-
-		updateResp, err := r.client.UpdateModelWithResponse(ctx, *foundID, updateBody)
+		updateResp, err := r.client.UpdateModelWithBodyWithResponse(ctx, *foundID, "application/json", bytes.NewReader(bodyBytes))
 		if err != nil {
 			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update model pricing: %s", err))
+			return
+		}
+		if IsNotFound(updateResp) {
+			resp.State.RemoveResource(ctx)
 			return
 		}
 		if updateResp.JSON200 == nil {
@@ -279,42 +259,32 @@ func (r *LlmModelResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	updateBody := client.UpdateModelJSONRequestBody{}
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, llmModelAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if len(patch) == 0 {
+		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+		return
+	}
+	LogPatch(ctx, "archestra_llm_model Update", patch, llmModelAttrSpec)
 
-	if !data.CustomPricePerMillionInput.IsNull() {
-		v := data.CustomPricePerMillionInput.ValueString()
-		updateBody.CustomPricePerMillionInput = &v
+	bodyBytes, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
-	if !data.CustomPricePerMillionOutput.IsNull() {
-		v := data.CustomPricePerMillionOutput.ValueString()
-		updateBody.CustomPricePerMillionOutput = &v
-	}
-	if !data.Ignored.IsNull() {
-		v := data.Ignored.ValueBool()
-		updateBody.Ignored = &v
-	}
-	if !data.InputModalities.IsNull() && !data.InputModalities.IsUnknown() {
-		var vals []string
-		data.InputModalities.ElementsAs(ctx, &vals, false)
-		modalities := make([]client.UpdateModelJSONBodyInputModalities, len(vals))
-		for i, v := range vals {
-			modalities[i] = client.UpdateModelJSONBodyInputModalities(v)
-		}
-		updateBody.InputModalities = &modalities
-	}
-	if !data.OutputModalities.IsNull() && !data.OutputModalities.IsUnknown() {
-		var vals []string
-		data.OutputModalities.ElementsAs(ctx, &vals, false)
-		modalities := make([]client.UpdateModelJSONBodyOutputModalities, len(vals))
-		for i, v := range vals {
-			modalities[i] = client.UpdateModelJSONBodyOutputModalities(v)
-		}
-		updateBody.OutputModalities = &modalities
-	}
-
-	updateResp, err := r.client.UpdateModelWithResponse(ctx, id, updateBody)
+	updateResp, err := r.client.UpdateModelWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(bodyBytes))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update model: %s", err))
+		return
+	}
+	if IsNotFound(updateResp) {
+		resp.Diagnostics.AddError(
+			"Resource Deleted Outside Terraform",
+			"The resource was deleted on the backend between refresh and apply. "+
+				"Re-run `terraform apply` — the next refresh drops it from state and the plan recreates it.",
+		)
 		return
 	}
 

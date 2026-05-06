@@ -3,32 +3,55 @@
 page_title: "archestra_tool_invocation_policy Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an Archestra tool invocation policy.
+  Conditional tool-invocation policy — fires action when ALL of conditions match the tool-call arguments. conditions must be non-empty; for the unconditional default, use archestra_tool_invocation_policy_default.
 ---
 
 # archestra_tool_invocation_policy (Resource)
 
-Manages an Archestra tool invocation policy.
+Conditional tool-invocation policy — fires `action` when ALL of `conditions` match the tool-call arguments. `conditions` must be non-empty; for the unconditional default, use `archestra_tool_invocation_policy_default`.
 
 ## Example Usage
 
 ```terraform
-data "archestra_profile" "test" {
-  profile_id = "profile-id-here"
+resource "archestra_mcp_registry_catalog_item" "filesystem" {
+  name        = "filesystem"
+  description = "Filesystem MCP server"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
 }
 
-data "archestra_profile_tool" "file_write" {
-  profile_id = data.archestra_profile.test.id
-  tool_name  = "write_file"
+resource "archestra_mcp_server_installation" "filesystem" {
+  name       = "filesystem"
+  catalog_id = archestra_mcp_registry_catalog_item.filesystem.id
+}
+
+# One-line tool-id lookup via the install's `tool_id_by_name` map —
+# no `data "archestra_mcp_server_tool"` plumbing required.
+locals {
+  file_write_tool_id = archestra_mcp_server_installation.filesystem.tool_id_by_name["${archestra_mcp_registry_catalog_item.filesystem.name}__write_file"]
 }
 
 resource "archestra_tool_invocation_policy" "block_system_paths" {
-  profile_tool_id = data.archestra_profile_tool.file_write.id
-  argument_name   = "path"
-  operator        = "contains"
-  value           = "/etc/"
-  action          = "block_always"
-  description     = "Block writes to system configuration directories"
+  tool_id = local.file_write_tool_id
+  conditions = [
+    { key = "path", operator = "contains", value = "/etc/" },
+  ]
+  action = "block_always"
+  reason = "Block writes to system configuration directories"
+}
+
+# Multi-condition policy — ALL conditions must match for `action` to fire.
+resource "archestra_tool_invocation_policy" "block_dotfiles_in_home" {
+  tool_id = local.file_write_tool_id
+  conditions = [
+    { key = "path", operator = "startsWith", value = "/home/" },
+    { key = "path", operator = "contains", value = "/." },
+  ]
+  action = "block_always"
+  reason = "Block writes that target hidden files under /home"
 }
 ```
 
@@ -37,16 +60,35 @@ resource "archestra_tool_invocation_policy" "block_system_paths" {
 
 ### Required
 
-- `action` (String) The action to take when the policy matches. Valid values: `allow_when_context_is_untrusted`, `block_when_context_is_untrusted`, `block_always`, `require_approval`
-- `argument_name` (String) The argument name to match
-- `operator` (String) The comparison operator. Valid values: `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`
-- `profile_tool_id` (String) The tool ID this policy applies to
-- `value` (String) The value to compare against
+- `action` (String) Action to take when the policy matches. One of `allow_when_context_is_untrusted`, `block_when_context_is_untrusted`, `block_always`, `require_approval`.
+- `conditions` (Attributes List) Conditions evaluated against tool-call arguments. ALL must match for `action` to fire. (see [below for nested schema](#nestedatt--conditions))
+- `tool_id` (String) Bare tool UUID this policy applies to. **Not** the agent-tool assignment composite ID.
+
+Preferred lookup is `archestra_mcp_server_installation.<n>.tool_id_by_name["<server>__<short>"]` — one line, no extra data source. Fallbacks: `archestra_agent_tool.<n>.tool_id` (when the assignment is also Terraform-managed) or `data.archestra_mcp_server_tool.<n>.id` (for installs not managed by Terraform).
 
 ### Optional
 
-- `reason` (String) Optional reason for the policy
+- `reason` (String) Optional reason describing why this policy exists.
 
 ### Read-Only
 
 - `id` (String) Policy identifier
+
+<a id="nestedatt--conditions"></a>
+### Nested Schema for `conditions`
+
+Required:
+
+- `key` (String) Argument name to match.
+- `operator` (String) Comparison operator. One of `equal`, `notEqual`, `contains`, `notContains`, `startsWith`, `endsWith`, `regex`.
+- `value` (String) Value to compare against.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_tool_invocation_policy.example 00000000-0000-0000-0000-000000000000
+```

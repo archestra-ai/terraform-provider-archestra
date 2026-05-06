@@ -3,6 +3,7 @@ package provider
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
@@ -281,9 +282,17 @@ func TestAccMcpRegistryCatalogItemResourceWithEnvironmentVariables(t *testing.T)
 					statecheck.ExpectKnownValue(
 						"archestra_mcp_registry_catalog_item.test_env",
 						tfjsonpath.New("local_config").AtMapKey("environment"),
-						knownvalue.MapExact(map[string]knownvalue.Check{
-							"API_URL":   knownvalue.StringExact("{{API_URL}}"),
-							"API_TOKEN": knownvalue.StringExact("{{API_TOKEN}}"),
+						knownvalue.SetExact([]knownvalue.Check{
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":   knownvalue.StringExact("API_URL"),
+								"type":  knownvalue.StringExact("plain_text"),
+								"value": knownvalue.StringExact("{{API_URL}}"),
+							}),
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":   knownvalue.StringExact("API_TOKEN"),
+								"type":  knownvalue.StringExact("plain_text"),
+								"value": knownvalue.StringExact("{{API_TOKEN}}"),
+							}),
 						}),
 					),
 				},
@@ -307,10 +316,10 @@ resource "archestra_mcp_registry_catalog_item" "test_env" {
   local_config = {
     command   = "npx"
     arguments = ["-y", "@example/mcp-server"]
-    environment = {
-      API_URL   = "{{API_URL}}"
-      API_TOKEN = "{{API_TOKEN}}"
-    }
+    environment = [
+      { key = "API_URL",   type = "plain_text", value = "{{API_URL}}" },
+      { key = "API_TOKEN", type = "plain_text", value = "{{API_TOKEN}}" },
+    ]
   }
 
   auth_fields = [
@@ -355,9 +364,17 @@ func TestAccMcpRegistryCatalogItemResourceDockerImageWithEnv(t *testing.T) {
 					statecheck.ExpectKnownValue(
 						"archestra_mcp_registry_catalog_item.test_docker_env",
 						tfjsonpath.New("local_config").AtMapKey("environment"),
-						knownvalue.MapExact(map[string]knownvalue.Check{
-							"GRAFANA_URL":                   knownvalue.StringExact("{{GRAFANA_URL}}"),
-							"GRAFANA_SERVICE_ACCOUNT_TOKEN": knownvalue.StringExact("{{GRAFANA_SERVICE_ACCOUNT_TOKEN}}"),
+						knownvalue.SetExact([]knownvalue.Check{
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":   knownvalue.StringExact("GRAFANA_URL"),
+								"type":  knownvalue.StringExact("plain_text"),
+								"value": knownvalue.StringExact("{{GRAFANA_URL}}"),
+							}),
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":   knownvalue.StringExact("GRAFANA_SERVICE_ACCOUNT_TOKEN"),
+								"type":  knownvalue.StringExact("secret"),
+								"value": knownvalue.StringExact("{{GRAFANA_SERVICE_ACCOUNT_TOKEN}}"),
+							}),
 						}),
 					),
 				},
@@ -381,10 +398,10 @@ resource "archestra_mcp_registry_catalog_item" "test_docker_env" {
   local_config = {
     docker_image = "mcp/grafana"
     arguments    = ["-t", "stdio"]
-    environment = {
-      GRAFANA_URL                   = "{{GRAFANA_URL}}"
-      GRAFANA_SERVICE_ACCOUNT_TOKEN = "{{GRAFANA_SERVICE_ACCOUNT_TOKEN}}"
-    }
+    environment = [
+      { key = "GRAFANA_URL",                   type = "plain_text", value = "{{GRAFANA_URL}}" },
+      { key = "GRAFANA_SERVICE_ACCOUNT_TOKEN", type = "secret",     value = "{{GRAFANA_SERVICE_ACCOUNT_TOKEN}}" },
+    ]
   }
 
   auth_fields = [
@@ -403,6 +420,89 @@ resource "archestra_mcp_registry_catalog_item" "test_docker_env" {
       description = "Service account token for authenticating with Grafana"
     }
   ]
+}
+`, name)
+}
+
+// TestAccMcpRegistryCatalogItemResourceWithEnvDefaults exercises the
+// `local_config.environment[].default` round-trip across all three scalar
+// types (plain_text, number, boolean). Regression coverage for the codegen
+// patcher fix in c62a2f1: before the patcher rewrote `envVar.Default` to
+// `interface{}`, the inline `z.union([string, number, boolean])` produced a
+// broken Go union with an unexported field, so json.Marshal returned `"{}"`
+// and Catalog Read wrote `"{}"` into state — causing permanent plan diffs
+// for any env var with a default. The second step re-applies the same
+// Config so the framework's plan-no-drift assertion catches any state
+// divergence between Create and Read.
+func TestAccMcpRegistryCatalogItemResourceWithEnvDefaults(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create + Read: assert each default round-trips to its bare
+			// HCL form, NOT the broken `"{}"` value.
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithEnvDefaults("test-env-defaults-item"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_env_defaults",
+						tfjsonpath.New("name"),
+						knownvalue.StringExact("test-env-defaults-item"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_registry_catalog_item.test_env_defaults",
+						tfjsonpath.New("local_config").AtMapKey("environment"),
+						knownvalue.SetExact([]knownvalue.Check{
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":     knownvalue.StringExact("GREETING"),
+								"type":    knownvalue.StringExact("plain_text"),
+								"default": knownvalue.StringExact("hello"),
+							}),
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":     knownvalue.StringExact("MAX_RETRIES"),
+								"type":    knownvalue.StringExact("number"),
+								"default": knownvalue.StringExact("42"),
+							}),
+							knownvalue.ObjectPartial(map[string]knownvalue.Check{
+								"key":     knownvalue.StringExact("ENABLE_CACHE"),
+								"type":    knownvalue.StringExact("boolean"),
+								"default": knownvalue.StringExact("true"),
+							}),
+						}),
+					),
+				},
+			},
+			// Re-apply identical Config: the framework runs an internal
+			// `terraform plan` and fails if state drifted between Create
+			// and Read (which is exactly what the `"{}"` bug produced).
+			{
+				Config: testAccMcpRegistryCatalogItemResourceConfigWithEnvDefaults("test-env-defaults-item"),
+			},
+			// ImportState testing
+			{
+				ResourceName:      "archestra_mcp_registry_catalog_item.test_env_defaults",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccMcpRegistryCatalogItemResourceConfigWithEnvDefaults(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_mcp_registry_catalog_item" "test_env_defaults" {
+  name        = %[1]q
+  description = "Test MCP server with polymorphic environment defaults"
+
+  local_config = {
+    docker_image = "mcp/grafana"
+    arguments    = ["-t", "stdio"]
+    environment = [
+      { key = "GREETING",     type = "plain_text", default = "hello" },
+      { key = "MAX_RETRIES",  type = "number",     default = "42" },
+      { key = "ENABLE_CACHE", type = "boolean",    default = "true" },
+    ]
+  }
 }
 `, name)
 }
@@ -690,11 +790,11 @@ resource "archestra_mcp_registry_catalog_item" "ipsc" {
 }
 
 func TestAccMcpRegistryCatalogItemResourceWithVaultRefs(t *testing.T) {
-	if os.Getenv("ARCHESTRA_READONLY_VAULT_ENABLED") != "true" {
-		t.Skip("Skipping: backend must run with ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT and an enterprise license. Set ARCHESTRA_READONLY_VAULT_ENABLED=true to run.")
-	}
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
+		PreCheck: func() {
+			testAccPreCheck(t)
+			testAccRequireByosEnabled(t)
+		},
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
@@ -814,8 +914,11 @@ resource "archestra_mcp_registry_catalog_item" "user_config" {
 // Requires a pre-existing identity provider UUID; set ARCHESTRA_TEST_IDP_ID to opt in.
 func TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig(t *testing.T) {
 	idpID := os.Getenv("ARCHESTRA_TEST_IDP_ID")
-	if idpID == "" {
-		t.Skip("Skipping: set ARCHESTRA_TEST_IDP_ID to an existing identity provider UUID to run this test")
+	// Gate the t.Fatal on TF_ACC so plain `go test` doesn't bomb out before
+	// resource.Test can apply its own TF_ACC skip. With TF_ACC set, missing
+	// IDP env is a setup defect, not a test skip.
+	if idpID == "" && os.Getenv("TF_ACC") != "" {
+		t.Fatal("ARCHESTRA_TEST_IDP_ID must be set; provision a throwaway IdP with scripts/bootstrap-test-idp.sh and export the resulting UUID")
 	}
 	name := "emc-" + acctest.RandString(6)
 	resource.Test(t, resource.TestCase{
@@ -871,4 +974,78 @@ resource "archestra_mcp_registry_catalog_item" "emc" {
   }
 }
 `, name, idpID)
+}
+
+// TestAccMcpRegistryCatalogItemResource_BothConfigsSet pins the
+// ValidateConfig XOR — local_config and remote_config must be mutually
+// exclusive at plan time.
+func TestAccMcpRegistryCatalogItemResource_BothConfigsSet(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_mcp_registry_catalog_item" "test" {
+  name        = "tf-acc-catalog-both"
+  description = "x"
+
+  local_config = {
+    command   = "node"
+    arguments = ["server.js"]
+  }
+
+  remote_config = {
+    url = "https://example.com/mcp"
+  }
+}
+`,
+				ExpectError: regexp.MustCompile(`only one of local_config or remote_config`),
+			},
+		},
+	})
+}
+
+// TestAccMcpRegistryCatalogItemResource_NeitherConfigSet pins the other
+// arm — at least one of local_config or remote_config must be present.
+func TestAccMcpRegistryCatalogItemResource_NeitherConfigSet(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_mcp_registry_catalog_item" "test" {
+  name        = "tf-acc-catalog-neither"
+  description = "x"
+}
+`,
+				ExpectError: regexp.MustCompile(`exactly one of local_config or remote_config`),
+			},
+		},
+	})
+}
+
+// TestAccMcpRegistryCatalogItemResource_LocalConfigEmpty pins the
+// inner XOR — local_config must contain command or docker_image.
+func TestAccMcpRegistryCatalogItemResource_LocalConfigEmpty(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: `
+resource "archestra_mcp_registry_catalog_item" "test" {
+  name        = "tf-acc-catalog-empty-local"
+  description = "x"
+
+  local_config = {
+    arguments = ["x"]
+  }
+}
+`,
+				ExpectError: regexp.MustCompile(`either command or docker_image must be set`),
+			},
+		},
+	})
 }

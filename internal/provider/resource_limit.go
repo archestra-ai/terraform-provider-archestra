@@ -1,11 +1,13 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 
-	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -14,6 +16,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
+
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -48,7 +53,7 @@ func (r *LimitResource) Metadata(ctx context.Context, req resource.MetadataReque
 
 func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages usage limits in Archestra.",
+		MarkdownDescription: "Usage limit on tokens or call counts, scoped per organization, team, or agent. See `limit_type` below for the three modes.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -63,10 +68,10 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				Required:            true,
 			},
 			"entity_type": schema.StringAttribute{
-				MarkdownDescription: "Entity type: organization, team, or profile",
+				MarkdownDescription: "Entity type: organization, team, or agent",
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("organization", "team", "profile"),
+					stringvalidator.OneOf("organization", "team", "agent"),
 				},
 			},
 			"limit_type": schema.StringAttribute{
@@ -77,8 +82,11 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				},
 			},
 			"limit_value": schema.Int64Attribute{
-				MarkdownDescription: "Limit threshold value",
+				MarkdownDescription: "Limit threshold value. Must be at least 1.",
 				Required:            true,
+				Validators: []validator.Int64{
+					int64validator.AtLeast(1),
+				},
 			},
 			"model": schema.ListAttribute{
 				MarkdownDescription: "Required when limit_type is 'token_cost'. List of model names this limit applies to.",
@@ -106,91 +114,89 @@ func (r *LimitResource) ValidateConfig(ctx context.Context, req resource.Validat
 		return
 	}
 
-	// Skip validation if limit_type is unknown (e.g., during plan with variables)
 	if data.LimitType.IsUnknown() {
 		return
 	}
 
 	limitType := data.LimitType.ValueString()
 
+	// Required-when checks below skip Unknown values: when a field is
+	// referenced from another resource (e.g.,
+	// `mcp_server_name = archestra_mcp_server_installation.foo.name`),
+	// the value is Unknown at plan-time until the referenced resource
+	// finalizes. Erroring on Unknown produces a false "X is required"
+	// even though X is set — the framework re-validates after Unknowns
+	// resolve.
 	switch limitType {
 	case "token_cost":
-		// model must be set and non-empty
-		if data.Model.IsNull() || data.Model.IsUnknown() {
+		if data.Model.IsNull() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("model"),
 				"Missing Required Attribute",
-				"model is required when limit_type is 'token_cost'",
+				"limit_type = 'token_cost' requires `model`. Set `model = [\"<model-id>\", ...]` or change `limit_type`.",
 			)
-		} else {
+		} else if !data.Model.IsUnknown() {
 			var models []string
 			data.Model.ElementsAs(ctx, &models, false)
 			if len(models) == 0 {
 				resp.Diagnostics.AddAttributeError(
 					path.Root("model"),
 					"Invalid Attribute Value",
-					"model must contain at least one value when limit_type is 'token_cost'",
+					"`model` must contain at least one value when limit_type = 'token_cost'.",
 				)
 			}
 		}
-		// mcp_server_name must NOT be set
 		if !data.MCPServerName.IsNull() && !data.MCPServerName.IsUnknown() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("mcp_server_name"),
 				"Invalid Attribute Combination",
-				"mcp_server_name must not be set when limit_type is 'token_cost'",
+				"`mcp_server_name` must not be set when limit_type = 'token_cost'.",
 			)
 		}
-		// tool_name must NOT be set
 		if !data.ToolName.IsNull() && !data.ToolName.IsUnknown() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("tool_name"),
 				"Invalid Attribute Combination",
-				"tool_name must not be set when limit_type is 'token_cost'",
+				"`tool_name` must not be set when limit_type = 'token_cost'.",
 			)
 		}
 
 	case "mcp_server_calls":
-		// mcp_server_name is required
-		if data.MCPServerName.IsNull() || data.MCPServerName.IsUnknown() {
+		if data.MCPServerName.IsNull() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("mcp_server_name"),
 				"Missing Required Attribute",
-				"mcp_server_name is required when limit_type is 'mcp_server_calls'",
+				"limit_type = 'mcp_server_calls' requires `mcp_server_name`. Set `mcp_server_name = \"<server>\"` or change `limit_type`.",
 			)
 		}
-		// model must NOT be set
 		if !data.Model.IsNull() && !data.Model.IsUnknown() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("model"),
 				"Invalid Attribute Combination",
-				"model must not be set when limit_type is 'mcp_server_calls'",
+				"`model` must not be set when limit_type = 'mcp_server_calls'.",
 			)
 		}
 
 	case "tool_calls":
-		// mcp_server_name is required
-		if data.MCPServerName.IsNull() || data.MCPServerName.IsUnknown() {
+		if data.MCPServerName.IsNull() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("mcp_server_name"),
 				"Missing Required Attribute",
-				"mcp_server_name is required when limit_type is 'tool_calls'",
+				"limit_type = 'tool_calls' requires `mcp_server_name`. Set `mcp_server_name = \"<server>\"` or change `limit_type`.",
 			)
 		}
-		// tool_name is required
-		if data.ToolName.IsNull() || data.ToolName.IsUnknown() {
+		if data.ToolName.IsNull() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("tool_name"),
 				"Missing Required Attribute",
-				"tool_name is required when limit_type is 'tool_calls'",
+				"limit_type = 'tool_calls' requires `tool_name`. Set `tool_name = \"<tool>\"` or change `limit_type`.",
 			)
 		}
-		// model must NOT be set
 		if !data.Model.IsNull() && !data.Model.IsUnknown() {
 			resp.Diagnostics.AddAttributeError(
 				path.Root("model"),
 				"Invalid Attribute Combination",
-				"model must not be set when limit_type is 'tool_calls'",
+				"`model` must not be set when limit_type = 'tool_calls'.",
 			)
 		}
 	}
@@ -215,41 +221,28 @@ func (r *LimitResource) Configure(ctx context.Context, req resource.ConfigureReq
 
 func (r *LimitResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data LimitResourceModel
-
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	requestBody := client.CreateLimitJSONRequestBody{
-		EntityId:    data.EntityID.ValueString(),
-		EntityType:  client.CreateLimitJSONBodyEntityType(data.EntityType.ValueString()),
-		LimitType:   client.CreateLimitJSONBodyLimitType(data.LimitType.ValueString()),
-		LimitValue:  int(data.LimitValue.ValueInt64()),
-		LastCleanup: nil,
+	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
+	patch := MergePatch(ctx, req.Plan.Raw, prior, limitAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
 	}
+	LogPatch(ctx, "archestra_limit Create", patch, limitAttrSpec)
 
-	if !data.Model.IsNull() {
-		var models []string
-		data.Model.ElementsAs(ctx, &models, false)
-		requestBody.Model = &models
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
-	if !data.ToolName.IsNull() {
-		toolName := data.ToolName.ValueString()
-		requestBody.ToolName = &toolName
-	}
-	if !data.MCPServerName.IsNull() {
-		mcpServerName := data.MCPServerName.ValueString()
-		requestBody.McpServerName = &mcpServerName
-	}
-
-	apiResp, err := r.client.CreateLimitWithResponse(ctx, requestBody)
+	apiResp, err := r.client.CreateLimitWithBodyWithResponse(ctx, "application/json", bytes.NewReader(body))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create limit, got error: %s", err))
 		return
 	}
-
 	if apiResp.JSON200 == nil {
 		resp.Diagnostics.AddError(
 			"Unexpected API Response",
@@ -343,9 +336,7 @@ func (r *LimitResource) Read(ctx context.Context, req resource.ReadRequest, resp
 
 func (r *LimitResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data LimitResourceModel
-
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -356,36 +347,28 @@ func (r *LimitResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
-	entityID := data.EntityID.ValueString()
-	entityType := client.UpdateLimitJSONBodyEntityType(data.EntityType.ValueString())
-	limitType := client.UpdateLimitJSONBodyLimitType(data.LimitType.ValueString())
-	limitValue := int(data.LimitValue.ValueInt64())
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, limitAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	LogPatch(ctx, "archestra_limit Update", patch, limitAttrSpec)
 
-	requestBody := client.UpdateLimitJSONRequestBody{
-		EntityId:    &entityID,
-		EntityType:  &entityType,
-		LimitType:   &limitType,
-		LimitValue:  &limitValue,
-		LastCleanup: nil,
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("Unable to marshal request body: %s", err))
+		return
 	}
-
-	if !data.Model.IsNull() {
-		var models []string
-		data.Model.ElementsAs(ctx, &models, false)
-		requestBody.Model = &models
-	}
-	if !data.ToolName.IsNull() {
-		toolName := data.ToolName.ValueString()
-		requestBody.ToolName = &toolName
-	}
-	if !data.MCPServerName.IsNull() {
-		mcpServerName := data.MCPServerName.ValueString()
-		requestBody.McpServerName = &mcpServerName
-	}
-
-	apiResp, err := r.client.UpdateLimitWithResponse(ctx, id, requestBody)
+	apiResp, err := r.client.UpdateLimitWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(body))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update limit, got error: %s", err))
+		return
+	}
+	if IsNotFound(apiResp) {
+		resp.Diagnostics.AddError(
+			"Resource Deleted Outside Terraform",
+			"The resource was deleted on the backend between refresh and apply. "+
+				"Re-run `terraform apply` — the next refresh drops it from state and the plan recreates it.",
+		)
 		return
 	}
 

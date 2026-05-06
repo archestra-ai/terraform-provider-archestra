@@ -4,9 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"regexp"
 
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )
+
+// uuidRegexp matches RFC 4122-style UUIDs in either case. The backend
+// emits lowercase, but values copy-pasted from a browser UI may be
+// uppercase, and Go's `uuid.Parse` is case-insensitive too — so the
+// validator should be lenient about the case it accepts.
+var uuidRegexp = regexp.MustCompile(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)
 
 // jsonObject is a validator.String that fails plan when the configured value,
 // parsed as JSON, is not a JSON object. Null/unknown values are ignored so it
@@ -17,7 +24,7 @@ import (
 type jsonObject struct{}
 
 // jsonObjectValidator returns the jsonObject validator. Kept package-internal
-// because the only consumer is resource_sso_provider.go.
+// because the only consumer is resource_identity_provider.go.
 func jsonObjectValidator() validator.String {
 	return jsonObject{}
 }

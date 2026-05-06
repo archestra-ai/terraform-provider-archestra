@@ -3,29 +3,51 @@
 page_title: "archestra_llm_model Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an LLM model's custom pricing and settings in Archestra. Models are discovered automatically from configured LLM provider API keys. This resource adopts an existing model by model_id and allows customizing its pricing. Destroying this resource only removes it from Terraform state — the model remains in Archestra.
+  Pricing and settings override for an LLM model auto-discovered from an archestra_llm_provider_api_key. Adopt-only — terraform destroy reverts the override; the model itself is never deleted.
 ---
 
 # archestra_llm_model (Resource)
 
-Manages an LLM model's custom pricing and settings in Archestra. Models are discovered automatically from configured LLM provider API keys. This resource adopts an existing model by `model_id` and allows customizing its pricing. Destroying this resource only removes it from Terraform state — the model remains in Archestra.
+Pricing and settings override for an LLM model auto-discovered from an `archestra_llm_provider_api_key`. Adopt-only — `terraform destroy` reverts the override; the model itself is never deleted.
 
 ## Example Usage
 
 ```terraform
-# Manage custom pricing for an LLM model
+# Override pricing for an existing model — useful when a discount agreement
+# means the platform's auto-discovered prices undercount your real spend.
 resource "archestra_llm_model" "gpt4o" {
   model_id = "gpt-4o"
 
-  # Override provider pricing with custom rates
   custom_price_per_million_input  = "2.50"
   custom_price_per_million_output = "10.00"
 }
 
-# Ignore a model (hide from model selection)
-resource "archestra_llm_model" "ignored" {
+# Hide a model from the UI's model picker without deleting it (e.g. legacy
+# models you no longer want users selecting). `ignored = true` is the wire
+# equivalent of the UI's "ignore" toggle.
+resource "archestra_llm_model" "deprecated_3_5" {
   model_id = "gpt-3.5-turbo"
   ignored  = true
+}
+
+# Override Claude with enterprise-contract pricing. The model's own
+# `description` is read-only (carried from the provider catalog); only
+# pricing, ignored, and modality overrides are settable on this resource.
+resource "archestra_llm_model" "claude_sonnet" {
+  model_id = "claude-sonnet-4-5"
+
+  custom_price_per_million_input  = "2.40"
+  custom_price_per_million_output = "12.00"
+}
+
+# Read-only outputs surfaced post-create — handy for debugging price drift.
+output "gpt4o_effective_input_price" {
+  value = archestra_llm_model.gpt4o.price_per_million_input
+}
+
+output "gpt4o_price_source" {
+  description = "One of: custom, provider, default"
+  value       = archestra_llm_model.gpt4o.price_source
 }
 ```
 
@@ -34,15 +56,15 @@ resource "archestra_llm_model" "ignored" {
 
 ### Required
 
-- `model_id` (String) The model identifier (e.g., `gpt-4o`, `claude-sonnet-4-20250514`). Used to look up the model on create.
+- `model_id` (String) The model identifier (e.g., `gpt-4o`, `claude-sonnet-4-20250514`). Must match a model the platform has discovered via a configured `archestra_llm_provider_api_key` — the backend rejects IDs that aren't in any provider's discovered model list. Check the UI's model picker for the live set.
 
 ### Optional
 
 - `custom_price_per_million_input` (String) Custom price per million input tokens (overrides provider pricing)
 - `custom_price_per_million_output` (String) Custom price per million output tokens (overrides provider pricing)
 - `ignored` (Boolean) Whether the model is ignored (hidden from model selection)
-- `input_modalities` (List of String) Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`
-- `output_modalities` (List of String) Output modality overrides. Valid values: `text`, `image`, `audio`
+- `input_modalities` (List of String) Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.
+- `output_modalities` (List of String) Output modality overrides. Valid values: `text`, `image`, `audio`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.
 
 ### Read-Only
 
@@ -54,3 +76,14 @@ resource "archestra_llm_model" "ignored" {
 - `price_per_million_input` (String) Effective price per million input tokens (computed from custom or provider pricing)
 - `price_per_million_output` (String) Effective price per million output tokens (computed from custom or provider pricing)
 - `price_source` (String) Source of the current pricing: `custom`, `models_dev`, or `default`
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+# Import by upstream model_id (e.g. "gpt-4o"), not UUID.
+terraform import archestra_llm_model.example gpt-4o
+```

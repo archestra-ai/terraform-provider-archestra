@@ -72,7 +72,7 @@ func (r *TeamExternalGroupResource) Schema(
 	resp *resource.SchemaResponse,
 ) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages external identity provider group sync for a team.",
+		MarkdownDescription: "Maps an external identity-provider group onto an Archestra team's membership.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{

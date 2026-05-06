@@ -3,16 +3,18 @@
 page_title: "archestra_mcp_registry_catalog_item Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an MCP server in the Private MCP Registry. This allows you to register local MCP servers that can then be installed by profiles.
+  Catalog entry / template for an MCP server in the Private MCP Registry. The catalog item alone doesn't run anything; pair it with archestra_mcp_server_installation to run an instance.
 ---
 
 # archestra_mcp_registry_catalog_item (Resource)
 
-Manages an MCP server in the Private MCP Registry. This allows you to register local MCP servers that can then be installed by profiles.
+Catalog entry / template for an MCP server in the Private MCP Registry. The catalog item alone doesn't run anything; pair it with `archestra_mcp_server_installation` to run an instance.
 
 ## Example Usage
 
 ```terraform
+# Variables (declare in your variables.tf): registry_username (string), registry_password (string, sensitive), postgres_password (string, sensitive), oauth_client_secret (string, sensitive).
+
 # Local MCP server with stdio transport (default)
 resource "archestra_mcp_registry_catalog_item" "filesystem" {
   name        = "filesystem-mcp-server"
@@ -23,9 +25,9 @@ resource "archestra_mcp_registry_catalog_item" "filesystem" {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/home/user"]
 
-    environment = {
-      NODE_ENV = "production"
-    }
+    environment = [
+      { key = "NODE_ENV", type = "plain_text", value = "production" },
+    ]
   }
 }
 
@@ -41,9 +43,9 @@ resource "archestra_mcp_registry_catalog_item" "github" {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-github"]
 
-    environment = {
-      NODE_ENV = "production"
-    }
+    environment = [
+      { key = "NODE_ENV", type = "plain_text", value = "production" },
+    ]
   }
 
   auth_fields = [
@@ -93,11 +95,11 @@ resource "archestra_mcp_registry_catalog_item" "postgres" {
     arguments    = ["-y", "@modelcontextprotocol/server-postgres"]
     docker_image = "postgres:16-alpine"
 
-    environment = {
-      POSTGRES_USER     = "admin"
-      POSTGRES_PASSWORD = "${var.postgres_password}"
-      POSTGRES_DB       = "myapp"
-    }
+    environment = [
+      { key = "POSTGRES_USER", type = "plain_text", value = "admin" },
+      { key = "POSTGRES_PASSWORD", type = "secret", value = var.postgres_password },
+      { key = "POSTGRES_DB", type = "plain_text", value = "myapp" },
+    ]
   }
 
   auth_fields = [
@@ -293,10 +295,10 @@ Optional:
 - `assertion_mode` (String) Assertion exchange mode. One of `exchange`, `passthrough`.
 - `audience` (String)
 - `body_field_name` (String)
-- `cache_ttl_seconds` (Number)
+- `cache_ttl_seconds` (Number) Cache TTL in seconds. Non-negative.
 - `client_id_override` (String)
 - `env_var_name` (String)
-- `fallback_mode` (String)
+- `fallback_mode` (String) Behavior when credential exchange fails. One of `fail_closed`, `fallback_to_dynamic`, `fallback_to_static`.
 - `header_name` (String)
 - `identity_provider_id` (String) Identity provider UUID issuing credentials.
 - `requested_credential_type` (String) Credential type requested. One of `id_jag`, `bearer_token`, `secret`, `service_account`, `opaque_json`.
@@ -305,7 +307,7 @@ Optional:
 - `resource_type` (String) Resource type. One of `mcp`, `oauth_protected_resource`, `secret`, `service_account`, `custom_http`.
 - `response_field_path` (String)
 - `scopes` (List of String)
-- `token_injection_mode` (String) How the token is injected into the downstream request.
+- `token_injection_mode` (String) How the token is injected into the downstream request. One of `authorization_bearer`, `raw_authorization`, `header`, `env`, `body_field`.
 
 
 <a id="nestedatt--labels"></a>
@@ -326,12 +328,11 @@ Optional:
 - `command` (String) The executable command to run (e.g., 'node', 'python', 'npx'). Optional if Docker Image is set (will use image's default CMD).
 - `docker_image` (String) Custom Docker image URL. If not specified, Archestra's default base image will be used.
 - `env_from` (Attributes List) List of sources to populate environment variables from (Kubernetes secrets or configMaps) (see [below for nested schema](#nestedatt--local_config--env_from))
-- `environment` (Map of String) Environment variables for the MCP server (KEY=value format)
+- `environment` (Attributes Set) Environment variables declared on the MCP server. Each entry mirrors the backend's wire shape one-to-one: `key`, `type`, optional `value`, `default`, `description`, plus `prompt_on_installation`, `required`, and `mounted` flags. (see [below for nested schema](#nestedatt--local_config--environment))
 - `http_path` (String) HTTP path for streamable-http transport (e.g., '/sse')
-- `http_port` (Number) HTTP port for streamable-http transport
+- `http_port` (Number) HTTP port for streamable-http transport. Range 0..65535.
 - `image_pull_secrets` (Attributes List) Kubernetes image pull secrets for the MCP server pod. Supports two variants: `source = "existing"` references a pre-existing secret by `name`; `source = "credentials"` creates a new secret from explicit registry credentials (`server`, `username`, `password`, optional `email`). (see [below for nested schema](#nestedatt--local_config--image_pull_secrets))
-- `mounted_env_keys` (Set of String) Set of environment variable keys that should be mounted as files at /secrets/<key>
-- `node_port` (Number) Node port for the MCP server service
+- `node_port` (Number) Node port for the MCP server service. Kubernetes NodePort range 30000..32767.
 - `service_account` (String) Kubernetes service account for the MCP server pod
 - `transport_type` (String) Transport type: 'stdio' or 'streamable-http'. Defaults to 'stdio'
 
@@ -346,6 +347,24 @@ Required:
 Optional:
 
 - `prefix` (String) Optional prefix for environment variable names
+
+
+<a id="nestedatt--local_config--environment"></a>
+### Nested Schema for `local_config.environment`
+
+Required:
+
+- `key` (String) Environment variable name.
+- `type` (String) Variable type. One of `plain_text`, `secret`, `boolean`, `number`.
+
+Optional:
+
+- `default` (String) Default value. Use `jsonencode(...)` to encode non-string defaults (number, bool). Plain strings may be provided as-is.
+- `description` (String) Human-readable description of the variable.
+- `mounted` (Boolean) When true, the value is mounted as a file at `/secrets/<key>` rather than injected as an env var.
+- `prompt_on_installation` (Boolean) Whether the installer must supply this value at install time. Required field on the wire — defaults to `false`.
+- `required` (Boolean) Whether the value must be set.
+- `value` (String) Value for `plain_text` / `secret` variables.
 
 
 <a id="nestedatt--local_config--image_pull_secrets"></a>
@@ -396,9 +415,9 @@ Optional:
 - `requires_proxy` (Boolean) Route OAuth redirects through the Archestra proxy.
 - `resource_metadata_url` (String) URL of the protected-resource metadata document.
 - `scopes` (List of String) List of OAuth scopes to request (e.g., ['read', 'write'])
-- `streamable_http_port` (Number) Streamable-HTTP MCP server port override.
+- `streamable_http_port` (Number) Streamable-HTTP MCP server port override. Range 0..65535.
 - `streamable_http_url` (String) Streamable-HTTP MCP server URL override.
-- `supports_resource_metadata` (Boolean) Enable if the server publishes OAuth metadata at /.well-known/oauth-authorization-server for automatic endpoint discovery
+- `supports_resource_metadata` (Boolean) Enable if the server publishes OAuth metadata at /.well-known/oauth-authorization-server for automatic endpoint discovery. Defaults to `false` (matching the backend default).
 - `token_endpoint` (String) Custom OAuth token endpoint URL.
 - `well_known_url` (String) Override for the `.well-known` discovery document URL.
 
@@ -423,3 +442,13 @@ Optional:
 - `prompt_on_installation` (Boolean) Whether to prompt the user for this value during installation.
 - `required` (Boolean) Whether the installer must supply this field.
 - `sensitive` (Boolean) If true, the value is redacted in logs and UI.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_mcp_registry_catalog_item.example 00000000-0000-0000-0000-000000000000
+```
