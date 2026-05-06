@@ -144,6 +144,11 @@ func (r *AgentToolBatchResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
+	if data.AgentID.IsNull() || data.AgentID.ValueString() == "" ||
+		data.McpServerID.IsNull() || data.McpServerID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	agentUUID, err := uuid.Parse(data.AgentID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError("Invalid agent_id", err.Error())

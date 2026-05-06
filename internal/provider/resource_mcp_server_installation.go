@@ -423,6 +423,10 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
+	if data.ID.IsNull() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	// Parse UUID from state
 	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
