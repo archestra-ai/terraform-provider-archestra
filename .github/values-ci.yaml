@@ -15,6 +15,16 @@ archestra:
 
     ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
 
+    # BYOS vault (READONLY_VAULT) so tests that exercise vault-backed catalog
+    # fields can run. The Vault server is deployed as a sidecar in the CI
+    # workflow (dev mode, root token).
+    ARCHESTRA_SECRETS_MANAGER: "READONLY_VAULT"
+    ARCHESTRA_HASHICORP_VAULT_ADDR: "http://vault.default.svc.cluster.local:8200"
+    ARCHESTRA_HASHICORP_VAULT_TOKEN: "root"
+
+    # Ollama probe stub for testProviderApiKey (no real Ollama in CI).
+    ARCHESTRA_OLLAMA_BASE_URL: "http://ollama-mock.default.svc.cluster.local:11434/v1"
+
     # Enable test MCP server seeding (useful for acceptance tests)
     ENABLE_TEST_MCP_SERVER: "true"
 

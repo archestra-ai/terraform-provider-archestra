@@ -3,16 +3,18 @@
 page_title: "archestra_mcp_registry_catalog_item Resource - archestra"
 subcategory: ""
 description: |-
-  Manages an MCP server in the Private MCP Registry. This allows you to register local MCP servers that can then be installed by profiles.
+  Catalog entry / template for an MCP server in the Private MCP Registry. The catalog item alone doesn't run anything; pair it with archestra_mcp_server_installation to run an instance.
 ---
 
 # archestra_mcp_registry_catalog_item (Resource)
 
-Manages an MCP server in the Private MCP Registry. This allows you to register local MCP servers that can then be installed by profiles.
+Catalog entry / template for an MCP server in the Private MCP Registry. The catalog item alone doesn't run anything; pair it with `archestra_mcp_server_installation` to run an instance.
 
 ## Example Usage
 
 ```terraform
+# Variables (declare in your variables.tf): registry_username (string), registry_password (string, sensitive), postgres_password (string, sensitive), oauth_client_secret (string, sensitive).
+
 # Local MCP server with stdio transport (default)
 resource "archestra_mcp_registry_catalog_item" "filesystem" {
   name        = "filesystem-mcp-server"
@@ -23,9 +25,9 @@ resource "archestra_mcp_registry_catalog_item" "filesystem" {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/home/user"]
 
-    environment = {
-      NODE_ENV = "production"
-    }
+    environment = [
+      { key = "NODE_ENV", type = "plain_text", value = "production" },
+    ]
   }
 }
 
@@ -41,9 +43,9 @@ resource "archestra_mcp_registry_catalog_item" "github" {
     command   = "npx"
     arguments = ["-y", "@modelcontextprotocol/server-github"]
 
-    environment = {
-      NODE_ENV = "production"
-    }
+    environment = [
+      { key = "NODE_ENV", type = "plain_text", value = "production" },
+    ]
   }
 
   auth_fields = [
@@ -93,11 +95,11 @@ resource "archestra_mcp_registry_catalog_item" "postgres" {
     arguments    = ["-y", "@modelcontextprotocol/server-postgres"]
     docker_image = "postgres:16-alpine"
 
-    environment = {
-      POSTGRES_USER     = "admin"
-      POSTGRES_PASSWORD = "${var.postgres_password}"
-      POSTGRES_DB       = "myapp"
-    }
+    environment = [
+      { key = "POSTGRES_USER", type = "plain_text", value = "admin" },
+      { key = "POSTGRES_PASSWORD", type = "secret", value = var.postgres_password },
+      { key = "POSTGRES_DB", type = "plain_text", value = "myapp" },
+    ]
   }
 
   auth_fields = [
@@ -132,6 +134,40 @@ resource "archestra_mcp_registry_catalog_item" "github_remote" {
   ]
 }
 
+# Local MCP server exposing installer-configurable user_config fields
+resource "archestra_mcp_registry_catalog_item" "with_user_config" {
+  name        = "user-config-mcp-server"
+  description = "MCP server that collects configuration from the installer at install time"
+
+  local_config = {
+    command   = "npx"
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+  }
+
+  user_config = {
+    workspace = {
+      title       = "Workspace Path"
+      description = "Absolute path to the workspace root"
+      type        = "directory"
+      required    = true
+    }
+    max_results = {
+      title       = "Max Results"
+      description = "Maximum number of records to return"
+      type        = "number"
+      default     = jsonencode(50)
+      min         = 1
+      max         = 500
+    }
+    enable_cache = {
+      title       = "Enable Cache"
+      description = "Whether to cache API responses"
+      type        = "boolean"
+      default     = jsonencode(true)
+    }
+  }
+}
+
 # Remote MCP server with OAuth authentication
 resource "archestra_mcp_registry_catalog_item" "remote_oauth" {
   name        = "remote-oauth-mcp-server"
@@ -148,6 +184,54 @@ resource "archestra_mcp_registry_catalog_item" "remote_oauth" {
     }
   }
 }
+
+# Remote MCP server with an advanced OAuth configuration — exercises all of the
+# new fields exposed in v1.2.20: grant_type, audience, endpoint overrides,
+# well-known discovery URL, default scopes, and provider metadata.
+resource "archestra_mcp_registry_catalog_item" "remote_oauth_advanced" {
+  name        = "remote-oauth-advanced"
+  description = "Remote MCP server with an explicit OAuth authorization_code flow"
+
+  remote_config = {
+    url = "https://api.example.com/mcp/"
+    oauth_config = {
+      client_id              = "your-client-id"
+      client_secret          = var.oauth_client_secret
+      grant_type             = "authorization_code"
+      redirect_uris          = ["https://frontend.archestra.dev/oauth-callback"]
+      scopes                 = ["read", "write"]
+      default_scopes         = ["openid"]
+      audience               = "https://api.example.com"
+      authorization_endpoint = "https://auth.example.com/oauth/authorize"
+      token_endpoint         = "https://auth.example.com/oauth/token"
+      well_known_url         = "https://auth.example.com/.well-known/oauth-authorization-server"
+      provider_name          = "Example OAuth"
+      browser_auth           = true
+      generic_oauth          = false
+    }
+  }
+}
+
+# Local MCP server pulling from a private registry using inline credentials
+# (alternative to referencing a pre-existing Kubernetes secret by name).
+resource "archestra_mcp_registry_catalog_item" "private_registry" {
+  name        = "private-registry-mcp-server"
+  description = "MCP server whose image is pulled from a private registry using inline credentials"
+
+  local_config = {
+    command      = "/usr/local/bin/mcp-server"
+    docker_image = "registry.example.com/team/mcp-server:1.0.0"
+    image_pull_secrets = [
+      {
+        source   = "credentials"
+        server   = "registry.example.com"
+        username = var.registry_username
+        password = var.registry_password
+        email    = "devops@example.com"
+      }
+    ]
+  }
+}
 ```
 
 <!-- schema generated by tfplugindocs -->
@@ -161,11 +245,28 @@ resource "archestra_mcp_registry_catalog_item" "remote_oauth" {
 
 - `auth_description` (String) Description of the authentication requirements
 - `auth_fields` (Attributes List) Custom authentication fields required by the MCP server (see [below for nested schema](#nestedatt--auth_fields))
+- `client_secret_id` (String) UUID of a stored secret holding the OAuth client secret. Mutually exclusive with inline `oauth_config.client_secret`. Computed when the backend auto-creates a BYOS vault reference.
+- `deployment_spec_yaml` (String) Custom Kubernetes deployment YAML for the MCP server
 - `description` (String) Description of the MCP server
 - `docs_url` (String) URL to the MCP server documentation
+- `enterprise_managed_config` (Attributes) Enterprise-managed credential configuration. Binds this catalog item to an identity provider that issues credentials at runtime rather than using static secrets. (see [below for nested schema](#nestedatt--enterprise_managed_config))
+- `icon` (String) Icon string for the MCP server
 - `installation_command` (String) Installation command for the MCP server (e.g., npm install -g @example/mcp-server)
+- `instructions` (String) Installation instructions text for the MCP server
+- `labels` (Attributes List) Labels for the MCP server catalog item (see [below for nested schema](#nestedatt--labels))
 - `local_config` (Attributes) Configuration for MCP servers run in the Archestra orchestrator MCP runtime (see [below for nested schema](#nestedatt--local_config))
+- `local_config_secret_id` (String) UUID of a stored secret holding local_config environment values. Computed when the backend auto-creates a BYOS vault reference.
+- `local_config_vault_key` (String) BYOS vault key for local_config secrets.
+- `local_config_vault_path` (String) BYOS vault path for local_config secrets.
+- `oauth_client_secret_vault_key` (String) BYOS vault key for the OAuth client secret.
+- `oauth_client_secret_vault_path` (String) BYOS vault path for the OAuth client secret.
 - `remote_config` (Attributes) Configuration for remote/hosted MCP servers accessed via HTTP (see [below for nested schema](#nestedatt--remote_config))
+- `repository` (String) Repository URL for the MCP server
+- `requires_auth` (Boolean) Whether the MCP server requires authentication
+- `scope` (String) Visibility scope for the MCP server catalog item (e.g., 'personal', 'team', 'org')
+- `teams` (List of String) Team IDs that have access to this MCP server
+- `user_config` (Attributes Map) User-configurable fields collected from the installer at install time. The map key is the field name the installer will see. (see [below for nested schema](#nestedatt--user_config))
+- `version` (String) Version string for the MCP server
 
 ### Read-Only
 
@@ -186,6 +287,38 @@ Optional:
 - `description` (String) Description of the field
 
 
+<a id="nestedatt--enterprise_managed_config"></a>
+### Nested Schema for `enterprise_managed_config`
+
+Optional:
+
+- `assertion_mode` (String) Assertion exchange mode. One of `exchange`, `passthrough`.
+- `audience` (String)
+- `body_field_name` (String)
+- `cache_ttl_seconds` (Number) Cache TTL in seconds. Non-negative.
+- `client_id_override` (String)
+- `env_var_name` (String)
+- `fallback_mode` (String) Behavior when credential exchange fails. One of `fail_closed`, `fallback_to_dynamic`, `fallback_to_static`.
+- `header_name` (String)
+- `identity_provider_id` (String) Identity provider UUID issuing credentials.
+- `requested_credential_type` (String) Credential type requested. One of `id_jag`, `bearer_token`, `secret`, `service_account`, `opaque_json`.
+- `requested_issuer` (String)
+- `resource_identifier` (String)
+- `resource_type` (String) Resource type. One of `mcp`, `oauth_protected_resource`, `secret`, `service_account`, `custom_http`.
+- `response_field_path` (String)
+- `scopes` (List of String)
+- `token_injection_mode` (String) How the token is injected into the downstream request. One of `authorization_bearer`, `raw_authorization`, `header`, `env`, `body_field`.
+
+
+<a id="nestedatt--labels"></a>
+### Nested Schema for `labels`
+
+Required:
+
+- `key` (String) Label key
+- `value` (String) Label value
+
+
 <a id="nestedatt--local_config"></a>
 ### Nested Schema for `local_config`
 
@@ -194,10 +327,58 @@ Optional:
 - `arguments` (List of String) Arguments to pass to the command
 - `command` (String) The executable command to run (e.g., 'node', 'python', 'npx'). Optional if Docker Image is set (will use image's default CMD).
 - `docker_image` (String) Custom Docker image URL. If not specified, Archestra's default base image will be used.
-- `environment` (Map of String) Environment variables for the MCP server (KEY=value format)
+- `env_from` (Attributes List) List of sources to populate environment variables from (Kubernetes secrets or configMaps) (see [below for nested schema](#nestedatt--local_config--env_from))
+- `environment` (Attributes Set) Environment variables declared on the MCP server. Each entry mirrors the backend's wire shape one-to-one: `key`, `type`, optional `value`, `default`, `description`, plus `prompt_on_installation`, `required`, and `mounted` flags. (see [below for nested schema](#nestedatt--local_config--environment))
 - `http_path` (String) HTTP path for streamable-http transport (e.g., '/sse')
-- `http_port` (Number) HTTP port for streamable-http transport
+- `http_port` (Number) HTTP port for streamable-http transport. Range 0..65535.
+- `image_pull_secrets` (Attributes List) Kubernetes image pull secrets for the MCP server pod. Supports two variants: `source = "existing"` references a pre-existing secret by `name`; `source = "credentials"` creates a new secret from explicit registry credentials (`server`, `username`, `password`, optional `email`). (see [below for nested schema](#nestedatt--local_config--image_pull_secrets))
+- `node_port` (Number) Node port for the MCP server service. Kubernetes NodePort range 30000..32767.
+- `service_account` (String) Kubernetes service account for the MCP server pod
 - `transport_type` (String) Transport type: 'stdio' or 'streamable-http'. Defaults to 'stdio'
+
+<a id="nestedatt--local_config--env_from"></a>
+### Nested Schema for `local_config.env_from`
+
+Required:
+
+- `name` (String) Name of the secret or configMap
+- `type` (String) Source type: 'secret' or 'configMap'
+
+Optional:
+
+- `prefix` (String) Optional prefix for environment variable names
+
+
+<a id="nestedatt--local_config--environment"></a>
+### Nested Schema for `local_config.environment`
+
+Required:
+
+- `key` (String) Environment variable name.
+- `type` (String) Variable type. One of `plain_text`, `secret`, `boolean`, `number`.
+
+Optional:
+
+- `default` (String) Default value. Use `jsonencode(...)` to encode non-string defaults (number, bool). Plain strings may be provided as-is.
+- `description` (String) Human-readable description of the variable.
+- `mounted` (Boolean) When true, the value is mounted as a file at `/secrets/<key>` rather than injected as an env var.
+- `prompt_on_installation` (Boolean) Whether the installer must supply this value at install time. Required field on the wire — defaults to `false`.
+- `required` (Boolean) Whether the value must be set.
+- `value` (String) Value for `plain_text` / `secret` variables.
+
+
+<a id="nestedatt--local_config--image_pull_secrets"></a>
+### Nested Schema for `local_config.image_pull_secrets`
+
+Optional:
+
+- `email` (String) Registry email (optional for `source = credentials`).
+- `name` (String) Name of the existing Kubernetes secret (required for `source = existing`).
+- `password` (String, Sensitive) Registry password (required for `source = credentials`). Write-only: the backend never echoes it back. To stay consistent across refreshes the provider preserves it keyed by `(server, username)`; rotating either of those values drops the password from state and forces re-entry.
+- `server` (String) Docker registry server URL (required for `source = credentials`).
+- `source` (String) Source of the pull secret. One of `existing`, `credentials`. Defaults to `existing` for backward compatibility when only `name` is set.
+- `username` (String) Registry username (required for `source = credentials`).
+
 
 
 <a id="nestedatt--remote_config"></a>
@@ -220,7 +401,54 @@ Required:
 
 Optional:
 
+- `access_token_env_var` (String) Environment variable name to inject the acquired access token into.
+- `audience` (String) `aud` claim to request when performing token exchange.
+- `auth_server_url` (String) Override for the OAuth authorization server root URL.
+- `authorization_endpoint` (String) Custom OAuth authorization endpoint URL
+- `browser_auth` (Boolean) Prompt the installer through an interactive browser auth flow.
 - `client_id` (String) OAuth Client ID. Leave empty if the server supports dynamic client registration.
 - `client_secret` (String, Sensitive) OAuth Client Secret (optional)
+- `default_scopes` (List of String) Scopes requested by default when the server doesn't advertise its own.
+- `generic_oauth` (Boolean) Treat the server as a generic OAuth provider (skip vendor-specific probes).
+- `grant_type` (String) OAuth grant type. One of `authorization_code`, `client_credentials`.
+- `provider_name` (String) Human-readable name of the OAuth provider for display.
+- `requires_proxy` (Boolean) Route OAuth redirects through the Archestra proxy.
+- `resource_metadata_url` (String) URL of the protected-resource metadata document.
 - `scopes` (List of String) List of OAuth scopes to request (e.g., ['read', 'write'])
-- `supports_resource_metadata` (Boolean) Enable if the server publishes OAuth metadata at /.well-known/oauth-authorization-server for automatic endpoint discovery
+- `streamable_http_port` (Number) Streamable-HTTP MCP server port override. Range 0..65535.
+- `streamable_http_url` (String) Streamable-HTTP MCP server URL override.
+- `supports_resource_metadata` (Boolean) Enable if the server publishes OAuth metadata at /.well-known/oauth-authorization-server for automatic endpoint discovery. Defaults to `false` (matching the backend default).
+- `token_endpoint` (String) Custom OAuth token endpoint URL.
+- `well_known_url` (String) Override for the `.well-known` discovery document URL.
+
+
+
+<a id="nestedatt--user_config"></a>
+### Nested Schema for `user_config`
+
+Required:
+
+- `description` (String) Description of the field shown to the installer.
+- `title` (String) Human-readable field title shown to the installer.
+- `type` (String) Field type. One of `string`, `number`, `boolean`, `file`, `directory`.
+
+Optional:
+
+- `default` (String) Default value. Use `jsonencode(...)` to encode non-string defaults (number, bool, or []string). Plain strings may be provided as-is.
+- `header_name` (String) HTTP header name to bind this value to when installing a remote server.
+- `max` (Number) Maximum value (for numeric fields).
+- `min` (Number) Minimum value (for numeric fields).
+- `multiple` (Boolean) Whether multiple values may be supplied.
+- `prompt_on_installation` (Boolean) Whether to prompt the user for this value during installation.
+- `required` (Boolean) Whether the installer must supply this field.
+- `sensitive` (Boolean) If true, the value is redacted in logs and UI.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_mcp_registry_catalog_item.example 00000000-0000-0000-0000-000000000000
+```

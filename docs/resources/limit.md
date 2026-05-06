@@ -3,42 +3,63 @@
 page_title: "archestra_limit Resource - archestra"
 subcategory: ""
 description: |-
-  Manages usage limits in Archestra.
+  Usage limit on tokens or call counts, scoped per organization, team, or agent. See limit_type below for the three modes.
 ---
 
 # archestra_limit (Resource)
 
-Manages usage limits in Archestra.
+Usage limit on tokens or call counts, scoped per organization, team, or agent. See `limit_type` below for the three modes.
 
 ## Example Usage
 
 ```terraform
-# Model-specific token cost limit (required for token_cost type)
-resource "archestra_limit" "model_limit" {
-  entity_id   = "your-organization-id"
+# Variables (declare in your variables.tf): organization_id (string).
+# Externals (declare elsewhere): archestra_team.engineering, archestra_agent.support, archestra_mcp_server_installation.github.
+
+# Token-cost limit at the org level — caps cumulative input+output token spend
+# (in micro-USD, so 500_000 = $0.50). `model` is a list because a single limit
+# can apply to several models simultaneously.
+resource "archestra_limit" "org_token_cost" {
+  entity_id   = var.organization_id
   entity_type = "organization"
   limit_type  = "token_cost"
   limit_value = 500000
-  model       = "gpt-4o"
+  model       = ["gpt-4o", "gpt-4o-mini"]
 }
 
-# MCP server calls limit (requires mcp_server_name)
-resource "archestra_limit" "mcp_limit" {
+# Per-team MCP-server-call ceiling — every team gets 5k GitHub MCP calls before
+# requests start getting rate-limited. Requires `mcp_server_name`.
+resource "archestra_limit" "engineering_github_calls" {
   entity_id       = archestra_team.engineering.id
   entity_type     = "team"
   limit_type      = "mcp_server_calls"
   limit_value     = 5000
-  mcp_server_name = "github-mcp"
+  mcp_server_name = archestra_mcp_server_installation.github.name
 }
 
-# Tool calls limit (requires both mcp_server_name and tool_name)
-resource "archestra_limit" "tool_limit" {
-  entity_id       = archestra_profile.assistant.id
-  entity_type     = "profile"
+# Per-agent tool-call quota — caps how many times the support agent can call
+# `list_repos` on the github MCP. Requires both `mcp_server_name` and `tool_name`.
+resource "archestra_limit" "support_list_repos" {
+  entity_id       = archestra_agent.support.id
+  entity_type     = "agent"
   limit_type      = "tool_calls"
-  limit_value     = 10000
-  mcp_server_name = "github-mcp"
+  limit_value     = 200
+  mcp_server_name = archestra_mcp_server_installation.github.name
   tool_name       = "list_repos"
+}
+
+# Multi-model token-cost cap — same dollar budget split across the Claude
+# family. Useful when you want a single rolling spend window across models.
+resource "archestra_limit" "claude_family_budget" {
+  entity_id   = archestra_team.engineering.id
+  entity_type = "team"
+  limit_type  = "token_cost"
+  limit_value = 250000
+  model = [
+    "claude-sonnet-4-5",
+    "claude-opus-4-7",
+    "claude-haiku-4-5",
+  ]
 }
 ```
 
@@ -48,9 +69,9 @@ resource "archestra_limit" "tool_limit" {
 ### Required
 
 - `entity_id` (String) The entity ID this limit applies to
-- `entity_type` (String) Entity type: organization, team, or profile
+- `entity_type` (String) Entity type: organization, team, or agent
 - `limit_type` (String) Limit type: 'token_cost' (requires model), 'tool_calls' (requires mcp_server_name and tool_name), or 'mcp_server_calls' (requires mcp_server_name)
-- `limit_value` (Number) Limit threshold value
+- `limit_value` (Number) Limit threshold value. Must be at least 1.
 
 ### Optional
 
@@ -61,3 +82,13 @@ resource "archestra_limit" "tool_limit" {
 ### Read-Only
 
 - `id` (String) Limit identifier
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import archestra_limit.example 00000000-0000-0000-0000-000000000000
+```

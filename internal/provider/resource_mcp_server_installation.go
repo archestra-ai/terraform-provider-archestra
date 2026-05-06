@@ -2,25 +2,57 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"sort"
+	"strings"
 
 	"time"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+// Backend's K8s readiness budget alone is 120s (`waitForDeploymentReady(60, 2000)`
+// in platform `routes/mcp-server.ts`); 5 min covers slow nodes + image pulls.
 const (
-	mcpServerPollTimeout  = 30 * time.Second
-	mcpServerPollInterval = 1 * time.Second
+	mcpServerInstallTimeout = 5 * time.Minute
+	mcpServerInstallPoll    = 2 * time.Second
 )
+
+// installStatusDecision classifies a `localInstallationStatus` value into the
+// three outcomes the poller acts on. Pure function so the state machine is
+// testable without a backend.
+type installStatusDecision int
+
+const (
+	installStatusWait installStatusDecision = iota
+	installStatusDone
+	installStatusFailed
+)
+
+func decideInstallStatus(s string) installStatusDecision {
+	switch s {
+	case "success":
+		return installStatusDone
+	case "error":
+		return installStatusFailed
+	default: // idle, pending, discovering-tools, "", or anything else
+		return installStatusWait
+	}
+}
 
 var _ resource.Resource = &MCPServerResource{}
 var _ resource.ResourceWithImportState = &MCPServerResource{}
@@ -34,11 +66,52 @@ type MCPServerResource struct {
 }
 
 type MCPServerResourceModel struct {
-	ID          types.String `tfsdk:"id"`
-	Name        types.String `tfsdk:"name"`
-	DisplayName types.String `tfsdk:"display_name"`
-	MCPServerID types.String `tfsdk:"mcp_server_id"`
+	ID                types.String `tfsdk:"id"`
+	Name              types.String `tfsdk:"name"`
+	DisplayName       types.String `tfsdk:"display_name"`
+	CatalogID         types.String `tfsdk:"catalog_id"`
+	TeamID            types.String `tfsdk:"team_id"`
+	EnvironmentValues types.Map    `tfsdk:"environment_values"`
+	UserConfigValues  types.Map    `tfsdk:"user_config_values"`
+	SecretID          types.String `tfsdk:"secret_id"`
+	AccessToken       types.String `tfsdk:"access_token"`
+	ServiceAccount    types.String `tfsdk:"service_account"`
+	IsByosVault       types.Bool   `tfsdk:"is_byos_vault"`
+	AgentIDs          types.List   `tfsdk:"agent_ids"`
+	// Tools is a Computed list — the slice form ([]struct) can't represent
+	// the plan-time "unknown" marker the framework needs before Create
+	// runs, so this stays a types.List wrapping mcpServerToolObjectType.
+	Tools types.List `tfsdk:"tools"`
+	// ToolIDByName is a name→UUID lookup table — same data as `tools`
+	// but indexed for the common case of "I need this specific tool's
+	// id." Lets users write
+	// `archestra_mcp_server_installation.<n>.tool_id_by_name["<full-name>"]`
+	// instead of either a `data "archestra_mcp_server_tool"` block or a
+	// `for/if` HCL expression over the list.
+	ToolIDByName types.Map `tfsdk:"tool_id_by_name"`
 }
+
+// mcpServerToolObjectType is the per-element shape of the `tools`
+// Computed list. Surfaces every field the GetMcpServerTools wire returns
+// that's useful in HCL: the {id, name, description} core for `for_each`,
+// the JSON Schema `parameters` blob (as a string for dynamic-typed input
+// validation in user code), the `assigned_agents` summary so users can
+// see which agents already use the tool without a separate data source,
+// and `created_at` for stable ordering.
+var mcpServerToolAssignedAgentObjectType = types.ObjectType{AttrTypes: map[string]attr.Type{
+	"id":   types.StringType,
+	"name": types.StringType,
+}}
+
+var mcpServerToolObjectType = types.ObjectType{AttrTypes: map[string]attr.Type{
+	"id":                   types.StringType,
+	"name":                 types.StringType,
+	"description":          types.StringType,
+	"parameters":           types.StringType,
+	"assigned_agent_count": types.Int64Type,
+	"assigned_agents":      types.ListType{ElemType: mcpServerToolAssignedAgentObjectType},
+	"created_at":           types.StringType,
+}}
 
 func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_mcp_server_installation"
@@ -46,7 +119,7 @@ func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataR
 
 func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Manages an Archestra MCP server installation.",
+		MarkdownDescription: "Running instance of an MCP server, pulled from an `archestra_mcp_registry_catalog_item` template via `catalog_id`.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -70,12 +143,130 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"mcp_server_id": schema.StringAttribute{
-				MarkdownDescription: "The MCP server ID from the private MCP registry (archestra_mcp_registry_catalog_item resource)",
+			"catalog_id": schema.StringAttribute{
+				MarkdownDescription: "Catalog item ID (UUID of the `archestra_mcp_registry_catalog_item` resource) this installation is based on.",
+				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"team_id": schema.StringAttribute{
+				MarkdownDescription: "Team ID for team-scoped installations",
 				Optional:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+			},
+			"environment_values": schema.MapAttribute{
+				MarkdownDescription: "Environment variable values for the MCP server installation",
+				Optional:            true,
+				ElementType:         types.StringType,
+				PlanModifiers: []planmodifier.Map{
+					mapplanmodifier.RequiresReplace(),
+				},
+			},
+			"user_config_values": schema.MapAttribute{
+				MarkdownDescription: "User configuration field values for the MCP server installation",
+				Optional:            true,
+				ElementType:         types.StringType,
+				PlanModifiers: []planmodifier.Map{
+					mapplanmodifier.RequiresReplace(),
+				},
+			},
+			"secret_id": schema.StringAttribute{
+				MarkdownDescription: "Secret UUID for the MCP server installation. Set explicitly to reference a pre-created secret; otherwise the backend creates one when `user_config_values` is set and writes the resulting UUID back here.",
+				Optional:            true,
+				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"access_token": schema.StringAttribute{
+				MarkdownDescription: "Personal access token for the MCP server",
+				Optional:            true,
+				Sensitive:           true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"service_account": schema.StringAttribute{
+				MarkdownDescription: "Kubernetes service account override for the MCP server pod",
+				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"is_byos_vault": schema.BoolAttribute{
+				MarkdownDescription: "When true, environment_values and user_config_values are treated as vault references",
+				Optional:            true,
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.RequiresReplace(),
+				},
+			},
+			"agent_ids": schema.ListAttribute{
+				MarkdownDescription: "Agent IDs to auto-assign tools to on install",
+				Optional:            true,
+				ElementType:         types.StringType,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplace(),
+				},
+			},
+			"tools": schema.ListNestedAttribute{
+				MarkdownDescription: "Tools exposed by the installed MCP server. Populated after install (and refreshed on read) so you can fan out per-tool resources without separate `data \"archestra_mcp_server_tool\"` lookups:\n\n" +
+					"```hcl\n" +
+					"for_each = { for t in archestra_mcp_server_installation.<name>.tools : t.name => t }\n" +
+					"```",
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							MarkdownDescription: "Tool UUID. Use as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.",
+							Computed:            true,
+						},
+						"name": schema.StringAttribute{
+							MarkdownDescription: "Tool name (the MCP server's own identifier — stable across installs of the same catalog item).",
+							Computed:            true,
+						},
+						"description": schema.StringAttribute{
+							MarkdownDescription: "Human-readable description as advertised by the MCP server. May be null.",
+							Computed:            true,
+						},
+						"parameters": schema.StringAttribute{
+							MarkdownDescription: "JSON Schema for the tool's input parameters, encoded as a JSON string. Use `jsondecode(t.parameters)` to introspect required fields, types, etc. for validation or downstream codegen.",
+							Computed:            true,
+						},
+						"assigned_agent_count": schema.Int64Attribute{
+							MarkdownDescription: "Number of agents this tool is currently assigned to. Quick visibility without fetching the full assignment list.",
+							Computed:            true,
+						},
+						"assigned_agents": schema.ListNestedAttribute{
+							MarkdownDescription: "Agents this tool is currently assigned to. Lets you see which agents already use a tool without a separate `data \"archestra_agent_tool\"` lookup per assignment.",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"id": schema.StringAttribute{
+										MarkdownDescription: "Agent UUID.",
+										Computed:            true,
+									},
+									"name": schema.StringAttribute{
+										MarkdownDescription: "Agent name (the agent's `name` field on `archestra_agent` / `archestra_llm_proxy` / `archestra_mcp_gateway`).",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"created_at": schema.StringAttribute{
+							MarkdownDescription: "RFC 3339 timestamp of when the tool was first registered with the backend.",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"tool_id_by_name": schema.MapAttribute{
+				MarkdownDescription: "Lookup table from each tool's wire name (`<server>__<short>`) to its bare tool UUID — same data as `tools[*].id` but keyed for one-line lookups. Null while tools are still being discovered.",
+				Computed:            true,
+				ElementType:         types.StringType,
 			},
 		},
 	}
@@ -110,13 +301,76 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		Name: data.Name.ValueString(),
 	}
 
-	if !data.MCPServerID.IsNull() {
-		mcpServerID, err := uuid.Parse(data.MCPServerID.ValueString())
-		if err != nil {
-			resp.Diagnostics.AddError("Invalid MCP Server ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
+	catalogUUID, catalogErr := uuid.Parse(data.CatalogID.ValueString())
+	if catalogErr != nil {
+		resp.Diagnostics.AddError("Invalid catalog_id", fmt.Sprintf("Unable to parse catalog_id as a UUID: %s", catalogErr))
+		return
+	}
+	requestBody.CatalogId = catalogUUID
+
+	if !data.TeamID.IsNull() && !data.TeamID.IsUnknown() {
+		teamId := data.TeamID.ValueString()
+		requestBody.TeamId = &teamId
+	}
+
+	if !data.EnvironmentValues.IsNull() && !data.EnvironmentValues.IsUnknown() {
+		var envVals map[string]string
+		resp.Diagnostics.Append(data.EnvironmentValues.ElementsAs(ctx, &envVals, false)...)
+		if resp.Diagnostics.HasError() {
 			return
 		}
-		requestBody.CatalogId = mcpServerID
+		requestBody.EnvironmentValues = &envVals
+	}
+
+	if !data.UserConfigValues.IsNull() && !data.UserConfigValues.IsUnknown() {
+		var ucVals map[string]string
+		resp.Diagnostics.Append(data.UserConfigValues.ElementsAs(ctx, &ucVals, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		requestBody.UserConfigValues = &ucVals
+	}
+
+	if !data.SecretID.IsNull() && !data.SecretID.IsUnknown() {
+		secretUUID, err := uuid.Parse(data.SecretID.ValueString())
+		if err != nil {
+			resp.Diagnostics.AddError("Invalid Secret ID", fmt.Sprintf("Unable to parse secret ID: %s", err))
+			return
+		}
+		requestBody.SecretId = &secretUUID
+	}
+
+	if !data.AccessToken.IsNull() && !data.AccessToken.IsUnknown() {
+		token := data.AccessToken.ValueString()
+		requestBody.AccessToken = &token
+	}
+
+	if !data.ServiceAccount.IsNull() && !data.ServiceAccount.IsUnknown() {
+		sa := data.ServiceAccount.ValueString()
+		requestBody.ServiceAccount = &sa
+	}
+
+	if !data.IsByosVault.IsNull() && !data.IsByosVault.IsUnknown() {
+		isByosVault := data.IsByosVault.ValueBool()
+		requestBody.IsByosVault = &isByosVault
+	}
+
+	if !data.AgentIDs.IsNull() && !data.AgentIDs.IsUnknown() {
+		var agentIDStrs []string
+		resp.Diagnostics.Append(data.AgentIDs.ElementsAs(ctx, &agentIDStrs, false)...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		agentUUIDs := make([]openapi_types.UUID, len(agentIDStrs))
+		for i, idStr := range agentIDStrs {
+			parsed, err := uuid.Parse(idStr)
+			if err != nil {
+				resp.Diagnostics.AddError("Invalid Agent ID", fmt.Sprintf("Unable to parse agent ID %q: %s", idStr, err))
+				return
+			}
+			agentUUIDs[i] = parsed
+		}
+		requestBody.AgentIds = &agentUUIDs
 	}
 
 	// Call API
@@ -137,14 +391,27 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
-	data.MCPServerID = types.StringValue(apiResp.JSON200.CatalogId.String())
+	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
 
-	if err := r.waitForServerTools(ctx, apiResp.JSON200.Id.String()); err != nil {
-		resp.Diagnostics.AddWarning(
-			"MCP Server Not Fully Ready",
-			fmt.Sprintf("Server created successfully but tools are not yet available. They may appear shortly. Error: %s", err),
-		)
+	if apiResp.JSON200.TeamId != nil {
+		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
 	}
+
+	// Mirror Read's secret_id handling — Computed fields must settle to a
+	// known value after Create. Without this, installs with no
+	// user_config_values / is_byos_vault leave the planned Unknown in state
+	// and Plugin Framework rejects with "provider still indicated an
+	// unknown value". UseStateForUnknown only fires on Update.
+	if apiResp.JSON200.SecretId != nil {
+		data.SecretID = types.StringValue(apiResp.JSON200.SecretId.String())
+	} else {
+		data.SecretID = types.StringNull()
+	}
+
+	tools, toolIDsByName, toolsDiags := r.waitForServerTools(ctx, apiResp.JSON200.Id.String())
+	resp.Diagnostics.Append(toolsDiags...)
+	data.Tools = tools
+	data.ToolIDByName = toolIDsByName
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -159,7 +426,7 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	// Parse UUID from state
 	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server installation ID: %s", err))
 		return
 	}
 
@@ -185,10 +452,50 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
-	// Map response to Terraform state
+	// Map response to Terraform state.
 	// Note: Keep user's configured name, set display_name to the API-returned name
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
-	data.MCPServerID = types.StringValue(apiResp.JSON200.CatalogId.String())
+	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
+
+	if apiResp.JSON200.TeamId != nil {
+		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
+	} else {
+		data.TeamID = types.StringNull()
+	}
+
+	if apiResp.JSON200.SecretId != nil {
+		data.SecretID = types.StringValue(apiResp.JSON200.SecretId.String())
+	} else {
+		data.SecretID = types.StringNull()
+	}
+
+	// EnvironmentValues, UserConfigValues, and AccessToken are write-only;
+	// preserve from prior state to avoid spurious diffs.
+
+	// Refresh tools — drift-honest per A7. The MCP server can advertise
+	// new/removed tools at runtime; surfacing the change in plan is the
+	// point. On fetch failure, fall back to prior state so a transient
+	// backend hiccup doesn't blank the list.
+	toolsResp, toolsErr := r.client.GetMcpServerToolsWithResponse(ctx, serverID)
+	switch {
+	case toolsErr != nil:
+		resp.Diagnostics.AddWarning(
+			"Tools Refresh Failed",
+			fmt.Sprintf("Could not refresh tools list for MCP server %s: %s. Using last-known state.", serverID, toolsErr),
+		)
+	case toolsResp.JSON200 == nil:
+		resp.Diagnostics.AddWarning(
+			"Tools Refresh Returned Non-200",
+			fmt.Sprintf("GetMcpServerTools returned status %d for server %s. Using last-known state.", toolsResp.StatusCode(), serverID),
+		)
+	default:
+		flat, byName, projectDiags := projectMcpServerTools(*toolsResp.JSON200)
+		resp.Diagnostics.Append(projectDiags...)
+		if !projectDiags.HasError() {
+			data.Tools = flat
+			data.ToolIDByName = byName
+		}
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -213,7 +520,7 @@ func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteReque
 	// Parse UUID from state
 	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server ID: %s", err))
+		resp.Diagnostics.AddError("Invalid ID", fmt.Sprintf("Unable to parse MCP server installation ID: %s", err))
 		return
 	}
 
@@ -234,60 +541,212 @@ func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteReque
 	}
 }
 
+// ImportState requires the composite `<uuid>:<name>` so the user-
+// configured `name` round-trips cleanly. `name` is Required +
+// RequiresReplace and isn't stored separately by the backend (only
+// `display_name` is, with a possible uniqueness suffix), so bare-UUID
+// import would leave `name` null and force destroy+recreate on the
+// next plan. The composite carries the user's intended name explicitly.
 func (r *MCPServerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	parts := strings.SplitN(req.ID, ":", 2)
+	if len(parts) != 2 {
+		resp.Diagnostics.AddError(
+			"Invalid Import ID",
+			"Expected `<uuid>:<name>` — bare UUID isn't supported because the backend doesn't echo the user-configured `name` (only `display_name`, which may carry a uniqueness suffix). Run `terraform import archestra_mcp_server_installation.<addr> <uuid>:<name>` or set `id = \"<uuid>:<name>\"` in the import block, where `<name>` matches the `name` attribute in your HCL.",
+		)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), parts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), parts[1])...)
 }
 
-func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID string) error {
-	ctx, cancel := context.WithTimeout(ctx, mcpServerPollTimeout)
-	defer cancel()
+// waitForServerTools polls `/installation-status` until terminal, then
+// fetches tools once. Backend flips status to `success` only after tool
+// rows are persisted, so a single GET after `success` is race-free.
+// `error` surfaces `localInstallationError` instead of a silent warning.
+func (r *MCPServerResource) waitForServerTools(ctx context.Context, serverID string) (types.List, types.Map, diag.Diagnostics) {
+	var diags diag.Diagnostics
+	nullList := types.ListNull(mcpServerToolObjectType)
+	nullMap := types.MapNull(types.StringType)
 
-	ticker := time.NewTicker(mcpServerPollInterval)
-	defer ticker.Stop()
+	serverUUID, err := uuid.Parse(serverID)
+	if err != nil {
+		diags.AddError("Invalid Server ID", fmt.Sprintf("failed to parse server ID: %s", err))
+		return nullList, nullMap, diags
+	}
 
+	deadline := time.Now().Add(mcpServerInstallTimeout)
 	for {
+		statusResp, err := r.client.GetMcpServerInstallationStatusWithResponse(ctx, serverUUID)
+		if err != nil {
+			diags.AddWarning("Installation status fetch failed", err.Error())
+			return nullList, nullMap, diags
+		}
+		if statusResp.JSON200 == nil {
+			diags.AddWarning("Installation status fetch failed", fmt.Sprintf("unexpected response status %d: %s", statusResp.StatusCode(), string(statusResp.Body)))
+			return nullList, nullMap, diags
+		}
+
+		switch decideInstallStatus(string(statusResp.JSON200.LocalInstallationStatus)) {
+		case installStatusDone:
+			toolsResp, err := r.client.GetMcpServerToolsWithResponse(ctx, serverUUID)
+			if err != nil {
+				diags.AddWarning("Tools fetch failed", err.Error())
+				return nullList, nullMap, diags
+			}
+			if toolsResp.JSON200 == nil {
+				diags.AddWarning("Tools fetch failed", fmt.Sprintf("unexpected response status %d: %s", toolsResp.StatusCode(), string(toolsResp.Body)))
+				return nullList, nullMap, diags
+			}
+			flat, byName, projectDiags := projectMcpServerTools(*toolsResp.JSON200)
+			diags.Append(projectDiags...)
+			if projectDiags.HasError() {
+				return nullList, nullMap, diags
+			}
+			return flat, byName, diags
+
+		case installStatusFailed:
+			msg := "MCP server installation failed on the backend."
+			if statusResp.JSON200.LocalInstallationError != nil {
+				msg = *statusResp.JSON200.LocalInstallationError
+			}
+			diags.AddError("MCP server installation failed", msg)
+			return nullList, nullMap, diags
+		}
+
+		if time.Now().After(deadline) {
+			diags.AddWarning("Tools not ready",
+				fmt.Sprintf("timeout after %s waiting for MCP server installation to reach success/error (last status: %q). Tools will appear on the next refresh.",
+					mcpServerInstallTimeout, statusResp.JSON200.LocalInstallationStatus))
+			return nullList, nullMap, diags
+		}
 		select {
 		case <-ctx.Done():
-			return fmt.Errorf("timeout waiting for MCP server tools to be ready")
-
-		case <-ticker.C:
-			ready, err := r.checkServerToolsReady(ctx, serverID)
-			if err != nil {
-				tflog.Debug(ctx, "Error checking server tools", map[string]interface{}{
-					"error": err.Error(),
-				})
-				continue
-			}
-
-			if ready {
-				tflog.Info(ctx, "MCP server tools are ready", map[string]interface{}{
-					"server_id": serverID,
-				})
-				return nil
-			}
-
-			tflog.Debug(ctx, "MCP server tools not yet ready, retrying...", map[string]interface{}{
-				"server_id": serverID,
-			})
+			diags.AddError("Context cancelled", ctx.Err().Error())
+			return nullList, nullMap, diags
+		case <-time.After(mcpServerInstallPoll):
 		}
 	}
 }
 
-func (r *MCPServerResource) checkServerToolsReady(ctx context.Context, serverID string) (bool, error) {
-	toolsResp, err := r.client.GetToolsWithResponse(ctx)
-	if err != nil {
-		return false, fmt.Errorf("failed to get tools: %w", err)
-	}
+// projectMcpServerTools projects the `GetMcpServerTools` response onto
+// both Computed attributes in one walk: the rich `tools` ListNested and
+// the flat `tool_id_by_name` lookup map. Single function so the two
+// can't drift relative to each other (same input, same iteration order).
+//
+// The list element exposes every wire field useful in HCL — id, name,
+// description, JSON-encoded `parameters`, assigned-agent summary, and
+// `created_at`. The map is just `name → id` for the common one-line
+// lookup case.
+//
+// Duplicate wire-`name`s would silently collapse map entries; warn so
+// users know data was lost. Backend convention is `<server>__<short>`
+// which should be unique per install, but defending against future
+// looseness is cheap.
+func projectMcpServerTools(apiTools []struct {
+	AssignedAgentCount float32 `json:"assignedAgentCount"`
+	AssignedAgents     []struct {
+		Id   string `json:"id"`
+		Name string `json:"name"`
+	} `json:"assignedAgents"`
+	CreatedAt   time.Time              `json:"createdAt"`
+	Description *string                `json:"description"`
+	Id          string                 `json:"id"`
+	Name        string                 `json:"name"`
+	Parameters  map[string]interface{} `json:"parameters"`
+}) (types.List, types.Map, diag.Diagnostics) {
+	var diags diag.Diagnostics
 
-	if toolsResp.JSON200 == nil {
-		return false, fmt.Errorf("unexpected response status: %d", toolsResp.StatusCode())
-	}
+	// Sort for stable list ordering — backend `GetMcpServerTools` doesn't
+	// guarantee order, so without this the Computed `tools` list shuffles
+	// across reads. TODO(backend): add `ORDER BY name` server-side.
+	sort.SliceStable(apiTools, func(i, j int) bool {
+		return apiTools[i].Name < apiTools[j].Name
+	})
 
-	for _, tool := range *toolsResp.JSON200 {
-		if tool.McpServer != nil && tool.McpServer.Id == serverID {
-			return true, nil
+	listElements := make([]attr.Value, len(apiTools))
+	mapEntries := make(map[string]attr.Value, len(apiTools))
+	ambiguousNames := map[string]struct{}{}
+
+	for i, t := range apiTools {
+		desc := types.StringNull()
+		if t.Description != nil {
+			desc = types.StringValue(*t.Description)
+		}
+
+		// Parameters is JSON Schema; emit as a JSON string so HCL can
+		// jsondecode() it. Empty / nil map → null, not "{}", to keep
+		// state honest.
+		params := types.StringNull()
+		if len(t.Parameters) > 0 {
+			if b, err := json.Marshal(t.Parameters); err == nil {
+				params = types.StringValue(string(b))
+			}
+		}
+
+		// Assigned agents — flat list of {id, name}.
+		agentElems := make([]attr.Value, len(t.AssignedAgents))
+		for j, a := range t.AssignedAgents {
+			ao, d := types.ObjectValue(mcpServerToolAssignedAgentObjectType.AttrTypes, map[string]attr.Value{
+				"id":   types.StringValue(a.Id),
+				"name": types.StringValue(a.Name),
+			})
+			diags.Append(d...)
+			if d.HasError() {
+				return types.ListNull(mcpServerToolObjectType), types.MapNull(types.StringType), diags
+			}
+			agentElems[j] = ao
+		}
+		assignedAgents, d := types.ListValue(mcpServerToolAssignedAgentObjectType, agentElems)
+		diags.Append(d...)
+		if d.HasError() {
+			return types.ListNull(mcpServerToolObjectType), types.MapNull(types.StringType), diags
+		}
+
+		obj, d := types.ObjectValue(mcpServerToolObjectType.AttrTypes, map[string]attr.Value{
+			"id":                   types.StringValue(t.Id),
+			"name":                 types.StringValue(t.Name),
+			"description":          desc,
+			"parameters":           params,
+			"assigned_agent_count": types.Int64Value(int64(t.AssignedAgentCount)),
+			"assigned_agents":      assignedAgents,
+			"created_at":           types.StringValue(t.CreatedAt.Format(time.RFC3339)),
+		})
+		diags.Append(d...)
+		if d.HasError() {
+			return types.ListNull(mcpServerToolObjectType), types.MapNull(types.StringType), diags
+		}
+		listElements[i] = obj
+
+		// On name collision, drop both entries from `tool_id_by_name`
+		// so the map never silently maps a name to the wrong UUID.
+		// Downstream HCL referencing the absent key gets a clear
+		// "key not found" error from Terraform; users can fall back
+		// to the full `tools` list (filter by id). Warn-and-skip
+		// instead of erroring keeps `terraform refresh` and
+		// `terraform destroy` unblocked if the backend ever returns
+		// duplicates transiently.
+		if _, exists := mapEntries[t.Name]; exists {
+			ambiguousNames[t.Name] = struct{}{}
+			delete(mapEntries, t.Name)
+			diags.AddWarning(
+				"Duplicate tool name",
+				fmt.Sprintf("Two tools share the name %q. Removed from `tool_id_by_name` to avoid mapping it to the wrong UUID; both still appear in `tools`.", t.Name),
+			)
+		} else if _, ambiguous := ambiguousNames[t.Name]; !ambiguous {
+			mapEntries[t.Name] = types.StringValue(t.Id)
 		}
 	}
 
-	return false, nil
+	listValue, d := types.ListValue(mcpServerToolObjectType, listElements)
+	diags.Append(d...)
+	if d.HasError() {
+		return types.ListNull(mcpServerToolObjectType), types.MapNull(types.StringType), diags
+	}
+	mapValue, d := types.MapValue(types.StringType, mapEntries)
+	diags.Append(d...)
+	if d.HasError() {
+		return types.ListNull(mcpServerToolObjectType), types.MapNull(types.StringType), diags
+	}
+	return listValue, mapValue, diags
 }

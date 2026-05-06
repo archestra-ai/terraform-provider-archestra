@@ -69,7 +69,7 @@ func RetryUntilFound[T any](ctx context.Context, config RetryConfig, operation f
 			}
 
 			// Exponential backoff with cap
-			backoff = backoff * 2
+			backoff *= 2
 			if backoff > config.MaxBackoff {
 				backoff = config.MaxBackoff
 			}

@@ -1,0 +1,12 @@
+# Local Terraform state and plan artifacts. The root .gitignore already
+# excludes most of these, but list them here too so the example is
+# self-contained.
+*.tfstate
+*.tfstate.*
+*.tfplan
+.terraform/
+
+# Re-include .terraform.lock.hcl for this example only — the root
+# .gitignore excludes it globally, but committing the lock here gives
+# every consumer of the example the same provider version selection.
+!.terraform.lock.hcl

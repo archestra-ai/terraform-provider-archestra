@@ -1,0 +1,17 @@
+# Copy to terraform.tfvars (gitignored) and fill in real values, OR pass each
+# value via the matching TF_VAR_<name> environment variable.
+
+app_name    = "Demo Copilot"
+footer_text = "© 2026 Demo Inc."
+
+# OIDC IdP — for a real deployment, point these at your own Keycloak / Okta /
+# Auth0 / etc. The values below use Google's public OIDC endpoints, which let
+# `terraform apply` succeed (the backend stores the config without contacting
+# the IdP until a user actually signs in).
+oidc_issuer             = "https://accounts.google.com"
+oidc_discovery_endpoint = "https://accounts.google.com/.well-known/openid-configuration"
+oidc_client_id          = "demo-client-id"
+oidc_domain             = "demo.example.com"
+
+# Don't put oidc_client_secret in terraform.tfvars — pass it via env:
+#   export TF_VAR_oidc_client_secret="..."

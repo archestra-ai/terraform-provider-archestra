@@ -1,0 +1,30 @@
+---
+page_title: "{{.ProviderShortName}} Provider"
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# {{.ProviderShortName}} Provider
+
+{{ .Description | trimspace }}
+
+## Support
+
+- **Issues / bug reports:** [github.com/archestra-ai/terraform-provider-archestra/issues](https://github.com/archestra-ai/terraform-provider-archestra/issues) — include the resource type, provider version, and a minimal reproducer.
+- **Slack community:** [archestra.ai/join-slack](https://archestra.ai/join-slack) — fastest channel for usage questions and to reach the maintainers.
+- **Backend / platform issues:** [github.com/archestra-ai/archestra/issues](https://github.com/archestra-ai/archestra/issues) — for problems that turn out to be in the platform itself rather than the provider.
+- **Triage:** maintainers are best-effort; reproducers and full error output speed things up substantially.
+
+## Guides
+
+- [Getting Started](guides/getting-started) — declare the provider and apply your first resource.
+- [Authentication](guides/authentication) — credential precedence, key format, rotation procedure.
+- [Resource Bring-up Order](guides/bring-up-order) — natural dependency order when standing up a new org.
+- [BYOS Vault](guides/byos-vault) — running against a backend in `READONLY_VAULT` mode.
+- [Common Issues](guides/common-issues) — verbatim error strings with cause and fix.
+
+## Example Usage
+
+{{ tffile "examples/provider/provider.tf" }}
+
+{{ .SchemaMarkdown | trimspace }}
