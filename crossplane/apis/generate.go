@@ -14,8 +14,10 @@
 //go:generate bash -c "find ../internal/controller -type d -empty -delete"
 //go:generate rm -rf ../examples-generated
 
-// Generate documentation from Terraform docs.
-//go:generate go run github.com/crossplane/upjet/v2/cmd/scraper -n ${TERRAFORM_PROVIDER_SOURCE} -r ../.work/${TERRAFORM_PROVIDER_SOURCE}/${TERRAFORM_DOCS_PATH} -o ../config/provider-metadata.yaml
+// NOTE: docs scraper disabled — Archestra TF docs aren't pulled into .work yet.
+// Re-enable once we wire pull-docs to copy/symlink ../docs/resources into
+// .work/archestra-ai/archestra/docs/resources, or run the scraper directly
+// against ../docs/resources.
 
 // Run Upjet generator
 //go:generate go run ../cmd/generator/main.go ..

@@ -50,11 +50,20 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
-		// Set credentials in Terraform provider configuration.
-		/*ps.Configuration = map[string]any{
-			"username": creds["username"],
-			"password": creds["password"],
-		}*/
+		// Pass api_key (and optional base_url) through to the Terraform
+		// provider block. The Archestra TF provider also reads these from
+		// ARCHESTRA_API_KEY / ARCHESTRA_BASE_URL env vars, so leaving either
+		// out of the secret is fine — terraform will fall back.
+		cfg := map[string]any{}
+		if v, ok := creds["api_key"]; ok && v != "" {
+			cfg["api_key"] = v
+		}
+		if v, ok := creds["base_url"]; ok && v != "" {
+			cfg["base_url"] = v
+		}
+		if len(cfg) > 0 {
+			ps.Configuration = cfg
+		}
 		return ps, nil
 	}
 }

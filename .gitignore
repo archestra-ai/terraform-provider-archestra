@@ -44,6 +44,9 @@ terraform-provider-archestra
 # Sessions for Claude.
 .sessions/
 
+# Local scratch directories.
+scratch-test*/
+
 # Playwright MCP server for testing.
 .playwright-mcp
 

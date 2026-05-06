@@ -9,7 +9,11 @@ import (
 
 	"github.com/crossplane/upjet/v2/pkg/controller"
 
-	resource "github.com/archestra-ai/provider-archestra/internal/controller/cluster/null/resource"
+	agent "github.com/archestra-ai/provider-archestra/internal/controller/cluster/agent/agent"
+	toolbatch "github.com/archestra-ai/provider-archestra/internal/controller/cluster/agent/toolbatch"
+	registrycatalogitem "github.com/archestra-ai/provider-archestra/internal/controller/cluster/mcp/registrycatalogitem"
+	serverinstallation "github.com/archestra-ai/provider-archestra/internal/controller/cluster/mcp/serverinstallation"
+	toolinvocationpolicydefault "github.com/archestra-ai/provider-archestra/internal/controller/cluster/policy/toolinvocationpolicydefault"
 	providerconfig "github.com/archestra-ai/provider-archestra/internal/controller/cluster/providerconfig"
 )
 
@@ -17,7 +21,11 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		resource.Setup,
+		agent.Setup,
+		toolbatch.Setup,
+		registrycatalogitem.Setup,
+		serverinstallation.Setup,
+		toolinvocationpolicydefault.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
@@ -31,7 +39,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 // the supplied manager gated.
 func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		resource.SetupGated,
+		agent.SetupGated,
+		toolbatch.SetupGated,
+		registrycatalogitem.SetupGated,
+		serverinstallation.SetupGated,
+		toolinvocationpolicydefault.SetupGated,
 		providerconfig.SetupGated,
 	} {
 		if err := setup(mgr, o); err != nil {

@@ -1,0 +1,1442 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.20.1
+  name: registrycatalogitems.mcp.archestra.m.crossplane.io
+spec:
+  group: mcp.archestra.m.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - archestra
+    kind: RegistryCatalogItem
+    listKind: RegistryCatalogItemList
+    plural: registrycatalogitems
+    singular: registrycatalogitem
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: RegistryCatalogItem is the Schema for the RegistryCatalogItems
+          API. <no value>
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RegistryCatalogItemSpec defines the desired state of RegistryCatalogItem
+            properties:
+              forProvider:
+                properties:
+                  authDescription:
+                    description: Description of the authentication requirements
+                    type: string
+                  authFields:
+                    items:
+                      properties:
+                        description:
+                          description: Description of the field
+                          type: string
+                        label:
+                          description: Display label for the field
+                          type: string
+                        name:
+                          description: Field name (used as environment variable)
+                          type: string
+                        required:
+                          description: Whether this field is required
+                          type: boolean
+                        type:
+                          description: 'Field type: ''text'', ''password'', ''select'',
+                            etc.'
+                          type: string
+                      type: object
+                    type: array
+                  clientSecretId:
+                    description: UUID of a stored secret holding the OAuth client
+                      secret. Mutually exclusive with inline `oauth_config.client_secret`.
+                      Computed when the backend auto-creates a BYOS vault reference.
+                    type: string
+                  deploymentSpecYaml:
+                    description: Custom Kubernetes deployment YAML for the MCP server
+                    type: string
+                  description:
+                    description: Description of the MCP server
+                    type: string
+                  docsUrl:
+                    description: URL to the MCP server documentation
+                    type: string
+                  enterpriseManagedConfig:
+                    properties:
+                      assertionMode:
+                        description: Assertion exchange mode. One of `exchange`, `passthrough`.
+                        type: string
+                      audience:
+                        type: string
+                      bodyFieldName:
+                        type: string
+                      cacheTtlSeconds:
+                        description: Cache TTL in seconds. Non-negative.
+                        type: number
+                      clientIdOverride:
+                        type: string
+                      envVarName:
+                        type: string
+                      fallbackMode:
+                        description: Behavior when credential exchange fails. One
+                          of `fail_closed`, `fallback_to_dynamic`, `fallback_to_static`.
+                        type: string
+                      headerName:
+                        type: string
+                      identityProviderId:
+                        description: Identity provider UUID issuing credentials.
+                        type: string
+                      requestedCredentialType:
+                        description: Credential type requested. One of `id_jag`, `bearer_token`,
+                          `secret`, `service_account`, `opaque_json`.
+                        type: string
+                      requestedIssuer:
+                        type: string
+                      resourceIdentifier:
+                        type: string
+                      resourceType:
+                        description: Resource type. One of `mcp`, `oauth_protected_resource`,
+                          `secret`, `service_account`, `custom_http`.
+                        type: string
+                      responseFieldPath:
+                        type: string
+                      scopes:
+                        items:
+                          type: string
+                        type: array
+                      tokenInjectionMode:
+                        description: How the token is injected into the downstream
+                          request. One of `authorization_bearer`, `raw_authorization`,
+                          `header`, `env`, `body_field`.
+                        type: string
+                    type: object
+                  icon:
+                    description: Icon string for the MCP server
+                    type: string
+                  installationCommand:
+                    description: Installation command for the MCP server (e.g., npm
+                      install -g @example/mcp-server)
+                    type: string
+                  instructions:
+                    description: Installation instructions text for the MCP server
+                    type: string
+                  labels:
+                    items:
+                      properties:
+                        key:
+                          description: Label key
+                          type: string
+                        value:
+                          description: Label value
+                          type: string
+                      type: object
+                    type: array
+                  localConfig:
+                    properties:
+                      arguments:
+                        description: Arguments to pass to the command
+                        items:
+                          type: string
+                        type: array
+                      command:
+                        description: The executable command to run (e.g., 'node',
+                          'python', 'npx'). Optional if Docker Image is set (will
+                          use image's default CMD).
+                        type: string
+                      dockerImage:
+                        description: Custom Docker image URL. If not specified, Archestra's
+                          default base image will be used.
+                        type: string
+                      envFrom:
+                        items:
+                          properties:
+                            name:
+                              description: Name of the secret or configMap
+                              type: string
+                            prefix:
+                              description: Optional prefix for environment variable
+                                names
+                              type: string
+                            type:
+                              description: 'Source type: ''secret'' or ''configMap'''
+                              type: string
+                          type: object
+                        type: array
+                      environment:
+                        items:
+                          properties:
+                            default:
+                              description: Default value. Use `jsonencode(...)` to
+                                encode non-string defaults (number, bool). Plain strings
+                                may be provided as-is.
+                              type: string
+                            description:
+                              description: Human-readable description of the variable.
+                              type: string
+                            key:
+                              description: Environment variable name.
+                              type: string
+                            mounted:
+                              description: When true, the value is mounted as a file
+                                at `/secrets/<key>` rather than injected as an env
+                                var.
+                              type: boolean
+                            promptOnInstallation:
+                              description: Whether the installer must supply this
+                                value at install time. Required field on the wire
+                                — defaults to `false`.
+                              type: boolean
+                            required:
+                              description: Whether the value must be set.
+                              type: boolean
+                            type:
+                              description: Variable type. One of `plain_text`, `secret`,
+                                `boolean`, `number`.
+                              type: string
+                            value:
+                              description: Value for `plain_text` / `secret` variables.
+                              type: string
+                          type: object
+                        type: array
+                      httpPath:
+                        description: HTTP path for streamable-http transport (e.g.,
+                          '/sse')
+                        type: string
+                      httpPort:
+                        description: HTTP port for streamable-http transport. Range
+                          0..65535.
+                        type: number
+                      imagePullSecrets:
+                        items:
+                          properties:
+                            email:
+                              description: Registry email (optional for `source =
+                                credentials`).
+                              type: string
+                            name:
+                              description: Name of the existing Kubernetes secret
+                                (required for `source = existing`).
+                              type: string
+                            passwordSecretRef:
+                              description: 'Registry password (required for `source
+                                = credentials`). Write-only: the backend never echoes
+                                it back. To stay consistent across refreshes the provider
+                                preserves it keyed by `(server, username)`; rotating
+                                either of those values drops the password from state
+                                and forces re-entry.'
+                              properties:
+                                key:
+                                  type: string
+                                name:
+                                  description: Name of the secret.
+                                  type: string
+                              required:
+                              - key
+                              - name
+                              type: object
+                            server:
+                              description: Docker registry server URL (required for
+                                `source = credentials`).
+                              type: string
+                            source:
+                              description: Source of the pull secret. One of `existing`,
+                                `credentials`. Defaults to `existing` for backward
+                                compatibility when only `name` is set.
+                              type: string
+                            username:
+                              description: Registry username (required for `source
+                                = credentials`).
+                              type: string
+                          type: object
+                        type: array
+                      nodePort:
+                        description: Node port for the MCP server service. Kubernetes
+                          NodePort range 30000..32767.
+                        type: number
+                      serviceAccount:
+                        description: Kubernetes service account for the MCP server
+                          pod
+                        type: string
+                      transportType:
+                        description: 'Transport type: ''stdio'' or ''streamable-http''.
+                          Defaults to ''stdio'''
+                        type: string
+                    type: object
+                  localConfigSecretId:
+                    description: UUID of a stored secret holding local_config environment
+                      values. Computed when the backend auto-creates a BYOS vault
+                      reference.
+                    type: string
+                  localConfigVaultKey:
+                    description: BYOS vault key for local_config secrets.
+                    type: string
+                  localConfigVaultPath:
+                    description: BYOS vault path for local_config secrets.
+                    type: string
+                  name:
+                    description: The name of the MCP server
+                    type: string
+                  oauthClientSecretVaultKey:
+                    description: BYOS vault key for the OAuth client secret.
+                    type: string
+                  oauthClientSecretVaultPath:
+                    description: BYOS vault path for the OAuth client secret.
+                    type: string
+                  remoteConfig:
+                    properties:
+                      oauthConfig:
+                        properties:
+                          accessTokenEnvVar:
+                            description: Environment variable name to inject the acquired
+                              access token into.
+                            type: string
+                          audience:
+                            description: '`aud` claim to request when performing token
+                              exchange.'
+                            type: string
+                          authServerUrl:
+                            description: Override for the OAuth authorization server
+                              root URL.
+                            type: string
+                          authorizationEndpoint:
+                            description: Custom OAuth authorization endpoint URL
+                            type: string
+                          browserAuth:
+                            description: Prompt the installer through an interactive
+                              browser auth flow.
+                            type: boolean
+                          clientId:
+                            description: OAuth Client ID. Leave empty if the server
+                              supports dynamic client registration.
+                            type: string
+                          clientSecretSecretRef:
+                            description: OAuth Client Secret (optional)
+                            properties:
+                              key:
+                                type: string
+                              name:
+                                description: Name of the secret.
+                                type: string
+                            required:
+                            - key
+                            - name
+                            type: object
+                          defaultScopes:
+                            description: Scopes requested by default when the server
+                              doesn't advertise its own.
+                            items:
+                              type: string
+                            type: array
+                          genericOauth:
+                            description: Treat the server as a generic OAuth provider
+                              (skip vendor-specific probes).
+                            type: boolean
+                          grantType:
+                            description: OAuth grant type. One of `authorization_code`,
+                              `client_credentials`.
+                            type: string
+                          providerName:
+                            description: Human-readable name of the OAuth provider
+                              for display.
+                            type: string
+                          redirectUris:
+                            description: Comma-separated list of redirect URIs
+                            items:
+                              type: string
+                            type: array
+                          requiresProxy:
+                            description: Route OAuth redirects through the Archestra
+                              proxy.
+                            type: boolean
+                          resourceMetadataUrl:
+                            description: URL of the protected-resource metadata document.
+                            type: string
+                          scopes:
+                            description: List of OAuth scopes to request (e.g., ['read',
+                              'write'])
+                            items:
+                              type: string
+                            type: array
+                          streamableHttpPort:
+                            description: Streamable-HTTP MCP server port override.
+                              Range 0..65535.
+                            type: number
+                          streamableHttpUrl:
+                            description: Streamable-HTTP MCP server URL override.
+                            type: string
+                          supportsResourceMetadata:
+                            description: Enable if the server publishes OAuth metadata
+                              at /.well-known/oauth-authorization-server for automatic
+                              endpoint discovery. Defaults to `false` (matching the
+                              backend default).
+                            type: boolean
+                          tokenEndpoint:
+                            description: Custom OAuth token endpoint URL.
+                            type: string
+                          wellKnownUrl:
+                            description: Override for the `.well-known` discovery
+                              document URL.
+                            type: string
+                        type: object
+                      url:
+                        description: The URL of the remote MCP server (e.g., https://api.githubcopilot.com/mcp/)
+                        type: string
+                    type: object
+                  repository:
+                    description: Repository URL for the MCP server
+                    type: string
+                  requiresAuth:
+                    description: Whether the MCP server requires authentication
+                    type: boolean
+                  scope:
+                    description: Visibility scope for the MCP server catalog item
+                      (e.g., 'personal', 'team', 'org')
+                    type: string
+                  teams:
+                    description: Team IDs that have access to this MCP server
+                    items:
+                      type: string
+                    type: array
+                  userConfig:
+                    additionalProperties:
+                      properties:
+                        default:
+                          description: Default value. Use `jsonencode(...)` to encode
+                            non-string defaults (number, bool, or []string). Plain
+                            strings may be provided as-is.
+                          type: string
+                        description:
+                          description: Description of the field shown to the installer.
+                          type: string
+                        headerName:
+                          description: HTTP header name to bind this value to when
+                            installing a remote server.
+                          type: string
+                        max:
+                          description: Maximum value (for numeric fields).
+                          type: number
+                        min:
+                          description: Minimum value (for numeric fields).
+                          type: number
+                        multiple:
+                          description: Whether multiple values may be supplied.
+                          type: boolean
+                        promptOnInstallation:
+                          description: Whether to prompt the user for this value during
+                            installation.
+                          type: boolean
+                        required:
+                          description: Whether the installer must supply this field.
+                          type: boolean
+                        sensitive:
+                          description: If true, the value is redacted in logs and
+                            UI.
+                          type: boolean
+                        title:
+                          description: Human-readable field title shown to the installer.
+                          type: string
+                        type:
+                          description: Field type. One of `string`, `number`, `boolean`,
+                            `file`, `directory`.
+                          type: string
+                      type: object
+                    type: object
+                  version:
+                    description: Version string for the MCP server
+                    type: string
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  authDescription:
+                    description: Description of the authentication requirements
+                    type: string
+                  authFields:
+                    items:
+                      properties:
+                        description:
+                          description: Description of the field
+                          type: string
+                        label:
+                          description: Display label for the field
+                          type: string
+                        name:
+                          description: Field name (used as environment variable)
+                          type: string
+                        required:
+                          description: Whether this field is required
+                          type: boolean
+                        type:
+                          description: 'Field type: ''text'', ''password'', ''select'',
+                            etc.'
+                          type: string
+                      type: object
+                    type: array
+                  clientSecretId:
+                    description: UUID of a stored secret holding the OAuth client
+                      secret. Mutually exclusive with inline `oauth_config.client_secret`.
+                      Computed when the backend auto-creates a BYOS vault reference.
+                    type: string
+                  deploymentSpecYaml:
+                    description: Custom Kubernetes deployment YAML for the MCP server
+                    type: string
+                  description:
+                    description: Description of the MCP server
+                    type: string
+                  docsUrl:
+                    description: URL to the MCP server documentation
+                    type: string
+                  enterpriseManagedConfig:
+                    properties:
+                      assertionMode:
+                        description: Assertion exchange mode. One of `exchange`, `passthrough`.
+                        type: string
+                      audience:
+                        type: string
+                      bodyFieldName:
+                        type: string
+                      cacheTtlSeconds:
+                        description: Cache TTL in seconds. Non-negative.
+                        type: number
+                      clientIdOverride:
+                        type: string
+                      envVarName:
+                        type: string
+                      fallbackMode:
+                        description: Behavior when credential exchange fails. One
+                          of `fail_closed`, `fallback_to_dynamic`, `fallback_to_static`.
+                        type: string
+                      headerName:
+                        type: string
+                      identityProviderId:
+                        description: Identity provider UUID issuing credentials.
+                        type: string
+                      requestedCredentialType:
+                        description: Credential type requested. One of `id_jag`, `bearer_token`,
+                          `secret`, `service_account`, `opaque_json`.
+                        type: string
+                      requestedIssuer:
+                        type: string
+                      resourceIdentifier:
+                        type: string
+                      resourceType:
+                        description: Resource type. One of `mcp`, `oauth_protected_resource`,
+                          `secret`, `service_account`, `custom_http`.
+                        type: string
+                      responseFieldPath:
+                        type: string
+                      scopes:
+                        items:
+                          type: string
+                        type: array
+                      tokenInjectionMode:
+                        description: How the token is injected into the downstream
+                          request. One of `authorization_bearer`, `raw_authorization`,
+                          `header`, `env`, `body_field`.
+                        type: string
+                    type: object
+                  icon:
+                    description: Icon string for the MCP server
+                    type: string
+                  installationCommand:
+                    description: Installation command for the MCP server (e.g., npm
+                      install -g @example/mcp-server)
+                    type: string
+                  instructions:
+                    description: Installation instructions text for the MCP server
+                    type: string
+                  labels:
+                    items:
+                      properties:
+                        key:
+                          description: Label key
+                          type: string
+                        value:
+                          description: Label value
+                          type: string
+                      type: object
+                    type: array
+                  localConfig:
+                    properties:
+                      arguments:
+                        description: Arguments to pass to the command
+                        items:
+                          type: string
+                        type: array
+                      command:
+                        description: The executable command to run (e.g., 'node',
+                          'python', 'npx'). Optional if Docker Image is set (will
+                          use image's default CMD).
+                        type: string
+                      dockerImage:
+                        description: Custom Docker image URL. If not specified, Archestra's
+                          default base image will be used.
+                        type: string
+                      envFrom:
+                        items:
+                          properties:
+                            name:
+                              description: Name of the secret or configMap
+                              type: string
+                            prefix:
+                              description: Optional prefix for environment variable
+                                names
+                              type: string
+                            type:
+                              description: 'Source type: ''secret'' or ''configMap'''
+                              type: string
+                          type: object
+                        type: array
+                      environment:
+                        items:
+                          properties:
+                            default:
+                              description: Default value. Use `jsonencode(...)` to
+                                encode non-string defaults (number, bool). Plain strings
+                                may be provided as-is.
+                              type: string
+                            description:
+                              description: Human-readable description of the variable.
+                              type: string
+                            key:
+                              description: Environment variable name.
+                              type: string
+                            mounted:
+                              description: When true, the value is mounted as a file
+                                at `/secrets/<key>` rather than injected as an env
+                                var.
+                              type: boolean
+                            promptOnInstallation:
+                              description: Whether the installer must supply this
+                                value at install time. Required field on the wire
+                                — defaults to `false`.
+                              type: boolean
+                            required:
+                              description: Whether the value must be set.
+                              type: boolean
+                            type:
+                              description: Variable type. One of `plain_text`, `secret`,
+                                `boolean`, `number`.
+                              type: string
+                            value:
+                              description: Value for `plain_text` / `secret` variables.
+                              type: string
+                          type: object
+                        type: array
+                      httpPath:
+                        description: HTTP path for streamable-http transport (e.g.,
+                          '/sse')
+                        type: string
+                      httpPort:
+                        description: HTTP port for streamable-http transport. Range
+                          0..65535.
+                        type: number
+                      imagePullSecrets:
+                        items:
+                          properties:
+                            email:
+                              description: Registry email (optional for `source =
+                                credentials`).
+                              type: string
+                            name:
+                              description: Name of the existing Kubernetes secret
+                                (required for `source = existing`).
+                              type: string
+                            passwordSecretRef:
+                              description: 'Registry password (required for `source
+                                = credentials`). Write-only: the backend never echoes
+                                it back. To stay consistent across refreshes the provider
+                                preserves it keyed by `(server, username)`; rotating
+                                either of those values drops the password from state
+                                and forces re-entry.'
+                              properties:
+                                key:
+                                  type: string
+                                name:
+                                  description: Name of the secret.
+                                  type: string
+                              required:
+                              - key
+                              - name
+                              type: object
+                            server:
+                              description: Docker registry server URL (required for
+                                `source = credentials`).
+                              type: string
+                            source:
+                              description: Source of the pull secret. One of `existing`,
+                                `credentials`. Defaults to `existing` for backward
+                                compatibility when only `name` is set.
+                              type: string
+                            username:
+                              description: Registry username (required for `source
+                                = credentials`).
+                              type: string
+                          type: object
+                        type: array
+                      nodePort:
+                        description: Node port for the MCP server service. Kubernetes
+                          NodePort range 30000..32767.
+                        type: number
+                      serviceAccount:
+                        description: Kubernetes service account for the MCP server
+                          pod
+                        type: string
+                      transportType:
+                        description: 'Transport type: ''stdio'' or ''streamable-http''.
+                          Defaults to ''stdio'''
+                        type: string
+                    type: object
+                  localConfigSecretId:
+                    description: UUID of a stored secret holding local_config environment
+                      values. Computed when the backend auto-creates a BYOS vault
+                      reference.
+                    type: string
+                  localConfigVaultKey:
+                    description: BYOS vault key for local_config secrets.
+                    type: string
+                  localConfigVaultPath:
+                    description: BYOS vault path for local_config secrets.
+                    type: string
+                  name:
+                    description: The name of the MCP server
+                    type: string
+                  oauthClientSecretVaultKey:
+                    description: BYOS vault key for the OAuth client secret.
+                    type: string
+                  oauthClientSecretVaultPath:
+                    description: BYOS vault path for the OAuth client secret.
+                    type: string
+                  remoteConfig:
+                    properties:
+                      oauthConfig:
+                        properties:
+                          accessTokenEnvVar:
+                            description: Environment variable name to inject the acquired
+                              access token into.
+                            type: string
+                          audience:
+                            description: '`aud` claim to request when performing token
+                              exchange.'
+                            type: string
+                          authServerUrl:
+                            description: Override for the OAuth authorization server
+                              root URL.
+                            type: string
+                          authorizationEndpoint:
+                            description: Custom OAuth authorization endpoint URL
+                            type: string
+                          browserAuth:
+                            description: Prompt the installer through an interactive
+                              browser auth flow.
+                            type: boolean
+                          clientId:
+                            description: OAuth Client ID. Leave empty if the server
+                              supports dynamic client registration.
+                            type: string
+                          clientSecretSecretRef:
+                            description: OAuth Client Secret (optional)
+                            properties:
+                              key:
+                                type: string
+                              name:
+                                description: Name of the secret.
+                                type: string
+                            required:
+                            - key
+                            - name
+                            type: object
+                          defaultScopes:
+                            description: Scopes requested by default when the server
+                              doesn't advertise its own.
+                            items:
+                              type: string
+                            type: array
+                          genericOauth:
+                            description: Treat the server as a generic OAuth provider
+                              (skip vendor-specific probes).
+                            type: boolean
+                          grantType:
+                            description: OAuth grant type. One of `authorization_code`,
+                              `client_credentials`.
+                            type: string
+                          providerName:
+                            description: Human-readable name of the OAuth provider
+                              for display.
+                            type: string
+                          redirectUris:
+                            description: Comma-separated list of redirect URIs
+                            items:
+                              type: string
+                            type: array
+                          requiresProxy:
+                            description: Route OAuth redirects through the Archestra
+                              proxy.
+                            type: boolean
+                          resourceMetadataUrl:
+                            description: URL of the protected-resource metadata document.
+                            type: string
+                          scopes:
+                            description: List of OAuth scopes to request (e.g., ['read',
+                              'write'])
+                            items:
+                              type: string
+                            type: array
+                          streamableHttpPort:
+                            description: Streamable-HTTP MCP server port override.
+                              Range 0..65535.
+                            type: number
+                          streamableHttpUrl:
+                            description: Streamable-HTTP MCP server URL override.
+                            type: string
+                          supportsResourceMetadata:
+                            description: Enable if the server publishes OAuth metadata
+                              at /.well-known/oauth-authorization-server for automatic
+                              endpoint discovery. Defaults to `false` (matching the
+                              backend default).
+                            type: boolean
+                          tokenEndpoint:
+                            description: Custom OAuth token endpoint URL.
+                            type: string
+                          wellKnownUrl:
+                            description: Override for the `.well-known` discovery
+                              document URL.
+                            type: string
+                        type: object
+                      url:
+                        description: The URL of the remote MCP server (e.g., https://api.githubcopilot.com/mcp/)
+                        type: string
+                    type: object
+                  repository:
+                    description: Repository URL for the MCP server
+                    type: string
+                  requiresAuth:
+                    description: Whether the MCP server requires authentication
+                    type: boolean
+                  scope:
+                    description: Visibility scope for the MCP server catalog item
+                      (e.g., 'personal', 'team', 'org')
+                    type: string
+                  teams:
+                    description: Team IDs that have access to this MCP server
+                    items:
+                      type: string
+                    type: array
+                  userConfig:
+                    additionalProperties:
+                      properties:
+                        default:
+                          description: Default value. Use `jsonencode(...)` to encode
+                            non-string defaults (number, bool, or []string). Plain
+                            strings may be provided as-is.
+                          type: string
+                        description:
+                          description: Description of the field shown to the installer.
+                          type: string
+                        headerName:
+                          description: HTTP header name to bind this value to when
+                            installing a remote server.
+                          type: string
+                        max:
+                          description: Maximum value (for numeric fields).
+                          type: number
+                        min:
+                          description: Minimum value (for numeric fields).
+                          type: number
+                        multiple:
+                          description: Whether multiple values may be supplied.
+                          type: boolean
+                        promptOnInstallation:
+                          description: Whether to prompt the user for this value during
+                            installation.
+                          type: boolean
+                        required:
+                          description: Whether the installer must supply this field.
+                          type: boolean
+                        sensitive:
+                          description: If true, the value is redacted in logs and
+                            UI.
+                          type: boolean
+                        title:
+                          description: Human-readable field title shown to the installer.
+                          type: string
+                        type:
+                          description: Field type. One of `string`, `number`, `boolean`,
+                            `file`, `directory`.
+                          type: string
+                      type: object
+                    type: object
+                  version:
+                    description: Version string for the MCP server
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  kind: ClusterProviderConfig
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  kind:
+                    description: Kind of the referenced object.
+                    type: string
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+          status:
+            description: RegistryCatalogItemStatus defines the observed state of RegistryCatalogItem.
+            properties:
+              atProvider:
+                properties:
+                  authDescription:
+                    description: Description of the authentication requirements
+                    type: string
+                  authFields:
+                    items:
+                      properties:
+                        description:
+                          description: Description of the field
+                          type: string
+                        label:
+                          description: Display label for the field
+                          type: string
+                        name:
+                          description: Field name (used as environment variable)
+                          type: string
+                        required:
+                          description: Whether this field is required
+                          type: boolean
+                        type:
+                          description: 'Field type: ''text'', ''password'', ''select'',
+                            etc.'
+                          type: string
+                      type: object
+                    type: array
+                  clientSecretId:
+                    description: UUID of a stored secret holding the OAuth client
+                      secret. Mutually exclusive with inline `oauth_config.client_secret`.
+                      Computed when the backend auto-creates a BYOS vault reference.
+                    type: string
+                  deploymentSpecYaml:
+                    description: Custom Kubernetes deployment YAML for the MCP server
+                    type: string
+                  description:
+                    description: Description of the MCP server
+                    type: string
+                  docsUrl:
+                    description: URL to the MCP server documentation
+                    type: string
+                  enterpriseManagedConfig:
+                    properties:
+                      assertionMode:
+                        description: Assertion exchange mode. One of `exchange`, `passthrough`.
+                        type: string
+                      audience:
+                        type: string
+                      bodyFieldName:
+                        type: string
+                      cacheTtlSeconds:
+                        description: Cache TTL in seconds. Non-negative.
+                        type: number
+                      clientIdOverride:
+                        type: string
+                      envVarName:
+                        type: string
+                      fallbackMode:
+                        description: Behavior when credential exchange fails. One
+                          of `fail_closed`, `fallback_to_dynamic`, `fallback_to_static`.
+                        type: string
+                      headerName:
+                        type: string
+                      identityProviderId:
+                        description: Identity provider UUID issuing credentials.
+                        type: string
+                      requestedCredentialType:
+                        description: Credential type requested. One of `id_jag`, `bearer_token`,
+                          `secret`, `service_account`, `opaque_json`.
+                        type: string
+                      requestedIssuer:
+                        type: string
+                      resourceIdentifier:
+                        type: string
+                      resourceType:
+                        description: Resource type. One of `mcp`, `oauth_protected_resource`,
+                          `secret`, `service_account`, `custom_http`.
+                        type: string
+                      responseFieldPath:
+                        type: string
+                      scopes:
+                        items:
+                          type: string
+                        type: array
+                      tokenInjectionMode:
+                        description: How the token is injected into the downstream
+                          request. One of `authorization_bearer`, `raw_authorization`,
+                          `header`, `env`, `body_field`.
+                        type: string
+                    type: object
+                  icon:
+                    description: Icon string for the MCP server
+                    type: string
+                  id:
+                    type: string
+                  installationCommand:
+                    description: Installation command for the MCP server (e.g., npm
+                      install -g @example/mcp-server)
+                    type: string
+                  instructions:
+                    description: Installation instructions text for the MCP server
+                    type: string
+                  labels:
+                    items:
+                      properties:
+                        key:
+                          description: Label key
+                          type: string
+                        value:
+                          description: Label value
+                          type: string
+                      type: object
+                    type: array
+                  localConfig:
+                    properties:
+                      arguments:
+                        description: Arguments to pass to the command
+                        items:
+                          type: string
+                        type: array
+                      command:
+                        description: The executable command to run (e.g., 'node',
+                          'python', 'npx'). Optional if Docker Image is set (will
+                          use image's default CMD).
+                        type: string
+                      dockerImage:
+                        description: Custom Docker image URL. If not specified, Archestra's
+                          default base image will be used.
+                        type: string
+                      envFrom:
+                        items:
+                          properties:
+                            name:
+                              description: Name of the secret or configMap
+                              type: string
+                            prefix:
+                              description: Optional prefix for environment variable
+                                names
+                              type: string
+                            type:
+                              description: 'Source type: ''secret'' or ''configMap'''
+                              type: string
+                          type: object
+                        type: array
+                      environment:
+                        items:
+                          properties:
+                            default:
+                              description: Default value. Use `jsonencode(...)` to
+                                encode non-string defaults (number, bool). Plain strings
+                                may be provided as-is.
+                              type: string
+                            description:
+                              description: Human-readable description of the variable.
+                              type: string
+                            key:
+                              description: Environment variable name.
+                              type: string
+                            mounted:
+                              description: When true, the value is mounted as a file
+                                at `/secrets/<key>` rather than injected as an env
+                                var.
+                              type: boolean
+                            promptOnInstallation:
+                              description: Whether the installer must supply this
+                                value at install time. Required field on the wire
+                                — defaults to `false`.
+                              type: boolean
+                            required:
+                              description: Whether the value must be set.
+                              type: boolean
+                            type:
+                              description: Variable type. One of `plain_text`, `secret`,
+                                `boolean`, `number`.
+                              type: string
+                            value:
+                              description: Value for `plain_text` / `secret` variables.
+                              type: string
+                          type: object
+                        type: array
+                      httpPath:
+                        description: HTTP path for streamable-http transport (e.g.,
+                          '/sse')
+                        type: string
+                      httpPort:
+                        description: HTTP port for streamable-http transport. Range
+                          0..65535.
+                        type: number
+                      imagePullSecrets:
+                        items:
+                          properties:
+                            email:
+                              description: Registry email (optional for `source =
+                                credentials`).
+                              type: string
+                            name:
+                              description: Name of the existing Kubernetes secret
+                                (required for `source = existing`).
+                              type: string
+                            server:
+                              description: Docker registry server URL (required for
+                                `source = credentials`).
+                              type: string
+                            source:
+                              description: Source of the pull secret. One of `existing`,
+                                `credentials`. Defaults to `existing` for backward
+                                compatibility when only `name` is set.
+                              type: string
+                            username:
+                              description: Registry username (required for `source
+                                = credentials`).
+                              type: string
+                          type: object
+                        type: array
+                      nodePort:
+                        description: Node port for the MCP server service. Kubernetes
+                          NodePort range 30000..32767.
+                        type: number
+                      serviceAccount:
+                        description: Kubernetes service account for the MCP server
+                          pod
+                        type: string
+                      transportType:
+                        description: 'Transport type: ''stdio'' or ''streamable-http''.
+                          Defaults to ''stdio'''
+                        type: string
+                    type: object
+                  localConfigSecretId:
+                    description: UUID of a stored secret holding local_config environment
+                      values. Computed when the backend auto-creates a BYOS vault
+                      reference.
+                    type: string
+                  localConfigVaultKey:
+                    description: BYOS vault key for local_config secrets.
+                    type: string
+                  localConfigVaultPath:
+                    description: BYOS vault path for local_config secrets.
+                    type: string
+                  name:
+                    description: The name of the MCP server
+                    type: string
+                  oauthClientSecretVaultKey:
+                    description: BYOS vault key for the OAuth client secret.
+                    type: string
+                  oauthClientSecretVaultPath:
+                    description: BYOS vault path for the OAuth client secret.
+                    type: string
+                  remoteConfig:
+                    properties:
+                      oauthConfig:
+                        properties:
+                          accessTokenEnvVar:
+                            description: Environment variable name to inject the acquired
+                              access token into.
+                            type: string
+                          audience:
+                            description: '`aud` claim to request when performing token
+                              exchange.'
+                            type: string
+                          authServerUrl:
+                            description: Override for the OAuth authorization server
+                              root URL.
+                            type: string
+                          authorizationEndpoint:
+                            description: Custom OAuth authorization endpoint URL
+                            type: string
+                          browserAuth:
+                            description: Prompt the installer through an interactive
+                              browser auth flow.
+                            type: boolean
+                          clientId:
+                            description: OAuth Client ID. Leave empty if the server
+                              supports dynamic client registration.
+                            type: string
+                          defaultScopes:
+                            description: Scopes requested by default when the server
+                              doesn't advertise its own.
+                            items:
+                              type: string
+                            type: array
+                          genericOauth:
+                            description: Treat the server as a generic OAuth provider
+                              (skip vendor-specific probes).
+                            type: boolean
+                          grantType:
+                            description: OAuth grant type. One of `authorization_code`,
+                              `client_credentials`.
+                            type: string
+                          providerName:
+                            description: Human-readable name of the OAuth provider
+                              for display.
+                            type: string
+                          redirectUris:
+                            description: Comma-separated list of redirect URIs
+                            items:
+                              type: string
+                            type: array
+                          requiresProxy:
+                            description: Route OAuth redirects through the Archestra
+                              proxy.
+                            type: boolean
+                          resourceMetadataUrl:
+                            description: URL of the protected-resource metadata document.
+                            type: string
+                          scopes:
+                            description: List of OAuth scopes to request (e.g., ['read',
+                              'write'])
+                            items:
+                              type: string
+                            type: array
+                          streamableHttpPort:
+                            description: Streamable-HTTP MCP server port override.
+                              Range 0..65535.
+                            type: number
+                          streamableHttpUrl:
+                            description: Streamable-HTTP MCP server URL override.
+                            type: string
+                          supportsResourceMetadata:
+                            description: Enable if the server publishes OAuth metadata
+                              at /.well-known/oauth-authorization-server for automatic
+                              endpoint discovery. Defaults to `false` (matching the
+                              backend default).
+                            type: boolean
+                          tokenEndpoint:
+                            description: Custom OAuth token endpoint URL.
+                            type: string
+                          wellKnownUrl:
+                            description: Override for the `.well-known` discovery
+                              document URL.
+                            type: string
+                        type: object
+                      url:
+                        description: The URL of the remote MCP server (e.g., https://api.githubcopilot.com/mcp/)
+                        type: string
+                    type: object
+                  repository:
+                    description: Repository URL for the MCP server
+                    type: string
+                  requiresAuth:
+                    description: Whether the MCP server requires authentication
+                    type: boolean
+                  scope:
+                    description: Visibility scope for the MCP server catalog item
+                      (e.g., 'personal', 'team', 'org')
+                    type: string
+                  teams:
+                    description: Team IDs that have access to this MCP server
+                    items:
+                      type: string
+                    type: array
+                  userConfig:
+                    additionalProperties:
+                      properties:
+                        default:
+                          description: Default value. Use `jsonencode(...)` to encode
+                            non-string defaults (number, bool, or []string). Plain
+                            strings may be provided as-is.
+                          type: string
+                        description:
+                          description: Description of the field shown to the installer.
+                          type: string
+                        headerName:
+                          description: HTTP header name to bind this value to when
+                            installing a remote server.
+                          type: string
+                        max:
+                          description: Maximum value (for numeric fields).
+                          type: number
+                        min:
+                          description: Minimum value (for numeric fields).
+                          type: number
+                        multiple:
+                          description: Whether multiple values may be supplied.
+                          type: boolean
+                        promptOnInstallation:
+                          description: Whether to prompt the user for this value during
+                            installation.
+                          type: boolean
+                        required:
+                          description: Whether the installer must supply this field.
+                          type: boolean
+                        sensitive:
+                          description: If true, the value is redacted in logs and
+                            UI.
+                          type: boolean
+                        title:
+                          description: Human-readable field title shown to the installer.
+                          type: string
+                        type:
+                          description: Field type. One of `string`, `number`, `boolean`,
+                            `file`, `directory`.
+                          type: string
+                      type: object
+                    type: object
+                  version:
+                    description: Version string for the MCP server
+                    type: string
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
