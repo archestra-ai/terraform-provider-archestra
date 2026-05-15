@@ -129,7 +129,7 @@ TF_PROVIDER_BIN ?= ../terraform-provider-archestra
 
 $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
 	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
-	@PATH="$(dir $(TERRAFORM)):$$PATH" ./hack/generate-schema.sh "$(TF_PROVIDER_BIN)" > $(TERRAFORM_PROVIDER_SCHEMA)
+	@TERRAFORM="$(abspath $(TERRAFORM))" ./hack/generate-schema.sh "$(TF_PROVIDER_BIN)" > $(TERRAFORM_PROVIDER_SCHEMA)
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 
 # `pull-docs` would clone the public TF provider repo for example HCL.

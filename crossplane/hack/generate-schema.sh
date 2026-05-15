@@ -3,8 +3,11 @@
 #
 # Usage: hack/generate-schema.sh [path-to-provider-binary]
 #
-# Requires `terraform` on PATH. Writes to stdout; redirect to config/schema.json.
+# Set $TERRAFORM to the terraform binary (defaults to `terraform` on PATH).
+# Writes to stdout; redirect to config/schema.json.
 set -euo pipefail
+
+TERRAFORM="${TERRAFORM:-terraform}"
 
 PROVIDER_BIN="${1:-../terraform-provider-archestra}"
 if [[ ! -x "$PROVIDER_BIN" ]]; then
@@ -40,6 +43,6 @@ EOF
 
 (
     cd "$WORK"
-    terraform init -plugin-dir="$WORK/plugins" -input=false >&2
-    terraform providers schema -json
+    "$TERRAFORM" init -plugin-dir="$WORK/plugins" -input=false >&2
+    "$TERRAFORM" providers schema -json
 )
