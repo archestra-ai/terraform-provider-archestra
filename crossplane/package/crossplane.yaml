@@ -2,6 +2,22 @@ apiVersion: meta.pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-archestra
+  annotations:
+    meta.crossplane.io/maintainer: Archestra <support@archestra.ai>
+    meta.crossplane.io/source: github.com/archestra-ai/terraform-provider-archestra
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: |
+      Manage Archestra resources — agents, MCP server installations,
+      registry catalog items, and tool policies — as Kubernetes objects.
+    meta.crossplane.io/readme: |
+      The Archestra Crossplane provider lets you declare Archestra
+      resources as Kubernetes custom resources and reconcile them
+      continuously. It is generated from the Archestra Terraform provider
+      via upjet, so its resource schemas track the Terraform provider.
+
+      Create a ProviderConfig with an Archestra API key, then apply the
+      managed resources (Agent, ServerInstallation, RegistryCatalogItem,
+      ToolBatch, ToolInvocationPolicyDefault). See the examples/ directory.
 spec:
   capabilities:
     - SafeStart
