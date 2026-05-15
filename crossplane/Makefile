@@ -10,11 +10,13 @@ export TERRAFORM_VERSION ?= 1.5.7
 # licensed under BSL, which is not permitted.
 TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAFORM_VERSION)\n1.6" | sort -V | head -n1`" ] && echo 1 || echo 0)
 
-# Archestra TF provider isn't on the public registry, so the schema is dumped
-# from the locally-built binary (see hack/generate-schema.sh and the schema target).
+# The Archestra TF provider isn't on the Terraform registry. Codegen dumps the
+# schema from a locally-built binary (hack/generate-schema.sh); the provider
+# image bundles the native provider from the published GitHub release.
 export TERRAFORM_PROVIDER_SOURCE ?= archestra-ai/archestra
-export TERRAFORM_PROVIDER_VERSION ?= 0.0.1
+export TERRAFORM_PROVIDER_VERSION ?= 1.0.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-archestra
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/archestra-ai/terraform-provider-archestra/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-archestra
 export TERRAFORM_DOCS_PATH ?= docs/resources
 

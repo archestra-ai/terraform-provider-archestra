@@ -20,7 +20,7 @@ trap 'rm -rf "$WORK"' EXIT
 HOST="registry.terraform.io"
 NAMESPACE="archestra-ai"
 NAME="archestra"
-VERSION="0.0.1"
+VERSION="${TERRAFORM_PROVIDER_VERSION:-1.0.0}"
 OS_ARCH="$(go env GOOS)_$(go env GOARCH)"
 
 PLUGIN_DIR="$WORK/plugins/$HOST/$NAMESPACE/$NAME/$VERSION/$OS_ARCH"
