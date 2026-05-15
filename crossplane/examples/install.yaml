@@ -1,6 +1,8 @@
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: provider-archestra
+  name: crossplane-provider-archestra
 spec:
-  package: xpkg.crossplane.io/crossplane/provider-archestra:v0.1.0
+  # Replace with the registry path where you publish the xpkg. The default
+  # below assumes GitHub Container Registry under the archestra-ai org.
+  package: ghcr.io/archestra-ai/crossplane-provider-archestra:v0.1.0
