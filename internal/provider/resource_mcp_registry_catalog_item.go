@@ -1292,13 +1292,6 @@ func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	// Empty/null ID means the resource has not been created yet (e.g. upjet
-	// seeds Terraform state with id="" before the first reconcile). Treat as
-	// "doesn't exist" — terraform/upjet will plan a Create on the next pass.
-	if data.ID.IsNull() || data.ID.ValueString() == "" {
-		resp.State.RemoveResource(ctx)
-		return
-	}
 	// Parse UUID from state
 	serverID, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
