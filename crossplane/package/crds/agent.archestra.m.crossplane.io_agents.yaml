@@ -1,0 +1,489 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.20.1
+  name: agents.agent.archestra.m.crossplane.io
+spec:
+  group: agent.archestra.m.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - archestra
+    kind: Agent
+    listKind: AgentList
+    plural: agents
+    singular: agent
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Agent is the Schema for the Agents API. <no value>
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AgentSpec defines the desired state of Agent
+            properties:
+              forProvider:
+                properties:
+                  builtInAgentConfig:
+                    description: Built-in agent configuration. Discriminated by `name`.
+                    items:
+                      properties:
+                        autoConfigureOnToolDiscovery:
+                          description: Only applies when `name = "policy-configuration-subagent"`
+                          type: boolean
+                        maxRounds:
+                          description: Only applies when `name = "dual-llm-main-agent"`
+                            (1–20)
+                          type: number
+                        name:
+                          description: 'Built-in agent identifier: `policy-configuration-subagent`,
+                            `dual-llm-main-agent`, `dual-llm-quarantine-agent`'
+                          type: string
+                      type: object
+                    type: array
+                  connectorIds:
+                    description: Knowledge connector IDs the agent has access to
+                    items:
+                      type: string
+                    type: array
+                  considerContextUntrusted:
+                    description: Whether the agent context is treated as untrusted
+                    type: boolean
+                  description:
+                    description: Human-readable description
+                    type: string
+                  icon:
+                    description: Emoji or base64 image data URL
+                    type: string
+                  incomingEmailAllowedDomain:
+                    description: Allowed sender domain when `incoming_email_security_mode
+                      = "internal"`
+                    type: string
+                  incomingEmailEnabled:
+                    description: Whether incoming-email invocation is enabled
+                    type: boolean
+                  incomingEmailSecurityMode:
+                    description: Email-trigger security mode. One of `private` (only
+                      the agent owner can email it), `internal` (any sender from `incoming_email_allowed_domain`
+                      can), or `public` (any sender). Defaults to `private`.
+                    type: string
+                  isDefault:
+                    description: Whether this is the default agent for its type
+                    type: boolean
+                  knowledgeBaseIds:
+                    description: Knowledge base IDs the agent has access to
+                    items:
+                      type: string
+                    type: array
+                  labels:
+                    items:
+                      properties:
+                        key:
+                          type: string
+                        value:
+                          type: string
+                      type: object
+                    type: array
+                  llmApiKeyId:
+                    description: ID of the LLM provider API key the agent should use
+                    type: string
+                  llmModel:
+                    description: Model ID used for LLM calls
+                    type: string
+                  name:
+                    description: Agent name
+                    type: string
+                  scope:
+                    description: 'Ownership scope: `personal`, `team`, or `org` (default:
+                      `org`).'
+                    type: string
+                  suggestedPrompts:
+                    items:
+                      properties:
+                        prompt:
+                          description: Prompt text
+                          type: string
+                        summaryTitle:
+                          description: Title shown above the prompt
+                          type: string
+                      type: object
+                    type: array
+                  systemPrompt:
+                    description: System prompt that frames the agent's behavior
+                    type: string
+                  teams:
+                    description: Team IDs this agent is assigned to. Required when
+                      `scope = "team"`. Removing from configuration clears the assignment
+                      on next apply.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  builtInAgentConfig:
+                    description: Built-in agent configuration. Discriminated by `name`.
+                    items:
+                      properties:
+                        autoConfigureOnToolDiscovery:
+                          description: Only applies when `name = "policy-configuration-subagent"`
+                          type: boolean
+                        maxRounds:
+                          description: Only applies when `name = "dual-llm-main-agent"`
+                            (1–20)
+                          type: number
+                        name:
+                          description: 'Built-in agent identifier: `policy-configuration-subagent`,
+                            `dual-llm-main-agent`, `dual-llm-quarantine-agent`'
+                          type: string
+                      type: object
+                    type: array
+                  connectorIds:
+                    description: Knowledge connector IDs the agent has access to
+                    items:
+                      type: string
+                    type: array
+                  considerContextUntrusted:
+                    description: Whether the agent context is treated as untrusted
+                    type: boolean
+                  description:
+                    description: Human-readable description
+                    type: string
+                  icon:
+                    description: Emoji or base64 image data URL
+                    type: string
+                  incomingEmailAllowedDomain:
+                    description: Allowed sender domain when `incoming_email_security_mode
+                      = "internal"`
+                    type: string
+                  incomingEmailEnabled:
+                    description: Whether incoming-email invocation is enabled
+                    type: boolean
+                  incomingEmailSecurityMode:
+                    description: Email-trigger security mode. One of `private` (only
+                      the agent owner can email it), `internal` (any sender from `incoming_email_allowed_domain`
+                      can), or `public` (any sender). Defaults to `private`.
+                    type: string
+                  isDefault:
+                    description: Whether this is the default agent for its type
+                    type: boolean
+                  knowledgeBaseIds:
+                    description: Knowledge base IDs the agent has access to
+                    items:
+                      type: string
+                    type: array
+                  labels:
+                    items:
+                      properties:
+                        key:
+                          type: string
+                        value:
+                          type: string
+                      type: object
+                    type: array
+                  llmApiKeyId:
+                    description: ID of the LLM provider API key the agent should use
+                    type: string
+                  llmModel:
+                    description: Model ID used for LLM calls
+                    type: string
+                  name:
+                    description: Agent name
+                    type: string
+                  scope:
+                    description: 'Ownership scope: `personal`, `team`, or `org` (default:
+                      `org`).'
+                    type: string
+                  suggestedPrompts:
+                    items:
+                      properties:
+                        prompt:
+                          description: Prompt text
+                          type: string
+                        summaryTitle:
+                          description: Title shown above the prompt
+                          type: string
+                      type: object
+                    type: array
+                  systemPrompt:
+                    description: System prompt that frames the agent's behavior
+                    type: string
+                  teams:
+                    description: Team IDs this agent is assigned to. Required when
+                      `scope = "team"`. Removing from configuration clears the assignment
+                      on next apply.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  kind: ClusterProviderConfig
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  kind:
+                    description: Kind of the referenced object.
+                    type: string
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                required:
+                - name
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+          status:
+            description: AgentStatus defines the observed state of Agent.
+            properties:
+              atProvider:
+                properties:
+                  builtInAgentConfig:
+                    description: Built-in agent configuration. Discriminated by `name`.
+                    items:
+                      properties:
+                        autoConfigureOnToolDiscovery:
+                          description: Only applies when `name = "policy-configuration-subagent"`
+                          type: boolean
+                        maxRounds:
+                          description: Only applies when `name = "dual-llm-main-agent"`
+                            (1–20)
+                          type: number
+                        name:
+                          description: 'Built-in agent identifier: `policy-configuration-subagent`,
+                            `dual-llm-main-agent`, `dual-llm-quarantine-agent`'
+                          type: string
+                      type: object
+                    type: array
+                  connectorIds:
+                    description: Knowledge connector IDs the agent has access to
+                    items:
+                      type: string
+                    type: array
+                  considerContextUntrusted:
+                    description: Whether the agent context is treated as untrusted
+                    type: boolean
+                  description:
+                    description: Human-readable description
+                    type: string
+                  icon:
+                    description: Emoji or base64 image data URL
+                    type: string
+                  id:
+                    type: string
+                  incomingEmailAllowedDomain:
+                    description: Allowed sender domain when `incoming_email_security_mode
+                      = "internal"`
+                    type: string
+                  incomingEmailEnabled:
+                    description: Whether incoming-email invocation is enabled
+                    type: boolean
+                  incomingEmailSecurityMode:
+                    description: Email-trigger security mode. One of `private` (only
+                      the agent owner can email it), `internal` (any sender from `incoming_email_allowed_domain`
+                      can), or `public` (any sender). Defaults to `private`.
+                    type: string
+                  isDefault:
+                    description: Whether this is the default agent for its type
+                    type: boolean
+                  knowledgeBaseIds:
+                    description: Knowledge base IDs the agent has access to
+                    items:
+                      type: string
+                    type: array
+                  labels:
+                    items:
+                      properties:
+                        key:
+                          type: string
+                        value:
+                          type: string
+                      type: object
+                    type: array
+                  llmApiKeyId:
+                    description: ID of the LLM provider API key the agent should use
+                    type: string
+                  llmModel:
+                    description: Model ID used for LLM calls
+                    type: string
+                  name:
+                    description: Agent name
+                    type: string
+                  scope:
+                    description: 'Ownership scope: `personal`, `team`, or `org` (default:
+                      `org`).'
+                    type: string
+                  suggestedPrompts:
+                    items:
+                      properties:
+                        prompt:
+                          description: Prompt text
+                          type: string
+                        summaryTitle:
+                          description: Title shown above the prompt
+                          type: string
+                      type: object
+                    type: array
+                  systemPrompt:
+                    description: System prompt that frames the agent's behavior
+                    type: string
+                  teams:
+                    description: Team IDs this agent is assigned to. Required when
+                      `scope = "team"`. Removing from configuration clears the assignment
+                      on next apply.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
