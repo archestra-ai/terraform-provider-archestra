@@ -33,7 +33,7 @@ output-options:
     - Statistics
     - User Tokens
     - Vault
-    - Virtual API Keys
+    # Virtual API Keys - included for archestra_virtual_api_key resource
     - Webhooks
     - mcp-proxy
   exclude-schemas:
