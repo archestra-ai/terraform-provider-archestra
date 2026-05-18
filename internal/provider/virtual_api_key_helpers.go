@@ -31,9 +31,13 @@ func (r *VirtualApiKeyResource) AttrSpecs() []AttrSpec {
 	return virtualApiKeyAttrSpec
 }
 
-// APIShape uses the list endpoint with parent-info because the singular
-// `GET /api/llm-provider-api-keys/:id/virtual-keys/:vid` route doesn't
-// exist; Read paginates `/api/llm-virtual-keys` and finds by id.
+// APIShape uses the org-wide list endpoint (filtered by parent) rather
+// than the parent-scoped `GET /api/llm-provider-api-keys/:chatApiKeyId/
+// virtual-keys` because that route's `SelectVirtualApiKeySchema`
+// response omits `teams` and `authorName` — both of which are managed
+// schema attributes and need to round-trip drift-honestly on Read.
+// `GetAllVirtualApiKeysResponse` returns the full `VirtualApiKey
+// WithParentInfoSchema` shape including those fields.
 func (r *VirtualApiKeyResource) APIShape() any {
 	return client.GetAllVirtualApiKeysResponse{}
 }
@@ -97,6 +101,21 @@ func teamIDsFromCreateUpdate(ctx context.Context, prior types.List, teams []stru
 	list, d := teamIDsToList(ctx, prior, ids)
 	diags.Append(d...)
 	return list
+}
+
+// finalizeVirtualApiKeyPatch reconciles a backend quirk: the
+// `PATCH /api/llm-provider-api-keys/:id/virtual-keys/:vid` endpoint
+// reuses the Create body schema (`CreateOrUpdateVirtualApiKeyBodySchema`)
+// in which `name` is `z.string().min(1)` — REQUIRED, not nullable, not
+// optional. MergePatch only emits changed fields, so an update touching
+// only (say) `expires_at` produces a body without `name` and the
+// backend rejects it with 400 "body/name Invalid input". We inject
+// `name` from plan unconditionally to satisfy the contract; the
+// re-asserted value is a no-op when unchanged.
+func finalizeVirtualApiKeyPatch(patch map[string]any, name string) {
+	if _, ok := patch["name"]; !ok {
+		patch["name"] = name
+	}
 }
 
 // rfc3339TimeValidator rejects values that aren't parseable as RFC 3339

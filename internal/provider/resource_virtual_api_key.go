@@ -256,12 +256,12 @@ func (r *VirtualApiKeyResource) Read(ctx context.Context, req resource.ReadReque
 	}
 	id := data.ID.ValueString()
 
-	found, drop, diags := r.findVirtualKeyByID(ctx, parentID, id, &data)
+	found, diags := r.findVirtualKeyByID(ctx, parentID, id, &data)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if drop || !found {
+	if !found {
 		resp.State.RemoveResource(ctx)
 		return
 	}
@@ -292,9 +292,30 @@ func (r *VirtualApiKeyResource) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 	if len(patch) == 0 {
+		// No wire-field diff but Terraform still called Update — the
+		// trigger is one of the unsticky Computed fields (last_used_at,
+		// author_name) being Unknown in plan. Skipping the PATCH is
+		// correct; we still need to refresh from the API so those
+		// Computed fields land in state with concrete values instead of
+		// the plan's Unknown markers (Framework rejects Unknown in state
+		// with "Provider produced inconsistent result after apply").
+		found, fdiags := r.findVirtualKeyByID(ctx, parentID, data.ID.ValueString(), &data)
+		resp.Diagnostics.Append(fdiags...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		if !found {
+			resp.Diagnostics.AddError(
+				"Resource Deleted Outside Terraform",
+				"The virtual API key disappeared between refresh and apply. "+
+					"Re-run `terraform apply` — the next refresh drops it from state and the plan recreates it.",
+			)
+			return
+		}
 		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 		return
 	}
+	finalizeVirtualApiKeyPatch(patch, data.Name.ValueString())
 	LogPatch(ctx, "archestra_virtual_api_key Update", patch, virtualApiKeyAttrSpec)
 
 	bodyBytes, err := json.Marshal(patch)
@@ -385,15 +406,16 @@ func (r *VirtualApiKeyResource) ImportState(ctx context.Context, req resource.Im
 }
 
 // findVirtualKeyByID paginates `/api/llm-virtual-keys` filtered by
-// parent and writes the matching row into `data`. `drop = true` means
-// the API surfaced a 404 (parent gone or filter rejected) so the caller
-// should clear state.
+// parent and writes the matching row into `data`. `found = false` with
+// no error diagnostics means the row no longer exists (parent deleted
+// or virtual key deleted out-of-band); callers in Read should drop
+// state, callers in Update should error.
 func (r *VirtualApiKeyResource) findVirtualKeyByID(
 	ctx context.Context,
 	parentID openapi_types.UUID,
 	id string,
 	data *VirtualApiKeyResourceModel,
-) (found bool, drop bool, diags diag.Diagnostics) {
+) (found bool, diags diag.Diagnostics) {
 	limit := 100
 	offset := 0
 	chatApiKeyId := parentID
@@ -407,14 +429,17 @@ func (r *VirtualApiKeyResource) findVirtualKeyByID(
 		apiResp, err := r.client.GetAllVirtualApiKeysWithResponse(ctx, params)
 		if err != nil {
 			diags.AddError("API Error", fmt.Sprintf("Unable to list virtual API keys: %s", err))
-			return false, false, diags
+			return false, diags
 		}
-		if IsNotFound(apiResp) {
-			return false, true, diags
-		}
+		// No IsNotFound branch: this list endpoint never 404s for a
+		// missing parent or missing row — it filters silently and
+		// returns empty data (see platform/backend/src/routes/
+		// virtual-api-keys.ts:37-73). A 404 here would be an
+		// infrastructure layer (proxy/auth) error; treating it as
+		// "resource gone" would silently drop the user's state.
 		if apiResp.JSON200 == nil {
 			diags.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d: %s", apiResp.StatusCode(), string(apiResp.Body)))
-			return false, false, diags
+			return false, diags
 		}
 
 		for i := range apiResp.JSON200.Data {
@@ -446,11 +471,11 @@ func (r *VirtualApiKeyResource) findVirtualKeyByID(
 			// prior state. UseStateForUnknown carries it across refreshes;
 			// don't overwrite to null here.
 
-			return true, false, diags
+			return true, diags
 		}
 
 		if !apiResp.JSON200.Pagination.HasNext {
-			return false, false, diags
+			return false, diags
 		}
 		offset += limit
 		params.Offset = &offset

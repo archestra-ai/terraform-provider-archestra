@@ -50,6 +50,51 @@ func TestAccVirtualApiKeyResource(t *testing.T) {
 	})
 }
 
+// TestAccVirtualApiKeyResource_ExpiresAtClear pins the nullable round-
+// trip: create with expires_at set, update with expires_at omitted,
+// confirm state lands as null. Without this, the merge-patch null-emit
+// path on a `.nullable().optional()` wire field can silently drift.
+// Parent name is held constant across steps so updating the child
+// doesn't force-replace the parent (which would force-replace the
+// child too via the RequiresReplace `llm_provider_api_key_id`).
+func TestAccVirtualApiKeyResource_ExpiresAtClear(t *testing.T) {
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t); testAccRequireByosEnabled(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccVirtualApiKeyResourceConfigExpiresAt("Expiring Key", `expires_at = "2027-04-01T00:00:00Z"`),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("archestra_virtual_api_key.test", "expires_at", "2027-04-01T00:00:00Z"),
+				),
+			},
+			{
+				Config: testAccVirtualApiKeyResourceConfigExpiresAt("Expiring Key", ""),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckNoResourceAttr("archestra_virtual_api_key.test", "expires_at"),
+				),
+			},
+		},
+	})
+}
+
+func testAccVirtualApiKeyResourceConfigExpiresAt(name, expiresAttr string) string {
+	return fmt.Sprintf(`
+resource "archestra_llm_provider_api_key" "parent" {
+  name              = "Virtual Key Expires Parent"
+  llm_provider      = "ollama"
+  vault_secret_path = "secret/data/test/ollama"
+  vault_secret_key  = "api_key"
+}
+
+resource "archestra_virtual_api_key" "test" {
+  llm_provider_api_key_id = archestra_llm_provider_api_key.parent.id
+  name                    = %[1]q
+  %[2]s
+}
+`, name, expiresAttr)
+}
+
 // TestAccVirtualApiKeyResource_TeamScope covers scope = "team" with the
 // teams list resolved from a real archestra_team resource.
 func TestAccVirtualApiKeyResource_TeamScope(t *testing.T) {
