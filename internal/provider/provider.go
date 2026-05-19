@@ -201,6 +201,10 @@ func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource
 		NewMCPServerToolDataSource,
 		NewMcpToolCallsDataSource,
 		NewTeamExternalGroupsDataSource,
+		NewAgentDataSource,
+		NewScheduleTriggerDataSource,
+		NewIdentityProviderDataSource,
+		NewApiKeyDataSource,
 	}
 }
 
