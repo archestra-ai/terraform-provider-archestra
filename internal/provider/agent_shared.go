@@ -28,6 +28,7 @@ type agentAPIResponse struct {
 	IncomingEmailSecurityMode  string              `json:"incomingEmailSecurityMode"`
 	ConsiderContextUntrusted   bool                `json:"considerContextUntrusted"`
 	IsDefault                  bool                `json:"isDefault"`
+	BuiltIn                    *bool               `json:"builtIn"`
 	Scope                      string              `json:"scope"`
 	PassthroughHeaders         *[]string           `json:"passthroughHeaders"`
 	KnowledgeBaseIds           []string            `json:"knowledgeBaseIds"`
