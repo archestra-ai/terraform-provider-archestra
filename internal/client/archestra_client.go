@@ -1650,6 +1650,11 @@ type UpdateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsTokenEn
 // UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication defines parameters for UpdateIdentityProvider.
 type UpdateIdentityProviderJSONBodyOidcConfigTokenEndpointAuthentication string
 
+// SetupIncomingEmailWebhookJSONBody defines parameters for SetupIncomingEmailWebhook.
+type SetupIncomingEmailWebhookJSONBody struct {
+	WebhookUrl string `json:"webhookUrl"`
+}
+
 // CreateInternalMcpCatalogItemJSONBody defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBody struct {
 	AuthDescription *string `json:"authDescription"`
@@ -2855,6 +2860,9 @@ type CreateIdentityProviderJSONRequestBody CreateIdentityProviderJSONBody
 // UpdateIdentityProviderJSONRequestBody defines body for UpdateIdentityProvider for application/json ContentType.
 type UpdateIdentityProviderJSONRequestBody UpdateIdentityProviderJSONBody
 
+// SetupIncomingEmailWebhookJSONRequestBody defines body for SetupIncomingEmailWebhook for application/json ContentType.
+type SetupIncomingEmailWebhookJSONRequestBody SetupIncomingEmailWebhookJSONBody
+
 // CreateInternalMcpCatalogItemJSONRequestBody defines body for CreateInternalMcpCatalogItem for application/json ContentType.
 type CreateInternalMcpCatalogItemJSONRequestBody CreateInternalMcpCatalogItemJSONBody
 
@@ -3173,6 +3181,20 @@ type ClientInterface interface {
 	UpdateIdentityProviderWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateIdentityProvider(ctx context.Context, id string, body UpdateIdentityProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RenewIncomingEmailSubscription request
+	RenewIncomingEmailSubscription(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetupIncomingEmailWebhookWithBody request with any body
+	SetupIncomingEmailWebhookWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SetupIncomingEmailWebhook(ctx context.Context, body SetupIncomingEmailWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetIncomingEmailStatus request
+	GetIncomingEmailStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteIncomingEmailSubscription request
+	DeleteIncomingEmailSubscription(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetInternalMcpCatalog request
 	GetInternalMcpCatalog(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4136,6 +4158,66 @@ func (c *Client) UpdateIdentityProviderWithBody(ctx context.Context, id string, 
 
 func (c *Client) UpdateIdentityProvider(ctx context.Context, id string, body UpdateIdentityProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateIdentityProviderRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RenewIncomingEmailSubscription(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRenewIncomingEmailSubscriptionRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetupIncomingEmailWebhookWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetupIncomingEmailWebhookRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetupIncomingEmailWebhook(ctx context.Context, body SetupIncomingEmailWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetupIncomingEmailWebhookRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetIncomingEmailStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetIncomingEmailStatusRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteIncomingEmailSubscription(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteIncomingEmailSubscriptionRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -7587,6 +7669,127 @@ func NewUpdateIdentityProviderRequestWithBody(server string, id string, contentT
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRenewIncomingEmailSubscriptionRequest generates requests for RenewIncomingEmailSubscription
+func NewRenewIncomingEmailSubscriptionRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/incoming-email/renew")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSetupIncomingEmailWebhookRequest calls the generic SetupIncomingEmailWebhook builder with application/json body
+func NewSetupIncomingEmailWebhookRequest(server string, body SetupIncomingEmailWebhookJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSetupIncomingEmailWebhookRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewSetupIncomingEmailWebhookRequestWithBody generates requests for SetupIncomingEmailWebhook with any type of body
+func NewSetupIncomingEmailWebhookRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/incoming-email/setup")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetIncomingEmailStatusRequest generates requests for GetIncomingEmailStatus
+func NewGetIncomingEmailStatusRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/incoming-email/status")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteIncomingEmailSubscriptionRequest generates requests for DeleteIncomingEmailSubscription
+func NewDeleteIncomingEmailSubscriptionRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/incoming-email/subscription")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -12233,6 +12436,20 @@ type ClientWithResponsesInterface interface {
 
 	UpdateIdentityProviderWithResponse(ctx context.Context, id string, body UpdateIdentityProviderJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateIdentityProviderResponse, error)
 
+	// RenewIncomingEmailSubscriptionWithResponse request
+	RenewIncomingEmailSubscriptionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RenewIncomingEmailSubscriptionResponse, error)
+
+	// SetupIncomingEmailWebhookWithBodyWithResponse request with any body
+	SetupIncomingEmailWebhookWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetupIncomingEmailWebhookResponse, error)
+
+	SetupIncomingEmailWebhookWithResponse(ctx context.Context, body SetupIncomingEmailWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*SetupIncomingEmailWebhookResponse, error)
+
+	// GetIncomingEmailStatusWithResponse request
+	GetIncomingEmailStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetIncomingEmailStatusResponse, error)
+
+	// DeleteIncomingEmailSubscriptionWithResponse request
+	DeleteIncomingEmailSubscriptionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteIncomingEmailSubscriptionResponse, error)
+
 	// GetInternalMcpCatalogWithResponse request
 	GetInternalMcpCatalogWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogResponse, error)
 
@@ -16156,6 +16373,283 @@ func (r UpdateIdentityProviderResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateIdentityProviderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RenewIncomingEmailSubscriptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		ExpiresAt      *time.Time `json:"expiresAt,omitempty"`
+		Message        *string    `json:"message,omitempty"`
+		SubscriptionId *string    `json:"subscriptionId,omitempty"`
+		Success        bool       `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                     `json:"message"`
+			Type    RenewIncomingEmailSubscription500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type RenewIncomingEmailSubscription400ErrorType string
+type RenewIncomingEmailSubscription401ErrorType string
+type RenewIncomingEmailSubscription403ErrorType string
+type RenewIncomingEmailSubscription404ErrorType string
+type RenewIncomingEmailSubscription409ErrorType string
+type RenewIncomingEmailSubscription500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r RenewIncomingEmailSubscriptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RenewIncomingEmailSubscriptionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SetupIncomingEmailWebhookResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		ExpiresAt      *time.Time `json:"expiresAt,omitempty"`
+		Message        *string    `json:"message,omitempty"`
+		SubscriptionId *string    `json:"subscriptionId,omitempty"`
+		Success        bool       `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                `json:"message"`
+			Type    SetupIncomingEmailWebhook500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type SetupIncomingEmailWebhook400ErrorType string
+type SetupIncomingEmailWebhook401ErrorType string
+type SetupIncomingEmailWebhook403ErrorType string
+type SetupIncomingEmailWebhook404ErrorType string
+type SetupIncomingEmailWebhook409ErrorType string
+type SetupIncomingEmailWebhook500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r SetupIncomingEmailWebhookResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetupIncomingEmailWebhookResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetIncomingEmailStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		IsActive     bool `json:"isActive"`
+		Subscription *struct {
+			ExpiresAt      time.Time `json:"expiresAt"`
+			Id             string    `json:"id"`
+			Provider       string    `json:"provider"`
+			SubscriptionId string    `json:"subscriptionId"`
+			WebhookUrl     string    `json:"webhookUrl"`
+		} `json:"subscription"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetIncomingEmailStatus500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetIncomingEmailStatus400ErrorType string
+type GetIncomingEmailStatus401ErrorType string
+type GetIncomingEmailStatus403ErrorType string
+type GetIncomingEmailStatus404ErrorType string
+type GetIncomingEmailStatus409ErrorType string
+type GetIncomingEmailStatus500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetIncomingEmailStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetIncomingEmailStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteIncomingEmailSubscriptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    DeleteIncomingEmailSubscription500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteIncomingEmailSubscription400ErrorType string
+type DeleteIncomingEmailSubscription401ErrorType string
+type DeleteIncomingEmailSubscription403ErrorType string
+type DeleteIncomingEmailSubscription404ErrorType string
+type DeleteIncomingEmailSubscription409ErrorType string
+type DeleteIncomingEmailSubscription500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteIncomingEmailSubscriptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteIncomingEmailSubscriptionResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -26074,6 +26568,50 @@ func (c *ClientWithResponses) UpdateIdentityProviderWithResponse(ctx context.Con
 	return ParseUpdateIdentityProviderResponse(rsp)
 }
 
+// RenewIncomingEmailSubscriptionWithResponse request returning *RenewIncomingEmailSubscriptionResponse
+func (c *ClientWithResponses) RenewIncomingEmailSubscriptionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*RenewIncomingEmailSubscriptionResponse, error) {
+	rsp, err := c.RenewIncomingEmailSubscription(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRenewIncomingEmailSubscriptionResponse(rsp)
+}
+
+// SetupIncomingEmailWebhookWithBodyWithResponse request with arbitrary body returning *SetupIncomingEmailWebhookResponse
+func (c *ClientWithResponses) SetupIncomingEmailWebhookWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetupIncomingEmailWebhookResponse, error) {
+	rsp, err := c.SetupIncomingEmailWebhookWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetupIncomingEmailWebhookResponse(rsp)
+}
+
+func (c *ClientWithResponses) SetupIncomingEmailWebhookWithResponse(ctx context.Context, body SetupIncomingEmailWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*SetupIncomingEmailWebhookResponse, error) {
+	rsp, err := c.SetupIncomingEmailWebhook(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetupIncomingEmailWebhookResponse(rsp)
+}
+
+// GetIncomingEmailStatusWithResponse request returning *GetIncomingEmailStatusResponse
+func (c *ClientWithResponses) GetIncomingEmailStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetIncomingEmailStatusResponse, error) {
+	rsp, err := c.GetIncomingEmailStatus(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetIncomingEmailStatusResponse(rsp)
+}
+
+// DeleteIncomingEmailSubscriptionWithResponse request returning *DeleteIncomingEmailSubscriptionResponse
+func (c *ClientWithResponses) DeleteIncomingEmailSubscriptionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteIncomingEmailSubscriptionResponse, error) {
+	rsp, err := c.DeleteIncomingEmailSubscription(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteIncomingEmailSubscriptionResponse(rsp)
+}
+
 // GetInternalMcpCatalogWithResponse request returning *GetInternalMcpCatalogResponse
 func (c *ClientWithResponses) GetInternalMcpCatalogWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogResponse, error) {
 	rsp, err := c.GetInternalMcpCatalog(ctx, reqEditors...)
@@ -31956,6 +32494,419 @@ func ParseUpdateIdentityProviderResponse(rsp *http.Response) (*UpdateIdentityPro
 			Error struct {
 				Message string                             `json:"message"`
 				Type    UpdateIdentityProvider500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRenewIncomingEmailSubscriptionResponse parses an HTTP response from a RenewIncomingEmailSubscriptionWithResponse call
+func ParseRenewIncomingEmailSubscriptionResponse(rsp *http.Response) (*RenewIncomingEmailSubscriptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RenewIncomingEmailSubscriptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			ExpiresAt      *time.Time `json:"expiresAt,omitempty"`
+			Message        *string    `json:"message,omitempty"`
+			SubscriptionId *string    `json:"subscriptionId,omitempty"`
+			Success        bool       `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                     `json:"message"`
+				Type    RenewIncomingEmailSubscription500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSetupIncomingEmailWebhookResponse parses an HTTP response from a SetupIncomingEmailWebhookWithResponse call
+func ParseSetupIncomingEmailWebhookResponse(rsp *http.Response) (*SetupIncomingEmailWebhookResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetupIncomingEmailWebhookResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			ExpiresAt      *time.Time `json:"expiresAt,omitempty"`
+			Message        *string    `json:"message,omitempty"`
+			SubscriptionId *string    `json:"subscriptionId,omitempty"`
+			Success        bool       `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                `json:"message"`
+				Type    SetupIncomingEmailWebhook500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetIncomingEmailStatusResponse parses an HTTP response from a GetIncomingEmailStatusWithResponse call
+func ParseGetIncomingEmailStatusResponse(rsp *http.Response) (*GetIncomingEmailStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetIncomingEmailStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			IsActive     bool `json:"isActive"`
+			Subscription *struct {
+				ExpiresAt      time.Time `json:"expiresAt"`
+				Id             string    `json:"id"`
+				Provider       string    `json:"provider"`
+				SubscriptionId string    `json:"subscriptionId"`
+				WebhookUrl     string    `json:"webhookUrl"`
+			} `json:"subscription"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetIncomingEmailStatus500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteIncomingEmailSubscriptionResponse parses an HTTP response from a DeleteIncomingEmailSubscriptionWithResponse call
+func ParseDeleteIncomingEmailSubscriptionResponse(rsp *http.Response) (*DeleteIncomingEmailSubscriptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteIncomingEmailSubscriptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    DeleteIncomingEmailSubscription500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

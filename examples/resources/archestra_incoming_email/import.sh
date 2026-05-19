@@ -1,0 +1,1 @@
+terraform import archestra_incoming_email.outlook singleton
