@@ -1992,6 +1992,25 @@ type UpdateInternalMcpCatalogItemJSONBodyScope string
 // UpdateInternalMcpCatalogItemJSONBodyServerType defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBodyServerType string
 
+// GetKnowledgeBasesParams defines parameters for GetKnowledgeBases.
+type GetKnowledgeBasesParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int    `form:"offset,omitempty" json:"offset,omitempty"`
+	Search *string `form:"search,omitempty" json:"search,omitempty"`
+}
+
+// CreateKnowledgeBaseJSONBody defines parameters for CreateKnowledgeBase.
+type CreateKnowledgeBaseJSONBody struct {
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name"`
+}
+
+// UpdateKnowledgeBaseJSONBody defines parameters for UpdateKnowledgeBase.
+type UpdateKnowledgeBaseJSONBody struct {
+	Description *string `json:"description"`
+	Name        *string `json:"name,omitempty"`
+}
+
 // GetLimitsParams defines parameters for GetLimits.
 type GetLimitsParams struct {
 	EntityType *GetLimitsParamsEntityType `form:"entityType,omitempty" json:"entityType,omitempty"`
@@ -2864,6 +2883,12 @@ type ValidateDeploymentYamlJSONRequestBody ValidateDeploymentYamlJSONBody
 // UpdateInternalMcpCatalogItemJSONRequestBody defines body for UpdateInternalMcpCatalogItem for application/json ContentType.
 type UpdateInternalMcpCatalogItemJSONRequestBody UpdateInternalMcpCatalogItemJSONBody
 
+// CreateKnowledgeBaseJSONRequestBody defines body for CreateKnowledgeBase for application/json ContentType.
+type CreateKnowledgeBaseJSONRequestBody CreateKnowledgeBaseJSONBody
+
+// UpdateKnowledgeBaseJSONRequestBody defines body for UpdateKnowledgeBase for application/json ContentType.
+type UpdateKnowledgeBaseJSONRequestBody UpdateKnowledgeBaseJSONBody
+
 // CreateLimitJSONRequestBody defines body for CreateLimit for application/json ContentType.
 type CreateLimitJSONRequestBody CreateLimitJSONBody
 
@@ -3218,6 +3243,28 @@ type ClientInterface interface {
 
 	// GetK8sImagePullSecrets request
 	GetK8sImagePullSecrets(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKnowledgeBases request
+	GetKnowledgeBases(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateKnowledgeBaseWithBody request with any body
+	CreateKnowledgeBaseWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateKnowledgeBase(ctx context.Context, body CreateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteKnowledgeBase request
+	DeleteKnowledgeBase(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKnowledgeBase request
+	GetKnowledgeBase(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateKnowledgeBaseWithBody request with any body
+	UpdateKnowledgeBaseWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateKnowledgeBase(ctx context.Context, id string, body UpdateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKnowledgeBaseHealth request
+	GetKnowledgeBaseHealth(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetLimits request
 	GetLimits(ctx context.Context, params *GetLimitsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4328,6 +4375,102 @@ func (c *Client) GetInternalMcpCatalogTools(ctx context.Context, id openapi_type
 
 func (c *Client) GetK8sImagePullSecrets(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetK8sImagePullSecretsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetKnowledgeBases(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKnowledgeBasesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateKnowledgeBaseWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateKnowledgeBaseRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateKnowledgeBase(ctx context.Context, body CreateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateKnowledgeBaseRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteKnowledgeBase(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteKnowledgeBaseRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetKnowledgeBase(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKnowledgeBaseRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateKnowledgeBaseWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateKnowledgeBaseRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateKnowledgeBase(ctx context.Context, id string, body UpdateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateKnowledgeBaseRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetKnowledgeBaseHealth(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKnowledgeBaseHealthRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -8035,6 +8178,276 @@ func NewGetK8sImagePullSecretsRequest(server string) (*http.Request, error) {
 	}
 
 	operationPath := fmt.Sprintf("/api/k8s/image-pull-secrets")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetKnowledgeBasesRequest generates requests for GetKnowledgeBases
+func NewGetKnowledgeBasesRequest(server string, params *GetKnowledgeBasesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateKnowledgeBaseRequest calls the generic CreateKnowledgeBase builder with application/json body
+func NewCreateKnowledgeBaseRequest(server string, body CreateKnowledgeBaseJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateKnowledgeBaseRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateKnowledgeBaseRequestWithBody generates requests for CreateKnowledgeBase with any type of body
+func NewCreateKnowledgeBaseRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteKnowledgeBaseRequest generates requests for DeleteKnowledgeBase
+func NewDeleteKnowledgeBaseRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetKnowledgeBaseRequest generates requests for GetKnowledgeBase
+func NewGetKnowledgeBaseRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateKnowledgeBaseRequest calls the generic UpdateKnowledgeBase builder with application/json body
+func NewUpdateKnowledgeBaseRequest(server string, id string, body UpdateKnowledgeBaseJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateKnowledgeBaseRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateKnowledgeBaseRequestWithBody generates requests for UpdateKnowledgeBase with any type of body
+func NewUpdateKnowledgeBaseRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetKnowledgeBaseHealthRequest generates requests for GetKnowledgeBaseHealth
+func NewGetKnowledgeBaseHealthRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases/%s/health", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -12277,6 +12690,28 @@ type ClientWithResponsesInterface interface {
 
 	// GetK8sImagePullSecretsWithResponse request
 	GetK8sImagePullSecretsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetK8sImagePullSecretsResponse, error)
+
+	// GetKnowledgeBasesWithResponse request
+	GetKnowledgeBasesWithResponse(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*GetKnowledgeBasesResponse, error)
+
+	// CreateKnowledgeBaseWithBodyWithResponse request with any body
+	CreateKnowledgeBaseWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateKnowledgeBaseResponse, error)
+
+	CreateKnowledgeBaseWithResponse(ctx context.Context, body CreateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateKnowledgeBaseResponse, error)
+
+	// DeleteKnowledgeBaseWithResponse request
+	DeleteKnowledgeBaseWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteKnowledgeBaseResponse, error)
+
+	// GetKnowledgeBaseWithResponse request
+	GetKnowledgeBaseWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetKnowledgeBaseResponse, error)
+
+	// UpdateKnowledgeBaseWithBodyWithResponse request with any body
+	UpdateKnowledgeBaseWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKnowledgeBaseResponse, error)
+
+	UpdateKnowledgeBaseWithResponse(ctx context.Context, id string, body UpdateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKnowledgeBaseResponse, error)
+
+	// GetKnowledgeBaseHealthWithResponse request
+	GetKnowledgeBaseHealthWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetKnowledgeBaseHealthResponse, error)
 
 	// GetLimitsWithResponse request
 	GetLimitsWithResponse(ctx context.Context, params *GetLimitsParams, reqEditors ...RequestEditorFn) (*GetLimitsResponse, error)
@@ -17553,6 +17988,450 @@ func (r GetK8sImagePullSecretsResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetK8sImagePullSecretsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetKnowledgeBasesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			AssignedAgents []struct {
+				AgentType string `json:"agentType"`
+				Id        string `json:"id"`
+				Name      string `json:"name"`
+			} `json:"assignedAgents"`
+			Connectors []struct {
+				ConnectorType GetKnowledgeBases200DataConnectorsConnectorType `json:"connectorType"`
+				Id            string                                          `json:"id"`
+				Name          string                                          `json:"name"`
+			} `json:"connectors"`
+			CreatedAt        time.Time          `json:"createdAt"`
+			Description      *string            `json:"description"`
+			Id               openapi_types.UUID `json:"id"`
+			Name             string             `json:"name"`
+			OrganizationId   string             `json:"organizationId"`
+			Status           string             `json:"status"`
+			TotalDocsIndexed float32            `json:"totalDocsIndexed"`
+			UpdatedAt        time.Time          `json:"updatedAt"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetKnowledgeBases200DataConnectorsConnectorType string
+type GetKnowledgeBases400ErrorType string
+type GetKnowledgeBases401ErrorType string
+type GetKnowledgeBases403ErrorType string
+type GetKnowledgeBases404ErrorType string
+type GetKnowledgeBases409ErrorType string
+type GetKnowledgeBases500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetKnowledgeBasesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKnowledgeBasesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateKnowledgeBaseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time          `json:"createdAt"`
+		Description    *string            `json:"description"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		Status         string             `json:"status"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateKnowledgeBase400ErrorType string
+type CreateKnowledgeBase401ErrorType string
+type CreateKnowledgeBase403ErrorType string
+type CreateKnowledgeBase404ErrorType string
+type CreateKnowledgeBase409ErrorType string
+type CreateKnowledgeBase500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateKnowledgeBaseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateKnowledgeBaseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteKnowledgeBaseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteKnowledgeBase400ErrorType string
+type DeleteKnowledgeBase401ErrorType string
+type DeleteKnowledgeBase403ErrorType string
+type DeleteKnowledgeBase404ErrorType string
+type DeleteKnowledgeBase409ErrorType string
+type DeleteKnowledgeBase500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteKnowledgeBaseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteKnowledgeBaseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetKnowledgeBaseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time          `json:"createdAt"`
+		Description    *string            `json:"description"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		Status         string             `json:"status"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetKnowledgeBase400ErrorType string
+type GetKnowledgeBase401ErrorType string
+type GetKnowledgeBase403ErrorType string
+type GetKnowledgeBase404ErrorType string
+type GetKnowledgeBase409ErrorType string
+type GetKnowledgeBase500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetKnowledgeBaseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKnowledgeBaseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateKnowledgeBaseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time          `json:"createdAt"`
+		Description    *string            `json:"description"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		Status         string             `json:"status"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateKnowledgeBase400ErrorType string
+type UpdateKnowledgeBase401ErrorType string
+type UpdateKnowledgeBase403ErrorType string
+type UpdateKnowledgeBase404ErrorType string
+type UpdateKnowledgeBase409ErrorType string
+type UpdateKnowledgeBase500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateKnowledgeBaseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateKnowledgeBaseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetKnowledgeBaseHealthResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Message *string                         `json:"message,omitempty"`
+		Status  GetKnowledgeBaseHealth200Status `json:"status"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetKnowledgeBaseHealth200Status string
+type GetKnowledgeBaseHealth400ErrorType string
+type GetKnowledgeBaseHealth401ErrorType string
+type GetKnowledgeBaseHealth403ErrorType string
+type GetKnowledgeBaseHealth404ErrorType string
+type GetKnowledgeBaseHealth409ErrorType string
+type GetKnowledgeBaseHealth500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetKnowledgeBaseHealthResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKnowledgeBaseHealthResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -26215,6 +27094,76 @@ func (c *ClientWithResponses) GetK8sImagePullSecretsWithResponse(ctx context.Con
 	return ParseGetK8sImagePullSecretsResponse(rsp)
 }
 
+// GetKnowledgeBasesWithResponse request returning *GetKnowledgeBasesResponse
+func (c *ClientWithResponses) GetKnowledgeBasesWithResponse(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*GetKnowledgeBasesResponse, error) {
+	rsp, err := c.GetKnowledgeBases(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKnowledgeBasesResponse(rsp)
+}
+
+// CreateKnowledgeBaseWithBodyWithResponse request with arbitrary body returning *CreateKnowledgeBaseResponse
+func (c *ClientWithResponses) CreateKnowledgeBaseWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateKnowledgeBaseResponse, error) {
+	rsp, err := c.CreateKnowledgeBaseWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateKnowledgeBaseResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateKnowledgeBaseWithResponse(ctx context.Context, body CreateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateKnowledgeBaseResponse, error) {
+	rsp, err := c.CreateKnowledgeBase(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateKnowledgeBaseResponse(rsp)
+}
+
+// DeleteKnowledgeBaseWithResponse request returning *DeleteKnowledgeBaseResponse
+func (c *ClientWithResponses) DeleteKnowledgeBaseWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteKnowledgeBaseResponse, error) {
+	rsp, err := c.DeleteKnowledgeBase(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteKnowledgeBaseResponse(rsp)
+}
+
+// GetKnowledgeBaseWithResponse request returning *GetKnowledgeBaseResponse
+func (c *ClientWithResponses) GetKnowledgeBaseWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetKnowledgeBaseResponse, error) {
+	rsp, err := c.GetKnowledgeBase(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKnowledgeBaseResponse(rsp)
+}
+
+// UpdateKnowledgeBaseWithBodyWithResponse request with arbitrary body returning *UpdateKnowledgeBaseResponse
+func (c *ClientWithResponses) UpdateKnowledgeBaseWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKnowledgeBaseResponse, error) {
+	rsp, err := c.UpdateKnowledgeBaseWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateKnowledgeBaseResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateKnowledgeBaseWithResponse(ctx context.Context, id string, body UpdateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKnowledgeBaseResponse, error) {
+	rsp, err := c.UpdateKnowledgeBase(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateKnowledgeBaseResponse(rsp)
+}
+
+// GetKnowledgeBaseHealthWithResponse request returning *GetKnowledgeBaseHealthResponse
+func (c *ClientWithResponses) GetKnowledgeBaseHealthWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetKnowledgeBaseHealthResponse, error) {
+	rsp, err := c.GetKnowledgeBaseHealth(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKnowledgeBaseHealthResponse(rsp)
+}
+
 // GetLimitsWithResponse request returning *GetLimitsResponse
 func (c *ClientWithResponses) GetLimitsWithResponse(ctx context.Context, params *GetLimitsParams, reqEditors ...RequestEditorFn) (*GetLimitsResponse, error) {
 	rsp, err := c.GetLimits(ctx, params, reqEditors...)
@@ -33687,6 +34636,652 @@ func ParseGetK8sImagePullSecretsResponse(rsp *http.Response) (*GetK8sImagePullSe
 			Error struct {
 				Message string                             `json:"message"`
 				Type    GetK8sImagePullSecrets500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetKnowledgeBasesResponse parses an HTTP response from a GetKnowledgeBasesWithResponse call
+func ParseGetKnowledgeBasesResponse(rsp *http.Response) (*GetKnowledgeBasesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKnowledgeBasesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				AssignedAgents []struct {
+					AgentType string `json:"agentType"`
+					Id        string `json:"id"`
+					Name      string `json:"name"`
+				} `json:"assignedAgents"`
+				Connectors []struct {
+					ConnectorType GetKnowledgeBases200DataConnectorsConnectorType `json:"connectorType"`
+					Id            string                                          `json:"id"`
+					Name          string                                          `json:"name"`
+				} `json:"connectors"`
+				CreatedAt        time.Time          `json:"createdAt"`
+				Description      *string            `json:"description"`
+				Id               openapi_types.UUID `json:"id"`
+				Name             string             `json:"name"`
+				OrganizationId   string             `json:"organizationId"`
+				Status           string             `json:"status"`
+				TotalDocsIndexed float32            `json:"totalDocsIndexed"`
+				UpdatedAt        time.Time          `json:"updatedAt"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateKnowledgeBaseResponse parses an HTTP response from a CreateKnowledgeBaseWithResponse call
+func ParseCreateKnowledgeBaseResponse(rsp *http.Response) (*CreateKnowledgeBaseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateKnowledgeBaseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time          `json:"createdAt"`
+			Description    *string            `json:"description"`
+			Id             openapi_types.UUID `json:"id"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			Status         string             `json:"status"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteKnowledgeBaseResponse parses an HTTP response from a DeleteKnowledgeBaseWithResponse call
+func ParseDeleteKnowledgeBaseResponse(rsp *http.Response) (*DeleteKnowledgeBaseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteKnowledgeBaseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetKnowledgeBaseResponse parses an HTTP response from a GetKnowledgeBaseWithResponse call
+func ParseGetKnowledgeBaseResponse(rsp *http.Response) (*GetKnowledgeBaseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKnowledgeBaseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time          `json:"createdAt"`
+			Description    *string            `json:"description"`
+			Id             openapi_types.UUID `json:"id"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			Status         string             `json:"status"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateKnowledgeBaseResponse parses an HTTP response from a UpdateKnowledgeBaseWithResponse call
+func ParseUpdateKnowledgeBaseResponse(rsp *http.Response) (*UpdateKnowledgeBaseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateKnowledgeBaseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time          `json:"createdAt"`
+			Description    *string            `json:"description"`
+			Id             openapi_types.UUID `json:"id"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			Status         string             `json:"status"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetKnowledgeBaseHealthResponse parses an HTTP response from a GetKnowledgeBaseHealthWithResponse call
+func ParseGetKnowledgeBaseHealthResponse(rsp *http.Response) (*GetKnowledgeBaseHealthResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKnowledgeBaseHealthResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Message *string                         `json:"message,omitempty"`
+			Status  GetKnowledgeBaseHealth200Status `json:"status"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
