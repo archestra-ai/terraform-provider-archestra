@@ -43,10 +43,10 @@ API key for an LLM provider (OpenAI, Anthropic, etc.). Models are auto-discovere
 # on create and stored encrypted; pass via a TF variable so it never lands
 # in version control.
 resource "archestra_llm_provider_api_key" "inline" {
-  name                    = "Production OpenAI Key"
-  api_key                 = var.openai_api_key
-  llm_provider            = "openai"
-  is_organization_default = true
+  name         = "Production OpenAI Key"
+  api_key      = var.openai_api_key
+  llm_provider = "openai"
+  is_primary   = true
 }
 
 # Vault-backed key — REQUIRED in BYOS mode, accepted in either mode.
@@ -121,7 +121,7 @@ resource "archestra_llm_provider_api_key" "azure_openai" {
 
 - `api_key` (String, Sensitive) The API key value. Mutually exclusive with `vault_secret_path`/`vault_secret_key`. In BYOS (READONLY_VAULT) mode the backend requires the vault pair and rejects inline `api_key`.
 - `base_url` (String) Custom base URL for the LLM provider endpoint
-- `is_organization_default` (Boolean) Whether this API key is the primary key for the provider
+- `is_primary` (Boolean) Whether this API key is the primary key for `(provider, scope)`; a partial unique index on the backend means at most one primary per provider/scope tuple.
 - `scope` (String) Visibility scope for the API key: `personal`, `team`, or `org`
 - `team_id` (String) Team ID for team-scoped keys
 - `vault_secret_key` (String) Key within the vault secret. Must be set together with `vault_secret_path` and cannot be combined with `api_key`.
@@ -130,6 +130,7 @@ resource "archestra_llm_provider_api_key" "azure_openai" {
 ### Read-Only
 
 - `id` (String) LLM Provider API key identifier
+- `is_agent_key` (Boolean) True when the key was minted by a built-in agent's reconfiguration loop. Backend rejects user edits on agent-managed keys; surface this so 403s on `terraform apply` are diagnosable.
 
 ## Import
 

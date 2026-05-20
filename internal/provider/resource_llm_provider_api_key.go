@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -33,16 +34,17 @@ type LLMProviderApiKeyResource struct {
 }
 
 type LLMProviderApiKeyResourceModel struct {
-	ID                    types.String `tfsdk:"id"`
-	Name                  types.String `tfsdk:"name"`
-	ApiKey                types.String `tfsdk:"api_key"`
-	LLMProvider           types.String `tfsdk:"llm_provider"`
-	IsOrganizationDefault types.Bool   `tfsdk:"is_organization_default"`
-	BaseUrl               types.String `tfsdk:"base_url"`
-	Scope                 types.String `tfsdk:"scope"`
-	TeamID                types.String `tfsdk:"team_id"`
-	VaultSecretPath       types.String `tfsdk:"vault_secret_path"`
-	VaultSecretKey        types.String `tfsdk:"vault_secret_key"`
+	ID              types.String `tfsdk:"id"`
+	Name            types.String `tfsdk:"name"`
+	ApiKey          types.String `tfsdk:"api_key"`
+	LLMProvider     types.String `tfsdk:"llm_provider"`
+	IsPrimary       types.Bool   `tfsdk:"is_primary"`
+	BaseUrl         types.String `tfsdk:"base_url"`
+	Scope           types.String `tfsdk:"scope"`
+	TeamID          types.String `tfsdk:"team_id"`
+	VaultSecretPath types.String `tfsdk:"vault_secret_path"`
+	VaultSecretKey  types.String `tfsdk:"vault_secret_key"`
+	IsAgentKey      types.Bool   `tfsdk:"is_agent_key"`
 }
 
 func (r *LLMProviderApiKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -104,8 +106,8 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 					),
 				},
 			},
-			"is_organization_default": schema.BoolAttribute{
-				MarkdownDescription: "Whether this API key is the primary key for the provider",
+			"is_primary": schema.BoolAttribute{
+				MarkdownDescription: "Whether this API key is the primary key for `(provider, scope)`; a partial unique index on the backend means at most one primary per provider/scope tuple.",
 				Optional:            true,
 				Computed:            true,
 				Default:             booldefault.StaticBool(false),
@@ -146,6 +148,11 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 					stringvalidator.AlsoRequires(path.MatchRoot("vault_secret_path")),
 					stringvalidator.ConflictsWith(path.MatchRoot("api_key")),
 				},
+			},
+			"is_agent_key": schema.BoolAttribute{
+				Computed:            true,
+				MarkdownDescription: "True when the key was minted by a built-in agent's reconfiguration loop. Backend rejects user edits on agent-managed keys; surface this so 403s on `terraform apply` are diagnosable.",
+				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
 			},
 		},
 	}
@@ -206,8 +213,13 @@ func (r *LLMProviderApiKeyResource) Create(ctx context.Context, req resource.Cre
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.IsPrimary = types.BoolValue(apiResp.JSON200.IsPrimary)
 	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
+	// IsAgentKey isn't in the Create response (only the Get echoes
+	// it). A newly user-created key is never an agent-managed key by
+	// definition, so default to false; the next Read will refresh
+	// if the backend ever flips it.
+	data.IsAgentKey = types.BoolValue(false)
 
 	if apiResp.JSON200.BaseUrl != nil {
 		data.BaseUrl = types.StringValue(*apiResp.JSON200.BaseUrl)
@@ -259,8 +271,17 @@ func (r *LLMProviderApiKeyResource) Read(ctx context.Context, req resource.ReadR
 
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.IsPrimary = types.BoolValue(apiResp.JSON200.IsPrimary)
 	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
+
+	// IsAgentKey is only present on the Get response (Create / Update
+	// don't echo it). Default to false when missing so the Read-only
+	// projection is stable.
+	if apiResp.JSON200.IsAgentKey != nil {
+		data.IsAgentKey = types.BoolValue(*apiResp.JSON200.IsAgentKey)
+	} else {
+		data.IsAgentKey = types.BoolValue(false)
+	}
 
 	if apiResp.JSON200.BaseUrl != nil {
 		data.BaseUrl = types.StringValue(*apiResp.JSON200.BaseUrl)
@@ -342,7 +363,7 @@ func (r *LLMProviderApiKeyResource) Update(ctx context.Context, req resource.Upd
 
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.IsPrimary = types.BoolValue(apiResp.JSON200.IsPrimary)
 	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
 
 	if apiResp.JSON200.BaseUrl != nil {
