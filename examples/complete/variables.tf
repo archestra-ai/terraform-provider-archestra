@@ -42,3 +42,17 @@ variable "saml_cert" {
   description = "PEM-encoded signing certificate for the SAML IdP. The smoke-test default is a syntactically-valid placeholder; replace before any real auth flow."
   default     = "-----BEGIN CERTIFICATE-----\nMIICiTCCAg+gAwIBAgIJAJ8l4HnPq7F8MAOGA1UEBhMCVVMxCzAJBgNVBAgTAkNB\nMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMRowGAYDVQQKExFPcGVuQU1QIFNhbXBs\nZSBDb21wYW55IENBMRYwFAYDVQQDEx1vcGVuYW1wLmV4YW1wbGUuY29tMB4XDTE0\nMDgxOTE2MjQyNVoXDTIyMDgxODE2MjQyNVowdTELMAkGA1UEBhMCVVMxCzAJBgNV\nBAgTAkNBMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMRowGAYDVQQKExFPcGVuQU1Q\nIFNhbXBsZSBDb21wYW55IENBMRYwFAYDVQQDEx1vcGVuYW1wLmV4YW1wbGUuY29t\nMFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANgOqCbLsKv5CF+vGmJ9Vq5PJKKuiU8+\nLpqtHKHC9q3mRWxHF8dlE8j9D6Kz+N+CK+qGzFjWNBT3UVFzU5GJUYCAwEAAaNQ\nME4wHQYDVR0OBBYEFG7CJM9GjHn7Lqt8kJc8W5proUwWMB8GA1UdIwQYMBaAFG7C\nJM9GjHn7Lqt8kJc8W5proUwWMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQAD\nggEBABYIUUUeWDJ+wZF0lZ+mJnRnGZpXL2fKe3+KGjNM8xJfPf2YvqU4mgdMxgJn\n-----END CERTIFICATE-----"
 }
+
+variable "notion_integration_token" {
+  type        = string
+  description = "Notion integration token (https://www.notion.so/profile/integrations). Pass via TF_VAR_notion_integration_token, never inline. Used by the Notion knowledge connector; placeholder is fine when `enabled = false`."
+  sensitive   = true
+  default     = "secret_demo_notion_placeholder"
+}
+
+variable "atlassian_api_token" {
+  type        = string
+  description = "Atlassian Cloud API token (https://id.atlassian.com/manage-profile/security/api-tokens). Pass via TF_VAR_atlassian_api_token, never inline. Used by the Jira knowledge connector; placeholder is fine when `enabled = false`."
+  sensitive   = true
+  default     = "demo_atlassian_token_placeholder"
+}

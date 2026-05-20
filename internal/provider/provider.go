@@ -47,10 +47,11 @@ func (p *ArchestraProvider) Metadata(ctx context.Context, req provider.MetadataR
 func (p *ArchestraProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "The Archestra provider lets you manage Archestra resources " +
-			"(agents, MCP servers, identity providers, teams, LLM keys, security " +
-			"policies, organization settings) as code. Both configuration values " +
-			"can — and should — be supplied via environment variables so secrets " +
-			"never enter HCL.",
+			"(agents, MCP servers, identity providers, teams, RBAC roles, LLM keys, " +
+			"virtual API keys, knowledge bases, knowledge connectors, schedule " +
+			"triggers, security policies, organization settings) as code. Both " +
+			"configuration values can — and should — be supplied via environment " +
+			"variables so secrets never enter HCL.",
 		Attributes: map[string]schema.Attribute{
 			"base_url": schema.StringAttribute{
 				MarkdownDescription: "Base URL of the Archestra API (for example, `https://archestra.your-company.example`). " +
@@ -189,6 +190,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewToolInvocationPolicyDefaultResource,
 		NewTrustedDataPolicyDefaultResource,
 		NewToolPolicyAutoConfigResource,
+		NewKnowledgeConnectorResource,
 	}
 }
 
