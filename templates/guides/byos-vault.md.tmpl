@@ -112,3 +112,38 @@ for the workflow. For your own infrastructure, mirror the env-var block from
 [`scripts/k8s/vault-dev.yaml`](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/scripts/k8s/vault-dev.yaml) and
 [`.github/values-ci.yaml`](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/.github/values-ci.yaml) onto your platform
 deployment.
+
+## Per-team Vault folders (Enterprise Edition)
+
+On EE backends running in BYOS mode, the `archestra_team_vault_folder`
+resource binds a team to a Vault folder path. Members of that team get
+read access to secrets under the configured path; everyone else is
+denied. The mapping is a per-team singleton — at most one folder per
+team, enforced by a unique constraint.
+
+```hcl
+resource "archestra_team" "engineering" {
+  name = "engineering"
+}
+
+resource "archestra_team_vault_folder" "engineering" {
+  team_id    = archestra_team.engineering.id
+  vault_path = "secret/data/engineering"
+}
+```
+
+The backend's `SetTeamVaultFolder` route is idempotent — Terraform
+applies the same POST on both Create and Update, so changing
+`vault_path` in-place works without a destroy. Changing `team_id`
+forces replacement (different team → different singleton).
+
+**Gotchas:**
+
+- The route is EE-only and 404s on a non-EE backend. The provider
+  surfaces the bare 404 — there's no provider-side license check.
+- The folder path is *literal* — the provider doesn't prepend or
+  rewrite. If your Vault uses KV v2 the path must include the `data/`
+  segment (`secret/data/engineering`, not `secret/engineering`).
+- Deleting the resource removes the team→folder mapping but doesn't
+  touch Vault itself. Cleaning up the actual Vault folder is out of
+  scope for the provider.

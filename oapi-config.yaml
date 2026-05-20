@@ -32,7 +32,7 @@ output-options:
     - Secrets
     - Statistics
     - User Tokens
-    - Vault
+    # Vault - included for archestra_team_vault_folder resource (EE)
     - Virtual API Keys
     - Webhooks
     - mcp-proxy

@@ -112,3 +112,17 @@ resource "archestra_team_external_group" "engineers_oidc" {
   team_id           = archestra_team.engineering.id
   external_group_id = "engineering"
 }
+
+# --- Team Vault folder (Enterprise Edition + BYOS Vault only) --------------
+#
+# Maps the engineering team to a Vault folder path. Members of the
+# team can read secrets under that path; everyone else is denied.
+# Requires the backend to be running in BYOS / READONLY_VAULT mode AND
+# with the Enterprise license active. Apply on a non-EE backend
+# returns 404 from the route file (the routes live in
+# `team-vault-folder.ee.ts`).
+
+resource "archestra_team_vault_folder" "engineering" {
+  team_id    = archestra_team.engineering.id
+  vault_path = "secret/data/engineering"
+}
