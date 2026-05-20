@@ -19,21 +19,21 @@ output-options:
     - ChatOps
     - ChatOps Webhooks
     - Config
-    - Connectors
+    # Connectors - included for data.archestra_knowledge_connector{,_runs}
     - Incoming Email
     - Invitation
-    - Knowledge Bases
+    # Knowledge Bases - included for data.archestra_knowledge_base{,s}
     # LLM Models - included for archestra_llm_model resource
     # MCP Tool Call - included for data.archestra_mcp_tool_calls data source
-    - Member
+    # Member - included for data.archestra_organization_members
     - Members
     - OAuth
-    - Roles
+    # Roles - included for data.archestra_role{,s}
     - Secrets
     - Statistics
     - User Tokens
     - Vault
-    - Virtual API Keys
+    # Virtual API Keys - included for data.archestra_virtual_api_keys
     - Webhooks
     - mcp-proxy
   exclude-schemas:
