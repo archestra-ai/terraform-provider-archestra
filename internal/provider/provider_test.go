@@ -38,6 +38,13 @@ func testAccRequireByosEnabled(t *testing.T) {
 	}
 }
 
+//nolint:unused // Used by EE-only tests (roles, identity provider EMC, team vault folder).
+func testAccRequireEnterprise(t *testing.T) {
+	if os.Getenv("ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED") != "true" {
+		t.Fatal("requires ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true — Enterprise Edition routes are only exposed when the backend is started with the EE license active. The local stack script (`scripts/bootstrap-local-stack.sh`) enables this by default.")
+	}
+}
+
 // Unit tests for provider.
 func TestProviderNew(t *testing.T) {
 	provider := New("test")()
