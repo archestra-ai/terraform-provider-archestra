@@ -89,6 +89,15 @@ type MCPServerResourceModel struct {
 	// instead of either a `data "archestra_mcp_server_tool"` block or a
 	// `for/if` HCL expression over the list.
 	ToolIDByName types.Map `tfsdk:"tool_id_by_name"`
+	// Install-state observability — surfaces the backend's
+	// `localInstallationStatus` / `reinstallRequired` / OAuth refresh
+	// signals so operators can see failed installs and credential drift
+	// without scripting curl against the platform API.
+	ReinstallRequired       types.Bool   `tfsdk:"reinstall_required"`
+	LocalInstallationStatus types.String `tfsdk:"local_installation_status"`
+	LocalInstallationError  types.String `tfsdk:"local_installation_error"`
+	OauthRefreshError       types.String `tfsdk:"oauth_refresh_error"`
+	OauthRefreshFailedAt    types.String `tfsdk:"oauth_refresh_failed_at"`
 }
 
 // mcpServerToolObjectType is the per-element shape of the `tools`
@@ -268,6 +277,26 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				Computed:            true,
 				ElementType:         types.StringType,
 			},
+			"reinstall_required": schema.BoolAttribute{
+				MarkdownDescription: "True when the backend flagged the install as out-of-date (catalog template changed since install). Surface a reinstall by tainting and re-applying.",
+				Computed:            true,
+			},
+			"local_installation_status": schema.StringAttribute{
+				MarkdownDescription: "Terminal install status reported by the backend: `idle`, `pending`, `discovering-tools`, `success`, or `error`.",
+				Computed:            true,
+			},
+			"local_installation_error": schema.StringAttribute{
+				MarkdownDescription: "Backend-reported install error message when `local_installation_status = error`; null otherwise.",
+				Computed:            true,
+			},
+			"oauth_refresh_error": schema.StringAttribute{
+				MarkdownDescription: "OAuth refresh failure mode: `no_refresh_token` or `refresh_failed`; null while credentials are healthy.",
+				Computed:            true,
+			},
+			"oauth_refresh_failed_at": schema.StringAttribute{
+				MarkdownDescription: "RFC 3339 timestamp of the most recent OAuth refresh failure; null while credentials are healthy.",
+				Computed:            true,
+			},
 		},
 	}
 }
@@ -408,10 +437,46 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		data.SecretID = types.StringNull()
 	}
 
+	// Seed install-state fields from the InstallMcpServer response so
+	// `reinstall_required` and friends always have a known value even
+	// if the post-wait re-fetch below fails. The install-time snapshot
+	// is the safe fallback — `reinstall_required` is `false` for fresh
+	// installs and OAuth refresh fields are null until the server
+	// starts using credentials.
+	data.ReinstallRequired = types.BoolValue(apiResp.JSON200.ReinstallRequired)
+	data.LocalInstallationStatus = types.StringValue(string(apiResp.JSON200.LocalInstallationStatus))
+	if apiResp.JSON200.LocalInstallationError != nil {
+		data.LocalInstallationError = types.StringValue(*apiResp.JSON200.LocalInstallationError)
+	} else {
+		data.LocalInstallationError = types.StringNull()
+	}
+	if apiResp.JSON200.OauthRefreshError != nil {
+		data.OauthRefreshError = types.StringValue(string(*apiResp.JSON200.OauthRefreshError))
+	} else {
+		data.OauthRefreshError = types.StringNull()
+	}
+	if apiResp.JSON200.OauthRefreshFailedAt != nil {
+		data.OauthRefreshFailedAt = types.StringValue(apiResp.JSON200.OauthRefreshFailedAt.Format(time.RFC3339))
+	} else {
+		data.OauthRefreshFailedAt = types.StringNull()
+	}
+
 	tools, toolIDsByName, toolsDiags := r.waitForServerTools(ctx, apiResp.JSON200.Id.String())
 	resp.Diagnostics.Append(toolsDiags...)
 	data.Tools = tools
 	data.ToolIDByName = toolIDsByName
+
+	// Wait surfaced a hard install error — state won't be written by the
+	// framework, so skip the wasted re-fetch.
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// After waitForServerTools settles, re-fetch the server to overwrite
+	// the install-time snapshot with terminal values (status → success,
+	// reinstall_required refreshed). On fetch failure the seed values
+	// above remain — no Unknown leaks, no phantom null→false diffs.
+	resp.Diagnostics.Append(r.populateInstallState(ctx, apiResp.JSON200.Id, &data)...)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -467,6 +532,24 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 		data.SecretID = types.StringValue(apiResp.JSON200.SecretId.String())
 	} else {
 		data.SecretID = types.StringNull()
+	}
+
+	data.ReinstallRequired = types.BoolValue(apiResp.JSON200.ReinstallRequired)
+	data.LocalInstallationStatus = types.StringValue(string(apiResp.JSON200.LocalInstallationStatus))
+	if apiResp.JSON200.LocalInstallationError != nil {
+		data.LocalInstallationError = types.StringValue(*apiResp.JSON200.LocalInstallationError)
+	} else {
+		data.LocalInstallationError = types.StringNull()
+	}
+	if apiResp.JSON200.OauthRefreshError != nil {
+		data.OauthRefreshError = types.StringValue(string(*apiResp.JSON200.OauthRefreshError))
+	} else {
+		data.OauthRefreshError = types.StringNull()
+	}
+	if apiResp.JSON200.OauthRefreshFailedAt != nil {
+		data.OauthRefreshFailedAt = types.StringValue(apiResp.JSON200.OauthRefreshFailedAt.Format(time.RFC3339))
+	} else {
+		data.OauthRefreshFailedAt = types.StringNull()
 	}
 
 	// EnvironmentValues, UserConfigValues, and AccessToken are write-only;
@@ -558,6 +641,44 @@ func (r *MCPServerResource) ImportState(ctx context.Context, req resource.Import
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), parts[0])...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), parts[1])...)
+}
+
+// populateInstallState re-fetches the server post-install to capture
+// terminal `reinstall_required`, `local_installation_status/_error`, and
+// `oauth_refresh_*` values from the authoritative GetMcpServer endpoint.
+// Used at the tail of Create so the state row reflects the settled
+// install. On fetch failure, leaves the fields untouched (Create seeds
+// them from the InstallMcpServer response first) and surfaces a warning
+// — Read will refresh them on the next plan.
+func (r *MCPServerResource) populateInstallState(ctx context.Context, serverID openapi_types.UUID, data *MCPServerResourceModel) diag.Diagnostics {
+	var diags diag.Diagnostics
+	apiResp, err := r.client.GetMcpServerWithResponse(ctx, serverID)
+	if err != nil {
+		diags.AddWarning("Install-state refresh failed", err.Error())
+		return diags
+	}
+	if apiResp.JSON200 == nil {
+		diags.AddWarning("Install-state refresh failed", fmt.Sprintf("unexpected response status %d: %s", apiResp.StatusCode(), string(apiResp.Body)))
+		return diags
+	}
+	data.ReinstallRequired = types.BoolValue(apiResp.JSON200.ReinstallRequired)
+	data.LocalInstallationStatus = types.StringValue(string(apiResp.JSON200.LocalInstallationStatus))
+	if apiResp.JSON200.LocalInstallationError != nil {
+		data.LocalInstallationError = types.StringValue(*apiResp.JSON200.LocalInstallationError)
+	} else {
+		data.LocalInstallationError = types.StringNull()
+	}
+	if apiResp.JSON200.OauthRefreshError != nil {
+		data.OauthRefreshError = types.StringValue(string(*apiResp.JSON200.OauthRefreshError))
+	} else {
+		data.OauthRefreshError = types.StringNull()
+	}
+	if apiResp.JSON200.OauthRefreshFailedAt != nil {
+		data.OauthRefreshFailedAt = types.StringValue(apiResp.JSON200.OauthRefreshFailedAt.Format(time.RFC3339))
+	} else {
+		data.OauthRefreshFailedAt = types.StringNull()
+	}
+	return diags
 }
 
 // waitForServerTools polls `/installation-status` until terminal, then
