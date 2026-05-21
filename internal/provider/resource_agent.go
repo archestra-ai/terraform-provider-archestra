@@ -467,8 +467,8 @@ func (r *AgentResource) APIShape() any { return client.GetAgentResponse{} }
 //   - authorId/authorName/builtIn/organizationId/createdAt/updatedAt:
 //     audit/ownership metadata; could be added as Computed-only later if
 //     users ask, but no consumer has requested it yet.
-//   - suggestedPrompts/passthroughHeaders: llm_proxy / mcp_gateway-only
-//     wire fields; not present on the agent variant of the schema.
+//   - passthroughHeaders: llm_proxy / mcp_gateway-only wire field; not
+//     present on the agent variant of the schema.
 //   - identityProviderId: gateway/proxy-only on the schema side (an agent
 //     never has one); the wire returns null for agent rows.
 //   - slug: auto-generated URL slug, not user-configurable.
@@ -478,7 +478,7 @@ func (r *AgentResource) APIShape() any { return client.GetAgentResponse{} }
 func (r *AgentResource) KnownIntentionallySkipped() []string {
 	return []string{
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
-		"createdAt", "updatedAt", "suggestedPrompts", "passthroughHeaders",
+		"createdAt", "updatedAt", "passthroughHeaders",
 		"identityProviderId", "slug", "tools",
 	}
 }
