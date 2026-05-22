@@ -50,6 +50,25 @@
 * **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
 * **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
 
+## [1.2.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v1.1.4...v1.2.0) (2026-05-22)
+
+
+### Features
+
+* **ci:** add Crossplane coverage report + README badge ([#143](https://github.com/archestra-ai/terraform-provider-archestra/issues/143)) ([c2fa4df](https://github.com/archestra-ai/terraform-provider-archestra/commit/c2fa4df840812266d85df476bc96964fe39ab89b))
+
+
+### Bug Fixes
+
+* **provider:** treat empty ID in Read as "not yet created" ([#147](https://github.com/archestra-ai/terraform-provider-archestra/issues/147)) ([1a05b82](https://github.com/archestra-ai/terraform-provider-archestra/commit/1a05b824c7abba1b75551b587f5f18929b077bcd))
+
+
+### Documentation
+
+* add Crossplane MR quickstart to README step 5 ([#149](https://github.com/archestra-ai/terraform-provider-archestra/issues/149)) ([2faf041](https://github.com/archestra-ai/terraform-provider-archestra/commit/2faf0419b487e8a39371caac4e7df13f6448bbba))
+* add Crossplane section + tighten Releases explanation ([#145](https://github.com/archestra-ai/terraform-provider-archestra/issues/145)) ([7f1fdba](https://github.com/archestra-ai/terraform-provider-archestra/commit/7f1fdba5c09e914a93007da0ee849a4038ce4e2c))
+* add Resource coverage table to README ([#148](https://github.com/archestra-ai/terraform-provider-archestra/issues/148)) ([d2d28b1](https://github.com/archestra-ai/terraform-provider-archestra/commit/d2d28b1b7a1f3cbf22b4ab92d3bd23b6fdc6958f))
+
 ## [1.1.4](https://github.com/archestra-ai/terraform-provider-archestra/compare/v1.1.3...v1.1.4) (2026-05-22)
 
 
