@@ -100,17 +100,22 @@ extract from there to populate `ToolBatch.spec.forProvider.toolIds` and
 ## Development
 
 `apis/**/zz_*.go`, `internal/controller/**/zz_*.go`, and
-`package/crds/*.yaml` are gitignored — upjet regenerates them
-from the TF provider's schema. First time on a clean clone:
+`package/crds/*.yaml` are gitignored — `make generate` invokes
+upjet's codegen pipeline (`cmd/generator`) to (re)produce them
+from the TF provider's JSON schema. No `make generate` ⇒ those
+packages don't exist on disk ⇒ `go build` fails with "package not
+found".
+
+First time on a clean clone:
 
 ```bash
 # in repo root: produce the TF binary that upjet shells out to
 go build -o terraform-provider-archestra .
 
-# in crossplane/: dump schema, regen, build the controller
+# in crossplane/: dump schema, run upjet codegen, build the controller
 cd crossplane
 make schema     # writes config/schema.json from the local TF binary
-make generate   # produces apis/, internal/controller/, package/crds/
+make generate   # runs upjet -> apis/, internal/controller/, package/crds/
 make build      # binary at _output/bin/<host-platform>/provider
 ```
 
@@ -163,9 +168,14 @@ Archestra instance using the `ProviderConfig` named `default`.
    })
    ```
 
-3. **Regenerate.** `make generate` produces the `zz_*_types.go`,
-   `zz_controller.go`, and CRD YAML. Commit nothing from those
-   trees — they're gitignored.
+3. **Run upjet codegen.** `make generate` is what turns the
+   config changes from steps 1–2 into real Go types
+   (`apis/<scope>/<group>/v1alpha1/zz_<kind>_types.go`),
+   reconcilers (`internal/controller/<scope>/<group>/<kind>/zz_controller.go`),
+   and a CRD (`package/crds/<group>.archestra....yaml`). Without
+   this step the new resource exists only in the upjet config and
+   nothing else compiles. Commit nothing from these trees —
+   they're gitignored and CI regenerates them every build.
 
 4. **Add an example.** YAML manifests under
    `examples/cluster/<group>/<kind>.yaml` and the namespaced
