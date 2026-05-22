@@ -133,21 +133,27 @@ jobs:
       - name: Install goimports
         run: go install golang.org/x/tools/cmd/goimports@latest
 
-      - name: Install Upbound CLI
+      - name: Log in to Upbound registry
+        # `make publish` shells out to `crank xpkg push`, which is a Docker
+        # registry push — it reads creds from ~/.docker/config.json, not from
+        # the Upbound CLI's session. Robot tokens are also not valid for
+        # `up login --token` (that flag expects a user PAT).
+        env:
+          UPBOUND_ACCESS_ID: ${{ secrets.UPBOUND_ACCESS_ID }}
+          UPBOUND_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
         run: |
-          curl -sL https://cli.upbound.io | sh
-          sudo mv up /usr/local/bin/
+          set -euo pipefail
+          echo "$UPBOUND_TOKEN" | docker login xpkg.upbound.io \
+            --username "$UPBOUND_ACCESS_ID" --password-stdin
 
       - name: Build and publish provider package
         env:
-          UP_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
           TAG: ${{ needs.release-please.outputs.crossplane_tag_name }}
         run: |
           set -euo pipefail
           # release-please tags the Crossplane package crossplane-vX.Y.Z;
           # the xpkg is published as vX.Y.Z.
           VERSION="${TAG#crossplane-}"
-          up login --token "$UP_TOKEN"
           make -C crossplane generate
           make -C crossplane build publish \
             XPKG_REG_ORGS="xpkg.upbound.io/archestra" \
