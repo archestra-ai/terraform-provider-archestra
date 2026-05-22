@@ -13,7 +13,7 @@ through extending the provider.
 
 ## Resource coverage
 
-| Terraform resource | Crossplane Kind |
+| Terraform | Crossplane Kind |
 |---|---|
 | `archestra_agent` | `Agent` |
 | `archestra_agent_tool` | — |
@@ -35,12 +35,20 @@ through extending the provider.
 | `archestra_tool_policy_auto_config` | — |
 | `archestra_trusted_data_policy` | — |
 | `archestra_trusted_data_policy_default` | — |
+| `data.archestra_agent_tool` | n/a |
+| `data.archestra_agent_tools` | n/a |
+| `data.archestra_mcp_server_tool` | n/a |
+| `data.archestra_mcp_tool_calls` | n/a |
+| `data.archestra_team` | n/a |
+| `data.archestra_team_external_groups` | n/a |
+| `data.archestra_tool` | n/a |
 
-`—` means the resource is implemented for Terraform but not yet
-mapped as a Crossplane MR. See step 5 below to add a mapping.
-Crossplane Kinds ship in two API groups: `<group>.archestra.crossplane.io`
-(cluster-scoped, v1) and `<group>.archestra.m.crossplane.io`
-(namespaced, v2).
+- `—` — TF resource exists, no Crossplane MR yet. See step 5 below.
+- `n/a` — TF data source. Crossplane has no read-only Managed Resource concept, so nothing to map.
+
+Crossplane Kinds ship in two API groups:
+`<group>.archestra.crossplane.io` (cluster-scoped, v1) and
+`<group>.archestra.m.crossplane.io` (namespaced, v2).
 
 ## 1. Build it
 
