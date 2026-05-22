@@ -11,6 +11,37 @@ schema and shipped together on every `vX.Y.Z` tag:
 End users install from those. This README walks a new contributor
 through extending the provider.
 
+## Resource coverage
+
+| Terraform resource | Crossplane Kind |
+|---|---|
+| `archestra_agent` | `Agent` |
+| `archestra_agent_tool` | — |
+| `archestra_agent_tool_batch` | `ToolBatch` |
+| `archestra_identity_provider` | — |
+| `archestra_limit` | — |
+| `archestra_llm_model` | — |
+| `archestra_llm_provider_api_key` | — |
+| `archestra_llm_proxy` | — |
+| `archestra_mcp_gateway` | — |
+| `archestra_mcp_registry_catalog_item` | `RegistryCatalogItem` |
+| `archestra_mcp_server_installation` | `ServerInstallation` |
+| `archestra_optimization_rule` | — |
+| `archestra_organization_settings` | — |
+| `archestra_team` | — |
+| `archestra_team_external_group` | — |
+| `archestra_tool_invocation_policy` | — |
+| `archestra_tool_invocation_policy_default` | `ToolInvocationPolicyDefault` |
+| `archestra_tool_policy_auto_config` | — |
+| `archestra_trusted_data_policy` | — |
+| `archestra_trusted_data_policy_default` | — |
+
+`—` means the resource is implemented for Terraform but not yet
+mapped as a Crossplane MR. See step 5 below to add a mapping.
+Crossplane Kinds ship in two API groups: `<group>.archestra.crossplane.io`
+(cluster-scoped, v1) and `<group>.archestra.m.crossplane.io`
+(namespaced, v2).
+
 ## 1. Build it
 
 ```bash
@@ -65,21 +96,7 @@ schema — skipping leads to phantom plan diffs and silent backend drift.
 
 ## 5. Expose it as a Crossplane MR (optional)
 
-Currently mapped (the badge above tracks the gap vs. all 20 TF
-resources):
-
-| Terraform resource | Crossplane Kind | API group |
-|---|---|---|
-| `archestra_agent` | `Agent` | `agent.archestra.[m.]crossplane.io` |
-| `archestra_agent_tool_batch` | `ToolBatch` | `agent.archestra.[m.]crossplane.io` |
-| `archestra_mcp_registry_catalog_item` | `RegistryCatalogItem` | `mcp.archestra.[m.]crossplane.io` |
-| `archestra_mcp_server_installation` | `ServerInstallation` | `mcp.archestra.[m.]crossplane.io` |
-| `archestra_tool_invocation_policy_default` | `ToolInvocationPolicyDefault` | `policy.archestra.[m.]crossplane.io` |
-
-(The `[m.]` suffix is the Crossplane v2 namespaced variant; every
-resource ships in both scopes.)
-
-To expose another TF resource:
+To pick up a `—` row in the coverage table above:
 
 1. Whitelist the TF resource name in `crossplane/config/external_name.go`.
 2. Add a configurator block in **both** `crossplane/config/cluster/<group>/config.go` and `.../namespaced/<group>/config.go` setting `r.ShortGroup` (becomes `<group>.archestra.crossplane.io`) and `r.Kind` (CamelCase singular).
