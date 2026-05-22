@@ -5,81 +5,91 @@
 Source for two artifacts, both regenerated from a single Terraform
 schema and shipped together on every `vX.Y.Z` tag:
 
-- `archestra-ai/archestra` on the [Terraform Registry](https://registry.terraform.io/providers/archestra-ai/archestra/latest) — end-user install path.
-- `xpkg.upbound.io/archestra/provider-archestra` on Upbound — same resources, packaged for Crossplane v1/v2.
+- `archestra-ai/archestra` on the [Terraform Registry](https://registry.terraform.io/providers/archestra-ai/archestra/latest)
+- `xpkg.upbound.io/archestra/provider-archestra` on [Upbound](https://marketplace.upbound.io)
 
-End users install from those — this README is for contributors
-adding or extending resources.
+End users install from those. This README walks a new contributor
+through extending the provider.
 
-## Local test loop
+## 1. Build it
 
-Point Terraform at a locally-built provider via `dev_overrides`,
-then drive it against a local backend:
+```bash
+git clone https://github.com/archestra-ai/terraform-provider-archestra
+cd terraform-provider-archestra
+make install   # compiles + installs to $GOPATH/bin
+```
+
+## 2. Point Terraform at your local build
+
+Create `~/.terraformrc`:
 
 ```hcl
-# ~/.terraformrc
 provider_installation {
   dev_overrides {
-    "archestra-ai/archestra" = "/path/to/$GOPATH/bin"
+    "archestra-ai/archestra" = "/path/to/your/$GOPATH/bin"
   }
   direct {}
 }
 ```
 
+Now any `terraform apply` resolves `archestra-ai/archestra` to your
+local binary instead of the published Registry version.
+
+## 3. Smoke-test against a local Archestra
+
 ```bash
-make install                        # builds + installs binary into $GOPATH/bin
 export ARCHESTRA_BASE_URL=http://localhost:9000
-export ARCHESTRA_API_KEY=arch_...
+export ARCHESTRA_API_KEY=arch_...      # mint via Settings → API Keys
 cd examples/basic && terraform apply
 ```
 
-Crossplane controller out-of-cluster: see
+If this works, your dev_overrides wiring is right. If it doesn't,
+fix that before touching any code.
+
+## 4. Add or modify a Terraform resource
+
+Each resource lives in `internal/provider/resource_<name>.go` and is
+registered in `provider.go`'s `Resources()` function. The loop:
+
+1. Implement the resource (or change the existing one) + register it.
+2. Add an example under `examples/resources/archestra_<name>/`.
+3. Add an acceptance test (`resource_<name>_test.go`) — every bug fix needs a regression test too.
+4. `make generate` — refreshes `docs/` from your example via tfplugindocs.
+5. `make test && make testacc` — unit + drift checks, then acceptance against `$ARCHESTRA_BASE_URL`.
+
+Architecture (merge-patch + AttrSpec, the two drift-check tests)
+and the full new-resource checklist are in
+[`ARCHITECTURE.md`](ARCHITECTURE.md) and
+[`CONTRIBUTING.md`](CONTRIBUTING.md). Read them before touching the
+schema — skipping leads to phantom plan diffs and silent backend drift.
+
+## 5. Expose it as a Crossplane MR (optional)
+
+If the resource should also be reachable from Crossplane:
+
+1. Whitelist the TF resource name in `crossplane/config/external_name.go`.
+2. Add a configurator block in **both** `crossplane/config/cluster/<group>/config.go` and `.../namespaced/<group>/config.go` (v1 and v2 scopes).
+3. `make -C crossplane generate` — upjet regenerates apis, controllers, and CRDs.
+
+Local controller run, `make e2e`, and the full walkthrough are in
 [`crossplane/README.md`](crossplane/README.md).
 
-## Adding a Terraform resource
+## 6. Ship it
 
-Source lives in [`internal/provider/`](internal/provider/) — one
-`resource_<name>.go` per resource, registered in `provider.go`'s
-`Resources()` function. The dev loop:
-
-1. Add `internal/provider/resource_<name>.go` + register it in `provider.go`.
-2. Add an acceptance test (`resource_<name>_test.go`) and an example under `examples/resources/archestra_<name>/`. Every bug fix needs a regression test too — see [`CLAUDE.md`](CLAUDE.md).
-3. `make generate` — regenerates `docs/` from schema + examples via tfplugindocs.
-4. `make test` (unit + drift checks) → `make testacc` (against `$ARCHESTRA_BASE_URL`).
-
-Architecture (merge-patch + AttrSpec design, the two drift-check
-tests, the resource opt-in interfaces) and the full new-resource
-checklist live in
-[`ARCHITECTURE.md`](ARCHITECTURE.md) and
-[`CONTRIBUTING.md`](CONTRIBUTING.md). Read these before touching
-the schema — skipping them leads to phantom plan diffs and silent
-backend-drift bugs.
-
-## Adding a Crossplane mapping
-
-The Crossplane subtree is a pure code-gen target — generated Go
-and CRDs are gitignored. To expose an existing TF resource as a
-Crossplane MR:
-
-1. Whitelist it in `ExternalNameConfigs` in [`crossplane/config/external_name.go`](crossplane/config/external_name.go).
-2. Add a configurator block in **both** `crossplane/config/cluster/<group>/config.go` and `.../namespaced/<group>/config.go` (Crossplane v1 + v2 scopes).
-3. `make -C crossplane generate` — runs upjet over the TF schema to (re)produce `apis/**/zz_*.go`, `internal/controller/**/zz_*.go`, and `package/crds/*.yaml`.
-
-Local setup, the add-a-resource walkthrough, and `make e2e` are
-in [`crossplane/README.md`](crossplane/README.md). The badge above
-links to the live coverage gap between this list and the TF
-resource set.
-
-## Release process
+Open a PR with a conventional-commit title (`feat:`, `fix:`, etc.).
+After it merges:
 
 ```
-conventional commit on main
+commit on main
         │
         ▼
 release-please opens "chore(main): release vX.Y.Z"
         │  merge
         ▼
-tag vX.Y.Z   ──┬──▶  goreleaser   ──▶  Terraform Registry
+tag vX.Y.Z   ──┬──▶  goreleaser    ──▶  Terraform Registry
                │
-               └──▶  make generate + crank xpkg push  ──▶  xpkg.upbound.io
+               └──▶  crank xpkg push ──▶  xpkg.upbound.io
 ```
+
+The two publish jobs run in parallel; one failing won't roll back
+the other.
