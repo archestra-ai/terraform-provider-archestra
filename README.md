@@ -65,10 +65,24 @@ schema — skipping leads to phantom plan diffs and silent backend drift.
 
 ## 5. Expose it as a Crossplane MR (optional)
 
-If the resource should also be reachable from Crossplane:
+Currently mapped (the badge above tracks the gap vs. all 20 TF
+resources):
+
+| Terraform resource | Crossplane Kind | API group |
+|---|---|---|
+| `archestra_agent` | `Agent` | `agent.archestra.[m.]crossplane.io` |
+| `archestra_agent_tool_batch` | `ToolBatch` | `agent.archestra.[m.]crossplane.io` |
+| `archestra_mcp_registry_catalog_item` | `RegistryCatalogItem` | `mcp.archestra.[m.]crossplane.io` |
+| `archestra_mcp_server_installation` | `ServerInstallation` | `mcp.archestra.[m.]crossplane.io` |
+| `archestra_tool_invocation_policy_default` | `ToolInvocationPolicyDefault` | `policy.archestra.[m.]crossplane.io` |
+
+(The `[m.]` suffix is the Crossplane v2 namespaced variant; every
+resource ships in both scopes.)
+
+To expose another TF resource:
 
 1. Whitelist the TF resource name in `crossplane/config/external_name.go`.
-2. Add a configurator block in **both** `crossplane/config/cluster/<group>/config.go` and `.../namespaced/<group>/config.go` (v1 and v2 scopes).
+2. Add a configurator block in **both** `crossplane/config/cluster/<group>/config.go` and `.../namespaced/<group>/config.go` setting `r.ShortGroup` (becomes `<group>.archestra.crossplane.io`) and `r.Kind` (CamelCase singular).
 3. `make -C crossplane generate` — upjet regenerates apis, controllers, and CRDs.
 
 Local controller run, `make e2e`, and the full walkthrough are in
