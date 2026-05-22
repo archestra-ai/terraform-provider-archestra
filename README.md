@@ -77,10 +77,3 @@ tag vX.Y.Z   ──┬──▶  goreleaser   ──▶  Terraform Registry
                │
                └──▶  make generate + crank xpkg push  ──▶  xpkg.upbound.io
 ```
-
-Both jobs run in parallel and are independent — one failing
-doesn't roll back the other. Secrets: GitHub App
-(`ARCHESTRA_RELEASER_GITHUB_APP_*`) for release-please, GPG
-(`GPG_PRIVATE_KEY` + `GPG_PASSPHRASE`) for goreleaser, Upbound
-robot creds (`UPBOUND_ACCESS_ID` + `UPBOUND_TOKEN`) for the xpkg
-push.
