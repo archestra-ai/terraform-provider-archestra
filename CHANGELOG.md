@@ -50,6 +50,13 @@
 * **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
 * **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
 
+## [1.1.4](https://github.com/archestra-ai/terraform-provider-archestra/compare/v1.1.3...v1.1.4) (2026-05-22)
+
+
+### Bug Fixes
+
+* **ci:** build both linux archs before pushing the xpkg ([#141](https://github.com/archestra-ai/terraform-provider-archestra/issues/141)) ([2271b98](https://github.com/archestra-ai/terraform-provider-archestra/commit/2271b98d58f86ff4b0ebfc8f51030b3a0874e5d1))
+
 ## [1.1.3](https://github.com/archestra-ai/terraform-provider-archestra/compare/v1.1.2...v1.1.3) (2026-05-22)
 
 
