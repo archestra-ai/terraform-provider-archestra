@@ -116,6 +116,7 @@ func TestMapCatalogEnterpriseManagedConfig(t *testing.T) {
 		got := mapCatalogEnterpriseManagedConfig(parseCatalogResp(t, body))
 		if got == nil {
 			t.Fatal("got nil, want populated")
+			return
 		}
 		// stringValueOrNull on *string
 		if got.IdentityProviderId.ValueString() != "11111111-1111-1111-1111-111111111111" {
