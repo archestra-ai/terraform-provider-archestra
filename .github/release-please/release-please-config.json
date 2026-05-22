@@ -64,10 +64,16 @@
       "hidden": true
     }
   ],
+  "separate-pull-requests": true,
   "packages": {
     ".": {
       "release-type": "go",
       "initial-version": "0.0.1"
+    },
+    "crossplane": {
+      "release-type": "go",
+      "component": "crossplane",
+      "include-component-in-tag": true
     }
   },
   "plugins": [],

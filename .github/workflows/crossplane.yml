@@ -1,0 +1,56 @@
+name: Crossplane Provider
+
+# CI for the Crossplane provider (crossplane/ — its own Go module).
+# Path-filtered so Terraform-provider-only changes don't trigger it.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'crossplane/**'
+      - '.github/workflows/crossplane.yml'
+  pull_request:
+    paths:
+      - 'crossplane/**'
+      - '.github/workflows/crossplane.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Generate & Build
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          submodules: true   # crossplane/build makelib
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+        with:
+          go-version: '1.25'
+
+      # The Crossplane provider's CRDs are generated from the Terraform
+      # provider's schema. In this monorepo that is a local build step:
+      # build the binary, then `make generate` dumps its schema and runs
+      # upjet codegen against it.
+      - name: Build Terraform provider
+        run: go build -o terraform-provider-archestra .
+
+      - name: Install goimports
+        run: go install golang.org/x/tools/cmd/goimports@latest
+
+      - name: Generate Crossplane provider
+        run: make -C crossplane generate
+
+      - name: Verify generated code is up to date
+        run: git diff --exit-code
+
+      - name: Build & test
+        run: cd crossplane && go build ./... && go test ./...
