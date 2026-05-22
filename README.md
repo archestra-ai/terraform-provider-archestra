@@ -7,6 +7,7 @@ agents, MCP servers, identity providers, teams, LLM keys, security
 policies, organization settings — as code.
 
 - **Registry:** <https://registry.terraform.io/providers/archestra-ai/archestra/latest>
+- **Crossplane:** `xpkg.upbound.io/archestra/provider-archestra` — same resources via upjet, see [`crossplane/`](crossplane/)
 - **Guides:** [Getting Started](docs/guides/getting-started.md) · [Authentication](docs/guides/authentication.md) · [Resource Bring-up Order](docs/guides/bring-up-order.md) · [BYOS Vault](docs/guides/byos-vault.md) · [Common Issues](docs/guides/common-issues.md)
 - **Schema reference:** [docs/](docs/) (auto-generated)
 - **Per-resource snippets:** [examples/resources/](examples/resources/) — illustrative HCL for every resource
@@ -55,26 +56,36 @@ architecture, drift-check tests, the new-resource checklist, and the
 acceptance-test env gates (`ARCHESTRA_READONLY_VAULT_ENABLED`,
 `ARCHESTRA_TEST_IDP_ID`) live in [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Crossplane provider
+
+A Crossplane v1/v2 xpkg published from the same `vX.Y.Z` tag,
+[upjet](https://github.com/crossplane/upjet)-generated from this
+provider's TF schema. Lives under [`crossplane/`](crossplane/);
+the subtree's [README](crossplane/README.md) covers install, the
+ProviderConfig wiring, and the local `make generate` flow.
+
+Resource coverage is partial — the badge at the top links to the
+report of TF resources without a Crossplane MR yet. To expose a
+new resource, add it to `ExternalNameConfigs` in
+[`crossplane/config/external_name.go`](crossplane/config/external_name.go);
+codegen and CRDs follow on the next `make generate`.
+
 ## Releases
 
-Single `vX.Y.Z` track. Each release publishes:
+One `vX.Y.Z` tag ships both artifacts in parallel:
 
-- **Terraform provider** binaries (signed) to the
-  [Terraform Registry](https://registry.terraform.io/providers/archestra-ai/archestra)
-  and GitHub Release assets.
-- **Crossplane provider** xpkg (regenerated from the same TF
-  schema) to `xpkg.upbound.io/archestra/provider-archestra`.
+- Terraform binaries (signed) → [Registry](https://registry.terraform.io/providers/archestra-ai/archestra) + GitHub Release assets
+- Crossplane xpkg → `xpkg.upbound.io/archestra/provider-archestra`
 
+Flow: a conventional-commit lands on `main` →
 [`release-please`](https://github.com/googleapis/release-please)
-reads conventional-commit messages on `main`:
+opens a PR with the version bump + changelog entry → merging it
+creates the `vX.Y.Z` tag and fires both publish jobs (goreleaser
+for TF, multi-arch `crank xpkg push` for Crossplane). The two are
+independent — one failing won't roll back the other.
 
-| Commit prefix | Bumps |
-|---|---|
-| `feat:` | minor |
-| `fix:` | patch |
-| `feat!:` / `BREAKING CHANGE:` | major |
-| `chore:`, `docs:`, `ci:`, `refactor:`, `test:`, `style:` | nothing |
-
-The **type** (before the colon) drives the bump; the scope in
-parentheses is decorative. Use `chore(ci):` or `ci:` for CI-only
-changes you don't want to ship as a release.
+The commit **type** drives the bump (`feat:` minor, `fix:` patch,
+`feat!:` / `BREAKING CHANGE:` major); the **scope is decorative**.
+That means `fix(ci): tweak workflow` still cuts a patch release —
+use `ci:` or `chore(ci):` for plumbing-only changes you don't
+want to ship. Likewise `docs:` and `refactor:` don't bump.
