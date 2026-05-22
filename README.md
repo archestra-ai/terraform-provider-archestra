@@ -63,3 +63,24 @@ leaves the Go packages empty and any `go build` fails with
 Cluster install, ProviderConfig wiring, the five-step
 add-a-resource checklist, and the `make e2e` target are in
 [`crossplane/README.md`](crossplane/README.md).
+
+## Release process
+
+```
+conventional commit on main
+        │
+        ▼
+release-please opens "chore(main): release vX.Y.Z"
+        │  merge
+        ▼
+tag vX.Y.Z   ──┬──▶  goreleaser   ──▶  Terraform Registry
+               │
+               └──▶  make generate + crank xpkg push  ──▶  xpkg.upbound.io
+```
+
+Both jobs run in parallel and are independent — one failing
+doesn't roll back the other. Secrets: GitHub App
+(`ARCHESTRA_RELEASER_GITHUB_APP_*`) for release-please, GPG
+(`GPG_PRIVATE_KEY` + `GPG_PASSPHRASE`) for goreleaser, Upbound
+robot creds (`UPBOUND_ACCESS_ID` + `UPBOUND_TOKEN`) for the xpkg
+push.
