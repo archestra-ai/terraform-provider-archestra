@@ -25,12 +25,12 @@ kind: Provider
 metadata:
   name: crossplane-provider-archestra
 spec:
-  package: ghcr.io/archestra-ai/crossplane-provider-archestra:v0.1.0
+  package: xpkg.upbound.io/archestra/crossplane-provider-archestra:v1.0.0
 EOF
 ```
 
-Adjust the `package:` path to whichever registry you publish to (GHCR,
-`xpkg.upbound.io/archestra-ai/...`, etc.).
+Replace the tag with the latest release from
+[GitHub Releases](https://github.com/archestra-ai/terraform-provider-archestra/releases?q=crossplane-).
 
 ## Configure credentials
 
