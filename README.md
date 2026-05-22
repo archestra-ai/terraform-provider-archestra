@@ -102,15 +102,61 @@ and the full new-resource checklist are in
 [`CONTRIBUTING.md`](CONTRIBUTING.md). Read them before touching the
 schema — skipping leads to phantom plan diffs and silent backend drift.
 
-## 5. Expose it as a Crossplane MR (optional)
+## 5. Expose it as a Crossplane Managed Resource (optional)
 
-To pick up a `—` row in the coverage table above:
+A Managed Resource (**MR**) is the Kubernetes object a Crossplane
+provider reconciles to backend state — `kubectl apply` a YAML, the
+controller calls the Archestra API. To pick up a `—` row in the
+coverage table above:
+
+### a. Wire the config
 
 1. Whitelist the TF resource name in `crossplane/config/external_name.go`.
 2. Add a configurator block in **both** `crossplane/config/cluster/<group>/config.go` and `.../namespaced/<group>/config.go` setting `r.ShortGroup` (becomes `<group>.archestra.crossplane.io`) and `r.Kind` (CamelCase singular).
-3. `make -C crossplane generate` — upjet regenerates apis, controllers, and CRDs.
+3. `make -C crossplane generate` — runs upjet over the TF schema (using the binary you built in step 1) and produces the Go types, controllers, and CRDs for your new MR.
 
-Local controller run, `make e2e`, and the full walkthrough are in
+### b. Try it locally
+
+Prereq: a local k8s cluster with Crossplane installed (OrbStack /
+kind / minikube — the controller runs **out of cluster** against
+whichever `kubectl` context you're pointing at, so you don't need
+to package and install an xpkg).
+
+```bash
+# in repo root, rebuild the TF binary if you've changed the schema
+go build -o terraform-provider-archestra .
+
+cd crossplane
+make generate
+make build                                   # _output/bin/<host>/provider
+
+# 1. Apply the CRDs so your cluster knows about the new Kind
+kubectl apply -f package/crds/
+
+# 2. ProviderConfig + creds pointing at your local Archestra
+kubectl create secret generic archestra-creds -n crossplane-system \
+  --from-literal=credentials='{"api_key":"arch_...","base_url":"http://localhost:9000"}'
+
+cat <<EOF | kubectl apply -f -
+apiVersion: archestra.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata: { name: default }
+spec:
+  credentials:
+    source: Secret
+    secretRef: { namespace: crossplane-system, name: archestra-creds, key: credentials }
+EOF
+
+# 3. Run the controller (foreground, against $KUBECONFIG's current context)
+./_output/bin/$(go env GOOS)_$(go env GOARCH)/provider --debug
+
+# 4. In another shell: apply your MR YAML and watch it reconcile
+kubectl apply -f examples/cluster/<group>/<kind>.yaml
+kubectl get <kind>.<group>.archestra.crossplane.io -w
+```
+
+`make e2e` (kind + uptest), the namespaced (v2) scope wiring, and
+the upjet config reference live in
 [`crossplane/README.md`](crossplane/README.md).
 
 ## 6. Ship it
