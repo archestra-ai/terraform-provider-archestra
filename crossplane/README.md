@@ -23,14 +23,14 @@ kubectl apply -f - <<'EOF'
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: crossplane-provider-archestra
+  name: provider-archestra
 spec:
-  package: xpkg.upbound.io/archestra/crossplane-provider-archestra:v1.0.0
+  package: xpkg.upbound.io/archestra/provider-archestra:v1.1.0
 EOF
 ```
 
 Replace the tag with the latest release from
-[GitHub Releases](https://github.com/archestra-ai/terraform-provider-archestra/releases?q=crossplane-).
+[GitHub Releases](https://github.com/archestra-ai/terraform-provider-archestra/releases).
 
 ## Configure credentials
 
@@ -129,11 +129,10 @@ make build
 
 ## Releasing
 
-1. Cut a tag: `git tag -a v0.1.0 -m "v0.1.0"; git push origin v0.1.0`.
-2. Run the **Tag** GitHub Actions workflow if you prefer to drive
-   releases through the UI.
-3. The **Publish Provider Package** workflow builds the controller image
-   + xpkg and pushes both to the configured registry.
+Released on the same `vX.Y.Z` track as the Terraform provider — see
+the [root README's Releases section](../README.md#releases). The
+xpkg is published to `xpkg.upbound.io/archestra/provider-archestra`
+alongside each Terraform provider release.
 
 ## License
 
