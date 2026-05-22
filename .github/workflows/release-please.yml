@@ -27,9 +27,9 @@ jobs:
       issues: write # label release PRs
       id-token: write # OIDC for action identity
     outputs:
-      # Manifest mode -> outputs are path-namespaced.
-      release_created: ${{ steps.release-please.outputs['.--release_created'] }}
-      tag_name: ${{ steps.release-please.outputs['.--tag_name'] }}
+      # Single-package manifest mode -> outputs are flat (no `<path>--` prefix).
+      release_created: ${{ steps.release-please.outputs.release_created }}
+      tag_name: ${{ steps.release-please.outputs.tag_name }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
