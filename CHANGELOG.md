@@ -50,6 +50,14 @@
 * **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
 * **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
 
+## [1.1.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v1.1.0...v1.1.1) (2026-05-22)
+
+
+### Bug Fixes
+
+* **ci:** authenticate to Upbound via docker login, not up login ([#131](https://github.com/archestra-ai/terraform-provider-archestra/issues/131)) ([7c27a46](https://github.com/archestra-ai/terraform-provider-archestra/commit/7c27a469789a34ffc7eabb4da51eb0d2f07e9ec7))
+* **crossplane:** point install example at the real registry ([#133](https://github.com/archestra-ai/terraform-provider-archestra/issues/133)) ([b023c57](https://github.com/archestra-ai/terraform-provider-archestra/commit/b023c570f24af2896f75adf71e2c20fb47c87422))
+
 ## [1.1.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v1.0.0...v1.1.0) (2026-05-22)
 
 
