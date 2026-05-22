@@ -23,6 +23,12 @@ on:
       - '.github/workflows/crossplane-coverage.yml'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Cancel stale PR runs when new commits land; let main runs finish so the
+  # auto-commit step doesn't race itself.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 permissions:
   contents: read
 
@@ -34,6 +40,8 @@ jobs:
       contents: write # to commit the refreshed badge JSON on main
     steps:
       - name: Checkout
+        # zizmor: ignore[artipacked] credentials are intentionally persisted on
+        # main pushes so the auto-commit step can refresh the badge JSON.
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
