@@ -11,6 +11,31 @@ schema and shipped together on every `vX.Y.Z` tag:
 End users install from those — this README is for contributors
 adding or extending resources.
 
+## Local test loop
+
+Point Terraform at a locally-built provider via `dev_overrides`,
+then drive it against a local backend:
+
+```hcl
+# ~/.terraformrc
+provider_installation {
+  dev_overrides {
+    "archestra-ai/archestra" = "/path/to/$GOPATH/bin"
+  }
+  direct {}
+}
+```
+
+```bash
+make install                        # builds + installs binary into $GOPATH/bin
+export ARCHESTRA_BASE_URL=http://localhost:9000
+export ARCHESTRA_API_KEY=arch_...
+cd examples/basic && terraform apply
+```
+
+Crossplane controller out-of-cluster: see
+[`crossplane/README.md`](crossplane/README.md).
+
 ## Adding a Terraform resource
 
 Source lives in [`internal/provider/`](internal/provider/) — one
