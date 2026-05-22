@@ -49,8 +49,5 @@ jobs:
       - name: Generate Crossplane provider
         run: make -C crossplane generate
 
-      - name: Verify generated code is up to date
-        run: git diff --exit-code
-
       - name: Build & test
         run: cd crossplane && go build ./... && go test ./...

@@ -99,15 +99,20 @@ extract from there to populate `ToolBatch.spec.forProvider.toolIds` and
 
 ## Development
 
-The Crossplane provider is regenerated from the Terraform provider's
-schema. Whenever the upstream `terraform-provider-archestra` schema
-changes, refresh:
+`apis/**/zz_*.go`, `internal/controller/**/zz_*.go`, and
+`package/crds/*.yaml` are **generated** (gitignored) from the TF
+provider's schema. After cloning, regenerate them locally before
+`go build` / opening the project in your IDE:
 
 ```bash
+cd crossplane
 make schema     # dump the TF provider's schema as JSON
 make generate   # regenerate apis/, internal/controller/, package/crds/
 make build      # build the controller binary
 ```
+
+CI runs `make generate` on every build, so the published xpkg
+always reflects the current TF schema.
 
 `make schema` fetches the Terraform provider from the public registry
 (`archestra-ai/archestra`) by default. Override
