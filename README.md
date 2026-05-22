@@ -11,6 +11,45 @@ schema and shipped together on every `vX.Y.Z` tag:
 End users install from those. This README walks a new contributor
 through extending the provider.
 
+## Resource coverage
+
+| Terraform | Crossplane Kind |
+|---|---|
+| `archestra_agent` | `Agent` |
+| `archestra_agent_tool` | — |
+| `archestra_agent_tool_batch` | `ToolBatch` |
+| `archestra_identity_provider` | — |
+| `archestra_limit` | — |
+| `archestra_llm_model` | — |
+| `archestra_llm_provider_api_key` | — |
+| `archestra_llm_proxy` | — |
+| `archestra_mcp_gateway` | — |
+| `archestra_mcp_registry_catalog_item` | `RegistryCatalogItem` |
+| `archestra_mcp_server_installation` | `ServerInstallation` |
+| `archestra_optimization_rule` | — |
+| `archestra_organization_settings` | — |
+| `archestra_team` | — |
+| `archestra_team_external_group` | — |
+| `archestra_tool_invocation_policy` | — |
+| `archestra_tool_invocation_policy_default` | `ToolInvocationPolicyDefault` |
+| `archestra_tool_policy_auto_config` | — |
+| `archestra_trusted_data_policy` | — |
+| `archestra_trusted_data_policy_default` | — |
+| `data.archestra_agent_tool` | n/a |
+| `data.archestra_agent_tools` | n/a |
+| `data.archestra_mcp_server_tool` | n/a |
+| `data.archestra_mcp_tool_calls` | n/a |
+| `data.archestra_team` | n/a |
+| `data.archestra_team_external_groups` | n/a |
+| `data.archestra_tool` | n/a |
+
+- `—` — TF resource exists, no Crossplane MR yet. See step 5 below.
+- `n/a` — TF data source. Crossplane has no read-only Managed Resource concept, so nothing to map.
+
+Crossplane Kinds ship in two API groups:
+`<group>.archestra.crossplane.io` (cluster-scoped, v1) and
+`<group>.archestra.m.crossplane.io` (namespaced, v2).
+
 ## 1. Build it
 
 ```bash
@@ -65,10 +104,10 @@ schema — skipping leads to phantom plan diffs and silent backend drift.
 
 ## 5. Expose it as a Crossplane MR (optional)
 
-If the resource should also be reachable from Crossplane:
+To pick up a `—` row in the coverage table above:
 
 1. Whitelist the TF resource name in `crossplane/config/external_name.go`.
-2. Add a configurator block in **both** `crossplane/config/cluster/<group>/config.go` and `.../namespaced/<group>/config.go` (v1 and v2 scopes).
+2. Add a configurator block in **both** `crossplane/config/cluster/<group>/config.go` and `.../namespaced/<group>/config.go` setting `r.ShortGroup` (becomes `<group>.archestra.crossplane.io`) and `r.Kind` (CamelCase singular).
 3. `make -C crossplane generate` — upjet regenerates apis, controllers, and CRDs.
 
 Local controller run, `make e2e`, and the full walkthrough are in
