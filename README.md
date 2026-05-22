@@ -1,5 +1,7 @@
 # Archestra Terraform Provider
 
+[![Crossplane coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
+
 The Archestra Terraform provider lets you manage Archestra resources —
 agents, MCP servers, identity providers, teams, LLM keys, security
 policies, organization settings — as code.

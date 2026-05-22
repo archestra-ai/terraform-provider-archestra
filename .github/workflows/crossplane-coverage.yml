@@ -1,0 +1,54 @@
+name: Crossplane Coverage
+
+# Reports which Terraform resources don't yet have a Crossplane managed-resource
+# equivalent. Non-blocking — informational only.
+#
+# - On PRs that touch either side: writes the report to the job summary.
+# - On main pushes: also refreshes .github/badges/crossplane-coverage.json so the
+#   README badge stays in sync. Auto-commits when the JSON changes.
+
+on:
+  pull_request:
+    paths:
+      - 'internal/provider/resource_*.go'
+      - 'crossplane/config/external_name.go'
+      - 'scripts/crossplane-coverage.sh'
+      - '.github/workflows/crossplane-coverage.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'internal/provider/resource_*.go'
+      - 'crossplane/config/external_name.go'
+      - 'scripts/crossplane-coverage.sh'
+      - '.github/workflows/crossplane-coverage.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  coverage:
+    name: Report TF↔Crossplane coverage
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write # to commit the refreshed badge JSON on main
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+
+      - name: Generate coverage report
+        run: scripts/crossplane-coverage.sh "$GITHUB_STEP_SUMMARY"
+
+      - name: Refresh badge JSON
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          scripts/crossplane-coverage.sh --badge .github/badges/crossplane-coverage.json
+          if ! git diff --quiet .github/badges/crossplane-coverage.json; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add .github/badges/crossplane-coverage.json
+            git commit -m 'chore(ci): refresh Crossplane coverage badge'
+            git push
+          fi
