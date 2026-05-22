@@ -2,67 +2,48 @@
 
 [![Crossplane coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
 
-Manage Archestra agents, MCP servers, identity providers, teams,
-LLM keys, and security policies. Two distributions are published
-from the same `vX.Y.Z` tag — the Crossplane xpkg is
-[upjet](https://github.com/crossplane/upjet)-codegen'd from this
-provider's TF schema on every release, so the two stay locked.
+Source for two artifacts, both regenerated from a single Terraform
+schema and shipped together on every `vX.Y.Z` tag:
 
-## Terraform
+- `archestra-ai/archestra` on the [Terraform Registry](https://registry.terraform.io/providers/archestra-ai/archestra/latest) — end-user install path.
+- `xpkg.upbound.io/archestra/provider-archestra` on Upbound — same resources, packaged for Crossplane v1/v2.
 
-Published to [registry.terraform.io/providers/archestra-ai/archestra](https://registry.terraform.io/providers/archestra-ai/archestra/latest).
+End users install from those — this README is for contributors
+adding or extending resources.
 
-```hcl
-terraform {
-  required_providers {
-    archestra = {
-      source  = "archestra-ai/archestra"
-      version = "~> 1.0"
-    }
-  }
-}
+## Adding a Terraform resource
 
-provider "archestra" {
-  # ARCHESTRA_BASE_URL / ARCHESTRA_API_KEY are read from the env
-}
-```
+Source lives in [`internal/provider/`](internal/provider/) — one
+`resource_<name>.go` per resource, registered in `provider.go`'s
+`Resources()` function. The dev loop:
 
-```bash
-export ARCHESTRA_BASE_URL="https://archestra.your-company.example"
-export ARCHESTRA_API_KEY="arch_..."   # mint via Settings → API Keys
-terraform init && terraform apply
-```
+1. Add `internal/provider/resource_<name>.go` + register it in `provider.go`.
+2. Add an acceptance test (`resource_<name>_test.go`) and an example under `examples/resources/archestra_<name>/`. Every bug fix needs a regression test too — see [`CLAUDE.md`](CLAUDE.md).
+3. `make generate` — regenerates `docs/` from schema + examples via tfplugindocs.
+4. `make test` (unit + drift checks) → `make testacc` (against `$ARCHESTRA_BASE_URL`).
 
-Full walk-through:
-[Getting Started](docs/guides/getting-started.md). Other guides
-under [`docs/guides/`](docs/guides/), HCL snippets under
-[`examples/`](examples/), schema reference in [`docs/`](docs/),
-contributor setup in [`CONTRIBUTING.md`](CONTRIBUTING.md).
+Architecture (merge-patch + AttrSpec design, the two drift-check
+tests, the resource opt-in interfaces) and the full new-resource
+checklist live in
+[`ARCHITECTURE.md`](ARCHITECTURE.md) and
+[`CONTRIBUTING.md`](CONTRIBUTING.md). Read these before touching
+the schema — skipping them leads to phantom plan diffs and silent
+backend-drift bugs.
 
-## Crossplane
+## Adding a Crossplane mapping
 
-Published to `xpkg.upbound.io/archestra/provider-archestra`. The
-Crossplane subtree lives in [`crossplane/`](crossplane/) and is a
-**pure code-gen target** — `apis/**/zz_*.go`,
-`internal/controller/**/zz_*.go`, and `package/crds/*.yaml` are
-gitignored. After a fresh clone, regenerate before anything else:
+The Crossplane subtree is a pure code-gen target — generated Go
+and CRDs are gitignored. To expose an existing TF resource as a
+Crossplane MR:
 
-```bash
-go build -o terraform-provider-archestra .   # repo root — upjet shells out to this binary
-cd crossplane
-make schema     # dumps the TF schema to config/schema.json
-make generate   # runs upjet -> apis/, internal/controller/, package/crds/
-make build      # _output/bin/<host>/provider
-```
+1. Whitelist it in `ExternalNameConfigs` in [`crossplane/config/external_name.go`](crossplane/config/external_name.go).
+2. Add a configurator block in **both** `crossplane/config/cluster/<group>/config.go` and `.../namespaced/<group>/config.go` (Crossplane v1 + v2 scopes).
+3. `make -C crossplane generate` — runs upjet over the TF schema to (re)produce `apis/**/zz_*.go`, `internal/controller/**/zz_*.go`, and `package/crds/*.yaml`.
 
-The TF binary at the repo root is a hard prerequisite — upjet
-invokes it to extract the schema. Skipping `make generate`
-leaves the Go packages empty and any `go build` fails with
-"package not found".
-
-Cluster install, ProviderConfig wiring, the five-step
-add-a-resource checklist, and the `make e2e` target are in
-[`crossplane/README.md`](crossplane/README.md).
+Local setup, the add-a-resource walkthrough, and `make e2e` are
+in [`crossplane/README.md`](crossplane/README.md). The badge above
+links to the live coverage gap between this list and the TF
+resource set.
 
 ## Release process
 
