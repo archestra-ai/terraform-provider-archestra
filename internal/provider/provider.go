@@ -185,6 +185,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewLLMProviderApiKeyResource,
 		NewAgentToolResource,
 		NewAgentToolBatchResource,
+		NewAgentDelegationResource,
 		NewIdentityProviderResource,
 		NewToolInvocationPolicyDefaultResource,
 		NewTrustedDataPolicyDefaultResource,
