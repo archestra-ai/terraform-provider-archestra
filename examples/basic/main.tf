@@ -41,13 +41,19 @@ resource "archestra_mcp_server_installation" "memory" {
   catalog_id = archestra_mcp_registry_catalog_item.memory.id
 }
 
+resource "archestra_knowledge_base" "basic" {
+  name        = "basic-demo-kb"
+  description = "Hello-world knowledge base for the getting-started demo. Empty until a connector populates it; agents that reference it can still answer from their system_prompt."
+}
+
 resource "archestra_agent" "main" {
-  name           = "basic-demo-agent"
-  description    = "Hello-world agent for the getting-started demo."
-  system_prompt  = "You are a friendly assistant. Be concise."
-  llm_model      = "llama3"
-  llm_api_key_id = archestra_llm_provider_api_key.ollama.id
-  scope          = "org"
+  name               = "basic-demo-agent"
+  description        = "Hello-world agent for the getting-started demo."
+  system_prompt      = "You are a friendly assistant. Be concise."
+  llm_model          = "llama3"
+  llm_api_key_id     = archestra_llm_provider_api_key.ollama.id
+  scope              = "org"
+  knowledge_base_ids = [archestra_knowledge_base.basic.id]
 }
 
 resource "archestra_agent_tool" "create_entities" {
