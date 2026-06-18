@@ -21,3 +21,15 @@ resource "archestra_llm_proxy" "shared_ollama" {
   identity_provider_id = archestra_identity_provider.oidc.id
   is_default           = true
 }
+
+resource "archestra_virtual_api_key" "shared_ollama_cicd" {
+  llm_provider_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
+  name                    = "demo-cicd-virtual-key"
+  scope                   = "org"
+}
+
+output "cicd_virtual_key" {
+  description = "One-shot virtual API key — returned only on Create; stored sensitively in state."
+  value       = archestra_virtual_api_key.shared_ollama_cicd.value
+  sensitive   = true
+}

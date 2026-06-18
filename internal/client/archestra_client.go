@@ -639,6 +639,20 @@ const (
 	GetAvailableLlmProviderApiKeysParamsProviderZhipuai    GetAvailableLlmProviderApiKeysParamsProvider = "zhipuai"
 )
 
+// Defines values for CreateVirtualApiKeyJSONBodyScope.
+const (
+	CreateVirtualApiKeyJSONBodyScopeOrg      CreateVirtualApiKeyJSONBodyScope = "org"
+	CreateVirtualApiKeyJSONBodyScopePersonal CreateVirtualApiKeyJSONBodyScope = "personal"
+	CreateVirtualApiKeyJSONBodyScopeTeam     CreateVirtualApiKeyJSONBodyScope = "team"
+)
+
+// Defines values for UpdateVirtualApiKeyJSONBodyScope.
+const (
+	UpdateVirtualApiKeyJSONBodyScopeOrg      UpdateVirtualApiKeyJSONBodyScope = "org"
+	UpdateVirtualApiKeyJSONBodyScopePersonal UpdateVirtualApiKeyJSONBodyScope = "personal"
+	UpdateVirtualApiKeyJSONBodyScopeTeam     UpdateVirtualApiKeyJSONBodyScope = "team"
+)
+
 // Defines values for UpdateLlmProviderApiKeyJSONBodyScope.
 const (
 	UpdateLlmProviderApiKeyJSONBodyScopeOrg      UpdateLlmProviderApiKeyJSONBodyScope = "org"
@@ -2107,6 +2121,28 @@ type GetAvailableLlmProviderApiKeysParams struct {
 // GetAvailableLlmProviderApiKeysParamsProvider defines parameters for GetAvailableLlmProviderApiKeys.
 type GetAvailableLlmProviderApiKeysParamsProvider string
 
+// CreateVirtualApiKeyJSONBody defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBody struct {
+	ExpiresAt interface{}                       `json:"expiresAt"`
+	Name      string                            `json:"name"`
+	Scope     *CreateVirtualApiKeyJSONBodyScope `json:"scope,omitempty"`
+	Teams     *[]string                         `json:"teams,omitempty"`
+}
+
+// CreateVirtualApiKeyJSONBodyScope defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyScope string
+
+// UpdateVirtualApiKeyJSONBody defines parameters for UpdateVirtualApiKey.
+type UpdateVirtualApiKeyJSONBody struct {
+	ExpiresAt interface{}                       `json:"expiresAt"`
+	Name      string                            `json:"name"`
+	Scope     *UpdateVirtualApiKeyJSONBodyScope `json:"scope,omitempty"`
+	Teams     *[]string                         `json:"teams,omitempty"`
+}
+
+// UpdateVirtualApiKeyJSONBodyScope defines parameters for UpdateVirtualApiKey.
+type UpdateVirtualApiKeyJSONBodyScope string
+
 // UpdateLlmProviderApiKeyJSONBody defines parameters for UpdateLlmProviderApiKey.
 type UpdateLlmProviderApiKeyJSONBody struct {
 	ApiKey          *string                               `json:"apiKey,omitempty"`
@@ -2121,6 +2157,14 @@ type UpdateLlmProviderApiKeyJSONBody struct {
 
 // UpdateLlmProviderApiKeyJSONBodyScope defines parameters for UpdateLlmProviderApiKey.
 type UpdateLlmProviderApiKeyJSONBodyScope string
+
+// GetAllVirtualApiKeysParams defines parameters for GetAllVirtualApiKeys.
+type GetAllVirtualApiKeysParams struct {
+	Limit        *int                `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset       *int                `form:"offset,omitempty" json:"offset,omitempty"`
+	Search       *string             `form:"search,omitempty" json:"search,omitempty"`
+	ChatApiKeyId *openapi_types.UUID `form:"chatApiKeyId,omitempty" json:"chatApiKeyId,omitempty"`
+}
 
 // GetMcpToolCallsParams defines parameters for GetMcpToolCalls.
 type GetMcpToolCallsParams struct {
@@ -2876,6 +2920,12 @@ type UpdateModelJSONRequestBody UpdateModelJSONBody
 // CreateLlmProviderApiKeyJSONRequestBody defines body for CreateLlmProviderApiKey for application/json ContentType.
 type CreateLlmProviderApiKeyJSONRequestBody CreateLlmProviderApiKeyJSONBody
 
+// CreateVirtualApiKeyJSONRequestBody defines body for CreateVirtualApiKey for application/json ContentType.
+type CreateVirtualApiKeyJSONRequestBody CreateVirtualApiKeyJSONBody
+
+// UpdateVirtualApiKeyJSONRequestBody defines body for UpdateVirtualApiKey for application/json ContentType.
+type UpdateVirtualApiKeyJSONRequestBody UpdateVirtualApiKeyJSONBody
+
 // UpdateLlmProviderApiKeyJSONRequestBody defines body for UpdateLlmProviderApiKey for application/json ContentType.
 type UpdateLlmProviderApiKeyJSONRequestBody UpdateLlmProviderApiKeyJSONBody
 
@@ -3263,6 +3313,22 @@ type ClientInterface interface {
 	// GetAvailableLlmProviderApiKeys request
 	GetAvailableLlmProviderApiKeys(ctx context.Context, params *GetAvailableLlmProviderApiKeysParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetVirtualApiKeys request
+	GetVirtualApiKeys(ctx context.Context, chatApiKeyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateVirtualApiKeyWithBody request with any body
+	CreateVirtualApiKeyWithBody(ctx context.Context, chatApiKeyId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteVirtualApiKey request
+	DeleteVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateVirtualApiKeyWithBody request with any body
+	UpdateVirtualApiKeyWithBody(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteLlmProviderApiKey request
 	DeleteLlmProviderApiKey(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3273,6 +3339,9 @@ type ClientInterface interface {
 	UpdateLlmProviderApiKeyWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateLlmProviderApiKey(ctx context.Context, id openapi_types.UUID, body UpdateLlmProviderApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAllVirtualApiKeys request
+	GetAllVirtualApiKeys(ctx context.Context, params *GetAllVirtualApiKeysParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetMcpToolCalls request
 	GetMcpToolCalls(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4530,6 +4599,78 @@ func (c *Client) GetAvailableLlmProviderApiKeys(ctx context.Context, params *Get
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetVirtualApiKeys(ctx context.Context, chatApiKeyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVirtualApiKeysRequest(c.Server, chatApiKeyId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualApiKeyWithBody(ctx context.Context, chatApiKeyId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualApiKeyRequestWithBody(c.Server, chatApiKeyId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualApiKeyRequest(c.Server, chatApiKeyId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteVirtualApiKeyRequest(c.Server, chatApiKeyId, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateVirtualApiKeyWithBody(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateVirtualApiKeyRequestWithBody(c.Server, chatApiKeyId, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateVirtualApiKeyRequest(c.Server, chatApiKeyId, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) DeleteLlmProviderApiKey(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteLlmProviderApiKeyRequest(c.Server, id)
 	if err != nil {
@@ -4568,6 +4709,18 @@ func (c *Client) UpdateLlmProviderApiKeyWithBody(ctx context.Context, id openapi
 
 func (c *Client) UpdateLlmProviderApiKey(ctx context.Context, id openapi_types.UUID, body UpdateLlmProviderApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateLlmProviderApiKeyRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAllVirtualApiKeys(ctx context.Context, params *GetAllVirtualApiKeysParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAllVirtualApiKeysRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -8640,6 +8793,182 @@ func NewGetAvailableLlmProviderApiKeysRequest(server string, params *GetAvailabl
 	return req, nil
 }
 
+// NewGetVirtualApiKeysRequest generates requests for GetVirtualApiKeys
+func NewGetVirtualApiKeysRequest(server string, chatApiKeyId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "chatApiKeyId", runtime.ParamLocationPath, chatApiKeyId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-provider-api-keys/%s/virtual-keys", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateVirtualApiKeyRequest calls the generic CreateVirtualApiKey builder with application/json body
+func NewCreateVirtualApiKeyRequest(server string, chatApiKeyId openapi_types.UUID, body CreateVirtualApiKeyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateVirtualApiKeyRequestWithBody(server, chatApiKeyId, "application/json", bodyReader)
+}
+
+// NewCreateVirtualApiKeyRequestWithBody generates requests for CreateVirtualApiKey with any type of body
+func NewCreateVirtualApiKeyRequestWithBody(server string, chatApiKeyId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "chatApiKeyId", runtime.ParamLocationPath, chatApiKeyId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-provider-api-keys/%s/virtual-keys", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteVirtualApiKeyRequest generates requests for DeleteVirtualApiKey
+func NewDeleteVirtualApiKeyRequest(server string, chatApiKeyId openapi_types.UUID, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "chatApiKeyId", runtime.ParamLocationPath, chatApiKeyId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-provider-api-keys/%s/virtual-keys/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateVirtualApiKeyRequest calls the generic UpdateVirtualApiKey builder with application/json body
+func NewUpdateVirtualApiKeyRequest(server string, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateVirtualApiKeyRequestWithBody(server, chatApiKeyId, id, "application/json", bodyReader)
+}
+
+// NewUpdateVirtualApiKeyRequestWithBody generates requests for UpdateVirtualApiKey with any type of body
+func NewUpdateVirtualApiKeyRequestWithBody(server string, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "chatApiKeyId", runtime.ParamLocationPath, chatApiKeyId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-provider-api-keys/%s/virtual-keys/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewDeleteLlmProviderApiKeyRequest generates requests for DeleteLlmProviderApiKey
 func NewDeleteLlmProviderApiKeyRequest(server string, id openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -8751,6 +9080,103 @@ func NewUpdateLlmProviderApiKeyRequestWithBody(server string, id openapi_types.U
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetAllVirtualApiKeysRequest generates requests for GetAllVirtualApiKeys
+func NewGetAllVirtualApiKeysRequest(server string, params *GetAllVirtualApiKeysParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-virtual-keys")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ChatApiKeyId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "chatApiKeyId", runtime.ParamLocationQuery, *params.ChatApiKeyId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -12322,6 +12748,22 @@ type ClientWithResponsesInterface interface {
 	// GetAvailableLlmProviderApiKeysWithResponse request
 	GetAvailableLlmProviderApiKeysWithResponse(ctx context.Context, params *GetAvailableLlmProviderApiKeysParams, reqEditors ...RequestEditorFn) (*GetAvailableLlmProviderApiKeysResponse, error)
 
+	// GetVirtualApiKeysWithResponse request
+	GetVirtualApiKeysWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetVirtualApiKeysResponse, error)
+
+	// CreateVirtualApiKeyWithBodyWithResponse request with any body
+	CreateVirtualApiKeyWithBodyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error)
+
+	CreateVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error)
+
+	// DeleteVirtualApiKeyWithResponse request
+	DeleteVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteVirtualApiKeyResponse, error)
+
+	// UpdateVirtualApiKeyWithBodyWithResponse request with any body
+	UpdateVirtualApiKeyWithBodyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error)
+
+	UpdateVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error)
+
 	// DeleteLlmProviderApiKeyWithResponse request
 	DeleteLlmProviderApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteLlmProviderApiKeyResponse, error)
 
@@ -12332,6 +12774,9 @@ type ClientWithResponsesInterface interface {
 	UpdateLlmProviderApiKeyWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateLlmProviderApiKeyResponse, error)
 
 	UpdateLlmProviderApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateLlmProviderApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateLlmProviderApiKeyResponse, error)
+
+	// GetAllVirtualApiKeysWithResponse request
+	GetAllVirtualApiKeysWithResponse(ctx context.Context, params *GetAllVirtualApiKeysParams, reqEditors ...RequestEditorFn) (*GetAllVirtualApiKeysResponse, error)
 
 	// GetMcpToolCallsWithResponse request
 	GetMcpToolCallsWithResponse(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*GetMcpToolCallsResponse, error)
@@ -18542,6 +18987,311 @@ func (r GetAvailableLlmProviderApiKeysResponse) StatusCode() int {
 	return 0
 }
 
+type GetVirtualApiKeysResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		AuthorId     *string                   `json:"authorId"`
+		ChatApiKeyId openapi_types.UUID        `json:"chatApiKeyId"`
+		CreatedAt    time.Time                 `json:"createdAt"`
+		ExpiresAt    *time.Time                `json:"expiresAt"`
+		Id           openapi_types.UUID        `json:"id"`
+		LastUsedAt   *time.Time                `json:"lastUsedAt"`
+		Name         string                    `json:"name"`
+		Scope        GetVirtualApiKeys200Scope `json:"scope"`
+		SecretId     openapi_types.UUID        `json:"secretId"`
+		TokenStart   string                    `json:"tokenStart"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetVirtualApiKeys200Scope string
+type GetVirtualApiKeys400ErrorType string
+type GetVirtualApiKeys401ErrorType string
+type GetVirtualApiKeys403ErrorType string
+type GetVirtualApiKeys404ErrorType string
+type GetVirtualApiKeys409ErrorType string
+type GetVirtualApiKeys500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetVirtualApiKeysResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetVirtualApiKeysResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateVirtualApiKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId     *string                     `json:"authorId"`
+		AuthorName   *string                     `json:"authorName"`
+		ChatApiKeyId openapi_types.UUID          `json:"chatApiKeyId"`
+		CreatedAt    time.Time                   `json:"createdAt"`
+		ExpiresAt    *time.Time                  `json:"expiresAt"`
+		Id           openapi_types.UUID          `json:"id"`
+		LastUsedAt   *time.Time                  `json:"lastUsedAt"`
+		Name         string                      `json:"name"`
+		Scope        CreateVirtualApiKey200Scope `json:"scope"`
+		SecretId     openapi_types.UUID          `json:"secretId"`
+		Teams        []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TokenStart string `json:"tokenStart"`
+		Value      string `json:"value"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateVirtualApiKey200Scope string
+type CreateVirtualApiKey400ErrorType string
+type CreateVirtualApiKey401ErrorType string
+type CreateVirtualApiKey403ErrorType string
+type CreateVirtualApiKey404ErrorType string
+type CreateVirtualApiKey409ErrorType string
+type CreateVirtualApiKey500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateVirtualApiKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateVirtualApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteVirtualApiKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteVirtualApiKey400ErrorType string
+type DeleteVirtualApiKey401ErrorType string
+type DeleteVirtualApiKey403ErrorType string
+type DeleteVirtualApiKey404ErrorType string
+type DeleteVirtualApiKey409ErrorType string
+type DeleteVirtualApiKey500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteVirtualApiKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteVirtualApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateVirtualApiKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId     *string                     `json:"authorId"`
+		AuthorName   *string                     `json:"authorName"`
+		ChatApiKeyId openapi_types.UUID          `json:"chatApiKeyId"`
+		CreatedAt    time.Time                   `json:"createdAt"`
+		ExpiresAt    *time.Time                  `json:"expiresAt"`
+		Id           openapi_types.UUID          `json:"id"`
+		LastUsedAt   *time.Time                  `json:"lastUsedAt"`
+		Name         string                      `json:"name"`
+		Scope        UpdateVirtualApiKey200Scope `json:"scope"`
+		SecretId     openapi_types.UUID          `json:"secretId"`
+		Teams        []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TokenStart string `json:"tokenStart"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateVirtualApiKey200Scope string
+type UpdateVirtualApiKey400ErrorType string
+type UpdateVirtualApiKey401ErrorType string
+type UpdateVirtualApiKey403ErrorType string
+type UpdateVirtualApiKey404ErrorType string
+type UpdateVirtualApiKey409ErrorType string
+type UpdateVirtualApiKey500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateVirtualApiKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateVirtualApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeleteLlmProviderApiKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -18770,6 +19520,100 @@ func (r UpdateLlmProviderApiKeyResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateLlmProviderApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAllVirtualApiKeysResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			AuthorId          *string                          `json:"authorId"`
+			AuthorName        *string                          `json:"authorName"`
+			ChatApiKeyId      openapi_types.UUID               `json:"chatApiKeyId"`
+			CreatedAt         time.Time                        `json:"createdAt"`
+			ExpiresAt         *time.Time                       `json:"expiresAt"`
+			Id                openapi_types.UUID               `json:"id"`
+			LastUsedAt        *time.Time                       `json:"lastUsedAt"`
+			Name              string                           `json:"name"`
+			ParentKeyBaseUrl  *string                          `json:"parentKeyBaseUrl"`
+			ParentKeyName     string                           `json:"parentKeyName"`
+			ParentKeyProvider string                           `json:"parentKeyProvider"`
+			Scope             GetAllVirtualApiKeys200DataScope `json:"scope"`
+			SecretId          openapi_types.UUID               `json:"secretId"`
+			Teams             []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TokenStart string `json:"tokenStart"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAllVirtualApiKeys200DataScope string
+type GetAllVirtualApiKeys400ErrorType string
+type GetAllVirtualApiKeys401ErrorType string
+type GetAllVirtualApiKeys403ErrorType string
+type GetAllVirtualApiKeys404ErrorType string
+type GetAllVirtualApiKeys409ErrorType string
+type GetAllVirtualApiKeys500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAllVirtualApiKeysResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAllVirtualApiKeysResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -26355,6 +27199,58 @@ func (c *ClientWithResponses) GetAvailableLlmProviderApiKeysWithResponse(ctx con
 	return ParseGetAvailableLlmProviderApiKeysResponse(rsp)
 }
 
+// GetVirtualApiKeysWithResponse request returning *GetVirtualApiKeysResponse
+func (c *ClientWithResponses) GetVirtualApiKeysWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetVirtualApiKeysResponse, error) {
+	rsp, err := c.GetVirtualApiKeys(ctx, chatApiKeyId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetVirtualApiKeysResponse(rsp)
+}
+
+// CreateVirtualApiKeyWithBodyWithResponse request with arbitrary body returning *CreateVirtualApiKeyResponse
+func (c *ClientWithResponses) CreateVirtualApiKeyWithBodyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error) {
+	rsp, err := c.CreateVirtualApiKeyWithBody(ctx, chatApiKeyId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualApiKeyResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error) {
+	rsp, err := c.CreateVirtualApiKey(ctx, chatApiKeyId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualApiKeyResponse(rsp)
+}
+
+// DeleteVirtualApiKeyWithResponse request returning *DeleteVirtualApiKeyResponse
+func (c *ClientWithResponses) DeleteVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteVirtualApiKeyResponse, error) {
+	rsp, err := c.DeleteVirtualApiKey(ctx, chatApiKeyId, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteVirtualApiKeyResponse(rsp)
+}
+
+// UpdateVirtualApiKeyWithBodyWithResponse request with arbitrary body returning *UpdateVirtualApiKeyResponse
+func (c *ClientWithResponses) UpdateVirtualApiKeyWithBodyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error) {
+	rsp, err := c.UpdateVirtualApiKeyWithBody(ctx, chatApiKeyId, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateVirtualApiKeyResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error) {
+	rsp, err := c.UpdateVirtualApiKey(ctx, chatApiKeyId, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateVirtualApiKeyResponse(rsp)
+}
+
 // DeleteLlmProviderApiKeyWithResponse request returning *DeleteLlmProviderApiKeyResponse
 func (c *ClientWithResponses) DeleteLlmProviderApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteLlmProviderApiKeyResponse, error) {
 	rsp, err := c.DeleteLlmProviderApiKey(ctx, id, reqEditors...)
@@ -26388,6 +27284,15 @@ func (c *ClientWithResponses) UpdateLlmProviderApiKeyWithResponse(ctx context.Co
 		return nil, err
 	}
 	return ParseUpdateLlmProviderApiKeyResponse(rsp)
+}
+
+// GetAllVirtualApiKeysWithResponse request returning *GetAllVirtualApiKeysResponse
+func (c *ClientWithResponses) GetAllVirtualApiKeysWithResponse(ctx context.Context, params *GetAllVirtualApiKeysParams, reqEditors ...RequestEditorFn) (*GetAllVirtualApiKeysResponse, error) {
+	rsp, err := c.GetAllVirtualApiKeys(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAllVirtualApiKeysResponse(rsp)
 }
 
 // GetMcpToolCallsWithResponse request returning *GetMcpToolCallsResponse
@@ -35060,6 +35965,444 @@ func ParseGetAvailableLlmProviderApiKeysResponse(rsp *http.Response) (*GetAvaila
 	return response, nil
 }
 
+// ParseGetVirtualApiKeysResponse parses an HTTP response from a GetVirtualApiKeysWithResponse call
+func ParseGetVirtualApiKeysResponse(rsp *http.Response) (*GetVirtualApiKeysResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetVirtualApiKeysResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			AuthorId     *string                   `json:"authorId"`
+			ChatApiKeyId openapi_types.UUID        `json:"chatApiKeyId"`
+			CreatedAt    time.Time                 `json:"createdAt"`
+			ExpiresAt    *time.Time                `json:"expiresAt"`
+			Id           openapi_types.UUID        `json:"id"`
+			LastUsedAt   *time.Time                `json:"lastUsedAt"`
+			Name         string                    `json:"name"`
+			Scope        GetVirtualApiKeys200Scope `json:"scope"`
+			SecretId     openapi_types.UUID        `json:"secretId"`
+			TokenStart   string                    `json:"tokenStart"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateVirtualApiKeyResponse parses an HTTP response from a CreateVirtualApiKeyWithResponse call
+func ParseCreateVirtualApiKeyResponse(rsp *http.Response) (*CreateVirtualApiKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateVirtualApiKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId     *string                     `json:"authorId"`
+			AuthorName   *string                     `json:"authorName"`
+			ChatApiKeyId openapi_types.UUID          `json:"chatApiKeyId"`
+			CreatedAt    time.Time                   `json:"createdAt"`
+			ExpiresAt    *time.Time                  `json:"expiresAt"`
+			Id           openapi_types.UUID          `json:"id"`
+			LastUsedAt   *time.Time                  `json:"lastUsedAt"`
+			Name         string                      `json:"name"`
+			Scope        CreateVirtualApiKey200Scope `json:"scope"`
+			SecretId     openapi_types.UUID          `json:"secretId"`
+			Teams        []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TokenStart string `json:"tokenStart"`
+			Value      string `json:"value"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteVirtualApiKeyResponse parses an HTTP response from a DeleteVirtualApiKeyWithResponse call
+func ParseDeleteVirtualApiKeyResponse(rsp *http.Response) (*DeleteVirtualApiKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteVirtualApiKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateVirtualApiKeyResponse parses an HTTP response from a UpdateVirtualApiKeyWithResponse call
+func ParseUpdateVirtualApiKeyResponse(rsp *http.Response) (*UpdateVirtualApiKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateVirtualApiKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId     *string                     `json:"authorId"`
+			AuthorName   *string                     `json:"authorName"`
+			ChatApiKeyId openapi_types.UUID          `json:"chatApiKeyId"`
+			CreatedAt    time.Time                   `json:"createdAt"`
+			ExpiresAt    *time.Time                  `json:"expiresAt"`
+			Id           openapi_types.UUID          `json:"id"`
+			LastUsedAt   *time.Time                  `json:"lastUsedAt"`
+			Name         string                      `json:"name"`
+			Scope        UpdateVirtualApiKey200Scope `json:"scope"`
+			SecretId     openapi_types.UUID          `json:"secretId"`
+			Teams        []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TokenStart string `json:"tokenStart"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseDeleteLlmProviderApiKeyResponse parses an HTTP response from a DeleteLlmProviderApiKeyWithResponse call
 func ParseDeleteLlmProviderApiKeyResponse(rsp *http.Response) (*DeleteLlmProviderApiKeyResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -35379,6 +36722,133 @@ func ParseUpdateLlmProviderApiKeyResponse(rsp *http.Response) (*UpdateLlmProvide
 			Error struct {
 				Message string                              `json:"message"`
 				Type    UpdateLlmProviderApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAllVirtualApiKeysResponse parses an HTTP response from a GetAllVirtualApiKeysWithResponse call
+func ParseGetAllVirtualApiKeysResponse(rsp *http.Response) (*GetAllVirtualApiKeysResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAllVirtualApiKeysResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				AuthorId          *string                          `json:"authorId"`
+				AuthorName        *string                          `json:"authorName"`
+				ChatApiKeyId      openapi_types.UUID               `json:"chatApiKeyId"`
+				CreatedAt         time.Time                        `json:"createdAt"`
+				ExpiresAt         *time.Time                       `json:"expiresAt"`
+				Id                openapi_types.UUID               `json:"id"`
+				LastUsedAt        *time.Time                       `json:"lastUsedAt"`
+				Name              string                           `json:"name"`
+				ParentKeyBaseUrl  *string                          `json:"parentKeyBaseUrl"`
+				ParentKeyName     string                           `json:"parentKeyName"`
+				ParentKeyProvider string                           `json:"parentKeyProvider"`
+				Scope             GetAllVirtualApiKeys200DataScope `json:"scope"`
+				SecretId          openapi_types.UUID               `json:"secretId"`
+				Teams             []struct {
+					Id   string `json:"id"`
+					Name string `json:"name"`
+				} `json:"teams"`
+				TokenStart string `json:"tokenStart"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
