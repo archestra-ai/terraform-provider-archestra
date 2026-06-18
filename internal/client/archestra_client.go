@@ -2738,6 +2738,21 @@ type AddTeamMemberJSONBody struct {
 	UserId string  `json:"userId"`
 }
 
+// SetTeamVaultFolderJSONBody defines parameters for SetTeamVaultFolder.
+type SetTeamVaultFolderJSONBody struct {
+	VaultPath string `json:"vaultPath"`
+}
+
+// CheckTeamVaultFolderConnectivityJSONBody defines parameters for CheckTeamVaultFolderConnectivity.
+type CheckTeamVaultFolderConnectivityJSONBody struct {
+	VaultPath *string `json:"vaultPath,omitempty"`
+}
+
+// GetTeamVaultSecretKeysJSONBody defines parameters for GetTeamVaultSecretKeys.
+type GetTeamVaultSecretKeysJSONBody struct {
+	SecretPath string `json:"secretPath"`
+}
+
 // GetTokensParams defines parameters for GetTokens.
 type GetTokensParams struct {
 	// ProfileId Filter team tokens to only show tokens for teams the profile is assigned to
@@ -2953,6 +2968,15 @@ type AddTeamExternalGroupJSONRequestBody AddTeamExternalGroupJSONBody
 
 // AddTeamMemberJSONRequestBody defines body for AddTeamMember for application/json ContentType.
 type AddTeamMemberJSONRequestBody AddTeamMemberJSONBody
+
+// SetTeamVaultFolderJSONRequestBody defines body for SetTeamVaultFolder for application/json ContentType.
+type SetTeamVaultFolderJSONRequestBody SetTeamVaultFolderJSONBody
+
+// CheckTeamVaultFolderConnectivityJSONRequestBody defines body for CheckTeamVaultFolderConnectivity for application/json ContentType.
+type CheckTeamVaultFolderConnectivityJSONRequestBody CheckTeamVaultFolderConnectivityJSONBody
+
+// GetTeamVaultSecretKeysJSONRequestBody defines body for GetTeamVaultSecretKeys for application/json ContentType.
+type GetTeamVaultSecretKeysJSONRequestBody GetTeamVaultSecretKeysJSONBody
 
 // BulkUpsertDefaultCallPolicyJSONRequestBody defines body for BulkUpsertDefaultCallPolicy for application/json ContentType.
 type BulkUpsertDefaultCallPolicyJSONRequestBody BulkUpsertDefaultCallPolicyJSONBody
@@ -3506,6 +3530,30 @@ type ClientInterface interface {
 
 	// RemoveTeamMember request
 	RemoveTeamMember(ctx context.Context, id string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteTeamVaultFolder request
+	DeleteTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetTeamVaultFolder request
+	GetTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetTeamVaultFolderWithBody request with any body
+	SetTeamVaultFolderWithBody(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SetTeamVaultFolder(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CheckTeamVaultFolderConnectivityWithBody request with any body
+	CheckTeamVaultFolderConnectivityWithBody(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CheckTeamVaultFolderConnectivity(ctx context.Context, teamId string, body CheckTeamVaultFolderConnectivityJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListTeamVaultFolderSecrets request
+	ListTeamVaultFolderSecrets(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetTeamVaultSecretKeysWithBody request with any body
+	GetTeamVaultSecretKeysWithBody(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	GetTeamVaultSecretKeys(ctx context.Context, teamId string, body GetTeamVaultSecretKeysJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetTokens request
 	GetTokens(ctx context.Context, params *GetTokensParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -5600,6 +5648,114 @@ func (c *Client) AddTeamMember(ctx context.Context, id string, body AddTeamMembe
 
 func (c *Client) RemoveTeamMember(ctx context.Context, id string, userId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRemoveTeamMemberRequest(c.Server, id, userId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteTeamVaultFolderRequest(c.Server, teamId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTeamVaultFolderRequest(c.Server, teamId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetTeamVaultFolderWithBody(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetTeamVaultFolderRequestWithBody(c.Server, teamId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetTeamVaultFolder(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetTeamVaultFolderRequest(c.Server, teamId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CheckTeamVaultFolderConnectivityWithBody(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCheckTeamVaultFolderConnectivityRequestWithBody(c.Server, teamId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CheckTeamVaultFolderConnectivity(ctx context.Context, teamId string, body CheckTeamVaultFolderConnectivityJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCheckTeamVaultFolderConnectivityRequest(c.Server, teamId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListTeamVaultFolderSecrets(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListTeamVaultFolderSecretsRequest(c.Server, teamId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetTeamVaultSecretKeysWithBody(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTeamVaultSecretKeysRequestWithBody(c.Server, teamId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetTeamVaultSecretKeys(ctx context.Context, teamId string, body GetTeamVaultSecretKeysJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTeamVaultSecretKeysRequest(c.Server, teamId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -11443,6 +11599,249 @@ func NewRemoveTeamMemberRequest(server string, id string, userId string) (*http.
 	return req, nil
 }
 
+// NewDeleteTeamVaultFolderRequest generates requests for DeleteTeamVaultFolder
+func NewDeleteTeamVaultFolderRequest(server string, teamId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetTeamVaultFolderRequest generates requests for GetTeamVaultFolder
+func NewGetTeamVaultFolderRequest(server string, teamId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSetTeamVaultFolderRequest calls the generic SetTeamVaultFolder builder with application/json body
+func NewSetTeamVaultFolderRequest(server string, teamId string, body SetTeamVaultFolderJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSetTeamVaultFolderRequestWithBody(server, teamId, "application/json", bodyReader)
+}
+
+// NewSetTeamVaultFolderRequestWithBody generates requests for SetTeamVaultFolder with any type of body
+func NewSetTeamVaultFolderRequestWithBody(server string, teamId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCheckTeamVaultFolderConnectivityRequest calls the generic CheckTeamVaultFolderConnectivity builder with application/json body
+func NewCheckTeamVaultFolderConnectivityRequest(server string, teamId string, body CheckTeamVaultFolderConnectivityJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCheckTeamVaultFolderConnectivityRequestWithBody(server, teamId, "application/json", bodyReader)
+}
+
+// NewCheckTeamVaultFolderConnectivityRequestWithBody generates requests for CheckTeamVaultFolderConnectivity with any type of body
+func NewCheckTeamVaultFolderConnectivityRequestWithBody(server string, teamId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder/check-connectivity", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListTeamVaultFolderSecretsRequest generates requests for ListTeamVaultFolderSecrets
+func NewListTeamVaultFolderSecretsRequest(server string, teamId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder/secrets", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetTeamVaultSecretKeysRequest calls the generic GetTeamVaultSecretKeys builder with application/json body
+func NewGetTeamVaultSecretKeysRequest(server string, teamId string, body GetTeamVaultSecretKeysJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewGetTeamVaultSecretKeysRequestWithBody(server, teamId, "application/json", bodyReader)
+}
+
+// NewGetTeamVaultSecretKeysRequestWithBody generates requests for GetTeamVaultSecretKeys with any type of body
+func NewGetTeamVaultSecretKeysRequestWithBody(server string, teamId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder/secrets/keys", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetTokensRequest generates requests for GetTokens
 func NewGetTokensRequest(server string, params *GetTokensParams) (*http.Request, error) {
 	var err error
@@ -12565,6 +12964,30 @@ type ClientWithResponsesInterface interface {
 
 	// RemoveTeamMemberWithResponse request
 	RemoveTeamMemberWithResponse(ctx context.Context, id string, userId string, reqEditors ...RequestEditorFn) (*RemoveTeamMemberResponse, error)
+
+	// DeleteTeamVaultFolderWithResponse request
+	DeleteTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*DeleteTeamVaultFolderResponse, error)
+
+	// GetTeamVaultFolderWithResponse request
+	GetTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*GetTeamVaultFolderResponse, error)
+
+	// SetTeamVaultFolderWithBodyWithResponse request with any body
+	SetTeamVaultFolderWithBodyWithResponse(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error)
+
+	SetTeamVaultFolderWithResponse(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error)
+
+	// CheckTeamVaultFolderConnectivityWithBodyWithResponse request with any body
+	CheckTeamVaultFolderConnectivityWithBodyWithResponse(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CheckTeamVaultFolderConnectivityResponse, error)
+
+	CheckTeamVaultFolderConnectivityWithResponse(ctx context.Context, teamId string, body CheckTeamVaultFolderConnectivityJSONRequestBody, reqEditors ...RequestEditorFn) (*CheckTeamVaultFolderConnectivityResponse, error)
+
+	// ListTeamVaultFolderSecretsWithResponse request
+	ListTeamVaultFolderSecretsWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*ListTeamVaultFolderSecretsResponse, error)
+
+	// GetTeamVaultSecretKeysWithBodyWithResponse request with any body
+	GetTeamVaultSecretKeysWithBodyWithResponse(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GetTeamVaultSecretKeysResponse, error)
+
+	GetTeamVaultSecretKeysWithResponse(ctx context.Context, teamId string, body GetTeamVaultSecretKeysJSONRequestBody, reqEditors ...RequestEditorFn) (*GetTeamVaultSecretKeysResponse, error)
 
 	// GetTokensWithResponse request
 	GetTokensWithResponse(ctx context.Context, params *GetTokensParams, reqEditors ...RequestEditorFn) (*GetTokensResponse, error)
@@ -24573,6 +24996,413 @@ func (r RemoveTeamMemberResponse) StatusCode() int {
 	return 0
 }
 
+type DeleteTeamVaultFolderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteTeamVaultFolder400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteTeamVaultFolder401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteTeamVaultFolder403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteTeamVaultFolder404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteTeamVaultFolder409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                            `json:"message"`
+			Type    DeleteTeamVaultFolder500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteTeamVaultFolder400ErrorType string
+type DeleteTeamVaultFolder401ErrorType string
+type DeleteTeamVaultFolder403ErrorType string
+type DeleteTeamVaultFolder404ErrorType string
+type DeleteTeamVaultFolder409ErrorType string
+type DeleteTeamVaultFolder500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteTeamVaultFolderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteTeamVaultFolderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetTeamVaultFolderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt time.Time `json:"createdAt"`
+		Id        string    `json:"id"`
+		TeamId    string    `json:"teamId"`
+		UpdatedAt time.Time `json:"updatedAt"`
+		VaultPath string    `json:"vaultPath"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetTeamVaultFolder400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetTeamVaultFolder401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetTeamVaultFolder403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetTeamVaultFolder404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetTeamVaultFolder409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    GetTeamVaultFolder500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetTeamVaultFolder400ErrorType string
+type GetTeamVaultFolder401ErrorType string
+type GetTeamVaultFolder403ErrorType string
+type GetTeamVaultFolder404ErrorType string
+type GetTeamVaultFolder409ErrorType string
+type GetTeamVaultFolder500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetTeamVaultFolderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTeamVaultFolderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SetTeamVaultFolderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt time.Time `json:"createdAt"`
+		Id        string    `json:"id"`
+		TeamId    string    `json:"teamId"`
+		UpdatedAt time.Time `json:"updatedAt"`
+		VaultPath string    `json:"vaultPath"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    SetTeamVaultFolder400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    SetTeamVaultFolder401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    SetTeamVaultFolder403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    SetTeamVaultFolder404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    SetTeamVaultFolder409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                         `json:"message"`
+			Type    SetTeamVaultFolder500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type SetTeamVaultFolder400ErrorType string
+type SetTeamVaultFolder401ErrorType string
+type SetTeamVaultFolder403ErrorType string
+type SetTeamVaultFolder404ErrorType string
+type SetTeamVaultFolder409ErrorType string
+type SetTeamVaultFolder500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r SetTeamVaultFolderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetTeamVaultFolderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CheckTeamVaultFolderConnectivityResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Connected   bool    `json:"connected"`
+		Error       *string `json:"error,omitempty"`
+		SecretCount float32 `json:"secretCount"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    CheckTeamVaultFolderConnectivity400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    CheckTeamVaultFolderConnectivity401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    CheckTeamVaultFolderConnectivity403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    CheckTeamVaultFolderConnectivity404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    CheckTeamVaultFolderConnectivity409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                       `json:"message"`
+			Type    CheckTeamVaultFolderConnectivity500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CheckTeamVaultFolderConnectivity400ErrorType string
+type CheckTeamVaultFolderConnectivity401ErrorType string
+type CheckTeamVaultFolderConnectivity403ErrorType string
+type CheckTeamVaultFolderConnectivity404ErrorType string
+type CheckTeamVaultFolderConnectivity409ErrorType string
+type CheckTeamVaultFolderConnectivity500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CheckTeamVaultFolderConnectivityResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CheckTeamVaultFolderConnectivityResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListTeamVaultFolderSecretsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		Name string `json:"name"`
+		Path string `json:"path"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    ListTeamVaultFolderSecrets400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    ListTeamVaultFolderSecrets401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    ListTeamVaultFolderSecrets403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    ListTeamVaultFolderSecrets404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    ListTeamVaultFolderSecrets409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    ListTeamVaultFolderSecrets500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type ListTeamVaultFolderSecrets400ErrorType string
+type ListTeamVaultFolderSecrets401ErrorType string
+type ListTeamVaultFolderSecrets403ErrorType string
+type ListTeamVaultFolderSecrets404ErrorType string
+type ListTeamVaultFolderSecrets409ErrorType string
+type ListTeamVaultFolderSecrets500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r ListTeamVaultFolderSecretsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListTeamVaultFolderSecretsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetTeamVaultSecretKeysResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Keys []string `json:"keys"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetTeamVaultSecretKeys400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetTeamVaultSecretKeys401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetTeamVaultSecretKeys403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetTeamVaultSecretKeys404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetTeamVaultSecretKeys409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetTeamVaultSecretKeys500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetTeamVaultSecretKeys400ErrorType string
+type GetTeamVaultSecretKeys401ErrorType string
+type GetTeamVaultSecretKeys403ErrorType string
+type GetTeamVaultSecretKeys404ErrorType string
+type GetTeamVaultSecretKeys409ErrorType string
+type GetTeamVaultSecretKeys500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetTeamVaultSecretKeysResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTeamVaultSecretKeysResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetTokensResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -27137,6 +27967,84 @@ func (c *ClientWithResponses) RemoveTeamMemberWithResponse(ctx context.Context, 
 		return nil, err
 	}
 	return ParseRemoveTeamMemberResponse(rsp)
+}
+
+// DeleteTeamVaultFolderWithResponse request returning *DeleteTeamVaultFolderResponse
+func (c *ClientWithResponses) DeleteTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*DeleteTeamVaultFolderResponse, error) {
+	rsp, err := c.DeleteTeamVaultFolder(ctx, teamId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteTeamVaultFolderResponse(rsp)
+}
+
+// GetTeamVaultFolderWithResponse request returning *GetTeamVaultFolderResponse
+func (c *ClientWithResponses) GetTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*GetTeamVaultFolderResponse, error) {
+	rsp, err := c.GetTeamVaultFolder(ctx, teamId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTeamVaultFolderResponse(rsp)
+}
+
+// SetTeamVaultFolderWithBodyWithResponse request with arbitrary body returning *SetTeamVaultFolderResponse
+func (c *ClientWithResponses) SetTeamVaultFolderWithBodyWithResponse(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error) {
+	rsp, err := c.SetTeamVaultFolderWithBody(ctx, teamId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetTeamVaultFolderResponse(rsp)
+}
+
+func (c *ClientWithResponses) SetTeamVaultFolderWithResponse(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error) {
+	rsp, err := c.SetTeamVaultFolder(ctx, teamId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetTeamVaultFolderResponse(rsp)
+}
+
+// CheckTeamVaultFolderConnectivityWithBodyWithResponse request with arbitrary body returning *CheckTeamVaultFolderConnectivityResponse
+func (c *ClientWithResponses) CheckTeamVaultFolderConnectivityWithBodyWithResponse(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CheckTeamVaultFolderConnectivityResponse, error) {
+	rsp, err := c.CheckTeamVaultFolderConnectivityWithBody(ctx, teamId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCheckTeamVaultFolderConnectivityResponse(rsp)
+}
+
+func (c *ClientWithResponses) CheckTeamVaultFolderConnectivityWithResponse(ctx context.Context, teamId string, body CheckTeamVaultFolderConnectivityJSONRequestBody, reqEditors ...RequestEditorFn) (*CheckTeamVaultFolderConnectivityResponse, error) {
+	rsp, err := c.CheckTeamVaultFolderConnectivity(ctx, teamId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCheckTeamVaultFolderConnectivityResponse(rsp)
+}
+
+// ListTeamVaultFolderSecretsWithResponse request returning *ListTeamVaultFolderSecretsResponse
+func (c *ClientWithResponses) ListTeamVaultFolderSecretsWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*ListTeamVaultFolderSecretsResponse, error) {
+	rsp, err := c.ListTeamVaultFolderSecrets(ctx, teamId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListTeamVaultFolderSecretsResponse(rsp)
+}
+
+// GetTeamVaultSecretKeysWithBodyWithResponse request with arbitrary body returning *GetTeamVaultSecretKeysResponse
+func (c *ClientWithResponses) GetTeamVaultSecretKeysWithBodyWithResponse(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*GetTeamVaultSecretKeysResponse, error) {
+	rsp, err := c.GetTeamVaultSecretKeysWithBody(ctx, teamId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTeamVaultSecretKeysResponse(rsp)
+}
+
+func (c *ClientWithResponses) GetTeamVaultSecretKeysWithResponse(ctx context.Context, teamId string, body GetTeamVaultSecretKeysJSONRequestBody, reqEditors ...RequestEditorFn) (*GetTeamVaultSecretKeysResponse, error) {
+	rsp, err := c.GetTeamVaultSecretKeys(ctx, teamId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTeamVaultSecretKeysResponse(rsp)
 }
 
 // GetTokensWithResponse request returning *GetTokensResponse
@@ -42464,6 +43372,617 @@ func ParseRemoveTeamMemberResponse(rsp *http.Response) (*RemoveTeamMemberRespons
 			Error struct {
 				Message string                       `json:"message"`
 				Type    RemoveTeamMember500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteTeamVaultFolderResponse parses an HTTP response from a DeleteTeamVaultFolderWithResponse call
+func ParseDeleteTeamVaultFolderResponse(rsp *http.Response) (*DeleteTeamVaultFolderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteTeamVaultFolderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteTeamVaultFolder400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteTeamVaultFolder401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteTeamVaultFolder403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteTeamVaultFolder404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteTeamVaultFolder409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                            `json:"message"`
+				Type    DeleteTeamVaultFolder500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetTeamVaultFolderResponse parses an HTTP response from a GetTeamVaultFolderWithResponse call
+func ParseGetTeamVaultFolderResponse(rsp *http.Response) (*GetTeamVaultFolderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTeamVaultFolderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt time.Time `json:"createdAt"`
+			Id        string    `json:"id"`
+			TeamId    string    `json:"teamId"`
+			UpdatedAt time.Time `json:"updatedAt"`
+			VaultPath string    `json:"vaultPath"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetTeamVaultFolder400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetTeamVaultFolder401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetTeamVaultFolder403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetTeamVaultFolder404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetTeamVaultFolder409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    GetTeamVaultFolder500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSetTeamVaultFolderResponse parses an HTTP response from a SetTeamVaultFolderWithResponse call
+func ParseSetTeamVaultFolderResponse(rsp *http.Response) (*SetTeamVaultFolderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetTeamVaultFolderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt time.Time `json:"createdAt"`
+			Id        string    `json:"id"`
+			TeamId    string    `json:"teamId"`
+			UpdatedAt time.Time `json:"updatedAt"`
+			VaultPath string    `json:"vaultPath"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    SetTeamVaultFolder400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    SetTeamVaultFolder401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    SetTeamVaultFolder403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    SetTeamVaultFolder404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    SetTeamVaultFolder409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                         `json:"message"`
+				Type    SetTeamVaultFolder500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCheckTeamVaultFolderConnectivityResponse parses an HTTP response from a CheckTeamVaultFolderConnectivityWithResponse call
+func ParseCheckTeamVaultFolderConnectivityResponse(rsp *http.Response) (*CheckTeamVaultFolderConnectivityResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CheckTeamVaultFolderConnectivityResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Connected   bool    `json:"connected"`
+			Error       *string `json:"error,omitempty"`
+			SecretCount float32 `json:"secretCount"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    CheckTeamVaultFolderConnectivity400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    CheckTeamVaultFolderConnectivity401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    CheckTeamVaultFolderConnectivity403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    CheckTeamVaultFolderConnectivity404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    CheckTeamVaultFolderConnectivity409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                       `json:"message"`
+				Type    CheckTeamVaultFolderConnectivity500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListTeamVaultFolderSecretsResponse parses an HTTP response from a ListTeamVaultFolderSecretsWithResponse call
+func ParseListTeamVaultFolderSecretsResponse(rsp *http.Response) (*ListTeamVaultFolderSecretsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListTeamVaultFolderSecretsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			Name string `json:"name"`
+			Path string `json:"path"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    ListTeamVaultFolderSecrets400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    ListTeamVaultFolderSecrets401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    ListTeamVaultFolderSecrets403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    ListTeamVaultFolderSecrets404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    ListTeamVaultFolderSecrets409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    ListTeamVaultFolderSecrets500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetTeamVaultSecretKeysResponse parses an HTTP response from a GetTeamVaultSecretKeysWithResponse call
+func ParseGetTeamVaultSecretKeysResponse(rsp *http.Response) (*GetTeamVaultSecretKeysResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTeamVaultSecretKeysResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Keys []string `json:"keys"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetTeamVaultSecretKeys400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetTeamVaultSecretKeys401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetTeamVaultSecretKeys403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetTeamVaultSecretKeys404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetTeamVaultSecretKeys409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetTeamVaultSecretKeys500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
