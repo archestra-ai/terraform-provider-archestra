@@ -50,6 +50,20 @@
 * **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
 * **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
 
+## [1.3.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v1.2.0...v1.3.0) (2026-08-13)
+
+
+### Features
+
+* archestra_agent_delegation resource ([#154](https://github.com/archestra-ai/terraform-provider-archestra/issues/154)) ([aa21a0c](https://github.com/archestra-ai/terraform-provider-archestra/commit/aa21a0c54a18303c8457dc82f4738321912ed3e5))
+
+
+### Dependencies
+
+* **terraform:** bump github.com/hashicorp/terraform-plugin-sdk/v2 from 2.40.0 to 2.40.1 in the terraform-go-dependencies group across 1 directory ([#91](https://github.com/archestra-ai/terraform-provider-archestra/issues/91)) ([7c076e6](https://github.com/archestra-ai/terraform-provider-archestra/commit/7c076e67eb67f289b7d5b514e97ccd177d5f4f0a))
+* **terraform:** bump github.com/oapi-codegen/runtime from 1.4.0 to 1.4.1 in the terraform-go-dependencies group ([#151](https://github.com/archestra-ai/terraform-provider-archestra/issues/151)) ([4bb658e](https://github.com/archestra-ai/terraform-provider-archestra/commit/4bb658ed1d579c11c99b9dcaede08804eef68907))
+* **terraform:** bump the terraform-go-dependencies group across 1 directory with 2 updates ([#153](https://github.com/archestra-ai/terraform-provider-archestra/issues/153)) ([4879d5a](https://github.com/archestra-ai/terraform-provider-archestra/commit/4879d5aac7738ab9b9cd9f91d563c2de18944ede))
+
 ## [1.2.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v1.1.4...v1.2.0) (2026-05-22)
 
 
