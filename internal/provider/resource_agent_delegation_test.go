@@ -39,9 +39,9 @@ func TestAccAgentDelegationResource(t *testing.T) {
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// A second edge from the same delegating agent must not clobber the
-			// first — Create goes through a read-union-sync guarded by a
-			// per-agent mutex.
+			// Exercises the read-union-sync path: adding a second edge from the
+			// same delegating agent preserves the first (sequential apply — this
+			// does not exercise parallel-create racing).
 			{
 				Config: testAccAgentDelegationResourceConfigTwoEdges("tf-acc-agent-delegation"),
 				ConfigStateChecks: []statecheck.StateCheck{

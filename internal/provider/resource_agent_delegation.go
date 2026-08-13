@@ -60,8 +60,12 @@ func (r *AgentDelegationResource) Schema(_ context.Context, _ resource.SchemaReq
 		MarkdownDescription: "Delegates one agent to another: the delegating agent surfaces the target as a subagent " +
 			"delegation tool it can hand tasks to mid-conversation. One resource per edge; manage an agent's whole " +
 			"delegation surface as several of these.\n\n" +
-			"Delegation is supported for agents, MCP gateways, and profiles — the backend rejects LLM proxies on " +
-			"either side of the edge.",
+			"Agents, MCP gateways, and profiles may delegate (the `agent_id` side); the delegation **target** must be " +
+			"an internal agent. LLM proxies cannot delegate at all.\n\n" +
+			"~> The backend only exposes a full-replace sync for delegation writes, so Create re-reads the agent's " +
+			"current targets and syncs them back with the new edge added. Manage all of an agent's delegations from " +
+			"one place, with credentials that can see every existing target — a non-admin caller with hidden targets, " +
+			"or a concurrent out-of-band edit, can silently drop edges.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -266,6 +270,23 @@ func (r *AgentDelegationResource) Delete(ctx context.Context, req resource.Delet
 }
 
 func (r *AgentDelegationResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	parts := strings.Split(req.ID, ":")
+	if len(parts) != 2 {
+		resp.Diagnostics.AddError(
+			"Invalid Import ID",
+			fmt.Sprintf("Expected \"<agent_id>:<target_agent_id>\", got %q", req.ID),
+		)
+		return
+	}
+	for i, name := range []string{"agent_id", "target_agent_id"} {
+		if _, err := uuid.Parse(parts[i]); err != nil {
+			resp.Diagnostics.AddError(
+				"Invalid Import ID",
+				fmt.Sprintf("The %s half of %q is not a UUID: %s", name, req.ID, err),
+			)
+			return
+		}
+	}
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
