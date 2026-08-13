@@ -32,7 +32,12 @@ var agentDelegationSyncMu sync.Map // map[string]*sync.Mutex, keyed by agent UUI
 
 func lockAgentDelegations(agentID string) func() {
 	mu, _ := agentDelegationSyncMu.LoadOrStore(agentID, &sync.Mutex{})
-	m := mu.(*sync.Mutex)
+	m, ok := mu.(*sync.Mutex)
+	if !ok {
+		// Unreachable: the map only ever stores *sync.Mutex. Satisfies the
+		// forcetypeassert linter without a bare assertion.
+		m = &sync.Mutex{}
+	}
 	m.Lock()
 	return m.Unlock
 }
