@@ -43,6 +43,7 @@ type McpGatewayResourceModel struct {
 	PassthroughHeaders       types.List        `tfsdk:"passthrough_headers"`
 	IdentityProviderId       types.String      `tfsdk:"identity_provider_id"`
 	ConsiderContextUntrusted types.Bool        `tfsdk:"consider_context_untrusted"`
+	ToolExposureMode         types.String      `tfsdk:"tool_exposure_mode"`
 	IsDefault                types.Bool        `tfsdk:"is_default"`
 	Scope                    types.String      `tfsdk:"scope"`
 	Teams                    types.List        `tfsdk:"teams"`
@@ -83,6 +84,14 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 			"identity_provider_id": schema.StringAttribute{
 				Optional:            true,
 				MarkdownDescription: "Identity provider used to validate inbound JWTs. Reference an `archestra_identity_provider`. Omit to disable JWT auth.",
+			},
+			"tool_exposure_mode": schema.StringAttribute{
+				Optional:   true,
+				Computed:   true,
+				Validators: []validator.String{stringvalidator.OneOf("full", "search_and_run_only")},
+				MarkdownDescription: "How assigned tools are exposed to clients. `full` lists every assigned tool; " +
+					"`search_and_run_only` (progressive tool loading) lists only `search_tools` and `run_tool` and " +
+					"resolves the rest on demand, which keeps a large tool set out of the client's context window.",
 			},
 			"consider_context_untrusted": schema.BoolAttribute{
 				Optional:            true,
@@ -317,6 +326,7 @@ func (r *McpGatewayResource) flatten(ctx context.Context, data *McpGatewayResour
 	}
 
 	data.ConsiderContextUntrusted = types.BoolValue(resp.ConsiderContextUntrusted)
+	optionalStringFromAPI(&data.ToolExposureMode, resp.ToolExposureMode)
 	data.IsDefault = types.BoolValue(resp.IsDefault)
 	data.Scope = types.StringValue(resp.Scope)
 	data.Teams = teamsListFromAPI(ctx, data.Teams, resp.Teams, diags)
@@ -362,6 +372,7 @@ var mcpGatewayAttrSpec = []AttrSpec{
 	{TFName: "passthrough_headers", JSONName: "passthroughHeaders", Kind: List},
 	{TFName: "identity_provider_id", JSONName: "identityProviderId", Kind: Scalar},
 	{TFName: "consider_context_untrusted", JSONName: "considerContextUntrusted", Kind: Scalar},
+	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar},
 	{TFName: "is_default", JSONName: "isDefault", Kind: Scalar},
 	{TFName: "scope", JSONName: "scope", Kind: Scalar},
 	{TFName: "teams", JSONName: "teams", Kind: List},

@@ -70,6 +70,7 @@ resource "archestra_mcp_gateway" "engineering" {
 - `passthrough_headers` (List of String) Allowlist of HTTP header names to forward from gateway requests to downstream MCP servers
 - `scope` (String) Ownership scope: `personal`, `team`, or `org` (default: `org`).
 - `teams` (List of String) Team IDs this gateway is assigned to. Required when `scope = "team"`. Removing from configuration clears the assignment on next apply.
+- `tool_exposure_mode` (String) How assigned tools are exposed to clients. `full` lists every assigned tool; `search_and_run_only` (progressive tool loading) lists only `search_tools` and `run_tool` and resolves the rest on demand, which keeps a large tool set out of the client's context window.
 
 ### Read-Only
 

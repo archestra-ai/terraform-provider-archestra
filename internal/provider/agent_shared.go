@@ -27,6 +27,7 @@ type agentAPIResponse struct {
 	IncomingEmailAllowedDomain *string             `json:"incomingEmailAllowedDomain"`
 	IncomingEmailSecurityMode  string              `json:"incomingEmailSecurityMode"`
 	ConsiderContextUntrusted   bool                `json:"considerContextUntrusted"`
+	ToolExposureMode           *string             `json:"toolExposureMode"`
 	IsDefault                  bool                `json:"isDefault"`
 	Scope                      string              `json:"scope"`
 	PassthroughHeaders         *[]string           `json:"passthroughHeaders"`
