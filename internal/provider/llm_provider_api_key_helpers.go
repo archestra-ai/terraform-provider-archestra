@@ -12,7 +12,7 @@ var llmProviderApiKeyAttrSpec = []AttrSpec{
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "llm_provider", JSONName: "provider", Kind: Scalar},
 	{TFName: "api_key", JSONName: "apiKey", Kind: Scalar, Sensitive: true},
-	{TFName: "is_organization_default", JSONName: "isPrimary", Kind: Scalar},
+	{TFName: "is_primary", JSONName: "isPrimary", Kind: Scalar},
 	{TFName: "base_url", JSONName: "baseUrl", Kind: Scalar},
 	{TFName: "scope", JSONName: "scope", Kind: Scalar},
 	{TFName: "team_id", JSONName: "teamId", Kind: Scalar},
@@ -38,13 +38,17 @@ func (r *LLMProviderApiKeyResource) APIShape() any {
 //     vault_secret_path/vault_secret_key already cover the BYOS path.
 //   - bestModelId: cached "best model" pointer maintained by the backend's
 //     model-discovery scheduler; not part of the user's create/update flow.
-//   - isAgentKey/isSystem: server-side flags that mark special keys
-//     created by built-in agents or system-level integrations; users
-//     don't create these via Terraform.
+//   - isSystem: server-side flag that marks keys created by system-level
+//     integrations; users don't create these via Terraform.
+//
+// `isAgentKey` is exposed as a Computed schema attribute — when it's
+// true, the backend rejects user edits (key is owned by a built-in
+// agent's reconfiguration loop), and surfacing that visibility lets
+// users diagnose rejected applies instead of guessing at 403s.
 func (r *LLMProviderApiKeyResource) KnownIntentionallySkipped() []string {
 	return []string{
 		"createdAt", "updatedAt", "organizationId", "userId", "userName",
 		"teamName", "secretId", "secretStorageType", "bestModelId",
-		"isAgentKey", "isSystem",
+		"isSystem",
 	}
 }
