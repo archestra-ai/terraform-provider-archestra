@@ -122,3 +122,46 @@ resources still point at a deleted UUID.
 archestra_llm_proxy.X` *and* flip the backend record's `agentType`
 first (UI or API). Without the backend flip, the next Read will diff
 and Terraform will plan a recreate again.
+
+## `connector_type "X" requires `config.Y` to be set`
+
+**Where:** plan-time validation error on
+`archestra_knowledge_connector.<n>.config`.
+
+**Cause:** the provider's ValidateConfig checks the required-fields
+list for the declared `connector_type` against the JSON in `config`.
+The required fields are sourced from the backend's `<Type>ConfigSchema`
+non-`.optional()` fields (e.g. `jira` requires `jiraBaseUrl` +
+`isCloud`; `github` requires `githubUrl` + `owner`; `sharepoint`
+requires `tenantId` + `siteUrl`).
+
+**Fix:** add the missing key to your `jsonencode(...)` block. For the
+full schema per connector type, see
+`platform/backend/src/types/knowledge-connector.ts` upstream.
+
+## `` `type` is set automatically from `connector_type``
+
+**Where:** plan-time validation error on
+`archestra_knowledge_connector.<n>.config`.
+
+**Cause:** the wire body's `config` is a `discriminatedUnion("type",
+[...])` — the provider injects `type` from your `connector_type`
+attribute so the backend routes correctly across the 11 connector
+types. Letting the user also pass `type` in `config` would shadow
+the discriminator and the backend could route to the wrong validator.
+
+**Fix:** drop the `type` key from your `jsonencode(...)` block; the
+provider sets it from `connector_type`.
+
+## After `terraform import` on a connector, `credentials.api_token` is blank
+
+**Where:** post-import refresh of
+`archestra_knowledge_connector.<n>`.
+
+**Cause:** the backend stores credentials in its secret manager and
+never echoes the token back. The first refresh after import has no
+prior state to preserve the token from, so the attribute lands null.
+
+**Fix:** set `credentials.api_token` in your HCL and run
+`terraform apply`. The plan will show one diff rewriting credentials
+with your value; subsequent reads preserve it from state.
