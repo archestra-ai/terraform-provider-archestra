@@ -89,7 +89,7 @@ resource "archestra_agent" "intake" {
 
 ### Optional
 
-- `built_in_agent_config` (Block, Optional) Built-in agent configuration. Discriminated by `name`. (see [below for nested schema](#nestedblock--built_in_agent_config))
+- `built_in_agent_config` (Block, Optional) Configuration for platform built-in agents (`policy-configuration-subagent`, `dual-llm-main-agent`, `dual-llm-quarantine-agent`). ~> **Setting this block promotes the agent to built-in.** The backend's `built_in` column is generated from `built_in_agent_config IS NOT NULL`, and once promoted the backend rejects deletes with 403 — you must clear this block (and re-apply) before `terraform destroy` can succeed. The expected workflow is `terraform import` on an existing built-in agent that the platform auto-seeds, then manage its config from HCL; only set this block on a brand-new `archestra_agent` resource if you intend to create a built-in. (see [below for nested schema](#nestedblock--built_in_agent_config))
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
 - `consider_context_untrusted` (Boolean) Whether the agent context is treated as untrusted
 - `description` (String) Human-readable description
@@ -109,6 +109,7 @@ resource "archestra_agent" "intake" {
 
 ### Read-Only
 
+- `built_in` (Boolean) True when the agent is registered as a platform built-in. The backend sets this automatically based on `built_in_agent_config` — surface this via `output` to assert in HCL whether you're managing a regular or built-in agent.
 - `id` (String) Agent identifier
 
 <a id="nestedblock--built_in_agent_config"></a>

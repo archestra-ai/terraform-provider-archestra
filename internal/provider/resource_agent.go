@@ -54,6 +54,7 @@ type AgentResourceModel struct {
 	SuggestedPrompts           []SuggestedPromptModel   `tfsdk:"suggested_prompts"`
 	Labels                     []AgentLabelModel        `tfsdk:"labels"`
 	BuiltInAgentConfig         *BuiltInAgentConfigModel `tfsdk:"built_in_agent_config"`
+	BuiltIn                    types.Bool               `tfsdk:"built_in"`
 	Scope                      types.String             `tfsdk:"scope"`
 	Teams                      types.List               `tfsdk:"teams"`
 }
@@ -132,6 +133,14 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				Computed:            true,
 				MarkdownDescription: "Whether this is the default agent for its type",
 			},
+			"built_in": schema.BoolAttribute{
+				Computed: true,
+				// No UseStateForUnknown: the backend flips this flag
+				// based on whether `built_in_agent_config` is set, so
+				// every plan needs to surface the post-apply value
+				// rather than echo prior state.
+				MarkdownDescription: "True when the agent is registered as a platform built-in. The backend sets this automatically based on `built_in_agent_config` — surface this via `output` to assert in HCL whether you're managing a regular or built-in agent.",
+			},
 			"scope": schema.StringAttribute{
 				Optional:            true,
 				Computed:            true,
@@ -169,7 +178,9 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 		},
 		Blocks: map[string]schema.Block{
 			"built_in_agent_config": schema.SingleNestedBlock{
-				MarkdownDescription: "Built-in agent configuration. Discriminated by `name`.",
+				MarkdownDescription: "Configuration for platform built-in agents (`policy-configuration-subagent`, `dual-llm-main-agent`, `dual-llm-quarantine-agent`). " +
+					"~> **Setting this block promotes the agent to built-in.** The backend's `built_in` column is generated from `built_in_agent_config IS NOT NULL`, and once promoted the backend rejects deletes with 403 — you must clear this block (and re-apply) before `terraform destroy` can succeed. " +
+					"The expected workflow is `terraform import` on an existing built-in agent that the platform auto-seeds, then manage its config from HCL; only set this block on a brand-new `archestra_agent` resource if you intend to create a built-in.",
 				Attributes: map[string]schema.Attribute{
 					"name": schema.StringAttribute{
 						Optional:            true,
@@ -446,6 +457,13 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 
 	data.ConsiderContextUntrusted = types.BoolValue(resp.ConsiderContextUntrusted)
 	data.IsDefault = types.BoolValue(resp.IsDefault)
+	// Backend's `builtIn` is *bool; treat null as false (matches the
+	// schema's "all user-created agents are not built-in" semantic).
+	if resp.BuiltIn != nil {
+		data.BuiltIn = types.BoolValue(*resp.BuiltIn)
+	} else {
+		data.BuiltIn = types.BoolValue(false)
+	}
 	data.Scope = types.StringValue(resp.Scope)
 	data.Teams = teamsListFromAPI(ctx, data.Teams, resp.Teams, diags)
 
@@ -468,7 +486,7 @@ func (r *AgentResource) APIShape() any { return client.GetAgentResponse{} }
 // model on this resource:
 //   - agentType: discriminator the provider uses to split one backend table
 //     into three resources; not user-facing.
-//   - authorId/authorName/builtIn/organizationId/createdAt/updatedAt:
+//   - authorId/authorName/organizationId/createdAt/updatedAt:
 //     audit/ownership metadata; could be added as Computed-only later if
 //     users ask, but no consumer has requested it yet.
 //   - suggestedPrompts/passthroughHeaders: llm_proxy / mcp_gateway-only
@@ -481,7 +499,7 @@ func (r *AgentResource) APIShape() any { return client.GetAgentResponse{} }
 //     relationship.
 func (r *AgentResource) KnownIntentionallySkipped() []string {
 	return []string{
-		"agentType", "authorId", "authorName", "builtIn", "organizationId",
+		"agentType", "authorId", "authorName", "organizationId",
 		"createdAt", "updatedAt", "suggestedPrompts", "passthroughHeaders",
 		"identityProviderId", "slug", "tools",
 	}
