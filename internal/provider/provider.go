@@ -190,6 +190,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewToolInvocationPolicyDefaultResource,
 		NewTrustedDataPolicyDefaultResource,
 		NewToolPolicyAutoConfigResource,
+		NewApiKeyResource,
 	}
 }
 

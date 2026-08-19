@@ -15,6 +15,7 @@ another — but if you're sketching out modules, this is the order:
 1. **`archestra_organization_settings`** — appearance, security policies, LLM defaults.
 2. **`archestra_identity_provider`** — OIDC or SAML for SSO.
 3. **`archestra_team`** + **`archestra_team_external_group`** — team scoping + IdP-group mapping.
+   - **`archestra_api_key`** *(optional, bootstrap-only)* — platform `arch_...` tokens for authenticating downstream automation. Use a root admin key (minted in the UI) for the initial apply, then mint per-application keys here and switch downstream tooling to those. The full token is returned only at create time; the backend has no Update endpoint, so every input is RequiresReplace.
 4. **`archestra_llm_provider_api_key`** — credentials per LLM provider (OpenAI, Anthropic, etc.). If your backend runs in BYOS mode, see the [BYOS Vault guide](./byos-vault) for the required `vault_secret_path` form.
 5. **`archestra_mcp_registry_catalog_item`** — register MCP servers (local or remote).
 6. **`archestra_mcp_server_installation`** — install a catalog item with auth + team scoping.
