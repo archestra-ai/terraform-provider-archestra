@@ -161,6 +161,11 @@ resource "archestra_mcp_server_installation" "github_vault" {
 
 - `display_name` (String) The actual name of the MCP server installation as returned by the API. The API may append a suffix to ensure uniqueness.
 - `id` (String) MCP server identifier
+- `local_installation_error` (String) Backend-reported install error message when `local_installation_status = error`; null otherwise.
+- `local_installation_status` (String) Terminal install status reported by the backend: `idle`, `pending`, `discovering-tools`, `success`, or `error`.
+- `oauth_refresh_error` (String) OAuth refresh failure mode: `no_refresh_token` or `refresh_failed`; null while credentials are healthy.
+- `oauth_refresh_failed_at` (String) RFC 3339 timestamp of the most recent OAuth refresh failure; null while credentials are healthy.
+- `reinstall_required` (Boolean) True when the backend flagged the install as out-of-date (catalog template changed since install). Surface a reinstall by tainting and re-applying.
 - `tool_id_by_name` (Map of String) Lookup table from each tool's wire name (`<server>__<short>`) to its bare tool UUID — same data as `tools[*].id` but keyed for one-line lookups. Null while tools are still being discovered.
 - `tools` (Attributes List) Tools exposed by the installed MCP server. Populated after install (and refreshed on read) so you can fan out per-tool resources without separate `data "archestra_mcp_server_tool"` lookups:
 
