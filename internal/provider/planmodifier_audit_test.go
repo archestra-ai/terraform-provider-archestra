@@ -33,6 +33,7 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 	},
 	"archestra_mcp_server_installation": { //nolint:gosec // G101 false-positive — schema attribute name.
 		"secret_id": "computed when the backend auto-creates a secret to hold inline `user_config_values` / `environment_values`; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
+		"scope":     "visibility scope chosen at Create time (RequiresReplace, backend default \"personal\"); remove-from-config has no clear semantic, and planning null would replace every pre-existing install whose config never set it.",
 	},
 	"archestra_identity_provider": stickyOidcDerivedEndpoints(
 		// Auto-derived from `discovery_endpoint` on the backend when omitted
