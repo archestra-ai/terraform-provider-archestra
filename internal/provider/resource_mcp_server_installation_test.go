@@ -1,9 +1,13 @@
 package provider
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"regexp"
 	"testing"
+
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -332,4 +336,62 @@ resource "archestra_mcp_server_installation" "test" {
   }
 }
 `, name)
+}
+
+func TestScopeFromResponseBody(t *testing.T) {
+	t.Parallel()
+	cases := []struct {
+		name string
+		body string
+		want string
+	}{
+		{"org scope present", `{"id":"x","scope":"org"}`, "org"},
+		{"team scope present", `{"scope":"team"}`, "team"},
+		{"scope absent falls back to personal", `{"id":"x"}`, "personal"},
+		{"unparseable falls back to personal", `not-json`, "personal"},
+		{"empty body falls back to personal", ``, "personal"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := scopeFromResponseBody([]byte(tc.body)); got != tc.want {
+				t.Fatalf("scopeFromResponseBody(%q) = %q, want %q", tc.body, got, tc.want)
+			}
+		})
+	}
+}
+
+func TestInstallRequestBodyMarshalsScopeFlat(t *testing.T) {
+	t.Parallel()
+	scope := "org"
+	body := installRequestBody{
+		InstallMcpServerJSONRequestBody: client.InstallMcpServerJSONRequestBody{
+			Name: "task-env-controller",
+		},
+		Scope: &scope,
+	}
+	raw, err := json.Marshal(body)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	var decoded map[string]any
+	if err := json.Unmarshal(raw, &decoded); err != nil {
+		t.Fatalf("unmarshal: %v", err)
+	}
+	if decoded["scope"] != "org" {
+		t.Fatalf("scope not marshaled flat: %s", raw)
+	}
+	if decoded["name"] != "task-env-controller" {
+		t.Fatalf("embedded generated body fields lost: %s", raw)
+	}
+
+	// Omitted scope must stay off the wire so the backend default applies.
+	raw, err = json.Marshal(installRequestBody{
+		InstallMcpServerJSONRequestBody: client.InstallMcpServerJSONRequestBody{Name: "n"},
+	})
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
+	if bytes.Contains(raw, []byte(`"scope"`)) {
+		t.Fatalf("nil scope should be omitted: %s", raw)
+	}
 }

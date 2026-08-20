@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -21,6 +23,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
@@ -56,6 +59,32 @@ func decideInstallStatus(s string) installStatusDecision {
 
 var _ resource.Resource = &MCPServerResource{}
 var _ resource.ResourceWithImportState = &MCPServerResource{}
+var _ resource.ResourceWithValidateConfig = &MCPServerResource{}
+
+// installRequestBody wraps the generated install body with fields the
+// checked-in generated client predates. Embedding keeps every generated
+// field on the wire unchanged; regenerating the client
+// (`make codegen-api-client`) folds `scope` into
+// client.InstallMcpServerJSONRequestBody, at which point this wrapper can
+// be dropped in favor of the plain typed call.
+type installRequestBody struct {
+	client.InstallMcpServerJSONRequestBody
+	Scope *string `json:"scope,omitempty"`
+}
+
+// scopeFromResponseBody extracts the `scope` field from a raw MCP-server
+// API response body. The checked-in generated client predates the field,
+// so the typed JSON200 structs don't carry it — the raw bytes do. An
+// absent/unparseable scope maps to the backend's default, "personal".
+func scopeFromResponseBody(body []byte) string {
+	var v struct {
+		Scope string `json:"scope"`
+	}
+	if err := json.Unmarshal(body, &v); err == nil && v.Scope != "" {
+		return v.Scope
+	}
+	return "personal"
+}
 
 func NewMCPServerResource() resource.Resource {
 	return &MCPServerResource{}
@@ -70,6 +99,7 @@ type MCPServerResourceModel struct {
 	Name              types.String `tfsdk:"name"`
 	DisplayName       types.String `tfsdk:"display_name"`
 	CatalogID         types.String `tfsdk:"catalog_id"`
+	Scope             types.String `tfsdk:"scope"`
 	TeamID            types.String `tfsdk:"team_id"`
 	EnvironmentValues types.Map    `tfsdk:"environment_values"`
 	UserConfigValues  types.Map    `tfsdk:"user_config_values"`
@@ -150,8 +180,20 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
+			"scope": schema.StringAttribute{
+				MarkdownDescription: "Visibility scope of the installation: `personal` (default — the connection is bound to the API caller and resolves only for them), `team` (requires `team_id`), or `org`. A `team`/`org` install is the shared connection that dynamic credential resolution falls back to for callers without a personal one, so use `org` for service-account-style installs every org member's tool calls should route through. Org-scoped installs require the `mcpServerInstallation: admin` permission.",
+				Optional:            true,
+				Computed:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("personal", "team", "org"),
+				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
 			"team_id": schema.StringAttribute{
-				MarkdownDescription: "Team ID for team-scoped installations",
+				MarkdownDescription: "Team ID for team-scoped installations (set `scope = \"team\"` alongside it)",
 				Optional:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -272,6 +314,41 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 	}
 }
 
+// ValidateConfig cross-checks scope and team_id: the backend rejects
+// `team_id` on any non-team scope and requires it on `scope = "team"`, so
+// surface both at plan time instead of as an apply-time 400.
+func (r *MCPServerResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var data MCPServerResourceModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	if data.Scope.IsUnknown() || data.TeamID.IsUnknown() {
+		return
+	}
+	hasTeam := !data.TeamID.IsNull() && data.TeamID.ValueString() != ""
+	scope := data.Scope.ValueString()
+
+	if scope == "team" && !hasTeam {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("team_id"),
+			"Missing team_id",
+			`scope = "team" requires team_id to be set.`,
+		)
+	}
+	// Unset scope defaults to "personal" server-side, which also rejects
+	// team_id — so require the explicit pairing rather than special-casing
+	// null.
+	if hasTeam && scope != "team" {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("scope"),
+			"Invalid scope for team_id",
+			`team_id is only valid with scope = "team".`,
+		)
+	}
+}
+
 func (r *MCPServerResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
@@ -373,8 +450,20 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		requestBody.AgentIds = &agentUUIDs
 	}
 
-	// Call API
-	apiResp, err := r.client.InstallMcpServerWithResponse(ctx, requestBody)
+	// Call API. The body goes through the WithBody variant because the
+	// checked-in generated client predates the `scope` field; see
+	// installRequestBody.
+	body := installRequestBody{InstallMcpServerJSONRequestBody: requestBody}
+	if !data.Scope.IsNull() && !data.Scope.IsUnknown() {
+		scope := data.Scope.ValueString()
+		body.Scope = &scope
+	}
+	payload, err := json.Marshal(body)
+	if err != nil {
+		resp.Diagnostics.AddError("Request Encoding Error", fmt.Sprintf("Unable to encode install request body: %s", err))
+		return
+	}
+	apiResp, err := r.client.InstallMcpServerWithBodyWithResponse(ctx, "application/json", bytes.NewReader(payload))
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to install MCP server, got error: %s", err))
 		return
@@ -392,6 +481,7 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
 	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
+	data.Scope = types.StringValue(scopeFromResponseBody(apiResp.Body))
 
 	if apiResp.JSON200.TeamId != nil {
 		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
@@ -460,6 +550,7 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	// Note: Keep user's configured name, set display_name to the API-returned name
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
 	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
+	data.Scope = types.StringValue(scopeFromResponseBody(apiResp.Body))
 
 	if apiResp.JSON200.TeamId != nil {
 		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)

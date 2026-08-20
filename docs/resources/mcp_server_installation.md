@@ -152,9 +152,10 @@ resource "archestra_mcp_server_installation" "github_vault" {
 - `agent_ids` (List of String) Agent IDs to auto-assign tools to on install
 - `environment_values` (Map of String) Environment variable values for the MCP server installation
 - `is_byos_vault` (Boolean) When true, environment_values and user_config_values are treated as vault references
+- `scope` (String) Visibility scope of the installation: `personal` (default — the connection is bound to the API caller and resolves only for them), `team` (requires `team_id`), or `org`. A `team`/`org` install is the shared connection that dynamic credential resolution falls back to for callers without a personal one, so use `org` for service-account-style installs every org member's tool calls should route through. Org-scoped installs require the `mcpServerInstallation: admin` permission.
 - `secret_id` (String) Secret UUID for the MCP server installation. Set explicitly to reference a pre-created secret; otherwise the backend creates one when `user_config_values` is set and writes the resulting UUID back here.
 - `service_account` (String) Kubernetes service account override for the MCP server pod
-- `team_id` (String) Team ID for team-scoped installations
+- `team_id` (String) Team ID for team-scoped installations (set `scope = "team"` alongside it)
 - `user_config_values` (Map of String) User configuration field values for the MCP server installation
 
 ### Read-Only
