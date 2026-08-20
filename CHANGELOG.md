@@ -50,6 +50,13 @@
 * **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
 * **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
 
+## [1.5.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v1.4.0...v1.5.0) (2026-08-20)
+
+
+### Features
+
+* scope on archestra_mcp_server_installation ([#157](https://github.com/archestra-ai/terraform-provider-archestra/issues/157)) ([771a6f3](https://github.com/archestra-ai/terraform-provider-archestra/commit/771a6f338e1bb533886dbf4dc30b9ecaa5fdeb59))
+
 ## [1.4.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v1.3.0...v1.4.0) (2026-08-15)
 
 
