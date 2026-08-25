@@ -7,6 +7,11 @@ resource "archestra_agent" "support" {
   llm_model      = "llama3"
   llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
   scope          = "org"
+
+  knowledge_base_ids = [
+    archestra_knowledge_base.support_docs.id,
+    archestra_knowledge_base.internal_wiki.id,
+  ]
 }
 
 resource "archestra_agent" "support_batch" {

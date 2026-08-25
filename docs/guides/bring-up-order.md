@@ -18,13 +18,14 @@ another — but if you're sketching out modules, this is the order:
 4. **`archestra_llm_provider_api_key`** — credentials per LLM provider (OpenAI, Anthropic, etc.). If your backend runs in BYOS mode, see the [BYOS Vault guide](./byos-vault) for the required `vault_secret_path` form.
 5. **`archestra_mcp_registry_catalog_item`** — register MCP servers (local or remote).
 6. **`archestra_mcp_server_installation`** — install a catalog item with auth + team scoping.
-7. **`archestra_agent`** / **`archestra_llm_proxy`** / **`archestra_mcp_gateway`** — the chat surfaces.
-8. **`archestra_agent_tool`** / **`archestra_agent_tool_batch`** — wire tools to agents.
-9. Security policies — for each tool, decide invocation behavior + result trust:
-   - **`archestra_tool_invocation_policy_default`** + **`archestra_trusted_data_policy_default`** — bulk default actions across a tool set.
-   - **`archestra_tool_invocation_policy`** + **`archestra_trusted_data_policy`** — conditional rules layered on top.
-   - **`archestra_tool_policy_auto_config`** — alternative to the above: an LLM analyses each tool and writes both default policies for you.
-10. Cost controls:
+7. **`archestra_knowledge_base`** *(optional, referenced from agents)* — group documents and connectors that agents can search over. Declare before agents so `archestra_agent.knowledge_base_ids` can reference it directly.
+8. **`archestra_agent`** / **`archestra_llm_proxy`** / **`archestra_mcp_gateway`** — the chat surfaces.
+9. **`archestra_agent_tool`** / **`archestra_agent_tool_batch`** — wire tools to agents.
+10. Security policies — for each tool, decide invocation behavior + result trust:
+    - **`archestra_tool_invocation_policy_default`** + **`archestra_trusted_data_policy_default`** — bulk default actions across a tool set.
+    - **`archestra_tool_invocation_policy`** + **`archestra_trusted_data_policy`** — conditional rules layered on top.
+    - **`archestra_tool_policy_auto_config`** — alternative to the above: an LLM analyses each tool and writes both default policies for you.
+11. Cost controls:
     - **`archestra_limit`** — usage caps (token cost, tool calls, MCP calls) at org / team / agent scope.
     - **`archestra_optimization_rule`** — route requests to cheaper models when conditions match (e.g., short prompts, no tools).
 
