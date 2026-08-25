@@ -19,6 +19,7 @@ another — but if you're sketching out modules, this is the order:
 5. **`archestra_mcp_registry_catalog_item`** — register MCP servers (local or remote).
 6. **`archestra_mcp_server_installation`** — install a catalog item with auth + team scoping.
 7. **`archestra_agent`** / **`archestra_llm_proxy`** / **`archestra_mcp_gateway`** — the chat surfaces.
+   - **`archestra_schedule_trigger`** *(optional, depends on `archestra_agent`)* — cron-scheduled trigger that runs an internal agent on a recurring message template. Pause via `enabled = false` instead of deleting.
 8. **`archestra_agent_tool`** / **`archestra_agent_tool_batch`** — wire tools to agents.
 9. Security policies — for each tool, decide invocation behavior + result trust:
    - **`archestra_tool_invocation_policy_default`** + **`archestra_trusted_data_policy_default`** — bulk default actions across a tool set.

@@ -62,3 +62,24 @@ resource "archestra_agent_tool_batch" "support_batch_filesystem" {
   mcp_server_id = archestra_mcp_server_installation.filesystem.id
   tool_ids      = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])
 }
+
+# --- Scheduled triggers ----------------------------------------------------
+
+resource "archestra_schedule_trigger" "daily_summary" {
+  name             = "Daily Customer-Support Summary"
+  agent_id         = archestra_agent.support.id
+  message_template = "Summarise the last 24 hours of inbound customer issues into a Slack-ready digest."
+  cron_expression  = "0 9 * * 1-5"
+  timezone         = "UTC"
+}
+
+# Pause a trigger by setting `enabled = false` instead of deleting —
+# preserves the cron/template across re-enablement.
+resource "archestra_schedule_trigger" "paused_intake_warmup" {
+  name             = "Intake Warm-up (paused)"
+  agent_id         = archestra_agent.intake.id
+  message_template = "Ping — warming up the email-intake agent so the first real incident has a cached LLM context."
+  cron_expression  = "0 8 * * 1-5"
+  timezone         = "UTC"
+  enabled          = false
+}
