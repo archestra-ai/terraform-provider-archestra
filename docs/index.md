@@ -1,12 +1,12 @@
 ---
 page_title: "archestra Provider"
 description: |-
-  The Archestra provider lets you manage Archestra resources (agents, MCP servers, identity providers, teams, LLM keys, security policies, organization settings) as code. Both configuration values can — and should — be supplied via environment variables so secrets never enter HCL.
+  The Archestra provider lets you manage Archestra resources (agents, MCP servers, identity providers, teams, RBAC roles, LLM keys, virtual API keys, knowledge bases, knowledge connectors, schedule triggers, security policies, organization settings) as code. Both configuration values can — and should — be supplied via environment variables so secrets never enter HCL.
 ---
 
 # archestra Provider
 
-The Archestra provider lets you manage Archestra resources (agents, MCP servers, identity providers, teams, LLM keys, security policies, organization settings) as code. Both configuration values can — and should — be supplied via environment variables so secrets never enter HCL.
+The Archestra provider lets you manage Archestra resources (agents, MCP servers, identity providers, teams, RBAC roles, LLM keys, virtual API keys, knowledge bases, knowledge connectors, schedule triggers, security policies, organization settings) as code. Both configuration values can — and should — be supplied via environment variables so secrets never enter HCL.
 
 ## Support
 

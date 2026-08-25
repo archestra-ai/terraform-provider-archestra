@@ -19,7 +19,7 @@ output-options:
     - ChatOps
     - ChatOps Webhooks
     - Config
-    - Connectors
+    # Connectors - included for archestra_knowledge_connector resource
     - Incoming Email
     - Invitation
     - Knowledge Bases
