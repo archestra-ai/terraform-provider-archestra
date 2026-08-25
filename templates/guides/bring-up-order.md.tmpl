@@ -16,6 +16,7 @@ another — but if you're sketching out modules, this is the order:
 2. **`archestra_identity_provider`** — OIDC or SAML for SSO.
 3. **`archestra_team`** + **`archestra_team_external_group`** — team scoping + IdP-group mapping.
 4. **`archestra_llm_provider_api_key`** — credentials per LLM provider (OpenAI, Anthropic, etc.). If your backend runs in BYOS mode, see the [BYOS Vault guide](./byos-vault) for the required `vault_secret_path` form.
+   - **`archestra_virtual_api_key`** *(optional, depends on `archestra_llm_provider_api_key`)* — delegate tokens issued against a parent provider key. Useful for CI / per-team budgets. The token `value` is returned only once at create time and stored in Terraform state — treat it like an AWS access key.
 5. **`archestra_mcp_registry_catalog_item`** — register MCP servers (local or remote).
 6. **`archestra_mcp_server_installation`** — install a catalog item with auth + team scoping.
 7. **`archestra_agent`** / **`archestra_llm_proxy`** / **`archestra_mcp_gateway`** — the chat surfaces.
