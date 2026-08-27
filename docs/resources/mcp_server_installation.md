@@ -188,7 +188,7 @@ Read-Only:
 Read-Only:
 
 - `id` (String) Agent UUID.
-- `name` (String) Agent name (the agent's `name` field on `archestra_agent` / `archestra_llm_proxy` / `archestra_mcp_gateway`).
+- `name` (String) Agent name (the agent's `name` field on `archestra_agent` / `archestra_mcp_gateway`).
 
 ## Import
 

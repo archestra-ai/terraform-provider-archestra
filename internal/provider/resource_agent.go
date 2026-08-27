@@ -471,7 +471,7 @@ func (r *AgentResource) APIShape() any { return client.GetAgentResponse{} }
 //   - authorId/authorName/builtIn/organizationId/createdAt/updatedAt:
 //     audit/ownership metadata; could be added as Computed-only later if
 //     users ask, but no consumer has requested it yet.
-//   - suggestedPrompts/passthroughHeaders: llm_proxy / mcp_gateway-only
+//   - suggestedPrompts/passthroughHeaders: mcp_gateway-only
 //     wire fields; not present on the agent variant of the schema.
 //   - identityProviderId: gateway/proxy-only on the schema side (an agent
 //     never has one); the wire returns null for agent rows.

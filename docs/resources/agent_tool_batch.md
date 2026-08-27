@@ -32,7 +32,7 @@ resource "archestra_agent_tool_batch" "support_agent_filesystem" {
 
 ### Required
 
-- `agent_id` (String) Agent UUID. Pass the `id` from `archestra_agent` / `archestra_llm_proxy` / `archestra_mcp_gateway`.
+- `agent_id` (String) Agent UUID. Pass the `id` from `archestra_agent` / `archestra_mcp_gateway`.
 - `mcp_server_id` (String) MCP server installation UUID. Pass `archestra_mcp_server_installation.<n>.id`.
 - `tool_ids` (Set of String) Set of bare tool UUIDs to assign. Typically `[for t in archestra_mcp_server_installation.<n>.tools : t.id]`. Adding members triggers a bulk-assign on the new ones only; removing members unassigns each individually. **Patched in-place — does not force replacement.**
 

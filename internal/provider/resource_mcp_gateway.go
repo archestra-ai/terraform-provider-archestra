@@ -341,7 +341,7 @@ func (r *McpGatewayResource) AttrSpecs() []AttrSpec { return mcpGatewayAttrSpec 
 func (r *McpGatewayResource) APIShape() any { return client.GetAgentResponse{} }
 
 // KnownIntentionallySkipped — wire fields not modeled on archestra_mcp_gateway.
-// Same agent-table discriminator + audit-field situation as archestra_llm_proxy.
+// Same agent-table discriminator + audit-field situation as archestra_agent.
 // Fields excluded here belong to archestra_agent (system_prompt,
 // built_in_agent_config, llm config, incoming email, suggested prompts) or
 // aren't relevant to a gateway (isDefault, scope, teams,
@@ -359,7 +359,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 }
 
 // mcpGatewayAttrSpec declares the wire shape for `archestra_mcp_gateway`. Same
-// underlying agents table as archestra_agent / archestra_llm_proxy. No JSONB
+// underlying agents table as archestra_agent. No JSONB
 // sub-objects — top-level columns only — but several Postgres `text[]`
 // columns (knowledge_base_ids, connector_ids, passthrough_headers) which are
 // atomic on the wire (Kind: List).

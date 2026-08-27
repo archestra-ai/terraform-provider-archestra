@@ -99,16 +99,16 @@ If you need a data source, use `data.archestra_mcp_server_tool` (returns
 the bare UUID via `id`), not `data.archestra_agent_tool` (returns the
 composite UUID via `id` and the bare UUID via `tool_id`).
 
-## Changing `archestra_agent` to `archestra_llm_proxy` (or `archestra_mcp_gateway`) destroys and recreates
+## Changing `archestra_agent` to `archestra_mcp_gateway` destroys and recreates
 
 **Where:** plan diff shows the resource going away and a new one being
 added when you swap resource types in HCL.
 
-**Cause:** the backend models all three on a single `agents` table with an
-`agentType` discriminator, but the provider exposes them as three
-separate resource types for 1:1 parity with the UI. Changing the HCL
-resource type means deleting one resource and creating another in
-Terraform's view.
+**Cause:** the backend models both on a single `agents` table with an
+`agentType` discriminator, but the provider exposes them as separate
+resource types for 1:1 parity with the UI. Changing the HCL resource
+type means deleting one resource and creating another in Terraform's
+view.
 
 **Caveat:** the new resource gets a fresh UUID. Anything that referenced
 the old agent's id —
@@ -119,6 +119,6 @@ the old agent's id —
 resources still point at a deleted UUID.
 
 **Fix (preserve identity):** `terraform state mv archestra_agent.X
-archestra_llm_proxy.X` *and* flip the backend record's `agentType`
+archestra_mcp_gateway.X` *and* flip the backend record's `agentType`
 first (UI or API). Without the backend flip, the next Read will diff
 and Terraform will plan a recreate again.

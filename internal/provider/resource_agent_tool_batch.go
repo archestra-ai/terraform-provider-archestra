@@ -65,7 +65,7 @@ func (r *AgentToolBatchResource) Schema(_ context.Context, _ resource.SchemaRequ
 				},
 			},
 			"agent_id": schema.StringAttribute{
-				MarkdownDescription: "Agent UUID. Pass the `id` from `archestra_agent` / `archestra_llm_proxy` / `archestra_mcp_gateway`.",
+				MarkdownDescription: "Agent UUID. Pass the `id` from `archestra_agent` / `archestra_mcp_gateway`.",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),

@@ -292,7 +292,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 										Computed:            true,
 									},
 									"name": schema.StringAttribute{
-										MarkdownDescription: "Agent name (the agent's `name` field on `archestra_agent` / `archestra_llm_proxy` / `archestra_mcp_gateway`).",
+										MarkdownDescription: "Agent name (the agent's `name` field on `archestra_agent` / `archestra_mcp_gateway`).",
 										Computed:            true,
 									},
 								},
