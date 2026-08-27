@@ -22,7 +22,6 @@ through extending the provider.
 | `archestra_limit` | — |
 | `archestra_llm_model` | — |
 | `archestra_llm_provider_api_key` | — |
-| `archestra_llm_proxy` | — |
 | `archestra_mcp_gateway` | — |
 | `archestra_mcp_registry_catalog_item` | `RegistryCatalogItem` |
 | `archestra_mcp_server_installation` | `ServerInstallation` |

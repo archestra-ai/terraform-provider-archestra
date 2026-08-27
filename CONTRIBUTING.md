@@ -158,7 +158,7 @@ internal/
     apicoverage_test.go    # API ↔ schema coverage check
     resource_<name>.go     # one resource per file
     <name>_helpers.go      # split-out helpers for a SINGLE resource (AttrSpec, response mappers, etc.)
-    <name>_shared.go       # ONLY when consumed by 2+ resource files (e.g. agent_shared.go feeds agent/llm_proxy/mcp_gateway)
+    <name>_shared.go       # ONLY when consumed by 2+ resource files (e.g. agent_shared.go feeds agent/mcp_gateway)
 examples/                  # HCL examples — `make generate` renders these into docs/
 docs/                      # generated; do NOT edit by hand
 scripts/                   # CI + local bootstrap (api-key, vault, IdP, full stack)
