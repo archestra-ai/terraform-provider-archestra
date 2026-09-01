@@ -45,7 +45,12 @@ func testAccRequireByosEnabled(t *testing.T) {
 // platform release that ships them.
 func testAccRequireRunnerBackendEnabled(t *testing.T) {
 	if os.Getenv("ARCHESTRA_RUNNER_BACKEND_ENABLED") != "true" {
-		t.Fatal("requires ARCHESTRA_RUNNER_BACKEND_ENABLED=true and a backend with an execution runner backend configured (e.g. ARCHESTRA_ORCHESTRATOR_* K8s runtime)")
+		// Skip, not Fatal: CI pins an ARCHESTRA_VERSION that predates the
+		// execution-credential / tool-exclusion / background-execution APIs,
+		// and the execution-credential routes 404 unless the backend has a
+		// runner backend enabled. Export ARCHESTRA_RUNNER_BACKEND_ENABLED=true
+		// against a capable stack to run these.
+		t.Skip("requires ARCHESTRA_RUNNER_BACKEND_ENABLED=true and a backend with an execution runner backend configured (e.g. ARCHESTRA_ORCHESTRATOR_* K8s runtime)")
 	}
 }
 
