@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
@@ -128,18 +129,23 @@ func backgroundExecutionSchema() schema.SingleNestedAttribute {
 // AgentBackgroundExecutionModel mirrors the `background_execution` nested
 // attribute.
 type AgentBackgroundExecutionModel struct {
-	Image              types.String                              `tfsdk:"image"`
-	Command            types.List                                `tfsdk:"command"`
-	InferenceProtocol  types.String                              `tfsdk:"inference_protocol"`
-	Backend            types.String                              `tfsdk:"backend"`
-	SteerMode          types.String                              `tfsdk:"steer_mode"`
-	Privileged         types.Bool                                `tfsdk:"privileged"`
-	Resources          *AgentBackgroundExecutionResourcesModel   `tfsdk:"resources"`
-	Environment        []AgentBackgroundExecutionEnvEntryModel   `tfsdk:"environment"`
-	Credentials        []AgentBackgroundExecutionCredentialModel `tfsdk:"credentials"`
-	TtlHours           types.Int64                               `tfsdk:"ttl_hours"`
-	MaxCostUsd         types.Int64                               `tfsdk:"max_cost_usd"`
-	IdleTimeoutMinutes types.Int64                               `tfsdk:"idle_timeout_minutes"`
+	Image             types.String                            `tfsdk:"image"`
+	Command           types.List                              `tfsdk:"command"`
+	InferenceProtocol types.String                            `tfsdk:"inference_protocol"`
+	Backend           types.String                            `tfsdk:"backend"`
+	SteerMode         types.String                            `tfsdk:"steer_mode"`
+	Privileged        types.Bool                              `tfsdk:"privileged"`
+	Resources         *AgentBackgroundExecutionResourcesModel `tfsdk:"resources"`
+	// Environment and Credentials are types.List (of the entry object types
+	// below) rather than Go slices: the framework must be able to hand the
+	// model an UNKNOWN list — e.g. while a same-plan referenced resource is
+	// still pending import — and a raw slice cannot represent that (the
+	// "Received unknown value" conversion panic).
+	Environment        types.List  `tfsdk:"environment"`
+	Credentials        types.List  `tfsdk:"credentials"`
+	TtlHours           types.Int64 `tfsdk:"ttl_hours"`
+	MaxCostUsd         types.Int64 `tfsdk:"max_cost_usd"`
+	IdleTimeoutMinutes types.Int64 `tfsdk:"idle_timeout_minutes"`
 }
 
 type AgentBackgroundExecutionResourcesModel struct {
@@ -162,6 +168,20 @@ type AgentBackgroundExecutionCredentialModel struct {
 	Description  types.String `tfsdk:"description"`
 	Required     types.Bool   `tfsdk:"required"`
 }
+
+var backgroundExecutionEnvEntryType = types.ObjectType{AttrTypes: map[string]attr.Type{
+	"key":   types.StringType,
+	"value": types.StringType,
+}}
+
+var backgroundExecutionCredentialType = types.ObjectType{AttrTypes: map[string]attr.Type{
+	"key":           types.StringType,
+	"scope":         types.StringType,
+	"credential_id": types.StringType,
+	"label":         types.StringType,
+	"description":   types.StringType,
+	"required":      types.BoolType,
+}}
 
 // backgroundExecutionAttrSpec is the Children spec of the `backgroundExecution`
 // AtomicObject entry in agentAttrSpec.
@@ -271,6 +291,8 @@ func backgroundExecutionFromResponse(ctx context.Context, responseBody []byte, d
 	out := &AgentBackgroundExecutionModel{
 		Image:              types.StringValue(api.Image),
 		Command:            types.ListNull(types.StringType),
+		Environment:        types.ListNull(backgroundExecutionEnvEntryType),
+		Credentials:        types.ListNull(backgroundExecutionCredentialType),
 		InferenceProtocol:  types.StringValue(api.InferenceProtocol),
 		Backend:            types.StringValue(api.Backend),
 		SteerMode:          types.StringValue(api.SteerMode),
@@ -303,7 +325,9 @@ func backgroundExecutionFromResponse(ctx context.Context, responseBody []byte, d
 				Value: types.StringValue(e.Value),
 			}
 		}
-		out.Environment = env
+		list, d := types.ListValueFrom(ctx, backgroundExecutionEnvEntryType, env)
+		diags.Append(d...)
+		out.Environment = list
 	}
 
 	if api.Credentials != nil {
@@ -318,7 +342,9 @@ func backgroundExecutionFromResponse(ctx context.Context, responseBody []byte, d
 				Required:     types.BoolValue(c.Required),
 			}
 		}
-		out.Credentials = creds
+		list, d := types.ListValueFrom(ctx, backgroundExecutionCredentialType, creds)
+		diags.Append(d...)
+		out.Credentials = list
 	}
 
 	return out

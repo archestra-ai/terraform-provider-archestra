@@ -106,11 +106,15 @@ func TestBackgroundExecutionFromResponse(t *testing.T) {
 	if m.Resources == nil || m.Resources.MemoryLimit.ValueString() != "20Gi" || !m.Resources.CpuLimit.IsNull() {
 		t.Errorf("resources round-trip broken: %+v", m.Resources)
 	}
-	if m.Environment != nil {
-		t.Errorf("null environment must flatten to nil, got %+v", m.Environment)
+	if !m.Environment.IsNull() {
+		t.Errorf("null environment must flatten to a null list, got %+v", m.Environment)
 	}
-	if len(m.Credentials) != 1 || m.Credentials[0].CredentialId.ValueString() != "github" || !m.Credentials[0].Description.IsNull() {
-		t.Errorf("credentials round-trip broken: %+v", m.Credentials)
+	var creds []AgentBackgroundExecutionCredentialModel
+	if d := m.Credentials.ElementsAs(t.Context(), &creds, false); d.HasError() {
+		t.Fatalf("credentials list conversion: %v", d)
+	}
+	if len(creds) != 1 || creds[0].CredentialId.ValueString() != "github" || !creds[0].Description.IsNull() {
+		t.Errorf("credentials round-trip broken: %+v", creds)
 	}
 	if m.MaxCostUsd.ValueInt64() != 25 || !m.TtlHours.IsNull() || !m.IdleTimeoutMinutes.IsNull() {
 		t.Errorf("numeric round-trip broken: %+v", m)
