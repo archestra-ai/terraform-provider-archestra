@@ -122,3 +122,32 @@ resources still point at a deleted UUID.
 archestra_mcp_gateway.X` *and* flip the backend record's `agentType`
 first (UI or API). Without the backend flip, the next Read will diff
 and Terraform will plan a recreate again.
+
+## `Cannot update predefined roles`
+
+**Where:** apply-time 403 from the backend on
+`archestra_role.<n>` Update or Delete.
+
+**Cause:** predefined roles (`admin`, `member`, `owner`, etc.) are
+backed by Better Auth's default statements and managed by the
+backend; the provider cannot mutate them. If you imported a
+predefined role by mistake, the resource will start failing on the
+next plan because Read errors out with a "Predefined Role Not
+Manageable" message — the read-side guard is intentional.
+
+**Fix:** `terraform state rm archestra_role.<n>` to drop the
+predefined row from state. To declare a *new* custom role, use a
+unique `name` so the backend assigns a fresh base62 id rather than
+shadowing a predefined name.
+
+## `Action "X" is not one of: admin, cancel, create, ...`
+
+**Where:** plan-time validation error on `archestra_role.<n>.permission`.
+
+**Cause:** the value list under each resource key in `permission` is
+a closed enum (the backend's `actions` array). Typos and verbs from
+other systems (e.g. `read-write`, `manage`) are rejected.
+
+**Fix:** restrict each permission list to the documented set:
+`admin`, `cancel`, `create`, `delete`, `enable`, `query`, `read`,
+`team-admin`, `update`.

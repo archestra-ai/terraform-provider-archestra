@@ -28,7 +28,7 @@ output-options:
     - Member
     - Members
     - OAuth
-    - Roles
+    # Roles - included for archestra_role resource (EE)
     - Secrets
     - Statistics
     - User Tokens
