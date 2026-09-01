@@ -24,6 +24,8 @@ func TestAccAgentResource(t *testing.T) {
 					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("scope"), knownvalue.StringExact("org")),
 					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("teams"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("system_prompt"), knownvalue.StringExact("You are a helpful agent.")),
+					// User-created agents must report built_in = false.
+					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("built_in"), knownvalue.Bool(false)),
 				},
 			},
 			{

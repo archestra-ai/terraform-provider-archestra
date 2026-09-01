@@ -29,6 +29,7 @@ type agentAPIResponse struct {
 	ConsiderContextUntrusted   bool                `json:"considerContextUntrusted"`
 	ToolExposureMode           *string             `json:"toolExposureMode"`
 	IsDefault                  bool                `json:"isDefault"`
+	BuiltIn                    *bool               `json:"builtIn"`
 	Scope                      string              `json:"scope"`
 	PassthroughHeaders         *[]string           `json:"passthroughHeaders"`
 	KnowledgeBaseIds           []string            `json:"knowledgeBaseIds"`
