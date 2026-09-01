@@ -56,6 +56,12 @@ type AgentResourceModel struct {
 	BuiltInAgentConfig         *BuiltInAgentConfigModel `tfsdk:"built_in_agent_config"`
 	Scope                      types.String             `tfsdk:"scope"`
 	Teams                      types.List               `tfsdk:"teams"`
+
+	AccessAllTools            types.Bool                     `tfsdk:"access_all_tools"`
+	MissingCredentialBehavior types.String                   `tfsdk:"missing_credential_behavior"`
+	ModelId                   types.String                   `tfsdk:"model_id"`
+	EnvironmentId             types.String                   `tfsdk:"environment_id"`
+	BackgroundExecution       *AgentBackgroundExecutionModel `tfsdk:"background_execution"`
 }
 
 func (r *AgentResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -166,6 +172,28 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 					},
 				},
 			},
+			"access_all_tools": schema.BoolAttribute{
+				Optional:            true,
+				Computed:            true,
+				MarkdownDescription: "Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Pair with `archestra_agent_tool_exclusions` to carve tools out. Defaults to `false`.",
+			},
+			"missing_credential_behavior": schema.StringAttribute{
+				Optional:            true,
+				Computed:            true,
+				MarkdownDescription: "What happens when a caller lacks a connection the agent's tools need: `allow` (fail only at invocation, default), `warn` (surface missing connections up front), or `block` (agent unusable until connected)",
+				Validators: []validator.String{
+					stringvalidator.OneOf("allow", "warn", "block"),
+				},
+			},
+			"model_id": schema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`",
+			},
+			"environment_id": schema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "Environment UUID scoping which MCP servers and connections the agent resolves against; omit for the default environment",
+			},
+			"background_execution": backgroundExecutionSchema(),
 		},
 		Blocks: map[string]schema.Block{
 			"built_in_agent_config": schema.SingleNestedBlock{
@@ -456,6 +484,16 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 	data.Labels = flattenAgentLabels(data.Labels, resp.Labels)
 
 	data.BuiltInAgentConfig = builtInAgentConfigFromResponse(body)
+
+	data.AccessAllTools = types.BoolValue(resp.AccessAllTools)
+	if resp.MissingCredentialBehavior != "" {
+		data.MissingCredentialBehavior = types.StringValue(resp.MissingCredentialBehavior)
+	} else if !data.MissingCredentialBehavior.IsNull() {
+		data.MissingCredentialBehavior = types.StringNull()
+	}
+	optionalUUIDFromAPI(&data.ModelId, resp.ModelId)
+	optionalStringFromAPI(&data.EnvironmentId, resp.EnvironmentId)
+	data.BackgroundExecution = backgroundExecutionFromResponse(ctx, body, diags)
 }
 
 // AttrSpecs implements the resourceWithAttrSpec interface (see specdrift_test.go).
@@ -530,6 +568,19 @@ var agentAttrSpec = []AttrSpec{
 			{TFName: "key", JSONName: "key", Kind: Scalar},
 			{TFName: "value", JSONName: "value", Kind: Scalar},
 		},
+	},
+	// accessAllTools / missingCredentialBehavior are non-nullable optionals on
+	// the backend zod (columns with defaults) — null would 400, so removal
+	// means "stop managing". modelId / environmentId are nullable columns and
+	// accept an explicit null to clear.
+	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},
+	{TFName: "missing_credential_behavior", JSONName: "missingCredentialBehavior", Kind: Scalar, OmitOnNull: true},
+	{TFName: "model_id", JSONName: "modelId", Kind: Scalar},
+	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar},
+	{
+		TFName: "background_execution", JSONName: "backgroundExecution", Kind: AtomicObject,
+		Children: backgroundExecutionAttrSpec,
+		Encoder:  encodeBackgroundExecution,
 	},
 	{
 		TFName: "built_in_agent_config", JSONName: "builtInAgentConfig", Kind: AtomicObject,

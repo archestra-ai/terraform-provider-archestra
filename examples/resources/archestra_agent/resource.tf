@@ -1,4 +1,4 @@
-# Externals (declare elsewhere): archestra_team.engineering, archestra_llm_provider_api_key.vault_backed.
+# Externals (declare elsewhere): archestra_team.engineering, archestra_llm_provider_api_key.vault_backed, archestra_execution_credential.github.
 
 # NOTE: `llm_model` is the model_id you'd pass to the upstream LLM API
 # (e.g. "gpt-4o" for OpenAI, "claude-sonnet-4-5" for Anthropic). The
@@ -62,4 +62,46 @@ resource "archestra_agent" "intake" {
   incoming_email_allowed_domain = "acme.com"
 
   consider_context_untrusted = true # Treat email content as untrusted by default.
+}
+
+# Background-execution worker — delegated work runs in its own container via
+# the platform's execution runner backend (e.g. the Kubernetes orchestrator).
+# Auto-tool mode gives it every reachable tool; pair with
+# `archestra_agent_tool_exclusions` to carve some out.
+resource "archestra_agent" "worker" {
+  name          = "repo-worker"
+  description   = "Runs delegated repository work in an isolated execution"
+  system_prompt = "You run delegated repository work."
+
+  access_all_tools            = true
+  missing_credential_behavior = "warn"
+
+  background_execution = {
+    image              = "registry.example.com/repo-worker:latest"
+    command            = ["run-worker"]
+    inference_protocol = "anthropic"
+    steer_mode         = "tmux_keys"
+    privileged         = true
+
+    resources = {
+      cpu_request    = "2"
+      memory_request = "4Gi"
+      memory_limit   = "20Gi"
+    }
+
+    # Secrets never go in `environment` — declare them as credentials and
+    # deposit values via `archestra_execution_credential` (shared) or per user.
+    credentials = [
+      {
+        key           = "GITHUB_TOKEN" # env var inside the run
+        scope         = "per_user"
+        credential_id = archestra_execution_credential.github.key
+        label         = "GitHub token"
+        description   = "A personal token that can clone the repository and open pull requests."
+        required      = true
+      },
+    ]
+
+    max_cost_usd = 25
+  }
 }

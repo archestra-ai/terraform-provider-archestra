@@ -256,3 +256,103 @@ resource "archestra_agent" "test" {
 		},
 	})
 }
+
+// TestAccAgentResource_BackgroundExecution round-trips the background
+// execution block: create with the full shape, patch a field in place,
+// then clear the block entirely (wire null).
+func TestAccAgentResource_BackgroundExecution(t *testing.T) {
+	rName := acctest.RandomWithPrefix("tf-acc-agent-bgexec")
+	resource.Test(t, resource.TestCase{
+		PreCheck:                 func() { testAccPreCheck(t); testAccRequireRunnerBackendEnabled(t) },
+		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccAgentResourceConfigBackgroundExecution(rName, 25),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("archestra_agent.bgexec", tfjsonpath.New("access_all_tools"), knownvalue.Bool(true)),
+					statecheck.ExpectKnownValue("archestra_agent.bgexec", tfjsonpath.New("missing_credential_behavior"), knownvalue.StringExact("warn")),
+					statecheck.ExpectKnownValue("archestra_agent.bgexec", tfjsonpath.New("background_execution").AtMapKey("image"), knownvalue.StringExact("registry.example.com/tf-acc/worker:latest")),
+					statecheck.ExpectKnownValue("archestra_agent.bgexec", tfjsonpath.New("background_execution").AtMapKey("backend"), knownvalue.StringExact("kubernetes")),
+					statecheck.ExpectKnownValue("archestra_agent.bgexec", tfjsonpath.New("background_execution").AtMapKey("privileged"), knownvalue.Bool(true)),
+					statecheck.ExpectKnownValue("archestra_agent.bgexec", tfjsonpath.New("background_execution").AtMapKey("resources").AtMapKey("memory_limit"), knownvalue.StringExact("20Gi")),
+					statecheck.ExpectKnownValue("archestra_agent.bgexec", tfjsonpath.New("background_execution").AtMapKey("credentials"), knownvalue.ListSizeExact(1)),
+					statecheck.ExpectKnownValue("archestra_agent.bgexec", tfjsonpath.New("background_execution").AtMapKey("max_cost_usd"), knownvalue.Int64Exact(25)),
+					statecheck.ExpectKnownValue("archestra_agent.bgexec", tfjsonpath.New("background_execution").AtMapKey("ttl_hours"), knownvalue.Null()),
+				},
+			},
+			{
+				ResourceName:      "archestra_agent.bgexec",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccAgentResourceConfigBackgroundExecution(rName, 50),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("archestra_agent.bgexec", tfjsonpath.New("background_execution").AtMapKey("max_cost_usd"), knownvalue.Int64Exact(50)),
+				},
+			},
+			{
+				Config: testAccAgentResourceConfigNoBackgroundExecution(rName),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("archestra_agent.bgexec", tfjsonpath.New("background_execution"), knownvalue.Null()),
+				},
+			},
+		},
+	})
+}
+
+func testAccAgentResourceConfigBackgroundExecution(name string, maxCostUsd int) string {
+	return fmt.Sprintf(`
+resource "archestra_execution_credential" "github" {
+  key  = "%[1]s-github"
+  name = "GitHub token"
+}
+
+resource "archestra_agent" "bgexec" {
+  name          = %[1]q
+  system_prompt = "You run delegated repository work."
+
+  access_all_tools            = true
+  missing_credential_behavior = "warn"
+
+  background_execution = {
+    image              = "registry.example.com/tf-acc/worker:latest"
+    command            = ["run-worker"]
+    inference_protocol = "anthropic"
+    steer_mode         = "tmux_keys"
+    privileged         = true
+
+    resources = {
+      cpu_request    = "2"
+      memory_request = "4Gi"
+      memory_limit   = "20Gi"
+    }
+
+    credentials = [
+      {
+        key           = "GITHUB_TOKEN"
+        scope         = "per_user"
+        credential_id = archestra_execution_credential.github.key
+        label         = "GitHub token"
+        description   = "A personal token that can clone the repository."
+        required      = true
+      },
+    ]
+
+    max_cost_usd = %[2]d
+  }
+}
+`, name, maxCostUsd)
+}
+
+func testAccAgentResourceConfigNoBackgroundExecution(name string) string {
+	return fmt.Sprintf(`
+resource "archestra_agent" "bgexec" {
+  name          = %[1]q
+  system_prompt = "You run delegated repository work."
+
+  access_all_tools            = true
+  missing_credential_behavior = "warn"
+}
+`, name)
+}

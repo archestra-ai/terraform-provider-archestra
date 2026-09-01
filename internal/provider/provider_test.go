@@ -38,6 +38,17 @@ func testAccRequireByosEnabled(t *testing.T) {
 	}
 }
 
+// testAccRequireRunnerBackendEnabled gates tests that need the agent
+// background-execution feature set: the execution-credential API 404s unless
+// the backend has an execution runner backend configured (e.g. the K8s
+// orchestrator), and the backgroundExecution / tool-exclusions APIs need a
+// platform release that ships them.
+func testAccRequireRunnerBackendEnabled(t *testing.T) {
+	if os.Getenv("ARCHESTRA_RUNNER_BACKEND_ENABLED") != "true" {
+		t.Fatal("requires ARCHESTRA_RUNNER_BACKEND_ENABLED=true and a backend with an execution runner backend configured (e.g. ARCHESTRA_ORCHESTRATOR_* K8s runtime)")
+	}
+}
+
 // Unit tests for provider.
 func TestProviderNew(t *testing.T) {
 	provider := New("test")()
