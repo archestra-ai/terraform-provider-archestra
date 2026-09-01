@@ -50,6 +50,18 @@
 * **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
 * **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
 
+## [2.1.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v2.0.0...v2.1.0) (2026-09-01)
+
+
+### Features
+
+* agent background_execution, execution credentials, and tool exclusions ([#163](https://github.com/archestra-ai/terraform-provider-archestra/issues/163)) ([8c50ba4](https://github.com/archestra-ai/terraform-provider-archestra/commit/8c50ba472daf2e7fd3e177c51ebd24899c5ebd43))
+
+
+### Dependencies
+
+* **terraform:** bump github.com/oapi-codegen/runtime from 1.6.0 to 1.7.0 in the terraform-go-dependencies group across 1 directory ([#159](https://github.com/archestra-ai/terraform-provider-archestra/issues/159)) ([11482a2](https://github.com/archestra-ai/terraform-provider-archestra/commit/11482a212ce6f0397b5700501d7f15d378758c95))
+
 ## [2.0.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v1.5.0...v2.0.0) (2026-08-27)
 
 
