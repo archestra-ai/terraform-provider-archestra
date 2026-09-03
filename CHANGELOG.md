@@ -4,6 +4,8 @@
 
 ### ⚠ BREAKING CHANGES
 
+* **Agent Runtime naming replaces background execution naming.** The `archestra_execution_credential` resource is now `archestra_runtime_credential`, and the `archestra_agent.background_execution` nested block is now `runtime`. No deprecated resource or block alias is retained.
+
 * **`archestra_profile` replaced by three type-specific resources.** Backend collapses `agent`, `llm_proxy`, and `mcp_gateway` onto a single `agents` table with an `agentType` discriminator; the previous single `archestra_profile` mixed every variant's fields and required mode-aware validation in HCL. No deprecation alias.
 
   Migration: split each `resource "archestra_profile" "..."` block into one of `archestra_agent`, `archestra_llm_proxy`, or `archestra_mcp_gateway` (matching the original `agent_type`), then run `terraform state mv archestra_profile.<n> archestra_<new_type>.<n>` for each. The agent-tool resource and data source were renamed in the same pass: `archestra_profile_tool` → `archestra_agent_tool`, `data.archestra_profile_tool` → `data.archestra_agent_tool`, with `profile_id` → `agent_id`. The `tool_id` attribute on `archestra_tool_invocation_policy` and `archestra_trusted_data_policy` was renamed from `profile_tool_id` (was a misnomer — the backend stores a bare `toolId` referencing `tools.id`, not an agent-tool assignment ID).

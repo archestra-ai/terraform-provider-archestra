@@ -14,18 +14,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-// backgroundExecutionSchema returns the `background_execution` nested
-// attribute for `archestra_agent`. Kept beside its model/flatten/encode
+// runtimeSchema returns the `runtime` nested attribute for `archestra_agent`.
+// Kept beside its model/flatten/encode
 // helpers so a wire-shape change touches one file.
-func backgroundExecutionSchema() schema.SingleNestedAttribute {
+func runtimeSchema() schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{
 		Optional: true,
-		MarkdownDescription: "Container deployment used for delegated/background work. " +
-			"Requires an execution runner backend on the platform (e.g. the Kubernetes orchestrator).",
+		MarkdownDescription: "Dedicated runtime used for interactive, delegated, and long-running work. " +
+			"Requires an Agent Runtime backend on the platform (e.g. the Kubernetes orchestrator).",
 		Attributes: map[string]schema.Attribute{
 			"image": schema.StringAttribute{
 				Required:            true,
-				MarkdownDescription: "Container image reference the background run boots from",
+				MarkdownDescription: "Container image reference the run starts from",
 			},
 			"command": schema.ListAttribute{
 				Optional:            true,
@@ -43,12 +43,12 @@ func backgroundExecutionSchema() schema.SingleNestedAttribute {
 				Optional:            true,
 				Computed:            true,
 				Default:             stringdefault.StaticString("kubernetes"),
-				MarkdownDescription: "Execution backend the run is scheduled on. Only `kubernetes` today (default).",
+				MarkdownDescription: "Runtime backend the run is scheduled on. Only `kubernetes` today (default).",
 				Validators:          []validator.String{stringvalidator.OneOf("kubernetes")},
 			},
 			"steer_mode": schema.StringAttribute{
 				Required:            true,
-				MarkdownDescription: "How a steer message reaches the running process: `pipe` (execution-agent FIFO) or `tmux_keys` (typed into the tmux session, for CLIs that own their input loop)",
+				MarkdownDescription: "How a steer message reaches the running process: `pipe` (runtime-agent FIFO) or `tmux_keys` (typed into the tmux session, for CLIs that own their input loop)",
 				Validators:          []validator.String{stringvalidator.OneOf("pipe", "tmux_keys")},
 			},
 			"privileged": schema.BoolAttribute{
@@ -79,7 +79,7 @@ func backgroundExecutionSchema() schema.SingleNestedAttribute {
 			},
 			"credentials": schema.ListNestedAttribute{
 				Optional:            true,
-				MarkdownDescription: "Execution credentials the run needs, injected as environment variables. Values are supplied through `archestra_execution_credential` (organization scope) or by each user (personal scope) — never inline here.",
+				MarkdownDescription: "Runtime credentials the run needs, injected as environment variables. Values are supplied through `archestra_runtime_credential` (organization scope) or by each user (personal scope) — never inline here.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"key": schema.StringAttribute{
@@ -93,7 +93,7 @@ func backgroundExecutionSchema() schema.SingleNestedAttribute {
 						},
 						"credential_id": schema.StringAttribute{
 							Optional:            true,
-							MarkdownDescription: "Stable connection identifier — declarations sharing it (and scope) reuse one stored secret. Pass `archestra_execution_credential.<n>.key`.",
+							MarkdownDescription: "Stable connection identifier — declarations sharing it (and scope) reuse one stored secret. Pass `archestra_runtime_credential.<n>.key`.",
 						},
 						"label": schema.StringAttribute{
 							Required:            true,
@@ -126,16 +126,15 @@ func backgroundExecutionSchema() schema.SingleNestedAttribute {
 	}
 }
 
-// AgentBackgroundExecutionModel mirrors the `background_execution` nested
-// attribute.
-type AgentBackgroundExecutionModel struct {
-	Image             types.String                            `tfsdk:"image"`
-	Command           types.List                              `tfsdk:"command"`
-	InferenceProtocol types.String                            `tfsdk:"inference_protocol"`
-	Backend           types.String                            `tfsdk:"backend"`
-	SteerMode         types.String                            `tfsdk:"steer_mode"`
-	Privileged        types.Bool                              `tfsdk:"privileged"`
-	Resources         *AgentBackgroundExecutionResourcesModel `tfsdk:"resources"`
+// AgentRuntimeModel mirrors the `runtime` nested attribute.
+type AgentRuntimeModel struct {
+	Image             types.String                `tfsdk:"image"`
+	Command           types.List                  `tfsdk:"command"`
+	InferenceProtocol types.String                `tfsdk:"inference_protocol"`
+	Backend           types.String                `tfsdk:"backend"`
+	SteerMode         types.String                `tfsdk:"steer_mode"`
+	Privileged        types.Bool                  `tfsdk:"privileged"`
+	Resources         *AgentRuntimeResourcesModel `tfsdk:"resources"`
 	// Environment and Credentials are types.List (of the entry object types
 	// below) rather than Go slices: the framework must be able to hand the
 	// model an UNKNOWN list — e.g. while a same-plan referenced resource is
@@ -148,19 +147,19 @@ type AgentBackgroundExecutionModel struct {
 	IdleTimeoutMinutes types.Int64 `tfsdk:"idle_timeout_minutes"`
 }
 
-type AgentBackgroundExecutionResourcesModel struct {
+type AgentRuntimeResourcesModel struct {
 	CpuRequest    types.String `tfsdk:"cpu_request"`
 	MemoryRequest types.String `tfsdk:"memory_request"`
 	CpuLimit      types.String `tfsdk:"cpu_limit"`
 	MemoryLimit   types.String `tfsdk:"memory_limit"`
 }
 
-type AgentBackgroundExecutionEnvEntryModel struct {
+type AgentRuntimeEnvEntryModel struct {
 	Key   types.String `tfsdk:"key"`
 	Value types.String `tfsdk:"value"`
 }
 
-type AgentBackgroundExecutionCredentialModel struct {
+type AgentRuntimeCredentialModel struct {
 	Key          types.String `tfsdk:"key"`
 	Scope        types.String `tfsdk:"scope"`
 	CredentialId types.String `tfsdk:"credential_id"`
@@ -169,12 +168,12 @@ type AgentBackgroundExecutionCredentialModel struct {
 	Required     types.Bool   `tfsdk:"required"`
 }
 
-var backgroundExecutionEnvEntryType = types.ObjectType{AttrTypes: map[string]attr.Type{
+var runtimeEnvEntryType = types.ObjectType{AttrTypes: map[string]attr.Type{
 	"key":   types.StringType,
 	"value": types.StringType,
 }}
 
-var backgroundExecutionCredentialType = types.ObjectType{AttrTypes: map[string]attr.Type{
+var runtimeCredentialType = types.ObjectType{AttrTypes: map[string]attr.Type{
 	"key":           types.StringType,
 	"scope":         types.StringType,
 	"credential_id": types.StringType,
@@ -183,9 +182,9 @@ var backgroundExecutionCredentialType = types.ObjectType{AttrTypes: map[string]a
 	"required":      types.BoolType,
 }}
 
-// backgroundExecutionAttrSpec is the Children spec of the `backgroundExecution`
+// runtimeAttrSpec is the Children spec of the `runtime`
 // AtomicObject entry in agentAttrSpec.
-var backgroundExecutionAttrSpec = []AttrSpec{
+var runtimeAttrSpec = []AttrSpec{
 	{TFName: "image", JSONName: "image", Kind: Scalar},
 	{TFName: "command", JSONName: "command", Kind: List},
 	{TFName: "inference_protocol", JSONName: "inferenceProtocol", Kind: Scalar},
@@ -224,13 +223,13 @@ var backgroundExecutionAttrSpec = []AttrSpec{
 	{TFName: "idle_timeout_minutes", JSONName: "idleTimeoutMinutes", Kind: Scalar},
 }
 
-// encodeBackgroundExecution fills in the object keys the backend zod schema
+// encodeRuntime fills in the object keys the backend zod schema
 // declares as required-but-nullable. The generic AtomicObject encoder drops
-// null sub-attributes entirely, but `AgentBackgroundExecutionSchema` rejects
+// null sub-attributes entirely, but `AgentRuntimeSchema` rejects
 // a missing `command`/`resources`/`environment`/`credentials`/`ttlHours`/
 // `idleTimeoutMinutes` key ("received undefined") while accepting an explicit
 // null. `maxCostUsd` is genuinely optional and stays omitted when unset.
-func encodeBackgroundExecution(v any) any {
+func encodeRuntime(v any) any {
 	m, ok := v.(map[string]any)
 	if !ok || m == nil {
 		return v
@@ -243,10 +242,9 @@ func encodeBackgroundExecution(v any) any {
 	return m
 }
 
-// backgroundExecutionAPI mirrors the wire shape of an agent's
-// `backgroundExecution` JSONB payload for raw-body parsing (the pinned
-// generated client predates the field).
-type backgroundExecutionAPI struct {
+// runtimeAPI mirrors the wire shape of an agent's `runtime` payload so the
+// create, read, and update response variants share one decoder.
+type runtimeAPI struct {
 	Image             string    `json:"image"`
 	Command           *[]string `json:"command"`
 	InferenceProtocol string    `json:"inferenceProtocol"`
@@ -276,23 +274,23 @@ type backgroundExecutionAPI struct {
 	IdleTimeoutMinutes *int64 `json:"idleTimeoutMinutes"`
 }
 
-// backgroundExecutionFromResponse parses `backgroundExecution` out of a raw
+// runtimeFromResponse parses `runtime` out of a raw
 // agent response body into the nested model. Returns nil when the agent has
-// no background execution configured (or the backend predates the field).
-func backgroundExecutionFromResponse(ctx context.Context, responseBody []byte, diags *diag.Diagnostics) *AgentBackgroundExecutionModel {
+// no dedicated runtime configured.
+func runtimeFromResponse(ctx context.Context, responseBody []byte, diags *diag.Diagnostics) *AgentRuntimeModel {
 	var raw struct {
-		BackgroundExecution *backgroundExecutionAPI `json:"backgroundExecution"`
+		Runtime *runtimeAPI `json:"runtime"`
 	}
-	if err := json.Unmarshal(responseBody, &raw); err != nil || raw.BackgroundExecution == nil {
+	if err := json.Unmarshal(responseBody, &raw); err != nil || raw.Runtime == nil {
 		return nil
 	}
-	api := raw.BackgroundExecution
+	api := raw.Runtime
 
-	out := &AgentBackgroundExecutionModel{
+	out := &AgentRuntimeModel{
 		Image:              types.StringValue(api.Image),
 		Command:            types.ListNull(types.StringType),
-		Environment:        types.ListNull(backgroundExecutionEnvEntryType),
-		Credentials:        types.ListNull(backgroundExecutionCredentialType),
+		Environment:        types.ListNull(runtimeEnvEntryType),
+		Credentials:        types.ListNull(runtimeCredentialType),
 		InferenceProtocol:  types.StringValue(api.InferenceProtocol),
 		Backend:            types.StringValue(api.Backend),
 		SteerMode:          types.StringValue(api.SteerMode),
@@ -309,7 +307,7 @@ func backgroundExecutionFromResponse(ctx context.Context, responseBody []byte, d
 	}
 
 	if api.Resources != nil {
-		out.Resources = &AgentBackgroundExecutionResourcesModel{
+		out.Resources = &AgentRuntimeResourcesModel{
 			CpuRequest:    types.StringPointerValue(api.Resources.CpuRequest),
 			MemoryRequest: types.StringPointerValue(api.Resources.MemoryRequest),
 			CpuLimit:      types.StringPointerValue(api.Resources.CpuLimit),
@@ -318,22 +316,22 @@ func backgroundExecutionFromResponse(ctx context.Context, responseBody []byte, d
 	}
 
 	if api.Environment != nil {
-		env := make([]AgentBackgroundExecutionEnvEntryModel, len(*api.Environment))
+		env := make([]AgentRuntimeEnvEntryModel, len(*api.Environment))
 		for i, e := range *api.Environment {
-			env[i] = AgentBackgroundExecutionEnvEntryModel{
+			env[i] = AgentRuntimeEnvEntryModel{
 				Key:   types.StringValue(e.Key),
 				Value: types.StringValue(e.Value),
 			}
 		}
-		list, d := types.ListValueFrom(ctx, backgroundExecutionEnvEntryType, env)
+		list, d := types.ListValueFrom(ctx, runtimeEnvEntryType, env)
 		diags.Append(d...)
 		out.Environment = list
 	}
 
 	if api.Credentials != nil {
-		creds := make([]AgentBackgroundExecutionCredentialModel, len(*api.Credentials))
+		creds := make([]AgentRuntimeCredentialModel, len(*api.Credentials))
 		for i, c := range *api.Credentials {
-			creds[i] = AgentBackgroundExecutionCredentialModel{
+			creds[i] = AgentRuntimeCredentialModel{
 				Key:          types.StringValue(c.Key),
 				Scope:        types.StringValue(c.Scope),
 				CredentialId: types.StringPointerValue(c.CredentialId),
@@ -342,7 +340,7 @@ func backgroundExecutionFromResponse(ctx context.Context, responseBody []byte, d
 				Required:     types.BoolValue(c.Required),
 			}
 		}
-		list, d := types.ListValueFrom(ctx, backgroundExecutionCredentialType, creds)
+		list, d := types.ListValueFrom(ctx, runtimeCredentialType, creds)
 		diags.Append(d...)
 		out.Credentials = list
 	}

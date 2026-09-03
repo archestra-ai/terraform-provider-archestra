@@ -23,21 +23,21 @@ import (
 )
 
 var (
-	_ resource.Resource                   = &ExecutionCredentialResource{}
-	_ resource.ResourceWithImportState    = &ExecutionCredentialResource{}
-	_ resource.ResourceWithValidateConfig = &ExecutionCredentialResource{}
+	_ resource.Resource                   = &RuntimeCredentialResource{}
+	_ resource.ResourceWithImportState    = &RuntimeCredentialResource{}
+	_ resource.ResourceWithValidateConfig = &RuntimeCredentialResource{}
 )
 
-func NewExecutionCredentialResource() resource.Resource { return &ExecutionCredentialResource{} }
+func NewRuntimeCredentialResource() resource.Resource { return &RuntimeCredentialResource{} }
 
-type ExecutionCredentialResource struct {
+type RuntimeCredentialResource struct {
 	client *client.ClientWithResponses
 }
 
-// ExecutionCredentialResourceModel models one execution-credential definition
-// (a named secret slot that agent `background_execution.credentials` bindings
+// RuntimeCredentialResourceModel models one runtime credential definition
+// (a named secret slot that agent `runtime.credentials` bindings
 // reference by key) plus, optionally, its organization-scoped value.
-type ExecutionCredentialResourceModel struct {
+type RuntimeCredentialResourceModel struct {
 	ID                     types.String `tfsdk:"id"`
 	Key                    types.String `tfsdk:"key"`
 	Name                   types.String `tfsdk:"name"`
@@ -49,13 +49,13 @@ type ExecutionCredentialResourceModel struct {
 	OrganizationConfigured types.Bool   `tfsdk:"organization_configured"`
 }
 
-func (r *ExecutionCredentialResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_execution_credential"
+func (r *RuntimeCredentialResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_runtime_credential"
 }
 
-func (r *ExecutionCredentialResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *RuntimeCredentialResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Execution credential definition for agent background executions. Declares a named secret slot that `background_execution.credentials` bindings reference by `key`; the value is deposited per-user in the UI (`allow_personal`) or once for the whole organization via `organization_value` (`allow_organization`). Requires an execution runner backend on the platform.",
+		MarkdownDescription: "Runtime credential definition for Agent Runtime runs. Declares a named secret slot that `runtime.credentials` bindings reference by `key`; the value is deposited per-user in the UI (`allow_personal`) or once for the whole organization via `organization_value` (`allow_organization`). Requires an Agent Runtime backend on the platform.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed:            true,
@@ -64,10 +64,10 @@ func (r *ExecutionCredentialResource) Schema(_ context.Context, _ resource.Schem
 			},
 			"key": schema.StringAttribute{
 				Required:            true,
-				MarkdownDescription: "Stable credential identifier referenced by `background_execution.credentials[].credential_id` (lowercase letter first; lowercase letters, numbers, dots, dashes, underscores)",
+				MarkdownDescription: "Stable credential identifier referenced by `runtime.credentials[].credential_id` (lowercase letter first; lowercase letters, numbers, dots, dashes, underscores)",
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.RequiresReplace()},
 				Validators: []validator.String{
-					stringvalidator.RegexMatches(executionCredentialKeyRegexp, "must start with a lowercase letter and use lowercase letters, numbers, dots, dashes, or underscores"),
+					stringvalidator.RegexMatches(runtimeCredentialKeyRegexp, "must start with a lowercase letter and use lowercase letters, numbers, dots, dashes, or underscores"),
 				},
 			},
 			"name": schema.StringAttribute{
@@ -111,7 +111,7 @@ func (r *ExecutionCredentialResource) Schema(_ context.Context, _ resource.Schem
 	}
 }
 
-func (r *ExecutionCredentialResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *RuntimeCredentialResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -129,8 +129,8 @@ func (r *ExecutionCredentialResource) Configure(_ context.Context, req resource.
 // ValidateConfig enforces the backend's exactly-one-scope check constraint at
 // plan time, and that `organization_value` only accompanies the organization
 // scope — both otherwise surface as apply-time 400s.
-func (r *ExecutionCredentialResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var data ExecutionCredentialResourceModel
+func (r *RuntimeCredentialResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var data RuntimeCredentialResourceModel
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -160,34 +160,34 @@ func (r *ExecutionCredentialResource) ValidateConfig(ctx context.Context, req re
 	}
 }
 
-func (r *ExecutionCredentialResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan ExecutionCredentialResourceModel
+func (r *RuntimeCredentialResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan RuntimeCredentialResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
 	priorNull := tftypes.NewValue(req.Plan.Schema.Type().TerraformType(ctx), nil)
-	patch := MergePatch(ctx, req.Plan.Raw, priorNull, executionCredentialAttrSpec, &resp.Diagnostics)
+	patch := MergePatch(ctx, req.Plan.Raw, priorNull, runtimeCredentialAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	LogPatch(ctx, "archestra_execution_credential Create", patch, executionCredentialAttrSpec)
+	LogPatch(ctx, "archestra_runtime_credential Create", patch, runtimeCredentialAttrSpec)
 
 	body, err := json.Marshal(patch)
 	if err != nil {
 		resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("unable to marshal request body: %s", err))
 		return
 	}
-	apiResp, err := r.client.CreateExecutionCredentialWithBodyWithResponse(ctx, "application/json", bytes.NewReader(body))
+	apiResp, err := r.client.CreateRuntimeCredentialWithBodyWithResponse(ctx, "application/json", bytes.NewReader(body))
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create execution credential: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create runtime credential: %s", err))
 		return
 	}
 	if apiResp.StatusCode() == 404 {
 		resp.Diagnostics.AddError(
-			"Execution Runtime Not Enabled",
-			"The backend returned 404 for the execution-credential API. It requires a platform version with an execution runner backend configured (e.g. the Kubernetes orchestrator).",
+			"Agent Runtime Not Enabled",
+			"The backend returned 404 for the runtime-credential API. Configure an Agent Runtime backend before managing runtime credentials.",
 		)
 		return
 	}
@@ -218,8 +218,8 @@ func (r *ExecutionCredentialResource) Create(ctx context.Context, req resource.C
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
-func (r *ExecutionCredentialResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data ExecutionCredentialResourceModel
+func (r *RuntimeCredentialResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data RuntimeCredentialResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -252,8 +252,8 @@ func (r *ExecutionCredentialResource) Read(ctx context.Context, req resource.Rea
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *ExecutionCredentialResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state ExecutionCredentialResourceModel
+func (r *RuntimeCredentialResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state RuntimeCredentialResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
@@ -261,22 +261,22 @@ func (r *ExecutionCredentialResource) Update(ctx context.Context, req resource.U
 	}
 	key := state.Key.ValueString()
 
-	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, executionCredentialAttrSpec, &resp.Diagnostics)
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, runtimeCredentialAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 	// key/name/allow_* are RequiresReplace, so only the PATCH-able fields
 	// (description, icon) can appear here.
 	if len(patch) > 0 {
-		LogPatch(ctx, "archestra_execution_credential Update", patch, executionCredentialAttrSpec)
+		LogPatch(ctx, "archestra_runtime_credential Update", patch, runtimeCredentialAttrSpec)
 		body, err := json.Marshal(patch)
 		if err != nil {
 			resp.Diagnostics.AddError("Marshal Error", fmt.Sprintf("unable to marshal request body: %s", err))
 			return
 		}
-		apiResp, err := r.client.UpdateExecutionCredentialWithBodyWithResponse(ctx, key, "application/json", bytes.NewReader(body))
+		apiResp, err := r.client.UpdateRuntimeCredentialWithBodyWithResponse(ctx, key, "application/json", bytes.NewReader(body))
 		if err != nil {
-			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update execution credential: %s", err))
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update runtime credential: %s", err))
 			return
 		}
 		if apiResp.JSON200 == nil {
@@ -296,7 +296,7 @@ func (r *ExecutionCredentialResource) Update(ctx context.Context, req resource.U
 		}
 		plan.OrganizationConfigured = types.BoolValue(true)
 	case plan.OrganizationValue.IsNull() && !state.OrganizationValue.IsNull():
-		apiResp, err := r.client.DeleteOrganizationExecutionCredentialConnectionWithResponse(ctx, key)
+		apiResp, err := r.client.DeleteOrganizationRuntimeCredentialConnectionWithResponse(ctx, key)
 		if err != nil {
 			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to disconnect organization credential value: %s", err))
 			return
@@ -316,23 +316,23 @@ func (r *ExecutionCredentialResource) Update(ctx context.Context, req resource.U
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
-func (r *ExecutionCredentialResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data ExecutionCredentialResourceModel
+func (r *RuntimeCredentialResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data RuntimeCredentialResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
 	// The backend cascades stored connection values on definition delete.
-	apiResp, err := r.client.DeleteExecutionCredentialWithResponse(ctx, data.Key.ValueString())
+	apiResp, err := r.client.DeleteRuntimeCredentialWithResponse(ctx, data.Key.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete execution credential: %s", err))
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to delete runtime credential: %s", err))
 		return
 	}
 	if apiResp.StatusCode() == 409 {
 		resp.Diagnostics.AddError(
-			"Execution Credential In Use",
-			"An agent's background_execution.credentials still references this credential. Remove those bindings first, then destroy.",
+			"Runtime Credential In Use",
+			"An agent's runtime.credentials still references this credential. Remove those bindings first, then destroy.",
 		)
 		return
 	}
@@ -346,15 +346,15 @@ func (r *ExecutionCredentialResource) Delete(ctx context.Context, req resource.D
 
 // ImportState imports by credential key. `organization_value` cannot be
 // recovered (write-only) — a configured value shows one apply that re-sends it.
-func (r *ExecutionCredentialResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *RuntimeCredentialResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
 // AttrSpecs implements resourceWithAttrSpec (see specdrift_test.go).
-func (r *ExecutionCredentialResource) AttrSpecs() []AttrSpec { return executionCredentialAttrSpec }
+func (r *RuntimeCredentialResource) AttrSpecs() []AttrSpec { return runtimeCredentialAttrSpec }
 
-func (r *ExecutionCredentialResource) APIShape() any {
-	return client.ListExecutionCredentialsResponse{}
+func (r *RuntimeCredentialResource) APIShape() any {
+	return client.ListRuntimeCredentialsResponse{}
 }
 
 // KnownIntentionallySkipped — wire fields deliberately not modeled:
@@ -362,30 +362,30 @@ func (r *ExecutionCredentialResource) APIShape() any {
 //     definition is never built-in, so the flag carries no signal here.
 //   - personalConfigured: whether the *calling API-key user* deposited a
 //     personal value — caller-relative, meaningless as shared state.
-func (r *ExecutionCredentialResource) KnownIntentionallySkipped() []string {
+func (r *RuntimeCredentialResource) KnownIntentionallySkipped() []string {
 	return []string{"builtIn", "personalConfigured"}
 }
 
-// executionCredentialAttrSpec declares the wire shape. key/name/allow_* only
+// runtimeCredentialAttrSpec declares the wire shape. key/name/allow_* only
 // ever appear in Create patches (RequiresReplace keeps them out of Update
 // ones, matching the PATCH endpoint's description+icon-only contract).
-var executionCredentialAttrSpec = []AttrSpec{
+var runtimeCredentialAttrSpec = []AttrSpec{
 	{TFName: "key", JSONName: "key", Kind: Scalar},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar, OmitOnNull: true},
 	{TFName: "icon", JSONName: "icon", Kind: Scalar},
 	{TFName: "allow_personal", JSONName: "allowPersonal", Kind: Scalar, OmitOnNull: true},
 	{TFName: "allow_organization", JSONName: "allowOrganization", Kind: Scalar, OmitOnNull: true},
-	// Deposited via PUT /api/execution-credentials/:key/organization, never
+	// Deposited via PUT /api/runtime-credentials/:key/organization, never
 	// part of the definition body.
 	{TFName: "organization_value", Kind: Synthetic, Sensitive: true},
 }
 
-var executionCredentialKeyRegexp = regexp.MustCompile(`^[a-z][a-z0-9._-]*$`)
+var runtimeCredentialKeyRegexp = regexp.MustCompile(`^[a-z][a-z0-9._-]*$`)
 
-// executionCredentialView is a named copy of the list endpoint's element
+// runtimeCredentialView is a named copy of the list endpoint's element
 // shape so findByKey can return it (struct conversion ignores field tags).
-type executionCredentialView struct {
+type runtimeCredentialView struct {
 	AllowOrganization      bool
 	AllowPersonal          bool
 	BuiltIn                bool
@@ -399,33 +399,33 @@ type executionCredentialView struct {
 
 // findByKey resolves one definition from the list endpoint (the API has no
 // GET-by-key). ok=false means not found (resource gone or runtime disabled).
-func (r *ExecutionCredentialResource) findByKey(ctx context.Context, key string, diags *diag.Diagnostics) (executionCredentialView, bool) {
-	apiResp, err := r.client.ListExecutionCredentialsWithResponse(ctx)
+func (r *RuntimeCredentialResource) findByKey(ctx context.Context, key string, diags *diag.Diagnostics) (runtimeCredentialView, bool) {
+	apiResp, err := r.client.ListRuntimeCredentialsWithResponse(ctx)
 	if err != nil {
-		diags.AddError("API Error", fmt.Sprintf("Unable to list execution credentials: %s", err))
-		return executionCredentialView{}, false
+		diags.AddError("API Error", fmt.Sprintf("Unable to list runtime credentials: %s", err))
+		return runtimeCredentialView{}, false
 	}
 	if apiResp.StatusCode() == 404 {
-		return executionCredentialView{}, false
+		return runtimeCredentialView{}, false
 	}
 	if apiResp.JSON200 == nil {
 		diags.AddError(
 			"Unexpected API Response",
 			fmt.Sprintf("Expected 200 OK, got status %d: %s", apiResp.StatusCode(), string(apiResp.Body)),
 		)
-		return executionCredentialView{}, false
+		return runtimeCredentialView{}, false
 	}
 	for _, view := range *apiResp.JSON200 {
 		if view.Key == key {
-			return executionCredentialView(view), true
+			return runtimeCredentialView(view), true
 		}
 	}
-	return executionCredentialView{}, false
+	return runtimeCredentialView{}, false
 }
 
-func (r *ExecutionCredentialResource) putOrganizationValue(ctx context.Context, key, value string, diags *diag.Diagnostics) bool {
-	apiResp, err := r.client.SetOrganizationExecutionCredentialConnectionWithResponse(ctx, key,
-		client.SetOrganizationExecutionCredentialConnectionJSONRequestBody{Value: value})
+func (r *RuntimeCredentialResource) putOrganizationValue(ctx context.Context, key, value string, diags *diag.Diagnostics) bool {
+	apiResp, err := r.client.SetOrganizationRuntimeCredentialConnectionWithResponse(ctx, key,
+		client.SetOrganizationRuntimeCredentialConnectionJSONRequestBody{Value: value})
 	if err != nil {
 		diags.AddError("API Error", fmt.Sprintf("Unable to set organization credential value: %s", err))
 		return false

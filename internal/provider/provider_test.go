@@ -38,19 +38,11 @@ func testAccRequireByosEnabled(t *testing.T) {
 	}
 }
 
-// testAccRequireRunnerBackendEnabled gates tests that need the agent
-// background-execution feature set: the execution-credential API 404s unless
-// the backend has an execution runner backend configured (e.g. the K8s
-// orchestrator), and the backgroundExecution / tool-exclusions APIs need a
-// platform release that ships them.
-func testAccRequireRunnerBackendEnabled(t *testing.T) {
-	if os.Getenv("ARCHESTRA_RUNNER_BACKEND_ENABLED") != "true" {
-		// Skip, not Fatal: CI pins an ARCHESTRA_VERSION that predates the
-		// execution-credential / tool-exclusion / background-execution APIs,
-		// and the execution-credential routes 404 unless the backend has a
-		// runner backend enabled. Export ARCHESTRA_RUNNER_BACKEND_ENABLED=true
-		// against a capable stack to run these.
-		t.Skip("requires ARCHESTRA_RUNNER_BACKEND_ENABLED=true and a backend with an execution runner backend configured (e.g. ARCHESTRA_ORCHESTRATOR_* K8s runtime)")
+// testAccRequireAgentRuntimeEnabled gates tests that need the Agent Runtime
+// API and a configured runtime backend.
+func testAccRequireAgentRuntimeEnabled(t *testing.T) {
+	if os.Getenv("ARCHESTRA_AGENT_RUNTIME_ENABLED") != "true" {
+		t.Skip("requires ARCHESTRA_AGENT_RUNTIME_ENABLED=true and a configured Agent Runtime backend")
 	}
 }
 
