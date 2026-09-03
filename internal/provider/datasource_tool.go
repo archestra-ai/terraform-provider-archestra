@@ -90,17 +90,12 @@ func (d *ToolDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	}
 	retryConfig := DefaultRetryConfig(fmt.Sprintf("Tool '%s'", targetName))
 	result, found, err := RetryUntilFound(ctx, retryConfig, func() (toolResult, bool, error) {
-		toolsResp, err := d.client.GetToolsWithResponse(ctx)
+		tool, found, err := findToolByName(ctx, d.client, targetName)
 		if err != nil {
 			return toolResult{}, false, fmt.Errorf("unable to read tools: %w", err)
 		}
-		if toolsResp.JSON200 == nil {
-			return toolResult{}, false, fmt.Errorf("expected 200 OK, got status %d", toolsResp.StatusCode())
-		}
-		for _, tool := range *toolsResp.JSON200 {
-			if tool.Name == targetName {
-				return toolResult{ID: tool.Id.String(), Description: tool.Description}, true, nil
-			}
+		if found {
+			return toolResult{ID: tool.ID, Description: tool.Description}, true, nil
 		}
 		return toolResult{}, false, nil
 	})
@@ -124,4 +119,43 @@ func (d *ToolDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		data.Description = types.StringNull()
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+type toolLookup struct {
+	ID          string  `json:"id"`
+	Name        string  `json:"name"`
+	Description *string `json:"description"`
+}
+
+func findToolByName(ctx context.Context, apiClient *client.ClientWithResponses, targetName string) (toolLookup, bool, error) {
+	const pageLimit = 100
+
+	limit := pageLimit
+	search := targetName
+	for offset := 0; ; offset += pageLimit {
+		apiResp, err := apiClient.GetToolsWithAssignmentsWithResponse(ctx, &client.GetToolsWithAssignmentsParams{
+			Search: &search,
+			Limit:  &limit,
+			Offset: &offset,
+		})
+		if err != nil {
+			return toolLookup{}, false, err
+		}
+		if apiResp.JSON200 == nil {
+			return toolLookup{}, false, fmt.Errorf("expected 200 OK, got status %d", apiResp.StatusCode())
+		}
+
+		for _, tool := range apiResp.JSON200.Data {
+			if tool.Name == targetName {
+				return toolLookup{
+					ID:          tool.Id,
+					Name:        tool.Name,
+					Description: tool.Description,
+				}, true, nil
+			}
+		}
+		if !apiResp.JSON200.Pagination.HasNext {
+			return toolLookup{}, false, nil
+		}
+	}
 }
