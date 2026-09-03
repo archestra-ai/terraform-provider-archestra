@@ -247,6 +247,158 @@ const (
 	UpdateToolInvocationPolicyJSONBodyConditionsOperatorStartsWith  UpdateToolInvocationPolicyJSONBodyConditionsOperator = "startsWith"
 )
 
+// Defines values for GetConnectorsParamsConnectorType.
+const (
+	GetConnectorsParamsConnectorTypeAsana      GetConnectorsParamsConnectorType = "asana"
+	GetConnectorsParamsConnectorTypeConfluence GetConnectorsParamsConnectorType = "confluence"
+	GetConnectorsParamsConnectorTypeDropbox    GetConnectorsParamsConnectorType = "dropbox"
+	GetConnectorsParamsConnectorTypeGdrive     GetConnectorsParamsConnectorType = "gdrive"
+	GetConnectorsParamsConnectorTypeGithub     GetConnectorsParamsConnectorType = "github"
+	GetConnectorsParamsConnectorTypeGitlab     GetConnectorsParamsConnectorType = "gitlab"
+	GetConnectorsParamsConnectorTypeJira       GetConnectorsParamsConnectorType = "jira"
+	GetConnectorsParamsConnectorTypeLinear     GetConnectorsParamsConnectorType = "linear"
+	GetConnectorsParamsConnectorTypeNotion     GetConnectorsParamsConnectorType = "notion"
+	GetConnectorsParamsConnectorTypeServicenow GetConnectorsParamsConnectorType = "servicenow"
+	GetConnectorsParamsConnectorTypeSharepoint GetConnectorsParamsConnectorType = "sharepoint"
+)
+
+// Defines values for CreateConnectorJSONBodyConfig0Type.
+const (
+	CreateConnectorJSONBodyConfig0TypeJira CreateConnectorJSONBodyConfig0Type = "jira"
+)
+
+// Defines values for CreateConnectorJSONBodyConfig1Type.
+const (
+	CreateConnectorJSONBodyConfig1TypeConfluence CreateConnectorJSONBodyConfig1Type = "confluence"
+)
+
+// Defines values for CreateConnectorJSONBodyConfig2Type.
+const (
+	CreateConnectorJSONBodyConfig2TypeGithub CreateConnectorJSONBodyConfig2Type = "github"
+)
+
+// Defines values for CreateConnectorJSONBodyConfig3Type.
+const (
+	CreateConnectorJSONBodyConfig3TypeGitlab CreateConnectorJSONBodyConfig3Type = "gitlab"
+)
+
+// Defines values for CreateConnectorJSONBodyConfig4Type.
+const (
+	CreateConnectorJSONBodyConfig4TypeServicenow CreateConnectorJSONBodyConfig4Type = "servicenow"
+)
+
+// Defines values for CreateConnectorJSONBodyConfig5Type.
+const (
+	CreateConnectorJSONBodyConfig5TypeNotion CreateConnectorJSONBodyConfig5Type = "notion"
+)
+
+// Defines values for CreateConnectorJSONBodyConfig6Type.
+const (
+	CreateConnectorJSONBodyConfig6TypeSharepoint CreateConnectorJSONBodyConfig6Type = "sharepoint"
+)
+
+// Defines values for CreateConnectorJSONBodyConfig7Type.
+const (
+	CreateConnectorJSONBodyConfig7TypeGdrive CreateConnectorJSONBodyConfig7Type = "gdrive"
+)
+
+// Defines values for CreateConnectorJSONBodyConfig8Type.
+const (
+	CreateConnectorJSONBodyConfig8TypeDropbox CreateConnectorJSONBodyConfig8Type = "dropbox"
+)
+
+// Defines values for CreateConnectorJSONBodyConfig9Type.
+const (
+	CreateConnectorJSONBodyConfig9TypeAsana CreateConnectorJSONBodyConfig9Type = "asana"
+)
+
+// Defines values for CreateConnectorJSONBodyConfig10Type.
+const (
+	CreateConnectorJSONBodyConfig10TypeLinear CreateConnectorJSONBodyConfig10Type = "linear"
+)
+
+// Defines values for CreateConnectorJSONBodyConnectorType.
+const (
+	CreateConnectorJSONBodyConnectorTypeAsana      CreateConnectorJSONBodyConnectorType = "asana"
+	CreateConnectorJSONBodyConnectorTypeConfluence CreateConnectorJSONBodyConnectorType = "confluence"
+	CreateConnectorJSONBodyConnectorTypeDropbox    CreateConnectorJSONBodyConnectorType = "dropbox"
+	CreateConnectorJSONBodyConnectorTypeGdrive     CreateConnectorJSONBodyConnectorType = "gdrive"
+	CreateConnectorJSONBodyConnectorTypeGithub     CreateConnectorJSONBodyConnectorType = "github"
+	CreateConnectorJSONBodyConnectorTypeGitlab     CreateConnectorJSONBodyConnectorType = "gitlab"
+	CreateConnectorJSONBodyConnectorTypeJira       CreateConnectorJSONBodyConnectorType = "jira"
+	CreateConnectorJSONBodyConnectorTypeLinear     CreateConnectorJSONBodyConnectorType = "linear"
+	CreateConnectorJSONBodyConnectorTypeNotion     CreateConnectorJSONBodyConnectorType = "notion"
+	CreateConnectorJSONBodyConnectorTypeServicenow CreateConnectorJSONBodyConnectorType = "servicenow"
+	CreateConnectorJSONBodyConnectorTypeSharepoint CreateConnectorJSONBodyConnectorType = "sharepoint"
+)
+
+// Defines values for CreateConnectorJSONBodyVisibility.
+const (
+	CreateConnectorJSONBodyVisibilityOrgWide    CreateConnectorJSONBodyVisibility = "org-wide"
+	CreateConnectorJSONBodyVisibilityTeamScoped CreateConnectorJSONBodyVisibility = "team-scoped"
+)
+
+// Defines values for UpdateConnectorJSONBodyConfig0Type.
+const (
+	Jira UpdateConnectorJSONBodyConfig0Type = "jira"
+)
+
+// Defines values for UpdateConnectorJSONBodyConfig1Type.
+const (
+	Confluence UpdateConnectorJSONBodyConfig1Type = "confluence"
+)
+
+// Defines values for UpdateConnectorJSONBodyConfig2Type.
+const (
+	UpdateConnectorJSONBodyConfig2TypeGithub UpdateConnectorJSONBodyConfig2Type = "github"
+)
+
+// Defines values for UpdateConnectorJSONBodyConfig3Type.
+const (
+	UpdateConnectorJSONBodyConfig3TypeGitlab UpdateConnectorJSONBodyConfig3Type = "gitlab"
+)
+
+// Defines values for UpdateConnectorJSONBodyConfig4Type.
+const (
+	UpdateConnectorJSONBodyConfig4TypeServicenow UpdateConnectorJSONBodyConfig4Type = "servicenow"
+)
+
+// Defines values for UpdateConnectorJSONBodyConfig5Type.
+const (
+	UpdateConnectorJSONBodyConfig5TypeNotion UpdateConnectorJSONBodyConfig5Type = "notion"
+)
+
+// Defines values for UpdateConnectorJSONBodyConfig6Type.
+const (
+	UpdateConnectorJSONBodyConfig6TypeSharepoint UpdateConnectorJSONBodyConfig6Type = "sharepoint"
+)
+
+// Defines values for UpdateConnectorJSONBodyConfig7Type.
+const (
+	UpdateConnectorJSONBodyConfig7TypeGdrive UpdateConnectorJSONBodyConfig7Type = "gdrive"
+)
+
+// Defines values for UpdateConnectorJSONBodyConfig8Type.
+const (
+	UpdateConnectorJSONBodyConfig8TypeDropbox UpdateConnectorJSONBodyConfig8Type = "dropbox"
+)
+
+// Defines values for UpdateConnectorJSONBodyConfig9Type.
+const (
+	UpdateConnectorJSONBodyConfig9TypeAsana UpdateConnectorJSONBodyConfig9Type = "asana"
+)
+
+// Defines values for UpdateConnectorJSONBodyConfig10Type.
+const (
+	UpdateConnectorJSONBodyConfig10TypeLinear UpdateConnectorJSONBodyConfig10Type = "linear"
+)
+
+// Defines values for UpdateConnectorJSONBodyVisibility.
+const (
+	UpdateConnectorJSONBodyVisibilityOrgWide    UpdateConnectorJSONBodyVisibility = "org-wide"
+	UpdateConnectorJSONBodyVisibilityTeamScoped UpdateConnectorJSONBodyVisibility = "team-scoped"
+)
+
 // Defines values for CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy.
 const (
 	CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategyEntraObo    CreateIdentityProviderJSONBodyOidcConfigEnterpriseManagedCredentialsExchangeStrategy = "entra_obo"
@@ -639,6 +791,20 @@ const (
 	GetAvailableLlmProviderApiKeysParamsProviderZhipuai    GetAvailableLlmProviderApiKeysParamsProvider = "zhipuai"
 )
 
+// Defines values for CreateVirtualApiKeyJSONBodyScope.
+const (
+	CreateVirtualApiKeyJSONBodyScopeOrg      CreateVirtualApiKeyJSONBodyScope = "org"
+	CreateVirtualApiKeyJSONBodyScopePersonal CreateVirtualApiKeyJSONBodyScope = "personal"
+	CreateVirtualApiKeyJSONBodyScopeTeam     CreateVirtualApiKeyJSONBodyScope = "team"
+)
+
+// Defines values for UpdateVirtualApiKeyJSONBodyScope.
+const (
+	UpdateVirtualApiKeyJSONBodyScopeOrg      UpdateVirtualApiKeyJSONBodyScope = "org"
+	UpdateVirtualApiKeyJSONBodyScopePersonal UpdateVirtualApiKeyJSONBodyScope = "personal"
+	UpdateVirtualApiKeyJSONBodyScopeTeam     UpdateVirtualApiKeyJSONBodyScope = "team"
+)
+
 // Defines values for UpdateLlmProviderApiKeyJSONBodyScope.
 const (
 	UpdateLlmProviderApiKeyJSONBodyScopeOrg      UpdateLlmProviderApiKeyJSONBodyScope = "org"
@@ -943,6 +1109,32 @@ const (
 const (
 	Permissive  UpdateSecuritySettingsJSONBodyGlobalToolPolicy = "permissive"
 	Restrictive UpdateSecuritySettingsJSONBodyGlobalToolPolicy = "restrictive"
+)
+
+// Defines values for CreateRoleJSONBodyPermission.
+const (
+	CreateRoleJSONBodyPermissionAdmin     CreateRoleJSONBodyPermission = "admin"
+	CreateRoleJSONBodyPermissionCancel    CreateRoleJSONBodyPermission = "cancel"
+	CreateRoleJSONBodyPermissionCreate    CreateRoleJSONBodyPermission = "create"
+	CreateRoleJSONBodyPermissionDelete    CreateRoleJSONBodyPermission = "delete"
+	CreateRoleJSONBodyPermissionEnable    CreateRoleJSONBodyPermission = "enable"
+	CreateRoleJSONBodyPermissionQuery     CreateRoleJSONBodyPermission = "query"
+	CreateRoleJSONBodyPermissionRead      CreateRoleJSONBodyPermission = "read"
+	CreateRoleJSONBodyPermissionTeamAdmin CreateRoleJSONBodyPermission = "team-admin"
+	CreateRoleJSONBodyPermissionUpdate    CreateRoleJSONBodyPermission = "update"
+)
+
+// Defines values for UpdateRoleJSONBodyPermission.
+const (
+	UpdateRoleJSONBodyPermissionAdmin     UpdateRoleJSONBodyPermission = "admin"
+	UpdateRoleJSONBodyPermissionCancel    UpdateRoleJSONBodyPermission = "cancel"
+	UpdateRoleJSONBodyPermissionCreate    UpdateRoleJSONBodyPermission = "create"
+	UpdateRoleJSONBodyPermissionDelete    UpdateRoleJSONBodyPermission = "delete"
+	UpdateRoleJSONBodyPermissionEnable    UpdateRoleJSONBodyPermission = "enable"
+	UpdateRoleJSONBodyPermissionQuery     UpdateRoleJSONBodyPermission = "query"
+	UpdateRoleJSONBodyPermissionRead      UpdateRoleJSONBodyPermission = "read"
+	UpdateRoleJSONBodyPermissionTeamAdmin UpdateRoleJSONBodyPermission = "team-admin"
+	UpdateRoleJSONBodyPermissionUpdate    UpdateRoleJSONBodyPermission = "update"
 )
 
 // Defines values for GetScheduleTriggerRunsParamsStatus.
@@ -1396,6 +1588,398 @@ type UpdateToolInvocationPolicyJSONBodyAction string
 
 // UpdateToolInvocationPolicyJSONBodyConditionsOperator defines parameters for UpdateToolInvocationPolicy.
 type UpdateToolInvocationPolicyJSONBodyConditionsOperator string
+
+// GetConnectorsParams defines parameters for GetConnectors.
+type GetConnectorsParams struct {
+	Limit           *int                              `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset          *int                              `form:"offset,omitempty" json:"offset,omitempty"`
+	KnowledgeBaseId *string                           `form:"knowledgeBaseId,omitempty" json:"knowledgeBaseId,omitempty"`
+	Search          *string                           `form:"search,omitempty" json:"search,omitempty"`
+	ConnectorType   *GetConnectorsParamsConnectorType `form:"connectorType,omitempty" json:"connectorType,omitempty"`
+}
+
+// GetConnectorsParamsConnectorType defines parameters for GetConnectors.
+type GetConnectorsParamsConnectorType string
+
+// CreateConnectorJSONBody defines parameters for CreateConnector.
+type CreateConnectorJSONBody struct {
+	Config        CreateConnectorJSONBody_Config       `json:"config"`
+	ConnectorType CreateConnectorJSONBodyConnectorType `json:"connectorType"`
+	Credentials   struct {
+		ApiToken string  `json:"apiToken"`
+		Email    *string `json:"email,omitempty"`
+	} `json:"credentials"`
+	Description      *string                            `json:"description"`
+	Enabled          *bool                              `json:"enabled,omitempty"`
+	KnowledgeBaseIds *[]string                          `json:"knowledgeBaseIds,omitempty"`
+	Name             string                             `json:"name"`
+	Schedule         *string                            `json:"schedule,omitempty"`
+	TeamIds          *[]string                          `json:"teamIds,omitempty"`
+	Visibility       *CreateConnectorJSONBodyVisibility `json:"visibility,omitempty"`
+}
+
+// CreateConnectorJSONBodyConfig0 defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig0 struct {
+	CommentEmailBlacklist *[]string                          `json:"commentEmailBlacklist,omitempty"`
+	IsCloud               bool                               `json:"isCloud"`
+	JiraBaseUrl           string                             `json:"jiraBaseUrl"`
+	JqlQuery              *string                            `json:"jqlQuery,omitempty"`
+	LabelsToSkip          *[]string                          `json:"labelsToSkip,omitempty"`
+	ProjectKey            *string                            `json:"projectKey,omitempty"`
+	Type                  CreateConnectorJSONBodyConfig0Type `json:"type"`
+}
+
+// CreateConnectorJSONBodyConfig0Type defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig0Type string
+
+// CreateConnectorJSONBodyConfig1 defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig1 struct {
+	BatchSize     *float32                           `json:"batchSize,omitempty"`
+	ConfluenceUrl string                             `json:"confluenceUrl"`
+	CqlQuery      *string                            `json:"cqlQuery,omitempty"`
+	IsCloud       bool                               `json:"isCloud"`
+	LabelsToSkip  *[]string                          `json:"labelsToSkip,omitempty"`
+	PageIds       *[]string                          `json:"pageIds,omitempty"`
+	SpaceKeys     *[]string                          `json:"spaceKeys,omitempty"`
+	Type          CreateConnectorJSONBodyConfig1Type `json:"type"`
+}
+
+// CreateConnectorJSONBodyConfig1Type defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig1Type string
+
+// CreateConnectorJSONBodyConfig2 defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig2 struct {
+	GithubUrl            string                             `json:"githubUrl"`
+	IncludeIssues        *bool                              `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                              `json:"includeMarkdownFiles,omitempty"`
+	IncludePullRequests  *bool                              `json:"includePullRequests,omitempty"`
+	LabelsToSkip         *[]string                          `json:"labelsToSkip,omitempty"`
+	Owner                string                             `json:"owner"`
+	Repos                *[]string                          `json:"repos,omitempty"`
+	Type                 CreateConnectorJSONBodyConfig2Type `json:"type"`
+}
+
+// CreateConnectorJSONBodyConfig2Type defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig2Type string
+
+// CreateConnectorJSONBodyConfig3 defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig3 struct {
+	GitlabUrl            string                             `json:"gitlabUrl"`
+	GroupId              *string                            `json:"groupId,omitempty"`
+	IncludeIssues        *bool                              `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                              `json:"includeMarkdownFiles,omitempty"`
+	IncludeMergeRequests *bool                              `json:"includeMergeRequests,omitempty"`
+	LabelsToSkip         *[]string                          `json:"labelsToSkip,omitempty"`
+	ProjectIds           *[]float32                         `json:"projectIds,omitempty"`
+	Type                 CreateConnectorJSONBodyConfig3Type `json:"type"`
+}
+
+// CreateConnectorJSONBodyConfig3Type defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig3Type string
+
+// CreateConnectorJSONBodyConfig4 defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig4 struct {
+	AssignmentGroups      *[]string                          `json:"assignmentGroups,omitempty"`
+	BatchSize             *float32                           `json:"batchSize,omitempty"`
+	IncludeBusinessApps   *bool                              `json:"includeBusinessApps,omitempty"`
+	IncludeChangeRequests *bool                              `json:"includeChangeRequests,omitempty"`
+	IncludeChanges        *bool                              `json:"includeChanges,omitempty"`
+	IncludeIncidents      *bool                              `json:"includeIncidents,omitempty"`
+	IncludeProblems       *bool                              `json:"includeProblems,omitempty"`
+	InstanceUrl           string                             `json:"instanceUrl"`
+	States                *[]string                          `json:"states,omitempty"`
+	SyncDataForLastMonths *float32                           `json:"syncDataForLastMonths,omitempty"`
+	Type                  CreateConnectorJSONBodyConfig4Type `json:"type"`
+}
+
+// CreateConnectorJSONBodyConfig4Type defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig4Type string
+
+// CreateConnectorJSONBodyConfig5 defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig5 struct {
+	BatchSize   *float32                           `json:"batchSize,omitempty"`
+	DatabaseIds *[]string                          `json:"databaseIds,omitempty"`
+	PageIds     *[]string                          `json:"pageIds,omitempty"`
+	Type        CreateConnectorJSONBodyConfig5Type `json:"type"`
+}
+
+// CreateConnectorJSONBodyConfig5Type defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig5Type string
+
+// CreateConnectorJSONBodyConfig6 defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig6 struct {
+	BatchSize    *float32                           `json:"batchSize,omitempty"`
+	DriveIds     *[]string                          `json:"driveIds,omitempty"`
+	FolderPath   *string                            `json:"folderPath,omitempty"`
+	IncludePages *bool                              `json:"includePages,omitempty"`
+	MaxDepth     *int                               `json:"maxDepth,omitempty"`
+	Recursive    *bool                              `json:"recursive,omitempty"`
+	SiteUrl      string                             `json:"siteUrl"`
+	TenantId     string                             `json:"tenantId"`
+	Type         CreateConnectorJSONBodyConfig6Type `json:"type"`
+}
+
+// CreateConnectorJSONBodyConfig6Type defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig6Type string
+
+// CreateConnectorJSONBodyConfig7 defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig7 struct {
+	BatchSize *float32                           `json:"batchSize,omitempty"`
+	DriveId   *string                            `json:"driveId,omitempty"`
+	DriveIds  *[]string                          `json:"driveIds,omitempty"`
+	FileTypes *[]string                          `json:"fileTypes,omitempty"`
+	FolderId  *string                            `json:"folderId,omitempty"`
+	MaxDepth  *int                               `json:"maxDepth,omitempty"`
+	Recursive *bool                              `json:"recursive,omitempty"`
+	Type      CreateConnectorJSONBodyConfig7Type `json:"type"`
+}
+
+// CreateConnectorJSONBodyConfig7Type defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig7Type string
+
+// CreateConnectorJSONBodyConfig8 defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig8 struct {
+	BatchSize *float32                           `json:"batchSize,omitempty"`
+	FileTypes *[]string                          `json:"fileTypes,omitempty"`
+	MaxDepth  *float32                           `json:"maxDepth,omitempty"`
+	Recursive *bool                              `json:"recursive,omitempty"`
+	RootPath  *string                            `json:"rootPath,omitempty"`
+	Type      CreateConnectorJSONBodyConfig8Type `json:"type"`
+}
+
+// CreateConnectorJSONBodyConfig8Type defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig8Type string
+
+// CreateConnectorJSONBodyConfig9 defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig9 struct {
+	ProjectGids  *[]string                          `json:"projectGids,omitempty"`
+	TagsToSkip   *[]string                          `json:"tagsToSkip,omitempty"`
+	Type         CreateConnectorJSONBodyConfig9Type `json:"type"`
+	WorkspaceGid string                             `json:"workspaceGid"`
+}
+
+// CreateConnectorJSONBodyConfig9Type defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig9Type string
+
+// CreateConnectorJSONBodyConfig10 defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig10 struct {
+	BatchSize       *int                                `json:"batchSize,omitempty"`
+	IncludeComments *bool                               `json:"includeComments,omitempty"`
+	IncludeCycles   *bool                               `json:"includeCycles,omitempty"`
+	IncludeProjects *bool                               `json:"includeProjects,omitempty"`
+	LinearApiUrl    *string                             `json:"linearApiUrl,omitempty"`
+	ProjectIds      *[]string                           `json:"projectIds,omitempty"`
+	States          *[]string                           `json:"states,omitempty"`
+	TeamIds         *[]string                           `json:"teamIds,omitempty"`
+	Type            CreateConnectorJSONBodyConfig10Type `json:"type"`
+}
+
+// CreateConnectorJSONBodyConfig10Type defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConfig10Type string
+
+// CreateConnectorJSONBody_Config defines parameters for CreateConnector.
+type CreateConnectorJSONBody_Config struct {
+	union json.RawMessage
+}
+
+// CreateConnectorJSONBodyConnectorType defines parameters for CreateConnector.
+type CreateConnectorJSONBodyConnectorType string
+
+// CreateConnectorJSONBodyVisibility defines parameters for CreateConnector.
+type CreateConnectorJSONBodyVisibility string
+
+// UpdateConnectorJSONBody defines parameters for UpdateConnector.
+type UpdateConnectorJSONBody struct {
+	Config      *UpdateConnectorJSONBody_Config `json:"config,omitempty"`
+	Credentials *struct {
+		ApiToken string  `json:"apiToken"`
+		Email    *string `json:"email,omitempty"`
+	} `json:"credentials,omitempty"`
+	Description *string                            `json:"description"`
+	Enabled     *bool                              `json:"enabled,omitempty"`
+	Name        *string                            `json:"name,omitempty"`
+	Schedule    *string                            `json:"schedule,omitempty"`
+	TeamIds     *[]string                          `json:"teamIds,omitempty"`
+	Visibility  *UpdateConnectorJSONBodyVisibility `json:"visibility,omitempty"`
+}
+
+// UpdateConnectorJSONBodyConfig0 defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig0 struct {
+	CommentEmailBlacklist *[]string                          `json:"commentEmailBlacklist,omitempty"`
+	IsCloud               bool                               `json:"isCloud"`
+	JiraBaseUrl           string                             `json:"jiraBaseUrl"`
+	JqlQuery              *string                            `json:"jqlQuery,omitempty"`
+	LabelsToSkip          *[]string                          `json:"labelsToSkip,omitempty"`
+	ProjectKey            *string                            `json:"projectKey,omitempty"`
+	Type                  UpdateConnectorJSONBodyConfig0Type `json:"type"`
+}
+
+// UpdateConnectorJSONBodyConfig0Type defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig0Type string
+
+// UpdateConnectorJSONBodyConfig1 defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig1 struct {
+	BatchSize     *float32                           `json:"batchSize,omitempty"`
+	ConfluenceUrl string                             `json:"confluenceUrl"`
+	CqlQuery      *string                            `json:"cqlQuery,omitempty"`
+	IsCloud       bool                               `json:"isCloud"`
+	LabelsToSkip  *[]string                          `json:"labelsToSkip,omitempty"`
+	PageIds       *[]string                          `json:"pageIds,omitempty"`
+	SpaceKeys     *[]string                          `json:"spaceKeys,omitempty"`
+	Type          UpdateConnectorJSONBodyConfig1Type `json:"type"`
+}
+
+// UpdateConnectorJSONBodyConfig1Type defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig1Type string
+
+// UpdateConnectorJSONBodyConfig2 defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig2 struct {
+	GithubUrl            string                             `json:"githubUrl"`
+	IncludeIssues        *bool                              `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                              `json:"includeMarkdownFiles,omitempty"`
+	IncludePullRequests  *bool                              `json:"includePullRequests,omitempty"`
+	LabelsToSkip         *[]string                          `json:"labelsToSkip,omitempty"`
+	Owner                string                             `json:"owner"`
+	Repos                *[]string                          `json:"repos,omitempty"`
+	Type                 UpdateConnectorJSONBodyConfig2Type `json:"type"`
+}
+
+// UpdateConnectorJSONBodyConfig2Type defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig2Type string
+
+// UpdateConnectorJSONBodyConfig3 defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig3 struct {
+	GitlabUrl            string                             `json:"gitlabUrl"`
+	GroupId              *string                            `json:"groupId,omitempty"`
+	IncludeIssues        *bool                              `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                              `json:"includeMarkdownFiles,omitempty"`
+	IncludeMergeRequests *bool                              `json:"includeMergeRequests,omitempty"`
+	LabelsToSkip         *[]string                          `json:"labelsToSkip,omitempty"`
+	ProjectIds           *[]float32                         `json:"projectIds,omitempty"`
+	Type                 UpdateConnectorJSONBodyConfig3Type `json:"type"`
+}
+
+// UpdateConnectorJSONBodyConfig3Type defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig3Type string
+
+// UpdateConnectorJSONBodyConfig4 defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig4 struct {
+	AssignmentGroups      *[]string                          `json:"assignmentGroups,omitempty"`
+	BatchSize             *float32                           `json:"batchSize,omitempty"`
+	IncludeBusinessApps   *bool                              `json:"includeBusinessApps,omitempty"`
+	IncludeChangeRequests *bool                              `json:"includeChangeRequests,omitempty"`
+	IncludeChanges        *bool                              `json:"includeChanges,omitempty"`
+	IncludeIncidents      *bool                              `json:"includeIncidents,omitempty"`
+	IncludeProblems       *bool                              `json:"includeProblems,omitempty"`
+	InstanceUrl           string                             `json:"instanceUrl"`
+	States                *[]string                          `json:"states,omitempty"`
+	SyncDataForLastMonths *float32                           `json:"syncDataForLastMonths,omitempty"`
+	Type                  UpdateConnectorJSONBodyConfig4Type `json:"type"`
+}
+
+// UpdateConnectorJSONBodyConfig4Type defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig4Type string
+
+// UpdateConnectorJSONBodyConfig5 defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig5 struct {
+	BatchSize   *float32                           `json:"batchSize,omitempty"`
+	DatabaseIds *[]string                          `json:"databaseIds,omitempty"`
+	PageIds     *[]string                          `json:"pageIds,omitempty"`
+	Type        UpdateConnectorJSONBodyConfig5Type `json:"type"`
+}
+
+// UpdateConnectorJSONBodyConfig5Type defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig5Type string
+
+// UpdateConnectorJSONBodyConfig6 defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig6 struct {
+	BatchSize    *float32                           `json:"batchSize,omitempty"`
+	DriveIds     *[]string                          `json:"driveIds,omitempty"`
+	FolderPath   *string                            `json:"folderPath,omitempty"`
+	IncludePages *bool                              `json:"includePages,omitempty"`
+	MaxDepth     *int                               `json:"maxDepth,omitempty"`
+	Recursive    *bool                              `json:"recursive,omitempty"`
+	SiteUrl      string                             `json:"siteUrl"`
+	TenantId     string                             `json:"tenantId"`
+	Type         UpdateConnectorJSONBodyConfig6Type `json:"type"`
+}
+
+// UpdateConnectorJSONBodyConfig6Type defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig6Type string
+
+// UpdateConnectorJSONBodyConfig7 defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig7 struct {
+	BatchSize *float32                           `json:"batchSize,omitempty"`
+	DriveId   *string                            `json:"driveId,omitempty"`
+	DriveIds  *[]string                          `json:"driveIds,omitempty"`
+	FileTypes *[]string                          `json:"fileTypes,omitempty"`
+	FolderId  *string                            `json:"folderId,omitempty"`
+	MaxDepth  *int                               `json:"maxDepth,omitempty"`
+	Recursive *bool                              `json:"recursive,omitempty"`
+	Type      UpdateConnectorJSONBodyConfig7Type `json:"type"`
+}
+
+// UpdateConnectorJSONBodyConfig7Type defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig7Type string
+
+// UpdateConnectorJSONBodyConfig8 defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig8 struct {
+	BatchSize *float32                           `json:"batchSize,omitempty"`
+	FileTypes *[]string                          `json:"fileTypes,omitempty"`
+	MaxDepth  *float32                           `json:"maxDepth,omitempty"`
+	Recursive *bool                              `json:"recursive,omitempty"`
+	RootPath  *string                            `json:"rootPath,omitempty"`
+	Type      UpdateConnectorJSONBodyConfig8Type `json:"type"`
+}
+
+// UpdateConnectorJSONBodyConfig8Type defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig8Type string
+
+// UpdateConnectorJSONBodyConfig9 defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig9 struct {
+	ProjectGids  *[]string                          `json:"projectGids,omitempty"`
+	TagsToSkip   *[]string                          `json:"tagsToSkip,omitempty"`
+	Type         UpdateConnectorJSONBodyConfig9Type `json:"type"`
+	WorkspaceGid string                             `json:"workspaceGid"`
+}
+
+// UpdateConnectorJSONBodyConfig9Type defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig9Type string
+
+// UpdateConnectorJSONBodyConfig10 defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig10 struct {
+	BatchSize       *int                                `json:"batchSize,omitempty"`
+	IncludeComments *bool                               `json:"includeComments,omitempty"`
+	IncludeCycles   *bool                               `json:"includeCycles,omitempty"`
+	IncludeProjects *bool                               `json:"includeProjects,omitempty"`
+	LinearApiUrl    *string                             `json:"linearApiUrl,omitempty"`
+	ProjectIds      *[]string                           `json:"projectIds,omitempty"`
+	States          *[]string                           `json:"states,omitempty"`
+	TeamIds         *[]string                           `json:"teamIds,omitempty"`
+	Type            UpdateConnectorJSONBodyConfig10Type `json:"type"`
+}
+
+// UpdateConnectorJSONBodyConfig10Type defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyConfig10Type string
+
+// UpdateConnectorJSONBody_Config defines parameters for UpdateConnector.
+type UpdateConnectorJSONBody_Config struct {
+	union json.RawMessage
+}
+
+// UpdateConnectorJSONBodyVisibility defines parameters for UpdateConnector.
+type UpdateConnectorJSONBodyVisibility string
+
+// AssignConnectorToKnowledgeBasesJSONBody defines parameters for AssignConnectorToKnowledgeBases.
+type AssignConnectorToKnowledgeBasesJSONBody struct {
+	KnowledgeBaseIds []string `json:"knowledgeBaseIds"`
+}
+
+// GetConnectorRunsParams defines parameters for GetConnectorRuns.
+type GetConnectorRunsParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
 
 // CreateIdentityProviderJSONBody defines parameters for CreateIdentityProvider.
 type CreateIdentityProviderJSONBody struct {
@@ -1992,6 +2576,25 @@ type UpdateInternalMcpCatalogItemJSONBodyScope string
 // UpdateInternalMcpCatalogItemJSONBodyServerType defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBodyServerType string
 
+// GetKnowledgeBasesParams defines parameters for GetKnowledgeBases.
+type GetKnowledgeBasesParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int    `form:"offset,omitempty" json:"offset,omitempty"`
+	Search *string `form:"search,omitempty" json:"search,omitempty"`
+}
+
+// CreateKnowledgeBaseJSONBody defines parameters for CreateKnowledgeBase.
+type CreateKnowledgeBaseJSONBody struct {
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name"`
+}
+
+// UpdateKnowledgeBaseJSONBody defines parameters for UpdateKnowledgeBase.
+type UpdateKnowledgeBaseJSONBody struct {
+	Description *string `json:"description"`
+	Name        *string `json:"name,omitempty"`
+}
+
 // GetLimitsParams defines parameters for GetLimits.
 type GetLimitsParams struct {
 	EntityType *GetLimitsParamsEntityType `form:"entityType,omitempty" json:"entityType,omitempty"`
@@ -2107,6 +2710,28 @@ type GetAvailableLlmProviderApiKeysParams struct {
 // GetAvailableLlmProviderApiKeysParamsProvider defines parameters for GetAvailableLlmProviderApiKeys.
 type GetAvailableLlmProviderApiKeysParamsProvider string
 
+// CreateVirtualApiKeyJSONBody defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBody struct {
+	ExpiresAt interface{}                       `json:"expiresAt"`
+	Name      string                            `json:"name"`
+	Scope     *CreateVirtualApiKeyJSONBodyScope `json:"scope,omitempty"`
+	Teams     *[]string                         `json:"teams,omitempty"`
+}
+
+// CreateVirtualApiKeyJSONBodyScope defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyScope string
+
+// UpdateVirtualApiKeyJSONBody defines parameters for UpdateVirtualApiKey.
+type UpdateVirtualApiKeyJSONBody struct {
+	ExpiresAt interface{}                       `json:"expiresAt"`
+	Name      string                            `json:"name"`
+	Scope     *UpdateVirtualApiKeyJSONBodyScope `json:"scope,omitempty"`
+	Teams     *[]string                         `json:"teams,omitempty"`
+}
+
+// UpdateVirtualApiKeyJSONBodyScope defines parameters for UpdateVirtualApiKey.
+type UpdateVirtualApiKeyJSONBodyScope string
+
 // UpdateLlmProviderApiKeyJSONBody defines parameters for UpdateLlmProviderApiKey.
 type UpdateLlmProviderApiKeyJSONBody struct {
 	ApiKey          *string                               `json:"apiKey,omitempty"`
@@ -2121,6 +2746,14 @@ type UpdateLlmProviderApiKeyJSONBody struct {
 
 // UpdateLlmProviderApiKeyJSONBodyScope defines parameters for UpdateLlmProviderApiKey.
 type UpdateLlmProviderApiKeyJSONBodyScope string
+
+// GetAllVirtualApiKeysParams defines parameters for GetAllVirtualApiKeys.
+type GetAllVirtualApiKeysParams struct {
+	Limit        *int                `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset       *int                `form:"offset,omitempty" json:"offset,omitempty"`
+	Search       *string             `form:"search,omitempty" json:"search,omitempty"`
+	ChatApiKeyId *openapi_types.UUID `form:"chatApiKeyId,omitempty" json:"chatApiKeyId,omitempty"`
+}
 
 // GetMcpToolCallsParams defines parameters for GetMcpToolCalls.
 type GetMcpToolCallsParams struct {
@@ -2510,6 +3143,18 @@ type AddMcpServerInstallationRequestNoteJSONBody struct {
 	Content string `json:"content"`
 }
 
+// GetMembersParams defines parameters for GetMembers.
+type GetMembersParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+
+	// Name Search by user name or email (case-insensitive partial match)
+	Name *string `form:"name,omitempty" json:"name,omitempty"`
+
+	// Role Filter by exact role name
+	Role *string `form:"role,omitempty" json:"role,omitempty"`
+}
+
 // CreateOptimizationRuleJSONBody defines parameters for CreateOptimizationRule.
 type CreateOptimizationRuleJSONBody struct {
 	Conditions  []CreateOptimizationRuleJSONBody_Conditions_Item `json:"conditions"`
@@ -2665,6 +3310,33 @@ type UpdateSecuritySettingsJSONBody struct {
 
 // UpdateSecuritySettingsJSONBodyGlobalToolPolicy defines parameters for UpdateSecuritySettings.
 type UpdateSecuritySettingsJSONBodyGlobalToolPolicy string
+
+// GetRolesParams defines parameters for GetRoles.
+type GetRolesParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int    `form:"offset,omitempty" json:"offset,omitempty"`
+	Name   *string `form:"name,omitempty" json:"name,omitempty"`
+}
+
+// CreateRoleJSONBody defines parameters for CreateRole.
+type CreateRoleJSONBody struct {
+	Description *string                                   `json:"description,omitempty"`
+	Name        string                                    `json:"name"`
+	Permission  map[string][]CreateRoleJSONBodyPermission `json:"permission"`
+}
+
+// CreateRoleJSONBodyPermission defines parameters for CreateRole.
+type CreateRoleJSONBodyPermission string
+
+// UpdateRoleJSONBody defines parameters for UpdateRole.
+type UpdateRoleJSONBody struct {
+	Description *string                                    `json:"description,omitempty"`
+	Name        *string                                    `json:"name,omitempty"`
+	Permission  *map[string][]UpdateRoleJSONBodyPermission `json:"permission,omitempty"`
+}
+
+// UpdateRoleJSONBodyPermission defines parameters for UpdateRole.
+type UpdateRoleJSONBodyPermission string
 
 // GetScheduleTriggersParams defines parameters for GetScheduleTriggers.
 type GetScheduleTriggersParams struct {
@@ -2849,6 +3521,15 @@ type CreateToolInvocationPolicyJSONRequestBody CreateToolInvocationPolicyJSONBod
 // UpdateToolInvocationPolicyJSONRequestBody defines body for UpdateToolInvocationPolicy for application/json ContentType.
 type UpdateToolInvocationPolicyJSONRequestBody UpdateToolInvocationPolicyJSONBody
 
+// CreateConnectorJSONRequestBody defines body for CreateConnector for application/json ContentType.
+type CreateConnectorJSONRequestBody CreateConnectorJSONBody
+
+// UpdateConnectorJSONRequestBody defines body for UpdateConnector for application/json ContentType.
+type UpdateConnectorJSONRequestBody UpdateConnectorJSONBody
+
+// AssignConnectorToKnowledgeBasesJSONRequestBody defines body for AssignConnectorToKnowledgeBases for application/json ContentType.
+type AssignConnectorToKnowledgeBasesJSONRequestBody AssignConnectorToKnowledgeBasesJSONBody
+
 // CreateIdentityProviderJSONRequestBody defines body for CreateIdentityProvider for application/json ContentType.
 type CreateIdentityProviderJSONRequestBody CreateIdentityProviderJSONBody
 
@@ -2864,6 +3545,12 @@ type ValidateDeploymentYamlJSONRequestBody ValidateDeploymentYamlJSONBody
 // UpdateInternalMcpCatalogItemJSONRequestBody defines body for UpdateInternalMcpCatalogItem for application/json ContentType.
 type UpdateInternalMcpCatalogItemJSONRequestBody UpdateInternalMcpCatalogItemJSONBody
 
+// CreateKnowledgeBaseJSONRequestBody defines body for CreateKnowledgeBase for application/json ContentType.
+type CreateKnowledgeBaseJSONRequestBody CreateKnowledgeBaseJSONBody
+
+// UpdateKnowledgeBaseJSONRequestBody defines body for UpdateKnowledgeBase for application/json ContentType.
+type UpdateKnowledgeBaseJSONRequestBody UpdateKnowledgeBaseJSONBody
+
 // CreateLimitJSONRequestBody defines body for CreateLimit for application/json ContentType.
 type CreateLimitJSONRequestBody CreateLimitJSONBody
 
@@ -2875,6 +3562,12 @@ type UpdateModelJSONRequestBody UpdateModelJSONBody
 
 // CreateLlmProviderApiKeyJSONRequestBody defines body for CreateLlmProviderApiKey for application/json ContentType.
 type CreateLlmProviderApiKeyJSONRequestBody CreateLlmProviderApiKeyJSONBody
+
+// CreateVirtualApiKeyJSONRequestBody defines body for CreateVirtualApiKey for application/json ContentType.
+type CreateVirtualApiKeyJSONRequestBody CreateVirtualApiKeyJSONBody
+
+// UpdateVirtualApiKeyJSONRequestBody defines body for UpdateVirtualApiKey for application/json ContentType.
+type UpdateVirtualApiKeyJSONRequestBody UpdateVirtualApiKeyJSONBody
 
 // UpdateLlmProviderApiKeyJSONRequestBody defines body for UpdateLlmProviderApiKey for application/json ContentType.
 type UpdateLlmProviderApiKeyJSONRequestBody UpdateLlmProviderApiKeyJSONBody
@@ -2935,6 +3628,12 @@ type UpdateMcpSettingsJSONRequestBody UpdateMcpSettingsJSONBody
 
 // UpdateSecuritySettingsJSONRequestBody defines body for UpdateSecuritySettings for application/json ContentType.
 type UpdateSecuritySettingsJSONRequestBody UpdateSecuritySettingsJSONBody
+
+// CreateRoleJSONRequestBody defines body for CreateRole for application/json ContentType.
+type CreateRoleJSONRequestBody CreateRoleJSONBody
+
+// UpdateRoleJSONRequestBody defines body for UpdateRole for application/json ContentType.
+type UpdateRoleJSONRequestBody UpdateRoleJSONBody
 
 // CreateScheduleTriggerJSONRequestBody defines body for CreateScheduleTrigger for application/json ContentType.
 type CreateScheduleTriggerJSONRequestBody CreateScheduleTriggerJSONBody
@@ -3149,6 +3848,51 @@ type ClientInterface interface {
 
 	UpdateToolInvocationPolicy(ctx context.Context, id openapi_types.UUID, body UpdateToolInvocationPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetConnectors request
+	GetConnectors(ctx context.Context, params *GetConnectorsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateConnectorWithBody request with any body
+	CreateConnectorWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateConnector(ctx context.Context, body CreateConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteConnector request
+	DeleteConnector(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetConnector request
+	GetConnector(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateConnectorWithBody request with any body
+	UpdateConnectorWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateConnector(ctx context.Context, id string, body UpdateConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ForceResyncConnector request
+	ForceResyncConnector(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetConnectorKnowledgeBases request
+	GetConnectorKnowledgeBases(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AssignConnectorToKnowledgeBasesWithBody request with any body
+	AssignConnectorToKnowledgeBasesWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AssignConnectorToKnowledgeBases(ctx context.Context, id string, body AssignConnectorToKnowledgeBasesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UnassignConnectorFromKnowledgeBase request
+	UnassignConnectorFromKnowledgeBase(ctx context.Context, id string, kbId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetConnectorRuns request
+	GetConnectorRuns(ctx context.Context, id string, params *GetConnectorRunsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetConnectorRun request
+	GetConnectorRun(ctx context.Context, id string, runId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SyncConnector request
+	SyncConnector(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TestConnectorConnection request
+	TestConnectorConnection(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetIdentityProviders request
 	GetIdentityProviders(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3219,6 +3963,28 @@ type ClientInterface interface {
 	// GetK8sImagePullSecrets request
 	GetK8sImagePullSecrets(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetKnowledgeBases request
+	GetKnowledgeBases(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateKnowledgeBaseWithBody request with any body
+	CreateKnowledgeBaseWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateKnowledgeBase(ctx context.Context, body CreateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteKnowledgeBase request
+	DeleteKnowledgeBase(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKnowledgeBase request
+	GetKnowledgeBase(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateKnowledgeBaseWithBody request with any body
+	UpdateKnowledgeBaseWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateKnowledgeBase(ctx context.Context, id string, body UpdateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKnowledgeBaseHealth request
+	GetKnowledgeBaseHealth(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetLimits request
 	GetLimits(ctx context.Context, params *GetLimitsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3263,6 +4029,22 @@ type ClientInterface interface {
 	// GetAvailableLlmProviderApiKeys request
 	GetAvailableLlmProviderApiKeys(ctx context.Context, params *GetAvailableLlmProviderApiKeysParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetVirtualApiKeys request
+	GetVirtualApiKeys(ctx context.Context, chatApiKeyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateVirtualApiKeyWithBody request with any body
+	CreateVirtualApiKeyWithBody(ctx context.Context, chatApiKeyId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteVirtualApiKey request
+	DeleteVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateVirtualApiKeyWithBody request with any body
+	UpdateVirtualApiKeyWithBody(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteLlmProviderApiKey request
 	DeleteLlmProviderApiKey(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3273,6 +4055,9 @@ type ClientInterface interface {
 	UpdateLlmProviderApiKeyWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateLlmProviderApiKey(ctx context.Context, id openapi_types.UUID, body UpdateLlmProviderApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAllVirtualApiKeys request
+	GetAllVirtualApiKeys(ctx context.Context, params *GetAllVirtualApiKeysParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetMcpToolCalls request
 	GetMcpToolCalls(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3348,6 +4133,9 @@ type ClientInterface interface {
 	AddMcpServerInstallationRequestNoteWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	AddMcpServerInstallationRequestNote(ctx context.Context, id openapi_types.UUID, body AddMcpServerInstallationRequestNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetMembers request
+	GetMembers(ctx context.Context, params *GetMembersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetOptimizationRules request
 	GetOptimizationRules(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3428,6 +4216,25 @@ type ClientInterface interface {
 	UpdateSecuritySettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateSecuritySettings(ctx context.Context, body UpdateSecuritySettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetRoles request
+	GetRoles(ctx context.Context, params *GetRolesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateRoleWithBody request with any body
+	CreateRoleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateRole(ctx context.Context, body CreateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteRole request
+	DeleteRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetRole request
+	GetRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateRoleWithBody request with any body
+	UpdateRoleWithBody(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateRole(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetScheduleTriggers request
 	GetScheduleTriggers(ctx context.Context, params *GetScheduleTriggersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4038,6 +4845,198 @@ func (c *Client) UpdateToolInvocationPolicy(ctx context.Context, id openapi_type
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetConnectors(ctx context.Context, params *GetConnectorsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetConnectorsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateConnectorWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateConnectorRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateConnector(ctx context.Context, body CreateConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateConnectorRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteConnector(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteConnectorRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetConnector(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetConnectorRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateConnectorWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateConnectorRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateConnector(ctx context.Context, id string, body UpdateConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateConnectorRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ForceResyncConnector(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewForceResyncConnectorRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetConnectorKnowledgeBases(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetConnectorKnowledgeBasesRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AssignConnectorToKnowledgeBasesWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssignConnectorToKnowledgeBasesRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AssignConnectorToKnowledgeBases(ctx context.Context, id string, body AssignConnectorToKnowledgeBasesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssignConnectorToKnowledgeBasesRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UnassignConnectorFromKnowledgeBase(ctx context.Context, id string, kbId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUnassignConnectorFromKnowledgeBaseRequest(c.Server, id, kbId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetConnectorRuns(ctx context.Context, id string, params *GetConnectorRunsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetConnectorRunsRequest(c.Server, id, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetConnectorRun(ctx context.Context, id string, runId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetConnectorRunRequest(c.Server, id, runId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SyncConnector(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSyncConnectorRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) TestConnectorConnection(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTestConnectorConnectionRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetIdentityProviders(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetIdentityProvidersRequest(c.Server)
 	if err != nil {
@@ -4338,6 +5337,102 @@ func (c *Client) GetK8sImagePullSecrets(ctx context.Context, reqEditors ...Reque
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetKnowledgeBases(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKnowledgeBasesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateKnowledgeBaseWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateKnowledgeBaseRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateKnowledgeBase(ctx context.Context, body CreateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateKnowledgeBaseRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteKnowledgeBase(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteKnowledgeBaseRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetKnowledgeBase(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKnowledgeBaseRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateKnowledgeBaseWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateKnowledgeBaseRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateKnowledgeBase(ctx context.Context, id string, body UpdateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateKnowledgeBaseRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetKnowledgeBaseHealth(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKnowledgeBaseHealthRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetLimits(ctx context.Context, params *GetLimitsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetLimitsRequest(c.Server, params)
 	if err != nil {
@@ -4530,6 +5625,78 @@ func (c *Client) GetAvailableLlmProviderApiKeys(ctx context.Context, params *Get
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetVirtualApiKeys(ctx context.Context, chatApiKeyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVirtualApiKeysRequest(c.Server, chatApiKeyId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualApiKeyWithBody(ctx context.Context, chatApiKeyId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualApiKeyRequestWithBody(c.Server, chatApiKeyId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualApiKeyRequest(c.Server, chatApiKeyId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteVirtualApiKeyRequest(c.Server, chatApiKeyId, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateVirtualApiKeyWithBody(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateVirtualApiKeyRequestWithBody(c.Server, chatApiKeyId, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateVirtualApiKey(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateVirtualApiKeyRequest(c.Server, chatApiKeyId, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) DeleteLlmProviderApiKey(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteLlmProviderApiKeyRequest(c.Server, id)
 	if err != nil {
@@ -4568,6 +5735,18 @@ func (c *Client) UpdateLlmProviderApiKeyWithBody(ctx context.Context, id openapi
 
 func (c *Client) UpdateLlmProviderApiKey(ctx context.Context, id openapi_types.UUID, body UpdateLlmProviderApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateLlmProviderApiKeyRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAllVirtualApiKeys(ctx context.Context, params *GetAllVirtualApiKeysParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAllVirtualApiKeysRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -4904,6 +6083,18 @@ func (c *Client) AddMcpServerInstallationRequestNoteWithBody(ctx context.Context
 
 func (c *Client) AddMcpServerInstallationRequestNote(ctx context.Context, id openapi_types.UUID, body AddMcpServerInstallationRequestNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAddMcpServerInstallationRequestNoteRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetMembers(ctx context.Context, params *GetMembersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMembersRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -5264,6 +6455,90 @@ func (c *Client) UpdateSecuritySettingsWithBody(ctx context.Context, contentType
 
 func (c *Client) UpdateSecuritySettings(ctx context.Context, body UpdateSecuritySettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateSecuritySettingsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetRoles(ctx context.Context, params *GetRolesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetRolesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateRoleWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateRoleRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateRole(ctx context.Context, body CreateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateRoleRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteRoleRequest(c.Server, roleId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetRole(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetRoleRequest(c.Server, roleId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateRoleWithBody(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateRoleRequestWithBody(c.Server, roleId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateRole(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateRoleRequest(c.Server, roleId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -7355,6 +8630,611 @@ func NewUpdateToolInvocationPolicyRequestWithBody(server string, id openapi_type
 	return req, nil
 }
 
+// NewGetConnectorsRequest generates requests for GetConnectors
+func NewGetConnectorsRequest(server string, params *GetConnectorsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.KnowledgeBaseId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "knowledgeBaseId", runtime.ParamLocationQuery, *params.KnowledgeBaseId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ConnectorType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "connectorType", runtime.ParamLocationQuery, *params.ConnectorType); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateConnectorRequest calls the generic CreateConnector builder with application/json body
+func NewCreateConnectorRequest(server string, body CreateConnectorJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateConnectorRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateConnectorRequestWithBody generates requests for CreateConnector with any type of body
+func NewCreateConnectorRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteConnectorRequest generates requests for DeleteConnector
+func NewDeleteConnectorRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetConnectorRequest generates requests for GetConnector
+func NewGetConnectorRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateConnectorRequest calls the generic UpdateConnector builder with application/json body
+func NewUpdateConnectorRequest(server string, id string, body UpdateConnectorJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateConnectorRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateConnectorRequestWithBody generates requests for UpdateConnector with any type of body
+func NewUpdateConnectorRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewForceResyncConnectorRequest generates requests for ForceResyncConnector
+func NewForceResyncConnectorRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors/%s/force-resync", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetConnectorKnowledgeBasesRequest generates requests for GetConnectorKnowledgeBases
+func NewGetConnectorKnowledgeBasesRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors/%s/knowledge-bases", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAssignConnectorToKnowledgeBasesRequest calls the generic AssignConnectorToKnowledgeBases builder with application/json body
+func NewAssignConnectorToKnowledgeBasesRequest(server string, id string, body AssignConnectorToKnowledgeBasesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAssignConnectorToKnowledgeBasesRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewAssignConnectorToKnowledgeBasesRequestWithBody generates requests for AssignConnectorToKnowledgeBases with any type of body
+func NewAssignConnectorToKnowledgeBasesRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors/%s/knowledge-bases", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUnassignConnectorFromKnowledgeBaseRequest generates requests for UnassignConnectorFromKnowledgeBase
+func NewUnassignConnectorFromKnowledgeBaseRequest(server string, id string, kbId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "kbId", runtime.ParamLocationPath, kbId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors/%s/knowledge-bases/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetConnectorRunsRequest generates requests for GetConnectorRuns
+func NewGetConnectorRunsRequest(server string, id string, params *GetConnectorRunsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors/%s/runs", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetConnectorRunRequest generates requests for GetConnectorRun
+func NewGetConnectorRunRequest(server string, id string, runId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "runId", runtime.ParamLocationPath, runId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors/%s/runs/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSyncConnectorRequest generates requests for SyncConnector
+func NewSyncConnectorRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors/%s/sync", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewTestConnectorConnectionRequest generates requests for TestConnectorConnection
+func NewTestConnectorConnectionRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/connectors/%s/test", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetIdentityProvidersRequest generates requests for GetIdentityProviders
 func NewGetIdentityProvidersRequest(server string) (*http.Request, error) {
 	var err error
@@ -8052,6 +9932,276 @@ func NewGetK8sImagePullSecretsRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewGetKnowledgeBasesRequest generates requests for GetKnowledgeBases
+func NewGetKnowledgeBasesRequest(server string, params *GetKnowledgeBasesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateKnowledgeBaseRequest calls the generic CreateKnowledgeBase builder with application/json body
+func NewCreateKnowledgeBaseRequest(server string, body CreateKnowledgeBaseJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateKnowledgeBaseRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateKnowledgeBaseRequestWithBody generates requests for CreateKnowledgeBase with any type of body
+func NewCreateKnowledgeBaseRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteKnowledgeBaseRequest generates requests for DeleteKnowledgeBase
+func NewDeleteKnowledgeBaseRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetKnowledgeBaseRequest generates requests for GetKnowledgeBase
+func NewGetKnowledgeBaseRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateKnowledgeBaseRequest calls the generic UpdateKnowledgeBase builder with application/json body
+func NewUpdateKnowledgeBaseRequest(server string, id string, body UpdateKnowledgeBaseJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateKnowledgeBaseRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateKnowledgeBaseRequestWithBody generates requests for UpdateKnowledgeBase with any type of body
+func NewUpdateKnowledgeBaseRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetKnowledgeBaseHealthRequest generates requests for GetKnowledgeBaseHealth
+func NewGetKnowledgeBaseHealthRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-bases/%s/health", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetLimitsRequest generates requests for GetLimits
 func NewGetLimitsRequest(server string, params *GetLimitsParams) (*http.Request, error) {
 	var err error
@@ -8640,6 +10790,182 @@ func NewGetAvailableLlmProviderApiKeysRequest(server string, params *GetAvailabl
 	return req, nil
 }
 
+// NewGetVirtualApiKeysRequest generates requests for GetVirtualApiKeys
+func NewGetVirtualApiKeysRequest(server string, chatApiKeyId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "chatApiKeyId", runtime.ParamLocationPath, chatApiKeyId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-provider-api-keys/%s/virtual-keys", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateVirtualApiKeyRequest calls the generic CreateVirtualApiKey builder with application/json body
+func NewCreateVirtualApiKeyRequest(server string, chatApiKeyId openapi_types.UUID, body CreateVirtualApiKeyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateVirtualApiKeyRequestWithBody(server, chatApiKeyId, "application/json", bodyReader)
+}
+
+// NewCreateVirtualApiKeyRequestWithBody generates requests for CreateVirtualApiKey with any type of body
+func NewCreateVirtualApiKeyRequestWithBody(server string, chatApiKeyId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "chatApiKeyId", runtime.ParamLocationPath, chatApiKeyId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-provider-api-keys/%s/virtual-keys", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteVirtualApiKeyRequest generates requests for DeleteVirtualApiKey
+func NewDeleteVirtualApiKeyRequest(server string, chatApiKeyId openapi_types.UUID, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "chatApiKeyId", runtime.ParamLocationPath, chatApiKeyId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-provider-api-keys/%s/virtual-keys/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateVirtualApiKeyRequest calls the generic UpdateVirtualApiKey builder with application/json body
+func NewUpdateVirtualApiKeyRequest(server string, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateVirtualApiKeyRequestWithBody(server, chatApiKeyId, id, "application/json", bodyReader)
+}
+
+// NewUpdateVirtualApiKeyRequestWithBody generates requests for UpdateVirtualApiKey with any type of body
+func NewUpdateVirtualApiKeyRequestWithBody(server string, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "chatApiKeyId", runtime.ParamLocationPath, chatApiKeyId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-provider-api-keys/%s/virtual-keys/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewDeleteLlmProviderApiKeyRequest generates requests for DeleteLlmProviderApiKey
 func NewDeleteLlmProviderApiKeyRequest(server string, id openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -8751,6 +11077,103 @@ func NewUpdateLlmProviderApiKeyRequestWithBody(server string, id openapi_types.U
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetAllVirtualApiKeysRequest generates requests for GetAllVirtualApiKeys
+func NewGetAllVirtualApiKeysRequest(server string, params *GetAllVirtualApiKeysParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-virtual-keys")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ChatApiKeyId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "chatApiKeyId", runtime.ParamLocationQuery, *params.ChatApiKeyId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -9693,6 +12116,103 @@ func NewAddMcpServerInstallationRequestNoteRequestWithBody(server string, id ope
 	return req, nil
 }
 
+// NewGetMembersRequest generates requests for GetMembers
+func NewGetMembersRequest(server string, params *GetMembersParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/members")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Name != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "name", runtime.ParamLocationQuery, *params.Name); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Role != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "role", runtime.ParamLocationQuery, *params.Role); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetOptimizationRulesRequest generates requests for GetOptimizationRules
 func NewGetOptimizationRulesRequest(server string) (*http.Request, error) {
 	var err error
@@ -10382,6 +12902,242 @@ func NewUpdateSecuritySettingsRequestWithBody(server string, contentType string,
 	}
 
 	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetRolesRequest generates requests for GetRoles
+func NewGetRolesRequest(server string, params *GetRolesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/roles")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Name != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "name", runtime.ParamLocationQuery, *params.Name); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateRoleRequest calls the generic CreateRole builder with application/json body
+func NewCreateRoleRequest(server string, body CreateRoleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateRoleRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateRoleRequestWithBody generates requests for CreateRole with any type of body
+func NewCreateRoleRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/roles")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteRoleRequest generates requests for DeleteRole
+func NewDeleteRoleRequest(server string, roleId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "roleId", runtime.ParamLocationPath, roleId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/roles/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetRoleRequest generates requests for GetRole
+func NewGetRoleRequest(server string, roleId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "roleId", runtime.ParamLocationPath, roleId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/roles/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateRoleRequest calls the generic UpdateRole builder with application/json body
+func NewUpdateRoleRequest(server string, roleId string, body UpdateRoleJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateRoleRequestWithBody(server, roleId, "application/json", bodyReader)
+}
+
+// NewUpdateRoleRequestWithBody generates requests for UpdateRole with any type of body
+func NewUpdateRoleRequestWithBody(server string, roleId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "roleId", runtime.ParamLocationPath, roleId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/roles/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -12208,6 +14964,51 @@ type ClientWithResponsesInterface interface {
 
 	UpdateToolInvocationPolicyWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateToolInvocationPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateToolInvocationPolicyResponse, error)
 
+	// GetConnectorsWithResponse request
+	GetConnectorsWithResponse(ctx context.Context, params *GetConnectorsParams, reqEditors ...RequestEditorFn) (*GetConnectorsResponse, error)
+
+	// CreateConnectorWithBodyWithResponse request with any body
+	CreateConnectorWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateConnectorResponse, error)
+
+	CreateConnectorWithResponse(ctx context.Context, body CreateConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateConnectorResponse, error)
+
+	// DeleteConnectorWithResponse request
+	DeleteConnectorWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteConnectorResponse, error)
+
+	// GetConnectorWithResponse request
+	GetConnectorWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetConnectorResponse, error)
+
+	// UpdateConnectorWithBodyWithResponse request with any body
+	UpdateConnectorWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateConnectorResponse, error)
+
+	UpdateConnectorWithResponse(ctx context.Context, id string, body UpdateConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateConnectorResponse, error)
+
+	// ForceResyncConnectorWithResponse request
+	ForceResyncConnectorWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*ForceResyncConnectorResponse, error)
+
+	// GetConnectorKnowledgeBasesWithResponse request
+	GetConnectorKnowledgeBasesWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetConnectorKnowledgeBasesResponse, error)
+
+	// AssignConnectorToKnowledgeBasesWithBodyWithResponse request with any body
+	AssignConnectorToKnowledgeBasesWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignConnectorToKnowledgeBasesResponse, error)
+
+	AssignConnectorToKnowledgeBasesWithResponse(ctx context.Context, id string, body AssignConnectorToKnowledgeBasesJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignConnectorToKnowledgeBasesResponse, error)
+
+	// UnassignConnectorFromKnowledgeBaseWithResponse request
+	UnassignConnectorFromKnowledgeBaseWithResponse(ctx context.Context, id string, kbId string, reqEditors ...RequestEditorFn) (*UnassignConnectorFromKnowledgeBaseResponse, error)
+
+	// GetConnectorRunsWithResponse request
+	GetConnectorRunsWithResponse(ctx context.Context, id string, params *GetConnectorRunsParams, reqEditors ...RequestEditorFn) (*GetConnectorRunsResponse, error)
+
+	// GetConnectorRunWithResponse request
+	GetConnectorRunWithResponse(ctx context.Context, id string, runId string, reqEditors ...RequestEditorFn) (*GetConnectorRunResponse, error)
+
+	// SyncConnectorWithResponse request
+	SyncConnectorWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*SyncConnectorResponse, error)
+
+	// TestConnectorConnectionWithResponse request
+	TestConnectorConnectionWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*TestConnectorConnectionResponse, error)
+
 	// GetIdentityProvidersWithResponse request
 	GetIdentityProvidersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetIdentityProvidersResponse, error)
 
@@ -12278,6 +15079,28 @@ type ClientWithResponsesInterface interface {
 	// GetK8sImagePullSecretsWithResponse request
 	GetK8sImagePullSecretsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetK8sImagePullSecretsResponse, error)
 
+	// GetKnowledgeBasesWithResponse request
+	GetKnowledgeBasesWithResponse(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*GetKnowledgeBasesResponse, error)
+
+	// CreateKnowledgeBaseWithBodyWithResponse request with any body
+	CreateKnowledgeBaseWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateKnowledgeBaseResponse, error)
+
+	CreateKnowledgeBaseWithResponse(ctx context.Context, body CreateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateKnowledgeBaseResponse, error)
+
+	// DeleteKnowledgeBaseWithResponse request
+	DeleteKnowledgeBaseWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteKnowledgeBaseResponse, error)
+
+	// GetKnowledgeBaseWithResponse request
+	GetKnowledgeBaseWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetKnowledgeBaseResponse, error)
+
+	// UpdateKnowledgeBaseWithBodyWithResponse request with any body
+	UpdateKnowledgeBaseWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKnowledgeBaseResponse, error)
+
+	UpdateKnowledgeBaseWithResponse(ctx context.Context, id string, body UpdateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKnowledgeBaseResponse, error)
+
+	// GetKnowledgeBaseHealthWithResponse request
+	GetKnowledgeBaseHealthWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetKnowledgeBaseHealthResponse, error)
+
 	// GetLimitsWithResponse request
 	GetLimitsWithResponse(ctx context.Context, params *GetLimitsParams, reqEditors ...RequestEditorFn) (*GetLimitsResponse, error)
 
@@ -12322,6 +15145,22 @@ type ClientWithResponsesInterface interface {
 	// GetAvailableLlmProviderApiKeysWithResponse request
 	GetAvailableLlmProviderApiKeysWithResponse(ctx context.Context, params *GetAvailableLlmProviderApiKeysParams, reqEditors ...RequestEditorFn) (*GetAvailableLlmProviderApiKeysResponse, error)
 
+	// GetVirtualApiKeysWithResponse request
+	GetVirtualApiKeysWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetVirtualApiKeysResponse, error)
+
+	// CreateVirtualApiKeyWithBodyWithResponse request with any body
+	CreateVirtualApiKeyWithBodyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error)
+
+	CreateVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error)
+
+	// DeleteVirtualApiKeyWithResponse request
+	DeleteVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteVirtualApiKeyResponse, error)
+
+	// UpdateVirtualApiKeyWithBodyWithResponse request with any body
+	UpdateVirtualApiKeyWithBodyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error)
+
+	UpdateVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error)
+
 	// DeleteLlmProviderApiKeyWithResponse request
 	DeleteLlmProviderApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteLlmProviderApiKeyResponse, error)
 
@@ -12332,6 +15171,9 @@ type ClientWithResponsesInterface interface {
 	UpdateLlmProviderApiKeyWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateLlmProviderApiKeyResponse, error)
 
 	UpdateLlmProviderApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateLlmProviderApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateLlmProviderApiKeyResponse, error)
+
+	// GetAllVirtualApiKeysWithResponse request
+	GetAllVirtualApiKeysWithResponse(ctx context.Context, params *GetAllVirtualApiKeysParams, reqEditors ...RequestEditorFn) (*GetAllVirtualApiKeysResponse, error)
 
 	// GetMcpToolCallsWithResponse request
 	GetMcpToolCallsWithResponse(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*GetMcpToolCallsResponse, error)
@@ -12407,6 +15249,9 @@ type ClientWithResponsesInterface interface {
 	AddMcpServerInstallationRequestNoteWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AddMcpServerInstallationRequestNoteResponse, error)
 
 	AddMcpServerInstallationRequestNoteWithResponse(ctx context.Context, id openapi_types.UUID, body AddMcpServerInstallationRequestNoteJSONRequestBody, reqEditors ...RequestEditorFn) (*AddMcpServerInstallationRequestNoteResponse, error)
+
+	// GetMembersWithResponse request
+	GetMembersWithResponse(ctx context.Context, params *GetMembersParams, reqEditors ...RequestEditorFn) (*GetMembersResponse, error)
 
 	// GetOptimizationRulesWithResponse request
 	GetOptimizationRulesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOptimizationRulesResponse, error)
@@ -12487,6 +15332,25 @@ type ClientWithResponsesInterface interface {
 	UpdateSecuritySettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSecuritySettingsResponse, error)
 
 	UpdateSecuritySettingsWithResponse(ctx context.Context, body UpdateSecuritySettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSecuritySettingsResponse, error)
+
+	// GetRolesWithResponse request
+	GetRolesWithResponse(ctx context.Context, params *GetRolesParams, reqEditors ...RequestEditorFn) (*GetRolesResponse, error)
+
+	// CreateRoleWithBodyWithResponse request with any body
+	CreateRoleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateRoleResponse, error)
+
+	CreateRoleWithResponse(ctx context.Context, body CreateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateRoleResponse, error)
+
+	// DeleteRoleWithResponse request
+	DeleteRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*DeleteRoleResponse, error)
+
+	// GetRoleWithResponse request
+	GetRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*GetRoleResponse, error)
+
+	// UpdateRoleWithBodyWithResponse request with any body
+	UpdateRoleWithBodyWithResponse(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
+
+	UpdateRoleWithResponse(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error)
 
 	// GetScheduleTriggersWithResponse request
 	GetScheduleTriggersWithResponse(ctx context.Context, params *GetScheduleTriggersParams, reqEditors ...RequestEditorFn) (*GetScheduleTriggersResponse, error)
@@ -15235,6 +18099,1478 @@ func (r UpdateToolInvocationPolicyResponse) StatusCode() int {
 	return 0
 }
 
+type GetConnectorsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			AssignedAgents []struct {
+				AgentType string `json:"agentType"`
+				Id        string `json:"id"`
+				Name      string `json:"name"`
+			} `json:"assignedAgents"`
+			Checkpoint     interface{}                         `json:"checkpoint"`
+			Config         GetConnectors_200_Data_Config       `json:"config"`
+			ConnectorType  GetConnectors200DataConnectorType   `json:"connectorType"`
+			CreatedAt      time.Time                           `json:"createdAt"`
+			Description    *string                             `json:"description"`
+			Enabled        bool                                `json:"enabled"`
+			Id             openapi_types.UUID                  `json:"id"`
+			LastSyncAt     *time.Time                          `json:"lastSyncAt"`
+			LastSyncError  *string                             `json:"lastSyncError"`
+			LastSyncStatus *GetConnectors200DataLastSyncStatus `json:"lastSyncStatus"`
+			Name           string                              `json:"name"`
+			OrganizationId string                              `json:"organizationId"`
+			Schedule       string                              `json:"schedule"`
+			SecretId       *openapi_types.UUID                 `json:"secretId"`
+			TeamIds        []string                            `json:"teamIds"`
+			UpdatedAt      time.Time                           `json:"updatedAt"`
+			Visibility     GetConnectors200DataVisibility      `json:"visibility"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    GetConnectors400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    GetConnectors401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    GetConnectors403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    GetConnectors404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    GetConnectors409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    GetConnectors500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetConnectors200DataConfig0 struct {
+	CommentEmailBlacklist *[]string                       `json:"commentEmailBlacklist,omitempty"`
+	IsCloud               bool                            `json:"isCloud"`
+	JiraBaseUrl           interface{}                     `json:"jiraBaseUrl"`
+	JqlQuery              *string                         `json:"jqlQuery,omitempty"`
+	LabelsToSkip          *[]string                       `json:"labelsToSkip,omitempty"`
+	ProjectKey            *string                         `json:"projectKey,omitempty"`
+	Type                  GetConnectors200DataConfig0Type `json:"type"`
+}
+type GetConnectors200DataConfig0Type string
+type GetConnectors200DataConfig1 struct {
+	BatchSize     *float32                        `json:"batchSize,omitempty"`
+	ConfluenceUrl interface{}                     `json:"confluenceUrl"`
+	CqlQuery      *string                         `json:"cqlQuery,omitempty"`
+	IsCloud       bool                            `json:"isCloud"`
+	LabelsToSkip  *[]string                       `json:"labelsToSkip,omitempty"`
+	PageIds       *[]string                       `json:"pageIds,omitempty"`
+	SpaceKeys     *[]string                       `json:"spaceKeys,omitempty"`
+	Type          GetConnectors200DataConfig1Type `json:"type"`
+}
+type GetConnectors200DataConfig1Type string
+type GetConnectors200DataConfig2 struct {
+	GithubUrl            interface{}                     `json:"githubUrl"`
+	IncludeIssues        *bool                           `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                           `json:"includeMarkdownFiles,omitempty"`
+	IncludePullRequests  *bool                           `json:"includePullRequests,omitempty"`
+	LabelsToSkip         *[]string                       `json:"labelsToSkip,omitempty"`
+	Owner                string                          `json:"owner"`
+	Repos                *[]string                       `json:"repos,omitempty"`
+	Type                 GetConnectors200DataConfig2Type `json:"type"`
+}
+type GetConnectors200DataConfig2Type string
+type GetConnectors200DataConfig3 struct {
+	GitlabUrl            interface{}                     `json:"gitlabUrl"`
+	GroupId              *string                         `json:"groupId,omitempty"`
+	IncludeIssues        *bool                           `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                           `json:"includeMarkdownFiles,omitempty"`
+	IncludeMergeRequests *bool                           `json:"includeMergeRequests,omitempty"`
+	LabelsToSkip         *[]string                       `json:"labelsToSkip,omitempty"`
+	ProjectIds           *[]float32                      `json:"projectIds,omitempty"`
+	Type                 GetConnectors200DataConfig3Type `json:"type"`
+}
+type GetConnectors200DataConfig3Type string
+type GetConnectors200DataConfig4 struct {
+	AssignmentGroups      *[]string                       `json:"assignmentGroups,omitempty"`
+	BatchSize             *float32                        `json:"batchSize,omitempty"`
+	IncludeBusinessApps   *bool                           `json:"includeBusinessApps,omitempty"`
+	IncludeChangeRequests *bool                           `json:"includeChangeRequests,omitempty"`
+	IncludeChanges        *bool                           `json:"includeChanges,omitempty"`
+	IncludeIncidents      *bool                           `json:"includeIncidents,omitempty"`
+	IncludeProblems       *bool                           `json:"includeProblems,omitempty"`
+	InstanceUrl           interface{}                     `json:"instanceUrl"`
+	States                *[]string                       `json:"states,omitempty"`
+	SyncDataForLastMonths *float32                        `json:"syncDataForLastMonths,omitempty"`
+	Type                  GetConnectors200DataConfig4Type `json:"type"`
+}
+type GetConnectors200DataConfig4Type string
+type GetConnectors200DataConfig5 struct {
+	BatchSize   *float32                        `json:"batchSize,omitempty"`
+	DatabaseIds *[]string                       `json:"databaseIds,omitempty"`
+	PageIds     *[]string                       `json:"pageIds,omitempty"`
+	Type        GetConnectors200DataConfig5Type `json:"type"`
+}
+type GetConnectors200DataConfig5Type string
+type GetConnectors200DataConfig6 struct {
+	BatchSize    *float32                        `json:"batchSize,omitempty"`
+	DriveIds     *[]string                       `json:"driveIds,omitempty"`
+	FolderPath   *string                         `json:"folderPath,omitempty"`
+	IncludePages *bool                           `json:"includePages,omitempty"`
+	MaxDepth     *int                            `json:"maxDepth,omitempty"`
+	Recursive    *bool                           `json:"recursive,omitempty"`
+	SiteUrl      interface{}                     `json:"siteUrl"`
+	TenantId     string                          `json:"tenantId"`
+	Type         GetConnectors200DataConfig6Type `json:"type"`
+}
+type GetConnectors200DataConfig6Type string
+type GetConnectors200DataConfig7 struct {
+	BatchSize *float32                        `json:"batchSize,omitempty"`
+	DriveId   *string                         `json:"driveId,omitempty"`
+	DriveIds  *[]string                       `json:"driveIds,omitempty"`
+	FileTypes *[]string                       `json:"fileTypes,omitempty"`
+	FolderId  *string                         `json:"folderId,omitempty"`
+	MaxDepth  *int                            `json:"maxDepth,omitempty"`
+	Recursive *bool                           `json:"recursive,omitempty"`
+	Type      GetConnectors200DataConfig7Type `json:"type"`
+}
+type GetConnectors200DataConfig7Type string
+type GetConnectors200DataConfig8 struct {
+	BatchSize *float32                        `json:"batchSize,omitempty"`
+	FileTypes *[]string                       `json:"fileTypes,omitempty"`
+	MaxDepth  *float32                        `json:"maxDepth,omitempty"`
+	Recursive *bool                           `json:"recursive,omitempty"`
+	RootPath  *string                         `json:"rootPath,omitempty"`
+	Type      GetConnectors200DataConfig8Type `json:"type"`
+}
+type GetConnectors200DataConfig8Type string
+type GetConnectors200DataConfig9 struct {
+	ProjectGids  *[]string                       `json:"projectGids,omitempty"`
+	TagsToSkip   *[]string                       `json:"tagsToSkip,omitempty"`
+	Type         GetConnectors200DataConfig9Type `json:"type"`
+	WorkspaceGid string                          `json:"workspaceGid"`
+}
+type GetConnectors200DataConfig9Type string
+type GetConnectors200DataConfig10 struct {
+	BatchSize       *int                             `json:"batchSize,omitempty"`
+	IncludeComments *bool                            `json:"includeComments,omitempty"`
+	IncludeCycles   *bool                            `json:"includeCycles,omitempty"`
+	IncludeProjects *bool                            `json:"includeProjects,omitempty"`
+	LinearApiUrl    interface{}                      `json:"linearApiUrl"`
+	ProjectIds      *[]string                        `json:"projectIds,omitempty"`
+	States          *[]string                        `json:"states,omitempty"`
+	TeamIds         *[]string                        `json:"teamIds,omitempty"`
+	Type            GetConnectors200DataConfig10Type `json:"type"`
+}
+type GetConnectors200DataConfig10Type string
+type GetConnectors_200_Data_Config struct {
+	union json.RawMessage
+}
+type GetConnectors200DataConnectorType string
+type GetConnectors200DataLastSyncStatus string
+type GetConnectors200DataVisibility string
+type GetConnectors400ErrorType string
+type GetConnectors401ErrorType string
+type GetConnectors403ErrorType string
+type GetConnectors404ErrorType string
+type GetConnectors409ErrorType string
+type GetConnectors500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetConnectorsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetConnectorsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateConnectorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Checkpoint     interface{}                       `json:"checkpoint"`
+		Config         CreateConnector_200_Config        `json:"config"`
+		ConnectorType  CreateConnector200ConnectorType   `json:"connectorType"`
+		CreatedAt      time.Time                         `json:"createdAt"`
+		Description    *string                           `json:"description"`
+		Enabled        bool                              `json:"enabled"`
+		Id             openapi_types.UUID                `json:"id"`
+		LastSyncAt     *time.Time                        `json:"lastSyncAt"`
+		LastSyncError  *string                           `json:"lastSyncError"`
+		LastSyncStatus *CreateConnector200LastSyncStatus `json:"lastSyncStatus"`
+		Name           string                            `json:"name"`
+		OrganizationId string                            `json:"organizationId"`
+		Schedule       string                            `json:"schedule"`
+		SecretId       *openapi_types.UUID               `json:"secretId"`
+		TeamIds        []string                          `json:"teamIds"`
+		UpdatedAt      time.Time                         `json:"updatedAt"`
+		Visibility     CreateConnector200Visibility      `json:"visibility"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    CreateConnector400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    CreateConnector401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    CreateConnector403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    CreateConnector404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    CreateConnector409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    CreateConnector500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateConnector200Config0 struct {
+	CommentEmailBlacklist *[]string                     `json:"commentEmailBlacklist,omitempty"`
+	IsCloud               bool                          `json:"isCloud"`
+	JiraBaseUrl           interface{}                   `json:"jiraBaseUrl"`
+	JqlQuery              *string                       `json:"jqlQuery,omitempty"`
+	LabelsToSkip          *[]string                     `json:"labelsToSkip,omitempty"`
+	ProjectKey            *string                       `json:"projectKey,omitempty"`
+	Type                  CreateConnector200Config0Type `json:"type"`
+}
+type CreateConnector200Config0Type string
+type CreateConnector200Config1 struct {
+	BatchSize     *float32                      `json:"batchSize,omitempty"`
+	ConfluenceUrl interface{}                   `json:"confluenceUrl"`
+	CqlQuery      *string                       `json:"cqlQuery,omitempty"`
+	IsCloud       bool                          `json:"isCloud"`
+	LabelsToSkip  *[]string                     `json:"labelsToSkip,omitempty"`
+	PageIds       *[]string                     `json:"pageIds,omitempty"`
+	SpaceKeys     *[]string                     `json:"spaceKeys,omitempty"`
+	Type          CreateConnector200Config1Type `json:"type"`
+}
+type CreateConnector200Config1Type string
+type CreateConnector200Config2 struct {
+	GithubUrl            interface{}                   `json:"githubUrl"`
+	IncludeIssues        *bool                         `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                         `json:"includeMarkdownFiles,omitempty"`
+	IncludePullRequests  *bool                         `json:"includePullRequests,omitempty"`
+	LabelsToSkip         *[]string                     `json:"labelsToSkip,omitempty"`
+	Owner                string                        `json:"owner"`
+	Repos                *[]string                     `json:"repos,omitempty"`
+	Type                 CreateConnector200Config2Type `json:"type"`
+}
+type CreateConnector200Config2Type string
+type CreateConnector200Config3 struct {
+	GitlabUrl            interface{}                   `json:"gitlabUrl"`
+	GroupId              *string                       `json:"groupId,omitempty"`
+	IncludeIssues        *bool                         `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                         `json:"includeMarkdownFiles,omitempty"`
+	IncludeMergeRequests *bool                         `json:"includeMergeRequests,omitempty"`
+	LabelsToSkip         *[]string                     `json:"labelsToSkip,omitempty"`
+	ProjectIds           *[]float32                    `json:"projectIds,omitempty"`
+	Type                 CreateConnector200Config3Type `json:"type"`
+}
+type CreateConnector200Config3Type string
+type CreateConnector200Config4 struct {
+	AssignmentGroups      *[]string                     `json:"assignmentGroups,omitempty"`
+	BatchSize             *float32                      `json:"batchSize,omitempty"`
+	IncludeBusinessApps   *bool                         `json:"includeBusinessApps,omitempty"`
+	IncludeChangeRequests *bool                         `json:"includeChangeRequests,omitempty"`
+	IncludeChanges        *bool                         `json:"includeChanges,omitempty"`
+	IncludeIncidents      *bool                         `json:"includeIncidents,omitempty"`
+	IncludeProblems       *bool                         `json:"includeProblems,omitempty"`
+	InstanceUrl           interface{}                   `json:"instanceUrl"`
+	States                *[]string                     `json:"states,omitempty"`
+	SyncDataForLastMonths *float32                      `json:"syncDataForLastMonths,omitempty"`
+	Type                  CreateConnector200Config4Type `json:"type"`
+}
+type CreateConnector200Config4Type string
+type CreateConnector200Config5 struct {
+	BatchSize   *float32                      `json:"batchSize,omitempty"`
+	DatabaseIds *[]string                     `json:"databaseIds,omitempty"`
+	PageIds     *[]string                     `json:"pageIds,omitempty"`
+	Type        CreateConnector200Config5Type `json:"type"`
+}
+type CreateConnector200Config5Type string
+type CreateConnector200Config6 struct {
+	BatchSize    *float32                      `json:"batchSize,omitempty"`
+	DriveIds     *[]string                     `json:"driveIds,omitempty"`
+	FolderPath   *string                       `json:"folderPath,omitempty"`
+	IncludePages *bool                         `json:"includePages,omitempty"`
+	MaxDepth     *int                          `json:"maxDepth,omitempty"`
+	Recursive    *bool                         `json:"recursive,omitempty"`
+	SiteUrl      interface{}                   `json:"siteUrl"`
+	TenantId     string                        `json:"tenantId"`
+	Type         CreateConnector200Config6Type `json:"type"`
+}
+type CreateConnector200Config6Type string
+type CreateConnector200Config7 struct {
+	BatchSize *float32                      `json:"batchSize,omitempty"`
+	DriveId   *string                       `json:"driveId,omitempty"`
+	DriveIds  *[]string                     `json:"driveIds,omitempty"`
+	FileTypes *[]string                     `json:"fileTypes,omitempty"`
+	FolderId  *string                       `json:"folderId,omitempty"`
+	MaxDepth  *int                          `json:"maxDepth,omitempty"`
+	Recursive *bool                         `json:"recursive,omitempty"`
+	Type      CreateConnector200Config7Type `json:"type"`
+}
+type CreateConnector200Config7Type string
+type CreateConnector200Config8 struct {
+	BatchSize *float32                      `json:"batchSize,omitempty"`
+	FileTypes *[]string                     `json:"fileTypes,omitempty"`
+	MaxDepth  *float32                      `json:"maxDepth,omitempty"`
+	Recursive *bool                         `json:"recursive,omitempty"`
+	RootPath  *string                       `json:"rootPath,omitempty"`
+	Type      CreateConnector200Config8Type `json:"type"`
+}
+type CreateConnector200Config8Type string
+type CreateConnector200Config9 struct {
+	ProjectGids  *[]string                     `json:"projectGids,omitempty"`
+	TagsToSkip   *[]string                     `json:"tagsToSkip,omitempty"`
+	Type         CreateConnector200Config9Type `json:"type"`
+	WorkspaceGid string                        `json:"workspaceGid"`
+}
+type CreateConnector200Config9Type string
+type CreateConnector200Config10 struct {
+	BatchSize       *int                           `json:"batchSize,omitempty"`
+	IncludeComments *bool                          `json:"includeComments,omitempty"`
+	IncludeCycles   *bool                          `json:"includeCycles,omitempty"`
+	IncludeProjects *bool                          `json:"includeProjects,omitempty"`
+	LinearApiUrl    interface{}                    `json:"linearApiUrl"`
+	ProjectIds      *[]string                      `json:"projectIds,omitempty"`
+	States          *[]string                      `json:"states,omitempty"`
+	TeamIds         *[]string                      `json:"teamIds,omitempty"`
+	Type            CreateConnector200Config10Type `json:"type"`
+}
+type CreateConnector200Config10Type string
+type CreateConnector_200_Config struct {
+	union json.RawMessage
+}
+type CreateConnector200ConnectorType string
+type CreateConnector200LastSyncStatus string
+type CreateConnector200Visibility string
+type CreateConnector400ErrorType string
+type CreateConnector401ErrorType string
+type CreateConnector403ErrorType string
+type CreateConnector404ErrorType string
+type CreateConnector409ErrorType string
+type CreateConnector500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateConnectorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateConnectorResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteConnectorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    DeleteConnector400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    DeleteConnector401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    DeleteConnector403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    DeleteConnector404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    DeleteConnector409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    DeleteConnector500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteConnector400ErrorType string
+type DeleteConnector401ErrorType string
+type DeleteConnector403ErrorType string
+type DeleteConnector404ErrorType string
+type DeleteConnector409ErrorType string
+type DeleteConnector500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteConnectorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteConnectorResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetConnectorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Checkpoint        interface{}                    `json:"checkpoint"`
+		Config            GetConnector_200_Config        `json:"config"`
+		ConnectorType     GetConnector200ConnectorType   `json:"connectorType"`
+		CreatedAt         time.Time                      `json:"createdAt"`
+		Description       *string                        `json:"description"`
+		Enabled           bool                           `json:"enabled"`
+		Id                openapi_types.UUID             `json:"id"`
+		LastSyncAt        *time.Time                     `json:"lastSyncAt"`
+		LastSyncError     *string                        `json:"lastSyncError"`
+		LastSyncStatus    *GetConnector200LastSyncStatus `json:"lastSyncStatus"`
+		Name              string                         `json:"name"`
+		OrganizationId    string                         `json:"organizationId"`
+		Schedule          string                         `json:"schedule"`
+		SecretId          *openapi_types.UUID            `json:"secretId"`
+		TeamIds           []string                       `json:"teamIds"`
+		TotalDocsIngested float32                        `json:"totalDocsIngested"`
+		UpdatedAt         time.Time                      `json:"updatedAt"`
+		Visibility        GetConnector200Visibility      `json:"visibility"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetConnector400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetConnector401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetConnector403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetConnector404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetConnector409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                   `json:"message"`
+			Type    GetConnector500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetConnector200Config0 struct {
+	CommentEmailBlacklist *[]string                  `json:"commentEmailBlacklist,omitempty"`
+	IsCloud               bool                       `json:"isCloud"`
+	JiraBaseUrl           interface{}                `json:"jiraBaseUrl"`
+	JqlQuery              *string                    `json:"jqlQuery,omitempty"`
+	LabelsToSkip          *[]string                  `json:"labelsToSkip,omitempty"`
+	ProjectKey            *string                    `json:"projectKey,omitempty"`
+	Type                  GetConnector200Config0Type `json:"type"`
+}
+type GetConnector200Config0Type string
+type GetConnector200Config1 struct {
+	BatchSize     *float32                   `json:"batchSize,omitempty"`
+	ConfluenceUrl interface{}                `json:"confluenceUrl"`
+	CqlQuery      *string                    `json:"cqlQuery,omitempty"`
+	IsCloud       bool                       `json:"isCloud"`
+	LabelsToSkip  *[]string                  `json:"labelsToSkip,omitempty"`
+	PageIds       *[]string                  `json:"pageIds,omitempty"`
+	SpaceKeys     *[]string                  `json:"spaceKeys,omitempty"`
+	Type          GetConnector200Config1Type `json:"type"`
+}
+type GetConnector200Config1Type string
+type GetConnector200Config2 struct {
+	GithubUrl            interface{}                `json:"githubUrl"`
+	IncludeIssues        *bool                      `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                      `json:"includeMarkdownFiles,omitempty"`
+	IncludePullRequests  *bool                      `json:"includePullRequests,omitempty"`
+	LabelsToSkip         *[]string                  `json:"labelsToSkip,omitempty"`
+	Owner                string                     `json:"owner"`
+	Repos                *[]string                  `json:"repos,omitempty"`
+	Type                 GetConnector200Config2Type `json:"type"`
+}
+type GetConnector200Config2Type string
+type GetConnector200Config3 struct {
+	GitlabUrl            interface{}                `json:"gitlabUrl"`
+	GroupId              *string                    `json:"groupId,omitempty"`
+	IncludeIssues        *bool                      `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                      `json:"includeMarkdownFiles,omitempty"`
+	IncludeMergeRequests *bool                      `json:"includeMergeRequests,omitempty"`
+	LabelsToSkip         *[]string                  `json:"labelsToSkip,omitempty"`
+	ProjectIds           *[]float32                 `json:"projectIds,omitempty"`
+	Type                 GetConnector200Config3Type `json:"type"`
+}
+type GetConnector200Config3Type string
+type GetConnector200Config4 struct {
+	AssignmentGroups      *[]string                  `json:"assignmentGroups,omitempty"`
+	BatchSize             *float32                   `json:"batchSize,omitempty"`
+	IncludeBusinessApps   *bool                      `json:"includeBusinessApps,omitempty"`
+	IncludeChangeRequests *bool                      `json:"includeChangeRequests,omitempty"`
+	IncludeChanges        *bool                      `json:"includeChanges,omitempty"`
+	IncludeIncidents      *bool                      `json:"includeIncidents,omitempty"`
+	IncludeProblems       *bool                      `json:"includeProblems,omitempty"`
+	InstanceUrl           interface{}                `json:"instanceUrl"`
+	States                *[]string                  `json:"states,omitempty"`
+	SyncDataForLastMonths *float32                   `json:"syncDataForLastMonths,omitempty"`
+	Type                  GetConnector200Config4Type `json:"type"`
+}
+type GetConnector200Config4Type string
+type GetConnector200Config5 struct {
+	BatchSize   *float32                   `json:"batchSize,omitempty"`
+	DatabaseIds *[]string                  `json:"databaseIds,omitempty"`
+	PageIds     *[]string                  `json:"pageIds,omitempty"`
+	Type        GetConnector200Config5Type `json:"type"`
+}
+type GetConnector200Config5Type string
+type GetConnector200Config6 struct {
+	BatchSize    *float32                   `json:"batchSize,omitempty"`
+	DriveIds     *[]string                  `json:"driveIds,omitempty"`
+	FolderPath   *string                    `json:"folderPath,omitempty"`
+	IncludePages *bool                      `json:"includePages,omitempty"`
+	MaxDepth     *int                       `json:"maxDepth,omitempty"`
+	Recursive    *bool                      `json:"recursive,omitempty"`
+	SiteUrl      interface{}                `json:"siteUrl"`
+	TenantId     string                     `json:"tenantId"`
+	Type         GetConnector200Config6Type `json:"type"`
+}
+type GetConnector200Config6Type string
+type GetConnector200Config7 struct {
+	BatchSize *float32                   `json:"batchSize,omitempty"`
+	DriveId   *string                    `json:"driveId,omitempty"`
+	DriveIds  *[]string                  `json:"driveIds,omitempty"`
+	FileTypes *[]string                  `json:"fileTypes,omitempty"`
+	FolderId  *string                    `json:"folderId,omitempty"`
+	MaxDepth  *int                       `json:"maxDepth,omitempty"`
+	Recursive *bool                      `json:"recursive,omitempty"`
+	Type      GetConnector200Config7Type `json:"type"`
+}
+type GetConnector200Config7Type string
+type GetConnector200Config8 struct {
+	BatchSize *float32                   `json:"batchSize,omitempty"`
+	FileTypes *[]string                  `json:"fileTypes,omitempty"`
+	MaxDepth  *float32                   `json:"maxDepth,omitempty"`
+	Recursive *bool                      `json:"recursive,omitempty"`
+	RootPath  *string                    `json:"rootPath,omitempty"`
+	Type      GetConnector200Config8Type `json:"type"`
+}
+type GetConnector200Config8Type string
+type GetConnector200Config9 struct {
+	ProjectGids  *[]string                  `json:"projectGids,omitempty"`
+	TagsToSkip   *[]string                  `json:"tagsToSkip,omitempty"`
+	Type         GetConnector200Config9Type `json:"type"`
+	WorkspaceGid string                     `json:"workspaceGid"`
+}
+type GetConnector200Config9Type string
+type GetConnector200Config10 struct {
+	BatchSize       *int                        `json:"batchSize,omitempty"`
+	IncludeComments *bool                       `json:"includeComments,omitempty"`
+	IncludeCycles   *bool                       `json:"includeCycles,omitempty"`
+	IncludeProjects *bool                       `json:"includeProjects,omitempty"`
+	LinearApiUrl    interface{}                 `json:"linearApiUrl"`
+	ProjectIds      *[]string                   `json:"projectIds,omitempty"`
+	States          *[]string                   `json:"states,omitempty"`
+	TeamIds         *[]string                   `json:"teamIds,omitempty"`
+	Type            GetConnector200Config10Type `json:"type"`
+}
+type GetConnector200Config10Type string
+type GetConnector_200_Config struct {
+	union json.RawMessage
+}
+type GetConnector200ConnectorType string
+type GetConnector200LastSyncStatus string
+type GetConnector200Visibility string
+type GetConnector400ErrorType string
+type GetConnector401ErrorType string
+type GetConnector403ErrorType string
+type GetConnector404ErrorType string
+type GetConnector409ErrorType string
+type GetConnector500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetConnectorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetConnectorResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateConnectorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Checkpoint     interface{}                       `json:"checkpoint"`
+		Config         UpdateConnector_200_Config        `json:"config"`
+		ConnectorType  UpdateConnector200ConnectorType   `json:"connectorType"`
+		CreatedAt      time.Time                         `json:"createdAt"`
+		Description    *string                           `json:"description"`
+		Enabled        bool                              `json:"enabled"`
+		Id             openapi_types.UUID                `json:"id"`
+		LastSyncAt     *time.Time                        `json:"lastSyncAt"`
+		LastSyncError  *string                           `json:"lastSyncError"`
+		LastSyncStatus *UpdateConnector200LastSyncStatus `json:"lastSyncStatus"`
+		Name           string                            `json:"name"`
+		OrganizationId string                            `json:"organizationId"`
+		Schedule       string                            `json:"schedule"`
+		SecretId       *openapi_types.UUID               `json:"secretId"`
+		TeamIds        []string                          `json:"teamIds"`
+		UpdatedAt      time.Time                         `json:"updatedAt"`
+		Visibility     UpdateConnector200Visibility      `json:"visibility"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    UpdateConnector400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    UpdateConnector401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    UpdateConnector403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    UpdateConnector404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    UpdateConnector409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    UpdateConnector500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateConnector200Config0 struct {
+	CommentEmailBlacklist *[]string                     `json:"commentEmailBlacklist,omitempty"`
+	IsCloud               bool                          `json:"isCloud"`
+	JiraBaseUrl           interface{}                   `json:"jiraBaseUrl"`
+	JqlQuery              *string                       `json:"jqlQuery,omitempty"`
+	LabelsToSkip          *[]string                     `json:"labelsToSkip,omitempty"`
+	ProjectKey            *string                       `json:"projectKey,omitempty"`
+	Type                  UpdateConnector200Config0Type `json:"type"`
+}
+type UpdateConnector200Config0Type string
+type UpdateConnector200Config1 struct {
+	BatchSize     *float32                      `json:"batchSize,omitempty"`
+	ConfluenceUrl interface{}                   `json:"confluenceUrl"`
+	CqlQuery      *string                       `json:"cqlQuery,omitempty"`
+	IsCloud       bool                          `json:"isCloud"`
+	LabelsToSkip  *[]string                     `json:"labelsToSkip,omitempty"`
+	PageIds       *[]string                     `json:"pageIds,omitempty"`
+	SpaceKeys     *[]string                     `json:"spaceKeys,omitempty"`
+	Type          UpdateConnector200Config1Type `json:"type"`
+}
+type UpdateConnector200Config1Type string
+type UpdateConnector200Config2 struct {
+	GithubUrl            interface{}                   `json:"githubUrl"`
+	IncludeIssues        *bool                         `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                         `json:"includeMarkdownFiles,omitempty"`
+	IncludePullRequests  *bool                         `json:"includePullRequests,omitempty"`
+	LabelsToSkip         *[]string                     `json:"labelsToSkip,omitempty"`
+	Owner                string                        `json:"owner"`
+	Repos                *[]string                     `json:"repos,omitempty"`
+	Type                 UpdateConnector200Config2Type `json:"type"`
+}
+type UpdateConnector200Config2Type string
+type UpdateConnector200Config3 struct {
+	GitlabUrl            interface{}                   `json:"gitlabUrl"`
+	GroupId              *string                       `json:"groupId,omitempty"`
+	IncludeIssues        *bool                         `json:"includeIssues,omitempty"`
+	IncludeMarkdownFiles *bool                         `json:"includeMarkdownFiles,omitempty"`
+	IncludeMergeRequests *bool                         `json:"includeMergeRequests,omitempty"`
+	LabelsToSkip         *[]string                     `json:"labelsToSkip,omitempty"`
+	ProjectIds           *[]float32                    `json:"projectIds,omitempty"`
+	Type                 UpdateConnector200Config3Type `json:"type"`
+}
+type UpdateConnector200Config3Type string
+type UpdateConnector200Config4 struct {
+	AssignmentGroups      *[]string                     `json:"assignmentGroups,omitempty"`
+	BatchSize             *float32                      `json:"batchSize,omitempty"`
+	IncludeBusinessApps   *bool                         `json:"includeBusinessApps,omitempty"`
+	IncludeChangeRequests *bool                         `json:"includeChangeRequests,omitempty"`
+	IncludeChanges        *bool                         `json:"includeChanges,omitempty"`
+	IncludeIncidents      *bool                         `json:"includeIncidents,omitempty"`
+	IncludeProblems       *bool                         `json:"includeProblems,omitempty"`
+	InstanceUrl           interface{}                   `json:"instanceUrl"`
+	States                *[]string                     `json:"states,omitempty"`
+	SyncDataForLastMonths *float32                      `json:"syncDataForLastMonths,omitempty"`
+	Type                  UpdateConnector200Config4Type `json:"type"`
+}
+type UpdateConnector200Config4Type string
+type UpdateConnector200Config5 struct {
+	BatchSize   *float32                      `json:"batchSize,omitempty"`
+	DatabaseIds *[]string                     `json:"databaseIds,omitempty"`
+	PageIds     *[]string                     `json:"pageIds,omitempty"`
+	Type        UpdateConnector200Config5Type `json:"type"`
+}
+type UpdateConnector200Config5Type string
+type UpdateConnector200Config6 struct {
+	BatchSize    *float32                      `json:"batchSize,omitempty"`
+	DriveIds     *[]string                     `json:"driveIds,omitempty"`
+	FolderPath   *string                       `json:"folderPath,omitempty"`
+	IncludePages *bool                         `json:"includePages,omitempty"`
+	MaxDepth     *int                          `json:"maxDepth,omitempty"`
+	Recursive    *bool                         `json:"recursive,omitempty"`
+	SiteUrl      interface{}                   `json:"siteUrl"`
+	TenantId     string                        `json:"tenantId"`
+	Type         UpdateConnector200Config6Type `json:"type"`
+}
+type UpdateConnector200Config6Type string
+type UpdateConnector200Config7 struct {
+	BatchSize *float32                      `json:"batchSize,omitempty"`
+	DriveId   *string                       `json:"driveId,omitempty"`
+	DriveIds  *[]string                     `json:"driveIds,omitempty"`
+	FileTypes *[]string                     `json:"fileTypes,omitempty"`
+	FolderId  *string                       `json:"folderId,omitempty"`
+	MaxDepth  *int                          `json:"maxDepth,omitempty"`
+	Recursive *bool                         `json:"recursive,omitempty"`
+	Type      UpdateConnector200Config7Type `json:"type"`
+}
+type UpdateConnector200Config7Type string
+type UpdateConnector200Config8 struct {
+	BatchSize *float32                      `json:"batchSize,omitempty"`
+	FileTypes *[]string                     `json:"fileTypes,omitempty"`
+	MaxDepth  *float32                      `json:"maxDepth,omitempty"`
+	Recursive *bool                         `json:"recursive,omitempty"`
+	RootPath  *string                       `json:"rootPath,omitempty"`
+	Type      UpdateConnector200Config8Type `json:"type"`
+}
+type UpdateConnector200Config8Type string
+type UpdateConnector200Config9 struct {
+	ProjectGids  *[]string                     `json:"projectGids,omitempty"`
+	TagsToSkip   *[]string                     `json:"tagsToSkip,omitempty"`
+	Type         UpdateConnector200Config9Type `json:"type"`
+	WorkspaceGid string                        `json:"workspaceGid"`
+}
+type UpdateConnector200Config9Type string
+type UpdateConnector200Config10 struct {
+	BatchSize       *int                           `json:"batchSize,omitempty"`
+	IncludeComments *bool                          `json:"includeComments,omitempty"`
+	IncludeCycles   *bool                          `json:"includeCycles,omitempty"`
+	IncludeProjects *bool                          `json:"includeProjects,omitempty"`
+	LinearApiUrl    interface{}                    `json:"linearApiUrl"`
+	ProjectIds      *[]string                      `json:"projectIds,omitempty"`
+	States          *[]string                      `json:"states,omitempty"`
+	TeamIds         *[]string                      `json:"teamIds,omitempty"`
+	Type            UpdateConnector200Config10Type `json:"type"`
+}
+type UpdateConnector200Config10Type string
+type UpdateConnector_200_Config struct {
+	union json.RawMessage
+}
+type UpdateConnector200ConnectorType string
+type UpdateConnector200LastSyncStatus string
+type UpdateConnector200Visibility string
+type UpdateConnector400ErrorType string
+type UpdateConnector401ErrorType string
+type UpdateConnector403ErrorType string
+type UpdateConnector404ErrorType string
+type UpdateConnector409ErrorType string
+type UpdateConnector500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateConnectorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateConnectorResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ForceResyncConnectorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Status string `json:"status"`
+		TaskId string `json:"taskId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    ForceResyncConnector400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    ForceResyncConnector401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    ForceResyncConnector403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    ForceResyncConnector404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    ForceResyncConnector409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    ForceResyncConnector500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type ForceResyncConnector400ErrorType string
+type ForceResyncConnector401ErrorType string
+type ForceResyncConnector403ErrorType string
+type ForceResyncConnector404ErrorType string
+type ForceResyncConnector409ErrorType string
+type ForceResyncConnector500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r ForceResyncConnectorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ForceResyncConnectorResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetConnectorKnowledgeBasesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			CreatedAt      time.Time          `json:"createdAt"`
+			Description    *string            `json:"description"`
+			Id             openapi_types.UUID `json:"id"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			Status         string             `json:"status"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		} `json:"data"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetConnectorKnowledgeBases400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetConnectorKnowledgeBases401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetConnectorKnowledgeBases403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetConnectorKnowledgeBases404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetConnectorKnowledgeBases409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                 `json:"message"`
+			Type    GetConnectorKnowledgeBases500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetConnectorKnowledgeBases400ErrorType string
+type GetConnectorKnowledgeBases401ErrorType string
+type GetConnectorKnowledgeBases403ErrorType string
+type GetConnectorKnowledgeBases404ErrorType string
+type GetConnectorKnowledgeBases409ErrorType string
+type GetConnectorKnowledgeBases500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetConnectorKnowledgeBasesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetConnectorKnowledgeBasesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type AssignConnectorToKnowledgeBasesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    AssignConnectorToKnowledgeBases400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    AssignConnectorToKnowledgeBases401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    AssignConnectorToKnowledgeBases403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    AssignConnectorToKnowledgeBases404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    AssignConnectorToKnowledgeBases409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                      `json:"message"`
+			Type    AssignConnectorToKnowledgeBases500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type AssignConnectorToKnowledgeBases400ErrorType string
+type AssignConnectorToKnowledgeBases401ErrorType string
+type AssignConnectorToKnowledgeBases403ErrorType string
+type AssignConnectorToKnowledgeBases404ErrorType string
+type AssignConnectorToKnowledgeBases409ErrorType string
+type AssignConnectorToKnowledgeBases500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r AssignConnectorToKnowledgeBasesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AssignConnectorToKnowledgeBasesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UnassignConnectorFromKnowledgeBaseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    UnassignConnectorFromKnowledgeBase400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    UnassignConnectorFromKnowledgeBase401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    UnassignConnectorFromKnowledgeBase403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    UnassignConnectorFromKnowledgeBase404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    UnassignConnectorFromKnowledgeBase409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                                         `json:"message"`
+			Type    UnassignConnectorFromKnowledgeBase500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UnassignConnectorFromKnowledgeBase400ErrorType string
+type UnassignConnectorFromKnowledgeBase401ErrorType string
+type UnassignConnectorFromKnowledgeBase403ErrorType string
+type UnassignConnectorFromKnowledgeBase404ErrorType string
+type UnassignConnectorFromKnowledgeBase409ErrorType string
+type UnassignConnectorFromKnowledgeBase500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UnassignConnectorFromKnowledgeBaseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UnassignConnectorFromKnowledgeBaseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetConnectorRunsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			Checkpoint         interface{}                   `json:"checkpoint"`
+			CompletedAt        *time.Time                    `json:"completedAt"`
+			CompletedBatches   *int                          `json:"completedBatches"`
+			ConnectorId        openapi_types.UUID            `json:"connectorId"`
+			CreatedAt          time.Time                     `json:"createdAt"`
+			DocumentsIngested  *int                          `json:"documentsIngested"`
+			DocumentsProcessed *int                          `json:"documentsProcessed"`
+			Error              *string                       `json:"error"`
+			Id                 openapi_types.UUID            `json:"id"`
+			ItemErrors         *int                          `json:"itemErrors"`
+			StartedAt          time.Time                     `json:"startedAt"`
+			Status             GetConnectorRuns200DataStatus `json:"status"`
+			TotalBatches       *int                          `json:"totalBatches"`
+			TotalItems         *int                          `json:"totalItems"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetConnectorRuns400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetConnectorRuns401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetConnectorRuns403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetConnectorRuns404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetConnectorRuns409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetConnectorRuns500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetConnectorRuns200DataStatus string
+type GetConnectorRuns400ErrorType string
+type GetConnectorRuns401ErrorType string
+type GetConnectorRuns403ErrorType string
+type GetConnectorRuns404ErrorType string
+type GetConnectorRuns409ErrorType string
+type GetConnectorRuns500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetConnectorRunsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetConnectorRunsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetConnectorRunResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Checkpoint         interface{}              `json:"checkpoint"`
+		CompletedAt        *time.Time               `json:"completedAt"`
+		CompletedBatches   *int                     `json:"completedBatches"`
+		ConnectorId        openapi_types.UUID       `json:"connectorId"`
+		CreatedAt          time.Time                `json:"createdAt"`
+		DocumentsIngested  *int                     `json:"documentsIngested"`
+		DocumentsProcessed *int                     `json:"documentsProcessed"`
+		Error              *string                  `json:"error"`
+		Id                 openapi_types.UUID       `json:"id"`
+		ItemErrors         *int                     `json:"itemErrors"`
+		Logs               *string                  `json:"logs"`
+		StartedAt          time.Time                `json:"startedAt"`
+		Status             GetConnectorRun200Status `json:"status"`
+		TotalBatches       *int                     `json:"totalBatches"`
+		TotalItems         *int                     `json:"totalItems"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetConnectorRun400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetConnectorRun401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetConnectorRun403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetConnectorRun404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetConnectorRun409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                      `json:"message"`
+			Type    GetConnectorRun500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetConnectorRun200Status string
+type GetConnectorRun400ErrorType string
+type GetConnectorRun401ErrorType string
+type GetConnectorRun403ErrorType string
+type GetConnectorRun404ErrorType string
+type GetConnectorRun409ErrorType string
+type GetConnectorRun500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetConnectorRunResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetConnectorRunResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SyncConnectorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Status string `json:"status"`
+		TaskId string `json:"taskId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncConnector400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncConnector401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncConnector403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncConnector404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncConnector409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                    `json:"message"`
+			Type    SyncConnector500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type SyncConnector400ErrorType string
+type SyncConnector401ErrorType string
+type SyncConnector403ErrorType string
+type SyncConnector404ErrorType string
+type SyncConnector409ErrorType string
+type SyncConnector500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r SyncConnectorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SyncConnectorResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type TestConnectorConnectionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Error   *string `json:"error,omitempty"`
+		Success bool    `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    TestConnectorConnection400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    TestConnectorConnection401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    TestConnectorConnection403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    TestConnectorConnection404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    TestConnectorConnection409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                              `json:"message"`
+			Type    TestConnectorConnection500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type TestConnectorConnection400ErrorType string
+type TestConnectorConnection401ErrorType string
+type TestConnectorConnection403ErrorType string
+type TestConnectorConnection404ErrorType string
+type TestConnectorConnection409ErrorType string
+type TestConnectorConnection500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r TestConnectorConnectionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TestConnectorConnectionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetIdentityProvidersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -17559,6 +21895,450 @@ func (r GetK8sImagePullSecretsResponse) StatusCode() int {
 	return 0
 }
 
+type GetKnowledgeBasesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			AssignedAgents []struct {
+				AgentType string `json:"agentType"`
+				Id        string `json:"id"`
+				Name      string `json:"name"`
+			} `json:"assignedAgents"`
+			Connectors []struct {
+				ConnectorType GetKnowledgeBases200DataConnectorsConnectorType `json:"connectorType"`
+				Id            string                                          `json:"id"`
+				Name          string                                          `json:"name"`
+			} `json:"connectors"`
+			CreatedAt        time.Time          `json:"createdAt"`
+			Description      *string            `json:"description"`
+			Id               openapi_types.UUID `json:"id"`
+			Name             string             `json:"name"`
+			OrganizationId   string             `json:"organizationId"`
+			Status           string             `json:"status"`
+			TotalDocsIndexed float32            `json:"totalDocsIndexed"`
+			UpdatedAt        time.Time          `json:"updatedAt"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetKnowledgeBases500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetKnowledgeBases200DataConnectorsConnectorType string
+type GetKnowledgeBases400ErrorType string
+type GetKnowledgeBases401ErrorType string
+type GetKnowledgeBases403ErrorType string
+type GetKnowledgeBases404ErrorType string
+type GetKnowledgeBases409ErrorType string
+type GetKnowledgeBases500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetKnowledgeBasesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKnowledgeBasesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateKnowledgeBaseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time          `json:"createdAt"`
+		Description    *string            `json:"description"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		Status         string             `json:"status"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateKnowledgeBase500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateKnowledgeBase400ErrorType string
+type CreateKnowledgeBase401ErrorType string
+type CreateKnowledgeBase403ErrorType string
+type CreateKnowledgeBase404ErrorType string
+type CreateKnowledgeBase409ErrorType string
+type CreateKnowledgeBase500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateKnowledgeBaseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateKnowledgeBaseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteKnowledgeBaseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteKnowledgeBase500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteKnowledgeBase400ErrorType string
+type DeleteKnowledgeBase401ErrorType string
+type DeleteKnowledgeBase403ErrorType string
+type DeleteKnowledgeBase404ErrorType string
+type DeleteKnowledgeBase409ErrorType string
+type DeleteKnowledgeBase500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteKnowledgeBaseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteKnowledgeBaseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetKnowledgeBaseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time          `json:"createdAt"`
+		Description    *string            `json:"description"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		Status         string             `json:"status"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                       `json:"message"`
+			Type    GetKnowledgeBase500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetKnowledgeBase400ErrorType string
+type GetKnowledgeBase401ErrorType string
+type GetKnowledgeBase403ErrorType string
+type GetKnowledgeBase404ErrorType string
+type GetKnowledgeBase409ErrorType string
+type GetKnowledgeBase500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetKnowledgeBaseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKnowledgeBaseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateKnowledgeBaseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time          `json:"createdAt"`
+		Description    *string            `json:"description"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		Status         string             `json:"status"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateKnowledgeBase500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateKnowledgeBase400ErrorType string
+type UpdateKnowledgeBase401ErrorType string
+type UpdateKnowledgeBase403ErrorType string
+type UpdateKnowledgeBase404ErrorType string
+type UpdateKnowledgeBase409ErrorType string
+type UpdateKnowledgeBase500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateKnowledgeBaseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateKnowledgeBaseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetKnowledgeBaseHealthResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Message *string                         `json:"message,omitempty"`
+		Status  GetKnowledgeBaseHealth200Status `json:"status"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                             `json:"message"`
+			Type    GetKnowledgeBaseHealth500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetKnowledgeBaseHealth200Status string
+type GetKnowledgeBaseHealth400ErrorType string
+type GetKnowledgeBaseHealth401ErrorType string
+type GetKnowledgeBaseHealth403ErrorType string
+type GetKnowledgeBaseHealth404ErrorType string
+type GetKnowledgeBaseHealth409ErrorType string
+type GetKnowledgeBaseHealth500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetKnowledgeBaseHealthResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKnowledgeBaseHealthResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetLimitsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -18542,6 +23322,311 @@ func (r GetAvailableLlmProviderApiKeysResponse) StatusCode() int {
 	return 0
 }
 
+type GetVirtualApiKeysResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		AuthorId     *string                   `json:"authorId"`
+		ChatApiKeyId openapi_types.UUID        `json:"chatApiKeyId"`
+		CreatedAt    time.Time                 `json:"createdAt"`
+		ExpiresAt    *time.Time                `json:"expiresAt"`
+		Id           openapi_types.UUID        `json:"id"`
+		LastUsedAt   *time.Time                `json:"lastUsedAt"`
+		Name         string                    `json:"name"`
+		Scope        GetVirtualApiKeys200Scope `json:"scope"`
+		SecretId     openapi_types.UUID        `json:"secretId"`
+		TokenStart   string                    `json:"tokenStart"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                        `json:"message"`
+			Type    GetVirtualApiKeys500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetVirtualApiKeys200Scope string
+type GetVirtualApiKeys400ErrorType string
+type GetVirtualApiKeys401ErrorType string
+type GetVirtualApiKeys403ErrorType string
+type GetVirtualApiKeys404ErrorType string
+type GetVirtualApiKeys409ErrorType string
+type GetVirtualApiKeys500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetVirtualApiKeysResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetVirtualApiKeysResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateVirtualApiKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId     *string                     `json:"authorId"`
+		AuthorName   *string                     `json:"authorName"`
+		ChatApiKeyId openapi_types.UUID          `json:"chatApiKeyId"`
+		CreatedAt    time.Time                   `json:"createdAt"`
+		ExpiresAt    *time.Time                  `json:"expiresAt"`
+		Id           openapi_types.UUID          `json:"id"`
+		LastUsedAt   *time.Time                  `json:"lastUsedAt"`
+		Name         string                      `json:"name"`
+		Scope        CreateVirtualApiKey200Scope `json:"scope"`
+		SecretId     openapi_types.UUID          `json:"secretId"`
+		Teams        []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TokenStart string `json:"tokenStart"`
+		Value      string `json:"value"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    CreateVirtualApiKey500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateVirtualApiKey200Scope string
+type CreateVirtualApiKey400ErrorType string
+type CreateVirtualApiKey401ErrorType string
+type CreateVirtualApiKey403ErrorType string
+type CreateVirtualApiKey404ErrorType string
+type CreateVirtualApiKey409ErrorType string
+type CreateVirtualApiKey500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateVirtualApiKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateVirtualApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteVirtualApiKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    DeleteVirtualApiKey500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteVirtualApiKey400ErrorType string
+type DeleteVirtualApiKey401ErrorType string
+type DeleteVirtualApiKey403ErrorType string
+type DeleteVirtualApiKey404ErrorType string
+type DeleteVirtualApiKey409ErrorType string
+type DeleteVirtualApiKey500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteVirtualApiKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteVirtualApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateVirtualApiKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId     *string                     `json:"authorId"`
+		AuthorName   *string                     `json:"authorName"`
+		ChatApiKeyId openapi_types.UUID          `json:"chatApiKeyId"`
+		CreatedAt    time.Time                   `json:"createdAt"`
+		ExpiresAt    *time.Time                  `json:"expiresAt"`
+		Id           openapi_types.UUID          `json:"id"`
+		LastUsedAt   *time.Time                  `json:"lastUsedAt"`
+		Name         string                      `json:"name"`
+		Scope        UpdateVirtualApiKey200Scope `json:"scope"`
+		SecretId     openapi_types.UUID          `json:"secretId"`
+		Teams        []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TokenStart string `json:"tokenStart"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                          `json:"message"`
+			Type    UpdateVirtualApiKey500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateVirtualApiKey200Scope string
+type UpdateVirtualApiKey400ErrorType string
+type UpdateVirtualApiKey401ErrorType string
+type UpdateVirtualApiKey403ErrorType string
+type UpdateVirtualApiKey404ErrorType string
+type UpdateVirtualApiKey409ErrorType string
+type UpdateVirtualApiKey500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateVirtualApiKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateVirtualApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeleteLlmProviderApiKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -18770,6 +23855,100 @@ func (r UpdateLlmProviderApiKeyResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateLlmProviderApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAllVirtualApiKeysResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			AuthorId          *string                          `json:"authorId"`
+			AuthorName        *string                          `json:"authorName"`
+			ChatApiKeyId      openapi_types.UUID               `json:"chatApiKeyId"`
+			CreatedAt         time.Time                        `json:"createdAt"`
+			ExpiresAt         *time.Time                       `json:"expiresAt"`
+			Id                openapi_types.UUID               `json:"id"`
+			LastUsedAt        *time.Time                       `json:"lastUsedAt"`
+			Name              string                           `json:"name"`
+			ParentKeyBaseUrl  *string                          `json:"parentKeyBaseUrl"`
+			ParentKeyName     string                           `json:"parentKeyName"`
+			ParentKeyProvider string                           `json:"parentKeyProvider"`
+			Scope             GetAllVirtualApiKeys200DataScope `json:"scope"`
+			SecretId          openapi_types.UUID               `json:"secretId"`
+			Teams             []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TokenStart string `json:"tokenStart"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                           `json:"message"`
+			Type    GetAllVirtualApiKeys500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAllVirtualApiKeys200DataScope string
+type GetAllVirtualApiKeys400ErrorType string
+type GetAllVirtualApiKeys401ErrorType string
+type GetAllVirtualApiKeys403ErrorType string
+type GetAllVirtualApiKeys404ErrorType string
+type GetAllVirtualApiKeys409ErrorType string
+type GetAllVirtualApiKeys500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAllVirtualApiKeysResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAllVirtualApiKeysResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -21020,6 +26199,88 @@ func (r AddMcpServerInstallationRequestNoteResponse) StatusCode() int {
 	return 0
 }
 
+type GetMembersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			CreatedAt time.Time `json:"createdAt"`
+			Email     string    `json:"email"`
+			Id        string    `json:"id"`
+			Image     *string   `json:"image"`
+			Name      *string   `json:"name"`
+			Role      string    `json:"role"`
+			UserId    string    `json:"userId"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    GetMembers400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    GetMembers401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    GetMembers403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    GetMembers404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    GetMembers409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    GetMembers500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetMembers400ErrorType string
+type GetMembers401ErrorType string
+type GetMembers403ErrorType string
+type GetMembers404ErrorType string
+type GetMembers409ErrorType string
+type GetMembers500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetMembersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMembersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetOptimizationRulesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -22819,6 +28080,382 @@ func (r UpdateSecuritySettingsResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateSecuritySettingsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetRolesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			CreatedAt      time.Time                              `json:"createdAt"`
+			Description    *string                                `json:"description"`
+			Id             string                                 `json:"id"`
+			Name           string                                 `json:"name"`
+			OrganizationId string                                 `json:"organizationId"`
+			Permission     map[string][]GetRoles200DataPermission `json:"permission"`
+			Predefined     bool                                   `json:"predefined"`
+			Role           string                                 `json:"role"`
+			UpdatedAt      *time.Time                             `json:"updatedAt"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string               `json:"message"`
+			Type    GetRoles400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string               `json:"message"`
+			Type    GetRoles401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string               `json:"message"`
+			Type    GetRoles403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string               `json:"message"`
+			Type    GetRoles404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string               `json:"message"`
+			Type    GetRoles409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string               `json:"message"`
+			Type    GetRoles500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetRoles200DataPermission string
+type GetRoles400ErrorType string
+type GetRoles401ErrorType string
+type GetRoles403ErrorType string
+type GetRoles404ErrorType string
+type GetRoles409ErrorType string
+type GetRoles500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetRolesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetRolesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateRoleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time                            `json:"createdAt"`
+		Description    *string                              `json:"description"`
+		Id             string                               `json:"id"`
+		Name           string                               `json:"name"`
+		OrganizationId string                               `json:"organizationId"`
+		Permission     map[string][]CreateRole200Permission `json:"permission"`
+		Predefined     bool                                 `json:"predefined"`
+		Role           string                               `json:"role"`
+		UpdatedAt      *time.Time                           `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateRole400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateRole401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateRole403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateRole404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateRole409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    CreateRole500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateRole200Permission string
+type CreateRole400ErrorType string
+type CreateRole401ErrorType string
+type CreateRole403ErrorType string
+type CreateRole404ErrorType string
+type CreateRole409ErrorType string
+type CreateRole500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateRoleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateRoleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteRoleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteRole400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteRole401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteRole403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteRole404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteRole409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    DeleteRole500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteRole400ErrorType string
+type DeleteRole401ErrorType string
+type DeleteRole403ErrorType string
+type DeleteRole404ErrorType string
+type DeleteRole409ErrorType string
+type DeleteRole500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteRoleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteRoleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetRoleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time                         `json:"createdAt"`
+		Description    *string                           `json:"description"`
+		Id             string                            `json:"id"`
+		Name           string                            `json:"name"`
+		OrganizationId string                            `json:"organizationId"`
+		Permission     map[string][]GetRole200Permission `json:"permission"`
+		Predefined     bool                              `json:"predefined"`
+		Role           string                            `json:"role"`
+		UpdatedAt      *time.Time                        `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string              `json:"message"`
+			Type    GetRole400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string              `json:"message"`
+			Type    GetRole401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string              `json:"message"`
+			Type    GetRole403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string              `json:"message"`
+			Type    GetRole404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string              `json:"message"`
+			Type    GetRole409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string              `json:"message"`
+			Type    GetRole500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetRole200Permission string
+type GetRole400ErrorType string
+type GetRole401ErrorType string
+type GetRole403ErrorType string
+type GetRole404ErrorType string
+type GetRole409ErrorType string
+type GetRole500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetRoleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetRoleResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateRoleResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time                            `json:"createdAt"`
+		Description    *string                              `json:"description"`
+		Id             string                               `json:"id"`
+		Name           string                               `json:"name"`
+		OrganizationId string                               `json:"organizationId"`
+		Permission     map[string][]UpdateRole200Permission `json:"permission"`
+		Predefined     bool                                 `json:"predefined"`
+		Role           string                               `json:"role"`
+		UpdatedAt      *time.Time                           `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateRole400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateRole401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateRole403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateRole404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateRole409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			Message string                 `json:"message"`
+			Type    UpdateRole500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateRole200Permission string
+type UpdateRole400ErrorType string
+type UpdateRole401ErrorType string
+type UpdateRole403ErrorType string
+type UpdateRole404ErrorType string
+type UpdateRole409ErrorType string
+type UpdateRole500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateRoleResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateRoleResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -25995,6 +31632,147 @@ func (c *ClientWithResponses) UpdateToolInvocationPolicyWithResponse(ctx context
 	return ParseUpdateToolInvocationPolicyResponse(rsp)
 }
 
+// GetConnectorsWithResponse request returning *GetConnectorsResponse
+func (c *ClientWithResponses) GetConnectorsWithResponse(ctx context.Context, params *GetConnectorsParams, reqEditors ...RequestEditorFn) (*GetConnectorsResponse, error) {
+	rsp, err := c.GetConnectors(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetConnectorsResponse(rsp)
+}
+
+// CreateConnectorWithBodyWithResponse request with arbitrary body returning *CreateConnectorResponse
+func (c *ClientWithResponses) CreateConnectorWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateConnectorResponse, error) {
+	rsp, err := c.CreateConnectorWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateConnectorResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateConnectorWithResponse(ctx context.Context, body CreateConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateConnectorResponse, error) {
+	rsp, err := c.CreateConnector(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateConnectorResponse(rsp)
+}
+
+// DeleteConnectorWithResponse request returning *DeleteConnectorResponse
+func (c *ClientWithResponses) DeleteConnectorWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteConnectorResponse, error) {
+	rsp, err := c.DeleteConnector(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteConnectorResponse(rsp)
+}
+
+// GetConnectorWithResponse request returning *GetConnectorResponse
+func (c *ClientWithResponses) GetConnectorWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetConnectorResponse, error) {
+	rsp, err := c.GetConnector(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetConnectorResponse(rsp)
+}
+
+// UpdateConnectorWithBodyWithResponse request with arbitrary body returning *UpdateConnectorResponse
+func (c *ClientWithResponses) UpdateConnectorWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateConnectorResponse, error) {
+	rsp, err := c.UpdateConnectorWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateConnectorResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateConnectorWithResponse(ctx context.Context, id string, body UpdateConnectorJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateConnectorResponse, error) {
+	rsp, err := c.UpdateConnector(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateConnectorResponse(rsp)
+}
+
+// ForceResyncConnectorWithResponse request returning *ForceResyncConnectorResponse
+func (c *ClientWithResponses) ForceResyncConnectorWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*ForceResyncConnectorResponse, error) {
+	rsp, err := c.ForceResyncConnector(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseForceResyncConnectorResponse(rsp)
+}
+
+// GetConnectorKnowledgeBasesWithResponse request returning *GetConnectorKnowledgeBasesResponse
+func (c *ClientWithResponses) GetConnectorKnowledgeBasesWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetConnectorKnowledgeBasesResponse, error) {
+	rsp, err := c.GetConnectorKnowledgeBases(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetConnectorKnowledgeBasesResponse(rsp)
+}
+
+// AssignConnectorToKnowledgeBasesWithBodyWithResponse request with arbitrary body returning *AssignConnectorToKnowledgeBasesResponse
+func (c *ClientWithResponses) AssignConnectorToKnowledgeBasesWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignConnectorToKnowledgeBasesResponse, error) {
+	rsp, err := c.AssignConnectorToKnowledgeBasesWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAssignConnectorToKnowledgeBasesResponse(rsp)
+}
+
+func (c *ClientWithResponses) AssignConnectorToKnowledgeBasesWithResponse(ctx context.Context, id string, body AssignConnectorToKnowledgeBasesJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignConnectorToKnowledgeBasesResponse, error) {
+	rsp, err := c.AssignConnectorToKnowledgeBases(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAssignConnectorToKnowledgeBasesResponse(rsp)
+}
+
+// UnassignConnectorFromKnowledgeBaseWithResponse request returning *UnassignConnectorFromKnowledgeBaseResponse
+func (c *ClientWithResponses) UnassignConnectorFromKnowledgeBaseWithResponse(ctx context.Context, id string, kbId string, reqEditors ...RequestEditorFn) (*UnassignConnectorFromKnowledgeBaseResponse, error) {
+	rsp, err := c.UnassignConnectorFromKnowledgeBase(ctx, id, kbId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUnassignConnectorFromKnowledgeBaseResponse(rsp)
+}
+
+// GetConnectorRunsWithResponse request returning *GetConnectorRunsResponse
+func (c *ClientWithResponses) GetConnectorRunsWithResponse(ctx context.Context, id string, params *GetConnectorRunsParams, reqEditors ...RequestEditorFn) (*GetConnectorRunsResponse, error) {
+	rsp, err := c.GetConnectorRuns(ctx, id, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetConnectorRunsResponse(rsp)
+}
+
+// GetConnectorRunWithResponse request returning *GetConnectorRunResponse
+func (c *ClientWithResponses) GetConnectorRunWithResponse(ctx context.Context, id string, runId string, reqEditors ...RequestEditorFn) (*GetConnectorRunResponse, error) {
+	rsp, err := c.GetConnectorRun(ctx, id, runId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetConnectorRunResponse(rsp)
+}
+
+// SyncConnectorWithResponse request returning *SyncConnectorResponse
+func (c *ClientWithResponses) SyncConnectorWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*SyncConnectorResponse, error) {
+	rsp, err := c.SyncConnector(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSyncConnectorResponse(rsp)
+}
+
+// TestConnectorConnectionWithResponse request returning *TestConnectorConnectionResponse
+func (c *ClientWithResponses) TestConnectorConnectionWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*TestConnectorConnectionResponse, error) {
+	rsp, err := c.TestConnectorConnection(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTestConnectorConnectionResponse(rsp)
+}
+
 // GetIdentityProvidersWithResponse request returning *GetIdentityProvidersResponse
 func (c *ClientWithResponses) GetIdentityProvidersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetIdentityProvidersResponse, error) {
 	rsp, err := c.GetIdentityProviders(ctx, reqEditors...)
@@ -26215,6 +31993,76 @@ func (c *ClientWithResponses) GetK8sImagePullSecretsWithResponse(ctx context.Con
 	return ParseGetK8sImagePullSecretsResponse(rsp)
 }
 
+// GetKnowledgeBasesWithResponse request returning *GetKnowledgeBasesResponse
+func (c *ClientWithResponses) GetKnowledgeBasesWithResponse(ctx context.Context, params *GetKnowledgeBasesParams, reqEditors ...RequestEditorFn) (*GetKnowledgeBasesResponse, error) {
+	rsp, err := c.GetKnowledgeBases(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKnowledgeBasesResponse(rsp)
+}
+
+// CreateKnowledgeBaseWithBodyWithResponse request with arbitrary body returning *CreateKnowledgeBaseResponse
+func (c *ClientWithResponses) CreateKnowledgeBaseWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateKnowledgeBaseResponse, error) {
+	rsp, err := c.CreateKnowledgeBaseWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateKnowledgeBaseResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateKnowledgeBaseWithResponse(ctx context.Context, body CreateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateKnowledgeBaseResponse, error) {
+	rsp, err := c.CreateKnowledgeBase(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateKnowledgeBaseResponse(rsp)
+}
+
+// DeleteKnowledgeBaseWithResponse request returning *DeleteKnowledgeBaseResponse
+func (c *ClientWithResponses) DeleteKnowledgeBaseWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteKnowledgeBaseResponse, error) {
+	rsp, err := c.DeleteKnowledgeBase(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteKnowledgeBaseResponse(rsp)
+}
+
+// GetKnowledgeBaseWithResponse request returning *GetKnowledgeBaseResponse
+func (c *ClientWithResponses) GetKnowledgeBaseWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetKnowledgeBaseResponse, error) {
+	rsp, err := c.GetKnowledgeBase(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKnowledgeBaseResponse(rsp)
+}
+
+// UpdateKnowledgeBaseWithBodyWithResponse request with arbitrary body returning *UpdateKnowledgeBaseResponse
+func (c *ClientWithResponses) UpdateKnowledgeBaseWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKnowledgeBaseResponse, error) {
+	rsp, err := c.UpdateKnowledgeBaseWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateKnowledgeBaseResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateKnowledgeBaseWithResponse(ctx context.Context, id string, body UpdateKnowledgeBaseJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKnowledgeBaseResponse, error) {
+	rsp, err := c.UpdateKnowledgeBase(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateKnowledgeBaseResponse(rsp)
+}
+
+// GetKnowledgeBaseHealthWithResponse request returning *GetKnowledgeBaseHealthResponse
+func (c *ClientWithResponses) GetKnowledgeBaseHealthWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetKnowledgeBaseHealthResponse, error) {
+	rsp, err := c.GetKnowledgeBaseHealth(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKnowledgeBaseHealthResponse(rsp)
+}
+
 // GetLimitsWithResponse request returning *GetLimitsResponse
 func (c *ClientWithResponses) GetLimitsWithResponse(ctx context.Context, params *GetLimitsParams, reqEditors ...RequestEditorFn) (*GetLimitsResponse, error) {
 	rsp, err := c.GetLimits(ctx, params, reqEditors...)
@@ -26355,6 +32203,58 @@ func (c *ClientWithResponses) GetAvailableLlmProviderApiKeysWithResponse(ctx con
 	return ParseGetAvailableLlmProviderApiKeysResponse(rsp)
 }
 
+// GetVirtualApiKeysWithResponse request returning *GetVirtualApiKeysResponse
+func (c *ClientWithResponses) GetVirtualApiKeysWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetVirtualApiKeysResponse, error) {
+	rsp, err := c.GetVirtualApiKeys(ctx, chatApiKeyId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetVirtualApiKeysResponse(rsp)
+}
+
+// CreateVirtualApiKeyWithBodyWithResponse request with arbitrary body returning *CreateVirtualApiKeyResponse
+func (c *ClientWithResponses) CreateVirtualApiKeyWithBodyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error) {
+	rsp, err := c.CreateVirtualApiKeyWithBody(ctx, chatApiKeyId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualApiKeyResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error) {
+	rsp, err := c.CreateVirtualApiKey(ctx, chatApiKeyId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualApiKeyResponse(rsp)
+}
+
+// DeleteVirtualApiKeyWithResponse request returning *DeleteVirtualApiKeyResponse
+func (c *ClientWithResponses) DeleteVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteVirtualApiKeyResponse, error) {
+	rsp, err := c.DeleteVirtualApiKey(ctx, chatApiKeyId, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteVirtualApiKeyResponse(rsp)
+}
+
+// UpdateVirtualApiKeyWithBodyWithResponse request with arbitrary body returning *UpdateVirtualApiKeyResponse
+func (c *ClientWithResponses) UpdateVirtualApiKeyWithBodyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error) {
+	rsp, err := c.UpdateVirtualApiKeyWithBody(ctx, chatApiKeyId, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateVirtualApiKeyResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateVirtualApiKeyWithResponse(ctx context.Context, chatApiKeyId openapi_types.UUID, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error) {
+	rsp, err := c.UpdateVirtualApiKey(ctx, chatApiKeyId, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateVirtualApiKeyResponse(rsp)
+}
+
 // DeleteLlmProviderApiKeyWithResponse request returning *DeleteLlmProviderApiKeyResponse
 func (c *ClientWithResponses) DeleteLlmProviderApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteLlmProviderApiKeyResponse, error) {
 	rsp, err := c.DeleteLlmProviderApiKey(ctx, id, reqEditors...)
@@ -26388,6 +32288,15 @@ func (c *ClientWithResponses) UpdateLlmProviderApiKeyWithResponse(ctx context.Co
 		return nil, err
 	}
 	return ParseUpdateLlmProviderApiKeyResponse(rsp)
+}
+
+// GetAllVirtualApiKeysWithResponse request returning *GetAllVirtualApiKeysResponse
+func (c *ClientWithResponses) GetAllVirtualApiKeysWithResponse(ctx context.Context, params *GetAllVirtualApiKeysParams, reqEditors ...RequestEditorFn) (*GetAllVirtualApiKeysResponse, error) {
+	rsp, err := c.GetAllVirtualApiKeys(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAllVirtualApiKeysResponse(rsp)
 }
 
 // GetMcpToolCallsWithResponse request returning *GetMcpToolCallsResponse
@@ -26631,6 +32540,15 @@ func (c *ClientWithResponses) AddMcpServerInstallationRequestNoteWithResponse(ct
 		return nil, err
 	}
 	return ParseAddMcpServerInstallationRequestNoteResponse(rsp)
+}
+
+// GetMembersWithResponse request returning *GetMembersResponse
+func (c *ClientWithResponses) GetMembersWithResponse(ctx context.Context, params *GetMembersParams, reqEditors ...RequestEditorFn) (*GetMembersResponse, error) {
+	rsp, err := c.GetMembers(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetMembersResponse(rsp)
 }
 
 // GetOptimizationRulesWithResponse request returning *GetOptimizationRulesResponse
@@ -26891,6 +32809,67 @@ func (c *ClientWithResponses) UpdateSecuritySettingsWithResponse(ctx context.Con
 		return nil, err
 	}
 	return ParseUpdateSecuritySettingsResponse(rsp)
+}
+
+// GetRolesWithResponse request returning *GetRolesResponse
+func (c *ClientWithResponses) GetRolesWithResponse(ctx context.Context, params *GetRolesParams, reqEditors ...RequestEditorFn) (*GetRolesResponse, error) {
+	rsp, err := c.GetRoles(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetRolesResponse(rsp)
+}
+
+// CreateRoleWithBodyWithResponse request with arbitrary body returning *CreateRoleResponse
+func (c *ClientWithResponses) CreateRoleWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateRoleResponse, error) {
+	rsp, err := c.CreateRoleWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateRoleResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateRoleWithResponse(ctx context.Context, body CreateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateRoleResponse, error) {
+	rsp, err := c.CreateRole(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateRoleResponse(rsp)
+}
+
+// DeleteRoleWithResponse request returning *DeleteRoleResponse
+func (c *ClientWithResponses) DeleteRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*DeleteRoleResponse, error) {
+	rsp, err := c.DeleteRole(ctx, roleId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteRoleResponse(rsp)
+}
+
+// GetRoleWithResponse request returning *GetRoleResponse
+func (c *ClientWithResponses) GetRoleWithResponse(ctx context.Context, roleId string, reqEditors ...RequestEditorFn) (*GetRoleResponse, error) {
+	rsp, err := c.GetRole(ctx, roleId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetRoleResponse(rsp)
+}
+
+// UpdateRoleWithBodyWithResponse request with arbitrary body returning *UpdateRoleResponse
+func (c *ClientWithResponses) UpdateRoleWithBodyWithResponse(ctx context.Context, roleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
+	rsp, err := c.UpdateRoleWithBody(ctx, roleId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateRoleResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateRoleWithResponse(ctx context.Context, roleId string, body UpdateRoleJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateRoleResponse, error) {
+	rsp, err := c.UpdateRole(ctx, roleId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateRoleResponse(rsp)
 }
 
 // GetScheduleTriggersWithResponse request returning *GetScheduleTriggersResponse
@@ -30819,6 +36798,1434 @@ func ParseUpdateToolInvocationPolicyResponse(rsp *http.Response) (*UpdateToolInv
 	return response, nil
 }
 
+// ParseGetConnectorsResponse parses an HTTP response from a GetConnectorsWithResponse call
+func ParseGetConnectorsResponse(rsp *http.Response) (*GetConnectorsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetConnectorsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				AssignedAgents []struct {
+					AgentType string `json:"agentType"`
+					Id        string `json:"id"`
+					Name      string `json:"name"`
+				} `json:"assignedAgents"`
+				Checkpoint     interface{}                         `json:"checkpoint"`
+				Config         GetConnectors_200_Data_Config       `json:"config"`
+				ConnectorType  GetConnectors200DataConnectorType   `json:"connectorType"`
+				CreatedAt      time.Time                           `json:"createdAt"`
+				Description    *string                             `json:"description"`
+				Enabled        bool                                `json:"enabled"`
+				Id             openapi_types.UUID                  `json:"id"`
+				LastSyncAt     *time.Time                          `json:"lastSyncAt"`
+				LastSyncError  *string                             `json:"lastSyncError"`
+				LastSyncStatus *GetConnectors200DataLastSyncStatus `json:"lastSyncStatus"`
+				Name           string                              `json:"name"`
+				OrganizationId string                              `json:"organizationId"`
+				Schedule       string                              `json:"schedule"`
+				SecretId       *openapi_types.UUID                 `json:"secretId"`
+				TeamIds        []string                            `json:"teamIds"`
+				UpdatedAt      time.Time                           `json:"updatedAt"`
+				Visibility     GetConnectors200DataVisibility      `json:"visibility"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    GetConnectors400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    GetConnectors401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    GetConnectors403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    GetConnectors404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    GetConnectors409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    GetConnectors500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateConnectorResponse parses an HTTP response from a CreateConnectorWithResponse call
+func ParseCreateConnectorResponse(rsp *http.Response) (*CreateConnectorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateConnectorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Checkpoint     interface{}                       `json:"checkpoint"`
+			Config         CreateConnector_200_Config        `json:"config"`
+			ConnectorType  CreateConnector200ConnectorType   `json:"connectorType"`
+			CreatedAt      time.Time                         `json:"createdAt"`
+			Description    *string                           `json:"description"`
+			Enabled        bool                              `json:"enabled"`
+			Id             openapi_types.UUID                `json:"id"`
+			LastSyncAt     *time.Time                        `json:"lastSyncAt"`
+			LastSyncError  *string                           `json:"lastSyncError"`
+			LastSyncStatus *CreateConnector200LastSyncStatus `json:"lastSyncStatus"`
+			Name           string                            `json:"name"`
+			OrganizationId string                            `json:"organizationId"`
+			Schedule       string                            `json:"schedule"`
+			SecretId       *openapi_types.UUID               `json:"secretId"`
+			TeamIds        []string                          `json:"teamIds"`
+			UpdatedAt      time.Time                         `json:"updatedAt"`
+			Visibility     CreateConnector200Visibility      `json:"visibility"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    CreateConnector400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    CreateConnector401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    CreateConnector403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    CreateConnector404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    CreateConnector409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    CreateConnector500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteConnectorResponse parses an HTTP response from a DeleteConnectorWithResponse call
+func ParseDeleteConnectorResponse(rsp *http.Response) (*DeleteConnectorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteConnectorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    DeleteConnector400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    DeleteConnector401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    DeleteConnector403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    DeleteConnector404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    DeleteConnector409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    DeleteConnector500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetConnectorResponse parses an HTTP response from a GetConnectorWithResponse call
+func ParseGetConnectorResponse(rsp *http.Response) (*GetConnectorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetConnectorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Checkpoint        interface{}                    `json:"checkpoint"`
+			Config            GetConnector_200_Config        `json:"config"`
+			ConnectorType     GetConnector200ConnectorType   `json:"connectorType"`
+			CreatedAt         time.Time                      `json:"createdAt"`
+			Description       *string                        `json:"description"`
+			Enabled           bool                           `json:"enabled"`
+			Id                openapi_types.UUID             `json:"id"`
+			LastSyncAt        *time.Time                     `json:"lastSyncAt"`
+			LastSyncError     *string                        `json:"lastSyncError"`
+			LastSyncStatus    *GetConnector200LastSyncStatus `json:"lastSyncStatus"`
+			Name              string                         `json:"name"`
+			OrganizationId    string                         `json:"organizationId"`
+			Schedule          string                         `json:"schedule"`
+			SecretId          *openapi_types.UUID            `json:"secretId"`
+			TeamIds           []string                       `json:"teamIds"`
+			TotalDocsIngested float32                        `json:"totalDocsIngested"`
+			UpdatedAt         time.Time                      `json:"updatedAt"`
+			Visibility        GetConnector200Visibility      `json:"visibility"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetConnector400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetConnector401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetConnector403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetConnector404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetConnector409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                   `json:"message"`
+				Type    GetConnector500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateConnectorResponse parses an HTTP response from a UpdateConnectorWithResponse call
+func ParseUpdateConnectorResponse(rsp *http.Response) (*UpdateConnectorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateConnectorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Checkpoint     interface{}                       `json:"checkpoint"`
+			Config         UpdateConnector_200_Config        `json:"config"`
+			ConnectorType  UpdateConnector200ConnectorType   `json:"connectorType"`
+			CreatedAt      time.Time                         `json:"createdAt"`
+			Description    *string                           `json:"description"`
+			Enabled        bool                              `json:"enabled"`
+			Id             openapi_types.UUID                `json:"id"`
+			LastSyncAt     *time.Time                        `json:"lastSyncAt"`
+			LastSyncError  *string                           `json:"lastSyncError"`
+			LastSyncStatus *UpdateConnector200LastSyncStatus `json:"lastSyncStatus"`
+			Name           string                            `json:"name"`
+			OrganizationId string                            `json:"organizationId"`
+			Schedule       string                            `json:"schedule"`
+			SecretId       *openapi_types.UUID               `json:"secretId"`
+			TeamIds        []string                          `json:"teamIds"`
+			UpdatedAt      time.Time                         `json:"updatedAt"`
+			Visibility     UpdateConnector200Visibility      `json:"visibility"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    UpdateConnector400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    UpdateConnector401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    UpdateConnector403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    UpdateConnector404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    UpdateConnector409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    UpdateConnector500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseForceResyncConnectorResponse parses an HTTP response from a ForceResyncConnectorWithResponse call
+func ParseForceResyncConnectorResponse(rsp *http.Response) (*ForceResyncConnectorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ForceResyncConnectorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Status string `json:"status"`
+			TaskId string `json:"taskId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    ForceResyncConnector400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    ForceResyncConnector401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    ForceResyncConnector403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    ForceResyncConnector404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    ForceResyncConnector409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    ForceResyncConnector500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetConnectorKnowledgeBasesResponse parses an HTTP response from a GetConnectorKnowledgeBasesWithResponse call
+func ParseGetConnectorKnowledgeBasesResponse(rsp *http.Response) (*GetConnectorKnowledgeBasesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetConnectorKnowledgeBasesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				CreatedAt      time.Time          `json:"createdAt"`
+				Description    *string            `json:"description"`
+				Id             openapi_types.UUID `json:"id"`
+				Name           string             `json:"name"`
+				OrganizationId string             `json:"organizationId"`
+				Status         string             `json:"status"`
+				UpdatedAt      time.Time          `json:"updatedAt"`
+			} `json:"data"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetConnectorKnowledgeBases400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetConnectorKnowledgeBases401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetConnectorKnowledgeBases403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetConnectorKnowledgeBases404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetConnectorKnowledgeBases409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                 `json:"message"`
+				Type    GetConnectorKnowledgeBases500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAssignConnectorToKnowledgeBasesResponse parses an HTTP response from a AssignConnectorToKnowledgeBasesWithResponse call
+func ParseAssignConnectorToKnowledgeBasesResponse(rsp *http.Response) (*AssignConnectorToKnowledgeBasesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AssignConnectorToKnowledgeBasesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    AssignConnectorToKnowledgeBases400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    AssignConnectorToKnowledgeBases401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    AssignConnectorToKnowledgeBases403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    AssignConnectorToKnowledgeBases404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    AssignConnectorToKnowledgeBases409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                      `json:"message"`
+				Type    AssignConnectorToKnowledgeBases500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUnassignConnectorFromKnowledgeBaseResponse parses an HTTP response from a UnassignConnectorFromKnowledgeBaseWithResponse call
+func ParseUnassignConnectorFromKnowledgeBaseResponse(rsp *http.Response) (*UnassignConnectorFromKnowledgeBaseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UnassignConnectorFromKnowledgeBaseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    UnassignConnectorFromKnowledgeBase400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    UnassignConnectorFromKnowledgeBase401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    UnassignConnectorFromKnowledgeBase403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    UnassignConnectorFromKnowledgeBase404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    UnassignConnectorFromKnowledgeBase409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                                         `json:"message"`
+				Type    UnassignConnectorFromKnowledgeBase500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetConnectorRunsResponse parses an HTTP response from a GetConnectorRunsWithResponse call
+func ParseGetConnectorRunsResponse(rsp *http.Response) (*GetConnectorRunsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetConnectorRunsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				Checkpoint         interface{}                   `json:"checkpoint"`
+				CompletedAt        *time.Time                    `json:"completedAt"`
+				CompletedBatches   *int                          `json:"completedBatches"`
+				ConnectorId        openapi_types.UUID            `json:"connectorId"`
+				CreatedAt          time.Time                     `json:"createdAt"`
+				DocumentsIngested  *int                          `json:"documentsIngested"`
+				DocumentsProcessed *int                          `json:"documentsProcessed"`
+				Error              *string                       `json:"error"`
+				Id                 openapi_types.UUID            `json:"id"`
+				ItemErrors         *int                          `json:"itemErrors"`
+				StartedAt          time.Time                     `json:"startedAt"`
+				Status             GetConnectorRuns200DataStatus `json:"status"`
+				TotalBatches       *int                          `json:"totalBatches"`
+				TotalItems         *int                          `json:"totalItems"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetConnectorRuns400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetConnectorRuns401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetConnectorRuns403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetConnectorRuns404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetConnectorRuns409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetConnectorRuns500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetConnectorRunResponse parses an HTTP response from a GetConnectorRunWithResponse call
+func ParseGetConnectorRunResponse(rsp *http.Response) (*GetConnectorRunResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetConnectorRunResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Checkpoint         interface{}              `json:"checkpoint"`
+			CompletedAt        *time.Time               `json:"completedAt"`
+			CompletedBatches   *int                     `json:"completedBatches"`
+			ConnectorId        openapi_types.UUID       `json:"connectorId"`
+			CreatedAt          time.Time                `json:"createdAt"`
+			DocumentsIngested  *int                     `json:"documentsIngested"`
+			DocumentsProcessed *int                     `json:"documentsProcessed"`
+			Error              *string                  `json:"error"`
+			Id                 openapi_types.UUID       `json:"id"`
+			ItemErrors         *int                     `json:"itemErrors"`
+			Logs               *string                  `json:"logs"`
+			StartedAt          time.Time                `json:"startedAt"`
+			Status             GetConnectorRun200Status `json:"status"`
+			TotalBatches       *int                     `json:"totalBatches"`
+			TotalItems         *int                     `json:"totalItems"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetConnectorRun400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetConnectorRun401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetConnectorRun403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetConnectorRun404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetConnectorRun409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                      `json:"message"`
+				Type    GetConnectorRun500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSyncConnectorResponse parses an HTTP response from a SyncConnectorWithResponse call
+func ParseSyncConnectorResponse(rsp *http.Response) (*SyncConnectorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SyncConnectorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Status string `json:"status"`
+			TaskId string `json:"taskId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncConnector400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncConnector401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncConnector403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncConnector404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncConnector409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                    `json:"message"`
+				Type    SyncConnector500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseTestConnectorConnectionResponse parses an HTTP response from a TestConnectorConnectionWithResponse call
+func ParseTestConnectorConnectionResponse(rsp *http.Response) (*TestConnectorConnectionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TestConnectorConnectionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Error   *string `json:"error,omitempty"`
+			Success bool    `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    TestConnectorConnection400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    TestConnectorConnection401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    TestConnectorConnection403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    TestConnectorConnection404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    TestConnectorConnection409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                              `json:"message"`
+				Type    TestConnectorConnection500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetIdentityProvidersResponse parses an HTTP response from a GetIdentityProvidersWithResponse call
 func ParseGetIdentityProvidersResponse(rsp *http.Response) (*GetIdentityProvidersResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -33699,6 +41106,652 @@ func ParseGetK8sImagePullSecretsResponse(rsp *http.Response) (*GetK8sImagePullSe
 	return response, nil
 }
 
+// ParseGetKnowledgeBasesResponse parses an HTTP response from a GetKnowledgeBasesWithResponse call
+func ParseGetKnowledgeBasesResponse(rsp *http.Response) (*GetKnowledgeBasesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKnowledgeBasesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				AssignedAgents []struct {
+					AgentType string `json:"agentType"`
+					Id        string `json:"id"`
+					Name      string `json:"name"`
+				} `json:"assignedAgents"`
+				Connectors []struct {
+					ConnectorType GetKnowledgeBases200DataConnectorsConnectorType `json:"connectorType"`
+					Id            string                                          `json:"id"`
+					Name          string                                          `json:"name"`
+				} `json:"connectors"`
+				CreatedAt        time.Time          `json:"createdAt"`
+				Description      *string            `json:"description"`
+				Id               openapi_types.UUID `json:"id"`
+				Name             string             `json:"name"`
+				OrganizationId   string             `json:"organizationId"`
+				Status           string             `json:"status"`
+				TotalDocsIndexed float32            `json:"totalDocsIndexed"`
+				UpdatedAt        time.Time          `json:"updatedAt"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetKnowledgeBases500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateKnowledgeBaseResponse parses an HTTP response from a CreateKnowledgeBaseWithResponse call
+func ParseCreateKnowledgeBaseResponse(rsp *http.Response) (*CreateKnowledgeBaseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateKnowledgeBaseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time          `json:"createdAt"`
+			Description    *string            `json:"description"`
+			Id             openapi_types.UUID `json:"id"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			Status         string             `json:"status"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateKnowledgeBase500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteKnowledgeBaseResponse parses an HTTP response from a DeleteKnowledgeBaseWithResponse call
+func ParseDeleteKnowledgeBaseResponse(rsp *http.Response) (*DeleteKnowledgeBaseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteKnowledgeBaseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteKnowledgeBase500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetKnowledgeBaseResponse parses an HTTP response from a GetKnowledgeBaseWithResponse call
+func ParseGetKnowledgeBaseResponse(rsp *http.Response) (*GetKnowledgeBaseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKnowledgeBaseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time          `json:"createdAt"`
+			Description    *string            `json:"description"`
+			Id             openapi_types.UUID `json:"id"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			Status         string             `json:"status"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                       `json:"message"`
+				Type    GetKnowledgeBase500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateKnowledgeBaseResponse parses an HTTP response from a UpdateKnowledgeBaseWithResponse call
+func ParseUpdateKnowledgeBaseResponse(rsp *http.Response) (*UpdateKnowledgeBaseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateKnowledgeBaseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time          `json:"createdAt"`
+			Description    *string            `json:"description"`
+			Id             openapi_types.UUID `json:"id"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			Status         string             `json:"status"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateKnowledgeBase500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetKnowledgeBaseHealthResponse parses an HTTP response from a GetKnowledgeBaseHealthWithResponse call
+func ParseGetKnowledgeBaseHealthResponse(rsp *http.Response) (*GetKnowledgeBaseHealthResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKnowledgeBaseHealthResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Message *string                         `json:"message,omitempty"`
+			Status  GetKnowledgeBaseHealth200Status `json:"status"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                             `json:"message"`
+				Type    GetKnowledgeBaseHealth500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetLimitsResponse parses an HTTP response from a GetLimitsWithResponse call
 func ParseGetLimitsResponse(rsp *http.Response) (*GetLimitsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -35060,6 +43113,444 @@ func ParseGetAvailableLlmProviderApiKeysResponse(rsp *http.Response) (*GetAvaila
 	return response, nil
 }
 
+// ParseGetVirtualApiKeysResponse parses an HTTP response from a GetVirtualApiKeysWithResponse call
+func ParseGetVirtualApiKeysResponse(rsp *http.Response) (*GetVirtualApiKeysResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetVirtualApiKeysResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			AuthorId     *string                   `json:"authorId"`
+			ChatApiKeyId openapi_types.UUID        `json:"chatApiKeyId"`
+			CreatedAt    time.Time                 `json:"createdAt"`
+			ExpiresAt    *time.Time                `json:"expiresAt"`
+			Id           openapi_types.UUID        `json:"id"`
+			LastUsedAt   *time.Time                `json:"lastUsedAt"`
+			Name         string                    `json:"name"`
+			Scope        GetVirtualApiKeys200Scope `json:"scope"`
+			SecretId     openapi_types.UUID        `json:"secretId"`
+			TokenStart   string                    `json:"tokenStart"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                        `json:"message"`
+				Type    GetVirtualApiKeys500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateVirtualApiKeyResponse parses an HTTP response from a CreateVirtualApiKeyWithResponse call
+func ParseCreateVirtualApiKeyResponse(rsp *http.Response) (*CreateVirtualApiKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateVirtualApiKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId     *string                     `json:"authorId"`
+			AuthorName   *string                     `json:"authorName"`
+			ChatApiKeyId openapi_types.UUID          `json:"chatApiKeyId"`
+			CreatedAt    time.Time                   `json:"createdAt"`
+			ExpiresAt    *time.Time                  `json:"expiresAt"`
+			Id           openapi_types.UUID          `json:"id"`
+			LastUsedAt   *time.Time                  `json:"lastUsedAt"`
+			Name         string                      `json:"name"`
+			Scope        CreateVirtualApiKey200Scope `json:"scope"`
+			SecretId     openapi_types.UUID          `json:"secretId"`
+			Teams        []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TokenStart string `json:"tokenStart"`
+			Value      string `json:"value"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    CreateVirtualApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteVirtualApiKeyResponse parses an HTTP response from a DeleteVirtualApiKeyWithResponse call
+func ParseDeleteVirtualApiKeyResponse(rsp *http.Response) (*DeleteVirtualApiKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteVirtualApiKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    DeleteVirtualApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateVirtualApiKeyResponse parses an HTTP response from a UpdateVirtualApiKeyWithResponse call
+func ParseUpdateVirtualApiKeyResponse(rsp *http.Response) (*UpdateVirtualApiKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateVirtualApiKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId     *string                     `json:"authorId"`
+			AuthorName   *string                     `json:"authorName"`
+			ChatApiKeyId openapi_types.UUID          `json:"chatApiKeyId"`
+			CreatedAt    time.Time                   `json:"createdAt"`
+			ExpiresAt    *time.Time                  `json:"expiresAt"`
+			Id           openapi_types.UUID          `json:"id"`
+			LastUsedAt   *time.Time                  `json:"lastUsedAt"`
+			Name         string                      `json:"name"`
+			Scope        UpdateVirtualApiKey200Scope `json:"scope"`
+			SecretId     openapi_types.UUID          `json:"secretId"`
+			Teams        []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TokenStart string `json:"tokenStart"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                          `json:"message"`
+				Type    UpdateVirtualApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseDeleteLlmProviderApiKeyResponse parses an HTTP response from a DeleteLlmProviderApiKeyWithResponse call
 func ParseDeleteLlmProviderApiKeyResponse(rsp *http.Response) (*DeleteLlmProviderApiKeyResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -35379,6 +43870,133 @@ func ParseUpdateLlmProviderApiKeyResponse(rsp *http.Response) (*UpdateLlmProvide
 			Error struct {
 				Message string                              `json:"message"`
 				Type    UpdateLlmProviderApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAllVirtualApiKeysResponse parses an HTTP response from a GetAllVirtualApiKeysWithResponse call
+func ParseGetAllVirtualApiKeysResponse(rsp *http.Response) (*GetAllVirtualApiKeysResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAllVirtualApiKeysResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				AuthorId          *string                          `json:"authorId"`
+				AuthorName        *string                          `json:"authorName"`
+				ChatApiKeyId      openapi_types.UUID               `json:"chatApiKeyId"`
+				CreatedAt         time.Time                        `json:"createdAt"`
+				ExpiresAt         *time.Time                       `json:"expiresAt"`
+				Id                openapi_types.UUID               `json:"id"`
+				LastUsedAt        *time.Time                       `json:"lastUsedAt"`
+				Name              string                           `json:"name"`
+				ParentKeyBaseUrl  *string                          `json:"parentKeyBaseUrl"`
+				ParentKeyName     string                           `json:"parentKeyName"`
+				ParentKeyProvider string                           `json:"parentKeyProvider"`
+				Scope             GetAllVirtualApiKeys200DataScope `json:"scope"`
+				SecretId          openapi_types.UUID               `json:"secretId"`
+				Teams             []struct {
+					Id   string `json:"id"`
+					Name string `json:"name"`
+				} `json:"teams"`
+				TokenStart string `json:"tokenStart"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                           `json:"message"`
+				Type    GetAllVirtualApiKeys500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -37581,6 +46199,122 @@ func ParseAddMcpServerInstallationRequestNoteResponse(rsp *http.Response) (*AddM
 			Error struct {
 				Message string                                          `json:"message"`
 				Type    AddMcpServerInstallationRequestNote500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMembersResponse parses an HTTP response from a GetMembersWithResponse call
+func ParseGetMembersResponse(rsp *http.Response) (*GetMembersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMembersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				CreatedAt time.Time `json:"createdAt"`
+				Email     string    `json:"email"`
+				Id        string    `json:"id"`
+				Image     *string   `json:"image"`
+				Name      *string   `json:"name"`
+				Role      string    `json:"role"`
+				UserId    string    `json:"userId"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    GetMembers400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    GetMembers401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    GetMembers403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    GetMembers404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    GetMembers409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    GetMembers500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -39977,6 +48711,548 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 			Error struct {
 				Message string                             `json:"message"`
 				Type    UpdateSecuritySettings500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetRolesResponse parses an HTTP response from a GetRolesWithResponse call
+func ParseGetRolesResponse(rsp *http.Response) (*GetRolesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetRolesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				CreatedAt      time.Time                              `json:"createdAt"`
+				Description    *string                                `json:"description"`
+				Id             string                                 `json:"id"`
+				Name           string                                 `json:"name"`
+				OrganizationId string                                 `json:"organizationId"`
+				Permission     map[string][]GetRoles200DataPermission `json:"permission"`
+				Predefined     bool                                   `json:"predefined"`
+				Role           string                                 `json:"role"`
+				UpdatedAt      *time.Time                             `json:"updatedAt"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string               `json:"message"`
+				Type    GetRoles400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string               `json:"message"`
+				Type    GetRoles401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string               `json:"message"`
+				Type    GetRoles403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string               `json:"message"`
+				Type    GetRoles404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string               `json:"message"`
+				Type    GetRoles409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string               `json:"message"`
+				Type    GetRoles500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateRoleResponse parses an HTTP response from a CreateRoleWithResponse call
+func ParseCreateRoleResponse(rsp *http.Response) (*CreateRoleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateRoleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time                            `json:"createdAt"`
+			Description    *string                              `json:"description"`
+			Id             string                               `json:"id"`
+			Name           string                               `json:"name"`
+			OrganizationId string                               `json:"organizationId"`
+			Permission     map[string][]CreateRole200Permission `json:"permission"`
+			Predefined     bool                                 `json:"predefined"`
+			Role           string                               `json:"role"`
+			UpdatedAt      *time.Time                           `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateRole400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateRole401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateRole403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateRole404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateRole409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    CreateRole500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteRoleResponse parses an HTTP response from a DeleteRoleWithResponse call
+func ParseDeleteRoleResponse(rsp *http.Response) (*DeleteRoleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteRoleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteRole400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteRole401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteRole403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteRole404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteRole409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    DeleteRole500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetRoleResponse parses an HTTP response from a GetRoleWithResponse call
+func ParseGetRoleResponse(rsp *http.Response) (*GetRoleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetRoleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time                         `json:"createdAt"`
+			Description    *string                           `json:"description"`
+			Id             string                            `json:"id"`
+			Name           string                            `json:"name"`
+			OrganizationId string                            `json:"organizationId"`
+			Permission     map[string][]GetRole200Permission `json:"permission"`
+			Predefined     bool                              `json:"predefined"`
+			Role           string                            `json:"role"`
+			UpdatedAt      *time.Time                        `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string              `json:"message"`
+				Type    GetRole400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string              `json:"message"`
+				Type    GetRole401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string              `json:"message"`
+				Type    GetRole403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string              `json:"message"`
+				Type    GetRole404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string              `json:"message"`
+				Type    GetRole409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string              `json:"message"`
+				Type    GetRole500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateRoleResponse parses an HTTP response from a UpdateRoleWithResponse call
+func ParseUpdateRoleResponse(rsp *http.Response) (*UpdateRoleResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateRoleResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time                            `json:"createdAt"`
+			Description    *string                              `json:"description"`
+			Id             string                               `json:"id"`
+			Name           string                               `json:"name"`
+			OrganizationId string                               `json:"organizationId"`
+			Permission     map[string][]UpdateRole200Permission `json:"permission"`
+			Predefined     bool                                 `json:"predefined"`
+			Role           string                               `json:"role"`
+			UpdatedAt      *time.Time                           `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateRole400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateRole401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateRole403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateRole404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateRole409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				Message string                 `json:"message"`
+				Type    UpdateRole500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
