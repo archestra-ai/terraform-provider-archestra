@@ -158,6 +158,37 @@ func TestAccMCPServerInstallationResource(t *testing.T) {
 						tfjsonpath.New("tool_id_by_name"),
 						knownvalue.NotNull(),
 					),
+					// Install-state observability — happy path. Failed
+					// installs surface via Create-time error diagnostic
+					// (state is never written), so the regression
+					// coverage is on the success-state shape: status
+					// settled to "success", reinstall_required false, no
+					// OAuth refresh errors.
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("local_installation_status"),
+						knownvalue.StringExact("success"),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("local_installation_error"),
+						knownvalue.Null(),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("reinstall_required"),
+						knownvalue.Bool(false),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("oauth_refresh_error"),
+						knownvalue.Null(),
+					),
+					statecheck.ExpectKnownValue(
+						"archestra_mcp_server_installation.test",
+						tfjsonpath.New("oauth_refresh_failed_at"),
+						knownvalue.Null(),
+					),
 				},
 			},
 			// Re-apply with identical config — pins the `tools` list-ordering
