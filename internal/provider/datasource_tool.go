@@ -2,7 +2,11 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
+	"strconv"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -90,16 +94,13 @@ func (d *ToolDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	}
 	retryConfig := DefaultRetryConfig(fmt.Sprintf("Tool '%s'", targetName))
 	result, found, err := RetryUntilFound(ctx, retryConfig, func() (toolResult, bool, error) {
-		toolsResp, err := d.client.GetToolsWithResponse(ctx)
+		tools, err := getTools(ctx, d.client)
 		if err != nil {
 			return toolResult{}, false, fmt.Errorf("unable to read tools: %w", err)
 		}
-		if toolsResp.JSON200 == nil {
-			return toolResult{}, false, fmt.Errorf("expected 200 OK, got status %d", toolsResp.StatusCode())
-		}
-		for _, tool := range *toolsResp.JSON200 {
+		for _, tool := range tools {
 			if tool.Name == targetName {
-				return toolResult{ID: tool.Id.String(), Description: tool.Description}, true, nil
+				return toolResult{ID: tool.ID, Description: tool.Description}, true, nil
 			}
 		}
 		return toolResult{}, false, nil
@@ -124,4 +125,75 @@ func (d *ToolDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		data.Description = types.StringNull()
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+type toolLookup struct {
+	ID          string  `json:"id"`
+	Name        string  `json:"name"`
+	Description *string `json:"description"`
+}
+
+type toolPage struct {
+	Data       []toolLookup `json:"data"`
+	Pagination struct {
+		HasNext bool `json:"hasNext"`
+	} `json:"pagination"`
+}
+
+func getTools(ctx context.Context, apiClient *client.ClientWithResponses) ([]toolLookup, error) {
+	const pageLimit = 100
+
+	var tools []toolLookup
+	for offset := 0; ; offset += pageLimit {
+		apiResp, err := apiClient.GetTools(ctx, func(_ context.Context, req *http.Request) error {
+			query := req.URL.Query()
+			query.Set("limit", strconv.Itoa(pageLimit))
+			query.Set("offset", strconv.Itoa(offset))
+			req.URL.RawQuery = query.Encode()
+			return nil
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		body, readErr := io.ReadAll(apiResp.Body)
+		closeErr := apiResp.Body.Close()
+		if readErr != nil {
+			return nil, fmt.Errorf("read response body: %w", readErr)
+		}
+		if closeErr != nil {
+			return nil, fmt.Errorf("close response body: %w", closeErr)
+		}
+		if apiResp.StatusCode != http.StatusOK {
+			return nil, fmt.Errorf("expected 200 OK, got status %d", apiResp.StatusCode)
+		}
+
+		pageTools, hasNext, paginated, err := decodeToolPage(body)
+		if err != nil {
+			return nil, err
+		}
+		tools = append(tools, pageTools...)
+		if !paginated || !hasNext {
+			return tools, nil
+		}
+		if len(pageTools) == 0 {
+			return nil, fmt.Errorf("paginated tools response has an empty page with hasNext=true")
+		}
+	}
+}
+
+func decodeToolPage(body []byte) ([]toolLookup, bool, bool, error) {
+	var unpaginatedTools []toolLookup
+	if err := json.Unmarshal(body, &unpaginatedTools); err == nil {
+		return unpaginatedTools, false, false, nil
+	}
+
+	var page toolPage
+	if err := json.Unmarshal(body, &page); err != nil {
+		return nil, false, false, fmt.Errorf("decode tools response: %w", err)
+	}
+	if page.Data == nil {
+		return nil, false, false, fmt.Errorf("decode tools response: missing data")
+	}
+	return page.Data, page.Pagination.HasNext, true, nil
 }
