@@ -20,7 +20,7 @@ output-options:
     - ChatOps Webhooks
     - Config
     - Connectors
-    - Incoming Email
+    # Incoming Email - included for archestra_incoming_email org-singleton resource
     - Invitation
     - Knowledge Bases
     # LLM Models - included for archestra_llm_model resource
