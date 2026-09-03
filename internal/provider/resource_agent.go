@@ -57,11 +57,11 @@ type AgentResourceModel struct {
 	Scope                      types.String             `tfsdk:"scope"`
 	Teams                      types.List               `tfsdk:"teams"`
 
-	AccessAllTools            types.Bool                     `tfsdk:"access_all_tools"`
-	MissingCredentialBehavior types.String                   `tfsdk:"missing_credential_behavior"`
-	ModelId                   types.String                   `tfsdk:"model_id"`
-	EnvironmentId             types.String                   `tfsdk:"environment_id"`
-	BackgroundExecution       *AgentBackgroundExecutionModel `tfsdk:"background_execution"`
+	AccessAllTools            types.Bool         `tfsdk:"access_all_tools"`
+	MissingCredentialBehavior types.String       `tfsdk:"missing_credential_behavior"`
+	ModelId                   types.String       `tfsdk:"model_id"`
+	EnvironmentId             types.String       `tfsdk:"environment_id"`
+	Runtime                   *AgentRuntimeModel `tfsdk:"runtime"`
 }
 
 func (r *AgentResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -193,7 +193,7 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				Optional:            true,
 				MarkdownDescription: "Environment UUID scoping which MCP servers and connections the agent resolves against; omit for the default environment",
 			},
-			"background_execution": backgroundExecutionSchema(),
+			"runtime": runtimeSchema(),
 		},
 		Blocks: map[string]schema.Block{
 			"built_in_agent_config": schema.SingleNestedBlock{
@@ -493,7 +493,7 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 	}
 	optionalUUIDFromAPI(&data.ModelId, resp.ModelId)
 	optionalStringFromAPI(&data.EnvironmentId, resp.EnvironmentId)
-	data.BackgroundExecution = backgroundExecutionFromResponse(ctx, body, diags)
+	data.Runtime = runtimeFromResponse(ctx, body, diags)
 }
 
 // AttrSpecs implements the resourceWithAttrSpec interface (see specdrift_test.go).
@@ -578,9 +578,9 @@ var agentAttrSpec = []AttrSpec{
 	{TFName: "model_id", JSONName: "modelId", Kind: Scalar},
 	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar},
 	{
-		TFName: "background_execution", JSONName: "backgroundExecution", Kind: AtomicObject,
-		Children: backgroundExecutionAttrSpec,
-		Encoder:  encodeBackgroundExecution,
+		TFName: "runtime", JSONName: "runtime", Kind: AtomicObject,
+		Children: runtimeAttrSpec,
+		Encoder:  encodeRuntime,
 	},
 	{
 		TFName: "built_in_agent_config", JSONName: "builtInAgentConfig", Kind: AtomicObject,

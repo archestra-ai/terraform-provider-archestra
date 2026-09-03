@@ -14,7 +14,7 @@ import (
 func TestAccAgentToolExclusionsResource(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-excl")
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t); testAccRequireRunnerBackendEnabled(t) },
+		PreCheck:                 func() { testAccPreCheck(t); testAccRequireAgentRuntimeEnabled(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{

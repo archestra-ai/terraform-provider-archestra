@@ -6,14 +6,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
-// The backend zod schema rejects a backgroundExecution object with *missing*
+// The backend zod schema rejects a runtime object with *missing*
 // required-nullable keys ("received undefined") while accepting explicit
 // nulls, and the generic AtomicObject encoder drops null sub-attributes —
 // this pins the encoder's null back-filling that bridges the two.
-func TestEncodeBackgroundExecutionFillsRequiredNullableKeys(t *testing.T) {
+func TestEncodeRuntimeFillsRequiredNullableKeys(t *testing.T) {
 	t.Parallel()
 
-	got, ok := encodeBackgroundExecution(map[string]any{
+	got, ok := encodeRuntime(map[string]any{
 		"image":             "img:latest",
 		"inferenceProtocol": "anthropic",
 		"backend":           "kubernetes",
@@ -43,10 +43,10 @@ func TestEncodeBackgroundExecutionFillsRequiredNullableKeys(t *testing.T) {
 	}
 }
 
-func TestEncodeBackgroundExecutionPreservesExplicitValues(t *testing.T) {
+func TestEncodeRuntimePreservesExplicitValues(t *testing.T) {
 	t.Parallel()
 
-	got, ok := encodeBackgroundExecution(map[string]any{
+	got, ok := encodeRuntime(map[string]any{
 		"image":       "img:latest",
 		"command":     []any{"run"},
 		"credentials": []any{map[string]any{"key": "K"}},
@@ -63,20 +63,20 @@ func TestEncodeBackgroundExecutionPreservesExplicitValues(t *testing.T) {
 	}
 }
 
-func TestBackgroundExecutionFromResponse(t *testing.T) {
+func TestRuntimeFromResponse(t *testing.T) {
 	t.Parallel()
 
 	var diags diag.Diagnostics
 
-	// Absent (old backend) and null (no background execution) both → nil.
-	if m := backgroundExecutionFromResponse(t.Context(), []byte(`{"id":"x"}`), &diags); m != nil {
+	// Absent and null runtime fields both map to no dedicated runtime.
+	if m := runtimeFromResponse(t.Context(), []byte(`{"id":"x"}`), &diags); m != nil {
 		t.Error("expected nil model when the field is absent")
 	}
-	if m := backgroundExecutionFromResponse(t.Context(), []byte(`{"backgroundExecution":null}`), &diags); m != nil {
+	if m := runtimeFromResponse(t.Context(), []byte(`{"runtime":null}`), &diags); m != nil {
 		t.Error("expected nil model when the field is null")
 	}
 
-	body := []byte(`{"backgroundExecution":{
+	body := []byte(`{"runtime":{
 		"image":"img:latest",
 		"command":["run-worker"],
 		"inferenceProtocol":"anthropic",
@@ -90,7 +90,7 @@ func TestBackgroundExecutionFromResponse(t *testing.T) {
 		"maxCostUsd":25,
 		"idleTimeoutMinutes":null
 	}}`)
-	m := backgroundExecutionFromResponse(t.Context(), body, &diags)
+	m := runtimeFromResponse(t.Context(), body, &diags)
 	if diags.HasError() {
 		t.Fatalf("unexpected diagnostics: %v", diags)
 	}
@@ -109,7 +109,7 @@ func TestBackgroundExecutionFromResponse(t *testing.T) {
 	if !m.Environment.IsNull() {
 		t.Errorf("null environment must flatten to a null list, got %+v", m.Environment)
 	}
-	var creds []AgentBackgroundExecutionCredentialModel
+	var creds []AgentRuntimeCredentialModel
 	if d := m.Credentials.ElementsAs(t.Context(), &creds, false); d.HasError() {
 		t.Fatalf("credentials list conversion: %v", d)
 	}
