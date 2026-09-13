@@ -52,6 +52,14 @@
 * **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
 * **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
 
+## [2.3.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v2.3.0...v2.3.1) (2026-09-13)
+
+
+### Bug Fixes
+
+* allow unknown runtime settings during agent validation ([#172](https://github.com/archestra-ai/terraform-provider-archestra/issues/172)) ([ef21250](https://github.com/archestra-ai/terraform-provider-archestra/commit/ef2125030bf088099cfcbe66d3f8e123f15220fc))
+* use pinned goimports in Crossplane releases ([#173](https://github.com/archestra-ai/terraform-provider-archestra/issues/173)) ([2706dcc](https://github.com/archestra-ai/terraform-provider-archestra/commit/2706dcc48562c327030c9110fa02c11ca28e208a))
+
 ## [2.3.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v2.2.1...v2.3.0) (2026-09-13)
 
 
