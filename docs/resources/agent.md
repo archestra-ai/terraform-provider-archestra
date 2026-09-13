@@ -189,6 +189,7 @@ Required:
 Optional:
 
 - `backend` (String) Runtime backend the run is scheduled on. Only `kubernetes` today (default).
+- `claude_code` (Attributes) Native Claude Code authentication and optional CLI model alias. Account tokens are connected separately and never stored here. (see [below for nested schema](#nestedatt--runtime--claude_code))
 - `command` (List of String) Container command override; omit to use the image's default entrypoint
 - `credentials` (Attributes List) Runtime credentials the run needs, injected as environment variables. Values are supplied through `archestra_runtime_credential` (organization scope) or by each user (personal scope) — never inline here. (see [below for nested schema](#nestedatt--runtime--credentials))
 - `environment` (Attributes List) Plain (non-secret) environment variables injected into the run (see [below for nested schema](#nestedatt--runtime--environment))
@@ -197,6 +198,18 @@ Optional:
 - `privileged` (Boolean) Whether the container runs privileged (default `false`)
 - `resources` (Attributes) Kubernetes-style resource requests/limits for the run (see [below for nested schema](#nestedatt--runtime--resources))
 - `ttl_hours` (Number) Hard lifetime cap for a run in hours (1–720); omit for no cap
+
+<a id="nestedatt--runtime--claude_code"></a>
+### Nested Schema for `runtime.claude_code`
+
+Required:
+
+- `authentication` (String) Authentication mode: `provider` or `subscription`.
+
+Optional:
+
+- `model` (String) Optional native Claude Code model alias.
+
 
 <a id="nestedatt--runtime--credentials"></a>
 ### Nested Schema for `runtime.credentials`

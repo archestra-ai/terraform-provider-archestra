@@ -1,6 +1,8 @@
 package provider
 
 import (
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -118,5 +120,41 @@ func TestRuntimeFromResponse(t *testing.T) {
 	}
 	if m.MaxCostUsd.ValueInt64() != 25 || !m.TtlHours.IsNull() || !m.IdleTimeoutMinutes.IsNull() {
 		t.Errorf("numeric round-trip broken: %+v", m)
+	}
+}
+
+func TestRuntimeClaudeCodeRoundTrip(t *testing.T) {
+	t.Parallel()
+	for _, model := range []any{nil, "sonnet"} {
+		nativeType := objType(map[string]tftypes.Type{"authentication": tftypes.String, "model": tftypes.String})
+		runtimeType := objType(map[string]tftypes.Type{"claude_code": nativeType})
+		value := tftypes.NewValue(runtimeType, map[string]tftypes.Value{
+			"claude_code": tftypes.NewValue(nativeType, map[string]tftypes.Value{
+				"authentication": tftypes.NewValue(tftypes.String, "subscription"),
+				"model":          tftypes.NewValue(tftypes.String, model),
+			}),
+		})
+		encoded, err := encodeValue(value, runtimeAttrSpec)
+		if err != nil {
+			t.Fatal(err)
+		}
+		payload, err := json.Marshal(map[string]any{"runtime": encoded})
+		if err != nil {
+			t.Fatal(err)
+		}
+		var diags diag.Diagnostics
+		decoded := runtimeFromResponse(t.Context(), payload, &diags)
+		if diags.HasError() || decoded == nil || decoded.ClaudeCode == nil {
+			t.Fatalf("runtime authentication lost: %s (%v)", payload, diags)
+		}
+		if decoded.ClaudeCode.Authentication.ValueString() != "subscription" {
+			t.Fatal("authentication changed")
+		}
+		if model == nil && !decoded.ClaudeCode.Model.IsNull() {
+			t.Fatal("omitted alias must stay null")
+		}
+		if model != nil && decoded.ClaudeCode.Model.ValueString() != model {
+			t.Fatal("alias lost")
+		}
 	}
 }
