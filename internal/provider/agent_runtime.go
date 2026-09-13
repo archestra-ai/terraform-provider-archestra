@@ -57,6 +57,22 @@ func runtimeSchema() schema.SingleNestedAttribute {
 				Default:             booldefault.StaticBool(false),
 				MarkdownDescription: "Whether the container runs privileged (default `false`)",
 			},
+			"claude_code": schema.SingleNestedAttribute{
+				Optional:            true,
+				MarkdownDescription: "Native Claude Code authentication and optional CLI model alias. Account tokens are connected separately and never stored here.",
+				Attributes: map[string]schema.Attribute{
+					"authentication": schema.StringAttribute{
+						Required:            true,
+						MarkdownDescription: "Authentication mode: `provider` or `subscription`.",
+						Validators:          []validator.String{stringvalidator.OneOf("provider", "subscription")},
+					},
+					"model": schema.StringAttribute{
+						Optional:            true,
+						MarkdownDescription: "Optional native Claude Code model alias.",
+						Validators:          []validator.String{stringvalidator.LengthBetween(1, 256)},
+					},
+				},
+			},
 			"resources": schema.SingleNestedAttribute{
 				Optional:            true,
 				MarkdownDescription: "Kubernetes-style resource requests/limits for the run",
@@ -128,13 +144,14 @@ func runtimeSchema() schema.SingleNestedAttribute {
 
 // AgentRuntimeModel mirrors the `runtime` nested attribute.
 type AgentRuntimeModel struct {
-	Image             types.String                `tfsdk:"image"`
-	Command           types.List                  `tfsdk:"command"`
-	InferenceProtocol types.String                `tfsdk:"inference_protocol"`
-	Backend           types.String                `tfsdk:"backend"`
-	SteerMode         types.String                `tfsdk:"steer_mode"`
-	Privileged        types.Bool                  `tfsdk:"privileged"`
-	Resources         *AgentRuntimeResourcesModel `tfsdk:"resources"`
+	ClaudeCode        *AgentRuntimeClaudeCodeModel `tfsdk:"claude_code"`
+	Image             types.String                 `tfsdk:"image"`
+	Command           types.List                   `tfsdk:"command"`
+	InferenceProtocol types.String                 `tfsdk:"inference_protocol"`
+	Backend           types.String                 `tfsdk:"backend"`
+	SteerMode         types.String                 `tfsdk:"steer_mode"`
+	Privileged        types.Bool                   `tfsdk:"privileged"`
+	Resources         *AgentRuntimeResourcesModel  `tfsdk:"resources"`
 	// Environment and Credentials are types.List (of the entry object types
 	// below) rather than Go slices: the framework must be able to hand the
 	// model an UNKNOWN list — e.g. while a same-plan referenced resource is
@@ -145,6 +162,11 @@ type AgentRuntimeModel struct {
 	TtlHours           types.Int64 `tfsdk:"ttl_hours"`
 	MaxCostUsd         types.Int64 `tfsdk:"max_cost_usd"`
 	IdleTimeoutMinutes types.Int64 `tfsdk:"idle_timeout_minutes"`
+}
+
+type AgentRuntimeClaudeCodeModel struct {
+	Authentication types.String `tfsdk:"authentication"`
+	Model          types.String `tfsdk:"model"`
 }
 
 type AgentRuntimeResourcesModel struct {
@@ -185,6 +207,12 @@ var runtimeCredentialType = types.ObjectType{AttrTypes: map[string]attr.Type{
 // runtimeAttrSpec is the Children spec of the `runtime`
 // AtomicObject entry in agentAttrSpec.
 var runtimeAttrSpec = []AttrSpec{
+	{TFName: "claude_code", JSONName: "claudeCode", Kind: AtomicObject, OmitOnNull: true,
+		Children: []AttrSpec{
+			{TFName: "authentication", JSONName: "authentication", Kind: Scalar},
+			{TFName: "model", JSONName: "model", Kind: Scalar, OmitOnNull: true},
+		},
+	},
 	{TFName: "image", JSONName: "image", Kind: Scalar},
 	{TFName: "command", JSONName: "command", Kind: List},
 	{TFName: "inference_protocol", JSONName: "inferenceProtocol", Kind: Scalar},
@@ -245,6 +273,10 @@ func encodeRuntime(v any) any {
 // runtimeAPI mirrors the wire shape of an agent's `runtime` payload so the
 // create, read, and update response variants share one decoder.
 type runtimeAPI struct {
+	ClaudeCode *struct {
+		Authentication string  `json:"authentication"`
+		Model          *string `json:"model"`
+	} `json:"claudeCode"`
 	Image             string    `json:"image"`
 	Command           *[]string `json:"command"`
 	InferenceProtocol string    `json:"inferenceProtocol"`
@@ -304,6 +336,13 @@ func runtimeFromResponse(ctx context.Context, responseBody []byte, diags *diag.D
 		list, d := types.ListValueFrom(ctx, types.StringType, *api.Command)
 		diags.Append(d...)
 		out.Command = list
+	}
+
+	if api.ClaudeCode != nil {
+		out.ClaudeCode = &AgentRuntimeClaudeCodeModel{
+			Authentication: types.StringValue(api.ClaudeCode.Authentication),
+			Model:          types.StringPointerValue(api.ClaudeCode.Model),
+		}
 	}
 
 	if api.Resources != nil {
