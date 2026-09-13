@@ -14,7 +14,10 @@ func TestAgentValidationAllowsUnknownRuntimeSettings(t *testing.T) {
 	r := &AgentResource{}
 	var schemaResponse resource.SchemaResponse
 	r.Schema(ctx, resource.SchemaRequest{}, &schemaResponse)
-	rootType := schemaResponse.Schema.Type().TerraformType(ctx).(tftypes.Object)
+	rootType, ok := schemaResponse.Schema.Type().TerraformType(ctx).(tftypes.Object)
+	if !ok {
+		t.Fatal("expected object resource schema")
+	}
 	for _, scope := range []string{"org", "team"} {
 		t.Run(scope, func(t *testing.T) {
 			values := make(map[string]tftypes.Value)
@@ -22,7 +25,10 @@ func TestAgentValidationAllowsUnknownRuntimeSettings(t *testing.T) {
 				values[name] = tftypes.NewValue(typ, nil)
 			}
 			values["scope"] = tftypes.NewValue(tftypes.String, scope)
-			runtimeType := rootType.AttributeTypes["runtime"].(tftypes.Object)
+			runtimeType, ok := rootType.AttributeTypes["runtime"].(tftypes.Object)
+			if !ok {
+				t.Fatal("expected object runtime schema")
+			}
 			runtimeValues := make(map[string]tftypes.Value)
 			for name, typ := range runtimeType.AttributeTypes {
 				runtimeValues[name] = tftypes.NewValue(typ, nil)
