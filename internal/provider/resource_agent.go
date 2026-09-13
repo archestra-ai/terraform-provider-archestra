@@ -414,7 +414,12 @@ func (r *AgentResource) ImportState(ctx context.Context, req resource.ImportStat
 // apply with a backend 400; this catches them at plan.
 func (r *AgentResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
 	var data AgentResourceModel
-	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+	// Decode only the fields this validator uses. Runtime objects can be
+	// unknown during validation (for example, a conditional inside for_each).
+	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("scope"), &data.Scope)...)
+	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("teams"), &data.Teams)...)
+	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("incoming_email_security_mode"), &data.IncomingEmailSecurityMode)...)
+	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("incoming_email_allowed_domain"), &data.IncomingEmailAllowedDomain)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
