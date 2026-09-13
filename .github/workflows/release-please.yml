@@ -129,7 +129,7 @@ jobs:
         run: go build -o terraform-provider-archestra .
 
       - name: Install goimports
-        run: go install golang.org/x/tools/cmd/goimports@latest
+        run: go -C crossplane install golang.org/x/tools/cmd/goimports
 
       - name: Log in to Upbound registry
         # `make publish` shells out to `crank xpkg push`, which is a Docker
