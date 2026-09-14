@@ -52,6 +52,13 @@
 * **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
 * **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
 
+## [2.4.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v2.3.1...v2.4.0) (2026-09-14)
+
+
+### Features
+
+* manage shared GitHub App user credentials ([#175](https://github.com/archestra-ai/terraform-provider-archestra/issues/175)) ([eb89448](https://github.com/archestra-ai/terraform-provider-archestra/commit/eb8944846a3df92d5845ccea099017fce62b5b34))
+
 ## [2.3.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v2.3.0...v2.3.1) (2026-09-13)
 
 
