@@ -26,6 +26,9 @@ codegen-api-client:
 	  -out ../.codegen/openapi.patched.json
 	go tool oapi-codegen -config oapi-config.yaml .codegen/openapi.patched.json
 
+codegen-credential-client:
+	./scripts/codegen-credential-client.sh
+
 fmt:
 	gofmt -s -w -e .
 	terraform fmt -recursive ./examples

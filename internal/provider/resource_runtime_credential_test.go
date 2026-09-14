@@ -107,3 +107,42 @@ resource "archestra_runtime_credential" "org" {
 }
 `, key)
 }
+
+func TestAccRuntimeCredentialResource_GitHubUserConnection(t *testing.T) {
+	key := acctest.RandomWithPrefix("tf-acc-github")
+	config := func(clientID string) string {
+		return fmt.Sprintf(`
+resource "archestra_runtime_credential" "app" {
+ key = %q
+ name = "Example GitHub App"
+ kind = "github_app"
+ allow_personal = false
+ allow_organization = true
+ app_id = "12345"
+ installation_id = "67890"
+ github_url = "https://api.github.com"
+ github_client_id = %q
+}
+resource "archestra_runtime_credential" "user" {
+ key = %q
+ name = "Example GitHub connection"
+ kind = "github_app_user"
+ github_app_credential_key = archestra_runtime_credential.app.key
+}
+`, key+"-app", clientID, key+"-user")
+	}
+	resource.Test(t, resource.TestCase{
+		PreCheck: func() { testAccPreCheck(t); testAccRequireAgentRuntimeEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{Config: config("example-client"), ConfigStateChecks: []statecheck.StateCheck{
+				statecheck.ExpectKnownValue("archestra_runtime_credential.user", tfjsonpath.New("github_app_credential_key"), knownvalue.StringExact(key+"-app")),
+				statecheck.ExpectKnownValue("archestra_runtime_credential.user", tfjsonpath.New("kind"), knownvalue.StringExact("github_app_user")),
+			}},
+			{ResourceName: "archestra_runtime_credential.app", ImportState: true, ImportStateVerify: true},
+			{ResourceName: "archestra_runtime_credential.user", ImportState: true, ImportStateVerify: true},
+			{Config: config("updated-example-client"), ConfigStateChecks: []statecheck.StateCheck{
+				statecheck.ExpectKnownValue("archestra_runtime_credential.app", tfjsonpath.New("github_client_id"), knownvalue.StringExact("updated-example-client")),
+			}},
+		},
+	})
+}

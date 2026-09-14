@@ -34,3 +34,25 @@ resource "archestra_runtime_credential" "openrouter" {
 #       },
 #     ]
 #   }
+
+# One organization App provides repository access. Deposit its private key and
+# OAuth client secret through Credentials so secret material stays out of state.
+resource "archestra_runtime_credential" "github_app" {
+  key                = "example-github-app"
+  name               = "Example GitHub App"
+  kind               = "github_app"
+  allow_personal     = false
+  allow_organization = true
+  app_id             = "12345"
+  installation_id    = "67890"
+  github_url         = "https://api.github.com"
+  github_client_id   = "example-client-id"
+}
+
+# Each person authorizes this connection once, then every agent can reuse it.
+resource "archestra_runtime_credential" "github_user" {
+  key                       = "example-github-user"
+  name                      = "GitHub account"
+  kind                      = "github_app_user"
+  github_app_credential_key = archestra_runtime_credential.github_app.key
+}

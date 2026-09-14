@@ -166,3 +166,48 @@ jobs:
           ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
           ARCHESTRA_TEST_IDP_ID: ${{ steps.test-idp.outputs.idp-id }}
           ARCHESTRA_READONLY_VAULT_ENABLED: "true"
+
+  credential-acceptance-tests:
+    name: Credential Acceptance Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-go
+      - uses: ./.github/actions/setup-terraform
+      # Credential APIs are newer than the platform used by the legacy suite.
+      # Pin the first deployed commit containing shared GitHub connections.
+      - name: Start platform with credential support
+        run: |
+          docker run -d --name credential-platform -p 9000:9000 -p 3000:3000 \
+            -e ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true \
+            -e ARCHESTRA_AGENT_RUNTIME_ENABLED=true \
+            -e ARCHESTRA_AUTH_SECRET=acceptance-test-auth-secret-32chars \
+            europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/platform:ee762a54c70053222f488bbb0f51c97ad15c6f31
+          for attempt in $(seq 1 120); do
+            if curl -fsS http://localhost:9000/health > /dev/null; then exit 0; fi
+            sleep 5
+          done
+          docker logs credential-platform
+          exit 1
+      - name: Obtain API key
+        id: api-key
+        run: |
+          API_KEY=$(./scripts/bootstrap-api-key.sh)
+          echo "::add-mask::${API_KEY}"
+          echo "api-key=${API_KEY}" >> "$GITHUB_OUTPUT"
+      - name: Verify generated credential client
+        run: |
+          make codegen-credential-client
+          git diff --exit-code -- internal/client/archestra_client_manual.go
+      - name: Test credential lifecycle and GitHub App linkage
+        env:
+          TF_ACC: "1"
+          ARCHESTRA_BASE_URL: http://localhost:9000
+          ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
+          ARCHESTRA_AGENT_RUNTIME_ENABLED: "true"
+        run: go test -v -timeout=10m ./internal/provider -run '^TestAccRuntimeCredentialResource'
+      - name: Platform logs on failure
+        if: failure()
+        run: docker logs --tail 200 credential-platform
