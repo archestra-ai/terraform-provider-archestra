@@ -16,10 +16,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 var (
@@ -38,6 +40,13 @@ type RuntimeCredentialResource struct {
 // (a named secret slot that agent `runtime.credentials` bindings
 // reference by key) plus, optionally, its organization-scoped value.
 type RuntimeCredentialResourceModel struct {
+	Kind                   types.String `tfsdk:"kind"`
+	AppId                  types.String `tfsdk:"app_id"`
+	InstallationId         types.String `tfsdk:"installation_id"`
+	GithubUrl              types.String `tfsdk:"github_url"`
+	GithubClientId         types.String `tfsdk:"github_client_id"`
+	GithubAppCredentialKey types.String `tfsdk:"github_app_credential_key"`
+
 	ID                     types.String `tfsdk:"id"`
 	Key                    types.String `tfsdk:"key"`
 	Name                   types.String `tfsdk:"name"`
@@ -55,8 +64,15 @@ func (r *RuntimeCredentialResource) Metadata(_ context.Context, req resource.Met
 
 func (r *RuntimeCredentialResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Runtime credential definition for Agent Runtime runs. Declares a named secret slot that `runtime.credentials` bindings reference by `key`; the value is deposited per-user in the UI (`allow_personal`) or once for the whole organization via `organization_value` (`allow_organization`). Requires an Agent Runtime backend on the platform.",
+		MarkdownDescription: "Runtime credential definition for Agent Runtime runs. Declares a named secret slot that `runtime.credentials` bindings reference by `key`; the value is deposited per-user in the UI (`allow_personal`) or once for the whole organization via `organization_value` (`allow_organization`). Supports secrets, GitHub Apps, and personal GitHub OAuth connections.",
 		Attributes: map[string]schema.Attribute{
+			"kind":                      schema.StringAttribute{Optional: true, MarkdownDescription: "Credential type: secret, github_app, or github_app_user.", Computed: true, Default: stringdefault.StaticString("secret"), Validators: []validator.String{stringvalidator.OneOf("secret", "github_app", "github_app_user")}},
+			"app_id":                    schema.StringAttribute{Optional: true, MarkdownDescription: "GitHub App ID."},
+			"installation_id":           schema.StringAttribute{Optional: true, MarkdownDescription: "GitHub App installation ID."},
+			"github_url":                schema.StringAttribute{Optional: true, MarkdownDescription: "GitHub API base URL."},
+			"github_client_id":          schema.StringAttribute{Optional: true, MarkdownDescription: "GitHub App OAuth client ID."},
+			"github_app_credential_key": schema.StringAttribute{Optional: true, MarkdownDescription: "Organization GitHub App credential used for personal OAuth connections."},
+
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Same as `key` — the backend addresses definitions by key",
@@ -234,6 +250,13 @@ func (r *RuntimeCredentialResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
+	data.Kind = types.StringValue(string(view.Kind))
+	optionalStringFromAPI(&data.AppId, view.AppId)
+	optionalStringFromAPI(&data.InstallationId, view.InstallationId)
+	optionalStringFromAPI(&data.GithubUrl, view.GithubUrl)
+	optionalStringFromAPI(&data.GithubClientId, view.GithubClientId)
+	optionalStringFromAPI(&data.GithubAppCredentialKey, view.GithubAppCredentialKey)
+
 	data.Key = types.StringValue(view.Key)
 	data.Name = types.StringValue(view.Name)
 	data.Description = types.StringValue(view.Description)
@@ -287,6 +310,10 @@ func (r *RuntimeCredentialResource) Update(ctx context.Context, req resource.Upd
 			return
 		}
 		plan.Description = types.StringValue(apiResp.JSON200.Description)
+	}
+
+	if plan.Description.IsUnknown() {
+		plan.Description = state.Description
 	}
 
 	switch {
@@ -368,8 +395,15 @@ func (r *RuntimeCredentialResource) KnownIntentionallySkipped() []string {
 
 // runtimeCredentialAttrSpec declares the wire shape. key/name/allow_* only
 // ever appear in Create patches (RequiresReplace keeps them out of Update
-// ones, matching the PATCH endpoint's description+icon-only contract).
+// ones). GitHub configuration fields can be updated in place.
 var runtimeCredentialAttrSpec = []AttrSpec{
+	{TFName: "kind", JSONName: "kind", Kind: Scalar, OmitOnNull: true},
+	{TFName: "app_id", JSONName: "appId", Kind: Scalar},
+	{TFName: "installation_id", JSONName: "installationId", Kind: Scalar},
+	{TFName: "github_url", JSONName: "githubUrl", Kind: Scalar},
+	{TFName: "github_client_id", JSONName: "githubClientId", Kind: Scalar},
+	{TFName: "github_app_credential_key", JSONName: "githubAppCredentialKey", Kind: Scalar},
+
 	{TFName: "key", JSONName: "key", Kind: Scalar},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar, OmitOnNull: true},
@@ -386,19 +420,26 @@ var runtimeCredentialKeyRegexp = regexp.MustCompile(`^[a-z][a-z0-9._-]*$`)
 // runtimeCredentialView is a named copy of the list endpoint's element
 // shape so findByKey can return it (struct conversion ignores field tags).
 type runtimeCredentialView struct {
-	AllowOrganization      bool
-	AllowPersonal          bool
-	BuiltIn                bool
-	Description            string
-	Icon                   *string
-	Key                    string
-	Name                   string
-	OrganizationConfigured bool
-	PersonalConfigured     bool
+	AllowOrganization      bool                                 `json:"allowOrganization"`
+	AllowPersonal          bool                                 `json:"allowPersonal"`
+	AppId                  *string                              `json:"appId"`
+	BuiltIn                bool                                 `json:"builtIn"`
+	Description            string                               `json:"description"`
+	GithubAppCredentialKey *string                              `json:"githubAppCredentialKey"`
+	GithubClientId         *string                              `json:"githubClientId"`
+	GithubUrl              *string                              `json:"githubUrl"`
+	Icon                   *string                              `json:"icon"`
+	Id                     openapi_types.UUID                   `json:"id"`
+	InstallationId         *string                              `json:"installationId"`
+	Key                    string                               `json:"key"`
+	Kind                   client.ListRuntimeCredentials200Kind `json:"kind"`
+	Name                   string                               `json:"name"`
+	OrganizationConfigured bool                                 `json:"organizationConfigured"`
+	PersonalConfigured     bool                                 `json:"personalConfigured"`
 }
 
-// findByKey resolves one definition from the list endpoint (the API has no
-// GET-by-key). ok=false means not found (resource gone or runtime disabled).
+// findByKey resolves a definition and its configured-value flags from the list.
+// ok=false means not found (resource gone or runtime disabled).
 func (r *RuntimeCredentialResource) findByKey(ctx context.Context, key string, diags *diag.Diagnostics) (runtimeCredentialView, bool) {
 	apiResp, err := r.client.ListRuntimeCredentialsWithResponse(ctx)
 	if err != nil {
