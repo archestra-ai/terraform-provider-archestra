@@ -1,0 +1,78 @@
+{
+  "run_id": "c456ad91",
+  "terraform_sha256": "ff9ae5e3dd6a4a02fa67c0dbe37c7d2757ab7b4884a6615cbf6ceea9da062057",
+  "controller_sha256": "3190fc3340cc571d099a2a9146986890b5b7bd52778f7cc8d18301981e7baba9",
+  "results": [
+    {
+      "resource": "Tool",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ToolBatch",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ToolExclusions",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_clears_exclusions": "passed",
+      "agent_preserved": true
+    },
+    {
+      "resource": "ServerInstallation",
+      "scope": "cluster",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "tools_discovered": 2,
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Tool",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ToolBatch",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ToolExclusions",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_clears_exclusions": "passed",
+      "agent_preserved": true
+    },
+    {
+      "resource": "ServerInstallation",
+      "scope": "namespaced",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "tools_discovered": 2,
+      "delete": "passed",
+      "backend_after_delete": 404
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "outcome": "passed"
+}

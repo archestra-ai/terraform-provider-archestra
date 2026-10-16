@@ -159,8 +159,16 @@ func (r *TeamExternalGroupResource) Read(
 		ctx,
 		data.TeamID.ValueString(),
 	)
-	if err != nil || apiResp.JSON200 == nil {
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read external group mappings: %s", err))
+		return
+	}
+	if IsNotFound(apiResp) {
 		resp.State.RemoveResource(ctx)
+		return
+	}
+	if apiResp.JSON200 == nil {
+		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Expected 200 OK, got status %d", apiResp.StatusCode()))
 		return
 	}
 

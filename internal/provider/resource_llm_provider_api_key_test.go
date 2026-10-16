@@ -93,17 +93,17 @@ func TestAccLLMProviderApiKeyResourceInvalidProvider(t *testing.T) {
 	})
 }
 
-func TestAccLLMProviderApiKeyResourceWithScope(t *testing.T) {
+func TestAccLLMProviderApiKeyResourceOwnershipMetadata(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t); testAccRequireByosEnabled(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccLLMProviderApiKeyResourceConfigWithScope("Scoped Ollama Key", "ollama", "org"),
+				Config: testAccLLMProviderApiKeyResourceConfig("Scoped Ollama Key", "ollama", false),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "name", "Scoped Ollama Key"),
 					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "llm_provider", "ollama"),
-					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "scope", "org"),
+					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "scope", "personal"),
 					resource.TestCheckResourceAttrSet("archestra_llm_provider_api_key.test", "id"),
 				),
 			},
@@ -115,19 +115,6 @@ func TestAccLLMProviderApiKeyResourceWithScope(t *testing.T) {
 			},
 		},
 	})
-}
-
-func testAccLLMProviderApiKeyResourceConfigWithScope(name string, llmProvider string, scope string) string {
-	return fmt.Sprintf(`
-resource "archestra_llm_provider_api_key" "test" {
-  name                    = %[1]q
-  llm_provider            = %[2]q
-  is_primary = false
-  scope                   = %[3]q
-  vault_secret_path       = "secret/data/test/ollama"
-  vault_secret_key        = "api_key"
-}
-`, name, llmProvider, scope)
 }
 
 //nolint:unparam // llmProvider is always "ollama" today (BYOS tests seed a single vault secret); kept parameterised for future coverage.

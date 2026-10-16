@@ -2,7 +2,7 @@
 
 The sections below retain the initial baseline. Current v3 configuration is
 **23/23 resources in both scopes**, with real both-scope lifecycle evidence for
-**10/23**. See [the current inventory](provider-v3-inventory.md) and
+**23/23**. See [the current inventory](provider-v3-inventory.md) and
 [secret-free runtime evidence](v3-runtime-evidence.json). Full API-field checks
 and remaining lifecycle/migration/release gates are still open.
 

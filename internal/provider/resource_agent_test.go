@@ -198,7 +198,7 @@ resource "archestra_agent" "runtime" {
   runtime = {
     image              = "registry.example.com/tf-acc/worker:latest"
     command            = ["run-worker"]
-    inference_protocol = "anthropic"
+    inference_protocol = "openai_chat"
     steer_mode         = "tmux_keys"
     privileged         = false
 

@@ -1,0 +1,46 @@
+{
+  "run_id": "f57f68d6",
+  "terraform_sha256": "059e458a3e32d1344d27500348270654a2a0f334dc0c7fb64856c8cd15a12f3c",
+  "controller_sha256": "6d3f82de26c47e189fbbf2cb53a062bdd133f3e202fa7ec79032afa57d117351",
+  "results": [
+    {
+      "resource": "RegistryCatalogItem",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Limit",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "RegistryCatalogItem",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Limit",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "outcome": "passed"
+}

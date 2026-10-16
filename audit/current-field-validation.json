@@ -1,8 +1,8 @@
 {
   "api_source_commit": "91b2d0cbb1dfbed399f0ffb8b012d167453eff6e",
   "api_pr": "https://github.com/archestra-ai/archestra/pull/9032",
-  "published_api_tested": "1.4.0-rc.45",
-  "published_api_image_digest": "sha256:1befaf24bbac977267d7bd480a250969aa6126898ddef89a291a1fadd6477b26",
+  "published_api_tested": "1.4.0-rc.46",
+  "published_api_image_digest": "sha256:794147fc093325fbff58259ee9b7f7712126e3fc3e0e380ea10c0199ad3d6834",
   "real_terraform_acceptance": {
     "published_api": [
       "TestAccCurrentTeamHierarchy",
@@ -43,7 +43,7 @@
   },
   "remaining_api_field_gaps": 0,
   "remaining_gap_resources": [],
-  "crossplane_runtime_evidence": "Unchanged: 10/23 resources previously proved against the hashes in v3-runtime-evidence.json; rerun the final binaries before release.",
+  "crossplane_runtime_evidence": "23/23 configured resources have accumulated both-scope lifecycle proofs, recorded with binary hashes in v3-runtime-evidence.json and its additional probe files. Final release-candidate repetition remains required.",
   "release_status": "blocked pending remaining coverage, lifecycle, migration, CI, package and deployed sync validation",
   "model_runtime_assertions": [
     "provider-qualified native model adoption",
@@ -59,5 +59,6 @@
     "404 model reset is idempotent",
     "ambiguous model adoption/import refuses to write"
   ],
-  "api_coverage_limit": "GET field coverage is a schema guard, not proof that every meaningful API resource, request-only field or controller lifecycle is supported."
+  "api_coverage_limit": "GET field coverage is a schema guard, not proof that every meaningful API resource, request-only field or controller lifecycle is supported.",
+  "request_field_audit": "provider-v3-request-fields.json; unmapped writes require explicit implementation or justification before full API coverage can be claimed"
 }

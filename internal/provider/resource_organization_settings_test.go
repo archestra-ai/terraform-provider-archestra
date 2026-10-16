@@ -234,3 +234,29 @@ resource "archestra_organization_settings" "test" {
 }
 `
 }
+
+// Omitting a previously populated nested collection preserves the remote
+// endpoints and must not produce an update on every subsequent plan.
+func TestAccOrganizationSettingsOmittedConnectionURLs(t *testing.T) {
+	const configured = `
+resource "archestra_organization_settings" "test" {
+ font = "lato"
+ color_theme = "cosmic-night"
+ connection_base_urls = [{ url = "https://provider-test.example.invalid", description = "fixture" }]
+}
+`
+	const omitted = `
+resource "archestra_organization_settings" "test" {
+ font = "lato"
+ color_theme = "cosmic-night"
+}
+`
+	resource.Test(t, resource.TestCase{
+		PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{Config: configured},
+			{Config: omitted, Check: resource.TestCheckResourceAttr("archestra_organization_settings.test", "connection_base_urls.0.url", "https://provider-test.example.invalid")},
+			{Config: omitted, PlanOnly: true},
+		},
+	})
+}

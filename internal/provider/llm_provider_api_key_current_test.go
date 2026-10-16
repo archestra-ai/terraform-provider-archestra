@@ -17,10 +17,10 @@ func TestAccLLMProviderKeyCurrentFields(t *testing.T) {
 		return fmt.Sprintf(`resource "archestra_llm_provider_api_key" "test" {
  name="tf-current-key-fields"
  llm_provider="ollama"
- api_key="synthetic-local-test-key"
+ %s
  base_url=%q
  %s
-}`, baseURL, extra)
+}`, testAccLLMKeyMaterial(), baseURL, extra)
 	}
 	initial := config(fmt.Sprintf(`inference_base_url=%q
  extra_headers={"X-Synthetic-Test"="first"}
@@ -32,11 +32,20 @@ func TestAccLLMProviderKeyCurrentFields(t *testing.T) {
  labels=[]`)
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: initial, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "extra_headers.X-Synthetic-Test", "first"), resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "labels.0.value", "initial"), resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "requires_reauthentication", "false"))},
-		{ResourceName: "archestra_llm_provider_api_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"api_key"}},
+		{ResourceName: "archestra_llm_provider_api_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"api_key", "vault_secret_path", "vault_secret_key"}},
 		{Config: initial, PlanOnly: true},
 		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "extra_headers.X-Synthetic-Test", "second")},
 		{Config: updated, PlanOnly: true},
 		{Config: cleared, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "extra_headers.%", "0"), resource.TestCheckNoResourceAttr("archestra_llm_provider_api_key.test", "inference_base_url"))},
 		{Config: cleared, PlanOnly: true},
 	}})
+}
+
+// The same resource contract is exercised against both supported secret stores.
+func testAccLLMKeyMaterial() string {
+	if os.Getenv("ARCHESTRA_READONLY_VAULT_ENABLED") == "true" {
+		return `vault_secret_path="secret/data/test/ollama"
+ vault_secret_key="api_key"`
+	}
+	return `api_key="synthetic-local-test-key"`
 }

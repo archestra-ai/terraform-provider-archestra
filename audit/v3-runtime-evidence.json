@@ -1,4 +1,11 @@
 {
+  "additional_runtime_probe_evidence": [
+    "crossplane-current-catalog-limit.json",
+    "crossplane-current-llm.json",
+    "crossplane-current-policies-links.json",
+    "crossplane-current-identity.json",
+    "crossplane-current-tools.json"
+  ],
   "agent_crd_migration": {
     "cross_scope_observe_adoption": true,
     "explicit_delete_after_adoption": 404,
@@ -237,7 +244,7 @@
       "update": "passed"
     }
   ],
-  "crossplane_runtime_both_scopes": 10,
+  "crossplane_runtime_both_scopes": 23,
   "current_crossplane_configured": 23,
   "current_terraform_count": 23,
   "format_version": 1,
@@ -337,7 +344,7 @@
   ],
   "remaining_release_gates": [
     "The GET-field API coverage gate now passes; see current-field-validation.json for Terraform evidence. The broader meaningful-API taxonomy and final runtime proofs remain release gates.",
-    "Remaining 13 Crossplane resource lifecycle proofs.",
+    "Repeat all 23 both-scope lifecycle proofs against the final release candidate; accumulated evidence uses several recorded candidate hashes.",
     "Full meaningful API-domain taxonomy and justified exclusions.",
     "Other state/CRD adoption migrations and release package smoke tests.",
     "Live agent dry run, durable publication wiring, daily schedule and failure notification."

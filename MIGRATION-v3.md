@@ -14,9 +14,10 @@ provider and Crossplane package to the tested release until that work is complet
    Remove obsolete bindings and configuration without running a legacy destroy
    against the newer API. Do not rely on a resource rename to preserve security.
 3. Upgrade Archestra to the exact release pinned in the final compatibility matrix.
-   The current target is 1.4.0-rc.45, which includes the environment-by-ID read from
-   archestra-ai/archestra#9021. Publication and artifact verification must finish
-   before that target can be treated as a tested prerequisite.
+   The tested prerequisite is 1.4.0-rc.46, including the environment and label-read
+   API fixes. Its published image and the full isolated Terraform acceptance suite
+   are verified in `audit/published-api-full-acceptance.json`. Additional API
+   capabilities in this working branch can raise the final minimum version.
 4. Upgrade Terraform in a non-production copy of the workspace. Run refresh-only
    planning, then a normal plan. Review every deletion, replacement and grant
    revocation before applying. A version upgrade does not authorize recreation.
@@ -198,3 +199,14 @@ modality values were explicitly configured, so re-declare intended overrides in
 HCL and inspect the first plan. Destroy clears managed overrides and labels and
 retains the discovered model. Failed resets remain errors instead of silently
 dropping the Terraform binding.
+
+## Crossplane nested object representation
+
+Framework single blocks such as `spec.forProvider.oidcConfig` and
+`spec.forProvider.runtime` are native objects in v3 CRDs, matching Terraform
+configuration and state. Use `oidcConfig: {clientId: ...}` rather than a
+one-element array. Real list blocks, such as role-mapping rules, remain arrays.
+Identity-provider CRDs were not in the released v2 five-resource inventory.
+For an experimental manifest using an array, export it before upgrading and
+change it to an object before applying the new schema; verify the stored
+manifest was not pruned and that its external-name annotation is preserved.

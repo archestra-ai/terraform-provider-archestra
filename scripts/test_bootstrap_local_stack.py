@@ -47,6 +47,11 @@ esac
             file = scripts / 'bootstrap-api-key.sh'
             file.write_text('#!/bin/bash\necho test-key\n')
             file.chmod(0o755)
+            (scripts / 'bootstrap-test-llm-key.py').write_text(
+                'import os\nfrom pathlib import Path\n'
+                'with (Path(os.environ["CAPTURE"])/"commands").open("a") as f: '
+                'f.write("child " + os.environ["KUBECONFIG"] + " " + os.environ["ARCHESTRA_BASE_URL"] + "\\n")\n'
+                'print("model-fixture-id")\n')
             original = root / 'user-kubeconfig'
             original.write_text('preserve-current-context')
             env = {**os.environ, 'PATH': f'{binary_dir}:{os.environ["PATH"]}',

@@ -19,7 +19,8 @@ func TestAccCurrentModelOverrides(t *testing.T) {
 name="tf-native-model-fixture"
 llm_provider="ollama-native"
 base_url=%q
-}`, baseURL)
+%s
+}`, baseURL, testAccLLMKeyMaterial())
 	var modelUUID string
 	apiClient := func() *client.ClientWithResponses {
 		c, err := client.NewClientWithResponses(os.Getenv("ARCHESTRA_BASE_URL"), client.WithRequestEditorFn(func(_ context.Context, req *http.Request) error {

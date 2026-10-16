@@ -35,7 +35,7 @@ kubectl run vault-seed --rm -i --restart=Never --image=curlimages/curl:8.10.1 --
     -X POST "http://vault.default.svc.cluster.local:8200/v1/secret/data/test/ollama" \
     -H "X-Vault-Token: root" \
     -H "Content-Type: application/json" \
-    -d '{"data":{"api_key":"test-api-key-value"}}'
+    -d '{"data":{"api_key":"test-api-key-value","api_key_rotated":"test-api-key-value-rotated"}}'
 
 # The Archestra backend reads Vault config at startup; if it came up before
 # Vault was reachable, restart so it can connect now.

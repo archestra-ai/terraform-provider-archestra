@@ -77,13 +77,7 @@ func TestAccIntegration_FullWorkflow(t *testing.T) {
 	})
 }
 
-// TestAccIntegration_CrossScope_TeamAgentPersonalInstall pins the backend
-// rule in services/agent-tool-assignment.ts isMcpServerAssignableToTarget:
-// a team-scoped agent binding a tool from a personal-owned install
-// (ownerId set, teamId null) is allowed only when the install's owner is
-// a member of the agent's teams. The Terraform-created team has no
-// members, so the API key user (who owns the install) isn't in it, and
-// the assignment is rejected with the canonical message.
+// Personal MCP connections require dynamic credential resolution.
 func TestAccIntegration_CrossScope_TeamAgentPersonalInstall(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -91,7 +85,7 @@ func TestAccIntegration_CrossScope_TeamAgentPersonalInstall(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config:      testAccCrossScopeConfig(),
-				ExpectError: regexp.MustCompile(`credential owner must be a member of a team`),
+				ExpectError: regexp.MustCompile(`Personal connections cannot be assigned statically`),
 			},
 		},
 	})
@@ -107,8 +101,6 @@ resource "archestra_team" "cross" {
 resource "archestra_agent" "team_scoped" {
   name          = "tf-acc-cross-scope-team-agent"
   system_prompt = "Team-scoped agent."
-  scope         = "team"
-  teams         = [archestra_team.cross.id]
 }
 
 resource "archestra_mcp_registry_catalog_item" "cross" {
@@ -122,6 +114,12 @@ resource "archestra_mcp_registry_catalog_item" "cross" {
   }
 }
 
+resource "archestra_resource_permission_policy" "team_access" {
+  resource_type = "agent"
+  resource_id   = archestra_agent.team_scoped.id
+  grants = [{ subject_type = "team", subject_id = archestra_team.cross.id, actions = ["read", "use"] }]
+}
+
 # Personal-scoped install: deliberately no team_id.
 resource "archestra_mcp_server_installation" "personal" {
   name       = "tf-acc-cross-scope-personal-install"
@@ -132,6 +130,7 @@ resource "archestra_mcp_server_installation" "personal" {
 # from a personal-scoped install. Pulls the first tool the install
 # advertises (filesystem servers expose several; any one works).
 resource "archestra_agent_tool" "cross" {
+  depends_on = [archestra_resource_permission_policy.team_access]
   agent_id      = archestra_agent.team_scoped.id
   tool_id       = archestra_mcp_server_installation.personal.tools[0].id
   mcp_server_id = archestra_mcp_server_installation.personal.id

@@ -88,7 +88,7 @@ jobs:
     env:
       # Archestra platform version for acceptance tests
       # Update this single value to bump the version used
-      ARCHESTRA_VERSION: "1.2.20"
+      ARCHESTRA_VERSION: "1.4.0-rc.46"
     steps:
       - name: Checkout project
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -112,7 +112,7 @@ jobs:
           helm-chart-ref: oci://europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/helm-charts/archestra-platform:${{ env.ARCHESTRA_VERSION }}
           deploy-e2e-dependencies: "false"
           build-platform-image: "false"
-          platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}
+          platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}@sha256:794147fc093325fbff58259ee9b7f7712126e3fc3e0e380ea10c0199ad3d6834
 
       # Stub /v1/models so backend's testProviderApiKey passes without a real
       # Ollama. Manifest + apply logic shared with local development via
@@ -123,6 +123,15 @@ jobs:
       # Dev-mode Vault + secret seed for BYOS tests. Ephemeral; do not mirror
       # outside CI. Shared with local via scripts/bootstrap-vault.sh and
       # scripts/k8s/vault-dev.yaml.
+      - name: Install test Agent Runtime operator
+        run: |
+          curl --fail --silent --show-error --location \
+            https://github.com/kubernetes-sigs/agent-sandbox/releases/download/v1.0.1/sandbox-with-extensions.yaml \
+            --output /tmp/agent-sandbox.yaml
+          echo "460c1e0272c793c98de82482aed57db1bddb0afcb979c19325dc6cc52289c44c  /tmp/agent-sandbox.yaml" | sha256sum --check
+          kubectl apply --server-side -f /tmp/agent-sandbox.yaml
+          kubectl rollout status deployment/agent-sandbox-controller -n agent-sandbox-system --timeout=120s
+
       - name: Deploy Vault (dev mode)
         run: ./scripts/bootstrap-vault.sh
 
@@ -159,6 +168,14 @@ jobs:
           IDP_ID=$(./scripts/bootstrap-test-idp.sh)
           echo "idp-id=${IDP_ID}" >> "$GITHUB_OUTPUT"
 
+      - name: Seed model fixture
+        env:
+          ARCHESTRA_BASE_URL: http://localhost:9000
+          ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
+          ARCHESTRA_READONLY_VAULT_ENABLED: "true"
+          ARCHESTRA_TEST_LLM_BASE_URL: http://ollama-mock.default.svc.cluster.local:11434/v1
+        run: python3 scripts/bootstrap-test-llm-key.py
+
       - name: Run Acceptance Tests
         run: make testacc
         env:
@@ -166,6 +183,9 @@ jobs:
           ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
           ARCHESTRA_TEST_IDP_ID: ${{ steps.test-idp.outputs.idp-id }}
           ARCHESTRA_READONLY_VAULT_ENABLED: "true"
+          ARCHESTRA_AGENT_RUNTIME_ENABLED: "true"
+          ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
+          ARCHESTRA_TEST_LLM_BASE_URL: http://ollama-mock.default.svc.cluster.local:11434/v1
 
   credential-acceptance-tests:
     name: Credential Acceptance Tests
@@ -184,7 +204,7 @@ jobs:
             -e ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true \
             -e ARCHESTRA_AGENT_RUNTIME_ENABLED=true \
             -e ARCHESTRA_AUTH_SECRET=acceptance-test-auth-secret-32chars \
-            archestra/platform:1.4.0-rc.43@sha256:7129705975e1cb6f840a160a4292772ba9a2118b14480d267640011059b80cb8
+            archestra/platform:1.4.0-rc.46@sha256:794147fc093325fbff58259ee9b7f7712126e3fc3e0e380ea10c0199ad3d6834
           for _attempt in $(seq 1 120); do
             status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/api/health || true)
             case "$status" in 200|401) exit 0 ;; esac

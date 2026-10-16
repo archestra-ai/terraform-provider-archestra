@@ -1,0 +1,30 @@
+{
+  "run_id": "3a3e957a",
+  "terraform_sha256": "ff9ae5e3dd6a4a02fa67c0dbe37c7d2757ab7b4884a6615cbf6ceea9da062057",
+  "controller_sha256": "3190fc3340cc571d099a2a9146986890b5b7bd52778f7cc8d18301981e7baba9",
+  "results": [
+    {
+      "resource": "Provider",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "secret_absent_from_status": true,
+      "live_oauth_consent": "not_exercised; synthetic configuration only"
+    },
+    {
+      "resource": "Provider",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "secret_absent_from_status": true,
+      "live_oauth_consent": "not_exercised; synthetic configuration only"
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "outcome": "passed"
+}
