@@ -45,6 +45,7 @@ for port in "$BACKEND_PORT" "$FRONTEND_PORT" "$METRICS_PORT"; do
   }
 done
 export ARCHESTRA_BASE_URL="http://localhost:${BACKEND_PORT}"
+export ARCHESTRA_FRONTEND_URL="http://localhost:${FRONTEND_PORT}"
 export ARCHESTRA_NAMESPACE="${ARCHESTRA_NAMESPACE:-default}"
 
 log() { printf '%s\n' "$*" >&2; }
@@ -81,6 +82,7 @@ require_tool() {
 print_env() {
   cat <<EOF
 export ARCHESTRA_BASE_URL=${ARCHESTRA_BASE_URL}
+export ARCHESTRA_FRONTEND_URL=${ARCHESTRA_FRONTEND_URL}
 export ARCHESTRA_API_KEY=\$(${SCRIPT_DIR}/bootstrap-api-key.sh)
 export ARCHESTRA_READONLY_VAULT_ENABLED=true
 export ARCHESTRA_TEST_IDP_ID=\$(ARCHESTRA_API_KEY=\$ARCHESTRA_API_KEY ${SCRIPT_DIR}/bootstrap-test-idp.sh)
@@ -192,6 +194,6 @@ ARCHESTRA_API_KEY="$api_key" "${SCRIPT_DIR}/bootstrap-test-idp.sh" >/dev/null
 
 log "Stack ready."
 log
-log "  eval \"\$(KIND_CLUSTER=${KIND_CLUSTER} ARCHESTRA_TEST_BACKEND_PORT=${BACKEND_PORT} scripts/bootstrap-local-stack.sh --print-env)\" && make testacc"
+log "  eval \"\$(KIND_CLUSTER=${KIND_CLUSTER} ARCHESTRA_TEST_BACKEND_PORT=${BACKEND_PORT} ARCHESTRA_TEST_FRONTEND_PORT=${FRONTEND_PORT} scripts/bootstrap-local-stack.sh --print-env)\" && make testacc"
 log
 log "Tear down with:  KIND_CLUSTER=${KIND_CLUSTER} scripts/bootstrap-local-stack.sh --down"
