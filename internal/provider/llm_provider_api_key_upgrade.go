@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/hashicorp/terraform-plugin-go/tftypes"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 )
 
 var _ resource.ResourceWithUpgradeState = &LLMProviderApiKeyResource{}
@@ -44,7 +44,7 @@ func (r *LLMProviderApiKeyResource) UpgradeState(ctx context.Context) map[int64]
 			resp.Diagnostics.AddError("Key State Upgrade Failed", "Unable to encode the upgraded state.")
 			return
 		}
-		upgraded, err := tftypes.ValueFromJSON(encoded, current.Schema.Type().TerraformType(ctx))
+		upgraded, err := (tfprotov6.RawState{JSON: encoded}).Unmarshal(current.Schema.Type().TerraformType(ctx))
 		if err != nil {
 			resp.Diagnostics.AddError("Key State Upgrade Failed", "Previous key state does not match the supported v2 schema. Restore the state backup and inspect the provider version before retrying.")
 			return

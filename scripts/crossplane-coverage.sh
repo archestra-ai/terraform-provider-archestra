@@ -48,7 +48,7 @@ missing="$(comm -23 <(echo "$tf") <(echo "$cp"))"
 orphans="$(comm -13 <(echo "$tf") <(echo "$cp"))"
 
 {
-  echo "# Crossplane coverage report"
+  echo "# Crossplane mappings report"
   echo
   echo "**${cp_total} / ${tf_total} Terraform resources are included in the Crossplane configuration (${pct}%).**"
   echo

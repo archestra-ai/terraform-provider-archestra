@@ -2,11 +2,11 @@ terraform {
   required_providers {
     archestra = {
       source  = "archestra-ai/archestra"
-      version = "~> 0.6.0"
+      version = "~> 3.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = "~> 3.6"
+      version = "3.6.3"
     }
   }
 }
@@ -25,9 +25,8 @@ provider "archestra" {
 }
 
 resource "archestra_organization_settings" "main" {
-  app_name           = var.app_name
-  footer_text        = var.footer_text
-  global_tool_policy = "restrictive"
+  app_name    = var.app_name
+  footer_text = var.footer_text
 
   # Chat UX
   chat_placeholders         = ["What can I help with?", "Ask anything…"]
@@ -40,23 +39,10 @@ resource "archestra_organization_settings" "main" {
   slim_chat_error_ui         = false
   allow_chat_file_uploads    = true
 
-  # Compression
-  compression_scope            = "team"
-  convert_tool_results_to_toon = false
 
-  # Cost / limit cleanup
-  limit_cleanup_interval = "24h"
 
-  # MCP OAuth tuning
-  mcp_oauth_access_token_lifetime_seconds = 3600
 
-  # Auth UX
-  show_two_factor = true
 
-  # Default LLM + agent — cross-refs to our existing resources. Without these
-  # the platform falls back to whichever provider key is is_primary.
-  default_llm_provider   = "ollama"
-  default_llm_model      = "llama3"
   default_llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
   default_agent_id       = archestra_agent.support.id
 

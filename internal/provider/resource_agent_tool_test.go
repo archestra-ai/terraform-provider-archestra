@@ -51,6 +51,7 @@ resource "archestra_mcp_registry_catalog_item" "test" {
 }
 
 resource "archestra_mcp_server_installation" "test" {
+  scope = "org"
   name       = "%s-install"
   catalog_id = archestra_mcp_registry_catalog_item.test.id
 }

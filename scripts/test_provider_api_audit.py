@@ -47,6 +47,14 @@ class AuditTests(unittest.TestCase):
             self.assertTrue(endpoint['present_in_upstream'])
             self.assertEqual(endpoint['retired_request_fields'], ['scope'])
             self.assertIn('retired scope', audit.markdown(result))
+            current = {'provider_schemas': {'registry.terraform.io/archestra-ai/archestra': {'resource_schemas': {'archestra_thing': {'version': 1, 'block': {'attributes': {'scope': {'computed': True}}}}}}}}
+            upstream = {'paths': {'/api/things': {'post': {'requestBody': {'content': {'application/json': {'schema': {'properties': {'scope': {'not': {}}}}}}}}}}}
+            endpoint = audit.audit(root, upstream, current)['resources'][0]['endpoints'][0]
+            self.assertEqual(endpoint['api_forbidden_request_fields'], ['scope'])
+            self.assertEqual(endpoint['retired_request_fields'], [])
+            current['provider_schemas']['registry.terraform.io/archestra-ai/archestra']['resource_schemas']['archestra_thing']['block']['attributes']['scope']['optional'] = True
+            self.assertEqual(audit.audit(root, upstream, current)['resources'][0]['endpoints'][0]['retired_request_fields'], ['scope'])
+
 
 
 if __name__ == '__main__':

@@ -263,8 +263,6 @@ resource "archestra_mcp_registry_catalog_item" "private_registry" {
 - `remote_config` (Attributes) Configuration for remote/hosted MCP servers accessed via HTTP (see [below for nested schema](#nestedatt--remote_config))
 - `repository` (String) Repository URL for the MCP server
 - `requires_auth` (Boolean) Whether the MCP server requires authentication
-- `scope` (String) Visibility scope for the MCP server catalog item (e.g., 'personal', 'team', 'org')
-- `teams` (List of String) Team IDs that have access to this MCP server
 - `user_config` (Attributes Map) User-configurable fields collected from the installer at install time. The map key is the field name the installer will see. (see [below for nested schema](#nestedatt--user_config))
 - `version` (String) Version string for the MCP server
 

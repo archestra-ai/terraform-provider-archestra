@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -36,23 +35,23 @@ type AgentResource struct {
 // AgentResourceModel is the schema for an internal Archestra agent (chat agent
 // with prompts, knowledge sources, optional email triggers, etc.).
 type AgentResourceModel struct {
-	ID                         types.String             `tfsdk:"id"`
-	Name                       types.String             `tfsdk:"name"`
-	Description                types.String             `tfsdk:"description"`
-	Icon                       types.String             `tfsdk:"icon"`
-	SystemPrompt               types.String             `tfsdk:"system_prompt"`
-	LlmModel                   types.String             `tfsdk:"llm_model"`
-	LlmApiKeyId                types.String             `tfsdk:"llm_api_key_id"`
-	KnowledgeBaseIds           types.List               `tfsdk:"knowledge_base_ids"`
-	ConnectorIds               types.List               `tfsdk:"connector_ids"`
-	IncomingEmailEnabled       types.Bool               `tfsdk:"incoming_email_enabled"`
-	IncomingEmailAllowedDomain types.String             `tfsdk:"incoming_email_allowed_domain"`
-	IncomingEmailSecurityMode  types.String             `tfsdk:"incoming_email_security_mode"`
-	ConsiderContextUntrusted   types.Bool               `tfsdk:"consider_context_untrusted"`
-	IsDefault                  types.Bool               `tfsdk:"is_default"`
-	SuggestedPrompts           []SuggestedPromptModel   `tfsdk:"suggested_prompts"`
-	Labels                     []AgentLabelModel        `tfsdk:"labels"`
-	BuiltInAgentConfig         *BuiltInAgentConfigModel `tfsdk:"built_in_agent_config"`
+	ID                         types.String           `tfsdk:"id"`
+	Name                       types.String           `tfsdk:"name"`
+	Description                types.String           `tfsdk:"description"`
+	Icon                       types.String           `tfsdk:"icon"`
+	SystemPrompt               types.String           `tfsdk:"system_prompt"`
+	LlmModel                   types.String           `tfsdk:"llm_model"`
+	LlmApiKeyId                types.String           `tfsdk:"llm_api_key_id"`
+	KnowledgeBaseIds           types.List             `tfsdk:"knowledge_base_ids"`
+	ConnectorIds               types.List             `tfsdk:"connector_ids"`
+	IncomingEmailEnabled       types.Bool             `tfsdk:"incoming_email_enabled"`
+	IncomingEmailAllowedDomain types.String           `tfsdk:"incoming_email_allowed_domain"`
+	IncomingEmailSecurityMode  types.String           `tfsdk:"incoming_email_security_mode"`
+	ConsiderContextUntrusted   types.Bool             `tfsdk:"consider_context_untrusted"`
+	IsDefault                  types.Bool             `tfsdk:"is_default"`
+	SuggestedPrompts           []SuggestedPromptModel `tfsdk:"suggested_prompts"`
+	Labels                     []AgentLabelModel      `tfsdk:"labels"`
+	BuiltInAgentConfig         types.String           `tfsdk:"built_in_agent_config"`
 
 	AccessAllTools            types.Bool         `tfsdk:"access_all_tools"`
 	MissingCredentialBehavior types.String       `tfsdk:"missing_credential_behavior"`
@@ -67,6 +66,7 @@ func (r *AgentResource) Metadata(_ context.Context, req resource.MetadataRequest
 
 func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version:             1,
 		MarkdownDescription: "Internal chat agent — system prompt + LLM, optionally augmented with knowledge bases, connectors, and email triggers.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -176,28 +176,8 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				Optional:            true,
 				MarkdownDescription: "Environment UUID scoping which MCP servers and connections the agent resolves against; omit for the default environment",
 			},
-			"runtime": runtimeSchema(),
-		},
-		Blocks: map[string]schema.Block{
-			"built_in_agent_config": schema.SingleNestedBlock{
-				MarkdownDescription: "Built-in agent configuration. Discriminated by `name`.",
-				Attributes: map[string]schema.Attribute{
-					"name": schema.StringAttribute{
-						Optional:            true,
-						MarkdownDescription: "Built-in agent identifier: `policy-configuration-subagent`, `dual-llm-main-agent`, `dual-llm-quarantine-agent`",
-					},
-					"auto_configure_on_tool_discovery": schema.BoolAttribute{
-						Optional:            true,
-						MarkdownDescription: "Only applies when `name = \"policy-configuration-subagent\"`",
-					},
-					"max_rounds": schema.Int64Attribute{
-						Optional:            true,
-						Computed:            true,
-						MarkdownDescription: "Only applies when `name = \"dual-llm-main-agent\"` (1–20)",
-						PlanModifiers:       []planmodifier.Int64{int64planmodifier.UseStateForUnknown()},
-					},
-				},
-			},
+			"runtime":               runtimeSchema(),
+			"built_in_agent_config": schema.StringAttribute{Computed: true, MarkdownDescription: "Server-owned built-in agent metadata as JSON."},
 		},
 	}
 }
@@ -447,7 +427,10 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 
 	data.Labels = flattenAgentLabels(data.Labels, resp.Labels)
 
-	data.BuiltInAgentConfig = builtInAgentConfigFromResponse(body)
+	data.BuiltInAgentConfig = types.StringNull()
+	if resp.BuiltInAgentConfig != nil {
+		data.BuiltInAgentConfig = types.StringValue(string(*resp.BuiltInAgentConfig))
+	}
 
 	data.AccessAllTools = types.BoolValue(resp.AccessAllTools)
 	if resp.MissingCredentialBehavior != "" {
@@ -544,41 +527,4 @@ var agentAttrSpec = []AttrSpec{
 		Children: runtimeAttrSpec,
 		Encoder:  encodeRuntime,
 	},
-	{
-		TFName: "built_in_agent_config", JSONName: "builtInAgentConfig", Kind: AtomicObject,
-		Children: []AttrSpec{
-			{TFName: "name", JSONName: "name", Kind: Scalar},
-			{TFName: "auto_configure_on_tool_discovery", JSONName: "autoConfigureOnToolDiscovery", Kind: Scalar},
-			{TFName: "max_rounds", JSONName: "maxRounds", Kind: Scalar},
-		},
-		Encoder: encodeBuiltInAgentConfig,
-	},
-}
-
-// encodeBuiltInAgentConfig narrows the AtomicObject's encoded map to only the
-// sub-fields valid for the discriminator's `name` value. Backend zod is a
-// discriminated union; sending extra sub-fields would reject.
-func encodeBuiltInAgentConfig(v any) any {
-	m, ok := v.(map[string]any)
-	if !ok || m == nil {
-		return v
-	}
-	name, _ := m["name"].(string)
-	switch name {
-	case "policy-configuration-subagent":
-		out := map[string]any{"name": name}
-		if v, ok := m["autoConfigureOnToolDiscovery"]; ok {
-			out["autoConfigureOnToolDiscovery"] = v
-		}
-		return out
-	case "dual-llm-main-agent":
-		out := map[string]any{"name": name}
-		if v, ok := m["maxRounds"]; ok {
-			out["maxRounds"] = v
-		}
-		return out
-	case "dual-llm-quarantine-agent":
-		return map[string]any{"name": name}
-	}
-	return m
 }

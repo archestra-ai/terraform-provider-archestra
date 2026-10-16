@@ -21,13 +21,11 @@ resource "archestra_mcp_gateway" "authenticated" {
   identity_provider_id = archestra_identity_provider.oidc.id
 }
 
-# Team-scoped gateway — only members of the listed teams see it. Combined
+# Grant team access with archestra_resource_permission_policy. Combined
 # with `archestra_agent_tool`, this is how teams get their own tool surface.
 resource "archestra_mcp_gateway" "engineering" {
   name        = "engineering-mcp"
   description = "MCP gateway scoped to engineering"
-  scope       = "team"
-  teams       = [archestra_team.engineering.id]
 
   # Knowledge bases / connectors are surfaced as MCP resources on the gateway.
   knowledge_base_ids = []

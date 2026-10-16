@@ -38,7 +38,7 @@ func (d *AgentToolDataSource) Schema(_ context.Context, _ datasource.SchemaReque
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				MarkdownDescription: "Agent-tool assignment composite UUID. **Not** what `archestra_tool_invocation_policy.tool_id` / `archestra_trusted_data_policy.tool_id` expect — use the `tool_id` field below for those.",
+				MarkdownDescription: "Agent-tool assignment identifier.",
 				Computed:            true,
 			},
 			"agent_id": schema.StringAttribute{
@@ -50,7 +50,7 @@ func (d *AgentToolDataSource) Schema(_ context.Context, _ datasource.SchemaReque
 				Required:            true,
 			},
 			"tool_id": schema.StringAttribute{
-				MarkdownDescription: "The bare tool UUID. Pass this as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.",
+				MarkdownDescription: "Underlying tool identifier.",
 				Computed:            true,
 			},
 		},

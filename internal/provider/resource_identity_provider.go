@@ -175,6 +175,7 @@ func (r *IdentityProviderResource) Metadata(ctx context.Context, req resource.Me
 
 func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version:             1,
 		MarkdownDescription: "Manages Archestra identity providers (OIDC or SAML). Exactly one of oidc_config or saml_config must be set.",
 		Attributes: map[string]schema.Attribute{
 			"configured_secret_paths": schema.SetAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Secret paths present on the server. Their values are never returned; imported secrets must be supplied to manage rotation."},

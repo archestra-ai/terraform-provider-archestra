@@ -49,7 +49,6 @@ func testAccAgentToolsDataSourceConfig(name string) string {
 resource "archestra_agent" "test" {
   name        = %[1]q
   description = "Acceptance-test agent for data.archestra_agent_tools"
-  scope       = "org"
 }
 
 resource "archestra_mcp_registry_catalog_item" "test" {
@@ -62,6 +61,7 @@ resource "archestra_mcp_registry_catalog_item" "test" {
 }
 
 resource "archestra_mcp_server_installation" "test" {
+  scope = "org"
   name       = "%[1]s-install"
   catalog_id = archestra_mcp_registry_catalog_item.test.id
 }

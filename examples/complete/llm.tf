@@ -3,7 +3,6 @@ resource "archestra_llm_provider_api_key" "ollama_vault" {
   llm_provider      = "ollama"
   vault_secret_path = "secret/data/test/ollama"
   vault_secret_key  = "api_key"
-  scope             = "org"
 }
 
 resource "archestra_llm_model" "llama3" {

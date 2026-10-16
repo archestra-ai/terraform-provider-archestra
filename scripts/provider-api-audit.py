@@ -67,6 +67,8 @@ def audit(root, spec, terraform_schema=None):
             continue
         name = "archestra" + name[1]
         calls = sorted(set(re.findall(r'r.client\.(\w+?)(?:WithBody)?WithResponse\(', source)))
+        runtime_schema = (terraform_schema or {}).get("provider_schemas", {}).get("registry.terraform.io/archestra-ai/archestra", {}).get("resource_schemas", {}).get(name)
+        runtime_fields = runtime_schema.get("block", {}).get("attributes", {}) if runtime_schema else None
         endpoints = []
         for call in calls:
             endpoint = builders.get(call)
@@ -77,7 +79,8 @@ def audit(root, spec, terraform_schema=None):
             properties = request.get("properties", {})
             endpoints.append({
                 "request_fields": sorted(properties),
-                "retired_request_fields": sorted(key for key, value in properties.items() if value.get("not") == {}),
+                "api_forbidden_request_fields": sorted(key for key, value in properties.items() if value.get("not") == {}),
+                "retired_request_fields": sorted(key for key, value in properties.items() if value.get("not") == {} and (runtime_fields is None or any(v.get("optional") or v.get("required") for n,v in runtime_fields.items() if n == re.sub(r"(?<!^)(?=[A-Z])", "_", key).lower()))),
                 "query_parameters": sorted(parameter["name"] for parameter in operation.get("parameters", []) if parameter.get("in") == "query"),
                 "builder": call,
                 "method": endpoint[0] if endpoint else None,

@@ -154,3 +154,10 @@ func TestProviderProtocolSchemaIsValid(t *testing.T) {
 		}
 	}
 }
+
+func testAccRequireEnterprise(t *testing.T) {
+	t.Helper()
+	if os.Getenv("ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED") != "true" {
+		t.Fatal("requires an isolated Enterprise-enabled backend and ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true")
+	}
+}

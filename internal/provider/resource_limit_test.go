@@ -3,10 +3,11 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"net/http"
 	"os"
 	"testing"
+
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
@@ -187,7 +188,7 @@ resource "archestra_mcp_server_installation" "test" {
 }
 
 resource "archestra_limit" "test" {
-  entity_id       = "tf-acc-limit-ref-org"
+  entity_id       = "` + testAccOrganizationID(t) + `"
   entity_type     = "organization"
   limit_type      = "mcp_server_calls"
   limit_value     = "1000"

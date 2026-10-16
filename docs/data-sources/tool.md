@@ -34,15 +34,6 @@ data "archestra_tool" "fs_read" {
   depends_on = [archestra_mcp_server_installation.filesystem]
 }
 
-# Drive a tool-invocation policy off the lookup.
-resource "archestra_tool_invocation_policy" "no_etc_reads" {
-  tool_id = data.archestra_tool.fs_read.id
-  conditions = [
-    { key = "path", operator = "startsWith", value = "/etc/" },
-  ]
-  action = "block_always"
-  reason = "Block reads under /etc/"
-}
 
 output "tool_id" {
   value       = data.archestra_tool.fs_read.id

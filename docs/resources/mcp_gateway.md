@@ -36,13 +36,11 @@ resource "archestra_mcp_gateway" "authenticated" {
   identity_provider_id = archestra_identity_provider.oidc.id
 }
 
-# Team-scoped gateway — only members of the listed teams see it. Combined
+# Grant team access with archestra_resource_permission_policy. Combined
 # with `archestra_agent_tool`, this is how teams get their own tool surface.
 resource "archestra_mcp_gateway" "engineering" {
   name        = "engineering-mcp"
   description = "MCP gateway scoped to engineering"
-  scope       = "team"
-  teams       = [archestra_team.engineering.id]
 
   # Knowledge bases / connectors are surfaced as MCP resources on the gateway.
   knowledge_base_ids = []
@@ -68,8 +66,6 @@ resource "archestra_mcp_gateway" "engineering" {
 - `knowledge_base_ids` (List of String) Knowledge base IDs the gateway has access to
 - `labels` (Attributes Set) Key/value labels for organizing gateways (see [below for nested schema](#nestedatt--labels))
 - `passthrough_headers` (List of String) Allowlist of HTTP header names to forward from gateway requests to downstream MCP servers
-- `scope` (String) Ownership scope: `personal`, `team`, or `org` (default: `org`).
-- `teams` (List of String) Team IDs this gateway is assigned to. Required when `scope = "team"`. Removing from configuration clears the assignment on next apply.
 - `tool_exposure_mode` (String) How assigned tools are exposed to clients. `full` lists every assigned tool; `search_and_run_only` (progressive tool loading) lists only `search_tools` and `run_tool` and resolves the rest on demand, which keeps a large tool set out of the client's context window.
 
 ### Read-Only

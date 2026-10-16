@@ -44,8 +44,6 @@ var catalogItemAttrSpec = []AttrSpec{
 	{TFName: "icon", JSONName: "icon", Kind: Scalar},
 	{TFName: "requires_auth", JSONName: "requiresAuth", Kind: Scalar},
 	{TFName: "deployment_spec_yaml", JSONName: "deploymentSpecYaml", Kind: Scalar},
-	{TFName: "scope", JSONName: "scope", Kind: Scalar},
-	{TFName: "teams", JSONName: "teams", Kind: List},
 	{TFName: "labels", JSONName: "labels", Kind: List, Children: []AttrSpec{
 		{TFName: "key", JSONName: "key", Kind: Scalar},
 		{TFName: "value", JSONName: "value", Kind: Scalar},

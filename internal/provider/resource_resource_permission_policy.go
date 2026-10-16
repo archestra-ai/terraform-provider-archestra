@@ -113,8 +113,12 @@ func (r *ResourcePermissionPolicyResource) ValidateConfig(ctx context.Context, r
 			continue
 		}
 		values := object.Attributes()
-		kind := values["subject_type"].(types.String)
-		id := values["subject_id"].(types.String)
+		kind, kindOK := values["subject_type"].(types.String)
+		id, idOK := values["subject_id"].(types.String)
+		if !kindOK || !idOK {
+			resp.Diagnostics.AddAttributeError(path.Root("grants"), "Invalid Principal", "Principal type and ID must be strings.")
+			continue
+		}
 		if kind.IsUnknown() || id.IsUnknown() {
 			continue
 		}

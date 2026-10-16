@@ -117,6 +117,10 @@ func (r *EnvironmentResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 	data.ID = types.StringValue(created.JSON200.Id.String())
+	data.OrganizationID = types.StringNull()
+	data.SortOrder = types.Int64Null()
+	data.CreatedAt = types.StringNull()
+	data.UpdatedAt = types.StringNull()
 	// Persist the remote ID before any follow-up request can fail, so Terraform
 	// can recover and destroy the created object after a partial apply.
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

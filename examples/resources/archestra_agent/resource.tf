@@ -15,7 +15,6 @@ resource "archestra_agent" "support" {
   icon          = "headphones"
   system_prompt = "You are a friendly customer-support agent. Be concise."
   llm_model     = "gpt-4o"
-  scope         = "org"
 
   suggested_prompts = [
     {
@@ -34,15 +33,13 @@ resource "archestra_agent" "support" {
   ]
 }
 
-# Team-scoped agent — visible only to members of the listed teams. The
+# Agent access is configured with archestra_resource_permission_policy. The
 # `archestra_team` reference enforces ordering so the team exists first.
 resource "archestra_agent" "engineering_qa" {
   name          = "eng-qa"
   description   = "Engineering QA assistant"
   system_prompt = "You triage bug reports against the eng playbook."
   llm_model     = "claude-sonnet-4-5"
-  scope         = "team"
-  teams         = [archestra_team.engineering.id]
 
   # Wire a specific provider key (e.g. an Anthropic key from BYOS Vault) instead
   # of relying on the org-wide default.

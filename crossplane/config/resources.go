@@ -4,10 +4,26 @@ import ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
 // ConfigureResources applies the same API names and references in both scopes.
 func ConfigureResources(p *ujconfig.Provider) {
+	p.AddResourceConfigurator("archestra_project", func(r *ujconfig.Resource) {
+		r.ShortGroup = "project"
+		r.Kind = "Project"
+		r.References["default_agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
+	})
+	p.AddResourceConfigurator("archestra_knowledge_base", func(r *ujconfig.Resource) { r.ShortGroup = "knowledge"; r.Kind = "KnowledgeBase" })
+	p.AddResourceConfigurator("archestra_role", func(r *ujconfig.Resource) { r.ShortGroup = "identity"; r.Kind = "Role" })
+	p.AddResourceConfigurator("archestra_api_key", func(r *ujconfig.Resource) { r.ShortGroup = "credential"; r.Kind = "APIKey" })
+	p.AddResourceConfigurator("archestra_schedule_trigger", func(r *ujconfig.Resource) {
+		r.ShortGroup = "schedule"
+		r.Kind = "Trigger"
+		r.References["agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
+		r.References["project_id"] = ujconfig.Reference{TerraformName: "archestra_project"}
+	})
+
 	p.AddResourceConfigurator("archestra_environment", func(r *ujconfig.Resource) { r.ShortGroup = "environment"; r.Kind = "Environment" })
 	p.AddResourceConfigurator("archestra_agent", func(r *ujconfig.Resource) {
 		r.ShortGroup = "agent"
 		r.Kind = "Agent"
+		r.References["knowledge_base_ids"] = ujconfig.Reference{TerraformName: "archestra_knowledge_base"}
 		r.References["environment_id"] = ujconfig.Reference{TerraformName: "archestra_environment"}
 		r.References["llm_api_key_id"] = ujconfig.Reference{TerraformName: "archestra_llm_provider_api_key"}
 	})

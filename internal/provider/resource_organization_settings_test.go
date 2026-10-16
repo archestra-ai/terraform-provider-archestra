@@ -17,9 +17,7 @@ func TestAccOrganizationSettingsResource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_organization_settings.test", "font", "inter"),
 					resource.TestCheckResourceAttr("archestra_organization_settings.test", "color_theme", "modern-minimal"),
-					resource.TestCheckResourceAttr("archestra_organization_settings.test", "compression_scope", "organization"),
 					resource.TestCheckResourceAttr("archestra_organization_settings.test", "onboarding_complete", "true"),
-					resource.TestCheckResourceAttr("archestra_organization_settings.test", "convert_tool_results_to_toon", "false"),
 					resource.TestCheckResourceAttrSet("archestra_organization_settings.test", "id"),
 					// Read-only org-identity fields. The backend declares
 					// name/slug/created_at as NOT NULL so these must
@@ -40,53 +38,27 @@ func TestAccOrganizationSettingsResource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_organization_settings.test", "font", "roboto"),
 					resource.TestCheckResourceAttr("archestra_organization_settings.test", "color_theme", "claude"),
-					resource.TestCheckResourceAttr("archestra_organization_settings.test", "compression_scope", "team"),
-					resource.TestCheckResourceAttr("archestra_organization_settings.test", "convert_tool_results_to_toon", "true"),
 				),
 			},
 		},
 	})
 }
 
-func TestAccOrganizationSettingsResourceWithLimitCleanup(t *testing.T) {
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccOrganizationSettingsResourceConfigWithCleanup("24h"),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_organization_settings.test", "limit_cleanup_interval", "24h"),
-					resource.TestCheckResourceAttrSet("archestra_organization_settings.test", "id"),
-				),
-			},
-			{
-				Config: testAccOrganizationSettingsResourceConfigWithCleanup("1w"),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_organization_settings.test", "limit_cleanup_interval", "1w"),
-				),
-			},
-		},
-	})
+func TestAccOrganizationSettingsResourceRejectsRetiredCleanup(t *testing.T) {
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{{Config: testAccOrganizationSettingsResourceConfigWithCleanup("24h"), ExpectError: regexp.MustCompile("Unsupported argument")}}})
 }
 
-func testAccOrganizationSettingsResourceConfig(font, theme, scope string, onboarding, convert bool) string {
+func testAccOrganizationSettingsResourceConfig(font, theme, _ string, onboarding, _ bool) string {
 	onboardingStr := "false"
 	if onboarding {
 		onboardingStr = "true"
-	}
-	convertStr := "false"
-	if convert {
-		convertStr = "true"
 	}
 
 	return `
 resource "archestra_organization_settings" "test" {
   font                         = "` + font + `"
   color_theme                  = "` + theme + `"
-  compression_scope            = "` + scope + `"
   onboarding_complete          = ` + onboardingStr + `
-  convert_tool_results_to_toon = ` + convertStr + `
 }
 `
 }
@@ -133,7 +105,7 @@ func TestAccOrganizationSettingsResourceInvalidCompressionScope(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config:      testAccOrganizationSettingsResourceConfigInvalidCompressionScope(),
-				ExpectError: regexp.MustCompile(`value must be one of`),
+				ExpectError: regexp.MustCompile(`Unsupported argument`),
 			},
 		},
 	})
@@ -146,7 +118,7 @@ func TestAccOrganizationSettingsResourceInvalidLimitCleanupInterval(t *testing.T
 		Steps: []resource.TestStep{
 			{
 				Config:      testAccOrganizationSettingsResourceConfigInvalidLimitCleanupInterval(),
-				ExpectError: regexp.MustCompile(`value must be one of`),
+				ExpectError: regexp.MustCompile(`Unsupported argument`),
 			},
 		},
 	})
@@ -183,7 +155,6 @@ func TestAccOrganizationSettingsResourceWithAppearance(t *testing.T) {
 				Config: testAccOrganizationSettingsResourceConfigWithAppearance("Test App", "restrictive", false),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_organization_settings.test", "app_name", "Test App"),
-					resource.TestCheckResourceAttr("archestra_organization_settings.test", "global_tool_policy", "restrictive"),
 					resource.TestCheckResourceAttr("archestra_organization_settings.test", "allow_chat_file_uploads", "false"),
 					resource.TestCheckResourceAttrSet("archestra_organization_settings.test", "id"),
 				),
@@ -192,7 +163,6 @@ func TestAccOrganizationSettingsResourceWithAppearance(t *testing.T) {
 				Config: testAccOrganizationSettingsResourceConfigWithAppearance("Updated App", "permissive", true),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_organization_settings.test", "app_name", "Updated App"),
-					resource.TestCheckResourceAttr("archestra_organization_settings.test", "global_tool_policy", "permissive"),
 					resource.TestCheckResourceAttr("archestra_organization_settings.test", "allow_chat_file_uploads", "true"),
 				),
 			},
@@ -200,7 +170,7 @@ func TestAccOrganizationSettingsResourceWithAppearance(t *testing.T) {
 	})
 }
 
-func testAccOrganizationSettingsResourceConfigWithAppearance(appName, globalToolPolicy string, allowUploads bool) string {
+func testAccOrganizationSettingsResourceConfigWithAppearance(appName, _ string, allowUploads bool) string {
 	allowUploadsStr := "false"
 	if allowUploads {
 		allowUploadsStr = "true"
@@ -210,7 +180,6 @@ func testAccOrganizationSettingsResourceConfigWithAppearance(appName, globalTool
 resource "archestra_organization_settings" "test" {
   onboarding_complete      = true
   app_name                 = "` + appName + `"
-  global_tool_policy       = "` + globalToolPolicy + `"
   allow_chat_file_uploads  = ` + allowUploadsStr + `
 }
 `

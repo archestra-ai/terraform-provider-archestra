@@ -75,3 +75,22 @@ output-options:
     - updateSecuritySettings
     - updateTeam
     - updateTeamMember
+    - createApiKey
+    - createKnowledgeBase
+    - createRole
+    - createScheduleTrigger
+    - deleteApiKey
+    - deleteKnowledgeBase
+    - deleteRole
+    - deleteScheduleTrigger
+    - getApiKey
+    - getKnowledgeBase
+    - getRole
+    - getScheduleTrigger
+    - updateKnowledgeBase
+    - updateRole
+    - updateScheduleTrigger
+    - createProject
+    - getProject
+    - updateProject
+    - deleteProject

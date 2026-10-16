@@ -10,7 +10,6 @@ import (
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
@@ -54,7 +53,10 @@ func TestMcpToolCallsPagination(t *testing.T) {
 			ctx := t.Context()
 			var schema datasource.SchemaResponse
 			d.Schema(ctx, datasource.SchemaRequest{}, &schema)
-			typ := schema.Schema.Type().TerraformType(ctx).(tftypes.Object)
+			typ, ok := schema.Schema.Type().TerraformType(ctx).(tftypes.Object)
+			if !ok {
+				t.Fatal("expected an object schema")
+			}
 			values := map[string]tftypes.Value{}
 			for name, typ := range typ.AttributeTypes {
 				values[name] = tftypes.NewValue(typ, nil)
@@ -79,12 +81,12 @@ func TestMcpToolCallsPagination(t *testing.T) {
 			if result.ReturnedCount.ValueInt64() != tc.wantCount || result.Truncated.ValueBool() != tc.truncated {
 				t.Fatalf("count=%v truncated=%v", result.ReturnedCount, result.Truncated)
 			}
-			object := result.Calls.Elements()[0].(types.Object).Attributes()
+			object := asObject(t, result.Calls.Elements()[0]).Attributes()
 			var wire map[string]any
-			if err := json.Unmarshal([]byte(object["tool_call_json"].(types.String).ValueString()), &wire); err != nil || wire["extension"] != true {
+			if err := json.Unmarshal([]byte(asString(t, object["tool_call_json"]).ValueString()), &wire); err != nil || wire["extension"] != true {
 				t.Fatal("tool payload extension lost")
 			}
-			if object["app_name"].(types.String).ValueString() != "app" {
+			if asString(t, object["app_name"]).ValueString() != "app" {
 				t.Fatal("app metadata lost")
 			}
 		})
@@ -96,8 +98,8 @@ func TestMcpToolCallAcceptsPolymorphicPayload(t *testing.T) {
 	if ds.HasError() {
 		t.Fatal(ds)
 	}
-	attrs := value.(types.Object).Attributes()
-	if attrs["tool_call_json"].(types.String).ValueString() != `"opaque"` || !attrs["tool_name"].IsNull() {
+	attrs := asObject(t, value).Attributes()
+	if asString(t, attrs["tool_call_json"]).ValueString() != `"opaque"` || !attrs["tool_name"].IsNull() {
 		t.Fatal("polymorphic payload was not preserved")
 	}
 }

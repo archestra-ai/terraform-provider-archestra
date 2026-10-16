@@ -2,15 +2,10 @@ package provider
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
-	"sort"
-	"strings"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	openapi_types "github.com/oapi-codegen/runtime/types"
@@ -36,29 +31,6 @@ func parseUUIDSet(ctx context.Context, set types.Set, diags *diag.Diagnostics, f
 		out = append(out, u)
 	}
 	return out
-}
-
-// syntheticToolSetID hashes the (sorted tool_ids, action) tuple into a
-// fixed-length, opaque resource ID. The result is stable across
-// invocations and bounded in length regardless of tool set size, which
-// matters because some Terraform tooling truncates long IDs in displays.
-//
-// Two resources with the same `(tool_ids, action)` produce the same ID
-// — a Terraform-state collision that surfaces as "id already exists" on
-// the second apply. That's the right outcome: writing the same default
-// policy twice is a configuration mistake, and one ID per logical
-// configuration makes it impossible to silently shadow.
-func syntheticToolSetID(tools []openapi_types.UUID, action string) string {
-	strs := make([]string, len(tools))
-	for i, t := range tools {
-		strs[i] = t.String()
-	}
-	sort.Strings(strs)
-	h := sha256.New()
-	h.Write([]byte(action))
-	h.Write([]byte{0})
-	h.Write([]byte(strings.Join(strs, ",")))
-	return action + ":" + hex.EncodeToString(h.Sum(nil))
 }
 
 // reconcileDefaultPolicyTools intersects the state's managed `tool_ids`
@@ -129,17 +101,6 @@ func reconcileDefaultPolicyToolsWithRetry(
 		}
 	}
 	return lastKept, nil
-}
-
-// uuidsToStringSet builds a `types.Set` of strings from a UUID slice for
-// writing back into Terraform state. Empty input produces an empty
-// (non-null) set.
-func uuidsToStringSet(uuids []openapi_types.UUID) (types.Set, diag.Diagnostics) {
-	elems := make([]attr.Value, len(uuids))
-	for i, u := range uuids {
-		elems[i] = types.StringValue(u.String())
-	}
-	return types.SetValue(types.StringType, elems)
 }
 
 // diffUUIDSets returns the elements to add (in want, not in have) and to

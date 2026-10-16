@@ -6,7 +6,6 @@ resource "archestra_agent" "support" {
   system_prompt  = "You are a friendly customer-support agent. Be concise."
   llm_model      = "llama3"
   llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
-  scope          = "org"
 }
 
 resource "archestra_agent" "support_batch" {
@@ -15,7 +14,6 @@ resource "archestra_agent" "support_batch" {
   system_prompt  = "Same as support agent — separate so we can exercise agent_tool_batch without colliding with read_text_file's per-tool wiring."
   llm_model      = "llama3"
   llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
-  scope          = "org"
 }
 
 resource "archestra_agent" "intake" {
@@ -24,7 +22,6 @@ resource "archestra_agent" "intake" {
   system_prompt  = "Triage incoming customer emails into the right team."
   llm_model      = "llama3"
   llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
-  scope          = "org"
 
   consider_context_untrusted    = true
   incoming_email_enabled        = true

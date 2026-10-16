@@ -17,16 +17,6 @@ data "archestra_agent_tool" "support_read_text_file" {
   # depends_on = [archestra_agent_tool_batch.support_filesystem]
 }
 
-# Drive a tool-invocation policy off the lookup. `tool_id` on the policy
-# resource is the bare UUID — not the agent-tool composite ID.
-resource "archestra_tool_invocation_policy" "block_etc" {
-  tool_id = data.archestra_agent_tool.support_read_text_file.tool_id
-  conditions = [
-    { key = "path", operator = "startsWith", value = "/etc/" },
-  ]
-  action = "block_always"
-  reason = "Block reads from /etc/ regardless of trust level"
-}
 
 output "agent_tool_assignment_id" {
   description = "Composite agent-tool ID — useful in audit logs."

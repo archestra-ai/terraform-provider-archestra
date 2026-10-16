@@ -131,3 +131,32 @@ coverage decisions, real Terraform and both Crossplane-scope lifecycle tests,
 permission failure paths, documentation examples and package artifacts pass.
 Generated CRDs alone do not satisfy these gates. Daily sync PRs require manual
 review and must never automatically merge or publish breaking changes.
+
+## Server-owned built-in metadata
+
+Remove the `built_in_agent_config` block from HCL. Current Archestra reserves this
+configuration for its seeder. The provider now exposes it as computed JSON metadata.
+Schema-1 upgrades preserve the existing object ID, drop retired sharing/compression
+attributes, and retain sensitive state. Agent metadata changes type from the old
+block to JSON; refresh then reads the server-owned value. State upgrades do not
+perform API writes. Back up state and inspect a refresh-only plan before apply.
+
+## Runtime credential removal
+
+Clear an agent's runtime credential references and apply that change while keeping
+the credential definition. Remove the credential in a subsequent apply. Deleting
+a referenced credential is rejected; the provider does not detach consumers.
+
+## Migration validation completed
+
+The local Terraform CLI probe imports through the v2 schema, upgrades an LLM key
+from schema 0 to 1, preserves its ID and false primary flag, produces two no-change
+plans, and destroys the fixture. True primary flags and stored secret preservation
+are separately covered by unit migration tests. The executable probe is
+`scripts/integration/verify-llm-state-upgrade.py`; it refuses non-loopback backends.
+
+The local Kubernetes probe replaced actual v2 Agent CRDs with v3 CRDs, verified
+retired-field pruning with storage version `v1alpha1`, orphaned the old binding,
+adopted the same ID in namespaced Observe mode, then verified update and explicit
+delete. No CRD version conversion was required for this schema change. Other
+resource migrations still require their own runtime evidence before release.

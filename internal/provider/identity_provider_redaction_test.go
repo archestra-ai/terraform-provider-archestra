@@ -1,8 +1,9 @@
 package provider
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"testing"
+
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 func TestIdentityProviderPreservesAllConfiguredRedactedSecrets(t *testing.T) {

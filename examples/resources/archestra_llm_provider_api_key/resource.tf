@@ -28,10 +28,10 @@
 # on create and stored encrypted; pass via a TF variable so it never lands
 # in version control.
 resource "archestra_llm_provider_api_key" "inline" {
-  name                    = "Production OpenAI Key"
-  api_key                 = var.openai_api_key
-  llm_provider            = "openai"
-  is_primary = true
+  name         = "Production OpenAI Key"
+  api_key      = var.openai_api_key
+  llm_provider = "openai"
+  is_primary   = true
 }
 
 # Vault-backed key — REQUIRED in BYOS mode, accepted in either mode.
@@ -50,17 +50,14 @@ resource "archestra_llm_provider_api_key" "vault_backed" {
   llm_provider      = "anthropic"
   vault_secret_path = "secret/data/your-org/llm" # placeholder — seed your own
   vault_secret_key  = "anthropic_api_key"
-  scope             = "org"
 }
 
-# Team-scoped key — DB MODE ONLY. Billable spend rolls up to the engineering
-# team only. In BYOS mode, swap to `vault_secret_path` / `vault_secret_key`.
+# Additional provider key — DB mode. Manage object access through direct grants.
+# In BYOS mode, use `vault_secret_path` / `vault_secret_key`.
 resource "archestra_llm_provider_api_key" "engineering_anthropic" {
   name         = "Engineering Anthropic Key"
   api_key      = var.anthropic_api_key_engineering
   llm_provider = "anthropic"
-  scope        = "team"
-  team_id      = archestra_team.engineering.id
 }
 
 # Self-hosted Ollama via custom base URL — DB MODE.

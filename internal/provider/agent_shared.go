@@ -77,13 +77,6 @@ type SuggestedPromptModel struct {
 	SummaryTitle types.String `tfsdk:"summary_title"`
 }
 
-// BuiltInAgentConfigModel describes the built-in agent configuration block.
-type BuiltInAgentConfigModel struct {
-	Name                         types.String `tfsdk:"name"`
-	AutoConfigureOnToolDiscovery types.Bool   `tfsdk:"auto_configure_on_tool_discovery"`
-	MaxRounds                    types.Int64  `tfsdk:"max_rounds"`
-}
-
 // flattenAgentLabels copies API-side labels into the model. Labels are exposed
 // as a set in the schema, so element order is irrelevant for state comparison
 // — both apply and import paths can return whatever order the API gives us.
@@ -125,25 +118,6 @@ func stringListFromAPI(ctx context.Context, target *types.List, apiValues []stri
 	}
 }
 
-// teamsListFromAPI builds a list of team IDs from the API agent response.
-// `prior` preserves the null-vs-[] distinction across refresh — see
-// flattenAgentLabels for the rationale.
-func teamsListFromAPI(ctx context.Context, prior types.List, teams []struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
-}, diags *diag.Diagnostics) types.List {
-	if len(teams) == 0 && prior.IsNull() {
-		return types.ListNull(types.StringType)
-	}
-	ids := make([]string, len(teams))
-	for i, t := range teams {
-		ids[i] = t.Id
-	}
-	list, d := types.ListValueFrom(ctx, types.StringType, ids)
-	diags.Append(d...)
-	return list
-}
-
 // optionalStringFromAPI updates a types.String target from an *string returned
 // by the API, normalising nil to typed null.
 func optionalStringFromAPI(target *types.String, v *string) {
@@ -182,44 +156,6 @@ func suggestedPromptsFromAPI(apiPrompts []struct {
 		out[i] = SuggestedPromptModel{
 			Prompt:       types.StringValue(sp.Prompt),
 			SummaryTitle: types.StringValue(sp.SummaryTitle),
-		}
-	}
-	return out
-}
-
-// builtInAgentConfigFromResponse parses builtInAgentConfig from a raw API
-// response body and returns a populated model (or nil if absent/invalid).
-func builtInAgentConfigFromResponse(responseBody []byte) *BuiltInAgentConfigModel {
-	var rawResp struct {
-		BuiltInAgentConfig *json.RawMessage `json:"builtInAgentConfig"`
-	}
-	if err := json.Unmarshal(responseBody, &rawResp); err != nil || rawResp.BuiltInAgentConfig == nil {
-		return nil
-	}
-
-	var configMap map[string]interface{}
-	if err := json.Unmarshal(*rawResp.BuiltInAgentConfig, &configMap); err != nil {
-		return nil
-	}
-
-	name, _ := configMap["name"].(string)
-	if name == "" {
-		return nil
-	}
-
-	out := &BuiltInAgentConfigModel{
-		Name:                         types.StringValue(name),
-		AutoConfigureOnToolDiscovery: types.BoolNull(),
-		MaxRounds:                    types.Int64Null(),
-	}
-	switch name {
-	case "policy-configuration-subagent":
-		if v, ok := configMap["autoConfigureOnToolDiscovery"].(bool); ok {
-			out.AutoConfigureOnToolDiscovery = types.BoolValue(v)
-		}
-	case "dual-llm-main-agent":
-		if v, ok := configMap["maxRounds"].(float64); ok {
-			out.MaxRounds = types.Int64Value(int64(v))
 		}
 	}
 	return out

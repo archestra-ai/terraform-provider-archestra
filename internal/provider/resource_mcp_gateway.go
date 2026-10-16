@@ -53,6 +53,7 @@ func (r *McpGatewayResource) Metadata(_ context.Context, req resource.MetadataRe
 
 func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version:             1,
 		MarkdownDescription: "Unified MCP endpoint that aggregates installed tools and (optionally) knowledge sources, with optional inbound JWT auth via `identity_provider_id`.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -170,6 +171,10 @@ func (r *McpGatewayResource) Read(ctx context.Context, req resource.ReadRequest,
 	var data McpGatewayResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
+		return
+	}
+	if data.ID.IsNull() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
 		return
 	}
 

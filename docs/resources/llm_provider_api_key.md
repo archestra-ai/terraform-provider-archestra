@@ -43,10 +43,10 @@ API key for an LLM provider (OpenAI, Anthropic, etc.). Models are auto-discovere
 # on create and stored encrypted; pass via a TF variable so it never lands
 # in version control.
 resource "archestra_llm_provider_api_key" "inline" {
-  name                    = "Production OpenAI Key"
-  api_key                 = var.openai_api_key
-  llm_provider            = "openai"
-  is_organization_default = true
+  name         = "Production OpenAI Key"
+  api_key      = var.openai_api_key
+  llm_provider = "openai"
+  is_primary   = true
 }
 
 # Vault-backed key — REQUIRED in BYOS mode, accepted in either mode.
@@ -65,17 +65,14 @@ resource "archestra_llm_provider_api_key" "vault_backed" {
   llm_provider      = "anthropic"
   vault_secret_path = "secret/data/your-org/llm" # placeholder — seed your own
   vault_secret_key  = "anthropic_api_key"
-  scope             = "org"
 }
 
-# Team-scoped key — DB MODE ONLY. Billable spend rolls up to the engineering
-# team only. In BYOS mode, swap to `vault_secret_path` / `vault_secret_key`.
+# Additional provider key — DB mode. Manage object access through direct grants.
+# In BYOS mode, use `vault_secret_path` / `vault_secret_key`.
 resource "archestra_llm_provider_api_key" "engineering_anthropic" {
   name         = "Engineering Anthropic Key"
   api_key      = var.anthropic_api_key_engineering
   llm_provider = "anthropic"
-  scope        = "team"
-  team_id      = archestra_team.engineering.id
 }
 
 # Self-hosted Ollama via custom base URL — DB MODE.
@@ -121,15 +118,16 @@ resource "archestra_llm_provider_api_key" "azure_openai" {
 
 - `api_key` (String, Sensitive) The API key value. Mutually exclusive with `vault_secret_path`/`vault_secret_key`. In BYOS (READONLY_VAULT) mode the backend requires the vault pair and rejects inline `api_key`.
 - `base_url` (String) Custom base URL for the LLM provider endpoint
-- `is_organization_default` (Boolean) Whether this API key is the primary key for the provider
-- `scope` (String) Visibility scope for the API key: `personal`, `team`, or `org`
-- `team_id` (String) Team ID for team-scoped keys
+- `is_primary` (Boolean) Whether this API key is the primary key for the provider
 - `vault_secret_key` (String) Key within the vault secret. Must be set together with `vault_secret_path` and cannot be combined with `api_key`.
 - `vault_secret_path` (String) Path to the secret in the vault. Must be set together with `vault_secret_key` and cannot be combined with `api_key`.
 
 ### Read-Only
 
 - `id` (String) LLM Provider API key identifier
+- `is_agent_key` (Boolean) True for a platform-managed agent key, which rejects user edits.
+- `scope` (String) Backend credential scope.
+- `team_id` (String) Backend team association, when present.
 
 ## Import
 

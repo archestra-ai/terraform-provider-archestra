@@ -255,7 +255,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
-							MarkdownDescription: "Tool UUID. Use as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.",
+							MarkdownDescription: "Underlying tool identifier.",
 							Computed:            true,
 						},
 						"name": schema.StringAttribute{

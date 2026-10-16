@@ -30,7 +30,6 @@ resource "archestra_agent" "support" {
   icon          = "headphones"
   system_prompt = "You are a friendly customer-support agent. Be concise."
   llm_model     = "gpt-4o"
-  scope         = "org"
 
   suggested_prompts = [
     {
@@ -49,15 +48,13 @@ resource "archestra_agent" "support" {
   ]
 }
 
-# Team-scoped agent — visible only to members of the listed teams. The
+# Agent access is configured with archestra_resource_permission_policy. The
 # `archestra_team` reference enforces ordering so the team exists first.
 resource "archestra_agent" "engineering_qa" {
   name          = "eng-qa"
   description   = "Engineering QA assistant"
   system_prompt = "You triage bug reports against the eng playbook."
   llm_model     = "claude-sonnet-4-5"
-  scope         = "team"
-  teams         = [archestra_team.engineering.id]
 
   # Wire a specific provider key (e.g. an Anthropic key from BYOS Vault) instead
   # of relying on the org-wide default.
@@ -132,7 +129,6 @@ resource "archestra_agent" "worker" {
 ### Optional
 
 - `access_all_tools` (Boolean) Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Pair with `archestra_agent_tool_exclusions` to carve tools out. Defaults to `false`.
-- `built_in_agent_config` (Block, Optional) Built-in agent configuration. Discriminated by `name`. (see [below for nested schema](#nestedblock--built_in_agent_config))
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
 - `consider_context_untrusted` (Boolean) Whether the agent context is treated as untrusted
 - `description` (String) Human-readable description
@@ -149,24 +145,13 @@ resource "archestra_agent" "worker" {
 - `missing_credential_behavior` (String) What happens when a caller lacks a connection the agent's tools need: `allow` (fail only at invocation, default), `warn` (surface missing connections up front), or `block` (agent unusable until connected)
 - `model_id` (String) Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`
 - `runtime` (Attributes) Dedicated runtime used for interactive, delegated, and long-running work. Requires an Agent Runtime backend on the platform (e.g. the Kubernetes orchestrator). (see [below for nested schema](#nestedatt--runtime))
-- `scope` (String) Ownership scope: `personal`, `team`, or `org` (default: `org`).
 - `suggested_prompts` (Attributes List) Suggested prompts surfaced to users in the chat UI (see [below for nested schema](#nestedatt--suggested_prompts))
 - `system_prompt` (String) System prompt that frames the agent's behavior
-- `teams` (List of String) Team IDs this agent is assigned to. Required when `scope = "team"`. Removing from configuration clears the assignment on next apply.
 
 ### Read-Only
 
+- `built_in_agent_config` (String) Server-owned built-in agent metadata as JSON.
 - `id` (String) Agent identifier
-
-<a id="nestedblock--built_in_agent_config"></a>
-### Nested Schema for `built_in_agent_config`
-
-Optional:
-
-- `auto_configure_on_tool_discovery` (Boolean) Only applies when `name = "policy-configuration-subagent"`
-- `max_rounds` (Number) Only applies when `name = "dual-llm-main-agent"` (1–20)
-- `name` (String) Built-in agent identifier: `policy-configuration-subagent`, `dual-llm-main-agent`, `dual-llm-quarantine-agent`
-
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

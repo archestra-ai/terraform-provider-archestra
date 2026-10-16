@@ -55,8 +55,6 @@ type MCPServerRegistryResourceModel struct {
 	Icon                types.String `tfsdk:"icon"`
 	RequiresAuth        types.Bool   `tfsdk:"requires_auth"`
 	DeploymentSpecYaml  types.String `tfsdk:"deployment_spec_yaml"`
-	Scope               types.String `tfsdk:"scope"`
-	Teams               types.List   `tfsdk:"teams"`
 	Labels              types.List   `tfsdk:"labels"`
 
 	ClientSecretId             types.String `tfsdk:"client_secret_id"`
@@ -293,6 +291,7 @@ func (r *MCPServerRegistryResource) Metadata(ctx context.Context, req resource.M
 
 func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version:             1,
 		MarkdownDescription: "Catalog entry / template for an MCP server in the Private MCP Registry. The catalog item alone doesn't run anything; pair it with `archestra_mcp_server_installation` to run an instance.",
 
 		Attributes: map[string]schema.Attribute{
@@ -638,16 +637,6 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: "Custom Kubernetes deployment YAML for the MCP server",
 				Optional:            true,
 			},
-			"scope": schema.StringAttribute{
-				MarkdownDescription: "Visibility scope for the MCP server catalog item (e.g., 'personal', 'team', 'org')",
-				Optional:            true,
-				Computed:            true,
-			},
-			"teams": schema.ListAttribute{
-				MarkdownDescription: "Team IDs that have access to this MCP server",
-				Optional:            true,
-				ElementType:         types.StringType,
-			},
 			"labels": schema.ListNestedAttribute{
 				MarkdownDescription: "Labels for the MCP server catalog item",
 				Optional:            true,
@@ -822,13 +811,15 @@ func (r *MCPServerRegistryResource) APIShape() any {
 //   - serverType: wire discriminator the provider derives from which of
 //     local_config/remote_config the user populated.
 //   - organizationId: ownership metadata, never user-managed.
+//   - scope/teams: retired sharing projections; manage direct object grants with
+//     archestra_resource_permission_policy instead.
 func (r *MCPServerRegistryResource) KnownIntentionallySkipped() []string {
 	return []string{
 		"createdAt", "updatedAt", "publishedAt", "authorId", "authorName",
 		"verified", "reviews", "installations", "installCount",
 		"authDescription", "authFields", "approvalStatus", "approvedAt",
 		"approvedBy", "rejectionReason", "submittedAt", "submittedBy",
-		"oauthConfig", "serverType", "serverUrl", "organizationId",
+		"oauthConfig", "serverType", "serverUrl", "organizationId", "scope", "teams",
 	}
 }
 
@@ -916,7 +907,6 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 	data.Icon = stringValueOrNull(j.Icon)
 	data.RequiresAuth = types.BoolValue(j.RequiresAuth)
 	data.DeploymentSpecYaml = stringValueOrNull(j.DeploymentSpecYaml)
-	data.Scope = types.StringValue(string(j.Scope))
 
 	if j.ClientSecretId != nil {
 		data.ClientSecretId = types.StringValue(j.ClientSecretId.String())
@@ -941,7 +931,6 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 		data.UserConfig = types.MapNull(types.ObjectType{AttrTypes: userConfigAttrTypes})
 	}
 
-	data.Teams = mapCatalogTeams(apiResp)
 	data.Labels = mapCatalogLabels(apiResp)
 	data.LocalConfig = mapCatalogLocalConfig(ctx, apiResp, data.LocalConfig)
 	data.RemoteConfig = mapCatalogRemoteConfig(apiResp)
@@ -1001,19 +990,6 @@ func mapCatalogEnterpriseManagedConfig(apiResp *client.GetInternalMcpCatalogItem
 		model.Scopes = types.ListNull(types.StringType)
 	}
 	return model
-}
-
-func mapCatalogTeams(apiResp *client.GetInternalMcpCatalogItemResponse) types.List {
-	teams := apiResp.JSON200.Teams
-	if len(teams) == 0 {
-		return types.ListNull(types.StringType)
-	}
-	values := make([]attr.Value, len(teams))
-	for i, team := range teams {
-		values[i] = types.StringValue(team.Id)
-	}
-	out, _ := types.ListValue(types.StringType, values)
-	return out
 }
 
 func mapCatalogLabels(apiResp *client.GetInternalMcpCatalogItemResponse) types.List {

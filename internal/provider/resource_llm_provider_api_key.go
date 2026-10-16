@@ -252,7 +252,7 @@ func (r *LLMProviderApiKeyResource) Read(ctx context.Context, req resource.ReadR
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
 	data.IsPrimary = types.BoolValue(apiResp.JSON200.IsPrimary)
-	data.IsAgentKey = types.BoolPointerValue(apiResp.JSON200.IsAgentKey)
+	data.IsAgentKey = types.BoolValue(apiResp.JSON200.IsAgentKey != nil && *apiResp.JSON200.IsAgentKey)
 	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
 
 	if apiResp.JSON200.BaseUrl != nil {

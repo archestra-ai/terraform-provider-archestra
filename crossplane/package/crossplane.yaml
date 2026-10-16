@@ -8,7 +8,7 @@ metadata:
     meta.crossplane.io/license: Apache-2.0
     meta.crossplane.io/description: |
       Manage Archestra resources — agents, MCP server installations,
-      registry catalog items, and tool policies — as Kubernetes objects.
+      environments, projects, credentials, and permission policies — as Kubernetes objects.
     meta.crossplane.io/readme: |
       The Archestra Crossplane provider lets you declare Archestra
       resources as Kubernetes custom resources and reconcile them
@@ -17,7 +17,7 @@ metadata:
 
       Create a ProviderConfig with an Archestra API key, then apply the
       managed resources (Agent, ServerInstallation, RegistryCatalogItem,
-      ToolBatch, ToolInvocationPolicyDefault). See the examples/ directory.
+      Project, Environment, Policy). See the examples/ directory.
 spec:
   capabilities:
     - SafeStart

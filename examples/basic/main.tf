@@ -22,7 +22,6 @@ resource "archestra_llm_provider_api_key" "ollama" {
   llm_provider      = "ollama"
   vault_secret_path = "secret/data/test/ollama"
   vault_secret_key  = "api_key"
-  scope             = "org"
 }
 
 resource "archestra_mcp_registry_catalog_item" "memory" {
@@ -47,7 +46,6 @@ resource "archestra_agent" "main" {
   system_prompt  = "You are a friendly assistant. Be concise."
   llm_model      = "llama3"
   llm_api_key_id = archestra_llm_provider_api_key.ollama.id
-  scope          = "org"
 }
 
 resource "archestra_agent_tool" "create_entities" {

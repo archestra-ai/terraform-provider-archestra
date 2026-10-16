@@ -1,6 +1,6 @@
 # Archestra Provider
 
-[![Crossplane coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
+[![Crossplane mappings](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
 
 Source for two artifacts, both regenerated from a single Terraform
 schema and shipped together on every `vX.Y.Z` tag:
@@ -13,41 +13,42 @@ through extending the provider.
 
 ## Resource coverage
 
-| Terraform | Crossplane Kind |
+This v3 branch is under development. The current Terraform schema registers 23
+resources and all 23 are configured in both Crossplane scopes. Real lifecycle
+proof currently covers 10 resources in both scopes. Remaining field, migration
+and packaging gates are listed in [the evidence report](audit/v3-runtime-evidence.json).
+This count does not establish complete coverage of the wider Archestra API.
+
+| Terraform | Crossplane group / kind |
 |---|---|
-| `archestra_agent` | `Agent` |
-| `archestra_agent_tool` | — |
-| `archestra_agent_tool_batch` | `ToolBatch` |
-| `archestra_identity_provider` | — |
-| `archestra_limit` | — |
-| `archestra_llm_model` | — |
-| `archestra_llm_provider_api_key` | — |
-| `archestra_mcp_gateway` | — |
-| `archestra_mcp_registry_catalog_item` | `RegistryCatalogItem` |
-| `archestra_mcp_server_installation` | `ServerInstallation` |
-| `archestra_optimization_rule` | — |
-| `archestra_organization_settings` | — |
-| `archestra_team` | — |
-| `archestra_team_external_group` | — |
-| `archestra_tool_invocation_policy` | — |
-| `archestra_tool_invocation_policy_default` | `ToolInvocationPolicyDefault` |
-| `archestra_tool_policy_auto_config` | — |
-| `archestra_trusted_data_policy` | — |
-| `archestra_trusted_data_policy_default` | — |
-| `data.archestra_agent_tool` | n/a |
-| `data.archestra_agent_tools` | n/a |
-| `data.archestra_mcp_server_tool` | n/a |
-| `data.archestra_mcp_tool_calls` | n/a |
-| `data.archestra_team` | n/a |
-| `data.archestra_team_external_groups` | n/a |
-| `data.archestra_tool` | n/a |
+| `archestra_agent` | `agent` / `Agent` |
+| `archestra_agent_delegation` | `agent` / `Delegation` |
+| `archestra_agent_tool` | `agent` / `Tool` |
+| `archestra_agent_tool_batch` | `agent` / `ToolBatch` |
+| `archestra_agent_tool_exclusions` | `agent` / `ToolExclusions` |
+| `archestra_api_key` | `credential` / `APIKey` |
+| `archestra_environment` | `environment` / `Environment` |
+| `archestra_identity_provider` | `identity` / `Provider` |
+| `archestra_knowledge_base` | `knowledge` / `KnowledgeBase` |
+| `archestra_limit` | `limit` / `Limit` |
+| `archestra_llm_model` | `llm` / `ModelOverride` |
+| `archestra_llm_provider_api_key` | `llm` / `ProviderKey` |
+| `archestra_mcp_gateway` | `mcp` / `Gateway` |
+| `archestra_mcp_registry_catalog_item` | `mcp` / `RegistryCatalogItem` |
+| `archestra_mcp_server_installation` | `mcp` / `ServerInstallation` |
+| `archestra_organization_settings` | `organization` / `Settings` |
+| `archestra_project` | `project` / `Project` |
+| `archestra_resource_permission_policy` | `permission` / `Policy` |
+| `archestra_role` | `identity` / `Role` |
+| `archestra_runtime_credential` | `credential` / `RuntimeCredential` |
+| `archestra_schedule_trigger` | `schedule` / `Trigger` |
+| `archestra_team` | `team` / `Team` |
+| `archestra_team_external_group` | `team` / `ExternalGroup` |
 
-- `—` — TF resource exists, no Crossplane MR yet. See step 5 below.
-- `n/a` — TF data source. Crossplane has no read-only Managed Resource concept, so nothing to map.
-
-Crossplane Kinds ship in two API groups:
-`<group>.archestra.crossplane.io` (cluster-scoped, v1) and
-`<group>.archestra.m.crossplane.io` (namespaced, v2).
+Seven Terraform data sources remain available for lookups and audit data.
+Crossplane resources use `<group>.archestra.crossplane.io` in cluster scope and
+`<group>.archestra.m.crossplane.io` in namespaced scope. Both currently serve
+`v1alpha1`. See [MIGRATION-v3.md](MIGRATION-v3.md) before upgrading existing state.
 
 ## 1. Build it
 

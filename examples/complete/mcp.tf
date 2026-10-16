@@ -115,8 +115,6 @@ resource "archestra_mcp_server_installation" "configurable_fs_engineering" {
 resource "archestra_mcp_gateway" "engineering" {
   name        = "engineering-mcp"
   description = "MCP gateway scoped to engineering"
-  scope       = "team"
-  teams       = [archestra_team.engineering.id]
 }
 
 # JWT-authenticated MCP gateway — every inbound request must carry a token

@@ -154,7 +154,6 @@ resource "archestra_mcp_server_installation" "github_vault" {
 - `is_byos_vault` (Boolean) When true, environment_values and user_config_values are treated as vault references
 - `scope` (String) Visibility scope of the installation: `personal` (default — the connection is bound to the API caller and resolves only for them), `team` (requires `team_id`), or `org`. A `team`/`org` install is the shared connection that dynamic credential resolution falls back to for callers without a personal one, so use `org` for service-account-style installs every org member's tool calls should route through. Org-scoped installs require the `mcpServerInstallation: admin` permission.
 - `secret_id` (String) Secret UUID for the MCP server installation. Set explicitly to reference a pre-created secret; otherwise the backend creates one when `user_config_values` is set and writes the resulting UUID back here.
-- `service_account` (String) Kubernetes service account override for the MCP server pod
 - `team_id` (String) Team ID for team-scoped installations (set `scope = "team"` alongside it)
 - `user_config_values` (Map of String) User configuration field values for the MCP server installation
 
@@ -178,7 +177,7 @@ Read-Only:
 - `assigned_agents` (Attributes List) Agents this tool is currently assigned to. Lets you see which agents already use a tool without a separate `data "archestra_agent_tool"` lookup per assignment. (see [below for nested schema](#nestedatt--tools--assigned_agents))
 - `created_at` (String) RFC 3339 timestamp of when the tool was first registered with the backend.
 - `description` (String) Human-readable description as advertised by the MCP server. May be null.
-- `id` (String) Tool UUID. Use as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.
+- `id` (String) Underlying tool identifier.
 - `name` (String) Tool name (the MCP server's own identifier — stable across installs of the same catalog item).
 - `parameters` (String) JSON Schema for the tool's input parameters, encoded as a JSON string. Use `jsondecode(t.parameters)` to introspect required fields, types, etc. for validation or downstream codegen.
 

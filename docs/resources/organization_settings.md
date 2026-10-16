@@ -5,7 +5,7 @@ subcategory: ""
 description: |-
   Manages organization settings in Archestra. This is a singleton resource — only one instance can exist per organization.
   Lifecycle semantics depend on whether the field has a Default:.
-  Fields with a documented default (font, color_theme, compression_scope, convert_tool_results_to_toon): omitting the field from your .tf resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is sticky — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.
+  Fields with a documented default (font, color_theme): omitting the field from your .tf resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is sticky — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.
   terraform destroy only removes this resource from Terraform state; backend settings are never deleted. To stop managing the entire resource without touching the backend, run terraform state rm archestra_organization_settings.<n>.
 ---
 
@@ -15,7 +15,7 @@ Manages organization settings in Archestra. This is a singleton resource — onl
 
 **Lifecycle semantics depend on whether the field has a `Default:`.**
 
-- Fields with a documented default (`font`, `color_theme`, `compression_scope`, `convert_tool_results_to_toon`): omitting the field from your `.tf` resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.
+- Fields with a documented default (`font`, `color_theme`): omitting the field from your `.tf` resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.
 - Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is *sticky* — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.
 
 `terraform destroy` only removes this resource from Terraform state; backend settings are never deleted. To stop managing the entire resource without touching the backend, run `terraform state rm archestra_organization_settings.<n>`.
@@ -60,9 +60,6 @@ resource "archestra_organization_settings" "main" {
   slim_chat_error_ui         = false
   allow_chat_file_uploads    = true
 
-  # --- LLM defaults ---
-  default_llm_provider   = "openai"
-  default_llm_model      = "gpt-4o"
   default_llm_api_key_id = archestra_llm_provider_api_key.inline.id
   default_agent_id       = archestra_agent.support.id
 
@@ -74,21 +71,10 @@ resource "archestra_organization_settings" "main" {
   reranker_model            = "rerank-english-v3.0"
   reranker_chat_api_key_id  = archestra_llm_provider_api_key.cohere.id
 
-  # --- Tool / context security ---
-  global_tool_policy = "restrictive" # or "permissive"
 
-  # --- Compression / TOON ---
-  compression_scope            = "organization" # one of: organization, team
-  convert_tool_results_to_toon = true
 
-  # --- Cost / limit cleanup ---
-  limit_cleanup_interval = "24h" # 1h | 12h | 24h | 1w | 1m
 
-  # --- MCP OAuth tuning ---
-  mcp_oauth_access_token_lifetime_seconds = 3600
 
-  # --- Auth UX ---
-  show_two_factor = true
 
   # One-way flag — once set to true on the backend, attempts to flip back
   # to false are rejected. Leave commented until you've verified the org.
@@ -108,28 +94,20 @@ resource "archestra_organization_settings" "main" {
 - `chat_links` (Attributes List) Chat links displayed in the chat UI (see [below for nested schema](#nestedatt--chat_links))
 - `chat_placeholders` (List of String) Chat placeholder texts displayed in the chat input
 - `color_theme` (String) Color theme for the organization UI
-- `compression_scope` (String) Scope for tool results compression
-- `convert_tool_results_to_toon` (Boolean) Whether to convert tool results to TOON format for compression
 - `default_agent_id` (String) Default agent (profile) ID for the organization
 - `default_llm_api_key_id` (String) Default LLM API key ID for the organization
-- `default_llm_model` (String) Default LLM model for the organization
-- `default_llm_provider` (String) Default LLM provider for the organization. One of the providers supported by `archestra_llm_provider_api_key.llm_provider`.
 - `embedding_chat_api_key_id` (String) API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `embedding_model` (String) Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `favicon` (String) Base64 encoded favicon image for the organization
 - `font` (String) Custom font for the organization UI
 - `footer_text` (String) Custom footer text displayed in the UI
-- `global_tool_policy` (String) Global tool invocation policy. Valid values: permissive, restrictive.
 - `icon_logo` (String) Base64 encoded icon logo image for the organization
-- `limit_cleanup_interval` (String) Interval for cleaning up usage limits. Valid values: 1h, 12h, 24h, 1w, 1m. Set to null to disable.
 - `logo` (String) Base64 encoded logo image for the organization
 - `logo_dark` (String) Base64 encoded dark mode logo image for the organization
-- `mcp_oauth_access_token_lifetime_seconds` (Number) Lifetime in seconds for MCP OAuth access tokens. Must be at least 1 second.
 - `og_description` (String) OG meta description for the organization, max 500 characters
 - `onboarding_complete` (Boolean) Whether organization onboarding is complete. This is a one-way flag — once set to `true`, it cannot be reverted to `false`.
 - `reranker_chat_api_key_id` (String) API key ID for the reranker model
 - `reranker_model` (String) Reranker model for knowledge base
-- `show_two_factor` (Boolean) Whether to show two-factor authentication options
 - `slim_chat_error_ui` (Boolean) When enabled, renders a compact error UI in chat views.
 
 ### Read-Only

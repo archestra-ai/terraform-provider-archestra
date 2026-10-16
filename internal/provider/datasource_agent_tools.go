@@ -63,11 +63,11 @@ func (d *AgentToolsDataSource) Schema(_ context.Context, _ datasource.SchemaRequ
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"assignment_id": schema.StringAttribute{
-							MarkdownDescription: "Agent-tool assignment composite UUID. **Not** what `archestra_tool_invocation_policy.tool_id` expects — see `tool_id` below for that.",
+							MarkdownDescription: "Agent-tool assignment identifier.",
 							Computed:            true,
 						},
 						"tool_id": schema.StringAttribute{
-							MarkdownDescription: "Bare tool UUID. Pass this as `tool_id` on `archestra_tool_invocation_policy` / `archestra_trusted_data_policy`.",
+							MarkdownDescription: "Underlying tool identifier.",
 							Computed:            true,
 						},
 						"name": schema.StringAttribute{

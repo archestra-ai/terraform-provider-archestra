@@ -5,18 +5,20 @@ Crossplane provider for [Archestra](https://archestra.ai), generated from
 using the [`upjet`](https://github.com/crossplane/upjet) code-generation
 toolchain.
 
-Resources currently exposed (per group, both Cluster and Namespaced
-scopes — Crossplane v1 / v2):
+The v3 working schema includes all 23 Terraform resources in both scopes.
+The shared configurator in [config/resources.go](config/resources.go) defines each
+group/kind and reference once for both scopes. See the [resource matrix](../README.md#resource-coverage)
+and [runtime evidence](../audit/v3-runtime-evidence.json). Configuration inclusion
+and generated CRDs do not establish lifecycle coverage; 10 resources currently
+have real create/update/drift/delete evidence in both scopes on Crossplane 2.2.1.
 
-| Group | Kinds |
-|---|---|
-| `mcp.archestra.crossplane.io` / `mcp.archestra.m.crossplane.io` | `RegistryCatalogItem`, `ServerInstallation` |
-| `agent.archestra.crossplane.io` / `agent.archestra.m.crossplane.io` | `Agent`, `ToolBatch` |
-| `policy.archestra.crossplane.io` / `policy.archestra.m.crossplane.io` | `ToolInvocationPolicyDefault` |
+The v3 package remains unreleased pending full validation. Upgrade existing state
+and manifests using [MIGRATION-v3.md](../MIGRATION-v3.md).
 
 ## Installation
 
-Crossplane v1 or v2 must already be installed in the cluster.
+Install a supported Crossplane release first. The v3 runtime probes use Crossplane 2.2.1.
+The package tag below is the v2 maintenance release; select v3 only after its validation and publication complete.
 
 ```bash
 kubectl apply -f - <<'EOF'
@@ -25,7 +27,7 @@ kind: Provider
 metadata:
   name: provider-archestra
 spec:
-  package: xpkg.upbound.io/archestra/provider-archestra:v1.1.0
+  package: xpkg.upbound.io/archestra/provider-archestra:v2.4.1
 EOF
 ```
 
@@ -151,12 +153,9 @@ Archestra instance using the `ProviderConfig` named `default`.
    "archestra_<thing>": ujconfig.IdentifierFromProvider,
    ```
 
-2. **Configure both scopes.** Crossplane v1 (cluster) and v2
-   (namespaced) get separate configurator files. Pick the group
-   the resource belongs to (`agent`, `mcp`, `policy`, …) and add
-   a block to **both**
-   [`config/cluster/<group>/config.go`](config/cluster/) and
-   [`config/namespaced/<group>/config.go`](config/namespaced/):
+2. **Configure both scopes.** Add the group, kind and references to the shared
+   [config/resources.go](config/resources.go). `ConfigureResources` applies the
+   same declarations to both cluster and namespaced providers.
 
    ```go
    p.AddResourceConfigurator("archestra_<thing>", func(r *ujconfig.Resource) {

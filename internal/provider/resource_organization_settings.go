@@ -95,9 +95,10 @@ func (r *OrganizationSettingsResource) Metadata(ctx context.Context, req resourc
 
 func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version: 1,
 		MarkdownDescription: "Manages organization settings in Archestra. This is a singleton resource — only one instance can exist per organization.\n\n" +
 			"**Lifecycle semantics depend on whether the field has a `Default:`.**\n\n" +
-			"- Fields with a documented default (`font`, `color_theme`, `compression_scope`, `convert_tool_results_to_toon`): omitting the field from your `.tf` resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.\n" +
+			"- Fields with a documented default (`font`, `color_theme`): omitting the field from your `.tf` resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.\n" +
 			"- Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is *sticky* — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.\n\n" +
 			"`terraform destroy` only removes this resource from Terraform state; backend settings are never deleted. To stop managing the entire resource without touching the backend, run `terraform state rm archestra_organization_settings.<n>`.",
 
