@@ -30,31 +30,21 @@ var orgSettingsAppearanceSpec = []AttrSpec{
 		{TFName: "url", JSONName: "url", Kind: Scalar},
 	}},
 	{TFName: "animate_chat_placeholders", JSONName: "animateChatPlaceholders", Kind: Scalar},
-	{TFName: "show_two_factor", JSONName: "showTwoFactor", Kind: Scalar},
 	{TFName: "slim_chat_error_ui", JSONName: "slimChatErrorUi", Kind: Scalar},
 }
 
-var orgSettingsLlmSpec = []AttrSpec{
-	{TFName: "compression_scope", JSONName: "compressionScope", Kind: Scalar},
-	{TFName: "convert_tool_results_to_toon", JSONName: "convertToolResultsToToon", Kind: Scalar},
-	{TFName: "limit_cleanup_interval", JSONName: "limitCleanupInterval", Kind: Scalar},
-}
+var orgSettingsLlmSpec = []AttrSpec{}
 
 var orgSettingsSecuritySpec = []AttrSpec{
-	{TFName: "global_tool_policy", JSONName: "globalToolPolicy", Kind: Scalar},
 	{TFName: "allow_chat_file_uploads", JSONName: "allowChatFileUploads", Kind: Scalar},
 }
 
 var orgSettingsAgentSpec = []AttrSpec{
-	{TFName: "default_llm_model", JSONName: "defaultLlmModel", Kind: Scalar},
-	{TFName: "default_llm_provider", JSONName: "defaultLlmProvider", Kind: Scalar},
 	{TFName: "default_llm_api_key_id", JSONName: "defaultLlmApiKeyId", Kind: Scalar},
 	{TFName: "default_agent_id", JSONName: "defaultAgentId", Kind: Scalar},
 }
 
-var orgSettingsMcpSpec = []AttrSpec{
-	{TFName: "mcp_oauth_access_token_lifetime_seconds", JSONName: "mcpOauthAccessTokenLifetimeSeconds", Kind: Scalar},
-}
+var orgSettingsMcpSpec = []AttrSpec{}
 
 var orgSettingsKnowledgeSpec = []AttrSpec{
 	{TFName: "embedding_model", JSONName: "embeddingModel", Kind: Scalar},

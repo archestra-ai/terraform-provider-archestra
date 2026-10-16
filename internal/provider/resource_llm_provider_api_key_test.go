@@ -18,7 +18,7 @@ func TestAccLLMProviderApiKeyResource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "name", "Test Ollama Key"),
 					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "llm_provider", "ollama"),
-					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "is_organization_default", "false"),
+					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "is_primary", "false"),
 					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "vault_secret_path", "secret/data/test/ollama"),
 					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "vault_secret_key", "api_key"),
 					resource.TestCheckResourceAttrSet("archestra_llm_provider_api_key.test", "id"),
@@ -50,13 +50,13 @@ func TestAccLLMProviderApiKeyResourceWithDefault(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "name", "Default Ollama Key"),
 					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "llm_provider", "ollama"),
-					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "is_organization_default", "true"),
+					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "is_primary", "true"),
 				),
 			},
 			{
 				Config: testAccLLMProviderApiKeyResourceConfig("Default Ollama Key", "ollama", false),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "is_organization_default", "false"),
+					resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "is_primary", "false"),
 				),
 			},
 		},
@@ -122,7 +122,7 @@ func testAccLLMProviderApiKeyResourceConfigWithScope(name string, llmProvider st
 resource "archestra_llm_provider_api_key" "test" {
   name                    = %[1]q
   llm_provider            = %[2]q
-  is_organization_default = false
+  is_primary = false
   scope                   = %[3]q
   vault_secret_path       = "secret/data/test/ollama"
   vault_secret_key        = "api_key"
@@ -136,7 +136,7 @@ func testAccLLMProviderApiKeyResourceConfig(name string, llmProvider string, isD
 resource "archestra_llm_provider_api_key" "test" {
   name                    = %[1]q
   llm_provider            = %[2]q
-  is_organization_default = %[3]t
+  is_primary = %[3]t
   vault_secret_path       = "secret/data/test/ollama"
   vault_secret_key        = "api_key"
 }
@@ -152,7 +152,7 @@ resource "archestra_llm_provider_api_key" "test" {
   name                    = %[1]q
   api_key                 = "test-api-key-value"
   llm_provider            = %[2]q
-  is_organization_default = false
+  is_primary = false
 }
 `, name, llmProvider)
 }

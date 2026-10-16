@@ -13,7 +13,6 @@ import (
 var teamAttrSpec = []AttrSpec{
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
-	{TFName: "convert_tool_results_to_toon", JSONName: "convertToolResultsToToon", Kind: Scalar},
 	{TFName: "members", Kind: Synthetic},
 }
 

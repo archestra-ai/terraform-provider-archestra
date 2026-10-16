@@ -21,8 +21,6 @@ func TestAccAgentResource(t *testing.T) {
 				Config: testAccAgentResourceConfig("tf-acc-agent"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("name"), knownvalue.StringExact("tf-acc-agent")),
-					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("scope"), knownvalue.StringExact("org")),
-					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("teams"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("system_prompt"), knownvalue.StringExact("You are a helpful agent.")),
 				},
 			},
@@ -152,57 +150,6 @@ resource "archestra_agent" "builtin" {
 // TestAccAgentResource_TeamScopeMissingTeams pins the cross-field
 // validator from ValidateConfig: scope = "team" without a teams list
 // must error at plan time, not 400 at apply.
-func TestAccAgentResource_TeamScopeMissingTeams(t *testing.T) {
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: `
-resource "archestra_agent" "test" {
-  name          = "tf-acc-agent-team-scope-missing"
-  system_prompt = "You are a helpful agent."
-  scope         = "team"
-}
-`,
-				ExpectError: regexp.MustCompile(`teams must be set`),
-			},
-		},
-	})
-}
-
-// TestAccAgentResource_TeamsRemoveCycle pins RemoveOnConfigNullList on `teams`.
-// Note the second step also flips scope back to "org" because the cross-field
-// validator requires teams when scope = "team"; the modifier still has to
-// emit null for teams independently of that change.
-func TestAccAgentResource_TeamsRemoveCycle(t *testing.T) {
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccAgentResourceConfigTeamScoped("tf-acc-agent-team-cycle"),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_agent.cycle", tfjsonpath.New("scope"), knownvalue.StringExact("team")),
-					statecheck.ExpectKnownValue("archestra_agent.cycle", tfjsonpath.New("teams"), knownvalue.ListSizeExact(1)),
-				},
-			},
-			{
-				Config: testAccAgentResourceConfigOrgScoped("tf-acc-agent-team-cycle"),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_agent.cycle", tfjsonpath.New("scope"), knownvalue.StringExact("org")),
-					// HCL omits `teams`. EmptyListOnConfigNull() turns that
-					// into an explicit empty list on the wire (the backend
-					// rejects null but accepts []). The previous bug left
-					// the prior team in state (size 1), so size 0 catches
-					// the regression.
-					statecheck.ExpectKnownValue("archestra_agent.cycle", tfjsonpath.New("teams"), knownvalue.ListSizeExact(0)),
-				},
-			},
-		},
-	})
-}
-
 func testAccAgentResourceConfigTeamScoped(name string) string {
 	return fmt.Sprintf(`
 resource "archestra_team" "cycle" {
@@ -213,7 +160,7 @@ resource "archestra_team" "cycle" {
 resource "archestra_agent" "cycle" {
   name          = %[1]q
   system_prompt = "You are a helpful agent."
-  scope         = "team"
+
   teams         = [archestra_team.cycle.id]
 }
 `, name)

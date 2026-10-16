@@ -161,7 +161,7 @@ func (r *LlmModelResource) Create(ctx context.Context, req resource.CreateReques
 	}
 
 	// Look up the model by model_id from the list of all models
-	modelsResp, err := r.client.GetModelsWithApiKeysWithResponse(ctx)
+	modelsResp, err := r.client.GetModelsWithApiKeysWithResponse(ctx, nil)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list models: %s", err))
 		return
@@ -331,7 +331,7 @@ func (r *LlmModelResource) ImportState(ctx context.Context, req resource.ImportS
 	// Import by model_id string (e.g., "gpt-4o"), not UUID
 	modelID := req.ID
 
-	modelsResp, err := r.client.GetModelsWithApiKeysWithResponse(ctx)
+	modelsResp, err := r.client.GetModelsWithApiKeysWithResponse(ctx, nil)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to list models: %s", err))
 		return
@@ -354,7 +354,7 @@ func (r *LlmModelResource) ImportState(ctx context.Context, req resource.ImportS
 }
 
 func (r *LlmModelResource) readModelState(ctx context.Context, data *LlmModelResourceModel, diags *diag.Diagnostics) {
-	modelsResp, err := r.client.GetModelsWithApiKeysWithResponse(ctx)
+	modelsResp, err := r.client.GetModelsWithApiKeysWithResponse(ctx, nil)
 	if err != nil {
 		diags.AddError("API Error", fmt.Sprintf("Unable to read models: %s", err))
 		return

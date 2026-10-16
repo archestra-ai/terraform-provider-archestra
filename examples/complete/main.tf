@@ -54,7 +54,7 @@ resource "archestra_organization_settings" "main" {
   show_two_factor = true
 
   # Default LLM + agent — cross-refs to our existing resources. Without these
-  # the platform falls back to whichever provider key is is_organization_default.
+  # the platform falls back to whichever provider key is is_primary.
   default_llm_provider   = "ollama"
   default_llm_model      = "llama3"
   default_llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id

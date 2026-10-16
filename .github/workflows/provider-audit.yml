@@ -6,6 +6,7 @@ on:
       - 'scripts/provider-api-audit.py'
       - 'scripts/provider-sync-plan.py'
       - 'scripts/bootstrap-local-stack.sh'
+      - 'scripts/bootstrap-api-key.sh'
       - 'scripts/test_*.py'
       - '.github/provider-sync/**'
       - '.github/workflows/provider-audit.yml'

@@ -10,17 +10,14 @@ import (
 	"time"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
@@ -42,14 +39,11 @@ type OrganizationSettingsResource struct {
 }
 
 type OrganizationSettingsResourceModel struct {
-	ID                       types.String `tfsdk:"id"`
-	Font                     types.String `tfsdk:"font"`
-	ColorTheme               types.String `tfsdk:"color_theme"`
-	Logo                     types.String `tfsdk:"logo"`
-	LimitCleanupInterval     types.String `tfsdk:"limit_cleanup_interval"`
-	CompressionScope         types.String `tfsdk:"compression_scope"`
-	OnboardingComplete       types.Bool   `tfsdk:"onboarding_complete"`
-	ConvertToolResultsToToon types.Bool   `tfsdk:"convert_tool_results_to_toon"`
+	ID                 types.String `tfsdk:"id"`
+	Font               types.String `tfsdk:"font"`
+	ColorTheme         types.String `tfsdk:"color_theme"`
+	Logo               types.String `tfsdk:"logo"`
+	OnboardingComplete types.Bool   `tfsdk:"onboarding_complete"`
 
 	// Appearance settings
 	LogoDark                types.String `tfsdk:"logo_dark"`
@@ -62,21 +56,16 @@ type OrganizationSettingsResourceModel struct {
 	ChatPlaceholders        types.List   `tfsdk:"chat_placeholders"`
 	ChatLinks               types.List   `tfsdk:"chat_links"`
 	AnimateChatPlaceholders types.Bool   `tfsdk:"animate_chat_placeholders"`
-	ShowTwoFactor           types.Bool   `tfsdk:"show_two_factor"`
 	SlimChatErrorUI         types.Bool   `tfsdk:"slim_chat_error_ui"`
 
 	// Security settings
-	GlobalToolPolicy     types.String `tfsdk:"global_tool_policy"`
-	AllowChatFileUploads types.Bool   `tfsdk:"allow_chat_file_uploads"`
+	AllowChatFileUploads types.Bool `tfsdk:"allow_chat_file_uploads"`
 
 	// Agent settings
-	DefaultLlmModel    types.String `tfsdk:"default_llm_model"`
-	DefaultLlmProvider types.String `tfsdk:"default_llm_provider"`
 	DefaultLlmApiKeyId types.String `tfsdk:"default_llm_api_key_id"`
 	DefaultAgentId     types.String `tfsdk:"default_agent_id"`
 
 	// MCP settings
-	McpOauthAccessTokenLifetimeSeconds types.Int64 `tfsdk:"mcp_oauth_access_token_lifetime_seconds"`
 
 	// Knowledge settings
 	EmbeddingModel        types.String `tfsdk:"embedding_model"`
@@ -124,15 +113,15 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: "Custom font for the organization UI",
 				Optional:            true,
 				Computed:            true,
-				Default:             stringdefault.StaticString(string(client.Lato)),
+				Default:             stringdefault.StaticString(string("lato")),
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						string(client.Inter),
-						string(client.JetbrainsMono),
-						string(client.Lato),
-						string(client.OpenSans),
-						string(client.Roboto),
-						string(client.SourceSansPro),
+						string("inter"),
+						string("jetbrains-mono"),
+						string("lato"),
+						string("open-sans"),
+						string("roboto"),
+						string("source-sans-pro"),
 					),
 				},
 			},
@@ -140,33 +129,33 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: "Color theme for the organization UI",
 				Optional:            true,
 				Computed:            true,
-				Default:             stringdefault.StaticString(string(client.CosmicNight)),
+				Default:             stringdefault.StaticString(string("cosmic-night")),
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						string(client.AmberMinimal),
-						string(client.BoxyMinimalistic),
-						string(client.Bubblegum),
-						string(client.Caffeine),
-						string(client.Catppuccin),
-						string(client.Claude),
-						string(client.CleanSlate),
-						string(client.CosmicNight),
-						string(client.Doom64),
-						string(client.DraculaDark),
-						string(client.GruvboxDark),
-						string(client.MochaMousse),
-						string(client.ModernMinimal),
-						string(client.Mono),
-						string(client.MonokaiDark),
-						string(client.MoonlightDark),
-						string(client.Nature),
-						string(client.NeoBrutalism),
-						string(client.SolarizedDark),
-						string(client.SunsetHorizon),
-						string(client.Tangerine),
-						string(client.Twitter),
-						string(client.Vercel),
-						string(client.VintagePaper),
+						string("amber-minimal"),
+						string("boxy-minimalistic"),
+						string("bubblegum"),
+						string("caffeine"),
+						string("catppuccin"),
+						string("claude"),
+						string("clean-slate"),
+						string("cosmic-night"),
+						string("doom-64"),
+						string("dracula-dark"),
+						string("gruvbox-dark"),
+						string("mocha-mousse"),
+						string("modern-minimal"),
+						string("mono"),
+						string("monokai-dark"),
+						string("moonlight-dark"),
+						string("nature"),
+						string("neo-brutalism"),
+						string("solarized-dark"),
+						string("sunset-horizon"),
+						string("tangerine"),
+						string("twitter"),
+						string("vercel"),
+						string("vintage-paper"),
 					),
 				},
 			},
@@ -176,44 +165,11 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Computed:            true,
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
-			"limit_cleanup_interval": schema.StringAttribute{
-				MarkdownDescription: "Interval for cleaning up usage limits. Valid values: 1h, 12h, 24h, 1w, 1m. Set to null to disable.",
-				Optional:            true,
-				Computed:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						string(client.N1h),
-						string(client.N12h),
-						string(client.N24h),
-						string(client.N1w),
-						string(client.N1m),
-					),
-				},
-				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
-			},
-			"compression_scope": schema.StringAttribute{
-				MarkdownDescription: "Scope for tool results compression",
-				Optional:            true,
-				Computed:            true,
-				Default:             stringdefault.StaticString(string(client.Organization)),
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						string(client.Organization),
-						string(client.Team),
-					),
-				},
-			},
 			"onboarding_complete": schema.BoolAttribute{
 				MarkdownDescription: "Whether organization onboarding is complete. This is a one-way flag — once set to `true`, it cannot be reverted to `false`.",
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
-			},
-			"convert_tool_results_to_toon": schema.BoolAttribute{
-				MarkdownDescription: "Whether to convert tool results to TOON format for compression",
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 
 			// Appearance settings
@@ -290,12 +246,6 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Computed:            true,
 				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
 			},
-			"show_two_factor": schema.BoolAttribute{
-				MarkdownDescription: "Whether to show two-factor authentication options",
-				Optional:            true,
-				Computed:            true,
-				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
-			},
 			"slim_chat_error_ui": schema.BoolAttribute{
 				MarkdownDescription: "When enabled, renders a compact error UI in chat views.",
 				Optional:            true,
@@ -304,15 +254,6 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			},
 
 			// Security settings
-			"global_tool_policy": schema.StringAttribute{
-				MarkdownDescription: "Global tool invocation policy. Valid values: permissive, restrictive.",
-				Optional:            true,
-				Computed:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("permissive", "restrictive"),
-				},
-				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
-			},
 			"allow_chat_file_uploads": schema.BoolAttribute{
 				MarkdownDescription: "Whether to allow file uploads in chat",
 				Optional:            true,
@@ -321,39 +262,6 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			},
 
 			// Agent settings
-			"default_llm_model": schema.StringAttribute{
-				MarkdownDescription: "Default LLM model for the organization",
-				Optional:            true,
-				Computed:            true,
-				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
-			},
-			"default_llm_provider": schema.StringAttribute{
-				MarkdownDescription: "Default LLM provider for the organization. One of the providers supported by `archestra_llm_provider_api_key.llm_provider`.",
-				Optional:            true,
-				Computed:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderAnthropic),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderAzure),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderBedrock),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderCerebras),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderCohere),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderDeepseek),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderGemini),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderGroq),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderMinimax),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderMistral),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderOllama),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderOpenai),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderOpenrouter),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderPerplexity),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderVllm),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderXai),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderZhipuai),
-					),
-				},
-				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
-			},
 			"default_llm_api_key_id": schema.StringAttribute{
 				MarkdownDescription: "Default LLM API key ID for the organization",
 				Optional:            true,
@@ -368,15 +276,6 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			},
 
 			// MCP settings
-			"mcp_oauth_access_token_lifetime_seconds": schema.Int64Attribute{
-				MarkdownDescription: "Lifetime in seconds for MCP OAuth access tokens. Must be at least 1 second.",
-				Optional:            true,
-				Computed:            true,
-				Validators: []validator.Int64{
-					int64validator.AtLeast(1),
-				},
-				PlanModifiers: []planmodifier.Int64{int64planmodifier.UseStateForUnknown()},
-			},
 
 			// Knowledge settings
 			"embedding_model": schema.StringAttribute{
@@ -550,13 +449,6 @@ func (r *OrganizationSettingsResource) applySettings(ctx context.Context, plan, 
 			}
 			return resp.StatusCode(), resp.Body, nil
 		}},
-		{"llm", orgSettingsLlmSpec, func(body io.Reader) (int, []byte, error) {
-			resp, err := r.client.UpdateLlmSettingsWithBodyWithResponse(ctx, "application/json", body)
-			if err != nil {
-				return 0, nil, err
-			}
-			return resp.StatusCode(), resp.Body, nil
-		}},
 		{"security", orgSettingsSecuritySpec, func(body io.Reader) (int, []byte, error) {
 			resp, err := r.client.UpdateSecuritySettingsWithBodyWithResponse(ctx, "application/json", body)
 			if err != nil {
@@ -673,20 +565,12 @@ func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, dat
 	data.ID = types.StringValue(apiResp.JSON200.Id)
 	data.Font = types.StringValue(string(apiResp.JSON200.CustomFont))
 	data.ColorTheme = types.StringValue(string(apiResp.JSON200.Theme))
-	data.CompressionScope = types.StringValue(string(apiResp.JSON200.CompressionScope))
 	data.OnboardingComplete = types.BoolValue(apiResp.JSON200.OnboardingComplete)
-	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
 
 	if apiResp.JSON200.Logo != nil {
 		data.Logo = types.StringValue(*apiResp.JSON200.Logo)
 	} else {
 		data.Logo = types.StringNull()
-	}
-
-	if apiResp.JSON200.LimitCleanupInterval != nil {
-		data.LimitCleanupInterval = types.StringValue(string(*apiResp.JSON200.LimitCleanupInterval))
-	} else {
-		data.LimitCleanupInterval = types.StringNull()
 	}
 
 	// Appearance settings
@@ -754,24 +638,12 @@ func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, dat
 		}})
 	}
 	data.AnimateChatPlaceholders = types.BoolValue(apiResp.JSON200.AnimateChatPlaceholders)
-	data.ShowTwoFactor = types.BoolValue(apiResp.JSON200.ShowTwoFactor)
 	data.SlimChatErrorUI = types.BoolValue(apiResp.JSON200.SlimChatErrorUi)
 
 	// Security settings
-	data.GlobalToolPolicy = types.StringValue(string(apiResp.JSON200.GlobalToolPolicy))
 	data.AllowChatFileUploads = types.BoolValue(apiResp.JSON200.AllowChatFileUploads)
 
 	// Agent settings
-	if apiResp.JSON200.DefaultLlmModel != nil {
-		data.DefaultLlmModel = types.StringValue(*apiResp.JSON200.DefaultLlmModel)
-	} else {
-		data.DefaultLlmModel = types.StringNull()
-	}
-	if apiResp.JSON200.DefaultLlmProvider != nil {
-		data.DefaultLlmProvider = types.StringValue(string(*apiResp.JSON200.DefaultLlmProvider))
-	} else {
-		data.DefaultLlmProvider = types.StringNull()
-	}
 	if apiResp.JSON200.DefaultLlmApiKeyId != nil {
 		data.DefaultLlmApiKeyId = types.StringValue(apiResp.JSON200.DefaultLlmApiKeyId.String())
 	} else {
@@ -784,7 +656,6 @@ func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, dat
 	}
 
 	// MCP settings
-	data.McpOauthAccessTokenLifetimeSeconds = types.Int64Value(int64(apiResp.JSON200.McpOauthAccessTokenLifetimeSeconds))
 
 	// Knowledge settings
 	if apiResp.JSON200.EmbeddingModel != nil {

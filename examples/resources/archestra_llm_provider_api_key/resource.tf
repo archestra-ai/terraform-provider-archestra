@@ -31,7 +31,7 @@ resource "archestra_llm_provider_api_key" "inline" {
   name                    = "Production OpenAI Key"
   api_key                 = var.openai_api_key
   llm_provider            = "openai"
-  is_organization_default = true
+  is_primary = true
 }
 
 # Vault-backed key — REQUIRED in BYOS mode, accepted in either mode.

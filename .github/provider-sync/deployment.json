@@ -1,5 +1,5 @@
 {
-  "status": "requires_operator_approval_and_end_to_end_validation",
+  "status": "operator_approved_pending_end_to_end_validation",
   "agent_name": "Provider Sync",
   "agent_scope": "personal",
   "runtime": "existing_codex_runtime",

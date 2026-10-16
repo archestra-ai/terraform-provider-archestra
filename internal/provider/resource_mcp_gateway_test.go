@@ -19,7 +19,6 @@ func TestAccMcpGatewayResource(t *testing.T) {
 				Config: testAccMcpGatewayResourceConfig("tf-acc-mcp-gw"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("archestra_mcp_gateway.test", tfjsonpath.New("name"), knownvalue.StringExact("tf-acc-mcp-gw")),
-					statecheck.ExpectKnownValue("archestra_mcp_gateway.test", tfjsonpath.New("scope"), knownvalue.StringExact("org")),
 				},
 			},
 			{
@@ -47,14 +46,12 @@ func TestAccMcpGatewayResource_TeamsRemoveCycle(t *testing.T) {
 			{
 				Config: testAccMcpGatewayResourceConfigTeamScoped("tf-acc-mcp-gw-cycle"),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_mcp_gateway.cycle", tfjsonpath.New("scope"), knownvalue.StringExact("team")),
 					statecheck.ExpectKnownValue("archestra_mcp_gateway.cycle", tfjsonpath.New("teams"), knownvalue.ListSizeExact(1)),
 				},
 			},
 			{
 				Config: testAccMcpGatewayResourceConfigOrgScoped("tf-acc-mcp-gw-cycle"),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_mcp_gateway.cycle", tfjsonpath.New("scope"), knownvalue.StringExact("org")),
 					statecheck.ExpectKnownValue("archestra_mcp_gateway.cycle", tfjsonpath.New("teams"), knownvalue.ListSizeExact(0)),
 				},
 			},
@@ -71,7 +68,7 @@ resource "archestra_team" "cycle" {
 
 resource "archestra_mcp_gateway" "cycle" {
   name  = %[1]q
-  scope = "team"
+
   teams = [archestra_team.cycle.id]
 }
 `, name)

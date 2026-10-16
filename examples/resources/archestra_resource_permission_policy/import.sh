@@ -1,0 +1,1 @@
+terraform import archestra_resource_permission_policy.staging environment/00000000-0000-0000-0000-000000000001

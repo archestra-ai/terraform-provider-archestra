@@ -36,7 +36,7 @@ func testAccGetFirstModelID(t *testing.T) string {
 		t.Fatalf("Unable to create client: %s", err)
 	}
 
-	resp, err := c.GetModelsWithApiKeysWithResponse(t.Context())
+	resp, err := c.GetModelsWithApiKeysWithResponse(t.Context(), nil)
 	if err != nil {
 		t.Fatalf("GetModelsWithApiKeys failed: %s — likely a generated-client/spec mismatch; regenerate via `make codegen-api-client` after backend bumps", err)
 	}

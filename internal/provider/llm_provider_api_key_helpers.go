@@ -12,10 +12,8 @@ var llmProviderApiKeyAttrSpec = []AttrSpec{
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "llm_provider", JSONName: "provider", Kind: Scalar},
 	{TFName: "api_key", JSONName: "apiKey", Kind: Scalar, Sensitive: true},
-	{TFName: "is_organization_default", JSONName: "isPrimary", Kind: Scalar},
+	{TFName: "is_primary", JSONName: "isPrimary", Kind: Scalar},
 	{TFName: "base_url", JSONName: "baseUrl", Kind: Scalar},
-	{TFName: "scope", JSONName: "scope", Kind: Scalar},
-	{TFName: "team_id", JSONName: "teamId", Kind: Scalar},
 	{TFName: "vault_secret_path", JSONName: "vaultSecretPath", Kind: Scalar},
 	{TFName: "vault_secret_key", JSONName: "vaultSecretKey", Kind: Scalar},
 }
@@ -45,6 +43,6 @@ func (r *LLMProviderApiKeyResource) KnownIntentionallySkipped() []string {
 	return []string{
 		"createdAt", "updatedAt", "organizationId", "userId", "userName",
 		"teamName", "secretId", "secretStorageType", "bestModelId",
-		"isAgentKey", "isSystem",
+		"isSystem",
 	}
 }

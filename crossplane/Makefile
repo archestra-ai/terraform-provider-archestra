@@ -139,6 +139,17 @@ pull-docs:
 
 generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 
+# Clean before Go enumerates packages: deleting an obsolete kind from inside
+# go:generate leaves its removed files in the current invocation's package list.
+.PHONY: clean-generated
+clean-generated:
+	@mkdir -p internal/controller
+	@find apis internal/controller -type f -name 'zz_*' -delete
+	@find apis internal/controller -type d -empty -delete
+	@rm -rf package/crds examples-generated
+
+go.generate: clean-generated
+
 .PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version
 # ====================================================================================
 # Targets

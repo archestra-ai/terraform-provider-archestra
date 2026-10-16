@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -33,16 +32,17 @@ type LLMProviderApiKeyResource struct {
 }
 
 type LLMProviderApiKeyResourceModel struct {
-	ID                    types.String `tfsdk:"id"`
-	Name                  types.String `tfsdk:"name"`
-	ApiKey                types.String `tfsdk:"api_key"`
-	LLMProvider           types.String `tfsdk:"llm_provider"`
-	IsOrganizationDefault types.Bool   `tfsdk:"is_organization_default"`
-	BaseUrl               types.String `tfsdk:"base_url"`
-	Scope                 types.String `tfsdk:"scope"`
-	TeamID                types.String `tfsdk:"team_id"`
-	VaultSecretPath       types.String `tfsdk:"vault_secret_path"`
-	VaultSecretKey        types.String `tfsdk:"vault_secret_key"`
+	IsAgentKey      types.Bool   `tfsdk:"is_agent_key"`
+	ID              types.String `tfsdk:"id"`
+	Name            types.String `tfsdk:"name"`
+	ApiKey          types.String `tfsdk:"api_key"`
+	LLMProvider     types.String `tfsdk:"llm_provider"`
+	IsPrimary       types.Bool   `tfsdk:"is_primary"`
+	BaseUrl         types.String `tfsdk:"base_url"`
+	Scope           types.String `tfsdk:"scope"`
+	TeamID          types.String `tfsdk:"team_id"`
+	VaultSecretPath types.String `tfsdk:"vault_secret_path"`
+	VaultSecretKey  types.String `tfsdk:"vault_secret_key"`
 }
 
 func (r *LLMProviderApiKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -51,9 +51,11 @@ func (r *LLMProviderApiKeyResource) Metadata(ctx context.Context, req resource.M
 
 func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version:             1,
 		MarkdownDescription: "API key for an LLM provider (OpenAI, Anthropic, etc.). Models are auto-discovered after creation.",
 
 		Attributes: map[string]schema.Attribute{
+			"is_agent_key": schema.BoolAttribute{Computed: true, MarkdownDescription: "True for a platform-managed agent key, which rejects user edits."},
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "LLM Provider API key identifier",
@@ -84,27 +86,27 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 				},
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderAnthropic),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderAzure),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderBedrock),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderCerebras),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderCohere),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderDeepseek),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderGemini),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderGroq),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderMinimax),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderMistral),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderOllama),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderOpenai),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderOpenrouter),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderPerplexity),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderVllm),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderXai),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderZhipuai),
+						string("anthropic"),
+						string("azure"),
+						string("bedrock"),
+						string("cerebras"),
+						string("cohere"),
+						string("deepseek"),
+						string("gemini"),
+						string("groq"),
+						string("minimax"),
+						string("mistral"),
+						string("ollama"),
+						string("openai"),
+						string("openrouter"),
+						string("perplexity"),
+						string("vllm"),
+						string("xai"),
+						string("zhipuai"),
 					),
 				},
 			},
-			"is_organization_default": schema.BoolAttribute{
+			"is_primary": schema.BoolAttribute{
 				MarkdownDescription: "Whether this API key is the primary key for the provider",
 				Optional:            true,
 				Computed:            true,
@@ -115,21 +117,12 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 				Optional:            true,
 			},
 			"scope": schema.StringAttribute{
-				MarkdownDescription: "Visibility scope for the API key: `personal`, `team`, or `org`",
-				Optional:            true,
+				MarkdownDescription: "Backend credential scope.",
 				Computed:            true,
-				Default:             stringdefault.StaticString("personal"),
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						string(client.CreateLlmProviderApiKeyJSONBodyScopePersonal),
-						string(client.CreateLlmProviderApiKeyJSONBodyScopeTeam),
-						string(client.CreateLlmProviderApiKeyJSONBodyScopeOrg),
-					),
-				},
 			},
 			"team_id": schema.StringAttribute{
-				MarkdownDescription: "Team ID for team-scoped keys",
-				Optional:            true,
+				MarkdownDescription: "Backend team association, when present.",
+				Computed:            true,
 			},
 			"vault_secret_path": schema.StringAttribute{
 				MarkdownDescription: "Path to the secret in the vault. Must be set together with `vault_secret_key` and cannot be combined with `api_key`.",
@@ -206,16 +199,15 @@ func (r *LLMProviderApiKeyResource) Create(ctx context.Context, req resource.Cre
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.IsPrimary = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.IsAgentKey = types.BoolValue(false)
 	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
 
 	if apiResp.JSON200.BaseUrl != nil {
 		data.BaseUrl = types.StringValue(*apiResp.JSON200.BaseUrl)
 	}
 
-	if apiResp.JSON200.TeamId != nil {
-		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
-	}
+	data.TeamID = types.StringPointerValue(apiResp.JSON200.TeamId)
 
 	// VaultSecretPath and VaultSecretKey are not in the Create response;
 	// they are preserved from plan and will be read back via Read.
@@ -259,7 +251,8 @@ func (r *LLMProviderApiKeyResource) Read(ctx context.Context, req resource.ReadR
 
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.IsPrimary = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.IsAgentKey = types.BoolPointerValue(apiResp.JSON200.IsAgentKey)
 	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
 
 	if apiResp.JSON200.BaseUrl != nil {
@@ -268,11 +261,7 @@ func (r *LLMProviderApiKeyResource) Read(ctx context.Context, req resource.ReadR
 		data.BaseUrl = types.StringNull()
 	}
 
-	if apiResp.JSON200.TeamId != nil {
-		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
-	} else {
-		data.TeamID = types.StringNull()
-	}
+	data.TeamID = types.StringPointerValue(apiResp.JSON200.TeamId)
 
 	// VaultSecretPath and VaultSecretKey are write-only on the backend
 	// (consumed on create, never echoed). Preserve whatever is already in
@@ -342,16 +331,15 @@ func (r *LLMProviderApiKeyResource) Update(ctx context.Context, req resource.Upd
 
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.LLMProvider = types.StringValue(string(apiResp.JSON200.Provider))
-	data.IsOrganizationDefault = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.IsPrimary = types.BoolValue(apiResp.JSON200.IsPrimary)
+	data.IsAgentKey = types.BoolValue(false)
 	data.Scope = types.StringValue(string(apiResp.JSON200.Scope))
 
 	if apiResp.JSON200.BaseUrl != nil {
 		data.BaseUrl = types.StringValue(*apiResp.JSON200.BaseUrl)
 	}
 
-	if apiResp.JSON200.TeamId != nil {
-		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
-	}
+	data.TeamID = types.StringPointerValue(apiResp.JSON200.TeamId)
 
 	// VaultSecretPath and VaultSecretKey are not in the Update response;
 	// they are preserved from plan and will be read back via Read.

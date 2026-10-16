@@ -38,17 +38,19 @@ type IdentityProviderResource struct {
 }
 
 type IdentityProviderResourceModel struct {
-	ID             types.String         `tfsdk:"id"`
-	ProviderID     types.String         `tfsdk:"provider_id"`
-	Domain         types.String         `tfsdk:"domain"`
-	DomainVerified types.Bool           `tfsdk:"domain_verified"`
-	Issuer         types.String         `tfsdk:"issuer"`
-	OidcConfig     *OidcConfigModel     `tfsdk:"oidc_config"`
-	SamlConfig     *SamlConfigModel     `tfsdk:"saml_config"`
-	RoleMapping    *RoleMappingModel    `tfsdk:"role_mapping"`
-	TeamSyncConfig *TeamSyncConfigModel `tfsdk:"team_sync_config"`
-	UserID         types.String         `tfsdk:"user_id"`
-	OrganizationID types.String         `tfsdk:"organization_id"`
+	ConfiguredSecretPaths types.Set            `tfsdk:"configured_secret_paths"`
+	SsoLoginEnabled       types.Bool           `tfsdk:"sso_login_enabled"`
+	ID                    types.String         `tfsdk:"id"`
+	ProviderID            types.String         `tfsdk:"provider_id"`
+	Domain                types.String         `tfsdk:"domain"`
+	DomainVerified        types.Bool           `tfsdk:"domain_verified"`
+	Issuer                types.String         `tfsdk:"issuer"`
+	OidcConfig            *OidcConfigModel     `tfsdk:"oidc_config"`
+	SamlConfig            *SamlConfigModel     `tfsdk:"saml_config"`
+	RoleMapping           *RoleMappingModel    `tfsdk:"role_mapping"`
+	TeamSyncConfig        *TeamSyncConfigModel `tfsdk:"team_sync_config"`
+	UserID                types.String         `tfsdk:"user_id"`
+	OrganizationID        types.String         `tfsdk:"organization_id"`
 }
 
 type OidcConfigModel struct {
@@ -175,6 +177,8 @@ func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.Sche
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Manages Archestra identity providers (OIDC or SAML). Exactly one of oidc_config or saml_config must be set.",
 		Attributes: map[string]schema.Attribute{
+			"configured_secret_paths": schema.SetAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Secret paths present on the server. Their values are never returned; imported secrets must be supplied to manage rotation."},
+			"sso_login_enabled":       schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Enable this provider for interactive SSO login."},
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "identity provider identifier",
@@ -704,6 +708,7 @@ func (r *IdentityProviderResource) KnownIntentionallySkipped() []string {
 // plan-based state for sensitive fields is correct because the plan IS the
 // user-supplied value.
 var identityProviderAttrSpec = []AttrSpec{
+	{TFName: "sso_login_enabled", JSONName: "ssoLoginEnabled", Kind: Scalar, OmitOnNull: true},
 	{TFName: "provider_id", JSONName: "providerId", Kind: Scalar},
 	{TFName: "domain", JSONName: "domain", Kind: Scalar},
 	{TFName: "domain_verified", JSONName: "domainVerified", Kind: Scalar},

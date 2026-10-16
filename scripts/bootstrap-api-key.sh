@@ -14,6 +14,7 @@
 #
 # Environment overrides:
 #   ARCHESTRA_BASE_URL              Backend URL (default: http://localhost:9000)
+#   ARCHESTRA_FRONTEND_URL          Trusted frontend origin (default: http://localhost:3000)
 #   ARCHESTRA_ADMIN_EMAIL           Admin email   (default: admin@example.com)
 #   ARCHESTRA_ADMIN_PASSWORD        Admin password (default: password)
 #   ARCHESTRA_API_KEY_NAME          API key label (default: terraform-acceptance-tests)
@@ -22,6 +23,7 @@
 set -euo pipefail
 
 BASE_URL="${ARCHESTRA_BASE_URL:-http://localhost:9000}"
+FRONTEND_URL="${ARCHESTRA_FRONTEND_URL:-http://localhost:3000}"
 ADMIN_EMAIL="${ARCHESTRA_ADMIN_EMAIL:-admin@example.com}"
 ADMIN_PASSWORD="${ARCHESTRA_ADMIN_PASSWORD:-password}"
 KEY_NAME="${ARCHESTRA_API_KEY_NAME:-terraform-acceptance-tests}"
@@ -52,7 +54,7 @@ login_response=$(curl -sS --connect-timeout 5 --max-time 15 \
   -c "$cookies" -b "$cookies" \
   -X POST "${BASE_URL}/api/auth/sign-in/email" \
   -H "Content-Type: application/json" \
-  -H "Origin: http://localhost:3000" \
+  -H "Origin: ${FRONTEND_URL}" \
   -d "$(jq -n --arg email "$ADMIN_EMAIL" --arg password "$ADMIN_PASSWORD" \
     '{email:$email, password:$password}')")
 
@@ -66,7 +68,7 @@ key_response=$(curl -sS --connect-timeout 5 --max-time 15 \
   -b "$cookies" \
   -X POST "${BASE_URL}/api/auth/api-key/create" \
   -H "Content-Type: application/json" \
-  -H "Origin: http://localhost:3000" \
+  -H "Origin: ${FRONTEND_URL}" \
   -d "$(jq -n --arg name "$KEY_NAME" --argjson expiresIn "$EXPIRES_IN" \
     '{name:$name, expiresIn:$expiresIn}')")
 

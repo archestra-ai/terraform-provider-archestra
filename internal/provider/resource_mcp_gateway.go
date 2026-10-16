@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -45,8 +44,6 @@ type McpGatewayResourceModel struct {
 	ConsiderContextUntrusted types.Bool        `tfsdk:"consider_context_untrusted"`
 	ToolExposureMode         types.String      `tfsdk:"tool_exposure_mode"`
 	IsDefault                types.Bool        `tfsdk:"is_default"`
-	Scope                    types.String      `tfsdk:"scope"`
-	Teams                    types.List        `tfsdk:"teams"`
 	Labels                   []AgentLabelModel `tfsdk:"labels"`
 }
 
@@ -102,20 +99,6 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				Optional:            true,
 				Computed:            true,
 				MarkdownDescription: "Whether this is the default MCP gateway",
-			},
-			"scope": schema.StringAttribute{
-				Optional:            true,
-				Computed:            true,
-				Default:             stringdefault.StaticString("org"),
-				MarkdownDescription: "Ownership scope: `personal`, `team`, or `org` (default: `org`).",
-				Validators:          []validator.String{stringvalidator.OneOf("personal", "team", "org")},
-			},
-			"teams": schema.ListAttribute{
-				Optional:            true,
-				Computed:            true,
-				ElementType:         types.StringType,
-				MarkdownDescription: "Team IDs this gateway is assigned to. Required when `scope = \"team\"`. Removing from configuration clears the assignment on next apply.",
-				PlanModifiers:       []planmodifier.List{EmptyListOnConfigNull()},
 			},
 			"labels": schema.SetNestedAttribute{
 				Optional:            true,
@@ -328,8 +311,6 @@ func (r *McpGatewayResource) flatten(ctx context.Context, data *McpGatewayResour
 	data.ConsiderContextUntrusted = types.BoolValue(resp.ConsiderContextUntrusted)
 	optionalStringFromAPI(&data.ToolExposureMode, resp.ToolExposureMode)
 	data.IsDefault = types.BoolValue(resp.IsDefault)
-	data.Scope = types.StringValue(resp.Scope)
-	data.Teams = teamsListFromAPI(ctx, data.Teams, resp.Teams, diags)
 
 	data.Labels = flattenAgentLabels(data.Labels, resp.Labels)
 }
@@ -354,7 +335,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 		"systemPrompt", "llmModel", "llmApiKeyId", "isDefault", "scope",
 		"teams", "considerContextUntrusted", "incomingEmailEnabled",
 		"incomingEmailAllowedDomain", "incomingEmailSecurityMode", "icon",
-		"slug", "tools",
+		"slug", "tools", "users",
 	}
 }
 
@@ -374,8 +355,6 @@ var mcpGatewayAttrSpec = []AttrSpec{
 	{TFName: "consider_context_untrusted", JSONName: "considerContextUntrusted", Kind: Scalar},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar},
 	{TFName: "is_default", JSONName: "isDefault", Kind: Scalar},
-	{TFName: "scope", JSONName: "scope", Kind: Scalar},
-	{TFName: "teams", JSONName: "teams", Kind: List},
 	{
 		TFName: "labels", JSONName: "labels", Kind: Set,
 		Children: []AttrSpec{

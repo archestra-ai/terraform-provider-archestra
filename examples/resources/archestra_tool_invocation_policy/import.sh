@@ -1,1 +1,0 @@
-terraform import archestra_tool_invocation_policy.example 00000000-0000-0000-0000-000000000000

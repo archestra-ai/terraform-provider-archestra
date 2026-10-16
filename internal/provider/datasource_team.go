@@ -123,7 +123,7 @@ func (d *TeamDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	team := teamResp.JSON200
 	data.Name = types.StringValue(team.Name)
 	data.OrganizationID = types.StringValue(team.OrganizationId)
-	data.CreatedBy = types.StringValue(team.CreatedBy)
+	data.CreatedBy = types.StringPointerValue(team.CreatedBy)
 	if team.Description != nil {
 		data.Description = types.StringValue(*team.Description)
 	} else {

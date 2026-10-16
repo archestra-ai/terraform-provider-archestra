@@ -138,3 +138,19 @@ func TestBuildHTTPClient_WiredEndToEnd(t *testing.T) {
 		t.Errorf("request took %v; expected ~50ms timeout to fire", elapsed)
 	}
 }
+
+func TestProviderProtocolSchemaIsValid(t *testing.T) {
+	server, err := testAccProtoV6ProviderFactories["archestra"]()
+	if err != nil {
+		t.Fatal(err)
+	}
+	response, err := server.GetProviderSchema(t.Context(), &tfprotov6.GetProviderSchemaRequest{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, diagnostic := range response.Diagnostics {
+		if diagnostic.Severity == tfprotov6.DiagnosticSeverityError {
+			t.Errorf("%s: %s", diagnostic.Summary, diagnostic.Detail)
+		}
+	}
+}

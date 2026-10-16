@@ -7,7 +7,6 @@ import (
 	"fmt"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -37,13 +36,12 @@ type TeamMemberModel struct {
 }
 
 type TeamResourceModel struct {
-	ID                       types.String      `tfsdk:"id"`
-	Name                     types.String      `tfsdk:"name"`
-	Description              types.String      `tfsdk:"description"`
-	OrganizationID           types.String      `tfsdk:"organization_id"`
-	CreatedBy                types.String      `tfsdk:"created_by"`
-	ConvertToolResultsToToon types.Bool        `tfsdk:"convert_tool_results_to_toon"`
-	Members                  []TeamMemberModel `tfsdk:"members"`
+	ID             types.String      `tfsdk:"id"`
+	Name           types.String      `tfsdk:"name"`
+	Description    types.String      `tfsdk:"description"`
+	OrganizationID types.String      `tfsdk:"organization_id"`
+	CreatedBy      types.String      `tfsdk:"created_by"`
+	Members        []TeamMemberModel `tfsdk:"members"`
 }
 
 func (r *TeamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -84,11 +82,6 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"convert_tool_results_to_toon": schema.BoolAttribute{
-				MarkdownDescription: "Per-team TOON tool-result compression. **Requires `archestra_organization_settings.compression_scope = \"team\"`** — backend silently ignores team-level writes otherwise. When applying both in the same pass, also set `depends_on = [archestra_organization_settings.<n>]` on this team so org_settings applies first. Provider checks the precondition at apply time and surfaces a clear error if violated.",
-				Optional:            true,
-				Computed:            true,
-			},
 			"members": schema.ListNestedAttribute{
 				MarkdownDescription: "List of team members",
 				Optional:            true,
@@ -128,37 +121,6 @@ func (r *TeamResource) Configure(ctx context.Context, req resource.ConfigureRequ
 	r.client = client
 }
 
-// validateTeamToonPrecondition checks org `compression_scope == "team"`
-// at apply time when the user wants `convert_tool_results_to_toon = true`.
-// Apply-time (not ModifyPlan) so dependency-ordered same-pass applies work:
-// when `archestra_organization_settings` is in the same plan and the team
-// declares `depends_on`, org_settings's apply runs first and the GET here
-// reads the freshly-written scope. ModifyPlan-time would always see the
-// pre-apply backend state and force a `-target` workaround.
-//
-// TODO(backend): platform should either honor the team-level flag
-// regardless of scope or 4xx team-level writes when scope != "team".
-// Once that lands, drop this helper and both call sites.
-func (r *TeamResource) validateTeamToonPrecondition(ctx context.Context, diags *diag.Diagnostics) {
-	orgResp, err := r.client.GetOrganizationWithResponse(ctx)
-	if err != nil {
-		diags.AddError("API Error", fmt.Sprintf("convert_tool_results_to_toon pre-flight: unable to fetch organization settings: %s", err))
-		return
-	}
-	if orgResp.JSON200 == nil {
-		diags.AddError("API Error", fmt.Sprintf("convert_tool_results_to_toon pre-flight: GetOrganization returned status %d: %s", orgResp.StatusCode(), string(orgResp.Body)))
-		return
-	}
-	if string(orgResp.JSON200.CompressionScope) != string(client.Team) {
-		diags.AddAttributeError(
-			path.Root("convert_tool_results_to_toon"),
-			"Precondition Not Met",
-			fmt.Sprintf("`convert_tool_results_to_toon = true` on a team requires `archestra_organization_settings.compression_scope = \"team\"`. Current org scope is %q. Either set the scope first, or add `depends_on = [archestra_organization_settings.<n>]` on the team so org_settings applies before the team in the same pass. (Backend silently ignores team-level writes when scope != \"team\".)",
-				string(orgResp.JSON200.CompressionScope)),
-		)
-	}
-}
-
 func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data TeamResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -170,24 +132,6 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 	patch := MergePatch(ctx, req.Plan.Raw, prior, teamAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
-	}
-
-	// TODO(backend): platform's `CreateTeamBodySchema` (backend/src/types/team.ts:25)
-	// is missing `convertToolResultsToToon` — `UpdateTeamBodySchema` has it. Until
-	// it's added on the create endpoint, fastify-zod silently strips the field
-	// from the Create body, the team is created with the column default (false),
-	// and the response echoes false → "Provider produced inconsistent result
-	// after apply". Workaround: strip the field here, then issue a follow-up
-	// Update if the user wants it true. Drop both this block and the post-Create
-	// Update once the backend create schema accepts the field.
-	wantToon := !data.ConvertToolResultsToToon.IsNull() && !data.ConvertToolResultsToToon.IsUnknown() && data.ConvertToolResultsToToon.ValueBool()
-	delete(patch, "convertToolResultsToToon")
-
-	if wantToon {
-		r.validateTeamToonPrecondition(ctx, &resp.Diagnostics)
-		if resp.Diagnostics.HasError() {
-			return
-		}
 	}
 
 	LogPatch(ctx, "archestra_team Create", patch, teamAttrSpec)
@@ -216,27 +160,9 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 	data.ID = types.StringValue(apiResp.JSON200.Id)
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.OrganizationID = types.StringValue(apiResp.JSON200.OrganizationId)
-	data.CreatedBy = types.StringValue(apiResp.JSON200.CreatedBy)
+	data.CreatedBy = types.StringPointerValue(apiResp.JSON200.CreatedBy)
 	if apiResp.JSON200.Description != nil {
 		data.Description = types.StringValue(*apiResp.JSON200.Description)
-	}
-	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
-
-	// Follow-up Update to set TOON when requested — see TODO(backend) above.
-	if wantToon {
-		toon := true
-		updateResp, err := r.client.UpdateTeamWithResponse(ctx, apiResp.JSON200.Id, client.UpdateTeamJSONRequestBody{
-			ConvertToolResultsToToon: &toon,
-		})
-		if err != nil {
-			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to set convert_tool_results_to_toon after team Create, got error: %s", err))
-			return
-		}
-		if updateResp.JSON200 == nil {
-			resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Update after Create returned status %d: %s", updateResp.StatusCode(), string(updateResp.Body)))
-			return
-		}
-		data.ConvertToolResultsToToon = types.BoolValue(updateResp.JSON200.ConvertToolResultsToToon)
 	}
 
 	// Add team members
@@ -251,7 +177,8 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 				UserId: member.UserID.ValueString(),
 			}
 			if role != "" {
-				memberBody.Role = &role
+				typedRole := client.AddTeamMemberJSONBodyRole(role)
+				memberBody.Role = &typedRole
 			}
 
 			memberResp, err := r.client.AddTeamMemberWithResponse(ctx, apiResp.JSON200.Id, memberBody)
@@ -304,13 +231,12 @@ func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.OrganizationID = types.StringValue(apiResp.JSON200.OrganizationId)
-	data.CreatedBy = types.StringValue(apiResp.JSON200.CreatedBy)
+	data.CreatedBy = types.StringPointerValue(apiResp.JSON200.CreatedBy)
 	if apiResp.JSON200.Description != nil {
 		data.Description = types.StringValue(*apiResp.JSON200.Description)
 	} else {
 		data.Description = types.StringNull()
 	}
-	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
 
 	// Only manage members if they were explicitly configured in the plan
 	// If members was null/unset in config, keep it that way to avoid drift
@@ -354,14 +280,6 @@ func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		return
 	}
 
-	// Apply-time precondition check — see validateTeamToonPrecondition.
-	if !data.ConvertToolResultsToToon.IsNull() && !data.ConvertToolResultsToToon.IsUnknown() && data.ConvertToolResultsToToon.ValueBool() {
-		r.validateTeamToonPrecondition(ctx, &resp.Diagnostics)
-		if resp.Diagnostics.HasError() {
-			return
-		}
-	}
-
 	LogPatch(ctx, "archestra_team Update", patch, teamAttrSpec)
 
 	body, err := json.Marshal(patch)
@@ -395,84 +313,97 @@ func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	// Map response to Terraform state
 	data.Name = types.StringValue(apiResp.JSON200.Name)
 	data.OrganizationID = types.StringValue(apiResp.JSON200.OrganizationId)
-	data.CreatedBy = types.StringValue(apiResp.JSON200.CreatedBy)
+	data.CreatedBy = types.StringPointerValue(apiResp.JSON200.CreatedBy)
 	if apiResp.JSON200.Description != nil {
 		data.Description = types.StringValue(*apiResp.JSON200.Description)
 	}
-	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
 
-	// Handle team member changes
-	// Get current members
-	membersResp, err := r.client.GetTeamMembersWithResponse(ctx, data.ID.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read current team members, got error: %s", err))
-		return
-	}
-
-	if membersResp.JSON200 == nil {
-		resp.Diagnostics.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("Expected 200 OK for team members, got status %d", membersResp.StatusCode()),
-		)
-		return
-	}
-
-	// Create a map of desired members
-	desiredMembers := make(map[string]string) // userID -> role
-	for _, member := range data.Members {
-		role := "member"
-		if !member.Role.IsNull() {
-			role = member.Role.ValueString()
+	if data.Members != nil {
+		// Handle team member changes
+		// Get current members
+		membersResp, err := r.client.GetTeamMembersWithResponse(ctx, data.ID.ValueString())
+		if err != nil {
+			resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read current team members, got error: %s", err))
+			return
 		}
-		desiredMembers[member.UserID.ValueString()] = role
-	}
 
-	// Remove members not in desired state
-	for _, currentMember := range *membersResp.JSON200 {
-		if _, exists := desiredMembers[currentMember.UserId]; !exists {
-			removeResp, err := r.client.RemoveTeamMemberWithResponse(ctx, data.ID.ValueString(), currentMember.UserId)
-			if err != nil {
-				resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to remove team member, got error: %s", err))
-				return
-			}
-			if removeResp.JSON200 == nil {
-				resp.Diagnostics.AddError(
-					"Unexpected API Response",
-					fmt.Sprintf("Unable to remove team member, got status %d", removeResp.StatusCode()),
-				)
-				return
-			}
+		if membersResp.JSON200 == nil {
+			resp.Diagnostics.AddError(
+				"Unexpected API Response",
+				fmt.Sprintf("Expected 200 OK for team members, got status %d", membersResp.StatusCode()),
+			)
+			return
 		}
-	}
 
-	// Add new members
-	currentMemberIDs := make(map[string]bool)
-	for _, member := range *membersResp.JSON200 {
-		currentMemberIDs[member.UserId] = true
-	}
+		// Create a map of desired members
+		desiredMembers := make(map[string]string) // userID -> role
+		for _, member := range data.Members {
+			role := "member"
+			if !member.Role.IsNull() {
+				role = member.Role.ValueString()
+			}
+			desiredMembers[member.UserID.ValueString()] = role
+		}
 
-	for userID, role := range desiredMembers {
-		if !currentMemberIDs[userID] {
-			memberBody := client.AddTeamMemberJSONRequestBody{
-				UserId: userID,
-			}
-			if role != "" {
-				memberBody.Role = &role
-			}
-
-			addResp, err := r.client.AddTeamMemberWithResponse(ctx, data.ID.ValueString(), memberBody)
-			if err != nil {
-				resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to add team member, got error: %s", err))
-				return
-			}
-			if addResp.JSON200 == nil {
-				resp.Diagnostics.AddError(
-					"Unexpected API Response",
-					fmt.Sprintf("Unable to add team member, got status %d", addResp.StatusCode()),
-				)
-				return
+		// Remove members not in desired state
+		for _, currentMember := range *membersResp.JSON200 {
+			if _, exists := desiredMembers[currentMember.UserId]; !exists {
+				removeResp, err := r.client.RemoveTeamMemberWithResponse(ctx, data.ID.ValueString(), currentMember.UserId)
+				if err != nil {
+					resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to remove team member, got error: %s", err))
+					return
+				}
+				if removeResp.JSON200 == nil {
+					resp.Diagnostics.AddError(
+						"Unexpected API Response",
+						fmt.Sprintf("Unable to remove team member, got status %d", removeResp.StatusCode()),
+					)
+					return
+				}
 			}
 		}
+
+		// Add new members
+		currentMemberRoles := make(map[string]string)
+		for _, member := range *membersResp.JSON200 {
+			currentMemberRoles[member.UserId] = member.Role
+		}
+
+		for userID, role := range desiredMembers {
+			if currentRole, exists := currentMemberRoles[userID]; !exists {
+				memberBody := client.AddTeamMemberJSONRequestBody{
+					UserId: userID,
+				}
+				if role != "" {
+					typedRole := client.AddTeamMemberJSONBodyRole(role)
+					memberBody.Role = &typedRole
+				}
+
+				addResp, err := r.client.AddTeamMemberWithResponse(ctx, data.ID.ValueString(), memberBody)
+				if err != nil {
+					resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to add team member, got error: %s", err))
+					return
+				}
+				if addResp.JSON200 == nil {
+					resp.Diagnostics.AddError(
+						"Unexpected API Response",
+						fmt.Sprintf("Unable to add team member, got status %d", addResp.StatusCode()),
+					)
+					return
+				}
+			} else if currentRole != role {
+				updated, err := r.client.UpdateTeamMemberWithResponse(ctx, data.ID.ValueString(), userID, client.UpdateTeamMemberJSONRequestBody{Role: client.UpdateTeamMemberJSONBodyRole(role)})
+				if err != nil {
+					resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to update team member role: %s", err))
+					return
+				}
+				if updated.JSON200 == nil {
+					resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("Unable to update team member role, got status %d", updated.StatusCode()))
+					return
+				}
+			}
+		}
+
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

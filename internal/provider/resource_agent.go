@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -54,8 +53,6 @@ type AgentResourceModel struct {
 	SuggestedPrompts           []SuggestedPromptModel   `tfsdk:"suggested_prompts"`
 	Labels                     []AgentLabelModel        `tfsdk:"labels"`
 	BuiltInAgentConfig         *BuiltInAgentConfigModel `tfsdk:"built_in_agent_config"`
-	Scope                      types.String             `tfsdk:"scope"`
-	Teams                      types.List               `tfsdk:"teams"`
 
 	AccessAllTools            types.Bool         `tfsdk:"access_all_tools"`
 	MissingCredentialBehavior types.String       `tfsdk:"missing_credential_behavior"`
@@ -137,20 +134,6 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				Optional:            true,
 				Computed:            true,
 				MarkdownDescription: "Whether this is the default agent for its type",
-			},
-			"scope": schema.StringAttribute{
-				Optional:            true,
-				Computed:            true,
-				Default:             stringdefault.StaticString("org"),
-				MarkdownDescription: "Ownership scope: `personal`, `team`, or `org` (default: `org`).",
-				Validators:          []validator.String{stringvalidator.OneOf("personal", "team", "org")},
-			},
-			"teams": schema.ListAttribute{
-				Optional:            true,
-				Computed:            true,
-				ElementType:         types.StringType,
-				MarkdownDescription: "Team IDs this agent is assigned to. Required when `scope = \"team\"`. Removing from configuration clears the assignment on next apply.",
-				PlanModifiers:       []planmodifier.List{EmptyListOnConfigNull()},
 			},
 			"suggested_prompts": schema.ListNestedAttribute{
 				Optional:            true,
@@ -407,37 +390,15 @@ func (r *AgentResource) ImportState(ctx context.Context, req resource.ImportStat
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-// ValidateConfig enforces cross-field constraints the schema can't
-// express on its own — `scope = "team"` must come with a non-empty
-// `teams` list, and `incoming_email_security_mode = "internal"` must
-// come with `incoming_email_allowed_domain`. Both used to fail at
-// apply with a backend 400; this catches them at plan.
+// ValidateConfig checks the incoming-email domain requirement.
 func (r *AgentResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
 	var data AgentResourceModel
 	// Decode only the fields this validator uses. Runtime objects can be
 	// unknown during validation (for example, a conditional inside for_each).
-	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("scope"), &data.Scope)...)
-	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("teams"), &data.Teams)...)
 	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("incoming_email_security_mode"), &data.IncomingEmailSecurityMode)...)
 	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("incoming_email_allowed_domain"), &data.IncomingEmailAllowedDomain)...)
 	if resp.Diagnostics.HasError() {
 		return
-	}
-
-	if !data.Scope.IsNull() && !data.Scope.IsUnknown() && data.Scope.ValueString() == "team" {
-		if data.Teams.IsNull() || data.Teams.IsUnknown() {
-			resp.Diagnostics.AddAttributeError(
-				path.Root("teams"),
-				"Missing Required Attribute",
-				`teams must be set when scope = "team"`,
-			)
-		} else if len(data.Teams.Elements()) == 0 {
-			resp.Diagnostics.AddAttributeError(
-				path.Root("teams"),
-				"Invalid Attribute Value",
-				`teams must contain at least one team ID when scope = "team"`,
-			)
-		}
 	}
 
 	if !data.IncomingEmailSecurityMode.IsNull() && !data.IncomingEmailSecurityMode.IsUnknown() &&
@@ -479,8 +440,6 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 
 	data.ConsiderContextUntrusted = types.BoolValue(resp.ConsiderContextUntrusted)
 	data.IsDefault = types.BoolValue(resp.IsDefault)
-	data.Scope = types.StringValue(resp.Scope)
-	data.Teams = teamsListFromAPI(ctx, data.Teams, resp.Teams, diags)
 
 	data.SuggestedPrompts = suggestedPromptsFromAPI(resp.SuggestedPrompts)
 	stringListFromAPI(ctx, &data.KnowledgeBaseIds, resp.KnowledgeBaseIds, diags)
@@ -526,7 +485,7 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 	return []string{
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "suggestedPrompts", "passthroughHeaders",
-		"identityProviderId", "slug", "tools",
+		"identityProviderId", "slug", "tools", "scope", "teams", "users",
 	}
 }
 
@@ -558,8 +517,6 @@ var agentAttrSpec = []AttrSpec{
 	{TFName: "incoming_email_security_mode", JSONName: "incomingEmailSecurityMode", Kind: Scalar},
 	{TFName: "consider_context_untrusted", JSONName: "considerContextUntrusted", Kind: Scalar},
 	{TFName: "is_default", JSONName: "isDefault", Kind: Scalar},
-	{TFName: "scope", JSONName: "scope", Kind: Scalar},
-	{TFName: "teams", JSONName: "teams", Kind: List},
 	{
 		TFName: "suggested_prompts", JSONName: "suggestedPrompts", Kind: List,
 		Children: []AttrSpec{

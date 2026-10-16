@@ -4,15 +4,7 @@
 // NOTE: See the below link for details on what is happening here.
 // https://github.com/golang/go/wiki/Modules#how-can-i-track-tool-dependencies-for-a-module
 
-// Remove existing CRDs
-//go:generate rm -rf ../package/crds
-
-// Remove generated files
-//go:generate bash -c "find . -iname 'zz_*' ! -iname 'zz_generated.managed*.go' -delete"
-//go:generate bash -c "find . -type d -empty -delete"
-//go:generate bash -c "find ../internal/controller -iname 'zz_*' -delete"
-//go:generate bash -c "find ../internal/controller -type d -empty -delete"
-//go:generate rm -rf ../examples-generated
+// Generated output is cleaned by the Makefile before go generate enumerates packages.
 
 // NOTE: docs scraper disabled — Archestra TF docs aren't pulled into .work yet.
 // Re-enable once we wire pull-docs to copy/symlink ../docs/resources into

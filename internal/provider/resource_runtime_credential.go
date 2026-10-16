@@ -441,7 +441,7 @@ type runtimeCredentialView struct {
 // findByKey resolves a definition and its configured-value flags from the list.
 // ok=false means not found (resource gone or runtime disabled).
 func (r *RuntimeCredentialResource) findByKey(ctx context.Context, key string, diags *diag.Diagnostics) (runtimeCredentialView, bool) {
-	apiResp, err := r.client.ListRuntimeCredentialsWithResponse(ctx)
+	apiResp, err := r.client.ListRuntimeCredentialsWithResponse(ctx, nil)
 	if err != nil {
 		diags.AddError("API Error", fmt.Sprintf("Unable to list runtime credentials: %s", err))
 		return runtimeCredentialView{}, false

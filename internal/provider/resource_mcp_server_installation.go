@@ -105,7 +105,6 @@ type MCPServerResourceModel struct {
 	UserConfigValues  types.Map    `tfsdk:"user_config_values"`
 	SecretID          types.String `tfsdk:"secret_id"`
 	AccessToken       types.String `tfsdk:"access_token"`
-	ServiceAccount    types.String `tfsdk:"service_account"`
 	IsByosVault       types.Bool   `tfsdk:"is_byos_vault"`
 	AgentIDs          types.List   `tfsdk:"agent_ids"`
 	// Tools is a Computed list — the slice form ([]struct) can't represent
@@ -228,13 +227,6 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				MarkdownDescription: "Personal access token for the MCP server",
 				Optional:            true,
 				Sensitive:           true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
-			"service_account": schema.StringAttribute{
-				MarkdownDescription: "Kubernetes service account override for the MCP server pod",
-				Optional:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -420,11 +412,6 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 	if !data.AccessToken.IsNull() && !data.AccessToken.IsUnknown() {
 		token := data.AccessToken.ValueString()
 		requestBody.AccessToken = &token
-	}
-
-	if !data.ServiceAccount.IsNull() && !data.ServiceAccount.IsUnknown() {
-		sa := data.ServiceAccount.ValueString()
-		requestBody.ServiceAccount = &sa
 	}
 
 	if !data.IsByosVault.IsNull() && !data.IsByosVault.IsUnknown() {
@@ -746,6 +733,7 @@ func projectMcpServerTools(apiTools []struct {
 	} `json:"assignedAgents"`
 	CreatedAt   time.Time              `json:"createdAt"`
 	Description *string                `json:"description"`
+	Group       *string                `json:"group"`
 	Id          string                 `json:"id"`
 	Name        string                 `json:"name"`
 	Parameters  map[string]interface{} `json:"parameters"`
