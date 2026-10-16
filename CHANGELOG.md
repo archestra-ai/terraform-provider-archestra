@@ -52,6 +52,14 @@
 * **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
 * **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
 
+## [2.4.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v2.4.0...v2.4.1) (2026-10-16)
+
+
+### Bug Fixes
+
+* bundle matching Terraform release in Crossplane packages ([#177](https://github.com/archestra-ai/terraform-provider-archestra/issues/177)) ([1bfa6de](https://github.com/archestra-ai/terraform-provider-archestra/commit/1bfa6def6404de255b54c9729ba9ac604284fd8f))
+* **ci:** use a published credential acceptance image and matching client ([#179](https://github.com/archestra-ai/terraform-provider-archestra/issues/179)) ([4709b57](https://github.com/archestra-ai/terraform-provider-archestra/commit/4709b5714c73e3521c312f721789dcc764856506))
+
 ## [2.4.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v2.3.1...v2.4.0) (2026-09-14)
 
 
