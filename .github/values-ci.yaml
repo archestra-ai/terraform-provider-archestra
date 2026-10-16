@@ -4,6 +4,20 @@
 # as they are not needed for Terraform provider acceptance tests
 
 archestra:
+  # Ephemeral runner requests leave capacity for PostgreSQL and the operator.
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "2Gi"
+    limits:
+      memory: "3Gi"
+  worker:
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "512Mi"
+      limits:
+        memory: "1Gi"
   # Environment variables for acceptance testing
   env:
     # Point to real LLM APIs (or mock as needed)
@@ -41,12 +55,20 @@ postgresql:
   # Use the internal PostgreSQL instance
   external_database_url: null
   enabled: true
+  metrics:
+    enabled: false
   auth:
     database: archestra_dev
     username: archestra
     password: archestra_dev_password
   # Use NodePort to expose PostgreSQL for debugging if needed
   primary:
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "512Mi"
+      limits:
+        memory: "1Gi"
     service:
       type: NodePort
       nodePorts:
