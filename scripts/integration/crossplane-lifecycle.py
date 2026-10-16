@@ -826,7 +826,7 @@ def main():
                        scheduled_runs='not_executed')
 
             if 'api-key' in args.cases:
-                key_name = 'cp-test-api-key-' + run + '-' + scope
+                key_name = 'cp-key-' + run + '-' + scope[0]
                 lease, identifier, obj = create(scope, 'credential', 'APIKey', 'apikeys',
                     {'name': key_name, 'expiresInSeconds': 86400})
 
