@@ -5,10 +5,10 @@ Crossplane provider for [Archestra](https://archestra.ai), generated from
 using the [`upjet`](https://github.com/crossplane/upjet) code-generation
 toolchain.
 
-The v3 working schema includes all 44 Terraform resources in both scopes.
+The v3 working schema includes all 45 Terraform resources in both scopes.
 The shared configurator in [config/resources.go](config/resources.go) defines each
 group/kind and reference once for both scopes. See the [resource matrix](../README.md#resource-coverage)
-and [runtime evidence](../audit/README.md). All 44 families have real
+and [runtime evidence](../audit/README.md). All 45 families have real
 create/update/drift-repair/delete evidence on their recorded candidate binaries
 against Archestra 1.4.0-rc.48 and Crossplane 2.2.1; full final-candidate repetition
 remains part of release validation.

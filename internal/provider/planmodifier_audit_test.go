@@ -21,6 +21,7 @@ import (
 // Every entry needs a reason — the default of RemoveOnConfigNullList is
 // safer; allowlisting asserts the field has no "remove = clear" semantic.
 var useStateForUnknownAllowlist = map[string]map[string]string{
+	"archestra_git_plugin":         {"enabled": "Omission preserves the observed setting; configure true or false to manage it.", "initial_grants": "Creation-only grants are not echoed; permissions have a separate policy owner."},
 	"archestra_plugin":             {"enabled": "Omission preserves the observed setting; explicitly configure true or false to manage it.", "initial_grants": "Creation-only grants are not echoed; later permissions use the policy resource."},
 	"archestra_github_pat":         {"token": "Omission preserves the write-only stored credential; supply a new value to rotate or destroy to revoke the registration."}, //nolint:gosec // G101 false-positive: token is a schema attribute name.
 	"archestra_github_app_config":  {"private_key": "Omission preserves the write-only stored credential; supply a new value to rotate or destroy to revoke the registration."},

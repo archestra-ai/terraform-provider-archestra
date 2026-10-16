@@ -1,6 +1,6 @@
 # Provider resource scope and API review
 
-The current registry contains 44 families, all configured for both Crossplane
+The current registry contains 45 families, all configured for both Crossplane
 scopes. The historical 29-family proof remains in `crossplane-rc48-candidate.json`;
 the six-family expansion and two existing-resource control probes pass in both
 scopes in `crossplane-persistent-extensions.json`. Those evidence sets have distinct
@@ -16,7 +16,7 @@ implementation queue. They classify all 15 additional API review areas, includin
 consolidated OAuth client facades and the platform-owned LLM proxy singleton.
 The original 90 raw unmapped request-field occurrences are fully classified in
 `request-field-review.md`; they were not 90 confirmed missing capabilities. The
-current 44-family inventory has 128 raw occurrences, all classified in
+current 45-family inventory has 144 raw occurrences, all classified in
 `current-request-field-review.json`. Additional routes and shared profile schemas
 increase that raw count. Gateway subagent controls and installation personal-user
 selection/hibernation now have native and both-scope runtime regressions.
@@ -36,7 +36,7 @@ The detailed schema, import, sensitivity, request-field and executed-runtime rec
 are linked from `README.md`. Schema guards do not replace runtime proof. Provider
 keys now include shared ownership and SigV4 inputs, teams include role assignments,
 models include embedding dimensions, and runtime definitions include GitLab host
-management. Creation-time grants are configurable on fourteen families. The historical
+management. Creation-time grants are configurable on fifteen families. The historical
 29-family rc.48 Terraform suite passed 118 acceptance tests with zero skips, and
 the 35-family expansion passed 126; the 39-family suite passed 131
 with zero failures or skips (`a2a-environment-native-acceptance.json`). The
@@ -110,3 +110,5 @@ existing resource lifecycles. Count the underlying managed identity once; record
 chosen soft-delete, retention and adoption behavior explicitly.
 
 Manual plugin packages add one family in both scopes, including creation grants, authoritative file replacement and executable-mode preservation ([runtime proof](crossplane-manual-plugins.json)). The full 44-family native suite passes all 142 acceptance cases with zero failures or skips ([native proof](manual-plugins-full-native-acceptance.json)). Both records retain their exact frozen candidate hashes; current Linux packaging and the final combined sweep remain release gates.
+
+Pinned repository packages add one family in both scopes, including creation grants, scheduled candidate configuration, credential-reference clearing and approved-byte preservation ([runtime proof](crossplane-repository-plugins.json)). The full 45-family native suite passes all 145 acceptance cases ([native proof](repository-plugins-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.

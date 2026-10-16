@@ -15,7 +15,7 @@ API versions are independent of provider versions. See the [compatibility matrix
 
 ## Resource coverage
 
-This v3 branch is under development. The schema registers 44 resource families,
+This v3 branch is under development. The schema registers 45 resource families,
 all configured in both Crossplane scopes. The [29-family baseline](audit/crossplane-rc48-candidate.json)
 and [full 35-family sweep](audit/crossplane-35-family-candidate.json) have recorded
 real both-scope lifecycles. The [A2A and environment bindings](audit/crossplane-a2a-environment-bindings.json)
@@ -72,6 +72,7 @@ complete coverage of the wider Archestra API.
 | `archestra_team_vault_folder` | `team` / `VaultFolder` |
 | `archestra_virtual_api_key` | `llm` / `VirtualKey` |
 | `archestra_oauth_client` | `credential` / `OAuthClient` |
+| `archestra_git_plugin` | `plugin` / `RepositoryPackage` |
 | `archestra_plugin` | `plugin` / `ManualPackage` |
 | `archestra_github_pat` | `credential` / `GitHubPAT` |
 | `archestra_github_app_config` | `credential` / `GitHubAppConfig` |
@@ -211,3 +212,5 @@ The two publish jobs run in parallel; one failing won't roll back
 the other.
 
 Manual plugin packages add one family in both scopes, including creation grants, authoritative file replacement and executable-mode preservation (`audit/crossplane-manual-plugins.json` from the repository root). The full 44-family native suite passes all 142 acceptance cases with zero failures or skips (`audit/manual-plugins-full-native-acceptance.json`). Both records retain their exact frozen candidate hashes; current Linux packaging and the final combined sweep remain release gates.
+
+Pinned repository packages add one family in both scopes, including creation grants, scheduled candidate configuration, credential-reference clearing and approved-byte preservation ([runtime proof](audit/crossplane-repository-plugins.json)). The full 45-family native suite passes all 145 acceptance cases ([native proof](audit/repository-plugins-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.

@@ -1,5 +1,5 @@
 {
-  "crossplane_configured_count": 44,
+  "crossplane_configured_count": 45,
   "evidence_level": "static inventory; no runtime coverage implied",
   "format_version": 1,
   "resources": [
@@ -2341,6 +2341,602 @@
       "schema_version": 0,
       "source": "internal/provider/resource_environment_default.go",
       "terraform_resource": "archestra_environment_default"
+    },
+    {
+      "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 2,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "CreatePlugin",
+          "declared_request_field_mappings": {
+            "clientType": "client_type",
+            "description": "description",
+            "displayName": "display_name",
+            "icon": "icon",
+            "initialGrants": "initial_grants",
+            "labels": "labels",
+            "supportedPlatforms": "supported_platforms"
+          },
+          "method": "POST",
+          "path": "/api/plugins",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "clientType",
+            "description",
+            "displayName",
+            "files",
+            "icon",
+            "initialGrants",
+            "labels",
+            "supportedPlatforms"
+          ],
+          "request_fields_without_declared_mapping": [
+            "files"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "DeletePlugin",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/plugins/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetPlugin",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/plugins/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "ImportGithubPlugin",
+          "declared_request_field_mappings": {
+            "approvedCommitSha": "source_sha",
+            "clientType": "client_type",
+            "description": "description",
+            "displayName": "display_name",
+            "exclude": "source_exclude",
+            "githubAppConfigId": "github_app_config_id",
+            "githubPatId": "github_pat_id",
+            "gitlabTokenId": "gitlab_token_id",
+            "initialGrants": "initial_grants",
+            "provider": "source_provider",
+            "repoUrl": "source_repo",
+            "subdir": "source_subdir",
+            "supportedPlatforms": "supported_platforms",
+            "trackingRef": "github_sync_ref"
+          },
+          "method": "POST",
+          "path": "/api/plugins/github/import",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "approvedCommitSha",
+            "clientType",
+            "description",
+            "displayName",
+            "exclude",
+            "githubAppConfigId",
+            "githubPatId",
+            "githubToken",
+            "gitlabTokenId",
+            "initialGrants",
+            "provider",
+            "ref",
+            "repoUrl",
+            "subdir",
+            "supportedPlatforms",
+            "trackingRef"
+          ],
+          "request_fields_without_declared_mapping": [
+            "githubToken",
+            "ref"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdatePlugin",
+          "declared_request_field_mappings": {
+            "description": "description",
+            "displayName": "display_name",
+            "enabled": "enabled",
+            "icon": "icon",
+            "labels": "labels",
+            "supportedPlatforms": "supported_platforms"
+          },
+          "method": "PUT",
+          "path": "/api/plugins/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "description",
+            "displayName",
+            "enabled",
+            "files",
+            "githubSource",
+            "icon",
+            "labels",
+            "supportedPlatforms"
+          ],
+          "request_fields_without_declared_mapping": [
+            "files",
+            "githubSource"
+          ],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": true,
+          "optional": false,
+          "path": "approved_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "approved_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "approved_content_hash",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "client_type",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "content_hash",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "deleted_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "description",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "display_name",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "file_digests",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "files",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "files.content",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "files.encoding",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "files.mode",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "github_app_config_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "github_pat_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "github_sync_interval",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "github_sync_ref",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "gitlab_token_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "icon",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "labels",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.value",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "last_sync_error",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "last_synced_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "organization_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "pending_content_hash",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "pending_detected_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "pending_source_sha",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "plugin_slug",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "scope",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "source_exclude",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_kind",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_marketplace_path",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_marketplace_plugin_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_marketplace_repo",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_origin",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "source_provider",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_ref",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "source_repo",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "source_sha",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "source_subdir",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "supported_platforms",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "teams",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "updated_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "users",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_plugin.go",
+      "terraform_resource": "archestra_git_plugin"
     },
     {
       "acceptance_execution": "unverified",
@@ -8668,6 +9264,53 @@
         },
         {
           "api_forbidden_request_fields": [],
+          "builder": "ImportGithubPlugin",
+          "declared_request_field_mappings": {
+            "clientType": "client_type",
+            "description": "description",
+            "displayName": "display_name",
+            "initialGrants": "initial_grants",
+            "supportedPlatforms": "supported_platforms"
+          },
+          "method": "POST",
+          "path": "/api/plugins/github/import",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "approvedCommitSha",
+            "clientType",
+            "description",
+            "displayName",
+            "exclude",
+            "githubAppConfigId",
+            "githubPatId",
+            "githubToken",
+            "gitlabTokenId",
+            "initialGrants",
+            "provider",
+            "ref",
+            "repoUrl",
+            "subdir",
+            "supportedPlatforms",
+            "trackingRef"
+          ],
+          "request_fields_without_declared_mapping": [
+            "approvedCommitSha",
+            "exclude",
+            "githubAppConfigId",
+            "githubPatId",
+            "githubToken",
+            "gitlabTokenId",
+            "provider",
+            "ref",
+            "repoUrl",
+            "subdir",
+            "trackingRef"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
           "builder": "UpdatePlugin",
           "declared_request_field_mappings": {
             "description": "description",
@@ -12230,7 +12873,7 @@
       "terraform_resource": "archestra_virtual_api_key"
     }
   ],
-  "terraform_count": 44,
+  "terraform_count": 45,
   "unreferenced_mutating_operations": [
     {
       "method": "DELETE",
@@ -13321,11 +13964,6 @@
       "method": "POST",
       "operation_id": "testRerankerConnection",
       "path": "/api/organization/knowledge-settings/test-reranker"
-    },
-    {
-      "method": "POST",
-      "operation_id": "importGithubPlugin",
-      "path": "/api/plugins/github/import"
     },
     {
       "method": "POST",

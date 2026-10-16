@@ -1,24 +1,26 @@
 {
   "format_version": 1,
   "upstream_version": "1.4.0-rc.48",
-  "registered_resources": 44,
-  "crossplane_configured": 44,
-  "raw_occurrences": 128,
+  "registered_resources": 45,
+  "crossplane_configured": 45,
+  "raw_occurrences": 144,
   "unclassified": 0,
   "classification_counts": {
     "authentication_context": 6,
+    "covered_by_canonical_inputs": 1,
     "covered_creation_only": 3,
     "derived": 7,
     "implemented_gap": 2,
     "legacy_alias": 1,
     "lifecycle_owned": 6,
-    "manual_encoding": 36,
-    "other_source_subtype": 1,
+    "manual_encoding": 37,
+    "other_source_subtype": 14,
     "other_subtype": 40,
     "related_resource": 4,
+    "separate_credential_lifecycle": 1,
     "server_owned": 22
   },
-  "note": "Raw request occurrences include subtype-only controls, manual encoding and lifecycle/server-owned fields. They are not missing-feature counts; broader desired APIs remain in api-lifecycle-decisions.md.",
+  "note": "Composed request schemas and local refs are now resolved. Raw occurrences include both immutable source subtypes of shared receivers, manual encoding, transient aliases and lifecycle/server-owned fields. They are not missing-feature counts. Broader desired APIs remain in api-lifecycle-decisions.md.",
   "review": [
     {
       "resource": "archestra_agent",
@@ -227,6 +229,46 @@
       "classification": "manual_encoding",
       "rationale": "Each resource owns one resource_type slot; environment_id is encoded under that selected wire key. Create/update/delete preserve every other slot; omission resets only the selected kind.",
       "source": "internal/provider/resource_environment_default.go"
+    },
+    {
+      "resource": "archestra_git_plugin",
+      "operation": "CreatePlugin",
+      "field": "files",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes manual file creation/update. Git-derived files are read-only and fetched from the approved source commit; manual files have a separate resource and immutable source discriminator.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_git_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "githubToken",
+      "classification": "separate_credential_lifecycle",
+      "rationale": "One-time import tokens are transient inputs. Existing credentials are selected through stored GitHub PAT/App or GitLab credential IDs, including private-source creation and subsequent tracking; inline PAT storage is provided by archestra_github_pat.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_git_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "ref",
+      "classification": "covered_by_canonical_inputs",
+      "rationale": "approvedCommitSha pins the bytes and github_sync_ref maps to trackingRef. The optional ref alias is omitted to avoid a branch race or competing source selector.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_git_plugin",
+      "operation": "UpdatePlugin",
+      "field": "files",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes manual file creation/update. Git-derived files are read-only and fetched from the approved source commit; manual files have a separate resource and immutable source discriminator.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_git_plugin",
+      "operation": "UpdatePlugin",
+      "field": "githubSource",
+      "classification": "manual_encoding",
+      "rationale": "Repository, tracking ref, interval and nullable authentication IDs are encoded as the complete githubSource object only when a managed source control changes. Both-scope drift repair and credential/reference clears pass.",
+      "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_limit",
@@ -947,6 +989,94 @@
       "classification": "covered_creation_only",
       "rationale": "This secret/configuration input is supported by the installation resource at creation. Changes deliberately replace the connection; the alternate reinstall input is not a separate resource, and redacted credentials do not provide an observable clear/update contract.",
       "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "approvedCommitSha",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "exclude",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "githubAppConfigId",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "githubPatId",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "githubToken",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "gitlabTokenId",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "provider",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "ref",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "repoUrl",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "subdir",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "source": "internal/provider/resource_git_plugin.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "ImportGithubPlugin",
+      "field": "trackingRef",
+      "classification": "other_source_subtype",
+      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_plugin",

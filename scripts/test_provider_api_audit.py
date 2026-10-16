@@ -89,5 +89,31 @@ class AuditTests(unittest.TestCase):
             self.assertTrue(all(item['import_implemented'] for item in report['resources']))
 
 
+    def test_intersection_request_fields_and_references_are_not_silently_missed(self):
+        upstream = {'components': {'schemas': {'Source': {'properties': {
+            'repoUrl': {'type': 'string'}, 'retired': {'type': 'string'},
+        }}}}}
+        schema = {'allOf': [
+            {'$ref': '#/components/schemas/Source'},
+            {'properties': {'approvedCommitSha': {'type': 'string'}, 'retired': {'not': {}}}},
+        ], 'properties': {'displayName': {'type': 'string'}}}
+        fields = audit.request_properties(schema, upstream)
+        self.assertEqual(set(fields), {'repoUrl', 'approvedCommitSha', 'retired', 'displayName'})
+        self.assertEqual(fields['retired'], {'not': {}})
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for directory in ['internal/client', 'internal/provider', 'crossplane/config']:
+                (root / directory).mkdir(parents=True)
+            (root / 'internal/client/client.go').write_text('func NewImportThingRequestWithBody(server string) {\n operationPath := fmt.Sprintf("/api/things/import")\n req, err := http.NewRequest("POST", queryURL.String(), body)\n}')
+            (root / 'internal/provider/resource_thing.go').write_text('resp.TypeName = req.ProviderTypeName + "_thing"')
+            (root / 'crossplane/config/external_name.go').write_text('')
+            upstream['paths'] = {'/api/things/import': {'post': {'requestBody': {'content': {'application/json': {'schema': schema}}}}}}
+            contracts = {'archestra_thing': {'api_methods': ['ImportThing'], 'wire_fields': {'displayName': 'display_name'}}}
+            endpoint = audit.audit(root, upstream, wire_contracts=contracts)['resources'][0]['endpoints'][0]
+            self.assertEqual(endpoint['request_fields_without_declared_mapping'], ['approvedCommitSha', 'repoUrl'])
+            self.assertEqual(endpoint['retired_request_fields'], ['retired'])
+
+
+
 if __name__ == '__main__':
     unittest.main()

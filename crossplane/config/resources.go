@@ -7,6 +7,14 @@ const mcpGroup = "mcp"
 
 // ConfigureResources applies the same API names and references in both scopes.
 func ConfigureResources(p *ujconfig.Provider) {
+	p.AddResourceConfigurator("archestra_git_plugin", func(r *ujconfig.Resource) {
+		r.ShortGroup = "plugin"
+		r.Kind = "RepositoryPackage"
+		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "labels", "github_sync_ref", "github_sync_interval", "github_app_config_id", "github_pat_id", "gitlab_token_id")
+		r.References["github_app_config_id"] = ujconfig.Reference{TerraformName: "archestra_github_app_config"}
+		r.References["github_pat_id"] = ujconfig.Reference{TerraformName: "archestra_github_pat"}
+		r.References["gitlab_token_id"] = ujconfig.Reference{TerraformName: "archestra_runtime_credential"}
+	})
 	p.AddResourceConfigurator("archestra_plugin", func(r *ujconfig.Resource) {
 		r.ShortGroup = "plugin"
 		r.Kind = "ManualPackage"
@@ -46,7 +54,7 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.Kind = "VaultFolder"
 		r.References["team_id"] = ujconfig.Reference{TerraformName: "archestra_team"}
 	})
-	for _, name := range []string{"archestra_plugin", "archestra_virtual_api_key", "archestra_oauth_client", "archestra_remote_agent", "archestra_service_account", "archestra_llm_proxy_profile", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_mcp_registry_catalog_item", "archestra_skill", "archestra_runtime_credential", "archestra_llm_provider_api_key"} {
+	for _, name := range []string{"archestra_git_plugin", "archestra_plugin", "archestra_virtual_api_key", "archestra_oauth_client", "archestra_remote_agent", "archestra_service_account", "archestra_llm_proxy_profile", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_mcp_registry_catalog_item", "archestra_skill", "archestra_runtime_credential", "archestra_llm_provider_api_key"} {
 		p.AddResourceConfigurator(name, func(r *ujconfig.Resource) {
 			// Keep creation inputs in initProvider so later changes stay ignored.
 			r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "initial_grants")

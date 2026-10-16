@@ -17,6 +17,7 @@ import ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 // IdentifierFromProvider preserves the exact ID returned by each Terraform resource. This map also functions as the
 // upjet IncludeList — only resources listed here become Crossplane MRs.
 var ExternalNameConfigs = map[string]ujconfig.ExternalName{
+	"archestra_git_plugin":               ujconfig.IdentifierFromProvider,
 	"archestra_plugin":                   ujconfig.IdentifierFromProvider,
 	"archestra_github_pat":               ujconfig.IdentifierFromProvider,
 	"archestra_github_app_config":        ujconfig.IdentifierFromProvider,

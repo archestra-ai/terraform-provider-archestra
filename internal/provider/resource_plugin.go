@@ -28,7 +28,10 @@ import (
 
 func NewPluginResource() resource.Resource { return &PluginResource{} }
 
-type PluginResource struct{ client *client.ClientWithResponses }
+type PluginResource struct {
+	client    *client.ClientWithResponses
+	gitSource bool
+}
 
 var _ resource.ResourceWithImportState = &PluginResource{}
 
@@ -103,11 +106,19 @@ var pluginAttrSpec = []AttrSpec{
 	}}, credentialLabelsSpec, initialGrantsAttrSpec,
 }
 
-func (r *PluginResource) AttrSpecs() []AttrSpec               { return pluginAttrSpec }
+func (r *PluginResource) AttrSpecs() []AttrSpec {
+	if r.gitSource {
+		return gitPluginAttrSpecs()
+	}
+	return pluginAttrSpec
+}
 func (r *PluginResource) APIShape() any                       { return client.GetPluginResponse{} }
 func (r *PluginResource) KnownIntentionallySkipped() []string { return nil }
 func (r *PluginResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_plugin"
+	if r.gitSource {
+		resp.TypeName = req.ProviderTypeName + "_git_plugin"
+	}
 }
 func (r *PluginResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{MarkdownDescription: "Manually managed plugin package with authoritative UTF-8/base64 file content and executable modes. Applying files stores opaque bytes without executing plugin hooks. Derived plugin skills remain owned by the package. Git-sourced plugin content is managed through its repository declaration rather than this manual-file resource.", Attributes: map[string]schema.Attribute{
@@ -164,6 +175,9 @@ func (r *PluginResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 		"users":                          schema.StringAttribute{Computed: true, MarkdownDescription: "users metadata as JSON."},
 		"created_by":                     schema.StringAttribute{Computed: true, MarkdownDescription: "createdBy metadata as JSON."},
 	}}
+	if r.gitSource {
+		gitPluginSchema(&resp.Schema)
+	}
 }
 func (r *PluginResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
@@ -177,6 +191,10 @@ func (r *PluginResource) Configure(_ context.Context, req resource.ConfigureRequ
 	r.client = c
 }
 func (r *PluginResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	if r.gitSource {
+		r.createGit(ctx, req, resp)
+		return
+	}
 	var data PluginResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -248,6 +266,10 @@ func (r *PluginResource) Read(ctx context.Context, req resource.ReadRequest, res
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 func (r *PluginResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	if r.gitSource {
+		r.updateGit(ctx, req, resp)
+		return
+	}
 	var data PluginResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -274,7 +296,7 @@ func (r *PluginResource) update(ctx context.Context, data *PluginResourceModel, 
 		diags.AddError("Invalid ID", err.Error())
 		return false
 	}
-	LogPatch(ctx, "archestra_plugin Update", patch, pluginAttrSpec)
+	LogPatch(ctx, "Plugin Update", patch, r.AttrSpecs())
 	body, err := json.Marshal(patch)
 	if err != nil {
 		diags.AddError("Request Encoding Failed", err.Error())
@@ -377,8 +399,12 @@ func (r *PluginResource) flatten(ctx context.Context, data *PluginResourceModel,
 		diags.AddError("Invalid API Response", err.Error())
 		return
 	}
-	if value.SourceKind == nil || *value.SourceKind != "manual" {
-		diags.AddError("Unexpected plugin source", "The manual plugin resource cannot own Git-sourced plugin files.")
+	expectedKind := "manual"
+	if r.gitSource {
+		expectedKind = "github"
+	}
+	if value.SourceKind == nil || *value.SourceKind != expectedKind {
+		diags.AddError("Unexpected plugin source", "The resource cannot adopt a plugin with another immutable source kind.")
 		return
 	}
 	data.ID = types.StringValue(value.ID)

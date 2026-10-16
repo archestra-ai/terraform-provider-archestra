@@ -19,6 +19,7 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'repository-plugins': {'RepositoryPackage'},
     'manual-plugins': {'ManualPackage'},
     'github-registrations': {'GitHubPAT','GitHubAppConfig'},
     'api-compatibility': {'APICompatibilityConstraint'},
@@ -35,7 +36,7 @@ CASE_RESOURCES = {
     'skill-policy': {'SkillPolicy'}, 'subagent-exclusions': {'SubagentExclusions'},
     'knowledge-exclusions': {'KnowledgeSourceExclusions'}, 'skill': {'Skill'},
     'gateway-skills': {'SkillPublication', 'SkillExclusions'}, 'project-instructions': {'ProjectInstructions'},
-    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'ManualPackage', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
+    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'RepositoryPackage', 'ManualPackage', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
 }
 
 
@@ -67,6 +68,14 @@ def a2a_source(name):
         'securityRequirements': [{}, {'apiKeyAuth': []}]}}
 
 
+GIT_PLUGIN_FIXTURE_SHA = '9e6a43f5347f6f3730ffeb75946f6e162791851d'
+
+
+def git_plugin_source_fields():
+    return {'sourceRepo': 'archestra-ai/terraform-provider-archestra', 'sourceSha': GIT_PLUGIN_FIXTURE_SHA,
+            'sourceSubdir': 'scripts/integration/fixtures/plugins/synthetic', 'sourceExclude': ['excluded.txt']}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--api-url', required=True)
@@ -74,10 +83,10 @@ def main():
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility', 'manual-plugins'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility', 'manual-plugins', 'repository-plugins'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
     parser.add_argument('--scopes', nargs='+', choices=('cluster', 'namespaced'), default=['cluster', 'namespaced'])
-    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'ManualPackage', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
+    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'RepositoryPackage', 'ManualPackage', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
     parser.add_argument('--kubeconfig', type=Path, required=True)
     parser.add_argument('--provider-config', required=True)
     parser.add_argument('--namespace', default='crossplane-system')
@@ -282,6 +291,56 @@ def main():
                 results.append(result)
                 save()
                 print(json.dumps(result), flush=True)
+
+            if 'repository-plugins' in scope_cases:
+                package, package_id, _ = create(scope, 'plugin', 'RepositoryPackage', 'repositorypackages', {
+                    'displayName': 'cp-source-plugin-' + run + '-' + scope, 'clientType': 'claude-code', 'supportedPlatforms': ['posix'],
+                    'enabled': False, 'labels': [{'key': 'purpose', 'value': 'source'}], **git_plugin_source_fields()})
+                path = '/api/plugins/' + package_id
+                initial = api(path)[1]
+                content_hash = initial['contentHash']
+                if initial['sourceSha'] != GIT_PLUGIN_FIXTURE_SHA or initial['sourceKind'] != 'github' or initial['enabled'] or len(initial['files']) != 2:
+                    raise RuntimeError('Pinned repository import did not preserve approved source bytes and controls')
+                patch(package, {'displayName': 'Updated source plugin ' + run, 'description': 'Metadata only', 'enabled': True})
+                wait('Repository plugin metadata update', lambda: api(path)[1]['displayName'] == 'Updated source plugin ' + run and api(path)[1]['enabled'])
+                if api(path)[1]['contentHash'] != content_hash:
+                    raise RuntimeError('Repository metadata update changed approved bytes')
+                if api(path, {'description': 'Out of band', 'enabled': False, 'githubSource': {
+                        'repoUrl': initial['sourceRepo'], 'ref': GIT_PLUGIN_FIXTURE_SHA, 'syncInterval': '1h',
+                        'authentication': {'githubAppConfigId': None, 'githubPatId': None, 'gitlabTokenId': None}}}, 'PUT')[0] != 200:
+                    raise RuntimeError('Unable to inject owned source configuration drift')
+                wait('Repository source and metadata drift repair', lambda: api(path)[1]['description'] == 'Metadata only'
+                     and api(path)[1]['enabled'] and api(path)[1]['githubSyncInterval'] is None and api(path)[1]['githubSyncRef'] is None)
+                patch(package, {'githubSyncRef': GIT_PLUGIN_FIXTURE_SHA, 'githubSyncInterval': '1d'})
+                wait('Repository candidate-check configuration', lambda: api(path)[1]['githubSyncRef'] == GIT_PLUGIN_FIXTURE_SHA and api(path)[1]['githubSyncInterval'] == '1d')
+                secret_name = 'cp-source-pat-' + run + '-' + scope
+                kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
+                    'metadata': {'name': secret_name, 'namespace': args.namespace, 'labels': {'provider-test-run': run}},
+                    'stringData': {'input': 'secret/data/test/ollama#api_key' if args.readonly_vault else 'synthetic-local-only'}})
+                leases.append((['-n', args.namespace], 'secrets', secret_name))
+                ref = {'name': secret_name, 'key': 'input'}
+                if scope == 'cluster':
+                    ref['namespace'] = args.namespace
+                pat, pat_id, _ = create(scope, 'credential', 'GitHubPAT', 'githubpats', {
+                    'name': 'cp-source-auth-' + run + '-' + scope, 'tokenSecretRef': ref})
+                patch(package, {'githubSyncInterval': None, 'githubPatIdRef': {'name': pat[2]}})
+                wait('Repository existing credential reference', lambda: api(path)[1]['githubPatId'] == pat_id and api(path)[1]['githubSyncInterval'] is None)
+                patch(package, {'githubPatIdRef': None, 'githubPatId': None, 'githubSyncRef': None, 'labels': []})
+                wait('Repository authentication/tracking clear', lambda: api(path)[1]['githubPatId'] is None
+                     and api(path)[1]['githubSyncRef'] is None and api(path)[1]['githubSyncInterval'] is None and not api(path)[1]['labels'])
+                final = api(path)[1]
+                if final['sourceSha'] != GIT_PLUGIN_FIXTURE_SHA or final['contentHash'] != content_hash:
+                    raise RuntimeError('Source control changes altered approved package bytes')
+                immutable_update(package, {'sourceSha': '0' * 40}, {'sourceSha': GIT_PLUGIN_FIXTURE_SHA})
+                immutable_update(package, {'sourceExclude': []}, {'sourceExclude': ['excluded.txt']})
+                delete(package)
+                if api(path)[0] != 404:
+                    raise RuntimeError('Repository package survived normal deletion')
+                delete(pat)
+                record('RepositoryPackage', scope, create='passed', approved_commit=GIT_PLUGIN_FIXTURE_SHA, derived_files='passed', initially_disabled='passed',
+                       metadata_update_preserves_hash=True, update='passed', drift_repair='passed', scheduled_candidate_configuration='passed',
+                       stored_credential_reference_and_clear='passed', empty_labels_clear='passed', source_selection_replacement_refused='passed',
+                       delete='passed', hooks_executed=False)
 
             if 'manual-plugins' in scope_cases:
                 plugin_files = {
@@ -1026,6 +1085,7 @@ def main():
                     ('a2a', 'RemoteAgent', 'remoteagents', 'externalAgent', {'source': json.dumps(a2a_source('cp-grant-remote-' + run + '-' + scope))}),
                     ('llm', 'VirtualKey', 'virtualkeys', 'llmVirtualKey', {'includeFutureProviders': True, 'providerApiKeys': []}),
                     ('credential', 'OAuthClient', 'oauthclients', 'oauthClient', {'scopes': ['llm:proxy'], 'includeFutureProviders': True, 'providerApiKeys': []}),
+                    ('plugin', 'RepositoryPackage', 'repositorypackages', 'plugin', {'clientType': 'claude-code', 'supportedPlatforms': ['posix'], **git_plugin_source_fields()}),
                     ('plugin', 'ManualPackage', 'manualpackages', 'plugin', {'clientType': 'claude-code', 'supportedPlatforms': ['posix'], 'files': {'.claude-plugin/plugin.json': {'content': '{"name":"synthetic-plugin","version":"1.0.0"}', 'encoding': 'utf8', 'mode': '100644'}}}),
                     ('project', 'Project', 'projects', 'project', {}),
                     ('knowledge', 'KnowledgeBase', 'knowledgebases', 'knowledgeBase', {}),
@@ -1042,7 +1102,7 @@ def main():
                         continue
                     fields = {'name': 'cp-grant-' + kind.lower() + '-' + run + '-' + scope,
                               'initialGrants': [grant], **extra}
-                    if kind == 'ManualPackage':
+                    if kind in ('ManualPackage', 'RepositoryPackage'):
                         fields['displayName'] = fields.pop('name')
                     lease, identifier, obj = create(scope, group, kind, plural, fields, '-grant')
                     policy_id = obj.get('status', {}).get('atProvider', {}).get('definitionId') if resource_type == 'credential' else identifier
@@ -1058,8 +1118,8 @@ def main():
 
                     if not has_initial_grant():
                         raise RuntimeError('Initial grant was not persisted for ' + kind)
-                    updated_name = 'updated-' + (fields['displayName'] if kind == 'ManualPackage' else fields['name'])
-                    metadata_field = 'displayName' if kind == 'ManualPackage' else 'description' if kind in ('RegistryCatalogItem', 'RuntimeCredential') else 'name'
+                    updated_name = 'updated-' + (fields['displayName'] if kind in ('ManualPackage', 'RepositoryPackage') else fields['name'])
+                    metadata_field = 'displayName' if kind in ('ManualPackage', 'RepositoryPackage') else 'description' if kind in ('RegistryCatalogItem', 'RuntimeCredential') else 'name'
                     patch(lease, {metadata_field: updated_name})
 
                     def metadata_updated():

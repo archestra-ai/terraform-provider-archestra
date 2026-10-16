@@ -1,6 +1,6 @@
 # Provider modernization audit
 
-Current v3 configuration covers **44 registered resources in both scopes**.
+Current v3 configuration covers **45 registered resources in both scopes**.
 The [current inventory](provider-v3-current-inventory.md) records the schema and
 API call coverage. The [29-family baseline](crossplane-rc48-candidate.json) and
 [six-family expansion](crossplane-persistent-extensions.json) have separate recorded
@@ -10,7 +10,7 @@ and embedded xpkgs pass [packaging and actual image reconciliation](runtime-pack
 The [API lifecycle decisions](api-lifecycle-decisions.md) track every broader
 persistent API area. [Request-field review](request-field-review.md) classifies all
 90 baseline raw occurrences; `current-request-field-review.json` classifies all
-128 current occurrences. These raw counts include manual encoding, other agent
+144 current occurrences. These raw counts include manual encoding, other agent
 subtypes and server-owned state. They are not counts of missing capabilities.
 The completed 39-family full native suite passes 131 acceptance tests with zero failures or skips (`a2a-environment-native-acceptance.json`). The historical expansion has its own 126-test record (`persistent-extensions-native-acceptance.json`). New profile/service-account creation grants pass in both scopes (`crossplane-persistent-extension-grants.json`). The 41-family full native suite passed all 137 tests (`credential-routing-full-native-acceptance.json`); the 43-family suite passed all 140 with zero failures or skips (`github-registrations-full-native-acceptance.json`). Its six targeted cases are also recorded separately (`credential-routing-native-acceptance.json`). Final full-candidate repetition, remaining justified API implementations, normal
 protected review and publication remain open. The sections below retain the
@@ -138,3 +138,5 @@ observed configuration, then enable writes. Test this with the actual prior CRDs
 recreating a CR with a new Kubernetes name is not a migration test.
 
 Manual plugin packages add one family in both scopes, including creation grants, authoritative file replacement and executable-mode preservation ([runtime proof](crossplane-manual-plugins.json)). The full 44-family native suite passes all 142 acceptance cases with zero failures or skips ([native proof](manual-plugins-full-native-acceptance.json)). Both records retain their exact frozen candidate hashes; current Linux packaging and the final combined sweep remain release gates.
+
+Pinned repository packages add one family in both scopes, including creation grants, scheduled candidate configuration, credential-reference clearing and approved-byte preservation ([runtime proof](crossplane-repository-plugins.json)). The full 45-family native suite passes all 145 acceptance cases ([native proof](repository-plugins-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.

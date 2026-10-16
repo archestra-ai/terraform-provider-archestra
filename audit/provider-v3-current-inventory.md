@@ -2,7 +2,7 @@
 
 static inventory; no runtime coverage implied
 
-Terraform: 44; Crossplane configured: 44.
+Terraform: 45; Crossplane configured: 45.
 
 Mapping counts are configuration coverage, not successful CRUD or reconciliation coverage.
 
@@ -22,6 +22,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_default_user_limit` | True | True | none detected | none detected | 0 |
 | `archestra_environment` | True | True | none detected | none detected | 2 |
 | `archestra_environment_default` | True | True | none detected | UpdateEnvironmentResourceDefaults: agent, app, knowledgeSource, mcpGateway, mcpRegistry | 0 |
+| `archestra_git_plugin` | True | True | none detected | CreatePlugin: files; ImportGithubPlugin: githubToken, ref; UpdatePlugin: files, githubSource | 2 |
 | `archestra_github_app_config` | True | True | none detected | none detected | 0 |
 | `archestra_github_pat` | True | True | none detected | none detected | 0 |
 | `archestra_identity_provider` | True | True | none detected | none detected | 7 |
@@ -38,7 +39,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_mcp_server_installation` | True | True | none detected | InstallMcpServer: accessToken, agentIds, catalogId, createdByServiceAccountId, environmentValues, isByosVault, localInstallationError, localInstallationStatus, name, ownerId, reinstallRequired, scope, secretId, teamId, userConfigValues, userId; ReinstallMcpServer: environmentValues, hibernationMode, isByosVault, userConfigValues | 3 |
 | `archestra_oauth_client` | True | True | none detected | none detected | 0 |
 | `archestra_organization_settings` | True | True | none detected | none detected | 9 |
-| `archestra_plugin` | True | True | none detected | UpdatePlugin: githubSource | 2 |
+| `archestra_plugin` | True | True | none detected | ImportGithubPlugin: approvedCommitSha, exclude, githubAppConfigId, githubPatId, githubToken, gitlabTokenId, provider, ref, repoUrl, subdir, trackingRef; UpdatePlugin: githubSource | 2 |
 | `archestra_project` | True | True | none detected | SetProjectInstructions: content | 2 |
 | `archestra_remote_agent` | True | True | none detected | none detected | 3 |
 | `archestra_resource_permission_policy` | True | True | none detected | UpdateResourcePermissions: grants, revision | 1 |

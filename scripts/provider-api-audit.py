@@ -41,6 +41,28 @@ def schema_fields(block, prefix=""):
     return result
 
 
+
+def request_properties(schema, spec, seen=frozenset()):
+    """Resolve OpenAPI intersections and local refs before auditing wire fields."""
+    result = {}
+    reference = schema.get("$ref")
+    if reference and reference not in seen:
+        if not reference.startswith("#/"):
+            raise ValueError("Unsupported external request-schema reference: " + reference)
+        target = spec
+        for part in reference[2:].split("/"):
+            target = target[part.replace("~1", "/").replace("~0", "~")]
+        result.update(request_properties(target, spec, seen | {reference}))
+    for member in schema.get("allOf", []):
+        for name, shape in request_properties(member, spec, seen).items():
+            if name not in result or result[name].get("not") != {}:
+                result[name] = shape
+    for name, shape in schema.get("properties", {}).items():
+        if name not in result or result[name].get("not") != {}:
+            result[name] = shape
+    return result
+
+
 def audit(root, spec, terraform_schema=None, wire_contracts=None):
     operations = {
         (method.upper(), canonical_path(path)): operation
@@ -88,7 +110,7 @@ def audit(root, spec, terraform_schema=None, wire_contracts=None):
                 referenced.add(endpoint)
             operation = operations.get(endpoint, {})
             request = operation.get("requestBody", {}).get("content", {}).get("application/json", {}).get("schema", {})
-            properties = request.get("properties", {})
+            properties = request_properties(request, spec)
             endpoints.append({
                 "request_fields": sorted(properties),
                 "declared_request_field_mappings": {field: contract['wire_fields'][field] for field in sorted(properties) if contract and field in contract['wire_fields']} if contract else None,

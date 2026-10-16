@@ -1501,11 +1501,11 @@ const (
 
 // Defines values for CreatePluginJSONBodyClientType.
 const (
-	ClaudeCode    CreatePluginJSONBodyClientType = "claude-code"
-	ClaudeDesktop CreatePluginJSONBodyClientType = "claude-desktop"
-	Codex         CreatePluginJSONBodyClientType = "codex"
-	CopilotCli    CreatePluginJSONBodyClientType = "copilot-cli"
-	Cursor        CreatePluginJSONBodyClientType = "cursor"
+	CreatePluginJSONBodyClientTypeClaudeCode    CreatePluginJSONBodyClientType = "claude-code"
+	CreatePluginJSONBodyClientTypeClaudeDesktop CreatePluginJSONBodyClientType = "claude-desktop"
+	CreatePluginJSONBodyClientTypeCodex         CreatePluginJSONBodyClientType = "codex"
+	CreatePluginJSONBodyClientTypeCopilotCli    CreatePluginJSONBodyClientType = "copilot-cli"
+	CreatePluginJSONBodyClientTypeCursor        CreatePluginJSONBodyClientType = "cursor"
 )
 
 // Defines values for CreatePluginJSONBodyFilesEncoding.
@@ -1566,6 +1566,67 @@ const (
 	CreatePluginJSONBodySupportedPlatformsWindows CreatePluginJSONBodySupportedPlatforms = "windows"
 )
 
+// Defines values for ImportGithubPluginJSONBodyClientType.
+const (
+	ImportGithubPluginJSONBodyClientTypeClaudeCode    ImportGithubPluginJSONBodyClientType = "claude-code"
+	ImportGithubPluginJSONBodyClientTypeClaudeDesktop ImportGithubPluginJSONBodyClientType = "claude-desktop"
+	ImportGithubPluginJSONBodyClientTypeCodex         ImportGithubPluginJSONBodyClientType = "codex"
+	ImportGithubPluginJSONBodyClientTypeCopilotCli    ImportGithubPluginJSONBodyClientType = "copilot-cli"
+	ImportGithubPluginJSONBodyClientTypeCursor        ImportGithubPluginJSONBodyClientType = "cursor"
+)
+
+// Defines values for ImportGithubPluginJSONBodyInitialGrantsActions.
+const (
+	ImportGithubPluginJSONBodyInitialGrantsActionsConfigureDeploymentSpec ImportGithubPluginJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	ImportGithubPluginJSONBodyInitialGrantsActionsDelete                  ImportGithubPluginJSONBodyInitialGrantsActions = "delete"
+	ImportGithubPluginJSONBodyInitialGrantsActionsManagePermissions       ImportGithubPluginJSONBodyInitialGrantsActions = "manage-permissions"
+	ImportGithubPluginJSONBodyInitialGrantsActionsRead                    ImportGithubPluginJSONBodyInitialGrantsActions = "read"
+	ImportGithubPluginJSONBodyInitialGrantsActionsUpdate                  ImportGithubPluginJSONBodyInitialGrantsActions = "update"
+	ImportGithubPluginJSONBodyInitialGrantsActionsUse                     ImportGithubPluginJSONBodyInitialGrantsActions = "use"
+)
+
+// Defines values for ImportGithubPluginJSONBodyInitialGrantsSubject0Type.
+const (
+	ImportGithubPluginJSONBodyInitialGrantsSubject0TypeUser ImportGithubPluginJSONBodyInitialGrantsSubject0Type = "user"
+)
+
+// Defines values for ImportGithubPluginJSONBodyInitialGrantsSubject1Type.
+const (
+	ImportGithubPluginJSONBodyInitialGrantsSubject1TypeTeam ImportGithubPluginJSONBodyInitialGrantsSubject1Type = "team"
+)
+
+// Defines values for ImportGithubPluginJSONBodyInitialGrantsSubject2Type.
+const (
+	ImportGithubPluginJSONBodyInitialGrantsSubject2TypeServiceAccount ImportGithubPluginJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+)
+
+// Defines values for ImportGithubPluginJSONBodyInitialGrantsSubject3Type.
+const (
+	ImportGithubPluginJSONBodyInitialGrantsSubject3TypeRole ImportGithubPluginJSONBodyInitialGrantsSubject3Type = "role"
+)
+
+// Defines values for ImportGithubPluginJSONBodyInitialGrantsSubject4Id.
+const (
+	ImportGithubPluginJSONBodyInitialGrantsSubject4IdAsterisk ImportGithubPluginJSONBodyInitialGrantsSubject4Id = "*"
+)
+
+// Defines values for ImportGithubPluginJSONBodyInitialGrantsSubject4Type.
+const (
+	ImportGithubPluginJSONBodyInitialGrantsSubject4TypeOrganization ImportGithubPluginJSONBodyInitialGrantsSubject4Type = "organization"
+)
+
+// Defines values for ImportGithubPluginJSONBodyProvider.
+const (
+	Github ImportGithubPluginJSONBodyProvider = "github"
+	Gitlab ImportGithubPluginJSONBodyProvider = "gitlab"
+)
+
+// Defines values for ImportGithubPluginJSONBodySupportedPlatforms.
+const (
+	ImportGithubPluginJSONBodySupportedPlatformsPosix   ImportGithubPluginJSONBodySupportedPlatforms = "posix"
+	ImportGithubPluginJSONBodySupportedPlatformsWindows ImportGithubPluginJSONBodySupportedPlatforms = "windows"
+)
+
 // Defines values for UpdatePluginJSONBodyFilesEncoding.
 const (
 	UpdatePluginJSONBodyFilesEncodingBase64 UpdatePluginJSONBodyFilesEncoding = "base64"
@@ -1588,8 +1649,8 @@ const (
 
 // Defines values for UpdatePluginJSONBodySupportedPlatforms.
 const (
-	UpdatePluginJSONBodySupportedPlatformsPosix   UpdatePluginJSONBodySupportedPlatforms = "posix"
-	UpdatePluginJSONBodySupportedPlatformsWindows UpdatePluginJSONBodySupportedPlatforms = "windows"
+	Posix   UpdatePluginJSONBodySupportedPlatforms = "posix"
+	Windows UpdatePluginJSONBodySupportedPlatforms = "windows"
 )
 
 // Defines values for CreateProjectJSONBodyInitialGrantsActions.
@@ -1794,42 +1855,42 @@ const (
 
 // Defines values for CreateSkillJSONBodyInitialGrantsActions.
 const (
-	ConfigureDeploymentSpec CreateSkillJSONBodyInitialGrantsActions = "configure-deployment-spec"
-	Delete                  CreateSkillJSONBodyInitialGrantsActions = "delete"
-	ManagePermissions       CreateSkillJSONBodyInitialGrantsActions = "manage-permissions"
-	Read                    CreateSkillJSONBodyInitialGrantsActions = "read"
-	Update                  CreateSkillJSONBodyInitialGrantsActions = "update"
-	Use                     CreateSkillJSONBodyInitialGrantsActions = "use"
+	CreateSkillJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateSkillJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	CreateSkillJSONBodyInitialGrantsActionsDelete                  CreateSkillJSONBodyInitialGrantsActions = "delete"
+	CreateSkillJSONBodyInitialGrantsActionsManagePermissions       CreateSkillJSONBodyInitialGrantsActions = "manage-permissions"
+	CreateSkillJSONBodyInitialGrantsActionsRead                    CreateSkillJSONBodyInitialGrantsActions = "read"
+	CreateSkillJSONBodyInitialGrantsActionsUpdate                  CreateSkillJSONBodyInitialGrantsActions = "update"
+	CreateSkillJSONBodyInitialGrantsActionsUse                     CreateSkillJSONBodyInitialGrantsActions = "use"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject0Type.
 const (
-	User CreateSkillJSONBodyInitialGrantsSubject0Type = "user"
+	CreateSkillJSONBodyInitialGrantsSubject0TypeUser CreateSkillJSONBodyInitialGrantsSubject0Type = "user"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject1Type.
 const (
-	CreateSkillJSONBodyInitialGrantsSubject1TypeTeam CreateSkillJSONBodyInitialGrantsSubject1Type = "team"
+	Team CreateSkillJSONBodyInitialGrantsSubject1Type = "team"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject2Type.
 const (
-	CreateSkillJSONBodyInitialGrantsSubject2TypeServiceAccount CreateSkillJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+	ServiceAccount CreateSkillJSONBodyInitialGrantsSubject2Type = "serviceAccount"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject3Type.
 const (
-	Role CreateSkillJSONBodyInitialGrantsSubject3Type = "role"
+	CreateSkillJSONBodyInitialGrantsSubject3TypeRole CreateSkillJSONBodyInitialGrantsSubject3Type = "role"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject4Id.
 const (
-	Asterisk CreateSkillJSONBodyInitialGrantsSubject4Id = "*"
+	CreateSkillJSONBodyInitialGrantsSubject4IdAsterisk CreateSkillJSONBodyInitialGrantsSubject4Id = "*"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject4Type.
 const (
-	Organization CreateSkillJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateSkillJSONBodyInitialGrantsSubject4TypeOrganization CreateSkillJSONBodyInitialGrantsSubject4Type = "organization"
 )
 
 // Defines values for UpdateSkillJSONBodyFilesEncoding.
@@ -4680,6 +4741,96 @@ type CreatePluginJSONBody_InitialGrants_Subject struct {
 // CreatePluginJSONBodySupportedPlatforms defines parameters for CreatePlugin.
 type CreatePluginJSONBodySupportedPlatforms string
 
+// ImportGithubPluginJSONBody defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBody struct {
+	ApprovedCommitSha string                               `json:"approvedCommitSha"`
+	ClientType        ImportGithubPluginJSONBodyClientType `json:"clientType"`
+	Description       *string                              `json:"description,omitempty"`
+	DisplayName       string                               `json:"displayName"`
+	Exclude           *[]string                            `json:"exclude,omitempty"`
+	GithubAppConfigId *openapi_types.UUID                  `json:"githubAppConfigId,omitempty"`
+	GithubPatId       *openapi_types.UUID                  `json:"githubPatId,omitempty"`
+	GithubToken       *string                              `json:"githubToken,omitempty"`
+	GitlabTokenId     *openapi_types.UUID                  `json:"gitlabTokenId,omitempty"`
+	InitialGrants     *[]struct {
+		Actions []ImportGithubPluginJSONBodyInitialGrantsActions `json:"actions"`
+		Subject ImportGithubPluginJSONBody_InitialGrants_Subject `json:"subject"`
+	} `json:"initialGrants,omitempty"`
+
+	// Provider Git host of a public repository; defaults to github. Ignored when a credential is given.
+	Provider           *ImportGithubPluginJSONBodyProvider             `json:"provider,omitempty"`
+	Ref                *string                                         `json:"ref"`
+	RepoUrl            string                                          `json:"repoUrl"`
+	Subdir             *string                                         `json:"subdir,omitempty"`
+	SupportedPlatforms *[]ImportGithubPluginJSONBodySupportedPlatforms `json:"supportedPlatforms,omitempty"`
+	TrackingRef        *string                                         `json:"trackingRef"`
+}
+
+// ImportGithubPluginJSONBodyClientType defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyClientType string
+
+// ImportGithubPluginJSONBodyInitialGrantsActions defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsActions string
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject0 defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject0 struct {
+	Id   string                                              `json:"id"`
+	Type ImportGithubPluginJSONBodyInitialGrantsSubject0Type `json:"type"`
+}
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject0Type defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject0Type string
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject1 defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject1 struct {
+	Id   string                                              `json:"id"`
+	Type ImportGithubPluginJSONBodyInitialGrantsSubject1Type `json:"type"`
+}
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject1Type defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject1Type string
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject2 defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject2 struct {
+	Id   openapi_types.UUID                                  `json:"id"`
+	Type ImportGithubPluginJSONBodyInitialGrantsSubject2Type `json:"type"`
+}
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject2Type defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject2Type string
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject3 defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject3 struct {
+	Id   string                                              `json:"id"`
+	Type ImportGithubPluginJSONBodyInitialGrantsSubject3Type `json:"type"`
+}
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject3Type defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject3Type string
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject4 defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject4 struct {
+	Id   ImportGithubPluginJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Type ImportGithubPluginJSONBodyInitialGrantsSubject4Type `json:"type"`
+}
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject4Id defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject4Id string
+
+// ImportGithubPluginJSONBodyInitialGrantsSubject4Type defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyInitialGrantsSubject4Type string
+
+// ImportGithubPluginJSONBody_InitialGrants_Subject defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBody_InitialGrants_Subject struct {
+	union json.RawMessage
+}
+
+// ImportGithubPluginJSONBodyProvider defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodyProvider string
+
+// ImportGithubPluginJSONBodySupportedPlatforms defines parameters for ImportGithubPlugin.
+type ImportGithubPluginJSONBodySupportedPlatforms string
+
 // UpdatePluginJSONBody defines parameters for UpdatePlugin.
 type UpdatePluginJSONBody struct {
 	Description *string `json:"description,omitempty"`
@@ -5435,6 +5586,9 @@ type UpdateSkillsSettingsJSONRequestBody UpdateSkillsSettingsJSONBody
 // CreatePluginJSONRequestBody defines body for CreatePlugin for application/json ContentType.
 type CreatePluginJSONRequestBody CreatePluginJSONBody
 
+// ImportGithubPluginJSONRequestBody defines body for ImportGithubPlugin for application/json ContentType.
+type ImportGithubPluginJSONRequestBody ImportGithubPluginJSONBody
+
 // UpdatePluginJSONRequestBody defines body for UpdatePlugin for application/json ContentType.
 type UpdatePluginJSONRequestBody UpdatePluginJSONBody
 
@@ -6043,6 +6197,11 @@ type ClientInterface interface {
 	CreatePluginWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreatePlugin(ctx context.Context, body CreatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ImportGithubPluginWithBody request with any body
+	ImportGithubPluginWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ImportGithubPlugin(ctx context.Context, body ImportGithubPluginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeletePlugin request
 	DeletePlugin(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -8348,6 +8507,30 @@ func (c *Client) CreatePluginWithBody(ctx context.Context, contentType string, b
 
 func (c *Client) CreatePlugin(ctx context.Context, body CreatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreatePluginRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ImportGithubPluginWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewImportGithubPluginRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ImportGithubPlugin(ctx context.Context, body ImportGithubPluginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewImportGithubPluginRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -14230,6 +14413,46 @@ func NewCreatePluginRequestWithBody(server string, contentType string, body io.R
 	return req, nil
 }
 
+// NewImportGithubPluginRequest calls the generic ImportGithubPlugin builder with application/json body
+func NewImportGithubPluginRequest(server string, body ImportGithubPluginJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewImportGithubPluginRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewImportGithubPluginRequestWithBody generates requests for ImportGithubPlugin with any type of body
+func NewImportGithubPluginRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/plugins/github/import")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewDeletePluginRequest generates requests for DeletePlugin
 func NewDeletePluginRequest(server string, id openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -16714,6 +16937,11 @@ type ClientWithResponsesInterface interface {
 	CreatePluginWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePluginResponse, error)
 
 	CreatePluginWithResponse(ctx context.Context, body CreatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePluginResponse, error)
+
+	// ImportGithubPluginWithBodyWithResponse request with any body
+	ImportGithubPluginWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ImportGithubPluginResponse, error)
+
+	ImportGithubPluginWithResponse(ctx context.Context, body ImportGithubPluginJSONRequestBody, reqEditors ...RequestEditorFn) (*ImportGithubPluginResponse, error)
 
 	// DeletePluginWithResponse request
 	DeletePluginWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeletePluginResponse, error)
@@ -30086,6 +30314,158 @@ func (r CreatePluginResponse) StatusCode() int {
 	return 0
 }
 
+type ImportGithubPluginResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		ApprovedAt          *time.Time                      `json:"approvedAt"`
+		ApprovedBy          *string                         `json:"approvedBy"`
+		ApprovedContentHash *string                         `json:"approvedContentHash"`
+		AuthorId            *string                         `json:"authorId"`
+		ClientType          ImportGithubPlugin200ClientType `json:"clientType"`
+		ContentHash         string                          `json:"contentHash"`
+		CreatedAt           time.Time                       `json:"createdAt"`
+		CreatedBy           *struct {
+			Email *string                             `json:"email"`
+			Id    string                              `json:"id"`
+			Name  *string                             `json:"name"`
+			Type  *ImportGithubPlugin200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               string              `json:"description"`
+		DisplayName               string              `json:"displayName"`
+		Enabled                   bool                `json:"enabled"`
+		Files                     []struct {
+			Content  string                             `json:"content"`
+			Digest   string                             `json:"digest"`
+			Encoding ImportGithubPlugin200FilesEncoding `json:"encoding"`
+			Id       openapi_types.UUID                 `json:"id"`
+			Mode     ImportGithubPlugin200FilesMode     `json:"mode"`
+			Path     string                             `json:"path"`
+			PluginId openapi_types.UUID                 `json:"pluginId"`
+		} `json:"files"`
+		GithubAppConfigId  *openapi_types.UUID                     `json:"githubAppConfigId"`
+		GithubPatId        *openapi_types.UUID                     `json:"githubPatId"`
+		GithubSyncInterval ImportGithubPlugin200GithubSyncInterval `json:"githubSyncInterval"`
+		GithubSyncRef      *string                                 `json:"githubSyncRef"`
+		GitlabTokenId      *openapi_types.UUID                     `json:"gitlabTokenId"`
+		Icon               *string                                 `json:"icon"`
+		Id                 openapi_types.UUID                      `json:"id"`
+		Labels             []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastSyncError               *string                                   `json:"lastSyncError"`
+		LastSyncedAt                *time.Time                                `json:"lastSyncedAt"`
+		OrganizationId              string                                    `json:"organizationId"`
+		PendingContentHash          *string                                   `json:"pendingContentHash"`
+		PendingDetectedAt           *time.Time                                `json:"pendingDetectedAt"`
+		PendingSourceSha            *string                                   `json:"pendingSourceSha"`
+		PluginSlug                  string                                    `json:"pluginSlug"`
+		Scope                       ImportGithubPlugin200Scope                `json:"scope"`
+		SourceExclude               []string                                  `json:"sourceExclude"`
+		SourceId                    *string                                   `json:"sourceId"`
+		SourceKind                  ImportGithubPlugin200SourceKind           `json:"sourceKind"`
+		SourceMarketplacePath       *string                                   `json:"sourceMarketplacePath"`
+		SourceMarketplacePluginName *string                                   `json:"sourceMarketplacePluginName"`
+		SourceMarketplaceRepo       *string                                   `json:"sourceMarketplaceRepo"`
+		SourceOrigin                *string                                   `json:"sourceOrigin"`
+		SourceProvider              ImportGithubPlugin200SourceProvider       `json:"sourceProvider"`
+		SourceRef                   *string                                   `json:"sourceRef"`
+		SourceRepo                  *string                                   `json:"sourceRepo"`
+		SourceSha                   *string                                   `json:"sourceSha"`
+		SourceSubdir                *string                                   `json:"sourceSubdir"`
+		SupportedPlatforms          []ImportGithubPlugin200SupportedPlatforms `json:"supportedPlatforms"`
+		Teams                       []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		UpdatedAt time.Time `json:"updatedAt"`
+		Users     []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubPlugin400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubPlugin401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}        `json:"details,omitempty"`
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubPlugin403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubPlugin404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubPlugin409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubPlugin500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type ImportGithubPlugin200ClientType string
+type ImportGithubPlugin200CreatedByType string
+type ImportGithubPlugin200FilesEncoding string
+type ImportGithubPlugin200FilesMode string
+type ImportGithubPlugin200GithubSyncInterval string
+type ImportGithubPlugin200Scope string
+type ImportGithubPlugin200SourceKind string
+type ImportGithubPlugin200SourceProvider string
+type ImportGithubPlugin200SupportedPlatforms string
+type ImportGithubPlugin400ErrorType string
+type ImportGithubPlugin401ErrorType string
+type ImportGithubPlugin403ErrorType string
+type ImportGithubPlugin404ErrorType string
+type ImportGithubPlugin409ErrorType string
+type ImportGithubPlugin500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r ImportGithubPluginResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ImportGithubPluginResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeletePluginResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -35943,6 +36323,23 @@ func (c *ClientWithResponses) CreatePluginWithResponse(ctx context.Context, body
 		return nil, err
 	}
 	return ParseCreatePluginResponse(rsp)
+}
+
+// ImportGithubPluginWithBodyWithResponse request with arbitrary body returning *ImportGithubPluginResponse
+func (c *ClientWithResponses) ImportGithubPluginWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ImportGithubPluginResponse, error) {
+	rsp, err := c.ImportGithubPluginWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseImportGithubPluginResponse(rsp)
+}
+
+func (c *ClientWithResponses) ImportGithubPluginWithResponse(ctx context.Context, body ImportGithubPluginJSONRequestBody, reqEditors ...RequestEditorFn) (*ImportGithubPluginResponse, error) {
+	rsp, err := c.ImportGithubPlugin(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseImportGithubPluginResponse(rsp)
 }
 
 // DeletePluginWithResponse request returning *DeletePluginResponse
@@ -52965,6 +53362,183 @@ func ParseCreatePluginResponse(rsp *http.Response) (*CreatePluginResponse, error
 				InternalCode *string                  `json:"internal_code,omitempty"`
 				Message      string                   `json:"message"`
 				Type         CreatePlugin500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseImportGithubPluginResponse parses an HTTP response from a ImportGithubPluginWithResponse call
+func ParseImportGithubPluginResponse(rsp *http.Response) (*ImportGithubPluginResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ImportGithubPluginResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			ApprovedAt          *time.Time                      `json:"approvedAt"`
+			ApprovedBy          *string                         `json:"approvedBy"`
+			ApprovedContentHash *string                         `json:"approvedContentHash"`
+			AuthorId            *string                         `json:"authorId"`
+			ClientType          ImportGithubPlugin200ClientType `json:"clientType"`
+			ContentHash         string                          `json:"contentHash"`
+			CreatedAt           time.Time                       `json:"createdAt"`
+			CreatedBy           *struct {
+				Email *string                             `json:"email"`
+				Id    string                              `json:"id"`
+				Name  *string                             `json:"name"`
+				Type  *ImportGithubPlugin200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               string              `json:"description"`
+			DisplayName               string              `json:"displayName"`
+			Enabled                   bool                `json:"enabled"`
+			Files                     []struct {
+				Content  string                             `json:"content"`
+				Digest   string                             `json:"digest"`
+				Encoding ImportGithubPlugin200FilesEncoding `json:"encoding"`
+				Id       openapi_types.UUID                 `json:"id"`
+				Mode     ImportGithubPlugin200FilesMode     `json:"mode"`
+				Path     string                             `json:"path"`
+				PluginId openapi_types.UUID                 `json:"pluginId"`
+			} `json:"files"`
+			GithubAppConfigId  *openapi_types.UUID                     `json:"githubAppConfigId"`
+			GithubPatId        *openapi_types.UUID                     `json:"githubPatId"`
+			GithubSyncInterval ImportGithubPlugin200GithubSyncInterval `json:"githubSyncInterval"`
+			GithubSyncRef      *string                                 `json:"githubSyncRef"`
+			GitlabTokenId      *openapi_types.UUID                     `json:"gitlabTokenId"`
+			Icon               *string                                 `json:"icon"`
+			Id                 openapi_types.UUID                      `json:"id"`
+			Labels             []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastSyncError               *string                                   `json:"lastSyncError"`
+			LastSyncedAt                *time.Time                                `json:"lastSyncedAt"`
+			OrganizationId              string                                    `json:"organizationId"`
+			PendingContentHash          *string                                   `json:"pendingContentHash"`
+			PendingDetectedAt           *time.Time                                `json:"pendingDetectedAt"`
+			PendingSourceSha            *string                                   `json:"pendingSourceSha"`
+			PluginSlug                  string                                    `json:"pluginSlug"`
+			Scope                       ImportGithubPlugin200Scope                `json:"scope"`
+			SourceExclude               []string                                  `json:"sourceExclude"`
+			SourceId                    *string                                   `json:"sourceId"`
+			SourceKind                  ImportGithubPlugin200SourceKind           `json:"sourceKind"`
+			SourceMarketplacePath       *string                                   `json:"sourceMarketplacePath"`
+			SourceMarketplacePluginName *string                                   `json:"sourceMarketplacePluginName"`
+			SourceMarketplaceRepo       *string                                   `json:"sourceMarketplaceRepo"`
+			SourceOrigin                *string                                   `json:"sourceOrigin"`
+			SourceProvider              ImportGithubPlugin200SourceProvider       `json:"sourceProvider"`
+			SourceRef                   *string                                   `json:"sourceRef"`
+			SourceRepo                  *string                                   `json:"sourceRepo"`
+			SourceSha                   *string                                   `json:"sourceSha"`
+			SourceSubdir                *string                                   `json:"sourceSubdir"`
+			SupportedPlatforms          []ImportGithubPlugin200SupportedPlatforms `json:"supportedPlatforms"`
+			Teams                       []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			UpdatedAt time.Time `json:"updatedAt"`
+			Users     []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubPlugin400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubPlugin401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}        `json:"details,omitempty"`
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubPlugin403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubPlugin404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubPlugin409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubPlugin500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
