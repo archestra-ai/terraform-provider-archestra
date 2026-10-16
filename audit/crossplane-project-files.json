@@ -1,0 +1,66 @@
+{
+  "run_id": "cf22bbfc",
+  "terraform_sha256": "8610dd65fc3e9f43071b9bc8dfd7ba11ae9cabb646f84babb027573ce99ad8b2",
+  "controller_sha256": "b15ea3f32485c169dd9dda3e878572a299bc26d4e5029be1aed5ada5536b88a9",
+  "results": [
+    {
+      "resource": "ProjectFileText",
+      "scope": "cluster",
+      "create": "passed",
+      "project_reference": "passed",
+      "sensitive_input_reference": "passed",
+      "update_same_identity": "passed",
+      "drift_repair": "passed",
+      "byte_hash_observed": "passed",
+      "empty_content_clear": "passed",
+      "filename_replacement_refused": "passed",
+      "sensitive_content_absent_from_status": true,
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "ProjectFileBinary",
+      "scope": "cluster",
+      "create": "passed",
+      "exact_bytes": "passed",
+      "replacement_refused": "passed",
+      "identity_and_bytes_preserved": true,
+      "recovery": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "ProjectFileText",
+      "scope": "namespaced",
+      "create": "passed",
+      "project_reference": "passed",
+      "sensitive_input_reference": "passed",
+      "update_same_identity": "passed",
+      "drift_repair": "passed",
+      "byte_hash_observed": "passed",
+      "empty_content_clear": "passed",
+      "filename_replacement_refused": "passed",
+      "sensitive_content_absent_from_status": true,
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "ProjectFileBinary",
+      "scope": "namespaced",
+      "create": "passed",
+      "exact_bytes": "passed",
+      "replacement_refused": "passed",
+      "identity_and_bytes_preserved": true,
+      "recovery": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    }
+  ],
+  "cleanup": "passed",
+  "api_spec_sha256": "d88e74f5d3633eaeaf53e01c1c32a32d6e3fe013864d37e636324aac5633f73e",
+  "api_version": "1.4.0-rc.48",
+  "outcome": "passed",
+  "registered_families_per_scope": 47,
+  "source_evidence_sha256": "286f797acd4cd688df9385dee3f679544f19d563a0facde40eb32d94f65147cd",
+  "evidence_scope": "Project-owned text and binary files, exact bytes and hashes, scoped project and sensitive secret references, updates and empty text clearing, drift repair, immutable replacement refusal and recovery, normal deletion in both scopes. Failed initial probe semantics corrected and normal cleanup verified before this complete rerun. This candidate precedes the product-aligned major-version resource consolidation."
+}

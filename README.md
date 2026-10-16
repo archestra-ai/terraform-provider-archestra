@@ -15,7 +15,7 @@ API versions are independent of provider versions. See the [compatibility matrix
 
 ## Resource coverage
 
-This v3 branch is under development. The schema registers 46 resource families,
+This v3 branch is under development. The schema registers 47 resource families,
 all configured in both Crossplane scopes. The [29-family baseline](audit/crossplane-rc48-candidate.json)
 and [full 35-family sweep](audit/crossplane-35-family-candidate.json) have recorded
 real both-scope lifecycles. The [A2A and environment bindings](audit/crossplane-a2a-environment-bindings.json)
@@ -49,6 +49,7 @@ complete coverage of the wider Archestra API.
 | `archestra_mcp_registry_catalog_item` | `mcp` / `RegistryCatalogItem` |
 | `archestra_mcp_server_installation` | `mcp` / `ServerInstallation` |
 | `archestra_organization_settings` | `organization` / `Settings` |
+| `archestra_project_file` | `project` / `File` |
 | `archestra_project` | `project` / `Project` |
 | `archestra_resource_permission_policy` | `permission` / `Policy` |
 | `archestra_role` | `identity` / `Role` |
@@ -217,3 +218,5 @@ Manual plugin packages add one family in both scopes, including creation grants,
 Pinned repository packages add one family in both scopes, including creation grants, scheduled candidate configuration, credential-reference clearing and approved-byte preservation ([runtime proof](audit/crossplane-repository-plugins.json)). The full 45-family native suite passes all 145 acceptance cases ([native proof](audit/repository-plugins-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
 
 Revocable marketplace share links add one family and six both-scope records for skill/plugin membership, secret publication, anonymous read-only access, revocation drift and expiry ([runtime proof](audit/crossplane-marketplace-share-links.json)). The full 46-family native suite passes all 148 acceptance cases ([native proof](audit/marketplace-share-links-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
+
+Project-file content adds one family and four both-scope records for exact text/binary bytes, secret input and project references, drift repair, empty text updates, replacement refusal and normal deletion ([runtime proof](audit/crossplane-project-files.json)). All152 native acceptance cases pass ([native proof](audit/project-files-full-native-acceptance.json)). This is a pre-consolidation checkpoint; the major-version surface is being reviewed against product navigation.

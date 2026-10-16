@@ -1,6 +1,6 @@
 # Provider modernization audit
 
-Current v3 configuration covers **46 registered resources in both scopes**.
+Current v3 configuration covers **47 registered resources in both scopes**.
 The [current inventory](provider-v3-current-inventory.md) records the schema and
 API call coverage. The [29-family baseline](crossplane-rc48-candidate.json) and
 [six-family expansion](crossplane-persistent-extensions.json) have separate recorded
@@ -142,3 +142,5 @@ Manual plugin packages add one family in both scopes, including creation grants,
 Pinned repository packages add one family in both scopes, including creation grants, scheduled candidate configuration, credential-reference clearing and approved-byte preservation ([runtime proof](crossplane-repository-plugins.json)). The full 45-family native suite passes all 145 acceptance cases ([native proof](repository-plugins-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
 
 Revocable marketplace share links add one family and six both-scope records for skill/plugin membership, secret publication, anonymous read-only access, revocation drift and expiry ([runtime proof](crossplane-marketplace-share-links.json)). The full 46-family native suite passes all 148 acceptance cases ([native proof](marketplace-share-links-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
+
+Project-file content adds one family and four both-scope records for exact text/binary bytes, secret input and project references, drift repair, empty text updates, replacement refusal and normal deletion ([runtime proof](crossplane-project-files.json)). All152 native acceptance cases pass ([native proof](project-files-full-native-acceptance.json)). This is a pre-consolidation checkpoint; the major-version surface is being reviewed against product navigation.

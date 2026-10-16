@@ -1,9 +1,9 @@
 {
   "format_version": 1,
   "upstream_version": "1.4.0-rc.48",
-  "registered_resources": 46,
-  "crossplane_configured": 46,
-  "raw_occurrences": 144,
+  "registered_resources": 47,
+  "crossplane_configured": 47,
+  "raw_occurrences": 145,
   "unclassified": 0,
   "classification_counts": {
     "authentication_context": 6,
@@ -13,7 +13,7 @@
     "implemented_gap": 2,
     "legacy_alias": 1,
     "lifecycle_owned": 6,
-    "manual_encoding": 37,
+    "manual_encoding": 38,
     "other_source_subtype": 14,
     "other_subtype": 40,
     "related_resource": 4,
@@ -1093,6 +1093,14 @@
       "classification": "manual_encoding",
       "rationale": "The instructions attribute writes the separate content endpoint and preserves omitted instructions.",
       "source": "internal/provider/resource_project.go"
+    },
+    {
+      "resource": "archestra_project_file",
+      "operation": "UpdateSkillSandboxArtifactContent",
+      "field": "content",
+      "classification": "manual_encoding",
+      "rationale": "content_base64 owns exact bytes. Editable UTF-8 text is decoded to the text endpoint content field; the upload uses dataBase64. Both wire fields are masked in logs. Binary changes replace the file.",
+      "source": "internal/provider/resource_project_file.go"
     },
     {
       "resource": "archestra_resource_permission_policy",

@@ -7,6 +7,11 @@ const mcpGroup = "mcp"
 
 // ConfigureResources applies the same API names and references in both scopes.
 func ConfigureResources(p *ujconfig.Provider) {
+	p.AddResourceConfigurator("archestra_project_file", func(r *ujconfig.Resource) {
+		r.ShortGroup = "project"
+		r.Kind = "File"
+		r.References["project_id"] = ujconfig.Reference{TerraformName: "archestra_project"}
+	})
 	p.AddResourceConfigurator("archestra_marketplace_share_link", func(r *ujconfig.Resource) {
 		r.ShortGroup = "marketplace"
 		r.Kind = "ShareLink"

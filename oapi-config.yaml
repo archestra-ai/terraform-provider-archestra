@@ -171,3 +171,8 @@ output-options:
     - getPlugin
     - updatePlugin
     - deletePlugin
+    - uploadProjectFiles
+    - getProjectFiles
+    - getSkillSandboxArtifact
+    - deleteSkillSandboxArtifact
+    - updateSkillSandboxArtifactContent

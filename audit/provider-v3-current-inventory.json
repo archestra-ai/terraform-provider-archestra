@@ -1,5 +1,5 @@
 {
-  "crossplane_configured_count": 46,
+  "crossplane_configured_count": 47,
   "evidence_level": "static inventory; no runtime coverage implied",
   "format_version": 1,
   "resources": [
@@ -10285,6 +10285,197 @@
     },
     {
       "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 4,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "DeleteSkillSandboxArtifact",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/skill-sandbox/artifacts/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetProjectFiles",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/projects/{}/files",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetSkillSandboxArtifact",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/skill-sandbox/artifacts/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateSkillSandboxArtifactContent",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/skill-sandbox/artifacts/{}/content",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "content"
+          ],
+          "request_fields_without_declared_mapping": [
+            "content"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UploadProjectFiles",
+          "declared_request_field_mappings": {
+            "dataBase64": "content_base64",
+            "mimeType": "upload_mime_type",
+            "name": "filename"
+          },
+          "method": "POST",
+          "path": "/api/projects/{}/files",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "dataBase64",
+            "mimeType",
+            "name"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": false,
+          "optional": false,
+          "path": "content_base64",
+          "required": true,
+          "sensitive": true,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "download_ref",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "downloadable",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "file_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "filename",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "mime_type",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "project_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "project_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "sha256",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "size_bytes",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "upload_mime_type",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_project_file.go",
+      "terraform_resource": "archestra_project_file"
+    },
+    {
+      "acceptance_execution": "unverified",
       "acceptance_tests_declared": 3,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
@@ -13106,7 +13297,7 @@
       "terraform_resource": "archestra_virtual_api_key"
     }
   ],
-  "terraform_count": 46,
+  "terraform_count": 47,
   "unreferenced_mutating_operations": [
     {
       "method": "DELETE",
@@ -13427,11 +13618,6 @@
       "method": "DELETE",
       "operation_id": "deleteSiteNotification",
       "path": "/api/site-notification/{}"
-    },
-    {
-      "method": "DELETE",
-      "operation_id": "deleteSkillSandboxArtifact",
-      "path": "/api/skill-sandbox/artifacts/{}"
     },
     {
       "method": "DELETE",
@@ -14235,11 +14421,6 @@
     },
     {
       "method": "POST",
-      "operation_id": "uploadProjectFiles",
-      "path": "/api/projects/{}/files"
-    },
-    {
-      "method": "POST",
       "operation_id": "restoreProject",
       "path": "/api/projects/{}/restore"
     },
@@ -15017,11 +15198,6 @@
       "method": "PUT",
       "operation_id": "updateSiteNotification",
       "path": "/api/site-notification/{}"
-    },
-    {
-      "method": "PUT",
-      "operation_id": "updateSkillSandboxArtifactContent",
-      "path": "/api/skill-sandbox/artifacts/{}/content"
     }
   ]
 }

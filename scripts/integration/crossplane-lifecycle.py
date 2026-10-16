@@ -19,6 +19,7 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'project-files': {'ProjectFileText','ProjectFileBinary'},
     'marketplace-share-links': {'ShareLinkSkills','ShareLinkPlugins','ShareLinkExpiry'},
     'repository-plugins': {'RepositoryPackage'},
     'manual-plugins': {'ManualPackage'},
@@ -84,7 +85,7 @@ def main():
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility', 'manual-plugins', 'repository-plugins', 'marketplace-share-links'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility', 'manual-plugins', 'repository-plugins', 'marketplace-share-links', 'project-files'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
     parser.add_argument('--scopes', nargs='+', choices=('cluster', 'namespaced'), default=['cluster', 'namespaced'])
     parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'RepositoryPackage', 'ManualPackage', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
@@ -292,6 +293,80 @@ def main():
                 results.append(result)
                 save()
                 print(json.dumps(result), flush=True)
+
+            if 'project-files' in scope_cases:
+                import base64
+                project, project_id, _ = create(scope, 'project', 'Project', 'projects', {'name': 'cp-files-' + run + '-' + scope})
+                secret_name = 'cp-file-input-' + run + '-' + scope
+                initial = b'Synthetic project text.'
+                desired = b'Updated synthetic text.'
+                kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
+                    'metadata': {'name': secret_name, 'namespace': args.namespace, 'labels': {'provider-test-run': run}},
+                    'stringData': {'content': base64.b64encode(initial).decode()}})
+                secret_lease = (['-n', args.namespace], 'secrets', secret_name)
+                leases.append(secret_lease)
+                secret_ref = {'name': secret_name, 'key': 'content'}
+                if scope == 'cluster':
+                    secret_ref['namespace'] = args.namespace
+                def file_bytes(identifier):
+                    request = urllib.request.Request(args.api_url.rstrip('/') + '/api/skill-sandbox/artifacts/' + identifier,
+                                                     headers={'Authorization': token})
+                    try:
+                        with opener.open(request, timeout=30) as response:
+                            return response.status, response.read()
+                    except urllib.error.HTTPError as error:
+                        return error.code, None
+                text, text_id, obj = create(scope, 'project', 'File', 'files', {
+                    'projectIdRef': {'name': project[2]}, 'filename': 'notes.txt', 'contentBase64SecretRef': secret_ref})
+                file_id = text_id.split(':')[1]
+                if text_id.split(':')[0] != project_id or file_bytes(file_id) != (200, initial):
+                    raise RuntimeError('Scoped project file creation did not persist the declared bytes')
+                if base64.b64encode(initial).decode() in json.dumps(obj.get('status', {})):
+                    raise RuntimeError('Project file content leaked into resource status')
+                kube('-n', args.namespace, 'patch', 'secret', secret_name, '--type=merge', '-p',
+                     json.dumps({'stringData': {'content': base64.b64encode(desired).decode()}}))
+                wait('Project file text update', lambda: file_bytes(file_id) == (200, desired))
+                if api('/api/skill-sandbox/artifacts/' + file_id + '/content', {'content': 'Out of band'}, 'PUT')[0] != 200:
+                    raise RuntimeError('Unable to modify owned file bytes')
+                wait('Project file content drift repair', lambda: file_bytes(file_id) == (200, desired))
+                wait('Project file digest observation', lambda: observation(text).get('status', {}).get('atProvider', {}).get('sha256') == hashlib.sha256(desired).hexdigest())
+                kube('-n', args.namespace, 'patch', 'secret', secret_name, '--type=merge', '-p', json.dumps({'stringData': {'content': ''}}))
+                wait('Project text file clear', lambda: file_bytes(file_id) == (200, b''))
+                wait('Project empty file size', lambda: observation(text).get('status', {}).get('atProvider', {}).get('sizeBytes') == 0)
+                kube('-n', args.namespace, 'patch', 'secret', secret_name, '--type=merge', '-p', json.dumps({'stringData': {'content': base64.b64encode(desired).decode()}}))
+                wait('Project text restored before replacement probe', lambda: file_bytes(file_id) == (200, desired))
+                immutable_update(text, {'filename': 'renamed.txt'}, {'filename': 'notes.txt'})
+                if observation(text)['metadata']['annotations']['crossplane.io/external-name'] != text_id:
+                    raise RuntimeError('Text editing changed the scoped file identity')
+                delete(text)
+                if file_bytes(file_id)[0] != 404:
+                    raise RuntimeError('Project file remained downloadable after deletion')
+                record('ProjectFileText', scope, create='passed', project_reference='passed', sensitive_input_reference='passed',
+                       update_same_identity='passed', drift_repair='passed', byte_hash_observed='passed', empty_content_clear='passed',
+                       filename_replacement_refused='passed', sensitive_content_absent_from_status=True, delete='passed', backend_after_delete=404)
+                initial_binary = base64.b64encode(b'\x00\xff\x01').decode()
+                changed_binary = base64.b64encode(b'\x00\xfe\x02').decode()
+                kube('-n', args.namespace, 'patch', 'secret', secret_name, '--type=merge', '-p', json.dumps({'stringData': {'content': initial_binary}}))
+                binary, binary_id, _ = create(scope, 'project', 'File', 'files', {
+                    'projectIdRef': {'name': project[2]}, 'filename': 'blob.bin', 'contentBase64SecretRef': secret_ref}, '-binary')
+                binary_file = binary_id.split(':')[1]
+                if file_bytes(binary_file) != (200, b'\x00\xff\x01'):
+                    raise RuntimeError('Binary file bytes changed on upload')
+                kube('-n', args.namespace, 'patch', 'secret', secret_name, '--type=merge', '-p', json.dumps({'stringData': {'content': changed_binary}}))
+                wait('Binary content replacement refusal', lambda: any(item.get('type') == 'Synced' and item.get('status') == 'False'
+                     and any(marker in item.get('message', '').lower() for marker in ('replac', 'prevent_destroy'))
+                     for item in observation(binary).get('status', {}).get('conditions', [])))
+                if observation(binary)['metadata']['annotations']['crossplane.io/external-name'] != binary_id or file_bytes(binary_file) != (200, b'\x00\xff\x01'):
+                    raise RuntimeError('Refused binary replacement changed existing bytes or identity')
+                kube('-n', args.namespace, 'patch', 'secret', secret_name, '--type=merge', '-p', json.dumps({'stringData': {'content': initial_binary}}))
+                wait('Binary replacement refusal recovery', lambda: condition(binary, 'True'))
+                delete(binary)
+                if file_bytes(binary_file)[0] != 404:
+                    raise RuntimeError('Binary file remained downloadable after deletion')
+                record('ProjectFileBinary', scope, create='passed', exact_bytes='passed', replacement_refused='passed',
+                       identity_and_bytes_preserved=True, recovery='passed', delete='passed', backend_after_delete=404)
+                delete(secret_lease)
+                delete(project)
 
             if 'marketplace-share-links' in scope_cases:
                 import base64

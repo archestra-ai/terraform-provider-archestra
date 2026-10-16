@@ -4972,6 +4972,13 @@ type UpdateProjectJSONBody struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// UploadProjectFilesJSONBody defines parameters for UploadProjectFiles.
+type UploadProjectFilesJSONBody struct {
+	DataBase64 string `json:"dataBase64"`
+	MimeType   string `json:"mimeType"`
+	Name       string `json:"name"`
+}
+
 // SetProjectInstructionsJSONBody defines parameters for SetProjectInstructions.
 type SetProjectInstructionsJSONBody struct {
 	Content string `json:"content"`
@@ -5188,6 +5195,11 @@ type UpdateServiceAccountTokenJSONBody struct {
 	Disabled  *bool       `json:"disabled,omitempty"`
 	ExpiresAt interface{} `json:"expiresAt"`
 	Name      *string     `json:"name,omitempty"`
+}
+
+// UpdateSkillSandboxArtifactContentJSONBody defines parameters for UpdateSkillSandboxArtifactContent.
+type UpdateSkillSandboxArtifactContentJSONBody struct {
+	Content string `json:"content"`
 }
 
 // GetSkillShareLinksParams defines parameters for GetSkillShareLinks.
@@ -5621,6 +5633,9 @@ type CreateProjectJSONRequestBody CreateProjectJSONBody
 // UpdateProjectJSONRequestBody defines body for UpdateProject for application/json ContentType.
 type UpdateProjectJSONRequestBody UpdateProjectJSONBody
 
+// UploadProjectFilesJSONRequestBody defines body for UploadProjectFiles for application/json ContentType.
+type UploadProjectFilesJSONRequestBody UploadProjectFilesJSONBody
+
 // SetProjectInstructionsJSONRequestBody defines body for SetProjectInstructions for application/json ContentType.
 type SetProjectInstructionsJSONRequestBody SetProjectInstructionsJSONBody
 
@@ -5650,6 +5665,9 @@ type CreateServiceAccountTokenJSONRequestBody CreateServiceAccountTokenJSONBody
 
 // UpdateServiceAccountTokenJSONRequestBody defines body for UpdateServiceAccountToken for application/json ContentType.
 type UpdateServiceAccountTokenJSONRequestBody UpdateServiceAccountTokenJSONBody
+
+// UpdateSkillSandboxArtifactContentJSONRequestBody defines body for UpdateSkillSandboxArtifactContent for application/json ContentType.
+type UpdateSkillSandboxArtifactContentJSONRequestBody UpdateSkillSandboxArtifactContentJSONBody
 
 // CreateSkillShareLinkJSONRequestBody defines body for CreateSkillShareLink for application/json ContentType.
 type CreateSkillShareLinkJSONRequestBody CreateSkillShareLinkJSONBody
@@ -6256,6 +6274,14 @@ type ClientInterface interface {
 
 	UpdateProject(ctx context.Context, id openapi_types.UUID, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetProjectFiles request
+	GetProjectFiles(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UploadProjectFilesWithBody request with any body
+	UploadProjectFilesWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UploadProjectFiles(ctx context.Context, id openapi_types.UUID, body UploadProjectFilesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetProjectInstructions request
 	GetProjectInstructions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -6332,6 +6358,17 @@ type ClientInterface interface {
 	UpdateServiceAccountTokenWithBody(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateServiceAccountToken(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, body UpdateServiceAccountTokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteSkillSandboxArtifact request
+	DeleteSkillSandboxArtifact(ctx context.Context, artifactId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSkillSandboxArtifact request
+	GetSkillSandboxArtifact(ctx context.Context, artifactId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSkillSandboxArtifactContentWithBody request with any body
+	UpdateSkillSandboxArtifactContentWithBody(ctx context.Context, artifactId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateSkillSandboxArtifactContent(ctx context.Context, artifactId string, body UpdateSkillSandboxArtifactContentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSkillShareLinks request
 	GetSkillShareLinks(ctx context.Context, params *GetSkillShareLinksParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -8698,6 +8735,42 @@ func (c *Client) UpdateProject(ctx context.Context, id openapi_types.UUID, body 
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetProjectFiles(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProjectFilesRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UploadProjectFilesWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUploadProjectFilesRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UploadProjectFiles(ctx context.Context, id openapi_types.UUID, body UploadProjectFilesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUploadProjectFilesRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetProjectInstructions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetProjectInstructionsRequest(c.Server, id)
 	if err != nil {
@@ -9036,6 +9109,54 @@ func (c *Client) UpdateServiceAccountTokenWithBody(ctx context.Context, id opena
 
 func (c *Client) UpdateServiceAccountToken(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, body UpdateServiceAccountTokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateServiceAccountTokenRequest(c.Server, id, tokenId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteSkillSandboxArtifact(ctx context.Context, artifactId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSkillSandboxArtifactRequest(c.Server, artifactId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetSkillSandboxArtifact(ctx context.Context, artifactId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSkillSandboxArtifactRequest(c.Server, artifactId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSkillSandboxArtifactContentWithBody(ctx context.Context, artifactId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSkillSandboxArtifactContentRequestWithBody(c.Server, artifactId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSkillSandboxArtifactContent(ctx context.Context, artifactId string, body UpdateSkillSandboxArtifactContentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSkillSandboxArtifactContentRequest(c.Server, artifactId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -14808,6 +14929,87 @@ func NewUpdateProjectRequestWithBody(server string, id openapi_types.UUID, conte
 	return req, nil
 }
 
+// NewGetProjectFilesRequest generates requests for GetProjectFiles
+func NewGetProjectFilesRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/projects/%s/files", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUploadProjectFilesRequest calls the generic UploadProjectFiles builder with application/json body
+func NewUploadProjectFilesRequest(server string, id openapi_types.UUID, body UploadProjectFilesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUploadProjectFilesRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUploadProjectFilesRequestWithBody generates requests for UploadProjectFiles with any type of body
+func NewUploadProjectFilesRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/projects/%s/files", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetProjectInstructionsRequest generates requests for GetProjectInstructions
 func NewGetProjectInstructionsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -15582,6 +15784,121 @@ func NewUpdateServiceAccountTokenRequestWithBody(server string, id openapi_types
 	}
 
 	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteSkillSandboxArtifactRequest generates requests for DeleteSkillSandboxArtifact
+func NewDeleteSkillSandboxArtifactRequest(server string, artifactId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "artifactId", runtime.ParamLocationPath, artifactId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skill-sandbox/artifacts/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetSkillSandboxArtifactRequest generates requests for GetSkillSandboxArtifact
+func NewGetSkillSandboxArtifactRequest(server string, artifactId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "artifactId", runtime.ParamLocationPath, artifactId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skill-sandbox/artifacts/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateSkillSandboxArtifactContentRequest calls the generic UpdateSkillSandboxArtifactContent builder with application/json body
+func NewUpdateSkillSandboxArtifactContentRequest(server string, artifactId string, body UpdateSkillSandboxArtifactContentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateSkillSandboxArtifactContentRequestWithBody(server, artifactId, "application/json", bodyReader)
+}
+
+// NewUpdateSkillSandboxArtifactContentRequestWithBody generates requests for UpdateSkillSandboxArtifactContent with any type of body
+func NewUpdateSkillSandboxArtifactContentRequestWithBody(server string, artifactId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "artifactId", runtime.ParamLocationPath, artifactId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skill-sandbox/artifacts/%s/content", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -17178,6 +17495,14 @@ type ClientWithResponsesInterface interface {
 
 	UpdateProjectWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
 
+	// GetProjectFilesWithResponse request
+	GetProjectFilesWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetProjectFilesResponse, error)
+
+	// UploadProjectFilesWithBodyWithResponse request with any body
+	UploadProjectFilesWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UploadProjectFilesResponse, error)
+
+	UploadProjectFilesWithResponse(ctx context.Context, id openapi_types.UUID, body UploadProjectFilesJSONRequestBody, reqEditors ...RequestEditorFn) (*UploadProjectFilesResponse, error)
+
 	// GetProjectInstructionsWithResponse request
 	GetProjectInstructionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetProjectInstructionsResponse, error)
 
@@ -17254,6 +17579,17 @@ type ClientWithResponsesInterface interface {
 	UpdateServiceAccountTokenWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateServiceAccountTokenResponse, error)
 
 	UpdateServiceAccountTokenWithResponse(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, body UpdateServiceAccountTokenJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateServiceAccountTokenResponse, error)
+
+	// DeleteSkillSandboxArtifactWithResponse request
+	DeleteSkillSandboxArtifactWithResponse(ctx context.Context, artifactId string, reqEditors ...RequestEditorFn) (*DeleteSkillSandboxArtifactResponse, error)
+
+	// GetSkillSandboxArtifactWithResponse request
+	GetSkillSandboxArtifactWithResponse(ctx context.Context, artifactId string, reqEditors ...RequestEditorFn) (*GetSkillSandboxArtifactResponse, error)
+
+	// UpdateSkillSandboxArtifactContentWithBodyWithResponse request with any body
+	UpdateSkillSandboxArtifactContentWithBodyWithResponse(ctx context.Context, artifactId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSkillSandboxArtifactContentResponse, error)
+
+	UpdateSkillSandboxArtifactContentWithResponse(ctx context.Context, artifactId string, body UpdateSkillSandboxArtifactContentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSkillSandboxArtifactContentResponse, error)
 
 	// GetSkillShareLinksWithResponse request
 	GetSkillShareLinksWithResponse(ctx context.Context, params *GetSkillShareLinksParams, reqEditors ...RequestEditorFn) (*GetSkillShareLinksResponse, error)
@@ -31416,6 +31752,162 @@ func (r UpdateProjectResponse) StatusCode() int {
 	return 0
 }
 
+type GetProjectFilesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		CreatedAt    time.Time           `json:"createdAt"`
+		DownloadRef  string              `json:"downloadRef"`
+		Downloadable bool                `json:"downloadable"`
+		Filename     string              `json:"filename"`
+		Id           *openapi_types.UUID `json:"id"`
+		MimeType     string              `json:"mimeType"`
+		ProjectId    *openapi_types.UUID `json:"projectId"`
+		ProjectName  *string             `json:"projectName"`
+		SizeBytes    int                 `json:"sizeBytes"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetProjectFiles400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetProjectFiles401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}     `json:"details,omitempty"`
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetProjectFiles403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetProjectFiles404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetProjectFiles409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetProjectFiles500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetProjectFiles400ErrorType string
+type GetProjectFiles401ErrorType string
+type GetProjectFiles403ErrorType string
+type GetProjectFiles404ErrorType string
+type GetProjectFiles409ErrorType string
+type GetProjectFiles500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetProjectFilesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetProjectFilesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UploadProjectFilesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Filename string             `json:"filename"`
+		Id       openapi_types.UUID `json:"id"`
+		MimeType string             `json:"mimeType"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UploadProjectFiles400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UploadProjectFiles401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}        `json:"details,omitempty"`
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UploadProjectFiles403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UploadProjectFiles404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UploadProjectFiles409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UploadProjectFiles500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UploadProjectFiles400ErrorType string
+type UploadProjectFiles401ErrorType string
+type UploadProjectFiles403ErrorType string
+type UploadProjectFiles404ErrorType string
+type UploadProjectFiles409ErrorType string
+type UploadProjectFiles500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UploadProjectFilesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UploadProjectFilesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetProjectInstructionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -33218,6 +33710,179 @@ func (r UpdateServiceAccountTokenResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateServiceAccountTokenResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteSkillSandboxArtifactResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Ok DeleteSkillSandboxArtifact200Ok `json:"ok"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         DeleteSkillSandboxArtifact400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         DeleteSkillSandboxArtifact401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                `json:"details,omitempty"`
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         DeleteSkillSandboxArtifact403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         DeleteSkillSandboxArtifact404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         DeleteSkillSandboxArtifact409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         DeleteSkillSandboxArtifact500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteSkillSandboxArtifact200Ok bool
+type DeleteSkillSandboxArtifact400ErrorType string
+type DeleteSkillSandboxArtifact401ErrorType string
+type DeleteSkillSandboxArtifact403ErrorType string
+type DeleteSkillSandboxArtifact404ErrorType string
+type DeleteSkillSandboxArtifact409ErrorType string
+type DeleteSkillSandboxArtifact500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteSkillSandboxArtifactResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteSkillSandboxArtifactResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetSkillSandboxArtifactResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r GetSkillSandboxArtifactResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSkillSandboxArtifactResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateSkillSandboxArtifactContentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		FileId    string                                 `json:"fileId"`
+		Filename  string                                 `json:"filename"`
+		MimeType  string                                 `json:"mimeType"`
+		Ok        UpdateSkillSandboxArtifactContent200Ok `json:"ok"`
+		SizeBytes float32                                `json:"sizeBytes"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateSkillSandboxArtifactContent400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateSkillSandboxArtifactContent401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                       `json:"details,omitempty"`
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateSkillSandboxArtifactContent403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateSkillSandboxArtifactContent404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateSkillSandboxArtifactContent409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateSkillSandboxArtifactContent500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateSkillSandboxArtifactContent200Ok bool
+type UpdateSkillSandboxArtifactContent400ErrorType string
+type UpdateSkillSandboxArtifactContent401ErrorType string
+type UpdateSkillSandboxArtifactContent403ErrorType string
+type UpdateSkillSandboxArtifactContent404ErrorType string
+type UpdateSkillSandboxArtifactContent409ErrorType string
+type UpdateSkillSandboxArtifactContent500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateSkillSandboxArtifactContentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSkillSandboxArtifactContentResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -36928,6 +37593,32 @@ func (c *ClientWithResponses) UpdateProjectWithResponse(ctx context.Context, id 
 	return ParseUpdateProjectResponse(rsp)
 }
 
+// GetProjectFilesWithResponse request returning *GetProjectFilesResponse
+func (c *ClientWithResponses) GetProjectFilesWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetProjectFilesResponse, error) {
+	rsp, err := c.GetProjectFiles(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetProjectFilesResponse(rsp)
+}
+
+// UploadProjectFilesWithBodyWithResponse request with arbitrary body returning *UploadProjectFilesResponse
+func (c *ClientWithResponses) UploadProjectFilesWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UploadProjectFilesResponse, error) {
+	rsp, err := c.UploadProjectFilesWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUploadProjectFilesResponse(rsp)
+}
+
+func (c *ClientWithResponses) UploadProjectFilesWithResponse(ctx context.Context, id openapi_types.UUID, body UploadProjectFilesJSONRequestBody, reqEditors ...RequestEditorFn) (*UploadProjectFilesResponse, error) {
+	rsp, err := c.UploadProjectFiles(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUploadProjectFilesResponse(rsp)
+}
+
 // GetProjectInstructionsWithResponse request returning *GetProjectInstructionsResponse
 func (c *ClientWithResponses) GetProjectInstructionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetProjectInstructionsResponse, error) {
 	rsp, err := c.GetProjectInstructions(ctx, id, reqEditors...)
@@ -37177,6 +37868,41 @@ func (c *ClientWithResponses) UpdateServiceAccountTokenWithResponse(ctx context.
 		return nil, err
 	}
 	return ParseUpdateServiceAccountTokenResponse(rsp)
+}
+
+// DeleteSkillSandboxArtifactWithResponse request returning *DeleteSkillSandboxArtifactResponse
+func (c *ClientWithResponses) DeleteSkillSandboxArtifactWithResponse(ctx context.Context, artifactId string, reqEditors ...RequestEditorFn) (*DeleteSkillSandboxArtifactResponse, error) {
+	rsp, err := c.DeleteSkillSandboxArtifact(ctx, artifactId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteSkillSandboxArtifactResponse(rsp)
+}
+
+// GetSkillSandboxArtifactWithResponse request returning *GetSkillSandboxArtifactResponse
+func (c *ClientWithResponses) GetSkillSandboxArtifactWithResponse(ctx context.Context, artifactId string, reqEditors ...RequestEditorFn) (*GetSkillSandboxArtifactResponse, error) {
+	rsp, err := c.GetSkillSandboxArtifact(ctx, artifactId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSkillSandboxArtifactResponse(rsp)
+}
+
+// UpdateSkillSandboxArtifactContentWithBodyWithResponse request with arbitrary body returning *UpdateSkillSandboxArtifactContentResponse
+func (c *ClientWithResponses) UpdateSkillSandboxArtifactContentWithBodyWithResponse(ctx context.Context, artifactId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSkillSandboxArtifactContentResponse, error) {
+	rsp, err := c.UpdateSkillSandboxArtifactContentWithBody(ctx, artifactId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSkillSandboxArtifactContentResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateSkillSandboxArtifactContentWithResponse(ctx context.Context, artifactId string, body UpdateSkillSandboxArtifactContentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSkillSandboxArtifactContentResponse, error) {
+	rsp, err := c.UpdateSkillSandboxArtifactContent(ctx, artifactId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSkillSandboxArtifactContentResponse(rsp)
 }
 
 // GetSkillShareLinksWithResponse request returning *GetSkillShareLinksResponse
@@ -55028,6 +55754,230 @@ func ParseUpdateProjectResponse(rsp *http.Response) (*UpdateProjectResponse, err
 	return response, nil
 }
 
+// ParseGetProjectFilesResponse parses an HTTP response from a GetProjectFilesWithResponse call
+func ParseGetProjectFilesResponse(rsp *http.Response) (*GetProjectFilesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetProjectFilesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			CreatedAt    time.Time           `json:"createdAt"`
+			DownloadRef  string              `json:"downloadRef"`
+			Downloadable bool                `json:"downloadable"`
+			Filename     string              `json:"filename"`
+			Id           *openapi_types.UUID `json:"id"`
+			MimeType     string              `json:"mimeType"`
+			ProjectId    *openapi_types.UUID `json:"projectId"`
+			ProjectName  *string             `json:"projectName"`
+			SizeBytes    int                 `json:"sizeBytes"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetProjectFiles400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetProjectFiles401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}     `json:"details,omitempty"`
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetProjectFiles403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetProjectFiles404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetProjectFiles409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetProjectFiles500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUploadProjectFilesResponse parses an HTTP response from a UploadProjectFilesWithResponse call
+func ParseUploadProjectFilesResponse(rsp *http.Response) (*UploadProjectFilesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UploadProjectFilesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Filename string             `json:"filename"`
+			Id       openapi_types.UUID `json:"id"`
+			MimeType string             `json:"mimeType"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UploadProjectFiles400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UploadProjectFiles401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}        `json:"details,omitempty"`
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UploadProjectFiles403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UploadProjectFiles404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UploadProjectFiles409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UploadProjectFiles500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetProjectInstructionsResponse parses an HTTP response from a GetProjectInstructionsWithResponse call
 func ParseGetProjectInstructionsResponse(rsp *http.Response) (*GetProjectInstructionsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -57281,6 +58231,240 @@ func ParseUpdateServiceAccountTokenResponse(rsp *http.Response) (*UpdateServiceA
 				InternalCode *string                               `json:"internal_code,omitempty"`
 				Message      string                                `json:"message"`
 				Type         UpdateServiceAccountToken500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteSkillSandboxArtifactResponse parses an HTTP response from a DeleteSkillSandboxArtifactWithResponse call
+func ParseDeleteSkillSandboxArtifactResponse(rsp *http.Response) (*DeleteSkillSandboxArtifactResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteSkillSandboxArtifactResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Ok DeleteSkillSandboxArtifact200Ok `json:"ok"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         DeleteSkillSandboxArtifact400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         DeleteSkillSandboxArtifact401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                `json:"details,omitempty"`
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         DeleteSkillSandboxArtifact403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         DeleteSkillSandboxArtifact404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         DeleteSkillSandboxArtifact409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         DeleteSkillSandboxArtifact500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetSkillSandboxArtifactResponse parses an HTTP response from a GetSkillSandboxArtifactWithResponse call
+func ParseGetSkillSandboxArtifactResponse(rsp *http.Response) (*GetSkillSandboxArtifactResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSkillSandboxArtifactResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseUpdateSkillSandboxArtifactContentResponse parses an HTTP response from a UpdateSkillSandboxArtifactContentWithResponse call
+func ParseUpdateSkillSandboxArtifactContentResponse(rsp *http.Response) (*UpdateSkillSandboxArtifactContentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateSkillSandboxArtifactContentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			FileId    string                                 `json:"fileId"`
+			Filename  string                                 `json:"filename"`
+			MimeType  string                                 `json:"mimeType"`
+			Ok        UpdateSkillSandboxArtifactContent200Ok `json:"ok"`
+			SizeBytes float32                                `json:"sizeBytes"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateSkillSandboxArtifactContent400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateSkillSandboxArtifactContent401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                       `json:"details,omitempty"`
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateSkillSandboxArtifactContent403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateSkillSandboxArtifactContent404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateSkillSandboxArtifactContent409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateSkillSandboxArtifactContent500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
