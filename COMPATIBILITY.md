@@ -63,8 +63,19 @@ cannot be verified. A user constraint cannot lower the provider's minimum floor.
 The probe sends no API key, follows no redirects, reads at most 4 KiB and has a
 five-second deadline (a shorter configured HTTP timeout still applies). Its
 errors do not expose the health response body. The same check runs inside the
-Terraform provider embedded in Crossplane; this candidate does not yet expose
-the optional deployment constraint through Crossplane ProviderConfig.
+Terraform provider embedded in Crossplane. To constrain a Crossplane deployment,
+include the same `api_version_constraint` key in the credentials JSON referenced
+by its ProviderConfig, for example:
+
+```json
+{
+  "api_key": "arch_...",
+  "base_url": "https://archestra.example",
+  "api_version_constraint": "= 1.4.0-rc.48"
+}
+```
+
+This works with cluster, namespaced, and ClusterProviderConfig credentials.
 
 The range applies to version metadata, not license entitlements, permissions,
 backend-specific feature flags or an incompatible custom build using the same

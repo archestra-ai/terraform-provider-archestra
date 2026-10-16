@@ -21,7 +21,7 @@ release candidates; record each tested release explicitly.
 The tested platform image digest is
 `sha256:fdd17cf0e4361034c39d49d88ba367c980a576f7f7e93f438facb495c64bffb4`.
 Acceptance CI pins that digest. Native acceptance, state migration, Crossplane
-reconciliation and runtime package evidence are linked from [the audit](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/README.md).
+reconciliation and runtime package evidence are linked from [the audit](audit/README.md).
 An exact digest makes that result reproducible even if an image tag is republished.
 
 For Terraform, select an approved provider release with `required_providers` and
@@ -67,8 +67,19 @@ cannot be verified. A user constraint cannot lower the provider's minimum floor.
 The probe sends no API key, follows no redirects, reads at most 4 KiB and has a
 five-second deadline (a shorter configured HTTP timeout still applies). Its
 errors do not expose the health response body. The same check runs inside the
-Terraform provider embedded in Crossplane; this candidate does not yet expose
-the optional deployment constraint through Crossplane ProviderConfig.
+Terraform provider embedded in Crossplane. To constrain a Crossplane deployment,
+include the same `api_version_constraint` key in the credentials JSON referenced
+by its ProviderConfig, for example:
+
+```json
+{
+  "api_key": "arch_...",
+  "base_url": "https://archestra.example",
+  "api_version_constraint": "= 1.4.0-rc.48"
+}
+```
+
+This works with cluster, namespaced, and ClusterProviderConfig credentials.
 
 The range applies to version metadata, not license entitlements, permissions,
 backend-specific feature flags or an incompatible custom build using the same
