@@ -13,9 +13,9 @@ through extending the provider.
 
 ## Resource coverage
 
-This v3 branch is under development. The current Terraform schema registers 25
-resources and all 25 are configured in both Crossplane scopes. Real lifecycle
-proof currently covers all 25 resources in both scopes. Remaining field, migration
+This v3 branch is under development. The current Terraform schema registers 26
+resources and all 26 are configured in both Crossplane scopes. Real lifecycle
+proof currently covers all 26 resources in both scopes. Remaining field, migration
 and packaging gates are listed in [the evidence report](audit/v3-runtime-evidence.json).
 This count does not establish complete coverage of the wider Archestra API.
 
@@ -43,6 +43,7 @@ This count does not establish complete coverage of the wider Archestra API.
 | `archestra_resource_permission_policy` | `permission` / `Policy` |
 | `archestra_role` | `identity` / `Role` |
 | `archestra_runtime_credential` | `credential` / `RuntimeCredential` |
+| `archestra_skill` | `skill` / `Skill` |
 | `archestra_schedule_trigger` | `schedule` / `Trigger` |
 | `archestra_team` | `team` / `Team` |
 | `archestra_team_external_group` | `team` / `ExternalGroup` |

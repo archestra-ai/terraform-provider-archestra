@@ -41,7 +41,7 @@
     "shared_typecheck": "passed",
     "test_imports": "passed"
   },
-  "crossplane_runtime_evidence": "25/25 registered resources have accumulated both-scope lifecycle proofs with candidate hashes; final release-candidate repetition remains required.",
+  "crossplane_runtime_evidence": "26/26 registered resources have accumulated both-scope lifecycle proofs with candidate hashes; final release-candidate repetition remains required.",
   "release_status": "blocked pending remaining coverage, lifecycle, migration, CI, package and deployed sync validation",
   "model_runtime_assertions": [
     "provider-qualified native model adoption",
@@ -62,9 +62,9 @@
   "remaining_get_field_guard_gaps": 0,
   "remaining_get_field_guard_resources": [],
   "request_field_review_candidates": {
-    "occurrences": 94,
-    "operations": 22,
-    "resource_families": 16,
+    "occurrences": 98,
+    "operations": 24,
+    "resource_families": 17,
     "evidence": "provider-v3-request-fields.json",
     "note": "Review candidates include derived payloads and backend-owned fields; this is not a count of confirmed missing mutable capabilities."
   }

@@ -268,3 +268,18 @@ Destroy resets to manual mode and clears references without deleting the agent.
 set. Import by parent agent UUID. Empty sets clear exclusions; destroy also clears
 them while preserving the agent. Invalid, missing, cross-organization and self
 references are not silently accepted as successful managed state.
+
+### Versioned skill content
+
+`archestra_skill` owns manifest metadata, the Markdown instruction body and the
+complete file map. Set `files = {}` to remove resource files. Explicit empty
+`environment_ids` removes environment restrictions; `labels = []` clears labels.
+Files declare `utf8` or `base64` encoding. Import by skill UUID.
+
+The backend trims outer manifest/body whitespace; equivalent configured body
+formatting is retained. Import cannot recover original formatting. Content/file
+updates send the last observed `latest_version` and reject stale versions;
+frontmatter-only changes do not create content versions, so that counter does not
+provide concurrency protection for metadata-only edits. Destroy uses soft delete
+and does not invoke the separate permanent-purge API. Git-synchronized content
+remains owned by its source, and the API rejects conflicting content edits.

@@ -6,6 +6,11 @@ const agentGroup = "agent"
 
 // ConfigureResources applies the same API names and references in both scopes.
 func ConfigureResources(p *ujconfig.Provider) {
+	p.AddResourceConfigurator("archestra_skill", func(r *ujconfig.Resource) {
+		r.ShortGroup = "skill"
+		r.Kind = "Skill"
+		r.References["environment_ids"] = ujconfig.Reference{TerraformName: "archestra_environment"}
+	})
 	p.AddResourceConfigurator("archestra_agent_subagent_exclusions", func(r *ujconfig.Resource) {
 		r.ShortGroup = agentGroup
 		r.Kind = "SubagentExclusions"

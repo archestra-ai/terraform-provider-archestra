@@ -1,5 +1,5 @@
 {
-  "crossplane_configured_count": 25,
+  "crossplane_configured_count": 26,
   "evidence_level": "static inventory; no runtime coverage implied",
   "format_version": 1,
   "resources": [
@@ -7391,6 +7391,447 @@
     },
     {
       "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 1,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "CreateSkill",
+          "declared_request_field_mappings": {
+            "content": "content",
+            "environmentIds": "environment_ids",
+            "files": "files",
+            "icon": "icon",
+            "labels": "labels"
+          },
+          "method": "POST",
+          "path": "/api/skills",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "allowedTools",
+            "content",
+            "environmentIds",
+            "files",
+            "icon",
+            "initialGrants",
+            "labels"
+          ],
+          "request_fields_without_declared_mapping": [
+            "allowedTools",
+            "initialGrants"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "DeleteSkill",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/skills/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetSkill",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/skills/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateSkill",
+          "declared_request_field_mappings": {
+            "content": "content",
+            "environmentIds": "environment_ids",
+            "files": "files",
+            "icon": "icon",
+            "labels": "labels"
+          },
+          "method": "PUT",
+          "path": "/api/skills/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "allowedTools",
+            "baseVersion",
+            "content",
+            "environmentIds",
+            "files",
+            "icon",
+            "labels"
+          ],
+          "request_fields_without_declared_mapping": [
+            "allowedTools",
+            "baseVersion"
+          ],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": false,
+          "optional": true,
+          "path": "agent_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "allowed_tools",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "compatibility",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "content",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "deleted_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "description",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "digest",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "environment_ids",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "file_digests",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "files",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "files.content",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "files.encoding",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "github_app_config_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "github_pat_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "github_sync_interval",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "github_sync_ref",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "gitlab_token_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "icon",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.value",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "last_sync_error",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "last_synced_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "last_used_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "latest_version",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "license",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "metadata",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "name",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "organization_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "scope",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_commit",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_origin",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_provider",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_ref",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "source_type",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "templated",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "updated_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "usage_count",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_skill.go",
+      "terraform_resource": "archestra_skill"
+    },
+    {
+      "acceptance_execution": "unverified",
       "acceptance_tests_declared": 2,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
@@ -7758,7 +8199,7 @@
       "terraform_resource": "archestra_team_external_group"
     }
   ],
-  "terraform_count": 25,
+  "terraform_count": 26,
   "unreferenced_mutating_operations": [
     {
       "method": "DELETE",
@@ -8144,11 +8585,6 @@
       "method": "DELETE",
       "operation_id": "revokeSkillShareLink",
       "path": "/api/skill-share-links/{}"
-    },
-    {
-      "method": "DELETE",
-      "operation_id": "deleteSkill",
-      "path": "/api/skills/{}"
     },
     {
       "method": "DELETE",
@@ -9117,11 +9553,6 @@
     },
     {
       "method": "POST",
-      "operation_id": "createSkill",
-      "path": "/api/skills"
-    },
-    {
-      "method": "POST",
       "operation_id": "bulkDeleteSkills",
       "path": "/api/skills/bulk-delete"
     },
@@ -9909,11 +10340,6 @@
       "method": "PUT",
       "operation_id": "updateSkillSandboxArtifactContent",
       "path": "/api/skill-sandbox/artifacts/{}/content"
-    },
-    {
-      "method": "PUT",
-      "operation_id": "updateSkill",
-      "path": "/api/skills/{}"
     }
   ]
 }

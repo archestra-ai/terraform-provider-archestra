@@ -5,11 +5,11 @@ Crossplane provider for [Archestra](https://archestra.ai), generated from
 using the [`upjet`](https://github.com/crossplane/upjet) code-generation
 toolchain.
 
-The v3 working schema includes all 25 Terraform resources in both scopes.
+The v3 working schema includes all 26 Terraform resources in both scopes.
 The shared configurator in [config/resources.go](config/resources.go) defines each
 group/kind and reference once for both scopes. See the [resource matrix](../README.md#resource-coverage)
 and [runtime evidence](../audit/v3-runtime-evidence.json). Configuration inclusion
-and generated CRDs do not establish lifecycle coverage; all 25 resources currently
+and generated CRDs do not establish lifecycle coverage; all 26 resources currently
 have real create/update/drift/delete evidence in both scopes on Crossplane 2.2.1.
 
 The v3 package remains unreleased pending full validation. Upgrade existing state

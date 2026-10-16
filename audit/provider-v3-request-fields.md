@@ -2,7 +2,7 @@
 
 static inventory; no runtime coverage implied
 
-Terraform: 25; Crossplane configured: 25.
+Terraform: 26; Crossplane configured: 26.
 
 Mapping counts are configuration coverage, not successful CRUD or reconciliation coverage.
 
@@ -31,6 +31,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_role` | True | True | none detected | none detected | 3 |
 | `archestra_runtime_credential` | True | True | none detected | CreateRuntimeCredential: initialGrants; SetOrganizationRuntimeCredentialConnection: value | 3 |
 | `archestra_schedule_trigger` | True | True | none detected | none detected | 4 |
+| `archestra_skill` | True | True | none detected | CreateSkill: allowedTools, initialGrants; UpdateSkill: allowedTools, baseVersion | 1 |
 | `archestra_team` | True | True | none detected | AddTeamMember: role, userId; UpdateTeamMember: role | 2 |
 | `archestra_team_external_group` | True | True | none detected | AddTeamExternalGroup: groupIdentifier | 1 |
 

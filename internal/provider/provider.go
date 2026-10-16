@@ -191,6 +191,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewAgentToolBatchResource,
 		NewAgentToolExclusionsResource,
 		NewAgentSkillPolicyResource,
+		NewSkillResource,
 		NewAgentSubagentExclusionsResource,
 		NewRuntimeCredentialResource,
 		NewIdentityProviderResource,

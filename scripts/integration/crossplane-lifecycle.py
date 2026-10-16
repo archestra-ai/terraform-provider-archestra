@@ -23,7 +23,7 @@ def main():
     parser.add_argument('--key-file', type=Path, required=True)
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'skill'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--kubeconfig', type=Path, required=True)
     parser.add_argument('--provider-config', required=True)
     parser.add_argument('--namespace', default='crossplane-system')
@@ -120,6 +120,11 @@ def main():
 
     def patch(lease, fields):
         kube(*lease[0], 'patch', lease[1], lease[2], '--type=merge', '-p', json.dumps({'spec': {'forProvider': fields}}))
+
+    def replace_fields(lease, fields):
+        operations = [{'op': 'replace', 'path': '/spec/forProvider/' + name, 'value': value}
+                      for name, value in fields.items()]
+        kube(*lease[0], 'patch', lease[1], lease[2], '--type=json', '-p', json.dumps(operations))
 
     def delete(lease):
         if lease[1] == 'api-fixture':
@@ -337,6 +342,51 @@ def main():
                         delete(lease)
                     if api('/api/organization/appearance-settings', {'appName': original})[0] != 200:
                         raise RuntimeError('Unable to restore original isolated test appearance')
+
+            if 'skill' in args.cases:
+                skill_name = 'cp-content-' + run + '-' + scope
+                original_content = 'Inspect only synthetic local fixtures.'
+                files = {'references/README.md': {'content': 'Synthetic reference', 'encoding': 'utf8'},
+                         'assets/sample.bin': {'content': 'AAECAw==', 'encoding': 'base64'}}
+                lease, identifier, _ = create(scope, 'skill', 'Skill', 'skills',
+                        {'name': skill_name, 'description': 'Synthetic versioned skill fixture',
+                         'content': original_content, 'files': files, 'environmentIds': [],
+                         'labels': [], 'allowedTools': ['Read']})
+                path = '/api/skills/' + identifier
+                def skill_value():
+                    code, value = api(path)
+                    if code != 200:
+                        raise RuntimeError('Skill read failed: HTTP ' + str(code))
+                    return value
+                initial = skill_value()
+                if initial['content'] != original_content or initial['latestVersion'] != 1 or len(initial['files']) != 2:
+                    raise RuntimeError('Skill content/file creation was not persisted')
+                updated_content = 'Updated synthetic procedure.'
+                updated_files = {'references/README.md': {'content': 'Updated reference', 'encoding': 'utf8'}}
+                replace_fields(lease, {'content': updated_content, 'files': updated_files})
+                wait('Skill content and files update', lambda: skill_value()['content'] == updated_content and len(skill_value()['files']) == 1)
+                code, historical = api(path + '/versions/1')
+                if code != 200 or historical['content'] != original_content or len(historical['files']) != 2:
+                    raise RuntimeError('Skill update changed the immutable first version')
+                current = skill_value()
+                stale_status, _ = api(path, {'baseVersion': 1,
+                         'content': '---\nname: ' + skill_name + '\ndescription: Synthetic versioned skill fixture\n---\nStale edit.\n'}, 'PUT')
+                if stale_status != 409:
+                    raise RuntimeError('Skill API accepted a stale content version')
+                code, _ = api(path, {'baseVersion': current['latestVersion'],
+                         'content': '---\nname: ' + skill_name + '\ndescription: Synthetic versioned skill fixture\n---\nOut-of-band synthetic drift.\n'}, 'PUT')
+                if code != 200:
+                    raise RuntimeError('Unable to write isolated skill drift')
+                wait('Skill drift repair', lambda: skill_value()['content'] == updated_content)
+                replace_fields(lease, {'files': {}})
+                wait('Skill files clear', lambda: not skill_value()['files'])
+                delete(lease)
+                if api(path)[0] != 404:
+                    raise RuntimeError('Skill soft deletion left the fixture readable')
+                record('Skill', scope, create='passed', update='passed', drift_repair='passed',
+                       terraform_import='separate CLI test', empty_files_clear='passed',
+                       immutable_first_version_preserved=True, stale_version_refused=409,
+                       delete='soft-delete passed', backend_after_delete=404)
 
             if 'subagent-exclusions' in args.cases:
                 parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
