@@ -9,11 +9,14 @@ provider and Crossplane package to the tested release until that work is complet
 1. Back up Terraform state securely and export the managed Crossplane manifests,
    external-name annotations, connection secret references and provider settings.
    State and connection secrets can contain credentials even when marked sensitive.
-2. Upgrade Archestra first to the release named in the final compatibility matrix.
-   Environment resources require the environment-by-ID read endpoint introduced
-   by archestra-ai/archestra#9021. Do not infer compatibility from a generated SDK.
-3. Review retired resources and sharing changes below while still on v2. Remove
-   dependencies on retired configuration before changing provider constraints.
+2. While the old API and provider are still compatible, inventory retired rules,
+   verify their replacement enforcement, and review the sharing changes below.
+   Remove obsolete bindings and configuration without running a legacy destroy
+   against the newer API. Do not rely on a resource rename to preserve security.
+3. Upgrade Archestra to the exact release pinned in the final compatibility matrix.
+   The current target is 1.4.0-rc.45, which includes the environment-by-ID read from
+   archestra-ai/archestra#9021. Publication and artifact verification must finish
+   before that target can be treated as a tested prerequisite.
 4. Upgrade Terraform in a non-production copy of the workspace. Run refresh-only
    planning, then a normal plan. Review every deletion, replacement and grant
    revocation before applying. A version upgrade does not authorize recreation.
@@ -41,7 +44,7 @@ only the stale Terraform binding with `terraform state rm ADDRESS`. This forgets
 the binding; it does not recreate policy enforcement or prove an old rule was
 removed server-side.
 
-The removed Crossplane ToolInvocationPolicy CRD cannot be converted mechanically
+The removed Crossplane ToolInvocationPolicyDefault CRD cannot be converted mechanically
 to the new permission Policy: invocation decisions and object sharing are different
 controls. Preserve its manifest, set and verify an orphan deletion policy before
 removing the old managed resource, and verify replacement enforcement separately.

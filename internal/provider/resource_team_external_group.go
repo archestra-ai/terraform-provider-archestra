@@ -150,6 +150,10 @@ func (r *TeamExternalGroupResource) Read(
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	if data.ID.IsNull() || data.ID.IsUnknown() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	apiResp, err := r.client.GetTeamExternalGroupsWithResponse(
 		ctx,

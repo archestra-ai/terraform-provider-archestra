@@ -128,6 +128,7 @@ resource "archestra_agent" "worker" {
 
 ### Optional
 
+- `access_all_subagents` (Boolean) Whether all accessible subagents can be delegated to.
 - `access_all_tools` (Boolean) Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Pair with `archestra_agent_tool_exclusions` to carve tools out. Defaults to `false`.
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
 - `consider_context_untrusted` (Boolean) Whether the agent context is treated as untrusted
@@ -147,11 +148,26 @@ resource "archestra_agent" "worker" {
 - `runtime` (Attributes) Dedicated runtime used for interactive, delegated, and long-running work. Requires an Agent Runtime backend on the platform (e.g. the Kubernetes orchestrator). (see [below for nested schema](#nestedatt--runtime))
 - `suggested_prompts` (Attributes List) Suggested prompts surfaced to users in the chat UI (see [below for nested schema](#nestedatt--suggested_prompts))
 - `system_prompt` (String) System prompt that frames the agent's behavior
+- `tool_exposure_mode` (String) Tool exposure mode: full or search_and_run_only.
 
 ### Read-Only
 
+- `activation_skill_mode` (String) Server-reported activation skill mode.
+- `activation_skill_policy_revision` (Number) Server-reported activation skill policy revision.
+- `activation_skills_count` (Number) Server-reported activation skills count.
+- `author_email` (String) Server-reported author email.
 - `built_in_agent_config` (String) Server-owned built-in agent metadata as JSON.
+- `created_by` (String) Creator identity metadata as JSON.
+- `created_by_service_account_id` (String) Server-reported created by service account id.
+- `deleted_at` (String) Server-reported deleted at.
 - `id` (String) Agent identifier
+- `last_used_at` (String) Server-reported last used at.
+- `latest_version` (Number) Server-reported latest version.
+- `llm_provider_requires_per_user_credential` (Boolean) Server-reported llm provider requires per user credential.
+- `resolved_llm_model_name` (String) Server-reported resolved llm model name.
+- `resolved_llm_provider` (String) Server-reported resolved llm provider.
+- `resolved_llm_provider_key_name` (String) Server-reported resolved llm provider key name.
+- `sandbox_available` (Boolean) Server-reported sandbox available.
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

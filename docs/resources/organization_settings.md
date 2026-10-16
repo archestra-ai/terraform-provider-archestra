@@ -88,26 +88,68 @@ resource "archestra_organization_settings" "main" {
 ### Optional
 
 - `allow_chat_file_uploads` (Boolean) Whether to allow file uploads in chat
+- `allow_tool_auto_assignment` (Boolean) Whether new tools can be assigned automatically.
 - `animate_chat_placeholders` (Boolean) Whether to animate chat placeholders in the UI
 - `app_name` (String) Custom application name displayed in the UI
+- `apps_hackathon_recorder_enabled` (Boolean) Whether the app recorder is enabled.
 - `chat_error_support_message` (String) Custom error support message displayed in the chat UI
 - `chat_links` (Attributes List) Chat links displayed in the chat UI (see [below for nested schema](#nestedatt--chat_links))
 - `chat_placeholders` (List of String) Chat placeholder texts displayed in the chat input
 - `color_theme` (String) Color theme for the organization UI
+- `connection_base_urls` (Attributes List) Connection endpoints shown to clients. (see [below for nested schema](#nestedatt--connection_base_urls))
+- `connection_client_future_providers` (String) JSON configuration for connection client future providers.
+- `connection_client_order` (String) JSON configuration for connection client order.
+- `connection_client_provider_keys` (String) JSON configuration for connection client provider keys.
+- `connection_default_client_id` (String) Default client shown by connection setup.
+- `connection_default_mcp_gateway_id` (String) Default gateway offered to connecting clients.
+- `connection_llm_proxy_enabled` (Boolean) Whether connection setup offers the LLM proxy.
+- `connection_plugins_enabled` (Boolean) Whether connection setup offers plugins.
+- `connection_runtime_handoff_enabled` (Boolean) Whether clients can hand work to an agent runtime.
+- `connection_runtime_handoff_instructions` (String) Instructions shown during runtime handoff.
+- `connection_shown_client_ids` (String) JSON configuration for connection shown client ids.
+- `connection_skills_enabled` (Boolean) Whether connection setup offers skills.
 - `default_agent_id` (String) Default agent (profile) ID for the organization
+- `default_environment_description` (String) Description of the default deployment environment.
+- `default_environment_name` (String) Name of the default deployment environment.
+- `default_environment_namespace` (String) Kubernetes namespace of the default deployment environment.
+- `default_environment_trusted_image_registries` (String) JSON configuration for default environment trusted image registries.
+- `default_environment_validation_regex` (String) Validation expression for default-environment deployment names.
 - `default_llm_api_key_id` (String) Default LLM API key ID for the organization
+- `default_member_role` (String) Role assigned to new organization members.
+- `default_model_id` (String) Database ID of the default discovered LLM model.
+- `default_network_policy` (String) JSON configuration for default network policy.
 - `embedding_chat_api_key_id` (String) API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `embedding_model` (String) Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `favicon` (String) Base64 encoded favicon image for the organization
 - `font` (String) Custom font for the organization UI
 - `footer_text` (String) Custom footer text displayed in the UI
 - `icon_logo` (String) Base64 encoded icon logo image for the organization
+- `icon_logo_dark` (String) Icon logo displayed in dark mode.
+- `kb_bm25_b` (Number) BM25 document-length normalization coefficient.
+- `kb_bm25_k1` (Number) BM25 term-frequency saturation coefficient.
+- `kb_contextual_retrieval_mode` (String) Contextual retrieval mode for knowledge chunks.
+- `knowledge_connector_overrides` (String) JSON configuration for knowledge connector overrides.
 - `logo` (String) Base64 encoded logo image for the organization
 - `logo_dark` (String) Base64 encoded dark mode logo image for the organization
+- `mcp_idle_hibernation_enabled` (Boolean) Whether idle MCP deployments can hibernate.
+- `messaging_channel_overrides` (String) JSON configuration for messaging channel overrides.
+- `model_provider_overrides` (String) JSON configuration for model provider overrides.
+- `new_apps_disabled_by_default` (Boolean) Whether new apps start disabled.
+- `new_apps_locked_by_default` (Boolean) Whether new apps start locked.
+- `oauth_access_token_lifetime_seconds` (Number) Lifetime of issued OAuth access tokens in seconds.
+- `ocr_chat_api_key_id` (String) Provider key used for OCR requests.
+- `ocr_model` (String) Model used for OCR requests.
 - `og_description` (String) OG meta description for the organization, max 500 characters
 - `onboarding_complete` (Boolean) Whether organization onboarding is complete. This is a one-way flag — once set to `true`, it cannot be reverted to `false`.
+- `onboarding_wizard` (String) JSON configuration for onboarding wizard.
+- `online_mcp_catalog_enabled` (Boolean) Whether the online MCP catalog is available.
+- `online_skill_catalog_enabled` (Boolean) Whether the online skill catalog is available.
+- `popular_agent_overrides` (String) JSON configuration for popular agent overrides.
+- `require_two_factor` (Boolean) Whether organization members must use two-factor authentication.
 - `reranker_chat_api_key_id` (String) API key ID for the reranker model
 - `reranker_model` (String) Reranker model for knowledge base
+- `session_max_age_seconds` (Number) Maximum authentication session age in seconds.
+- `skill_marketplace_anonymous_access` (Boolean) Whether anonymous users can access the skill marketplace.
 - `slim_chat_error_ui` (Boolean) When enabled, renders a compact error UI in chat views.
 
 ### Read-Only
@@ -126,6 +168,20 @@ Required:
 
 - `label` (String) Display label for the chat link
 - `url` (String) URL for the chat link
+
+
+<a id="nestedatt--connection_base_urls"></a>
+### Nested Schema for `connection_base_urls`
+
+Required:
+
+- `url` (String) Endpoint URL.
+
+Optional:
+
+- `description` (String) Endpoint description.
+- `is_default` (Boolean) Whether this is the default endpoint.
+- `visible` (Boolean) Whether clients display this endpoint.
 
 ## Import
 

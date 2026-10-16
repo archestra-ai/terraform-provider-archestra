@@ -447,6 +447,10 @@ func (r *IdentityProviderResource) Read(ctx context.Context, req resource.ReadRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	if state.ID.IsNull() || state.ID.IsUnknown() || state.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	apiResp, err := r.client.GetIdentityProviderWithResponse(ctx, state.ID.ValueString())
 	if err != nil {

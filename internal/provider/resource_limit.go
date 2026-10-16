@@ -282,6 +282,10 @@ func (r *LimitResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	if data.ID.IsNull() || data.ID.IsUnknown() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	id, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {

@@ -33,6 +33,16 @@ type McpGatewayResource struct {
 // gateway exposes a unified MCP endpoint backed by tool installations and
 // optional knowledge sources.
 type McpGatewayResourceModel struct {
+	AuthorEmail               types.String `tfsdk:"author_email"`
+	CreatedBy                 types.String `tfsdk:"created_by"`
+	CreatedByServiceAccountId types.String `tfsdk:"created_by_service_account_id"`
+	DeletedAt                 types.String `tfsdk:"deleted_at"`
+	LastUsedAt                types.String `tfsdk:"last_used_at"`
+	LatestVersion             types.Int64  `tfsdk:"latest_version"`
+	AccessAllTools            types.Bool   `tfsdk:"access_all_tools"`
+	MissingCredentialBehavior types.String `tfsdk:"missing_credential_behavior"`
+	EnvironmentId             types.String `tfsdk:"environment_id"`
+
 	ID                       types.String      `tfsdk:"id"`
 	Name                     types.String      `tfsdk:"name"`
 	Description              types.String      `tfsdk:"description"`
@@ -113,6 +123,9 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 			},
 		},
 	}
+	for name, attribute := range currentGatewayAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
 }
 
 func (r *McpGatewayResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -164,6 +177,14 @@ func (r *McpGatewayResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -257,6 +278,10 @@ func (r *McpGatewayResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -296,6 +321,10 @@ func (r *McpGatewayResource) flatten(ctx context.Context, data *McpGatewayResour
 		return
 	}
 
+	flattenCurrentGatewayFields(data, body, diags)
+	if diags.HasError() {
+		return
+	}
 	data.ID = types.StringValue(resp.Id.String())
 	data.Name = types.StringValue(resp.Name)
 	optionalStringFromAPI(&data.Description, resp.Description)
@@ -334,7 +363,10 @@ func (r *McpGatewayResource) APIShape() any { return client.GetAgentResponse{} }
 // considerContextUntrusted). slug + tools follow the same convention as
 // the other agent-table resources.
 func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
+	// Legacy visibility/skill projections and secret-storage pointers are not managed.
+	// Gateway records share an agent response, but do not run agent runtimes or inference.
 	return []string{
+		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId", "accessAllSubagents", "activationSkillMode", "activationSkillPolicyRevision", "activationSkillsCount", "llmProviderRequiresPerUserCredential", "modelId", "resolvedLlmModelName", "resolvedLlmProvider", "resolvedLlmProviderKeyName", "runtime", "sandboxAvailable",
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "builtInAgentConfig", "suggestedPrompts",
 		"systemPrompt", "llmModel", "llmApiKeyId", "isDefault", "scope",
@@ -350,6 +382,10 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 // columns (knowledge_base_ids, connector_ids, passthrough_headers) which are
 // atomic on the wire (Kind: List).
 var mcpGatewayAttrSpec = []AttrSpec{
+	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},
+	{TFName: "missing_credential_behavior", JSONName: "missingCredentialBehavior", Kind: Scalar, OmitOnNull: true},
+	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar, OmitOnNull: false},
+
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
 	{TFName: "icon", JSONName: "icon", Kind: Scalar},
@@ -367,4 +403,22 @@ var mcpGatewayAttrSpec = []AttrSpec{
 			{TFName: "value", JSONName: "value", Kind: Scalar},
 		},
 	},
+}
+
+func (r *McpGatewayResource) refreshMetadataAfterWrite(ctx context.Context, data *McpGatewayResourceModel, diags *diag.Diagnostics) {
+	identifier, err := uuid.Parse(data.ID.ValueString())
+	if err != nil {
+		diags.AddError("Invalid Created Identifier", "The API did not return a valid agent ID.")
+		return
+	}
+	response, err := r.client.GetAgentWithResponse(ctx, identifier)
+	if err != nil {
+		diags.AddError("Agent Refresh Failed", "The object was written but its full metadata could not be read. Refresh state before retrying.")
+		return
+	}
+	if response.JSON200 == nil {
+		diags.AddError("Agent Refresh Failed", fmt.Sprintf("The object was written but metadata read returned %d. Refresh state before retrying.", response.StatusCode()))
+		return
+	}
+	r.flatten(ctx, data, response.Body, diags)
 }

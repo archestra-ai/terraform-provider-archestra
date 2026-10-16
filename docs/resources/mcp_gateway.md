@@ -57,20 +57,29 @@ resource "archestra_mcp_gateway" "engineering" {
 
 ### Optional
 
+- `access_all_tools` (Boolean) Whether all accessible tools are exposed automatically.
 - `connector_ids` (List of String) Knowledge connector IDs the gateway has access to
 - `consider_context_untrusted` (Boolean) Whether the gateway context is treated as untrusted
 - `description` (String) Human-readable description
+- `environment_id` (String) Deployment environment used to resolve MCP servers and credentials.
 - `icon` (String) Emoji or base64 image data URL
 - `identity_provider_id` (String) Identity provider used to validate inbound JWTs. Reference an `archestra_identity_provider`. Omit to disable JWT auth.
 - `is_default` (Boolean) Whether this is the default MCP gateway
 - `knowledge_base_ids` (List of String) Knowledge base IDs the gateway has access to
 - `labels` (Attributes Set) Key/value labels for organizing gateways (see [below for nested schema](#nestedatt--labels))
+- `missing_credential_behavior` (String) Behavior when a caller has no usable tool credential.
 - `passthrough_headers` (List of String) Allowlist of HTTP header names to forward from gateway requests to downstream MCP servers
 - `tool_exposure_mode` (String) How assigned tools are exposed to clients. `full` lists every assigned tool; `search_and_run_only` (progressive tool loading) lists only `search_tools` and `run_tool` and resolves the rest on demand, which keeps a large tool set out of the client's context window.
 
 ### Read-Only
 
+- `author_email` (String) Server-reported author email.
+- `created_by` (String) Creator identity metadata as JSON.
+- `created_by_service_account_id` (String) Server-reported created by service account id.
+- `deleted_at` (String) Server-reported deleted at.
 - `id` (String) MCP gateway identifier
+- `last_used_at` (String) Server-reported last used at.
+- `latest_version` (Number) Server-reported latest version.
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

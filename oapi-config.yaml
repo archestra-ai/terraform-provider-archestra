@@ -94,3 +94,8 @@ output-options:
     - getProject
     - updateProject
     - deleteProject
+    - updateAuthSettings
+    - updateSkillsSettings
+    - updateConnectionSettings
+    - updateIntegrationSettings
+    - updateDefaultEnvironment

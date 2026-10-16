@@ -71,7 +71,7 @@ func (r *OrganizationSettingsResource) AttrSpecs() []AttrSpec {
 	specs = append(specs, orgSettingsMcpSpec...)
 	specs = append(specs, orgSettingsKnowledgeSpec...)
 	specs = append(specs, orgSettingsOnboardingSpec...)
-	return specs
+	return append(specs, allCurrentOrganizationSpecs()...)
 }
 
 // APIShape implements resourceWithAPIShape — activates the API↔schema
@@ -86,6 +86,28 @@ func (r *OrganizationSettingsResource) APIShape() any {
 // every field on the response either has a managed schema attribute or
 // a Computed-only one. Add an entry here only with a justification
 // comment if the backend ever adds a field outside the provider's scope.
+// These legacy projections and telemetry fields are deliberately not managed.
 func (r *OrganizationSettingsResource) KnownIntentionallySkipped() []string {
-	return nil
+	return []string{
+		// Telemetry instance identity is not declarative organization configuration.
+		"analyticsInstanceId",
+		// Retired proxy singleton projection has no corresponding writable setting.
+		"connectionDefaultLlmProxyId",
+		// The API explicitly rejects this retired connection input.
+		"connectionShownProviders",
+		// Display projection of defaultModelId; manage default_model_id.
+		"defaultLlmModel",
+		// Display projection of defaultModelId; manage default_model_id.
+		"defaultLlmProvider",
+		// Legacy projection; current limits are per-environment lifecycle objects.
+		"defaultUserLimitCleanupInterval",
+		// Legacy projection; current limits are per-environment lifecycle objects.
+		"defaultUserLimitModel",
+		// Legacy projection; current limits are per-environment lifecycle objects.
+		"defaultUserLimitValue",
+		// User-interface survey tracking is not managed configuration.
+		"onboardingSurveyCompletedAt",
+		// Retired feature projection has no writable API setting.
+		"skillToolsEnabled",
+	}
 }

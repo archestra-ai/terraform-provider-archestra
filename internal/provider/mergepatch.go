@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"math/big"
 
@@ -221,7 +222,12 @@ func encodeValue(v tftypes.Value, attrs []AttrSpec) (any, error) {
 		if err := v.As(&f); err != nil {
 			return nil, err
 		}
-		// Try float64 first; fall back to a textual representation if exact.
+		// Keep large integral values exact through JSON serialization, including
+		// powers of two whose shortest float64 decimal text is approximate.
+		if f.IsInt() && f.MantExp(nil) > 53 {
+			return json.Number(f.Text('f', 0)), nil
+		}
+		// Small exact values keep their ordinary Go numeric representation.
 		if fv, acc := f.Float64(); acc == big.Exact {
 			return fv, nil
 		}
@@ -229,7 +235,7 @@ func encodeValue(v tftypes.Value, attrs []AttrSpec) (any, error) {
 		if i, acc := f.Int64(); acc == big.Exact {
 			return i, nil
 		}
-		return f.Text('f', -1), nil
+		return json.Number(f.Text('g', -1)), nil
 	}
 
 	if t.Is(tftypes.List{}) || t.Is(tftypes.Set{}) || t.Is(tftypes.Tuple{}) {

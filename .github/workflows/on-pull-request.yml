@@ -198,10 +198,10 @@ jobs:
           API_KEY=$(./scripts/bootstrap-api-key.sh)
           echo "::add-mask::${API_KEY}"
           echo "api-key=${API_KEY}" >> "$GITHUB_OUTPUT"
-      - name: Verify generated credential client
+      - name: Verify generated provider client
         run: |
-          make codegen-credential-client
-          git diff --exit-code -- internal/client/archestra_client_manual.go
+          make codegen-api-client
+          git diff --exit-code -- internal/client/archestra_client.go
       - name: Test credential lifecycle and GitHub App linkage
         env:
           TF_ACC: "1"

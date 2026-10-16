@@ -128,7 +128,47 @@
         {
           "computed": true,
           "optional": true,
+          "path": "access_all_subagents",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
           "path": "access_all_tools",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "activation_skill_mode",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "activation_skill_policy_revision",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "activation_skills_count",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_email",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -153,6 +193,30 @@
           "computed": true,
           "optional": true,
           "path": "consider_context_untrusted",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "deleted_at",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -254,6 +318,22 @@
           "write_only": false
         },
         {
+          "computed": true,
+          "optional": false,
+          "path": "last_used_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "latest_version",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
           "computed": false,
           "optional": true,
           "path": "llm_api_key_id",
@@ -265,6 +345,14 @@
           "computed": false,
           "optional": true,
           "path": "llm_model",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "llm_provider_requires_per_user_credential",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -290,6 +378,30 @@
           "optional": false,
           "path": "name",
           "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "resolved_llm_model_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "resolved_llm_provider",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "resolved_llm_provider_key_name",
+          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -518,6 +630,14 @@
           "write_only": false
         },
         {
+          "computed": true,
+          "optional": false,
+          "path": "sandbox_available",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
           "computed": false,
           "optional": true,
           "path": "suggested_prompts",
@@ -545,6 +665,14 @@
           "computed": false,
           "optional": true,
           "path": "system_prompt",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "tool_exposure_mode",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -2737,6 +2865,22 @@
       ],
       "fields": [
         {
+          "computed": true,
+          "optional": true,
+          "path": "access_all_tools",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_email",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
           "computed": false,
           "optional": true,
           "path": "connector_ids",
@@ -2753,9 +2897,41 @@
           "write_only": false
         },
         {
+          "computed": true,
+          "optional": false,
+          "path": "created_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "deleted_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
           "computed": false,
           "optional": true,
           "path": "description",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "environment_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -2821,6 +2997,30 @@
           "optional": false,
           "path": "labels.value",
           "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "last_used_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "latest_version",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "missing_credential_behavior",
+          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -4185,6 +4385,82 @@
         },
         {
           "api_forbidden_request_fields": [],
+          "builder": "UpdateAuthSettings",
+          "method": "PATCH",
+          "path": "/api/organization/auth-settings",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "defaultMemberRole",
+            "oauthAccessTokenLifetimeSeconds",
+            "requireTwoFactor",
+            "sessionMaxAgeSeconds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [
+            "connectionShownProviders"
+          ],
+          "builder": "UpdateConnectionSettings",
+          "method": "PATCH",
+          "path": "/api/organization/connection-settings",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "connectionBaseUrls",
+            "connectionClientFutureProviders",
+            "connectionClientOrder",
+            "connectionClientProviderKeys",
+            "connectionDefaultClientId",
+            "connectionDefaultMcpGatewayId",
+            "connectionLlmProxyEnabled",
+            "connectionPluginsEnabled",
+            "connectionRuntimeHandoffEnabled",
+            "connectionRuntimeHandoffInstructions",
+            "connectionShownClientIds",
+            "connectionShownProviders",
+            "connectionSkillsEnabled"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [
+            "restricted"
+          ],
+          "builder": "UpdateDefaultEnvironment",
+          "method": "PATCH",
+          "path": "/api/organization/default-environment",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "description",
+            "name",
+            "namespace",
+            "networkPolicy",
+            "restricted",
+            "trustedImageRegistries",
+            "validationRegex"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateIntegrationSettings",
+          "method": "PATCH",
+          "path": "/api/organization/integration-settings",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "knowledgeConnectorOverrides",
+            "messagingChannelOverrides",
+            "modelProviderOverrides",
+            "popularAgentOverrides"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
           "builder": "UpdateKnowledgeSettings",
           "method": "PATCH",
           "path": "/api/organization/knowledge-settings",
@@ -4231,6 +4507,19 @@
             "newAppsLockedByDefault"
           ],
           "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateSkillsSettings",
+          "method": "PATCH",
+          "path": "/api/organization/skills-settings",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "onlineSkillCatalogEnabled",
+            "skillMarketplaceAnonymousAccess"
+          ],
+          "retired_request_fields": []
         }
       ],
       "fields": [
@@ -4238,6 +4527,14 @@
           "computed": true,
           "optional": true,
           "path": "allow_chat_file_uploads",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "allow_tool_auto_assignment",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -4254,6 +4551,14 @@
           "computed": true,
           "optional": true,
           "path": "app_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "apps_hackathon_recorder_enabled",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -4308,6 +4613,134 @@
         },
         {
           "computed": true,
+          "optional": true,
+          "path": "connection_base_urls",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_base_urls.description",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_base_urls.is_default",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "connection_base_urls.url",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_base_urls.visible",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_client_future_providers",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_client_order",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_client_provider_keys",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_default_client_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_default_mcp_gateway_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_llm_proxy_enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_plugins_enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_runtime_handoff_enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_runtime_handoff_instructions",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_shown_client_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "connection_skills_enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
           "optional": false,
           "path": "created_at",
           "required": false,
@@ -4325,7 +4758,71 @@
         {
           "computed": true,
           "optional": true,
+          "path": "default_environment_description",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "default_environment_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "default_environment_namespace",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "default_environment_trusted_image_registries",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "default_environment_validation_regex",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
           "path": "default_llm_api_key_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "default_member_role",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "default_model_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "default_network_policy",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -4388,8 +4885,48 @@
         },
         {
           "computed": true,
+          "optional": true,
+          "path": "icon_logo_dark",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
           "optional": false,
           "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "kb_bm25_b",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "kb_bm25_k1",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "kb_contextual_retrieval_mode",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "knowledge_connector_overrides",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -4412,6 +4949,22 @@
         },
         {
           "computed": true,
+          "optional": true,
+          "path": "mcp_idle_hibernation_enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "messaging_channel_overrides",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
           "optional": false,
           "path": "metadata",
           "required": false,
@@ -4420,8 +4973,56 @@
         },
         {
           "computed": true,
+          "optional": true,
+          "path": "model_provider_overrides",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
           "optional": false,
           "path": "name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "new_apps_disabled_by_default",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "new_apps_locked_by_default",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "oauth_access_token_lifetime_seconds",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "ocr_chat_api_key_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "ocr_model",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -4445,6 +5046,46 @@
         {
           "computed": true,
           "optional": true,
+          "path": "onboarding_wizard",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "online_mcp_catalog_enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "online_skill_catalog_enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "popular_agent_overrides",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "require_two_factor",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
           "path": "reranker_chat_api_key_id",
           "required": false,
           "sensitive": false,
@@ -4454,6 +5095,22 @@
           "computed": true,
           "optional": true,
           "path": "reranker_model",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "session_max_age_seconds",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "skill_marketplace_anonymous_access",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -6028,31 +6685,6 @@
       "method": "PATCH",
       "operation_id": "updateOpenAppaYell",
       "path": "/api/openappa/yells/{}"
-    },
-    {
-      "method": "PATCH",
-      "operation_id": "updateAuthSettings",
-      "path": "/api/organization/auth-settings"
-    },
-    {
-      "method": "PATCH",
-      "operation_id": "updateConnectionSettings",
-      "path": "/api/organization/connection-settings"
-    },
-    {
-      "method": "PATCH",
-      "operation_id": "updateDefaultEnvironment",
-      "path": "/api/organization/default-environment"
-    },
-    {
-      "method": "PATCH",
-      "operation_id": "updateIntegrationSettings",
-      "path": "/api/organization/integration-settings"
-    },
-    {
-      "method": "PATCH",
-      "operation_id": "updateSkillsSettings",
-      "path": "/api/organization/skills-settings"
     },
     {
       "method": "PATCH",

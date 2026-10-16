@@ -319,13 +319,31 @@
     "TestIdentityProviderPreservesAllConfiguredRedactedSecrets",
     "TestPermissionPolicyConflictDoesNotRetry"
   ],
-  "provider_source_sha256": "f1bc402004ec59acc2e4688639f1d4bdcc22663e48815fbe93ec185675cf41d9",
+  "maintenance_release": {
+    "arm64_offline_schema_smoke_resources": 22,
+    "crossplane_multi_arch_published": [
+      "linux_amd64",
+      "linux_arm64"
+    ],
+    "native_path_metadata": "Unversioned environment path discovered; versioned correction prepared for v3.",
+    "registry_archive_checksum_verified": true,
+    "terraform_registry_indexed": true,
+    "version": "2.4.1"
+  },
+  "new_current_field_acceptance": [
+    "TestAccOrganizationSettingsCurrentDomains",
+    "TestAccCurrentAgentControls",
+    "TestAccCurrentGatewayControls"
+  ],
   "remaining_release_gates": [
-    "Full API-field coverage is failing (150 fields at the last measurement).",
+    "Full API-field coverage is still failing (54 fields at the latest measurement).",
     "Remaining 13 Crossplane resource lifecycle proofs.",
     "Full meaningful API-domain taxonomy and justified exclusions.",
     "Other state/CRD adoption migrations and release package smoke tests.",
     "Live agent dry run, durable publication wiring, daily schedule and failure notification."
   ],
+  "runtime_probe_controller_sha256": "9faacea7aba5b8caa12008f8904c53eb4c50d2266d638ab8fabd1295a0d656c7",
+  "runtime_probe_provider_sha256": "61eca82bd743de061bf9d3c4eb7730914f3cb9b1c83af4745c93f51b88c63df1",
+  "runtime_probe_version_note": "Earlier v3 candidate with the same 23 resource mappings. Rerun all runtime probes against the final release candidate; newer settings and agent fields currently have separate Terraform acceptance evidence.",
   "status": "draft_work_in_progress_not_release_coverage"
 }

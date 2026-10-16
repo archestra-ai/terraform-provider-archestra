@@ -206,6 +206,10 @@ func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	if data.ID.IsNull() || data.ID.IsUnknown() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	// Call API
 	apiResp, err := r.client.GetTeamWithResponse(ctx, data.ID.ValueString())

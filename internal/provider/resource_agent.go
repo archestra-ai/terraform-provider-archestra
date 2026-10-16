@@ -35,6 +35,23 @@ type AgentResource struct {
 // AgentResourceModel is the schema for an internal Archestra agent (chat agent
 // with prompts, knowledge sources, optional email triggers, etc.).
 type AgentResourceModel struct {
+	AuthorEmail                          types.String `tfsdk:"author_email"`
+	CreatedBy                            types.String `tfsdk:"created_by"`
+	CreatedByServiceAccountId            types.String `tfsdk:"created_by_service_account_id"`
+	DeletedAt                            types.String `tfsdk:"deleted_at"`
+	LastUsedAt                           types.String `tfsdk:"last_used_at"`
+	LatestVersion                        types.Int64  `tfsdk:"latest_version"`
+	ActivationSkillMode                  types.String `tfsdk:"activation_skill_mode"`
+	ActivationSkillPolicyRevision        types.Int64  `tfsdk:"activation_skill_policy_revision"`
+	ActivationSkillsCount                types.Int64  `tfsdk:"activation_skills_count"`
+	LlmProviderRequiresPerUserCredential types.Bool   `tfsdk:"llm_provider_requires_per_user_credential"`
+	ResolvedLlmModelName                 types.String `tfsdk:"resolved_llm_model_name"`
+	ResolvedLlmProvider                  types.String `tfsdk:"resolved_llm_provider"`
+	ResolvedLlmProviderKeyName           types.String `tfsdk:"resolved_llm_provider_key_name"`
+	SandboxAvailable                     types.Bool   `tfsdk:"sandbox_available"`
+	AccessAllSubagents                   types.Bool   `tfsdk:"access_all_subagents"`
+	ToolExposureMode                     types.String `tfsdk:"tool_exposure_mode"`
+
 	ID                         types.String           `tfsdk:"id"`
 	Name                       types.String           `tfsdk:"name"`
 	Description                types.String           `tfsdk:"description"`
@@ -180,6 +197,9 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"built_in_agent_config": schema.StringAttribute{Computed: true, MarkdownDescription: "Server-owned built-in agent metadata as JSON."},
 		},
 	}
+	for name, attribute := range currentAgentAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
 }
 
 func (r *AgentResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -237,6 +257,14 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -330,6 +358,10 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -402,6 +434,10 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 		return
 	}
 
+	flattenCurrentAgentFields(data, body, diags)
+	if diags.HasError() {
+		return
+	}
 	data.ID = types.StringValue(resp.Id.String())
 	data.Name = types.StringValue(resp.Name)
 	optionalStringFromAPI(&data.Description, resp.Description)
@@ -465,7 +501,10 @@ func (r *AgentResource) APIShape() any { return client.GetAgentResponse{} }
 //     duplicating it here would create a phantom diff against the m2m
 //     relationship.
 func (r *AgentResource) KnownIntentionallySkipped() []string {
+	// Legacy visibility/skill projections and secret-storage pointers are not managed.
+	// Activation policy is represented by its current mode/revision metadata.
 	return []string{
+		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId",
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "suggestedPrompts", "passthroughHeaders",
 		"identityProviderId", "slug", "tools", "scope", "teams", "users",
@@ -487,6 +526,9 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 //     `if (field !== undefined)` per-field guards. Merge-patch's "omit when
 //     equal, emit when changed" lines up with that exactly.
 var agentAttrSpec = []AttrSpec{
+	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
+	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar, OmitOnNull: true},
+
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
 	{TFName: "icon", JSONName: "icon", Kind: Scalar},
@@ -527,4 +569,22 @@ var agentAttrSpec = []AttrSpec{
 		Children: runtimeAttrSpec,
 		Encoder:  encodeRuntime,
 	},
+}
+
+func (r *AgentResource) refreshMetadataAfterWrite(ctx context.Context, data *AgentResourceModel, diags *diag.Diagnostics) {
+	identifier, err := uuid.Parse(data.ID.ValueString())
+	if err != nil {
+		diags.AddError("Invalid Created Identifier", "The API did not return a valid agent ID.")
+		return
+	}
+	response, err := r.client.GetAgentWithResponse(ctx, identifier)
+	if err != nil {
+		diags.AddError("Agent Refresh Failed", "The object was written but its full metadata could not be read. Refresh state before retrying.")
+		return
+	}
+	if response.JSON200 == nil {
+		diags.AddError("Agent Refresh Failed", fmt.Sprintf("The object was written but metadata read returned %d. Refresh state before retrying.", response.StatusCode()))
+		return
+	}
+	r.flattenAgentResponse(ctx, data, response.Body, diags)
 }

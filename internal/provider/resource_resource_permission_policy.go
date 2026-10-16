@@ -164,6 +164,11 @@ func (r *ResourcePermissionPolicyResource) Read(ctx context.Context, req resourc
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	if state.ID.IsNull() || state.ID.IsUnknown() || state.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
 	current, status := r.readPolicy(ctx, &state, &resp.Diagnostics)
 	if status == 404 {
 		resp.State.RemoveResource(ctx)

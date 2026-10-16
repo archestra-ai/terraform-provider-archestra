@@ -172,6 +172,10 @@ func (r *AgentDelegationResource) Read(ctx context.Context, req resource.ReadReq
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	if data.ID.IsNull() || data.ID.IsUnknown() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	parts := strings.Split(data.ID.ValueString(), ":")
 	if len(parts) != 2 {

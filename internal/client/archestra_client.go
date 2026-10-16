@@ -819,10 +819,10 @@ const (
 
 // Defines values for UpdateModelJSONBodyConfiguredParametersReasoningEffort.
 const (
-	High   UpdateModelJSONBodyConfiguredParametersReasoningEffort = "high"
-	Low    UpdateModelJSONBodyConfiguredParametersReasoningEffort = "low"
-	Medium UpdateModelJSONBodyConfiguredParametersReasoningEffort = "medium"
-	None   UpdateModelJSONBodyConfiguredParametersReasoningEffort = "none"
+	UpdateModelJSONBodyConfiguredParametersReasoningEffortHigh   UpdateModelJSONBodyConfiguredParametersReasoningEffort = "high"
+	UpdateModelJSONBodyConfiguredParametersReasoningEffortLow    UpdateModelJSONBodyConfiguredParametersReasoningEffort = "low"
+	UpdateModelJSONBodyConfiguredParametersReasoningEffortMedium UpdateModelJSONBodyConfiguredParametersReasoningEffort = "medium"
+	UpdateModelJSONBodyConfiguredParametersReasoningEffortNone   UpdateModelJSONBodyConfiguredParametersReasoningEffort = "none"
 )
 
 // Defines values for UpdateModelJSONBodyInputModalities.
@@ -883,30 +883,30 @@ const (
 
 // Defines values for CreateLlmProviderApiKeyJSONBodyProvider.
 const (
-	Anthropic           CreateLlmProviderApiKeyJSONBodyProvider = "anthropic"
-	Archestra           CreateLlmProviderApiKeyJSONBodyProvider = "archestra"
-	Azure               CreateLlmProviderApiKeyJSONBodyProvider = "azure"
-	Bedrock             CreateLlmProviderApiKeyJSONBodyProvider = "bedrock"
-	Cerebras            CreateLlmProviderApiKeyJSONBodyProvider = "cerebras"
-	Cohere              CreateLlmProviderApiKeyJSONBodyProvider = "cohere"
-	Deepseek            CreateLlmProviderApiKeyJSONBodyProvider = "deepseek"
-	Gemini              CreateLlmProviderApiKeyJSONBodyProvider = "gemini"
-	GithubCopilot       CreateLlmProviderApiKeyJSONBodyProvider = "github-copilot"
-	Groq                CreateLlmProviderApiKeyJSONBodyProvider = "groq"
-	Jev                 CreateLlmProviderApiKeyJSONBodyProvider = "jev"
-	Kimi                CreateLlmProviderApiKeyJSONBodyProvider = "kimi"
-	Microsoft365Copilot CreateLlmProviderApiKeyJSONBodyProvider = "microsoft-365-copilot"
-	Minimax             CreateLlmProviderApiKeyJSONBodyProvider = "minimax"
-	Mistral             CreateLlmProviderApiKeyJSONBodyProvider = "mistral"
-	Ollama              CreateLlmProviderApiKeyJSONBodyProvider = "ollama"
-	OllamaNative        CreateLlmProviderApiKeyJSONBodyProvider = "ollama-native"
-	Openai              CreateLlmProviderApiKeyJSONBodyProvider = "openai"
-	Openrouter          CreateLlmProviderApiKeyJSONBodyProvider = "openrouter"
-	Perplexity          CreateLlmProviderApiKeyJSONBodyProvider = "perplexity"
-	Vllm                CreateLlmProviderApiKeyJSONBodyProvider = "vllm"
-	Voyage              CreateLlmProviderApiKeyJSONBodyProvider = "voyage"
-	Xai                 CreateLlmProviderApiKeyJSONBodyProvider = "xai"
-	Zhipuai             CreateLlmProviderApiKeyJSONBodyProvider = "zhipuai"
+	CreateLlmProviderApiKeyJSONBodyProviderAnthropic           CreateLlmProviderApiKeyJSONBodyProvider = "anthropic"
+	CreateLlmProviderApiKeyJSONBodyProviderArchestra           CreateLlmProviderApiKeyJSONBodyProvider = "archestra"
+	CreateLlmProviderApiKeyJSONBodyProviderAzure               CreateLlmProviderApiKeyJSONBodyProvider = "azure"
+	CreateLlmProviderApiKeyJSONBodyProviderBedrock             CreateLlmProviderApiKeyJSONBodyProvider = "bedrock"
+	CreateLlmProviderApiKeyJSONBodyProviderCerebras            CreateLlmProviderApiKeyJSONBodyProvider = "cerebras"
+	CreateLlmProviderApiKeyJSONBodyProviderCohere              CreateLlmProviderApiKeyJSONBodyProvider = "cohere"
+	CreateLlmProviderApiKeyJSONBodyProviderDeepseek            CreateLlmProviderApiKeyJSONBodyProvider = "deepseek"
+	CreateLlmProviderApiKeyJSONBodyProviderGemini              CreateLlmProviderApiKeyJSONBodyProvider = "gemini"
+	CreateLlmProviderApiKeyJSONBodyProviderGithubCopilot       CreateLlmProviderApiKeyJSONBodyProvider = "github-copilot"
+	CreateLlmProviderApiKeyJSONBodyProviderGroq                CreateLlmProviderApiKeyJSONBodyProvider = "groq"
+	CreateLlmProviderApiKeyJSONBodyProviderJev                 CreateLlmProviderApiKeyJSONBodyProvider = "jev"
+	CreateLlmProviderApiKeyJSONBodyProviderKimi                CreateLlmProviderApiKeyJSONBodyProvider = "kimi"
+	CreateLlmProviderApiKeyJSONBodyProviderMicrosoft365Copilot CreateLlmProviderApiKeyJSONBodyProvider = "microsoft-365-copilot"
+	CreateLlmProviderApiKeyJSONBodyProviderMinimax             CreateLlmProviderApiKeyJSONBodyProvider = "minimax"
+	CreateLlmProviderApiKeyJSONBodyProviderMistral             CreateLlmProviderApiKeyJSONBodyProvider = "mistral"
+	CreateLlmProviderApiKeyJSONBodyProviderOllama              CreateLlmProviderApiKeyJSONBodyProvider = "ollama"
+	CreateLlmProviderApiKeyJSONBodyProviderOllamaNative        CreateLlmProviderApiKeyJSONBodyProvider = "ollama-native"
+	CreateLlmProviderApiKeyJSONBodyProviderOpenai              CreateLlmProviderApiKeyJSONBodyProvider = "openai"
+	CreateLlmProviderApiKeyJSONBodyProviderOpenrouter          CreateLlmProviderApiKeyJSONBodyProvider = "openrouter"
+	CreateLlmProviderApiKeyJSONBodyProviderPerplexity          CreateLlmProviderApiKeyJSONBodyProvider = "perplexity"
+	CreateLlmProviderApiKeyJSONBodyProviderVllm                CreateLlmProviderApiKeyJSONBodyProvider = "vllm"
+	CreateLlmProviderApiKeyJSONBodyProviderVoyage              CreateLlmProviderApiKeyJSONBodyProvider = "voyage"
+	CreateLlmProviderApiKeyJSONBodyProviderXai                 CreateLlmProviderApiKeyJSONBodyProvider = "xai"
+	CreateLlmProviderApiKeyJSONBodyProviderZhipuai             CreateLlmProviderApiKeyJSONBodyProvider = "zhipuai"
 )
 
 // Defines values for InstallMcpServerJSONBodyLocalInstallationStatus.
@@ -966,6 +966,48 @@ const (
 // Defines values for CompleteOnboardingJSONBodyOnboardingComplete.
 const (
 	True CompleteOnboardingJSONBodyOnboardingComplete = true
+)
+
+// Defines values for UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider.
+const (
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderAnthropic           UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "anthropic"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderArchestra           UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "archestra"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderAzure               UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "azure"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderBedrock             UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "bedrock"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderCerebras            UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "cerebras"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderCohere              UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "cohere"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderDeepseek            UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "deepseek"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderGemini              UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "gemini"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderGithubCopilot       UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "github-copilot"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderGroq                UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "groq"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderJev                 UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "jev"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderKimi                UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "kimi"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderMicrosoft365Copilot UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "microsoft-365-copilot"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderMinimax             UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "minimax"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderMistral             UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "mistral"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderOllama              UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "ollama"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderOllamaNative        UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "ollama-native"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderOpenai              UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "openai"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderOpenrouter          UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "openrouter"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderPerplexity          UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "perplexity"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderVllm                UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "vllm"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderVoyage              UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "voyage"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderXai                 UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "xai"
+	UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProviderZhipuai             UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider = "zhipuai"
+)
+
+// Defines values for UpdateDefaultEnvironmentJSONBodyNetworkPolicyDomainPreset.
+const (
+	UpdateDefaultEnvironmentJSONBodyNetworkPolicyDomainPresetCommonDependencies UpdateDefaultEnvironmentJSONBodyNetworkPolicyDomainPreset = "common_dependencies"
+	UpdateDefaultEnvironmentJSONBodyNetworkPolicyDomainPresetNone               UpdateDefaultEnvironmentJSONBodyNetworkPolicyDomainPreset = "none"
+	UpdateDefaultEnvironmentJSONBodyNetworkPolicyDomainPresetPackageManagers    UpdateDefaultEnvironmentJSONBodyNetworkPolicyDomainPreset = "package_managers"
+)
+
+// Defines values for UpdateDefaultEnvironmentJSONBodyNetworkPolicyEgressMode.
+const (
+	Off          UpdateDefaultEnvironmentJSONBodyNetworkPolicyEgressMode = "off"
+	Restricted   UpdateDefaultEnvironmentJSONBodyNetworkPolicyEgressMode = "restricted"
+	Unrestricted UpdateDefaultEnvironmentJSONBodyNetworkPolicyEgressMode = "unrestricted"
 )
 
 // Defines values for CreateProjectJSONBodyInitialGrantsActions.
@@ -2990,6 +3032,15 @@ type UpdateAppearanceSettingsJSONBodyCustomFont string
 // UpdateAppearanceSettingsJSONBodyTheme defines parameters for UpdateAppearanceSettings.
 type UpdateAppearanceSettingsJSONBodyTheme string
 
+// UpdateAuthSettingsJSONBody defines parameters for UpdateAuthSettings.
+type UpdateAuthSettingsJSONBody struct {
+	// DefaultMemberRole One or more organization role identifiers, separated by commas
+	DefaultMemberRole               *string `json:"defaultMemberRole"`
+	OauthAccessTokenLifetimeSeconds *int    `json:"oauthAccessTokenLifetimeSeconds,omitempty"`
+	RequireTwoFactor                *bool   `json:"requireTwoFactor,omitempty"`
+	SessionMaxAgeSeconds            *int    `json:"sessionMaxAgeSeconds"`
+}
+
 // CompleteOnboardingJSONBody defines parameters for CompleteOnboarding.
 type CompleteOnboardingJSONBody struct {
 	OnboardingComplete CompleteOnboardingJSONBodyOnboardingComplete `json:"onboardingComplete"`
@@ -2997,6 +3048,92 @@ type CompleteOnboardingJSONBody struct {
 
 // CompleteOnboardingJSONBodyOnboardingComplete defines parameters for CompleteOnboarding.
 type CompleteOnboardingJSONBodyOnboardingComplete bool
+
+// UpdateConnectionSettingsJSONBody defines parameters for UpdateConnectionSettings.
+type UpdateConnectionSettingsJSONBody struct {
+	ConnectionBaseUrls *[]struct {
+		Description *string `json:"description,omitempty"`
+		IsDefault   *bool   `json:"isDefault,omitempty"`
+		Url         string  `json:"url"`
+		Visible     *bool   `json:"visible,omitempty"`
+	} `json:"connectionBaseUrls"`
+	ConnectionClientFutureProviders *map[string]bool `json:"connectionClientFutureProviders"`
+	ConnectionClientOrder           *[]string        `json:"connectionClientOrder"`
+	ConnectionClientProviderKeys    *map[string][]struct {
+		Provider         UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider `json:"provider"`
+		ProviderApiKeyId openapi_types.UUID                                                   `json:"providerApiKeyId"`
+	} `json:"connectionClientProviderKeys"`
+	ConnectionDefaultClientId            *string             `json:"connectionDefaultClientId"`
+	ConnectionDefaultMcpGatewayId        *openapi_types.UUID `json:"connectionDefaultMcpGatewayId"`
+	ConnectionLlmProxyEnabled            *bool               `json:"connectionLlmProxyEnabled,omitempty"`
+	ConnectionPluginsEnabled             *bool               `json:"connectionPluginsEnabled,omitempty"`
+	ConnectionRuntimeHandoffEnabled      *bool               `json:"connectionRuntimeHandoffEnabled,omitempty"`
+	ConnectionRuntimeHandoffInstructions *string             `json:"connectionRuntimeHandoffInstructions"`
+	ConnectionShownClientIds             *[]string           `json:"connectionShownClientIds"`
+	ConnectionShownProviders             interface{}         `json:"connectionShownProviders,omitempty"`
+	ConnectionSkillsEnabled              *bool               `json:"connectionSkillsEnabled,omitempty"`
+}
+
+// UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider defines parameters for UpdateConnectionSettings.
+type UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider string
+
+// UpdateDefaultEnvironmentJSONBody defines parameters for UpdateDefaultEnvironment.
+type UpdateDefaultEnvironmentJSONBody struct {
+	Description   *string `json:"description"`
+	Name          *string `json:"name"`
+	Namespace     *string `json:"namespace"`
+	NetworkPolicy *struct {
+		AllowedCidrs   *[]string                                                  `json:"allowedCidrs,omitempty"`
+		AllowedDomains *[]string                                                  `json:"allowedDomains,omitempty"`
+		DomainPreset   *UpdateDefaultEnvironmentJSONBodyNetworkPolicyDomainPreset `json:"domainPreset,omitempty"`
+		EgressMode     *UpdateDefaultEnvironmentJSONBodyNetworkPolicyEgressMode   `json:"egressMode,omitempty"`
+	} `json:"networkPolicy"`
+	Restricted             interface{} `json:"restricted,omitempty"`
+	TrustedImageRegistries *[]string   `json:"trustedImageRegistries"`
+	ValidationRegex        *string     `json:"validationRegex"`
+}
+
+// UpdateDefaultEnvironmentJSONBodyNetworkPolicyDomainPreset defines parameters for UpdateDefaultEnvironment.
+type UpdateDefaultEnvironmentJSONBodyNetworkPolicyDomainPreset string
+
+// UpdateDefaultEnvironmentJSONBodyNetworkPolicyEgressMode defines parameters for UpdateDefaultEnvironment.
+type UpdateDefaultEnvironmentJSONBodyNetworkPolicyEgressMode string
+
+// UpdateIntegrationSettingsJSONBody defines parameters for UpdateIntegrationSettings.
+type UpdateIntegrationSettingsJSONBody struct {
+	KnowledgeConnectorOverrides *map[string]struct {
+		Hidden *bool `json:"hidden,omitempty"`
+	} `json:"knowledgeConnectorOverrides"`
+	MessagingChannelOverrides *map[string]struct {
+		Hidden *bool `json:"hidden,omitempty"`
+	} `json:"messagingChannelOverrides"`
+	ModelProviderOverrides *map[string]struct {
+		DisplayName *string `json:"displayName"`
+		Hidden      *bool   `json:"hidden,omitempty"`
+	} `json:"modelProviderOverrides"`
+	PopularAgentOverrides *struct {
+		ClaudeCode *struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"claude-code,omitempty"`
+		Codex *struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"codex,omitempty"`
+		Hermes *struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"hermes,omitempty"`
+		Openclaw *struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"openclaw,omitempty"`
+		Opencode *struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"opencode,omitempty"`
+	} `json:"popularAgentOverrides"`
+}
 
 // UpdateKnowledgeSettingsJSONBody defines parameters for UpdateKnowledgeSettings.
 type UpdateKnowledgeSettingsJSONBody struct {
@@ -3024,6 +3161,12 @@ type UpdateSecuritySettingsJSONBody struct {
 	AppsHackathonRecorderEnabled *bool `json:"appsHackathonRecorderEnabled,omitempty"`
 	NewAppsDisabledByDefault     *bool `json:"newAppsDisabledByDefault,omitempty"`
 	NewAppsLockedByDefault       *bool `json:"newAppsLockedByDefault,omitempty"`
+}
+
+// UpdateSkillsSettingsJSONBody defines parameters for UpdateSkillsSettings.
+type UpdateSkillsSettingsJSONBody struct {
+	OnlineSkillCatalogEnabled       *bool `json:"onlineSkillCatalogEnabled,omitempty"`
+	SkillMarketplaceAnonymousAccess *bool `json:"skillMarketplaceAnonymousAccess,omitempty"`
 }
 
 // CreateProjectJSONBody defines parameters for CreateProject.
@@ -3393,8 +3536,20 @@ type UpdateAgentSettingsJSONRequestBody UpdateAgentSettingsJSONBody
 // UpdateAppearanceSettingsJSONRequestBody defines body for UpdateAppearanceSettings for application/json ContentType.
 type UpdateAppearanceSettingsJSONRequestBody UpdateAppearanceSettingsJSONBody
 
+// UpdateAuthSettingsJSONRequestBody defines body for UpdateAuthSettings for application/json ContentType.
+type UpdateAuthSettingsJSONRequestBody UpdateAuthSettingsJSONBody
+
 // CompleteOnboardingJSONRequestBody defines body for CompleteOnboarding for application/json ContentType.
 type CompleteOnboardingJSONRequestBody CompleteOnboardingJSONBody
+
+// UpdateConnectionSettingsJSONRequestBody defines body for UpdateConnectionSettings for application/json ContentType.
+type UpdateConnectionSettingsJSONRequestBody UpdateConnectionSettingsJSONBody
+
+// UpdateDefaultEnvironmentJSONRequestBody defines body for UpdateDefaultEnvironment for application/json ContentType.
+type UpdateDefaultEnvironmentJSONRequestBody UpdateDefaultEnvironmentJSONBody
+
+// UpdateIntegrationSettingsJSONRequestBody defines body for UpdateIntegrationSettings for application/json ContentType.
+type UpdateIntegrationSettingsJSONRequestBody UpdateIntegrationSettingsJSONBody
 
 // UpdateKnowledgeSettingsJSONRequestBody defines body for UpdateKnowledgeSettings for application/json ContentType.
 type UpdateKnowledgeSettingsJSONRequestBody UpdateKnowledgeSettingsJSONBody
@@ -3404,6 +3559,9 @@ type UpdateMcpSettingsJSONRequestBody UpdateMcpSettingsJSONBody
 
 // UpdateSecuritySettingsJSONRequestBody defines body for UpdateSecuritySettings for application/json ContentType.
 type UpdateSecuritySettingsJSONRequestBody UpdateSecuritySettingsJSONBody
+
+// UpdateSkillsSettingsJSONRequestBody defines body for UpdateSkillsSettings for application/json ContentType.
+type UpdateSkillsSettingsJSONRequestBody UpdateSkillsSettingsJSONBody
 
 // CreateProjectJSONRequestBody defines body for CreateProject for application/json ContentType.
 type CreateProjectJSONRequestBody CreateProjectJSONBody
@@ -3745,10 +3903,30 @@ type ClientInterface interface {
 
 	UpdateAppearanceSettings(ctx context.Context, body UpdateAppearanceSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// UpdateAuthSettingsWithBody request with any body
+	UpdateAuthSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateAuthSettings(ctx context.Context, body UpdateAuthSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CompleteOnboardingWithBody request with any body
 	CompleteOnboardingWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CompleteOnboarding(ctx context.Context, body CompleteOnboardingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateConnectionSettingsWithBody request with any body
+	UpdateConnectionSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateConnectionSettings(ctx context.Context, body UpdateConnectionSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateDefaultEnvironmentWithBody request with any body
+	UpdateDefaultEnvironmentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateDefaultEnvironment(ctx context.Context, body UpdateDefaultEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateIntegrationSettingsWithBody request with any body
+	UpdateIntegrationSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateIntegrationSettings(ctx context.Context, body UpdateIntegrationSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateKnowledgeSettingsWithBody request with any body
 	UpdateKnowledgeSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3764,6 +3942,11 @@ type ClientInterface interface {
 	UpdateSecuritySettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateSecuritySettings(ctx context.Context, body UpdateSecuritySettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSkillsSettingsWithBody request with any body
+	UpdateSkillsSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateSkillsSettings(ctx context.Context, body UpdateSkillsSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateProjectWithBody request with any body
 	CreateProjectWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4900,6 +5083,30 @@ func (c *Client) UpdateAppearanceSettings(ctx context.Context, body UpdateAppear
 	return c.Client.Do(req)
 }
 
+func (c *Client) UpdateAuthSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAuthSettingsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAuthSettings(ctx context.Context, body UpdateAuthSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAuthSettingsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) CompleteOnboardingWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCompleteOnboardingRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -4914,6 +5121,78 @@ func (c *Client) CompleteOnboardingWithBody(ctx context.Context, contentType str
 
 func (c *Client) CompleteOnboarding(ctx context.Context, body CompleteOnboardingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCompleteOnboardingRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateConnectionSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateConnectionSettingsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateConnectionSettings(ctx context.Context, body UpdateConnectionSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateConnectionSettingsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateDefaultEnvironmentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateDefaultEnvironmentRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateDefaultEnvironment(ctx context.Context, body UpdateDefaultEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateDefaultEnvironmentRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateIntegrationSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateIntegrationSettingsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateIntegrationSettings(ctx context.Context, body UpdateIntegrationSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateIntegrationSettingsRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -4986,6 +5265,30 @@ func (c *Client) UpdateSecuritySettingsWithBody(ctx context.Context, contentType
 
 func (c *Client) UpdateSecuritySettings(ctx context.Context, body UpdateSecuritySettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateSecuritySettingsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSkillsSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSkillsSettingsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSkillsSettings(ctx context.Context, body UpdateSkillsSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSkillsSettingsRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -8095,6 +8398,46 @@ func NewUpdateAppearanceSettingsRequestWithBody(server string, contentType strin
 	return req, nil
 }
 
+// NewUpdateAuthSettingsRequest calls the generic UpdateAuthSettings builder with application/json body
+func NewUpdateAuthSettingsRequest(server string, body UpdateAuthSettingsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateAuthSettingsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateAuthSettingsRequestWithBody generates requests for UpdateAuthSettings with any type of body
+func NewUpdateAuthSettingsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/organization/auth-settings")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewCompleteOnboardingRequest calls the generic CompleteOnboarding builder with application/json body
 func NewCompleteOnboardingRequest(server string, body CompleteOnboardingJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -8126,6 +8469,126 @@ func NewCompleteOnboardingRequestWithBody(server string, contentType string, bod
 	}
 
 	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUpdateConnectionSettingsRequest calls the generic UpdateConnectionSettings builder with application/json body
+func NewUpdateConnectionSettingsRequest(server string, body UpdateConnectionSettingsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateConnectionSettingsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateConnectionSettingsRequestWithBody generates requests for UpdateConnectionSettings with any type of body
+func NewUpdateConnectionSettingsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/organization/connection-settings")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUpdateDefaultEnvironmentRequest calls the generic UpdateDefaultEnvironment builder with application/json body
+func NewUpdateDefaultEnvironmentRequest(server string, body UpdateDefaultEnvironmentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateDefaultEnvironmentRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateDefaultEnvironmentRequestWithBody generates requests for UpdateDefaultEnvironment with any type of body
+func NewUpdateDefaultEnvironmentRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/organization/default-environment")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUpdateIntegrationSettingsRequest calls the generic UpdateIntegrationSettings builder with application/json body
+func NewUpdateIntegrationSettingsRequest(server string, body UpdateIntegrationSettingsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateIntegrationSettingsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateIntegrationSettingsRequestWithBody generates requests for UpdateIntegrationSettings with any type of body
+func NewUpdateIntegrationSettingsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/organization/integration-settings")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -8236,6 +8699,46 @@ func NewUpdateSecuritySettingsRequestWithBody(server string, contentType string,
 	}
 
 	operationPath := fmt.Sprintf("/api/organization/security-settings")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUpdateSkillsSettingsRequest calls the generic UpdateSkillsSettings builder with application/json body
+func NewUpdateSkillsSettingsRequest(server string, body UpdateSkillsSettingsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateSkillsSettingsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateSkillsSettingsRequestWithBody generates requests for UpdateSkillsSettings with any type of body
+func NewUpdateSkillsSettingsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/organization/skills-settings")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -9735,10 +10238,30 @@ type ClientWithResponsesInterface interface {
 
 	UpdateAppearanceSettingsWithResponse(ctx context.Context, body UpdateAppearanceSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAppearanceSettingsResponse, error)
 
+	// UpdateAuthSettingsWithBodyWithResponse request with any body
+	UpdateAuthSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAuthSettingsResponse, error)
+
+	UpdateAuthSettingsWithResponse(ctx context.Context, body UpdateAuthSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAuthSettingsResponse, error)
+
 	// CompleteOnboardingWithBodyWithResponse request with any body
 	CompleteOnboardingWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CompleteOnboardingResponse, error)
 
 	CompleteOnboardingWithResponse(ctx context.Context, body CompleteOnboardingJSONRequestBody, reqEditors ...RequestEditorFn) (*CompleteOnboardingResponse, error)
+
+	// UpdateConnectionSettingsWithBodyWithResponse request with any body
+	UpdateConnectionSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateConnectionSettingsResponse, error)
+
+	UpdateConnectionSettingsWithResponse(ctx context.Context, body UpdateConnectionSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateConnectionSettingsResponse, error)
+
+	// UpdateDefaultEnvironmentWithBodyWithResponse request with any body
+	UpdateDefaultEnvironmentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateDefaultEnvironmentResponse, error)
+
+	UpdateDefaultEnvironmentWithResponse(ctx context.Context, body UpdateDefaultEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateDefaultEnvironmentResponse, error)
+
+	// UpdateIntegrationSettingsWithBodyWithResponse request with any body
+	UpdateIntegrationSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateIntegrationSettingsResponse, error)
+
+	UpdateIntegrationSettingsWithResponse(ctx context.Context, body UpdateIntegrationSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateIntegrationSettingsResponse, error)
 
 	// UpdateKnowledgeSettingsWithBodyWithResponse request with any body
 	UpdateKnowledgeSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKnowledgeSettingsResponse, error)
@@ -9754,6 +10277,11 @@ type ClientWithResponsesInterface interface {
 	UpdateSecuritySettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSecuritySettingsResponse, error)
 
 	UpdateSecuritySettingsWithResponse(ctx context.Context, body UpdateSecuritySettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSecuritySettingsResponse, error)
+
+	// UpdateSkillsSettingsWithBodyWithResponse request with any body
+	UpdateSkillsSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSkillsSettingsResponse, error)
+
+	UpdateSkillsSettingsWithResponse(ctx context.Context, body UpdateSkillsSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSkillsSettingsResponse, error)
 
 	// CreateProjectWithBodyWithResponse request with any body
 	CreateProjectWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error)
@@ -16555,6 +17083,197 @@ func (r UpdateAppearanceSettingsResponse) StatusCode() int {
 	return 0
 }
 
+type UpdateAuthSettingsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
+		AppName                      *string            `json:"appName"`
+		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
+		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                    *[]struct {
+			Label string `json:"label"`
+			Url   string `json:"url"`
+		} `json:"chatLinks"`
+		ChatPlaceholders   *[]string `json:"chatPlaceholders"`
+		ConnectionBaseUrls *[]struct {
+			Description string `json:"description"`
+			IsDefault   bool   `json:"isDefault"`
+			Url         string `json:"url"`
+			Visible     bool   `json:"visible"`
+		} `json:"connectionBaseUrls"`
+		ConnectionClientFutureProviders *map[string]bool `json:"connectionClientFutureProviders"`
+		ConnectionClientOrder           *[]string        `json:"connectionClientOrder"`
+		ConnectionClientProviderKeys    *map[string][]struct {
+			Provider         UpdateAuthSettings200ConnectionClientProviderKeysProvider `json:"provider"`
+			ProviderApiKeyId openapi_types.UUID                                        `json:"providerApiKeyId"`
+		} `json:"connectionClientProviderKeys"`
+		ConnectionDefaultClientId                *string                                  `json:"connectionDefaultClientId"`
+		ConnectionDefaultLlmProxyId              *openapi_types.UUID                      `json:"connectionDefaultLlmProxyId"`
+		ConnectionDefaultMcpGatewayId            *openapi_types.UUID                      `json:"connectionDefaultMcpGatewayId"`
+		ConnectionLlmProxyEnabled                bool                                     `json:"connectionLlmProxyEnabled"`
+		ConnectionPluginsEnabled                 bool                                     `json:"connectionPluginsEnabled"`
+		ConnectionRuntimeHandoffEnabled          bool                                     `json:"connectionRuntimeHandoffEnabled"`
+		ConnectionRuntimeHandoffInstructions     *string                                  `json:"connectionRuntimeHandoffInstructions"`
+		ConnectionShownClientIds                 *[]string                                `json:"connectionShownClientIds"`
+		ConnectionShownProviders                 *[]string                                `json:"connectionShownProviders"`
+		ConnectionSkillsEnabled                  bool                                     `json:"connectionSkillsEnabled"`
+		CreatedAt                                time.Time                                `json:"createdAt"`
+		CustomFont                               UpdateAuthSettings200CustomFont          `json:"customFont"`
+		DefaultAgentId                           *openapi_types.UUID                      `json:"defaultAgentId"`
+		DefaultEnvironmentDescription            *string                                  `json:"defaultEnvironmentDescription"`
+		DefaultEnvironmentName                   *string                                  `json:"defaultEnvironmentName"`
+		DefaultEnvironmentNamespace              *string                                  `json:"defaultEnvironmentNamespace"`
+		DefaultEnvironmentTrustedImageRegistries *[]string                                `json:"defaultEnvironmentTrustedImageRegistries"`
+		DefaultEnvironmentValidationRegex        *string                                  `json:"defaultEnvironmentValidationRegex"`
+		DefaultLlmApiKeyId                       *openapi_types.UUID                      `json:"defaultLlmApiKeyId"`
+		DefaultLlmModel                          *string                                  `json:"defaultLlmModel"`
+		DefaultLlmProvider                       *UpdateAuthSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
+		DefaultMemberRole                        *string                                  `json:"defaultMemberRole"`
+		DefaultModelId                           *openapi_types.UUID                      `json:"defaultModelId"`
+		DefaultNetworkPolicy                     *struct {
+			AllowedCidrs   []string                                              `json:"allowedCidrs"`
+			AllowedDomains []string                                              `json:"allowedDomains"`
+			DomainPreset   UpdateAuthSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
+			EgressMode     UpdateAuthSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
+		} `json:"defaultNetworkPolicy"`
+		DefaultUserLimitCleanupInterval *UpdateAuthSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel           *[]string                                             `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue           *int                                                  `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId           *openapi_types.UUID                                   `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions             *EmbeddingDimensions                                  `json:"embeddingDimensions"`
+		EmbeddingModel                  *string                                               `json:"embeddingModel"`
+		Favicon                         *string                                               `json:"favicon"`
+		FooterText                      *string                                               `json:"footerText"`
+		IconLogo                        *string                                               `json:"iconLogo"`
+		IconLogoDark                    *string                                               `json:"iconLogoDark"`
+		Id                              string                                                `json:"id"`
+		KbBm25B                         *float32                                              `json:"kbBm25B"`
+		KbBm25K1                        *float32                                              `json:"kbBm25K1"`
+		KbContextualRetrievalMode       *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides     *map[string]struct {
+			Hidden *bool `json:"hidden,omitempty"`
+		} `json:"knowledgeConnectorOverrides"`
+		Logo                      *string `json:"logo"`
+		LogoDark                  *string `json:"logoDark"`
+		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		MessagingChannelOverrides *map[string]struct {
+			Hidden *bool `json:"hidden,omitempty"`
+		} `json:"messagingChannelOverrides"`
+		Metadata               *string `json:"metadata"`
+		ModelProviderOverrides *map[string]struct {
+			DisplayName *string `json:"displayName"`
+			Hidden      *bool   `json:"hidden,omitempty"`
+		} `json:"modelProviderOverrides"`
+		Name                            string              `json:"name"`
+		NewAppsDisabledByDefault        bool                `json:"newAppsDisabledByDefault"`
+		NewAppsLockedByDefault          bool                `json:"newAppsLockedByDefault"`
+		OauthAccessTokenLifetimeSeconds int                 `json:"oauthAccessTokenLifetimeSeconds"`
+		OcrChatApiKeyId                 *openapi_types.UUID `json:"ocrChatApiKeyId"`
+		OcrModel                        *string             `json:"ocrModel"`
+		OgDescription                   *string             `json:"ogDescription"`
+		OnboardingComplete              bool                `json:"onboardingComplete"`
+		OnboardingSurveyCompletedAt     *time.Time          `json:"onboardingSurveyCompletedAt"`
+		OnboardingWizard                *struct {
+			Label string `json:"label"`
+			Pages []struct {
+				Content string  `json:"content"`
+				Image   *string `json:"image"`
+			} `json:"pages"`
+		} `json:"onboardingWizard"`
+		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
+		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PopularAgentOverrides     *map[string]struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"popularAgentOverrides"`
+		RequireTwoFactor                bool                       `json:"requireTwoFactor"`
+		RerankerChatApiKeyId            *openapi_types.UUID        `json:"rerankerChatApiKeyId"`
+		RerankerModel                   *string                    `json:"rerankerModel"`
+		SessionMaxAgeSeconds            *int                       `json:"sessionMaxAgeSeconds"`
+		SkillMarketplaceAnonymousAccess bool                       `json:"skillMarketplaceAnonymousAccess"`
+		SkillToolsEnabled               bool                       `json:"skillToolsEnabled"`
+		SlimChatErrorUi                 bool                       `json:"slimChatErrorUi"`
+		Slug                            string                     `json:"slug"`
+		Theme                           UpdateAuthSettings200Theme `json:"theme"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UpdateAuthSettings400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UpdateAuthSettings401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}        `json:"details,omitempty"`
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UpdateAuthSettings403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UpdateAuthSettings404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UpdateAuthSettings409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         UpdateAuthSettings500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateAuthSettings200ConnectionClientProviderKeysProvider string
+type UpdateAuthSettings200CustomFont string
+type UpdateAuthSettings200DefaultLlmProvider string
+type UpdateAuthSettings200DefaultNetworkPolicyDomainPreset string
+type UpdateAuthSettings200DefaultNetworkPolicyEgressMode string
+type UpdateAuthSettings200DefaultUserLimitCleanupInterval string
+type UpdateAuthSettings200Theme string
+type UpdateAuthSettings400ErrorType string
+type UpdateAuthSettings401ErrorType string
+type UpdateAuthSettings403ErrorType string
+type UpdateAuthSettings404ErrorType string
+type UpdateAuthSettings409ErrorType string
+type UpdateAuthSettings500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateAuthSettingsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateAuthSettingsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type CompleteOnboardingResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -16740,6 +17459,579 @@ func (r CompleteOnboardingResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CompleteOnboardingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateConnectionSettingsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
+		AppName                      *string            `json:"appName"`
+		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
+		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                    *[]struct {
+			Label string `json:"label"`
+			Url   string `json:"url"`
+		} `json:"chatLinks"`
+		ChatPlaceholders   *[]string `json:"chatPlaceholders"`
+		ConnectionBaseUrls *[]struct {
+			Description string `json:"description"`
+			IsDefault   bool   `json:"isDefault"`
+			Url         string `json:"url"`
+			Visible     bool   `json:"visible"`
+		} `json:"connectionBaseUrls"`
+		ConnectionClientFutureProviders *map[string]bool `json:"connectionClientFutureProviders"`
+		ConnectionClientOrder           *[]string        `json:"connectionClientOrder"`
+		ConnectionClientProviderKeys    *map[string][]struct {
+			Provider         UpdateConnectionSettings200ConnectionClientProviderKeysProvider `json:"provider"`
+			ProviderApiKeyId openapi_types.UUID                                              `json:"providerApiKeyId"`
+		} `json:"connectionClientProviderKeys"`
+		ConnectionDefaultClientId                *string                                        `json:"connectionDefaultClientId"`
+		ConnectionDefaultLlmProxyId              *openapi_types.UUID                            `json:"connectionDefaultLlmProxyId"`
+		ConnectionDefaultMcpGatewayId            *openapi_types.UUID                            `json:"connectionDefaultMcpGatewayId"`
+		ConnectionLlmProxyEnabled                bool                                           `json:"connectionLlmProxyEnabled"`
+		ConnectionPluginsEnabled                 bool                                           `json:"connectionPluginsEnabled"`
+		ConnectionRuntimeHandoffEnabled          bool                                           `json:"connectionRuntimeHandoffEnabled"`
+		ConnectionRuntimeHandoffInstructions     *string                                        `json:"connectionRuntimeHandoffInstructions"`
+		ConnectionShownClientIds                 *[]string                                      `json:"connectionShownClientIds"`
+		ConnectionShownProviders                 *[]string                                      `json:"connectionShownProviders"`
+		ConnectionSkillsEnabled                  bool                                           `json:"connectionSkillsEnabled"`
+		CreatedAt                                time.Time                                      `json:"createdAt"`
+		CustomFont                               UpdateConnectionSettings200CustomFont          `json:"customFont"`
+		DefaultAgentId                           *openapi_types.UUID                            `json:"defaultAgentId"`
+		DefaultEnvironmentDescription            *string                                        `json:"defaultEnvironmentDescription"`
+		DefaultEnvironmentName                   *string                                        `json:"defaultEnvironmentName"`
+		DefaultEnvironmentNamespace              *string                                        `json:"defaultEnvironmentNamespace"`
+		DefaultEnvironmentTrustedImageRegistries *[]string                                      `json:"defaultEnvironmentTrustedImageRegistries"`
+		DefaultEnvironmentValidationRegex        *string                                        `json:"defaultEnvironmentValidationRegex"`
+		DefaultLlmApiKeyId                       *openapi_types.UUID                            `json:"defaultLlmApiKeyId"`
+		DefaultLlmModel                          *string                                        `json:"defaultLlmModel"`
+		DefaultLlmProvider                       *UpdateConnectionSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
+		DefaultMemberRole                        *string                                        `json:"defaultMemberRole"`
+		DefaultModelId                           *openapi_types.UUID                            `json:"defaultModelId"`
+		DefaultNetworkPolicy                     *struct {
+			AllowedCidrs   []string                                                    `json:"allowedCidrs"`
+			AllowedDomains []string                                                    `json:"allowedDomains"`
+			DomainPreset   UpdateConnectionSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
+			EgressMode     UpdateConnectionSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
+		} `json:"defaultNetworkPolicy"`
+		DefaultUserLimitCleanupInterval *UpdateConnectionSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel           *[]string                                                   `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue           *int                                                        `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId           *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions             *EmbeddingDimensions                                        `json:"embeddingDimensions"`
+		EmbeddingModel                  *string                                                     `json:"embeddingModel"`
+		Favicon                         *string                                                     `json:"favicon"`
+		FooterText                      *string                                                     `json:"footerText"`
+		IconLogo                        *string                                                     `json:"iconLogo"`
+		IconLogoDark                    *string                                                     `json:"iconLogoDark"`
+		Id                              string                                                      `json:"id"`
+		KbBm25B                         *float32                                                    `json:"kbBm25B"`
+		KbBm25K1                        *float32                                                    `json:"kbBm25K1"`
+		KbContextualRetrievalMode       *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides     *map[string]struct {
+			Hidden *bool `json:"hidden,omitempty"`
+		} `json:"knowledgeConnectorOverrides"`
+		Logo                      *string `json:"logo"`
+		LogoDark                  *string `json:"logoDark"`
+		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		MessagingChannelOverrides *map[string]struct {
+			Hidden *bool `json:"hidden,omitempty"`
+		} `json:"messagingChannelOverrides"`
+		Metadata               *string `json:"metadata"`
+		ModelProviderOverrides *map[string]struct {
+			DisplayName *string `json:"displayName"`
+			Hidden      *bool   `json:"hidden,omitempty"`
+		} `json:"modelProviderOverrides"`
+		Name                            string              `json:"name"`
+		NewAppsDisabledByDefault        bool                `json:"newAppsDisabledByDefault"`
+		NewAppsLockedByDefault          bool                `json:"newAppsLockedByDefault"`
+		OauthAccessTokenLifetimeSeconds int                 `json:"oauthAccessTokenLifetimeSeconds"`
+		OcrChatApiKeyId                 *openapi_types.UUID `json:"ocrChatApiKeyId"`
+		OcrModel                        *string             `json:"ocrModel"`
+		OgDescription                   *string             `json:"ogDescription"`
+		OnboardingComplete              bool                `json:"onboardingComplete"`
+		OnboardingSurveyCompletedAt     *time.Time          `json:"onboardingSurveyCompletedAt"`
+		OnboardingWizard                *struct {
+			Label string `json:"label"`
+			Pages []struct {
+				Content string  `json:"content"`
+				Image   *string `json:"image"`
+			} `json:"pages"`
+		} `json:"onboardingWizard"`
+		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
+		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PopularAgentOverrides     *map[string]struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"popularAgentOverrides"`
+		RequireTwoFactor                bool                             `json:"requireTwoFactor"`
+		RerankerChatApiKeyId            *openapi_types.UUID              `json:"rerankerChatApiKeyId"`
+		RerankerModel                   *string                          `json:"rerankerModel"`
+		SessionMaxAgeSeconds            *int                             `json:"sessionMaxAgeSeconds"`
+		SkillMarketplaceAnonymousAccess bool                             `json:"skillMarketplaceAnonymousAccess"`
+		SkillToolsEnabled               bool                             `json:"skillToolsEnabled"`
+		SlimChatErrorUi                 bool                             `json:"slimChatErrorUi"`
+		Slug                            string                           `json:"slug"`
+		Theme                           UpdateConnectionSettings200Theme `json:"theme"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateConnectionSettings400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateConnectionSettings401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}              `json:"details,omitempty"`
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateConnectionSettings403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateConnectionSettings404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateConnectionSettings409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateConnectionSettings500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateConnectionSettings200ConnectionClientProviderKeysProvider string
+type UpdateConnectionSettings200CustomFont string
+type UpdateConnectionSettings200DefaultLlmProvider string
+type UpdateConnectionSettings200DefaultNetworkPolicyDomainPreset string
+type UpdateConnectionSettings200DefaultNetworkPolicyEgressMode string
+type UpdateConnectionSettings200DefaultUserLimitCleanupInterval string
+type UpdateConnectionSettings200Theme string
+type UpdateConnectionSettings400ErrorType string
+type UpdateConnectionSettings401ErrorType string
+type UpdateConnectionSettings403ErrorType string
+type UpdateConnectionSettings404ErrorType string
+type UpdateConnectionSettings409ErrorType string
+type UpdateConnectionSettings500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateConnectionSettingsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateConnectionSettingsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateDefaultEnvironmentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
+		AppName                      *string            `json:"appName"`
+		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
+		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                    *[]struct {
+			Label string `json:"label"`
+			Url   string `json:"url"`
+		} `json:"chatLinks"`
+		ChatPlaceholders   *[]string `json:"chatPlaceholders"`
+		ConnectionBaseUrls *[]struct {
+			Description string `json:"description"`
+			IsDefault   bool   `json:"isDefault"`
+			Url         string `json:"url"`
+			Visible     bool   `json:"visible"`
+		} `json:"connectionBaseUrls"`
+		ConnectionClientFutureProviders *map[string]bool `json:"connectionClientFutureProviders"`
+		ConnectionClientOrder           *[]string        `json:"connectionClientOrder"`
+		ConnectionClientProviderKeys    *map[string][]struct {
+			Provider         UpdateDefaultEnvironment200ConnectionClientProviderKeysProvider `json:"provider"`
+			ProviderApiKeyId openapi_types.UUID                                              `json:"providerApiKeyId"`
+		} `json:"connectionClientProviderKeys"`
+		ConnectionDefaultClientId                *string                                        `json:"connectionDefaultClientId"`
+		ConnectionDefaultLlmProxyId              *openapi_types.UUID                            `json:"connectionDefaultLlmProxyId"`
+		ConnectionDefaultMcpGatewayId            *openapi_types.UUID                            `json:"connectionDefaultMcpGatewayId"`
+		ConnectionLlmProxyEnabled                bool                                           `json:"connectionLlmProxyEnabled"`
+		ConnectionPluginsEnabled                 bool                                           `json:"connectionPluginsEnabled"`
+		ConnectionRuntimeHandoffEnabled          bool                                           `json:"connectionRuntimeHandoffEnabled"`
+		ConnectionRuntimeHandoffInstructions     *string                                        `json:"connectionRuntimeHandoffInstructions"`
+		ConnectionShownClientIds                 *[]string                                      `json:"connectionShownClientIds"`
+		ConnectionShownProviders                 *[]string                                      `json:"connectionShownProviders"`
+		ConnectionSkillsEnabled                  bool                                           `json:"connectionSkillsEnabled"`
+		CreatedAt                                time.Time                                      `json:"createdAt"`
+		CustomFont                               UpdateDefaultEnvironment200CustomFont          `json:"customFont"`
+		DefaultAgentId                           *openapi_types.UUID                            `json:"defaultAgentId"`
+		DefaultEnvironmentDescription            *string                                        `json:"defaultEnvironmentDescription"`
+		DefaultEnvironmentName                   *string                                        `json:"defaultEnvironmentName"`
+		DefaultEnvironmentNamespace              *string                                        `json:"defaultEnvironmentNamespace"`
+		DefaultEnvironmentTrustedImageRegistries *[]string                                      `json:"defaultEnvironmentTrustedImageRegistries"`
+		DefaultEnvironmentValidationRegex        *string                                        `json:"defaultEnvironmentValidationRegex"`
+		DefaultLlmApiKeyId                       *openapi_types.UUID                            `json:"defaultLlmApiKeyId"`
+		DefaultLlmModel                          *string                                        `json:"defaultLlmModel"`
+		DefaultLlmProvider                       *UpdateDefaultEnvironment200DefaultLlmProvider `json:"defaultLlmProvider"`
+		DefaultMemberRole                        *string                                        `json:"defaultMemberRole"`
+		DefaultModelId                           *openapi_types.UUID                            `json:"defaultModelId"`
+		DefaultNetworkPolicy                     *struct {
+			AllowedCidrs   []string                                                    `json:"allowedCidrs"`
+			AllowedDomains []string                                                    `json:"allowedDomains"`
+			DomainPreset   UpdateDefaultEnvironment200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
+			EgressMode     UpdateDefaultEnvironment200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
+		} `json:"defaultNetworkPolicy"`
+		DefaultUserLimitCleanupInterval *UpdateDefaultEnvironment200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel           *[]string                                                   `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue           *int                                                        `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId           *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions             *EmbeddingDimensions                                        `json:"embeddingDimensions"`
+		EmbeddingModel                  *string                                                     `json:"embeddingModel"`
+		Favicon                         *string                                                     `json:"favicon"`
+		FooterText                      *string                                                     `json:"footerText"`
+		IconLogo                        *string                                                     `json:"iconLogo"`
+		IconLogoDark                    *string                                                     `json:"iconLogoDark"`
+		Id                              string                                                      `json:"id"`
+		KbBm25B                         *float32                                                    `json:"kbBm25B"`
+		KbBm25K1                        *float32                                                    `json:"kbBm25K1"`
+		KbContextualRetrievalMode       *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides     *map[string]struct {
+			Hidden *bool `json:"hidden,omitempty"`
+		} `json:"knowledgeConnectorOverrides"`
+		Logo                      *string `json:"logo"`
+		LogoDark                  *string `json:"logoDark"`
+		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		MessagingChannelOverrides *map[string]struct {
+			Hidden *bool `json:"hidden,omitempty"`
+		} `json:"messagingChannelOverrides"`
+		Metadata               *string `json:"metadata"`
+		ModelProviderOverrides *map[string]struct {
+			DisplayName *string `json:"displayName"`
+			Hidden      *bool   `json:"hidden,omitempty"`
+		} `json:"modelProviderOverrides"`
+		Name                            string              `json:"name"`
+		NewAppsDisabledByDefault        bool                `json:"newAppsDisabledByDefault"`
+		NewAppsLockedByDefault          bool                `json:"newAppsLockedByDefault"`
+		OauthAccessTokenLifetimeSeconds int                 `json:"oauthAccessTokenLifetimeSeconds"`
+		OcrChatApiKeyId                 *openapi_types.UUID `json:"ocrChatApiKeyId"`
+		OcrModel                        *string             `json:"ocrModel"`
+		OgDescription                   *string             `json:"ogDescription"`
+		OnboardingComplete              bool                `json:"onboardingComplete"`
+		OnboardingSurveyCompletedAt     *time.Time          `json:"onboardingSurveyCompletedAt"`
+		OnboardingWizard                *struct {
+			Label string `json:"label"`
+			Pages []struct {
+				Content string  `json:"content"`
+				Image   *string `json:"image"`
+			} `json:"pages"`
+		} `json:"onboardingWizard"`
+		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
+		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PopularAgentOverrides     *map[string]struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"popularAgentOverrides"`
+		RequireTwoFactor                bool                             `json:"requireTwoFactor"`
+		RerankerChatApiKeyId            *openapi_types.UUID              `json:"rerankerChatApiKeyId"`
+		RerankerModel                   *string                          `json:"rerankerModel"`
+		SessionMaxAgeSeconds            *int                             `json:"sessionMaxAgeSeconds"`
+		SkillMarketplaceAnonymousAccess bool                             `json:"skillMarketplaceAnonymousAccess"`
+		SkillToolsEnabled               bool                             `json:"skillToolsEnabled"`
+		SlimChatErrorUi                 bool                             `json:"slimChatErrorUi"`
+		Slug                            string                           `json:"slug"`
+		Theme                           UpdateDefaultEnvironment200Theme `json:"theme"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateDefaultEnvironment400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateDefaultEnvironment401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}              `json:"details,omitempty"`
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateDefaultEnvironment403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateDefaultEnvironment404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateDefaultEnvironment409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                              `json:"internal_code,omitempty"`
+			Message      string                               `json:"message"`
+			Type         UpdateDefaultEnvironment500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateDefaultEnvironment200ConnectionClientProviderKeysProvider string
+type UpdateDefaultEnvironment200CustomFont string
+type UpdateDefaultEnvironment200DefaultLlmProvider string
+type UpdateDefaultEnvironment200DefaultNetworkPolicyDomainPreset string
+type UpdateDefaultEnvironment200DefaultNetworkPolicyEgressMode string
+type UpdateDefaultEnvironment200DefaultUserLimitCleanupInterval string
+type UpdateDefaultEnvironment200Theme string
+type UpdateDefaultEnvironment400ErrorType string
+type UpdateDefaultEnvironment401ErrorType string
+type UpdateDefaultEnvironment403ErrorType string
+type UpdateDefaultEnvironment404ErrorType string
+type UpdateDefaultEnvironment409ErrorType string
+type UpdateDefaultEnvironment500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateDefaultEnvironmentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateDefaultEnvironmentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateIntegrationSettingsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
+		AppName                      *string            `json:"appName"`
+		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
+		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                    *[]struct {
+			Label string `json:"label"`
+			Url   string `json:"url"`
+		} `json:"chatLinks"`
+		ChatPlaceholders   *[]string `json:"chatPlaceholders"`
+		ConnectionBaseUrls *[]struct {
+			Description string `json:"description"`
+			IsDefault   bool   `json:"isDefault"`
+			Url         string `json:"url"`
+			Visible     bool   `json:"visible"`
+		} `json:"connectionBaseUrls"`
+		ConnectionClientFutureProviders *map[string]bool `json:"connectionClientFutureProviders"`
+		ConnectionClientOrder           *[]string        `json:"connectionClientOrder"`
+		ConnectionClientProviderKeys    *map[string][]struct {
+			Provider         UpdateIntegrationSettings200ConnectionClientProviderKeysProvider `json:"provider"`
+			ProviderApiKeyId openapi_types.UUID                                               `json:"providerApiKeyId"`
+		} `json:"connectionClientProviderKeys"`
+		ConnectionDefaultClientId                *string                                         `json:"connectionDefaultClientId"`
+		ConnectionDefaultLlmProxyId              *openapi_types.UUID                             `json:"connectionDefaultLlmProxyId"`
+		ConnectionDefaultMcpGatewayId            *openapi_types.UUID                             `json:"connectionDefaultMcpGatewayId"`
+		ConnectionLlmProxyEnabled                bool                                            `json:"connectionLlmProxyEnabled"`
+		ConnectionPluginsEnabled                 bool                                            `json:"connectionPluginsEnabled"`
+		ConnectionRuntimeHandoffEnabled          bool                                            `json:"connectionRuntimeHandoffEnabled"`
+		ConnectionRuntimeHandoffInstructions     *string                                         `json:"connectionRuntimeHandoffInstructions"`
+		ConnectionShownClientIds                 *[]string                                       `json:"connectionShownClientIds"`
+		ConnectionShownProviders                 *[]string                                       `json:"connectionShownProviders"`
+		ConnectionSkillsEnabled                  bool                                            `json:"connectionSkillsEnabled"`
+		CreatedAt                                time.Time                                       `json:"createdAt"`
+		CustomFont                               UpdateIntegrationSettings200CustomFont          `json:"customFont"`
+		DefaultAgentId                           *openapi_types.UUID                             `json:"defaultAgentId"`
+		DefaultEnvironmentDescription            *string                                         `json:"defaultEnvironmentDescription"`
+		DefaultEnvironmentName                   *string                                         `json:"defaultEnvironmentName"`
+		DefaultEnvironmentNamespace              *string                                         `json:"defaultEnvironmentNamespace"`
+		DefaultEnvironmentTrustedImageRegistries *[]string                                       `json:"defaultEnvironmentTrustedImageRegistries"`
+		DefaultEnvironmentValidationRegex        *string                                         `json:"defaultEnvironmentValidationRegex"`
+		DefaultLlmApiKeyId                       *openapi_types.UUID                             `json:"defaultLlmApiKeyId"`
+		DefaultLlmModel                          *string                                         `json:"defaultLlmModel"`
+		DefaultLlmProvider                       *UpdateIntegrationSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
+		DefaultMemberRole                        *string                                         `json:"defaultMemberRole"`
+		DefaultModelId                           *openapi_types.UUID                             `json:"defaultModelId"`
+		DefaultNetworkPolicy                     *struct {
+			AllowedCidrs   []string                                                     `json:"allowedCidrs"`
+			AllowedDomains []string                                                     `json:"allowedDomains"`
+			DomainPreset   UpdateIntegrationSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
+			EgressMode     UpdateIntegrationSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
+		} `json:"defaultNetworkPolicy"`
+		DefaultUserLimitCleanupInterval *UpdateIntegrationSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel           *[]string                                                    `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue           *int                                                         `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId           *openapi_types.UUID                                          `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions             *EmbeddingDimensions                                         `json:"embeddingDimensions"`
+		EmbeddingModel                  *string                                                      `json:"embeddingModel"`
+		Favicon                         *string                                                      `json:"favicon"`
+		FooterText                      *string                                                      `json:"footerText"`
+		IconLogo                        *string                                                      `json:"iconLogo"`
+		IconLogoDark                    *string                                                      `json:"iconLogoDark"`
+		Id                              string                                                       `json:"id"`
+		KbBm25B                         *float32                                                     `json:"kbBm25B"`
+		KbBm25K1                        *float32                                                     `json:"kbBm25K1"`
+		KbContextualRetrievalMode       *ContextualRetrievalMode                                     `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides     *map[string]struct {
+			Hidden *bool `json:"hidden,omitempty"`
+		} `json:"knowledgeConnectorOverrides"`
+		Logo                      *string `json:"logo"`
+		LogoDark                  *string `json:"logoDark"`
+		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		MessagingChannelOverrides *map[string]struct {
+			Hidden *bool `json:"hidden,omitempty"`
+		} `json:"messagingChannelOverrides"`
+		Metadata               *string `json:"metadata"`
+		ModelProviderOverrides *map[string]struct {
+			DisplayName *string `json:"displayName"`
+			Hidden      *bool   `json:"hidden,omitempty"`
+		} `json:"modelProviderOverrides"`
+		Name                            string              `json:"name"`
+		NewAppsDisabledByDefault        bool                `json:"newAppsDisabledByDefault"`
+		NewAppsLockedByDefault          bool                `json:"newAppsLockedByDefault"`
+		OauthAccessTokenLifetimeSeconds int                 `json:"oauthAccessTokenLifetimeSeconds"`
+		OcrChatApiKeyId                 *openapi_types.UUID `json:"ocrChatApiKeyId"`
+		OcrModel                        *string             `json:"ocrModel"`
+		OgDescription                   *string             `json:"ogDescription"`
+		OnboardingComplete              bool                `json:"onboardingComplete"`
+		OnboardingSurveyCompletedAt     *time.Time          `json:"onboardingSurveyCompletedAt"`
+		OnboardingWizard                *struct {
+			Label string `json:"label"`
+			Pages []struct {
+				Content string  `json:"content"`
+				Image   *string `json:"image"`
+			} `json:"pages"`
+		} `json:"onboardingWizard"`
+		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
+		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PopularAgentOverrides     *map[string]struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"popularAgentOverrides"`
+		RequireTwoFactor                bool                              `json:"requireTwoFactor"`
+		RerankerChatApiKeyId            *openapi_types.UUID               `json:"rerankerChatApiKeyId"`
+		RerankerModel                   *string                           `json:"rerankerModel"`
+		SessionMaxAgeSeconds            *int                              `json:"sessionMaxAgeSeconds"`
+		SkillMarketplaceAnonymousAccess bool                              `json:"skillMarketplaceAnonymousAccess"`
+		SkillToolsEnabled               bool                              `json:"skillToolsEnabled"`
+		SlimChatErrorUi                 bool                              `json:"slimChatErrorUi"`
+		Slug                            string                            `json:"slug"`
+		Theme                           UpdateIntegrationSettings200Theme `json:"theme"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                               `json:"internal_code,omitempty"`
+			Message      string                                `json:"message"`
+			Type         UpdateIntegrationSettings400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                               `json:"internal_code,omitempty"`
+			Message      string                                `json:"message"`
+			Type         UpdateIntegrationSettings401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}               `json:"details,omitempty"`
+			InternalCode *string                               `json:"internal_code,omitempty"`
+			Message      string                                `json:"message"`
+			Type         UpdateIntegrationSettings403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                               `json:"internal_code,omitempty"`
+			Message      string                                `json:"message"`
+			Type         UpdateIntegrationSettings404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                               `json:"internal_code,omitempty"`
+			Message      string                                `json:"message"`
+			Type         UpdateIntegrationSettings409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                               `json:"internal_code,omitempty"`
+			Message      string                                `json:"message"`
+			Type         UpdateIntegrationSettings500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateIntegrationSettings200ConnectionClientProviderKeysProvider string
+type UpdateIntegrationSettings200CustomFont string
+type UpdateIntegrationSettings200DefaultLlmProvider string
+type UpdateIntegrationSettings200DefaultNetworkPolicyDomainPreset string
+type UpdateIntegrationSettings200DefaultNetworkPolicyEgressMode string
+type UpdateIntegrationSettings200DefaultUserLimitCleanupInterval string
+type UpdateIntegrationSettings200Theme string
+type UpdateIntegrationSettings400ErrorType string
+type UpdateIntegrationSettings401ErrorType string
+type UpdateIntegrationSettings403ErrorType string
+type UpdateIntegrationSettings404ErrorType string
+type UpdateIntegrationSettings409ErrorType string
+type UpdateIntegrationSettings500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateIntegrationSettingsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateIntegrationSettingsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -17313,6 +18605,197 @@ func (r UpdateSecuritySettingsResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateSecuritySettingsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateSkillsSettingsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
+		AppName                      *string            `json:"appName"`
+		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
+		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                    *[]struct {
+			Label string `json:"label"`
+			Url   string `json:"url"`
+		} `json:"chatLinks"`
+		ChatPlaceholders   *[]string `json:"chatPlaceholders"`
+		ConnectionBaseUrls *[]struct {
+			Description string `json:"description"`
+			IsDefault   bool   `json:"isDefault"`
+			Url         string `json:"url"`
+			Visible     bool   `json:"visible"`
+		} `json:"connectionBaseUrls"`
+		ConnectionClientFutureProviders *map[string]bool `json:"connectionClientFutureProviders"`
+		ConnectionClientOrder           *[]string        `json:"connectionClientOrder"`
+		ConnectionClientProviderKeys    *map[string][]struct {
+			Provider         UpdateSkillsSettings200ConnectionClientProviderKeysProvider `json:"provider"`
+			ProviderApiKeyId openapi_types.UUID                                          `json:"providerApiKeyId"`
+		} `json:"connectionClientProviderKeys"`
+		ConnectionDefaultClientId                *string                                    `json:"connectionDefaultClientId"`
+		ConnectionDefaultLlmProxyId              *openapi_types.UUID                        `json:"connectionDefaultLlmProxyId"`
+		ConnectionDefaultMcpGatewayId            *openapi_types.UUID                        `json:"connectionDefaultMcpGatewayId"`
+		ConnectionLlmProxyEnabled                bool                                       `json:"connectionLlmProxyEnabled"`
+		ConnectionPluginsEnabled                 bool                                       `json:"connectionPluginsEnabled"`
+		ConnectionRuntimeHandoffEnabled          bool                                       `json:"connectionRuntimeHandoffEnabled"`
+		ConnectionRuntimeHandoffInstructions     *string                                    `json:"connectionRuntimeHandoffInstructions"`
+		ConnectionShownClientIds                 *[]string                                  `json:"connectionShownClientIds"`
+		ConnectionShownProviders                 *[]string                                  `json:"connectionShownProviders"`
+		ConnectionSkillsEnabled                  bool                                       `json:"connectionSkillsEnabled"`
+		CreatedAt                                time.Time                                  `json:"createdAt"`
+		CustomFont                               UpdateSkillsSettings200CustomFont          `json:"customFont"`
+		DefaultAgentId                           *openapi_types.UUID                        `json:"defaultAgentId"`
+		DefaultEnvironmentDescription            *string                                    `json:"defaultEnvironmentDescription"`
+		DefaultEnvironmentName                   *string                                    `json:"defaultEnvironmentName"`
+		DefaultEnvironmentNamespace              *string                                    `json:"defaultEnvironmentNamespace"`
+		DefaultEnvironmentTrustedImageRegistries *[]string                                  `json:"defaultEnvironmentTrustedImageRegistries"`
+		DefaultEnvironmentValidationRegex        *string                                    `json:"defaultEnvironmentValidationRegex"`
+		DefaultLlmApiKeyId                       *openapi_types.UUID                        `json:"defaultLlmApiKeyId"`
+		DefaultLlmModel                          *string                                    `json:"defaultLlmModel"`
+		DefaultLlmProvider                       *UpdateSkillsSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
+		DefaultMemberRole                        *string                                    `json:"defaultMemberRole"`
+		DefaultModelId                           *openapi_types.UUID                        `json:"defaultModelId"`
+		DefaultNetworkPolicy                     *struct {
+			AllowedCidrs   []string                                                `json:"allowedCidrs"`
+			AllowedDomains []string                                                `json:"allowedDomains"`
+			DomainPreset   UpdateSkillsSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
+			EgressMode     UpdateSkillsSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
+		} `json:"defaultNetworkPolicy"`
+		DefaultUserLimitCleanupInterval *UpdateSkillsSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel           *[]string                                               `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue           *int                                                    `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId           *openapi_types.UUID                                     `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions             *EmbeddingDimensions                                    `json:"embeddingDimensions"`
+		EmbeddingModel                  *string                                                 `json:"embeddingModel"`
+		Favicon                         *string                                                 `json:"favicon"`
+		FooterText                      *string                                                 `json:"footerText"`
+		IconLogo                        *string                                                 `json:"iconLogo"`
+		IconLogoDark                    *string                                                 `json:"iconLogoDark"`
+		Id                              string                                                  `json:"id"`
+		KbBm25B                         *float32                                                `json:"kbBm25B"`
+		KbBm25K1                        *float32                                                `json:"kbBm25K1"`
+		KbContextualRetrievalMode       *ContextualRetrievalMode                                `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides     *map[string]struct {
+			Hidden *bool `json:"hidden,omitempty"`
+		} `json:"knowledgeConnectorOverrides"`
+		Logo                      *string `json:"logo"`
+		LogoDark                  *string `json:"logoDark"`
+		McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+		MessagingChannelOverrides *map[string]struct {
+			Hidden *bool `json:"hidden,omitempty"`
+		} `json:"messagingChannelOverrides"`
+		Metadata               *string `json:"metadata"`
+		ModelProviderOverrides *map[string]struct {
+			DisplayName *string `json:"displayName"`
+			Hidden      *bool   `json:"hidden,omitempty"`
+		} `json:"modelProviderOverrides"`
+		Name                            string              `json:"name"`
+		NewAppsDisabledByDefault        bool                `json:"newAppsDisabledByDefault"`
+		NewAppsLockedByDefault          bool                `json:"newAppsLockedByDefault"`
+		OauthAccessTokenLifetimeSeconds int                 `json:"oauthAccessTokenLifetimeSeconds"`
+		OcrChatApiKeyId                 *openapi_types.UUID `json:"ocrChatApiKeyId"`
+		OcrModel                        *string             `json:"ocrModel"`
+		OgDescription                   *string             `json:"ogDescription"`
+		OnboardingComplete              bool                `json:"onboardingComplete"`
+		OnboardingSurveyCompletedAt     *time.Time          `json:"onboardingSurveyCompletedAt"`
+		OnboardingWizard                *struct {
+			Label string `json:"label"`
+			Pages []struct {
+				Content string  `json:"content"`
+				Image   *string `json:"image"`
+			} `json:"pages"`
+		} `json:"onboardingWizard"`
+		OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
+		OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+		PopularAgentOverrides     *map[string]struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"popularAgentOverrides"`
+		RequireTwoFactor                bool                         `json:"requireTwoFactor"`
+		RerankerChatApiKeyId            *openapi_types.UUID          `json:"rerankerChatApiKeyId"`
+		RerankerModel                   *string                      `json:"rerankerModel"`
+		SessionMaxAgeSeconds            *int                         `json:"sessionMaxAgeSeconds"`
+		SkillMarketplaceAnonymousAccess bool                         `json:"skillMarketplaceAnonymousAccess"`
+		SkillToolsEnabled               bool                         `json:"skillToolsEnabled"`
+		SlimChatErrorUi                 bool                         `json:"slimChatErrorUi"`
+		Slug                            string                       `json:"slug"`
+		Theme                           UpdateSkillsSettings200Theme `json:"theme"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateSkillsSettings400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateSkillsSettings401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}          `json:"details,omitempty"`
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateSkillsSettings403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateSkillsSettings404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateSkillsSettings409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateSkillsSettings500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateSkillsSettings200ConnectionClientProviderKeysProvider string
+type UpdateSkillsSettings200CustomFont string
+type UpdateSkillsSettings200DefaultLlmProvider string
+type UpdateSkillsSettings200DefaultNetworkPolicyDomainPreset string
+type UpdateSkillsSettings200DefaultNetworkPolicyEgressMode string
+type UpdateSkillsSettings200DefaultUserLimitCleanupInterval string
+type UpdateSkillsSettings200Theme string
+type UpdateSkillsSettings400ErrorType string
+type UpdateSkillsSettings401ErrorType string
+type UpdateSkillsSettings403ErrorType string
+type UpdateSkillsSettings404ErrorType string
+type UpdateSkillsSettings409ErrorType string
+type UpdateSkillsSettings500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateSkillsSettingsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSkillsSettingsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -20493,6 +21976,23 @@ func (c *ClientWithResponses) UpdateAppearanceSettingsWithResponse(ctx context.C
 	return ParseUpdateAppearanceSettingsResponse(rsp)
 }
 
+// UpdateAuthSettingsWithBodyWithResponse request with arbitrary body returning *UpdateAuthSettingsResponse
+func (c *ClientWithResponses) UpdateAuthSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAuthSettingsResponse, error) {
+	rsp, err := c.UpdateAuthSettingsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAuthSettingsResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateAuthSettingsWithResponse(ctx context.Context, body UpdateAuthSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAuthSettingsResponse, error) {
+	rsp, err := c.UpdateAuthSettings(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAuthSettingsResponse(rsp)
+}
+
 // CompleteOnboardingWithBodyWithResponse request with arbitrary body returning *CompleteOnboardingResponse
 func (c *ClientWithResponses) CompleteOnboardingWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CompleteOnboardingResponse, error) {
 	rsp, err := c.CompleteOnboardingWithBody(ctx, contentType, body, reqEditors...)
@@ -20508,6 +22008,57 @@ func (c *ClientWithResponses) CompleteOnboardingWithResponse(ctx context.Context
 		return nil, err
 	}
 	return ParseCompleteOnboardingResponse(rsp)
+}
+
+// UpdateConnectionSettingsWithBodyWithResponse request with arbitrary body returning *UpdateConnectionSettingsResponse
+func (c *ClientWithResponses) UpdateConnectionSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateConnectionSettingsResponse, error) {
+	rsp, err := c.UpdateConnectionSettingsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateConnectionSettingsResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateConnectionSettingsWithResponse(ctx context.Context, body UpdateConnectionSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateConnectionSettingsResponse, error) {
+	rsp, err := c.UpdateConnectionSettings(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateConnectionSettingsResponse(rsp)
+}
+
+// UpdateDefaultEnvironmentWithBodyWithResponse request with arbitrary body returning *UpdateDefaultEnvironmentResponse
+func (c *ClientWithResponses) UpdateDefaultEnvironmentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateDefaultEnvironmentResponse, error) {
+	rsp, err := c.UpdateDefaultEnvironmentWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateDefaultEnvironmentResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateDefaultEnvironmentWithResponse(ctx context.Context, body UpdateDefaultEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateDefaultEnvironmentResponse, error) {
+	rsp, err := c.UpdateDefaultEnvironment(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateDefaultEnvironmentResponse(rsp)
+}
+
+// UpdateIntegrationSettingsWithBodyWithResponse request with arbitrary body returning *UpdateIntegrationSettingsResponse
+func (c *ClientWithResponses) UpdateIntegrationSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateIntegrationSettingsResponse, error) {
+	rsp, err := c.UpdateIntegrationSettingsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateIntegrationSettingsResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateIntegrationSettingsWithResponse(ctx context.Context, body UpdateIntegrationSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateIntegrationSettingsResponse, error) {
+	rsp, err := c.UpdateIntegrationSettings(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateIntegrationSettingsResponse(rsp)
 }
 
 // UpdateKnowledgeSettingsWithBodyWithResponse request with arbitrary body returning *UpdateKnowledgeSettingsResponse
@@ -20559,6 +22110,23 @@ func (c *ClientWithResponses) UpdateSecuritySettingsWithResponse(ctx context.Con
 		return nil, err
 	}
 	return ParseUpdateSecuritySettingsResponse(rsp)
+}
+
+// UpdateSkillsSettingsWithBodyWithResponse request with arbitrary body returning *UpdateSkillsSettingsResponse
+func (c *ClientWithResponses) UpdateSkillsSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSkillsSettingsResponse, error) {
+	rsp, err := c.UpdateSkillsSettingsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSkillsSettingsResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateSkillsSettingsWithResponse(ctx context.Context, body UpdateSkillsSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSkillsSettingsResponse, error) {
+	rsp, err := c.UpdateSkillsSettings(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSkillsSettingsResponse(rsp)
 }
 
 // CreateProjectWithBodyWithResponse request with arbitrary body returning *CreateProjectResponse
@@ -29293,6 +30861,224 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 	return response, nil
 }
 
+// ParseUpdateAuthSettingsResponse parses an HTTP response from a UpdateAuthSettingsWithResponse call
+func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateAuthSettingsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
+			AppName                      *string            `json:"appName"`
+			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
+			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                    *[]struct {
+				Label string `json:"label"`
+				Url   string `json:"url"`
+			} `json:"chatLinks"`
+			ChatPlaceholders   *[]string `json:"chatPlaceholders"`
+			ConnectionBaseUrls *[]struct {
+				Description string `json:"description"`
+				IsDefault   bool   `json:"isDefault"`
+				Url         string `json:"url"`
+				Visible     bool   `json:"visible"`
+			} `json:"connectionBaseUrls"`
+			ConnectionClientFutureProviders *map[string]bool `json:"connectionClientFutureProviders"`
+			ConnectionClientOrder           *[]string        `json:"connectionClientOrder"`
+			ConnectionClientProviderKeys    *map[string][]struct {
+				Provider         UpdateAuthSettings200ConnectionClientProviderKeysProvider `json:"provider"`
+				ProviderApiKeyId openapi_types.UUID                                        `json:"providerApiKeyId"`
+			} `json:"connectionClientProviderKeys"`
+			ConnectionDefaultClientId                *string                                  `json:"connectionDefaultClientId"`
+			ConnectionDefaultLlmProxyId              *openapi_types.UUID                      `json:"connectionDefaultLlmProxyId"`
+			ConnectionDefaultMcpGatewayId            *openapi_types.UUID                      `json:"connectionDefaultMcpGatewayId"`
+			ConnectionLlmProxyEnabled                bool                                     `json:"connectionLlmProxyEnabled"`
+			ConnectionPluginsEnabled                 bool                                     `json:"connectionPluginsEnabled"`
+			ConnectionRuntimeHandoffEnabled          bool                                     `json:"connectionRuntimeHandoffEnabled"`
+			ConnectionRuntimeHandoffInstructions     *string                                  `json:"connectionRuntimeHandoffInstructions"`
+			ConnectionShownClientIds                 *[]string                                `json:"connectionShownClientIds"`
+			ConnectionShownProviders                 *[]string                                `json:"connectionShownProviders"`
+			ConnectionSkillsEnabled                  bool                                     `json:"connectionSkillsEnabled"`
+			CreatedAt                                time.Time                                `json:"createdAt"`
+			CustomFont                               UpdateAuthSettings200CustomFont          `json:"customFont"`
+			DefaultAgentId                           *openapi_types.UUID                      `json:"defaultAgentId"`
+			DefaultEnvironmentDescription            *string                                  `json:"defaultEnvironmentDescription"`
+			DefaultEnvironmentName                   *string                                  `json:"defaultEnvironmentName"`
+			DefaultEnvironmentNamespace              *string                                  `json:"defaultEnvironmentNamespace"`
+			DefaultEnvironmentTrustedImageRegistries *[]string                                `json:"defaultEnvironmentTrustedImageRegistries"`
+			DefaultEnvironmentValidationRegex        *string                                  `json:"defaultEnvironmentValidationRegex"`
+			DefaultLlmApiKeyId                       *openapi_types.UUID                      `json:"defaultLlmApiKeyId"`
+			DefaultLlmModel                          *string                                  `json:"defaultLlmModel"`
+			DefaultLlmProvider                       *UpdateAuthSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
+			DefaultMemberRole                        *string                                  `json:"defaultMemberRole"`
+			DefaultModelId                           *openapi_types.UUID                      `json:"defaultModelId"`
+			DefaultNetworkPolicy                     *struct {
+				AllowedCidrs   []string                                              `json:"allowedCidrs"`
+				AllowedDomains []string                                              `json:"allowedDomains"`
+				DomainPreset   UpdateAuthSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     UpdateAuthSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"defaultNetworkPolicy"`
+			DefaultUserLimitCleanupInterval *UpdateAuthSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel           *[]string                                             `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue           *int                                                  `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId           *openapi_types.UUID                                   `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions             *EmbeddingDimensions                                  `json:"embeddingDimensions"`
+			EmbeddingModel                  *string                                               `json:"embeddingModel"`
+			Favicon                         *string                                               `json:"favicon"`
+			FooterText                      *string                                               `json:"footerText"`
+			IconLogo                        *string                                               `json:"iconLogo"`
+			IconLogoDark                    *string                                               `json:"iconLogoDark"`
+			Id                              string                                                `json:"id"`
+			KbBm25B                         *float32                                              `json:"kbBm25B"`
+			KbBm25K1                        *float32                                              `json:"kbBm25K1"`
+			KbContextualRetrievalMode       *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides     *map[string]struct {
+				Hidden *bool `json:"hidden,omitempty"`
+			} `json:"knowledgeConnectorOverrides"`
+			Logo                      *string `json:"logo"`
+			LogoDark                  *string `json:"logoDark"`
+			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			MessagingChannelOverrides *map[string]struct {
+				Hidden *bool `json:"hidden,omitempty"`
+			} `json:"messagingChannelOverrides"`
+			Metadata               *string `json:"metadata"`
+			ModelProviderOverrides *map[string]struct {
+				DisplayName *string `json:"displayName"`
+				Hidden      *bool   `json:"hidden,omitempty"`
+			} `json:"modelProviderOverrides"`
+			Name                            string              `json:"name"`
+			NewAppsDisabledByDefault        bool                `json:"newAppsDisabledByDefault"`
+			NewAppsLockedByDefault          bool                `json:"newAppsLockedByDefault"`
+			OauthAccessTokenLifetimeSeconds int                 `json:"oauthAccessTokenLifetimeSeconds"`
+			OcrChatApiKeyId                 *openapi_types.UUID `json:"ocrChatApiKeyId"`
+			OcrModel                        *string             `json:"ocrModel"`
+			OgDescription                   *string             `json:"ogDescription"`
+			OnboardingComplete              bool                `json:"onboardingComplete"`
+			OnboardingSurveyCompletedAt     *time.Time          `json:"onboardingSurveyCompletedAt"`
+			OnboardingWizard                *struct {
+				Label string `json:"label"`
+				Pages []struct {
+					Content string  `json:"content"`
+					Image   *string `json:"image"`
+				} `json:"pages"`
+			} `json:"onboardingWizard"`
+			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
+			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PopularAgentOverrides     *map[string]struct {
+				Hidden   *bool `json:"hidden,omitempty"`
+				Position *int  `json:"position,omitempty"`
+			} `json:"popularAgentOverrides"`
+			RequireTwoFactor                bool                       `json:"requireTwoFactor"`
+			RerankerChatApiKeyId            *openapi_types.UUID        `json:"rerankerChatApiKeyId"`
+			RerankerModel                   *string                    `json:"rerankerModel"`
+			SessionMaxAgeSeconds            *int                       `json:"sessionMaxAgeSeconds"`
+			SkillMarketplaceAnonymousAccess bool                       `json:"skillMarketplaceAnonymousAccess"`
+			SkillToolsEnabled               bool                       `json:"skillToolsEnabled"`
+			SlimChatErrorUi                 bool                       `json:"slimChatErrorUi"`
+			Slug                            string                     `json:"slug"`
+			Theme                           UpdateAuthSettings200Theme `json:"theme"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UpdateAuthSettings400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UpdateAuthSettings401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}        `json:"details,omitempty"`
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UpdateAuthSettings403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UpdateAuthSettings404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UpdateAuthSettings409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         UpdateAuthSettings500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseCompleteOnboardingResponse parses an HTTP response from a CompleteOnboardingWithResponse call
 func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -29499,6 +31285,660 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 				InternalCode *string                        `json:"internal_code,omitempty"`
 				Message      string                         `json:"message"`
 				Type         CompleteOnboarding500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateConnectionSettingsResponse parses an HTTP response from a UpdateConnectionSettingsWithResponse call
+func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectionSettingsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateConnectionSettingsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
+			AppName                      *string            `json:"appName"`
+			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
+			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                    *[]struct {
+				Label string `json:"label"`
+				Url   string `json:"url"`
+			} `json:"chatLinks"`
+			ChatPlaceholders   *[]string `json:"chatPlaceholders"`
+			ConnectionBaseUrls *[]struct {
+				Description string `json:"description"`
+				IsDefault   bool   `json:"isDefault"`
+				Url         string `json:"url"`
+				Visible     bool   `json:"visible"`
+			} `json:"connectionBaseUrls"`
+			ConnectionClientFutureProviders *map[string]bool `json:"connectionClientFutureProviders"`
+			ConnectionClientOrder           *[]string        `json:"connectionClientOrder"`
+			ConnectionClientProviderKeys    *map[string][]struct {
+				Provider         UpdateConnectionSettings200ConnectionClientProviderKeysProvider `json:"provider"`
+				ProviderApiKeyId openapi_types.UUID                                              `json:"providerApiKeyId"`
+			} `json:"connectionClientProviderKeys"`
+			ConnectionDefaultClientId                *string                                        `json:"connectionDefaultClientId"`
+			ConnectionDefaultLlmProxyId              *openapi_types.UUID                            `json:"connectionDefaultLlmProxyId"`
+			ConnectionDefaultMcpGatewayId            *openapi_types.UUID                            `json:"connectionDefaultMcpGatewayId"`
+			ConnectionLlmProxyEnabled                bool                                           `json:"connectionLlmProxyEnabled"`
+			ConnectionPluginsEnabled                 bool                                           `json:"connectionPluginsEnabled"`
+			ConnectionRuntimeHandoffEnabled          bool                                           `json:"connectionRuntimeHandoffEnabled"`
+			ConnectionRuntimeHandoffInstructions     *string                                        `json:"connectionRuntimeHandoffInstructions"`
+			ConnectionShownClientIds                 *[]string                                      `json:"connectionShownClientIds"`
+			ConnectionShownProviders                 *[]string                                      `json:"connectionShownProviders"`
+			ConnectionSkillsEnabled                  bool                                           `json:"connectionSkillsEnabled"`
+			CreatedAt                                time.Time                                      `json:"createdAt"`
+			CustomFont                               UpdateConnectionSettings200CustomFont          `json:"customFont"`
+			DefaultAgentId                           *openapi_types.UUID                            `json:"defaultAgentId"`
+			DefaultEnvironmentDescription            *string                                        `json:"defaultEnvironmentDescription"`
+			DefaultEnvironmentName                   *string                                        `json:"defaultEnvironmentName"`
+			DefaultEnvironmentNamespace              *string                                        `json:"defaultEnvironmentNamespace"`
+			DefaultEnvironmentTrustedImageRegistries *[]string                                      `json:"defaultEnvironmentTrustedImageRegistries"`
+			DefaultEnvironmentValidationRegex        *string                                        `json:"defaultEnvironmentValidationRegex"`
+			DefaultLlmApiKeyId                       *openapi_types.UUID                            `json:"defaultLlmApiKeyId"`
+			DefaultLlmModel                          *string                                        `json:"defaultLlmModel"`
+			DefaultLlmProvider                       *UpdateConnectionSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
+			DefaultMemberRole                        *string                                        `json:"defaultMemberRole"`
+			DefaultModelId                           *openapi_types.UUID                            `json:"defaultModelId"`
+			DefaultNetworkPolicy                     *struct {
+				AllowedCidrs   []string                                                    `json:"allowedCidrs"`
+				AllowedDomains []string                                                    `json:"allowedDomains"`
+				DomainPreset   UpdateConnectionSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     UpdateConnectionSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"defaultNetworkPolicy"`
+			DefaultUserLimitCleanupInterval *UpdateConnectionSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel           *[]string                                                   `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue           *int                                                        `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId           *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions             *EmbeddingDimensions                                        `json:"embeddingDimensions"`
+			EmbeddingModel                  *string                                                     `json:"embeddingModel"`
+			Favicon                         *string                                                     `json:"favicon"`
+			FooterText                      *string                                                     `json:"footerText"`
+			IconLogo                        *string                                                     `json:"iconLogo"`
+			IconLogoDark                    *string                                                     `json:"iconLogoDark"`
+			Id                              string                                                      `json:"id"`
+			KbBm25B                         *float32                                                    `json:"kbBm25B"`
+			KbBm25K1                        *float32                                                    `json:"kbBm25K1"`
+			KbContextualRetrievalMode       *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides     *map[string]struct {
+				Hidden *bool `json:"hidden,omitempty"`
+			} `json:"knowledgeConnectorOverrides"`
+			Logo                      *string `json:"logo"`
+			LogoDark                  *string `json:"logoDark"`
+			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			MessagingChannelOverrides *map[string]struct {
+				Hidden *bool `json:"hidden,omitempty"`
+			} `json:"messagingChannelOverrides"`
+			Metadata               *string `json:"metadata"`
+			ModelProviderOverrides *map[string]struct {
+				DisplayName *string `json:"displayName"`
+				Hidden      *bool   `json:"hidden,omitempty"`
+			} `json:"modelProviderOverrides"`
+			Name                            string              `json:"name"`
+			NewAppsDisabledByDefault        bool                `json:"newAppsDisabledByDefault"`
+			NewAppsLockedByDefault          bool                `json:"newAppsLockedByDefault"`
+			OauthAccessTokenLifetimeSeconds int                 `json:"oauthAccessTokenLifetimeSeconds"`
+			OcrChatApiKeyId                 *openapi_types.UUID `json:"ocrChatApiKeyId"`
+			OcrModel                        *string             `json:"ocrModel"`
+			OgDescription                   *string             `json:"ogDescription"`
+			OnboardingComplete              bool                `json:"onboardingComplete"`
+			OnboardingSurveyCompletedAt     *time.Time          `json:"onboardingSurveyCompletedAt"`
+			OnboardingWizard                *struct {
+				Label string `json:"label"`
+				Pages []struct {
+					Content string  `json:"content"`
+					Image   *string `json:"image"`
+				} `json:"pages"`
+			} `json:"onboardingWizard"`
+			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
+			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PopularAgentOverrides     *map[string]struct {
+				Hidden   *bool `json:"hidden,omitempty"`
+				Position *int  `json:"position,omitempty"`
+			} `json:"popularAgentOverrides"`
+			RequireTwoFactor                bool                             `json:"requireTwoFactor"`
+			RerankerChatApiKeyId            *openapi_types.UUID              `json:"rerankerChatApiKeyId"`
+			RerankerModel                   *string                          `json:"rerankerModel"`
+			SessionMaxAgeSeconds            *int                             `json:"sessionMaxAgeSeconds"`
+			SkillMarketplaceAnonymousAccess bool                             `json:"skillMarketplaceAnonymousAccess"`
+			SkillToolsEnabled               bool                             `json:"skillToolsEnabled"`
+			SlimChatErrorUi                 bool                             `json:"slimChatErrorUi"`
+			Slug                            string                           `json:"slug"`
+			Theme                           UpdateConnectionSettings200Theme `json:"theme"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateConnectionSettings400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateConnectionSettings401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}              `json:"details,omitempty"`
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateConnectionSettings403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateConnectionSettings404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateConnectionSettings409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateConnectionSettings500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateDefaultEnvironmentResponse parses an HTTP response from a UpdateDefaultEnvironmentWithResponse call
+func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEnvironmentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateDefaultEnvironmentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
+			AppName                      *string            `json:"appName"`
+			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
+			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                    *[]struct {
+				Label string `json:"label"`
+				Url   string `json:"url"`
+			} `json:"chatLinks"`
+			ChatPlaceholders   *[]string `json:"chatPlaceholders"`
+			ConnectionBaseUrls *[]struct {
+				Description string `json:"description"`
+				IsDefault   bool   `json:"isDefault"`
+				Url         string `json:"url"`
+				Visible     bool   `json:"visible"`
+			} `json:"connectionBaseUrls"`
+			ConnectionClientFutureProviders *map[string]bool `json:"connectionClientFutureProviders"`
+			ConnectionClientOrder           *[]string        `json:"connectionClientOrder"`
+			ConnectionClientProviderKeys    *map[string][]struct {
+				Provider         UpdateDefaultEnvironment200ConnectionClientProviderKeysProvider `json:"provider"`
+				ProviderApiKeyId openapi_types.UUID                                              `json:"providerApiKeyId"`
+			} `json:"connectionClientProviderKeys"`
+			ConnectionDefaultClientId                *string                                        `json:"connectionDefaultClientId"`
+			ConnectionDefaultLlmProxyId              *openapi_types.UUID                            `json:"connectionDefaultLlmProxyId"`
+			ConnectionDefaultMcpGatewayId            *openapi_types.UUID                            `json:"connectionDefaultMcpGatewayId"`
+			ConnectionLlmProxyEnabled                bool                                           `json:"connectionLlmProxyEnabled"`
+			ConnectionPluginsEnabled                 bool                                           `json:"connectionPluginsEnabled"`
+			ConnectionRuntimeHandoffEnabled          bool                                           `json:"connectionRuntimeHandoffEnabled"`
+			ConnectionRuntimeHandoffInstructions     *string                                        `json:"connectionRuntimeHandoffInstructions"`
+			ConnectionShownClientIds                 *[]string                                      `json:"connectionShownClientIds"`
+			ConnectionShownProviders                 *[]string                                      `json:"connectionShownProviders"`
+			ConnectionSkillsEnabled                  bool                                           `json:"connectionSkillsEnabled"`
+			CreatedAt                                time.Time                                      `json:"createdAt"`
+			CustomFont                               UpdateDefaultEnvironment200CustomFont          `json:"customFont"`
+			DefaultAgentId                           *openapi_types.UUID                            `json:"defaultAgentId"`
+			DefaultEnvironmentDescription            *string                                        `json:"defaultEnvironmentDescription"`
+			DefaultEnvironmentName                   *string                                        `json:"defaultEnvironmentName"`
+			DefaultEnvironmentNamespace              *string                                        `json:"defaultEnvironmentNamespace"`
+			DefaultEnvironmentTrustedImageRegistries *[]string                                      `json:"defaultEnvironmentTrustedImageRegistries"`
+			DefaultEnvironmentValidationRegex        *string                                        `json:"defaultEnvironmentValidationRegex"`
+			DefaultLlmApiKeyId                       *openapi_types.UUID                            `json:"defaultLlmApiKeyId"`
+			DefaultLlmModel                          *string                                        `json:"defaultLlmModel"`
+			DefaultLlmProvider                       *UpdateDefaultEnvironment200DefaultLlmProvider `json:"defaultLlmProvider"`
+			DefaultMemberRole                        *string                                        `json:"defaultMemberRole"`
+			DefaultModelId                           *openapi_types.UUID                            `json:"defaultModelId"`
+			DefaultNetworkPolicy                     *struct {
+				AllowedCidrs   []string                                                    `json:"allowedCidrs"`
+				AllowedDomains []string                                                    `json:"allowedDomains"`
+				DomainPreset   UpdateDefaultEnvironment200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     UpdateDefaultEnvironment200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"defaultNetworkPolicy"`
+			DefaultUserLimitCleanupInterval *UpdateDefaultEnvironment200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel           *[]string                                                   `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue           *int                                                        `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId           *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions             *EmbeddingDimensions                                        `json:"embeddingDimensions"`
+			EmbeddingModel                  *string                                                     `json:"embeddingModel"`
+			Favicon                         *string                                                     `json:"favicon"`
+			FooterText                      *string                                                     `json:"footerText"`
+			IconLogo                        *string                                                     `json:"iconLogo"`
+			IconLogoDark                    *string                                                     `json:"iconLogoDark"`
+			Id                              string                                                      `json:"id"`
+			KbBm25B                         *float32                                                    `json:"kbBm25B"`
+			KbBm25K1                        *float32                                                    `json:"kbBm25K1"`
+			KbContextualRetrievalMode       *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides     *map[string]struct {
+				Hidden *bool `json:"hidden,omitempty"`
+			} `json:"knowledgeConnectorOverrides"`
+			Logo                      *string `json:"logo"`
+			LogoDark                  *string `json:"logoDark"`
+			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			MessagingChannelOverrides *map[string]struct {
+				Hidden *bool `json:"hidden,omitempty"`
+			} `json:"messagingChannelOverrides"`
+			Metadata               *string `json:"metadata"`
+			ModelProviderOverrides *map[string]struct {
+				DisplayName *string `json:"displayName"`
+				Hidden      *bool   `json:"hidden,omitempty"`
+			} `json:"modelProviderOverrides"`
+			Name                            string              `json:"name"`
+			NewAppsDisabledByDefault        bool                `json:"newAppsDisabledByDefault"`
+			NewAppsLockedByDefault          bool                `json:"newAppsLockedByDefault"`
+			OauthAccessTokenLifetimeSeconds int                 `json:"oauthAccessTokenLifetimeSeconds"`
+			OcrChatApiKeyId                 *openapi_types.UUID `json:"ocrChatApiKeyId"`
+			OcrModel                        *string             `json:"ocrModel"`
+			OgDescription                   *string             `json:"ogDescription"`
+			OnboardingComplete              bool                `json:"onboardingComplete"`
+			OnboardingSurveyCompletedAt     *time.Time          `json:"onboardingSurveyCompletedAt"`
+			OnboardingWizard                *struct {
+				Label string `json:"label"`
+				Pages []struct {
+					Content string  `json:"content"`
+					Image   *string `json:"image"`
+				} `json:"pages"`
+			} `json:"onboardingWizard"`
+			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
+			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PopularAgentOverrides     *map[string]struct {
+				Hidden   *bool `json:"hidden,omitempty"`
+				Position *int  `json:"position,omitempty"`
+			} `json:"popularAgentOverrides"`
+			RequireTwoFactor                bool                             `json:"requireTwoFactor"`
+			RerankerChatApiKeyId            *openapi_types.UUID              `json:"rerankerChatApiKeyId"`
+			RerankerModel                   *string                          `json:"rerankerModel"`
+			SessionMaxAgeSeconds            *int                             `json:"sessionMaxAgeSeconds"`
+			SkillMarketplaceAnonymousAccess bool                             `json:"skillMarketplaceAnonymousAccess"`
+			SkillToolsEnabled               bool                             `json:"skillToolsEnabled"`
+			SlimChatErrorUi                 bool                             `json:"slimChatErrorUi"`
+			Slug                            string                           `json:"slug"`
+			Theme                           UpdateDefaultEnvironment200Theme `json:"theme"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateDefaultEnvironment400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateDefaultEnvironment401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}              `json:"details,omitempty"`
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateDefaultEnvironment403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateDefaultEnvironment404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateDefaultEnvironment409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                              `json:"internal_code,omitempty"`
+				Message      string                               `json:"message"`
+				Type         UpdateDefaultEnvironment500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateIntegrationSettingsResponse parses an HTTP response from a UpdateIntegrationSettingsWithResponse call
+func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrationSettingsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateIntegrationSettingsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
+			AppName                      *string            `json:"appName"`
+			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
+			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                    *[]struct {
+				Label string `json:"label"`
+				Url   string `json:"url"`
+			} `json:"chatLinks"`
+			ChatPlaceholders   *[]string `json:"chatPlaceholders"`
+			ConnectionBaseUrls *[]struct {
+				Description string `json:"description"`
+				IsDefault   bool   `json:"isDefault"`
+				Url         string `json:"url"`
+				Visible     bool   `json:"visible"`
+			} `json:"connectionBaseUrls"`
+			ConnectionClientFutureProviders *map[string]bool `json:"connectionClientFutureProviders"`
+			ConnectionClientOrder           *[]string        `json:"connectionClientOrder"`
+			ConnectionClientProviderKeys    *map[string][]struct {
+				Provider         UpdateIntegrationSettings200ConnectionClientProviderKeysProvider `json:"provider"`
+				ProviderApiKeyId openapi_types.UUID                                               `json:"providerApiKeyId"`
+			} `json:"connectionClientProviderKeys"`
+			ConnectionDefaultClientId                *string                                         `json:"connectionDefaultClientId"`
+			ConnectionDefaultLlmProxyId              *openapi_types.UUID                             `json:"connectionDefaultLlmProxyId"`
+			ConnectionDefaultMcpGatewayId            *openapi_types.UUID                             `json:"connectionDefaultMcpGatewayId"`
+			ConnectionLlmProxyEnabled                bool                                            `json:"connectionLlmProxyEnabled"`
+			ConnectionPluginsEnabled                 bool                                            `json:"connectionPluginsEnabled"`
+			ConnectionRuntimeHandoffEnabled          bool                                            `json:"connectionRuntimeHandoffEnabled"`
+			ConnectionRuntimeHandoffInstructions     *string                                         `json:"connectionRuntimeHandoffInstructions"`
+			ConnectionShownClientIds                 *[]string                                       `json:"connectionShownClientIds"`
+			ConnectionShownProviders                 *[]string                                       `json:"connectionShownProviders"`
+			ConnectionSkillsEnabled                  bool                                            `json:"connectionSkillsEnabled"`
+			CreatedAt                                time.Time                                       `json:"createdAt"`
+			CustomFont                               UpdateIntegrationSettings200CustomFont          `json:"customFont"`
+			DefaultAgentId                           *openapi_types.UUID                             `json:"defaultAgentId"`
+			DefaultEnvironmentDescription            *string                                         `json:"defaultEnvironmentDescription"`
+			DefaultEnvironmentName                   *string                                         `json:"defaultEnvironmentName"`
+			DefaultEnvironmentNamespace              *string                                         `json:"defaultEnvironmentNamespace"`
+			DefaultEnvironmentTrustedImageRegistries *[]string                                       `json:"defaultEnvironmentTrustedImageRegistries"`
+			DefaultEnvironmentValidationRegex        *string                                         `json:"defaultEnvironmentValidationRegex"`
+			DefaultLlmApiKeyId                       *openapi_types.UUID                             `json:"defaultLlmApiKeyId"`
+			DefaultLlmModel                          *string                                         `json:"defaultLlmModel"`
+			DefaultLlmProvider                       *UpdateIntegrationSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
+			DefaultMemberRole                        *string                                         `json:"defaultMemberRole"`
+			DefaultModelId                           *openapi_types.UUID                             `json:"defaultModelId"`
+			DefaultNetworkPolicy                     *struct {
+				AllowedCidrs   []string                                                     `json:"allowedCidrs"`
+				AllowedDomains []string                                                     `json:"allowedDomains"`
+				DomainPreset   UpdateIntegrationSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     UpdateIntegrationSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"defaultNetworkPolicy"`
+			DefaultUserLimitCleanupInterval *UpdateIntegrationSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel           *[]string                                                    `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue           *int                                                         `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId           *openapi_types.UUID                                          `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions             *EmbeddingDimensions                                         `json:"embeddingDimensions"`
+			EmbeddingModel                  *string                                                      `json:"embeddingModel"`
+			Favicon                         *string                                                      `json:"favicon"`
+			FooterText                      *string                                                      `json:"footerText"`
+			IconLogo                        *string                                                      `json:"iconLogo"`
+			IconLogoDark                    *string                                                      `json:"iconLogoDark"`
+			Id                              string                                                       `json:"id"`
+			KbBm25B                         *float32                                                     `json:"kbBm25B"`
+			KbBm25K1                        *float32                                                     `json:"kbBm25K1"`
+			KbContextualRetrievalMode       *ContextualRetrievalMode                                     `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides     *map[string]struct {
+				Hidden *bool `json:"hidden,omitempty"`
+			} `json:"knowledgeConnectorOverrides"`
+			Logo                      *string `json:"logo"`
+			LogoDark                  *string `json:"logoDark"`
+			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			MessagingChannelOverrides *map[string]struct {
+				Hidden *bool `json:"hidden,omitempty"`
+			} `json:"messagingChannelOverrides"`
+			Metadata               *string `json:"metadata"`
+			ModelProviderOverrides *map[string]struct {
+				DisplayName *string `json:"displayName"`
+				Hidden      *bool   `json:"hidden,omitempty"`
+			} `json:"modelProviderOverrides"`
+			Name                            string              `json:"name"`
+			NewAppsDisabledByDefault        bool                `json:"newAppsDisabledByDefault"`
+			NewAppsLockedByDefault          bool                `json:"newAppsLockedByDefault"`
+			OauthAccessTokenLifetimeSeconds int                 `json:"oauthAccessTokenLifetimeSeconds"`
+			OcrChatApiKeyId                 *openapi_types.UUID `json:"ocrChatApiKeyId"`
+			OcrModel                        *string             `json:"ocrModel"`
+			OgDescription                   *string             `json:"ogDescription"`
+			OnboardingComplete              bool                `json:"onboardingComplete"`
+			OnboardingSurveyCompletedAt     *time.Time          `json:"onboardingSurveyCompletedAt"`
+			OnboardingWizard                *struct {
+				Label string `json:"label"`
+				Pages []struct {
+					Content string  `json:"content"`
+					Image   *string `json:"image"`
+				} `json:"pages"`
+			} `json:"onboardingWizard"`
+			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
+			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PopularAgentOverrides     *map[string]struct {
+				Hidden   *bool `json:"hidden,omitempty"`
+				Position *int  `json:"position,omitempty"`
+			} `json:"popularAgentOverrides"`
+			RequireTwoFactor                bool                              `json:"requireTwoFactor"`
+			RerankerChatApiKeyId            *openapi_types.UUID               `json:"rerankerChatApiKeyId"`
+			RerankerModel                   *string                           `json:"rerankerModel"`
+			SessionMaxAgeSeconds            *int                              `json:"sessionMaxAgeSeconds"`
+			SkillMarketplaceAnonymousAccess bool                              `json:"skillMarketplaceAnonymousAccess"`
+			SkillToolsEnabled               bool                              `json:"skillToolsEnabled"`
+			SlimChatErrorUi                 bool                              `json:"slimChatErrorUi"`
+			Slug                            string                            `json:"slug"`
+			Theme                           UpdateIntegrationSettings200Theme `json:"theme"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                               `json:"internal_code,omitempty"`
+				Message      string                                `json:"message"`
+				Type         UpdateIntegrationSettings400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                               `json:"internal_code,omitempty"`
+				Message      string                                `json:"message"`
+				Type         UpdateIntegrationSettings401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}               `json:"details,omitempty"`
+				InternalCode *string                               `json:"internal_code,omitempty"`
+				Message      string                                `json:"message"`
+				Type         UpdateIntegrationSettings403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                               `json:"internal_code,omitempty"`
+				Message      string                                `json:"message"`
+				Type         UpdateIntegrationSettings404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                               `json:"internal_code,omitempty"`
+				Message      string                                `json:"message"`
+				Type         UpdateIntegrationSettings409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                               `json:"internal_code,omitempty"`
+				Message      string                                `json:"message"`
+				Type         UpdateIntegrationSettings500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -30153,6 +32593,224 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 				InternalCode *string                            `json:"internal_code,omitempty"`
 				Message      string                             `json:"message"`
 				Type         UpdateSecuritySettings500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateSkillsSettingsResponse parses an HTTP response from a UpdateSkillsSettingsWithResponse call
+func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSettingsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateSkillsSettingsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
+			AppName                      *string            `json:"appName"`
+			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
+			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                    *[]struct {
+				Label string `json:"label"`
+				Url   string `json:"url"`
+			} `json:"chatLinks"`
+			ChatPlaceholders   *[]string `json:"chatPlaceholders"`
+			ConnectionBaseUrls *[]struct {
+				Description string `json:"description"`
+				IsDefault   bool   `json:"isDefault"`
+				Url         string `json:"url"`
+				Visible     bool   `json:"visible"`
+			} `json:"connectionBaseUrls"`
+			ConnectionClientFutureProviders *map[string]bool `json:"connectionClientFutureProviders"`
+			ConnectionClientOrder           *[]string        `json:"connectionClientOrder"`
+			ConnectionClientProviderKeys    *map[string][]struct {
+				Provider         UpdateSkillsSettings200ConnectionClientProviderKeysProvider `json:"provider"`
+				ProviderApiKeyId openapi_types.UUID                                          `json:"providerApiKeyId"`
+			} `json:"connectionClientProviderKeys"`
+			ConnectionDefaultClientId                *string                                    `json:"connectionDefaultClientId"`
+			ConnectionDefaultLlmProxyId              *openapi_types.UUID                        `json:"connectionDefaultLlmProxyId"`
+			ConnectionDefaultMcpGatewayId            *openapi_types.UUID                        `json:"connectionDefaultMcpGatewayId"`
+			ConnectionLlmProxyEnabled                bool                                       `json:"connectionLlmProxyEnabled"`
+			ConnectionPluginsEnabled                 bool                                       `json:"connectionPluginsEnabled"`
+			ConnectionRuntimeHandoffEnabled          bool                                       `json:"connectionRuntimeHandoffEnabled"`
+			ConnectionRuntimeHandoffInstructions     *string                                    `json:"connectionRuntimeHandoffInstructions"`
+			ConnectionShownClientIds                 *[]string                                  `json:"connectionShownClientIds"`
+			ConnectionShownProviders                 *[]string                                  `json:"connectionShownProviders"`
+			ConnectionSkillsEnabled                  bool                                       `json:"connectionSkillsEnabled"`
+			CreatedAt                                time.Time                                  `json:"createdAt"`
+			CustomFont                               UpdateSkillsSettings200CustomFont          `json:"customFont"`
+			DefaultAgentId                           *openapi_types.UUID                        `json:"defaultAgentId"`
+			DefaultEnvironmentDescription            *string                                    `json:"defaultEnvironmentDescription"`
+			DefaultEnvironmentName                   *string                                    `json:"defaultEnvironmentName"`
+			DefaultEnvironmentNamespace              *string                                    `json:"defaultEnvironmentNamespace"`
+			DefaultEnvironmentTrustedImageRegistries *[]string                                  `json:"defaultEnvironmentTrustedImageRegistries"`
+			DefaultEnvironmentValidationRegex        *string                                    `json:"defaultEnvironmentValidationRegex"`
+			DefaultLlmApiKeyId                       *openapi_types.UUID                        `json:"defaultLlmApiKeyId"`
+			DefaultLlmModel                          *string                                    `json:"defaultLlmModel"`
+			DefaultLlmProvider                       *UpdateSkillsSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
+			DefaultMemberRole                        *string                                    `json:"defaultMemberRole"`
+			DefaultModelId                           *openapi_types.UUID                        `json:"defaultModelId"`
+			DefaultNetworkPolicy                     *struct {
+				AllowedCidrs   []string                                                `json:"allowedCidrs"`
+				AllowedDomains []string                                                `json:"allowedDomains"`
+				DomainPreset   UpdateSkillsSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
+				EgressMode     UpdateSkillsSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
+			} `json:"defaultNetworkPolicy"`
+			DefaultUserLimitCleanupInterval *UpdateSkillsSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel           *[]string                                               `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue           *int                                                    `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId           *openapi_types.UUID                                     `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions             *EmbeddingDimensions                                    `json:"embeddingDimensions"`
+			EmbeddingModel                  *string                                                 `json:"embeddingModel"`
+			Favicon                         *string                                                 `json:"favicon"`
+			FooterText                      *string                                                 `json:"footerText"`
+			IconLogo                        *string                                                 `json:"iconLogo"`
+			IconLogoDark                    *string                                                 `json:"iconLogoDark"`
+			Id                              string                                                  `json:"id"`
+			KbBm25B                         *float32                                                `json:"kbBm25B"`
+			KbBm25K1                        *float32                                                `json:"kbBm25K1"`
+			KbContextualRetrievalMode       *ContextualRetrievalMode                                `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides     *map[string]struct {
+				Hidden *bool `json:"hidden,omitempty"`
+			} `json:"knowledgeConnectorOverrides"`
+			Logo                      *string `json:"logo"`
+			LogoDark                  *string `json:"logoDark"`
+			McpIdleHibernationEnabled bool    `json:"mcpIdleHibernationEnabled"`
+			MessagingChannelOverrides *map[string]struct {
+				Hidden *bool `json:"hidden,omitempty"`
+			} `json:"messagingChannelOverrides"`
+			Metadata               *string `json:"metadata"`
+			ModelProviderOverrides *map[string]struct {
+				DisplayName *string `json:"displayName"`
+				Hidden      *bool   `json:"hidden,omitempty"`
+			} `json:"modelProviderOverrides"`
+			Name                            string              `json:"name"`
+			NewAppsDisabledByDefault        bool                `json:"newAppsDisabledByDefault"`
+			NewAppsLockedByDefault          bool                `json:"newAppsLockedByDefault"`
+			OauthAccessTokenLifetimeSeconds int                 `json:"oauthAccessTokenLifetimeSeconds"`
+			OcrChatApiKeyId                 *openapi_types.UUID `json:"ocrChatApiKeyId"`
+			OcrModel                        *string             `json:"ocrModel"`
+			OgDescription                   *string             `json:"ogDescription"`
+			OnboardingComplete              bool                `json:"onboardingComplete"`
+			OnboardingSurveyCompletedAt     *time.Time          `json:"onboardingSurveyCompletedAt"`
+			OnboardingWizard                *struct {
+				Label string `json:"label"`
+				Pages []struct {
+					Content string  `json:"content"`
+					Image   *string `json:"image"`
+				} `json:"pages"`
+			} `json:"onboardingWizard"`
+			OnlineMcpCatalogEnabled   bool `json:"onlineMcpCatalogEnabled"`
+			OnlineSkillCatalogEnabled bool `json:"onlineSkillCatalogEnabled"`
+			PopularAgentOverrides     *map[string]struct {
+				Hidden   *bool `json:"hidden,omitempty"`
+				Position *int  `json:"position,omitempty"`
+			} `json:"popularAgentOverrides"`
+			RequireTwoFactor                bool                         `json:"requireTwoFactor"`
+			RerankerChatApiKeyId            *openapi_types.UUID          `json:"rerankerChatApiKeyId"`
+			RerankerModel                   *string                      `json:"rerankerModel"`
+			SessionMaxAgeSeconds            *int                         `json:"sessionMaxAgeSeconds"`
+			SkillMarketplaceAnonymousAccess bool                         `json:"skillMarketplaceAnonymousAccess"`
+			SkillToolsEnabled               bool                         `json:"skillToolsEnabled"`
+			SlimChatErrorUi                 bool                         `json:"slimChatErrorUi"`
+			Slug                            string                       `json:"slug"`
+			Theme                           UpdateSkillsSettings200Theme `json:"theme"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateSkillsSettings400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateSkillsSettings401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}          `json:"details,omitempty"`
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateSkillsSettings403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateSkillsSettings404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateSkillsSettings409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateSkillsSettings500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

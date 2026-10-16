@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -39,11 +40,53 @@ type OrganizationSettingsResource struct {
 }
 
 type OrganizationSettingsResourceModel struct {
-	ID                 types.String `tfsdk:"id"`
-	Font               types.String `tfsdk:"font"`
-	ColorTheme         types.String `tfsdk:"color_theme"`
-	Logo               types.String `tfsdk:"logo"`
-	OnboardingComplete types.Bool   `tfsdk:"onboarding_complete"`
+	OnlineMcpCatalogEnabled                  types.Bool           `tfsdk:"online_mcp_catalog_enabled"`
+	OnlineSkillCatalogEnabled                types.Bool           `tfsdk:"online_skill_catalog_enabled"`
+	SkillMarketplaceAnonymousAccess          types.Bool           `tfsdk:"skill_marketplace_anonymous_access"`
+	AllowToolAutoAssignment                  types.Bool           `tfsdk:"allow_tool_auto_assignment"`
+	OcrChatApiKeyId                          types.String         `tfsdk:"ocr_chat_api_key_id"`
+	OcrModel                                 types.String         `tfsdk:"ocr_model"`
+	KbBm25K1                                 types.Float64        `tfsdk:"kb_bm25_k1"`
+	KbBm25B                                  types.Float64        `tfsdk:"kb_bm25_b"`
+	KbContextualRetrievalMode                types.String         `tfsdk:"kb_contextual_retrieval_mode"`
+	DefaultModelId                           types.String         `tfsdk:"default_model_id"`
+	DefaultMemberRole                        types.String         `tfsdk:"default_member_role"`
+	OnboardingWizard                         jsontypes.Normalized `tfsdk:"onboarding_wizard"`
+	IconLogoDark                             types.String         `tfsdk:"icon_logo_dark"`
+	RequireTwoFactor                         types.Bool           `tfsdk:"require_two_factor"`
+	SessionMaxAgeSeconds                     types.Int64          `tfsdk:"session_max_age_seconds"`
+	OauthAccessTokenLifetimeSeconds          types.Int64          `tfsdk:"oauth_access_token_lifetime_seconds"`
+	ConnectionDefaultMcpGatewayId            types.String         `tfsdk:"connection_default_mcp_gateway_id"`
+	ConnectionDefaultClientId                types.String         `tfsdk:"connection_default_client_id"`
+	ConnectionShownClientIds                 jsontypes.Normalized `tfsdk:"connection_shown_client_ids"`
+	ConnectionClientOrder                    jsontypes.Normalized `tfsdk:"connection_client_order"`
+	ConnectionBaseUrls                       types.List           `tfsdk:"connection_base_urls"`
+	ConnectionClientFutureProviders          jsontypes.Normalized `tfsdk:"connection_client_future_providers"`
+	ConnectionClientProviderKeys             jsontypes.Normalized `tfsdk:"connection_client_provider_keys"`
+	ConnectionSkillsEnabled                  types.Bool           `tfsdk:"connection_skills_enabled"`
+	ConnectionLlmProxyEnabled                types.Bool           `tfsdk:"connection_llm_proxy_enabled"`
+	ConnectionPluginsEnabled                 types.Bool           `tfsdk:"connection_plugins_enabled"`
+	ConnectionRuntimeHandoffEnabled          types.Bool           `tfsdk:"connection_runtime_handoff_enabled"`
+	ConnectionRuntimeHandoffInstructions     types.String         `tfsdk:"connection_runtime_handoff_instructions"`
+	ModelProviderOverrides                   jsontypes.Normalized `tfsdk:"model_provider_overrides"`
+	MessagingChannelOverrides                jsontypes.Normalized `tfsdk:"messaging_channel_overrides"`
+	KnowledgeConnectorOverrides              jsontypes.Normalized `tfsdk:"knowledge_connector_overrides"`
+	PopularAgentOverrides                    jsontypes.Normalized `tfsdk:"popular_agent_overrides"`
+	DefaultEnvironmentName                   types.String         `tfsdk:"default_environment_name"`
+	DefaultEnvironmentNamespace              types.String         `tfsdk:"default_environment_namespace"`
+	DefaultEnvironmentDescription            types.String         `tfsdk:"default_environment_description"`
+	DefaultNetworkPolicy                     jsontypes.Normalized `tfsdk:"default_network_policy"`
+	DefaultEnvironmentValidationRegex        types.String         `tfsdk:"default_environment_validation_regex"`
+	DefaultEnvironmentTrustedImageRegistries jsontypes.Normalized `tfsdk:"default_environment_trusted_image_registries"`
+	McpIdleHibernationEnabled                types.Bool           `tfsdk:"mcp_idle_hibernation_enabled"`
+	AppsHackathonRecorderEnabled             types.Bool           `tfsdk:"apps_hackathon_recorder_enabled"`
+	NewAppsDisabledByDefault                 types.Bool           `tfsdk:"new_apps_disabled_by_default"`
+	NewAppsLockedByDefault                   types.Bool           `tfsdk:"new_apps_locked_by_default"`
+	ID                                       types.String         `tfsdk:"id"`
+	Font                                     types.String         `tfsdk:"font"`
+	ColorTheme                               types.String         `tfsdk:"color_theme"`
+	Logo                                     types.String         `tfsdk:"logo"`
+	OnboardingComplete                       types.Bool           `tfsdk:"onboarding_complete"`
 
 	// Appearance settings
 	LogoDark                types.String `tfsdk:"logo_dark"`
@@ -339,6 +382,9 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			},
 		},
 	}
+	for name, attribute := range currentOrganizationAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
 }
 
 func (r *OrganizationSettingsResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -443,40 +489,75 @@ func (r *OrganizationSettingsResource) applySettings(ctx context.Context, plan, 
 		spec []AttrSpec
 		send func(io.Reader) (int, []byte, error)
 	}{
-		{"appearance", orgSettingsAppearanceSpec, func(body io.Reader) (int, []byte, error) {
+		{"appearance", append(orgSettingsAppearanceSpec, currentOrganizationSpecs("appearance-settings")...), func(body io.Reader) (int, []byte, error) {
 			resp, err := r.client.UpdateAppearanceSettingsWithBodyWithResponse(ctx, "application/json", body)
 			if err != nil {
 				return 0, nil, err
 			}
 			return resp.StatusCode(), resp.Body, nil
 		}},
-		{"security", orgSettingsSecuritySpec, func(body io.Reader) (int, []byte, error) {
+		{"security", append(orgSettingsSecuritySpec, currentOrganizationSpecs("security-settings")...), func(body io.Reader) (int, []byte, error) {
 			resp, err := r.client.UpdateSecuritySettingsWithBodyWithResponse(ctx, "application/json", body)
 			if err != nil {
 				return 0, nil, err
 			}
 			return resp.StatusCode(), resp.Body, nil
 		}},
-		{"agent", orgSettingsAgentSpec, func(body io.Reader) (int, []byte, error) {
+		{"agent", append(orgSettingsAgentSpec, currentOrganizationSpecs("agent-settings")...), func(body io.Reader) (int, []byte, error) {
 			resp, err := r.client.UpdateAgentSettingsWithBodyWithResponse(ctx, "application/json", body)
 			if err != nil {
 				return 0, nil, err
 			}
 			return resp.StatusCode(), resp.Body, nil
 		}},
-		{"mcp", orgSettingsMcpSpec, func(body io.Reader) (int, []byte, error) {
+		{"mcp", append(orgSettingsMcpSpec, currentOrganizationSpecs("mcp-settings")...), func(body io.Reader) (int, []byte, error) {
 			resp, err := r.client.UpdateMcpSettingsWithBodyWithResponse(ctx, "application/json", body)
 			if err != nil {
 				return 0, nil, err
 			}
 			return resp.StatusCode(), resp.Body, nil
 		}},
-		{"knowledge", orgSettingsKnowledgeSpec, func(body io.Reader) (int, []byte, error) {
+		{"knowledge", append(orgSettingsKnowledgeSpec, currentOrganizationSpecs("knowledge-settings")...), func(body io.Reader) (int, []byte, error) {
 			resp, err := r.client.UpdateKnowledgeSettingsWithBodyWithResponse(ctx, "application/json", body)
 			if err != nil {
 				return 0, nil, err
 			}
 			return resp.StatusCode(), resp.Body, nil
+		}},
+		{"skills-settings", currentOrganizationSpecs("skills-settings"), func(body io.Reader) (int, []byte, error) {
+			response, err := r.client.UpdateSkillsSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return response.StatusCode(), response.Body, nil
+		}},
+		{"auth-settings", currentOrganizationSpecs("auth-settings"), func(body io.Reader) (int, []byte, error) {
+			response, err := r.client.UpdateAuthSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return response.StatusCode(), response.Body, nil
+		}},
+		{"connection-settings", currentOrganizationSpecs("connection-settings"), func(body io.Reader) (int, []byte, error) {
+			response, err := r.client.UpdateConnectionSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return response.StatusCode(), response.Body, nil
+		}},
+		{"integration-settings", currentOrganizationSpecs("integration-settings"), func(body io.Reader) (int, []byte, error) {
+			response, err := r.client.UpdateIntegrationSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return response.StatusCode(), response.Body, nil
+		}},
+		{"default-environment", currentOrganizationSpecs("default-environment"), func(body io.Reader) (int, []byte, error) {
+			response, err := r.client.UpdateDefaultEnvironmentWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return response.StatusCode(), response.Body, nil
 		}},
 	}
 
@@ -563,6 +644,10 @@ func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, dat
 		return
 	}
 
+	flattenCurrentOrganizationSettings(data, apiResp.Body, diags)
+	if diags.HasError() {
+		return
+	}
 	data.ID = types.StringValue(apiResp.JSON200.Id)
 	data.Font = types.StringValue(string(apiResp.JSON200.CustomFont))
 	data.ColorTheme = types.StringValue(string(apiResp.JSON200.Theme))

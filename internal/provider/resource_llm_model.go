@@ -236,6 +236,10 @@ func (r *LlmModelResource) Read(ctx context.Context, req resource.ReadRequest, r
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	if data.ID.IsNull() || data.ID.IsUnknown() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	r.readModelState(ctx, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {

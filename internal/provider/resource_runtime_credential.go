@@ -240,6 +240,10 @@ func (r *RuntimeCredentialResource) Read(ctx context.Context, req resource.ReadR
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	if data.ID.IsNull() || data.ID.IsUnknown() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	view, ok := r.findByKey(ctx, data.ID.ValueString(), &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
