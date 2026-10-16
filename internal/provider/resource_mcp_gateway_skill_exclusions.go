@@ -252,5 +252,14 @@ func (r *MCPGatewaySkillExclusionsResource) replaceExclusions(ctx context.Contex
 		)
 		return false
 	}
+	confirmed := make([]string, 0, len(apiResp.JSON200.ExcludedSkillIds))
+	for _, id := range apiResp.JSON200.ExcludedSkillIds {
+		confirmed = append(confirmed, id.String())
+	}
+	if !agentSet(ctx, confirmed, diags).Equal(plan.ExcludedSkillIds) {
+		diags.AddError("Incomplete exclusion replacement", "The API did not retain the complete requested exclusion set. Refresh and verify access before retrying.")
+		return false
+	}
+
 	return true
 }

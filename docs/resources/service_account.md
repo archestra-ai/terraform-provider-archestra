@@ -32,7 +32,8 @@ resource "archestra_service_account" "example" {
 - `disabled` (Boolean) Whether the identity is disabled.
 - `icon` (String) Emoji or image icon.
 - `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
-- `labels` (Attributes Set) Knowledge-base labels. (see [below for nested schema](#nestedatt--labels))
+- `labels` (Attributes Set) Service-account labels. (see [below for nested schema](#nestedatt--labels))
+- `team_id` (String) Owning team; remove this field to return to organization ownership.
 
 ### Read-Only
 

@@ -35,6 +35,17 @@ type AgentResource struct {
 // AgentResourceModel is the schema for an internal Archestra agent (chat agent
 // with prompts, knowledge sources, optional email triggers, etc.).
 type AgentResourceModel struct {
+	Tools                          types.Set    `tfsdk:"tools"`
+	ExcludedToolIDs                types.Set    `tfsdk:"excluded_tool_ids"`
+	Hooks                          types.Set    `tfsdk:"hooks"`
+	SubagentIDs                    types.Set    `tfsdk:"subagent_ids"`
+	RemoteAgentIDs                 types.Set    `tfsdk:"remote_agent_ids"`
+	ExcludedSubagentIDs            types.Set    `tfsdk:"excluded_subagent_ids"`
+	ExcludedConnectorIDs           types.Set    `tfsdk:"excluded_connector_ids"`
+	SkillPolicy                    types.Object `tfsdk:"skills"`
+	SkillPolicyHiddenAllowedCount  types.Int64  `tfsdk:"skill_policy_hidden_allowed_count"`
+	SkillPolicyHiddenExcludedCount types.Int64  `tfsdk:"skill_policy_hidden_excluded_count"`
+
 	InitialGrants                        types.Set    `tfsdk:"initial_grants"`
 	AuthorEmail                          types.String `tfsdk:"author_email"`
 	CreatedBy                            types.String `tfsdk:"created_by"`
@@ -177,7 +188,7 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"access_all_tools": schema.BoolAttribute{
 				Optional:            true,
 				Computed:            true,
-				MarkdownDescription: "Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Pair with `archestra_agent_tool_exclusions` to carve tools out. Defaults to `false`.",
+				MarkdownDescription: "Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Use excluded_tool_ids to exclude tools. Defaults to `false`.",
 			},
 			"missing_credential_behavior": schema.StringAttribute{
 				Optional:            true,
@@ -198,6 +209,12 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"runtime":               runtimeSchema(),
 			"built_in_agent_config": schema.StringAttribute{Computed: true, MarkdownDescription: "Server-owned built-in agent metadata as JSON."},
 		},
+	}
+	resp.Schema.Attributes["hooks"] = agentHooksAttribute()
+	resp.Schema.Attributes["tools"] = agentToolsAttribute()
+	resp.Schema.Attributes["excluded_tool_ids"] = agentIDSetAttribute("Tools excluded from automatic tool access; omit to preserve or set an empty set to clear.", 0)
+	for name, attribute := range agentRelationshipAttributes() {
+		resp.Schema.Attributes[name] = attribute
 	}
 	for name, attribute := range currentAgentAttributes() {
 		resp.Schema.Attributes[name] = attribute
@@ -260,11 +277,33 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
 	resolveInitialGrants(&data.InitialGrants)
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	partial := data
+	nullUnknownAgentRelationships(&partial)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &partial)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.writeRelationships(ctx, &data, &AgentResourceModel{}, req.Config, &resp.Diagnostics)
+	if !resp.Diagnostics.HasError() {
+		r.writeHooks(ctx, &data, &AgentResourceModel{}, req.Config, &resp.Diagnostics)
+		if !resp.Diagnostics.HasError() {
+			r.writeTools(ctx, &data, &AgentResourceModel{}, req.Config, &resp.Diagnostics)
+		}
+	}
 	if resp.Diagnostics.HasError() {
 		return
 	}
 	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
+	if !resp.Diagnostics.HasError() {
+		r.readHooks(ctx, &data, &resp.Diagnostics)
+		if !resp.Diagnostics.HasError() {
+			r.readTools(ctx, &data, &resp.Diagnostics)
+		}
+	}
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -307,6 +346,16 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	}
 
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
+	if !resp.Diagnostics.HasError() {
+		r.readHooks(ctx, &data, &resp.Diagnostics)
+		if !resp.Diagnostics.HasError() {
+			r.readTools(ctx, &data, &resp.Diagnostics)
+		}
+	}
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -363,7 +412,27 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	r.writeRelationships(ctx, &data, &stateData, req.Config, &resp.Diagnostics)
+	if !resp.Diagnostics.HasError() {
+		r.writeHooks(ctx, &data, &stateData, req.Config, &resp.Diagnostics)
+		if !resp.Diagnostics.HasError() {
+			r.writeTools(ctx, &data, &stateData, req.Config, &resp.Diagnostics)
+		}
+	}
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
+	if !resp.Diagnostics.HasError() {
+		r.readHooks(ctx, &data, &resp.Diagnostics)
+		if !resp.Diagnostics.HasError() {
+			r.readTools(ctx, &data, &resp.Diagnostics)
+		}
+	}
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -408,8 +477,11 @@ func (r *AgentResource) ImportState(ctx context.Context, req resource.ImportStat
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-// ValidateConfig checks the incoming-email domain requirement.
+// ValidateConfig checks dependent configuration and skill reference shapes.
 func (r *AgentResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	validateInlineSkillPolicy(ctx, req.Config, &resp.Diagnostics)
+	validateInlineHooks(ctx, req.Config, &resp.Diagnostics)
+	validateInlineTools(ctx, req.Config, &resp.Diagnostics)
 	var data AgentResourceModel
 	// Decode only the fields this validator uses. Runtime objects can be
 	// unknown during validation (for example, a conditional inside for_each).
@@ -503,9 +575,8 @@ func (r *AgentResource) APIShape() any { return client.GetAgentResponse{} }
 //   - identityProviderId: gateway/proxy-only on the schema side (an agent
 //     never has one); the wire returns null for agent rows.
 //   - slug: auto-generated URL slug, not user-configurable.
-//   - tools: list of tool assignments managed by archestra_agent_tool —
-//     duplicating it here would create a phantom diff against the m2m
-//     relationship.
+//
+// Tool assignments, subagents and skills are managed by inline agent fields.
 func (r *AgentResource) KnownIntentionallySkipped() []string {
 	// Legacy visibility/skill projections and secret-storage pointers are not managed.
 	// Activation policy is represented by its current mode/revision metadata.
@@ -513,7 +584,7 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId",
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "suggestedPrompts", "passthroughHeaders",
-		"identityProviderId", "slug", "tools", "scope", "teams", "users",
+		"identityProviderId", "slug", "scope", "teams", "users",
 	}
 }
 
@@ -531,7 +602,7 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 //     `suggested_prompts` are many-to-many sync'd by AgentModel.update via
 //     `if (field !== undefined)` per-field guards. Merge-patch's "omit when
 //     equal, emit when changed" lines up with that exactly.
-var agentAttrSpec = []AttrSpec{
+var agentAttrSpec = append(append(agentRelationshipAttrSpecs(), AttrSpec{TFName: "hooks", Kind: Synthetic}, AttrSpec{TFName: "tools", Kind: Synthetic}, AttrSpec{TFName: "excluded_tool_ids", Kind: Synthetic}), []AttrSpec{
 	initialGrantsAttrSpec,
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar, OmitOnNull: true},
@@ -576,7 +647,7 @@ var agentAttrSpec = []AttrSpec{
 		Children: runtimeAttrSpec,
 		Encoder:  encodeRuntime,
 	},
-}
+}...)
 
 func (r *AgentResource) refreshMetadataAfterWrite(ctx context.Context, data *AgentResourceModel, diags *diag.Diagnostics) {
 	identifier, err := uuid.Parse(data.ID.ValueString())

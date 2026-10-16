@@ -78,7 +78,7 @@ data "archestra_agent_tool" "support_read_text_file" {
   agent_id  = archestra_agent.support.id
   tool_name = "${archestra_mcp_registry_catalog_item.filesystem.name}__read_text_file"
 
-  depends_on = [archestra_agent_tool.read_text_file]
+  depends_on = [archestra_agent.support]
 }
 
 data "archestra_mcp_tool_calls" "support_recent" {

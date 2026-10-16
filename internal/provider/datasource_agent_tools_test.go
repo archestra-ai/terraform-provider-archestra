@@ -47,6 +47,7 @@ func TestAccAgentToolsDataSource(t *testing.T) {
 func testAccAgentToolsDataSourceConfig(name string) string {
 	return fmt.Sprintf(`
 resource "archestra_agent" "test" {
+ tools=[for tool in archestra_mcp_server_installation.test.tools:{tool_id=tool.id,mcp_server_id=archestra_mcp_server_installation.test.id}]
   name        = %[1]q
   description = "Acceptance-test agent for data.archestra_agent_tools"
 }
@@ -68,15 +69,10 @@ resource "archestra_mcp_server_installation" "test" {
 
 # Bulk-assign the install's tools to drive the assignment list the
 # data source then queries.
-resource "archestra_agent_tool_batch" "test" {
-  agent_id      = archestra_agent.test.id
-  mcp_server_id = archestra_mcp_server_installation.test.id
-  tool_ids      = toset([for t in archestra_mcp_server_installation.test.tools : t.id])
-}
 
 data "archestra_agent_tools" "test" {
   agent_id   = archestra_agent.test.id
-  depends_on = [archestra_agent_tool_batch.test]
+  depends_on = [archestra_agent.test]
 }
 `, name)
 }

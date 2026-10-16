@@ -10,16 +10,16 @@ Terraform provider release and inherit the same API requirements.
 
 | Provider | API capability floor | Exact API versions tested | Status |
 |---|---|---|---|
-| Proposed 3.0.0 | 1.4.0-rc.48 | 1.4.0-rc.48, pinned image digest below | Development candidate; unreleased |
+| Proposed 3.0.0 | 1.4.0-rc.49 | 1.4.0-rc.49, pinned image digest below | Development candidate; unreleased |
 
-The floor includes the atomic delegation API used by v3. It is a minimum required
+The floor includes atomic delegation and the current service-account team ownership API used by v3. It is a minimum required
 capability level, not evidence that every later release is compatible. This
 candidate has not established compatibility with all future 1.4.x versions or
 with the eventual 1.4.0 stable release. Prereleases can change contracts between
 release candidates; record each tested release explicitly.
 
 The tested platform image digest is
-`sha256:fdd17cf0e4361034c39d49d88ba367c980a576f7f7e93f438facb495c64bffb4`.
+`sha256:c9177010ed05666f76cb12bf165f5a4c5d7d8175f5ce8e90259fc16173eb7679`.
 Acceptance CI pins that digest. Native acceptance, state migration, Crossplane
 reconciliation and runtime package evidence are linked from [the audit](audit/README.md).
 An exact digest makes that result reproducible even if an image tag is republished.
@@ -42,9 +42,9 @@ must not silently widen support or merge updates.
 ## Runtime compatibility check
 
 Before configuring resource and data-source clients, the provider reads the
-public `GET /health` endpoint. It rejects semantic versions below `1.4.0-rc.48`,
+public `GET /health` endpoint. It rejects semantic versions below `1.4.0-rc.49`,
 which lack required v3 API capabilities. Versions outside the tested interval
-`= 1.4.0-rc.48` produce a warning. Newer does not automatically mean compatible.
+`= 1.4.0-rc.49` produce a warning. Newer does not automatically mean compatible.
 Custom versions or unreadable version metadata produce a warning by default.
 No resource client is configured when compatibility validation produces an error.
 
@@ -54,7 +54,7 @@ range independently of the Terraform provider constraint:
 ```hcl
 provider "archestra" {
   # The current tested API release. Credentials stay in environment variables.
-  api_version_constraint = "= 1.4.0-rc.48"
+  api_version_constraint = "= 1.4.0-rc.49"
 }
 ```
 
@@ -75,7 +75,7 @@ by its ProviderConfig, for example:
 {
   "api_key": "arch_...",
   "base_url": "https://archestra.example",
-  "api_version_constraint": "= 1.4.0-rc.48"
+  "api_version_constraint": "= 1.4.0-rc.49"
 }
 ```
 

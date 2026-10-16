@@ -101,6 +101,7 @@ resource "archestra_team" "cross" {
 resource "archestra_agent" "team_scoped" {
   name          = "tf-acc-cross-scope-team-agent"
   system_prompt = "Team-scoped agent."
+ tools=[{tool_id=archestra_mcp_server_installation.personal.tools[0].id,mcp_server_id=archestra_mcp_server_installation.personal.id}]
 }
 
 resource "archestra_mcp_registry_catalog_item" "cross" {
@@ -126,15 +127,7 @@ resource "archestra_mcp_server_installation" "personal" {
   catalog_id = archestra_mcp_registry_catalog_item.cross.id
 }
 
-# The actual cross-scope binding: a team-scoped agent picking up a tool
-# from a personal-scoped install. Pulls the first tool the install
-# advertises (filesystem servers expose several; any one works).
-resource "archestra_agent_tool" "cross" {
-  depends_on = [archestra_resource_permission_policy.team_access]
-  agent_id      = archestra_agent.team_scoped.id
-  tool_id       = archestra_mcp_server_installation.personal.tools[0].id
-  mcp_server_id = archestra_mcp_server_installation.personal.id
-}
+
 `
 }
 

@@ -113,3 +113,35 @@ name="tf-token-parent"
 			{Config: config("tf-token-renamed", false, "", "second"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
 		}})
 }
+
+func TestAccServiceAccountTeamOwnership(t *testing.T) {
+	var id string
+	config := func(team string) string {
+		return fmt.Sprintf(`
+resource "archestra_team" "first" {name="tf-account-owner-first"}
+resource "archestra_team" "second" {name="tf-account-owner-second"}
+resource "archestra_service_account" "test" {
+ name="tf-team-account"
+ role="member"
+ team_id=%s
+}
+`, team)
+	}
+	unchanged := func(s *terraform.State) error {
+		if s.RootModule().Resources["archestra_service_account.test"].Primary.ID != id {
+			return fmt.Errorf("team ownership replaced service account")
+		}
+		return nil
+	}
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+		{Config: config("archestra_team.first.id"), Check: resource.ComposeTestCheckFunc(resource.TestCheckResourceAttrPair("archestra_service_account.test", "team_id", "archestra_team.first", "id"), func(s *terraform.State) error {
+			id = s.RootModule().Resources["archestra_service_account.test"].Primary.ID
+			return nil
+		})},
+		{ResourceName: "archestra_service_account.test", ImportState: true, ImportStateVerify: true},
+		{Config: config("archestra_team.first.id"), PlanOnly: true},
+		{Config: config("archestra_team.second.id"), Check: resource.ComposeTestCheckFunc(unchanged, resource.TestCheckResourceAttrPair("archestra_service_account.test", "team_id", "archestra_team.second", "id"))},
+		{Config: config("null"), Check: resource.ComposeTestCheckFunc(unchanged, resource.TestCheckNoResourceAttr("archestra_service_account.test", "team_id"))},
+		{Config: config("null"), PlanOnly: true},
+	}})
+}

@@ -11,6 +11,12 @@ import (
 )
 
 func main() {
+	if len(os.Args) == 3 && os.Args[1] == "--references" {
+		if err := config.PreserveReferenceCollectionOmission(os.Args[2]); err != nil {
+			panic(err)
+		}
+		return
+	}
 	if len(os.Args) < 2 || os.Args[1] == "" {
 		panic("root directory is required to be given as argument")
 	}

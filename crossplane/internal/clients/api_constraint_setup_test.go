@@ -2,6 +2,8 @@ package clients
 
 import (
 	"encoding/json"
+	"testing"
+
 	clusterenvironment "github.com/archestra-ai/provider-archestra/apis/cluster/environment/v1alpha1"
 	clusterconfig "github.com/archestra-ai/provider-archestra/apis/cluster/v1beta1"
 	namespacedenvironment "github.com/archestra-ai/provider-archestra/apis/namespaced/environment/v1alpha1"
@@ -13,7 +15,6 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
-	"testing"
 )
 
 func TestAPIConstraintReachesTerraformInBothScopes(t *testing.T) {

@@ -20,25 +20,25 @@ func TestAPICompatibility(t *testing.T) {
 		status                 int
 		wantError, wantWarning bool
 	}{
-		{"tested", `{"version":"1.4.0-rc.48"}`, "", 200, false, false},
-		{"below-floor", `{"version":"1.4.0-rc.47"}`, "", 200, true, false},
+		{"tested", `{"version":"1.4.0-rc.49"}`, "", 200, false, false},
+		{"below-floor", `{"version":"1.4.0-rc.48"}`, "", 200, true, false},
 		{"old-stable", `{"version":"1.3.0"}`, "", 200, true, false},
-		{"next-rc", `{"version":"1.4.0-rc.49"}`, "", 200, false, true},
+		{"next-rc", `{"version":"1.4.0-rc.50"}`, "", 200, false, true},
 		{"stable-not-yet-tested", `{"version":"1.4.0"}`, "", 200, false, true},
 		{"major-not-tested", `{"version":"2.0.0"}`, "", 200, false, true},
-		{"build-metadata", `{"version":"1.4.0-rc.48+build.123"}`, "", 200, false, false},
+		{"build-metadata", `{"version":"1.4.0-rc.49+build.123"}`, "", 200, false, false},
 		{"custom", `{"version":"dev"}`, "", 200, false, true},
 		{"missing", `{}`, "", 200, false, true},
 		{"malformed", `not JSON secret-marker`, "", 200, false, true},
 		{"unavailable", `secret-marker`, "", 503, false, true},
 		{"denied", `secret-marker`, "", 403, false, true},
-		{"exact-constraint", `{"version":"1.4.0-rc.48"}`, "= 1.4.0-rc.48", 200, false, false},
-		{"constraint-mismatch", `{"version":"1.4.0-rc.49"}`, "= 1.4.0-rc.48", 200, true, false},
+		{"exact-constraint", `{"version":"1.4.0-rc.49"}`, "= 1.4.0-rc.49", 200, false, false},
+		{"constraint-mismatch", `{"version":"1.4.0-rc.50"}`, "= 1.4.0-rc.49", 200, true, false},
 		{"constraint-range", `{"version":"1.4.1"}`, ">= 1.4.0, < 1.5.0", 200, false, true},
 		{"constraint-cannot-lower-floor", `{"version":"1.3.0"}`, ">= 1.0.0", 200, true, false},
 		{"constraint-requires-version", `{"version":"dev"}`, ">= 1.4.0", 200, true, false},
 		{"constraint-requires-health", `secret-marker`, ">= 1.4.0", 404, true, false},
-		{"invalid-constraint", `{"version":"1.4.0-rc.48"}`, "not-a-constraint", 200, true, false},
+		{"invalid-constraint", `{"version":"1.4.0-rc.49"}`, "not-a-constraint", 200, true, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			calls := 0
@@ -81,7 +81,7 @@ func TestAPICompatibilityDoesNotFollowRedirects(t *testing.T) {
 }
 
 func TestAPICompatibilityStopsProviderConfiguration(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { fmt.Fprint(w, `{"version":"1.4.0-rc.47"}`) }))
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { fmt.Fprint(w, `{"version":"1.4.0-rc.48"}`) }))
 	defer server.Close()
 	p := &ArchestraProvider{version: "3.0.0"}
 	var schema provider.SchemaResponse

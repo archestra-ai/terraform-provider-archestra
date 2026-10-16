@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"go/ast"
-	"go/parser"
-	"go/token"
+	"go/types"
+	"golang.org/x/tools/go/packages"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -60,70 +60,104 @@ func main() {
 	}
 }
 
+// Follow typed helper calls so inline owners retain their complete API contract.
 func resourceAPIMethods() (map[string][]string, map[string]string) {
-	sources := map[string]string{}
-	result := map[string][]string{}
-	files, err := filepath.Glob("internal/provider/*.go")
+	loaded, err := packages.Load(&packages.Config{Mode: packages.NeedName | packages.NeedFiles | packages.NeedSyntax | packages.NeedTypes | packages.NeedTypesInfo | packages.NeedImports | packages.NeedDeps}, "./internal/provider")
 	if err != nil {
 		panic(err)
 	}
-	for _, file := range files {
-		if strings.HasSuffix(file, "_test.go") {
-			continue
-		}
-		tree, err := parser.ParseFile(token.NewFileSet(), file, nil, 0)
-		if err != nil {
-			panic(err)
-		}
+	if packages.PrintErrors(loaded) > 0 || len(loaded) != 1 {
+		panic("unable to load provider source contract")
+	}
+	pkg := loaded[0]
+	type calls struct {
+		api     map[string]bool
+		helpers []*types.Func
+	}
+	graph := map[*types.Func]calls{}
+	owners := map[string][]*types.Func{}
+	sources := map[string]string{}
+	for index, tree := range pkg.Syntax {
 		for _, declaration := range tree.Decls {
 			fn, ok := declaration.(*ast.FuncDecl)
-			if !ok || fn.Recv == nil || len(fn.Recv.List) != 1 || len(fn.Recv.List[0].Names) != 1 {
+			if !ok || fn.Body == nil {
 				continue
 			}
-			receiver := fn.Recv.List[0]
-			pointer, ok := receiver.Type.(*ast.StarExpr)
+			object, ok := pkg.TypesInfo.Defs[fn.Name].(*types.Func)
 			if !ok {
 				continue
 			}
-			kind, ok := pointer.X.(*ast.Ident)
-			if !ok {
-				continue
-			}
-			if fn.Name.Name == "Metadata" {
-				sources[kind.Name] = file
+			info := calls{api: map[string]bool{}}
+			if signature, ok := object.Type().(*types.Signature); ok && signature.Recv() != nil {
+				receiver := signature.Recv().Type()
+				if pointer, ok := receiver.(*types.Pointer); ok {
+					receiver = pointer.Elem()
+				}
+				if named, ok := receiver.(*types.Named); ok {
+					kind := named.Obj().Name()
+					owners[kind] = append(owners[kind], object)
+					if fn.Name.Name == "Metadata" {
+						sources[kind] = "internal/provider/" + filepath.Base(pkg.GoFiles[index])
+					}
+				}
 			}
 			ast.Inspect(fn.Body, func(node ast.Node) bool {
-				selector, ok := node.(*ast.SelectorExpr)
+				call, ok := node.(*ast.CallExpr)
 				if !ok {
 					return true
 				}
-				owner, ok := selector.X.(*ast.SelectorExpr)
-				if !ok || owner.Sel.Name != "client" {
+				var target *types.Func
+				switch callee := call.Fun.(type) {
+				case *ast.SelectorExpr:
+					if selection := pkg.TypesInfo.Selections[callee]; selection != nil {
+						target, _ = selection.Obj().(*types.Func)
+					} else {
+						target, _ = pkg.TypesInfo.Uses[callee.Sel].(*types.Func)
+					}
+				case *ast.Ident:
+					target, _ = pkg.TypesInfo.Uses[callee].(*types.Func)
+				}
+				if target == nil || target.Pkg() == nil {
 					return true
 				}
-				variable, ok := owner.X.(*ast.Ident)
-				if !ok || variable.Name != receiver.Names[0].Name {
-					return true
+				switch target.Pkg().Path() {
+				case pkg.PkgPath:
+					info.helpers = append(info.helpers, target)
+				case pkg.PkgPath[:strings.LastIndex(pkg.PkgPath, "/")] + "/client":
+					name := target.Name()
+					if strings.HasSuffix(name, "WithResponse") {
+						info.api[strings.TrimSuffix(strings.TrimSuffix(name, "WithResponse"), "WithBody")] = true
+					}
 				}
-				name := selector.Sel.Name
-				if !strings.HasSuffix(name, "WithResponse") {
-					return true
-				}
-				name = strings.TrimSuffix(strings.TrimSuffix(name, "WithResponse"), "WithBody")
-				result[kind.Name] = append(result[kind.Name], name)
 				return true
 			})
+			graph[object] = info
 		}
 	}
-	for name, methods := range result {
-		sort.Strings(methods)
-		unique := []string{}
-		for _, method := range methods {
-			if len(unique) == 0 || method != unique[len(unique)-1] {
-				unique = append(unique, method)
+	result := map[string][]string{}
+	for kind, roots := range owners {
+		seen := map[*types.Func]bool{}
+		api := map[string]bool{}
+		var visit func(*types.Func)
+		visit = func(fn *types.Func) {
+			if seen[fn] {
+				return
+			}
+			seen[fn] = true
+			for name := range graph[fn].api {
+				api[name] = true
+			}
+			for _, helper := range graph[fn].helpers {
+				visit(helper)
 			}
 		}
-		result[name] = unique
+		for _, root := range roots {
+			visit(root)
+		}
+		for name := range api {
+			result[kind] = append(result[kind], name)
+		}
+		sort.Strings(result[kind])
 	}
 	return result, sources
 }

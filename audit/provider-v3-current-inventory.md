@@ -2,22 +2,13 @@
 
 static inventory; no runtime coverage implied
 
-Terraform: 47; Crossplane configured: 47.
+Terraform: 35; Crossplane configured: 35.
 
 Mapping counts are configuration coverage, not successful CRUD or reconciliation coverage.
 
 | Terraform resource | Crossplane configured | Import | Missing direct API calls / retired request fields | Request fields needing review | Acceptance tests declared |
 |---|---|---|---|---|---|
-| `archestra_agent` | True | True | none detected | CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, identityProviderId, isPersonalProxy, organizationId, passthroughHeaders; UpdateAgent: agentType, builtInAgentConfig, deletedAt, identityProviderId, isPersonalProxy, organizationId, passthroughHeaders | 5 |
-| `archestra_agent_delegation` | True | True | none detected | none detected | 1 |
-| `archestra_agent_hook` | True | True | none detected | CreateHook: agentId | 0 |
-| `archestra_agent_knowledge_source_exclusions` | True | True | none detected | none detected | 1 |
-| `archestra_agent_remote_delegations` | True | True | none detected | none detected | 0 |
-| `archestra_agent_skill_policy` | True | True | none detected | PatchAgentActivationSkillPolicy: discardUnavailable, expectedRevision, operations | 1 |
-| `archestra_agent_subagent_exclusions` | True | True | none detected | none detected | 1 |
-| `archestra_agent_tool` | True | True | none detected | AssignToolToAgent: resolveAtCallTime | 1 |
-| `archestra_agent_tool_batch` | True | True | none detected | BulkAssignTools: assignments | 1 |
-| `archestra_agent_tool_exclusions` | True | True | none detected | none detected | 1 |
+| `archestra_agent` | True | True | none detected | BulkAssignTools: assignments; CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, identityProviderId, isPersonalProxy, organizationId, passthroughHeaders; CreateHook: agentId, content, enabled, event, fileName, requirements; PatchAgentActivationSkillPolicy: discardUnavailable, expectedRevision, mode, operations; SyncAgentA2aDelegations: connectionIds; SyncAgentDelegations: targetAgentIds; UpdateAgent: agentType, builtInAgentConfig, deletedAt, identityProviderId, isPersonalProxy, organizationId, passthroughHeaders; UpdateAgentKnowledgeSourceExclusions: excludedConnectorIds; UpdateAgentSubagentExclusions: excludedSubagentIds; UpdateAgentToolExclusions: excludedToolIds; UpdateHook: content, enabled, event, fileName, requirements | 5 |
 | `archestra_api_key` | True | True | none detected | none detected | 5 |
 | `archestra_default_user_limit` | True | True | none detected | none detected | 0 |
 | `archestra_environment` | True | True | none detected | none detected | 2 |
@@ -31,11 +22,8 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_limit` | True | True | none detected | CreateLimit: lastCleanup; UpdateLimit: lastCleanup | 4 |
 | `archestra_llm_model` | True | True | none detected | none detected | 4 |
 | `archestra_llm_provider_api_key` | True | True | none detected | none detected | 5 |
-| `archestra_llm_proxy_profile` | True | True | none detected | CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; UpdateAgent: agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt | 2 |
 | `archestra_marketplace_share_link` | True | True | none detected | none detected | 3 |
-| `archestra_mcp_gateway` | True | True | none detected | CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; UpdateAgent: agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt | 2 |
-| `archestra_mcp_gateway_skill_exclusions` | True | True | none detected | none detected | 0 |
-| `archestra_mcp_gateway_skill_publication` | True | True | none detected | none detected | 1 |
+| `archestra_mcp_gateway` | True | True | none detected | BulkAssignTools: assignments; CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; SyncAgentA2aDelegations: connectionIds; SyncAgentDelegations: targetAgentIds; UpdateAgent: agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; UpdateAgentKnowledgeSourceExclusions: excludedConnectorIds; UpdateAgentSkillExclusions: excludedSkillIds; UpdateAgentSkills: accessAllSkills, skillIds; UpdateAgentSubagentExclusions: excludedSubagentIds; UpdateAgentToolExclusions: excludedToolIds | 2 |
 | `archestra_mcp_registry_catalog_item` | True | True | none detected | CreateInternalMcpCatalogItem: catalogReinstallRequired, id, oauthConfig, serverType, serverUrl; UpdateInternalMcpCatalogItem: catalogReinstallRequired, hibernationMode, oauthConfig, serverType, serverUrl | 18 |
 | `archestra_mcp_server_installation` | True | True | none detected | InstallMcpServer: accessToken, agentIds, catalogId, createdByServiceAccountId, environmentValues, isByosVault, localInstallationError, localInstallationStatus, name, ownerId, reinstallRequired, scope, secretId, teamId, userConfigValues, userId; ReinstallMcpServer: environmentValues, hibernationMode, isByosVault, userConfigValues | 3 |
 | `archestra_oauth_client` | True | True | none detected | none detected | 0 |
@@ -43,12 +31,12 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_plugin` | True | True | none detected | ImportGithubPlugin: approvedCommitSha, exclude, githubAppConfigId, githubPatId, githubToken, gitlabTokenId, provider, ref, repoUrl, subdir, trackingRef; UpdatePlugin: githubSource | 2 |
 | `archestra_project` | True | True | none detected | SetProjectInstructions: content | 2 |
 | `archestra_project_file` | True | True | none detected | UpdateSkillSandboxArtifactContent: content | 4 |
-| `archestra_remote_agent` | True | True | none detected | none detected | 3 |
+| `archestra_remote_agent` | True | True | none detected | none detected | 2 |
 | `archestra_resource_permission_policy` | True | True | none detected | UpdateResourcePermissions: grants, revision | 1 |
 | `archestra_role` | True | True | none detected | none detected | 3 |
 | `archestra_runtime_credential` | True | True | none detected | SetOrganizationRuntimeCredentialConnection: value | 3 |
 | `archestra_schedule_trigger` | True | True | none detected | none detected | 4 |
-| `archestra_service_account` | True | True | none detected | none detected | 2 |
+| `archestra_service_account` | True | True | none detected | none detected | 3 |
 | `archestra_service_account_token` | True | True | none detected | none detected | 0 |
 | `archestra_skill` | True | True | none detected | CreateSkill: allowedTools; UpdateSkill: allowedTools, baseVersion | 1 |
 | `archestra_team` | True | True | none detected | AddTeamMember: role, userId; UpdateTeamMember: role | 2 |

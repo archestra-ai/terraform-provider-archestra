@@ -2,7 +2,7 @@ terraform {
   required_providers {
     archestra = {
       source  = "archestra-ai/archestra"
-      version = "~> 0.6.0"
+      version = "~> 3.0"
     }
   }
 }
@@ -41,6 +41,7 @@ resource "archestra_mcp_server_installation" "memory" {
 }
 
 resource "archestra_agent" "main" {
+  tools          = [{ tool_id = archestra_mcp_server_installation.memory.tool_id_by_name["${archestra_mcp_registry_catalog_item.memory.name}__create_entities"], mcp_server_id = archestra_mcp_server_installation.memory.id }]
   name           = "basic-demo-agent"
   description    = "Hello-world agent for the getting-started demo."
   system_prompt  = "You are a friendly assistant. Be concise."
@@ -48,11 +49,6 @@ resource "archestra_agent" "main" {
   llm_api_key_id = archestra_llm_provider_api_key.ollama.id
 }
 
-resource "archestra_agent_tool" "create_entities" {
-  agent_id      = archestra_agent.main.id
-  mcp_server_id = archestra_mcp_server_installation.memory.id
-  tool_id       = archestra_mcp_server_installation.memory.tool_id_by_name["${archestra_mcp_registry_catalog_item.memory.name}__create_entities"]
-}
 
 output "agent_id" {
   value = archestra_agent.main.id

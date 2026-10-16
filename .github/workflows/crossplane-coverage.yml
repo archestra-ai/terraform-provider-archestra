@@ -10,14 +10,16 @@ name: Crossplane Coverage
 on:
   pull_request:
     paths:
-      - 'internal/provider/resource_*.go'
+      - 'internal/provider/*.go'
+      - 'cmd/provider-contracts/**'
       - 'crossplane/config/external_name.go'
       - 'scripts/crossplane-coverage.sh'
       - '.github/workflows/crossplane-coverage.yml'
   push:
     branches: [main]
     paths:
-      - 'internal/provider/resource_*.go'
+      - 'internal/provider/*.go'
+      - 'cmd/provider-contracts/**'
       - 'crossplane/config/external_name.go'
       - 'scripts/crossplane-coverage.sh'
       - '.github/workflows/crossplane-coverage.yml'
@@ -45,6 +47,9 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+
+      - name: Setup Go
+        uses: ./.github/actions/setup-go
 
       - name: Generate coverage report
         run: scripts/crossplane-coverage.sh "$GITHUB_STEP_SUMMARY"

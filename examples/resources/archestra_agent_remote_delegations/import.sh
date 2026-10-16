@@ -1,1 +1,0 @@
-terraform import archestra_agent_remote_delegations.external "AGENT_ID"

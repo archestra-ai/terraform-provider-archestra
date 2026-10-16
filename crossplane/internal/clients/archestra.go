@@ -53,14 +53,10 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		// Forward supported provider settings; omitted credentials and base URL
 		// use the native provider's environment-variable fallbacks.
 		cfg := map[string]any{}
-		if v, ok := creds["api_key"]; ok && v != "" {
-			cfg["api_key"] = v
-		}
-		if v, ok := creds["base_url"]; ok && v != "" {
-			cfg["base_url"] = v
-		}
-		if v, ok := creds["api_version_constraint"]; ok && v != "" {
-			cfg["api_version_constraint"] = v
+		for _, key := range []string{"api_key", "base_url", "api_version_constraint"} {
+			if value := creds[key]; value != "" {
+				cfg[key] = value
+			}
 		}
 		if len(cfg) > 0 {
 			ps.Configuration = cfg

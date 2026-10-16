@@ -22,7 +22,7 @@ see [../complete/](../complete/) instead.
 | `archestra_mcp_registry_catalog_item.memory` | Registers the in-memory MCP server in the private catalog |
 | `archestra_mcp_server_installation.memory` | Installs the catalog item — backend discovers ~9 tools |
 | `archestra_agent.main` | Hello-world chat agent backed by Ollama |
-| `archestra_agent_tool.create_entities` | Wires the `create_entities` MCP tool to the agent |
+| `archestra_agent.main.tools` | Wires the `create_entities` MCP tool to the agent |
 
 ## Prerequisites
 

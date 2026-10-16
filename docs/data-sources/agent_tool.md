@@ -23,13 +23,13 @@ Fetches one agent-tool assignment by agent ID and tool name. Policy resources' `
 # or `tool_id_by_name`) so you don't have to know the prefix rule.
 #
 # `depends_on` is required when the agent-tool assignment is also managed
-# in this module (e.g., via `archestra_agent_tool_batch.<n>`). Without
+# in this module (e.g., via `the agent tools attribute`). Without
 # it Terraform may run this data source before the assignment is
 # created, surfacing a "Tool not found for agent" error.
 data "archestra_agent_tool" "support_read_text_file" {
   agent_id  = archestra_agent.support.id
   tool_name = "${archestra_mcp_registry_catalog_item.filesystem.name}__read_text_file"
-  # depends_on = [archestra_agent_tool_batch.support_filesystem]
+  # depends_on = [archestra_agent.support]
 }
 
 

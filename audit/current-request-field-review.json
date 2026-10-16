@@ -1,34 +1,40 @@
 {
   "format_version": 1,
-  "upstream_version": "1.4.0-rc.48",
-  "registered_resources": 47,
-  "crossplane_configured": 47,
-  "raw_occurrences": 145,
+  "upstream_version": "1.4.0-rc.49",
+  "registered_resources": 35,
+  "crossplane_configured": 35,
+  "raw_occurrences": 140,
   "unclassified": 0,
   "classification_counts": {
-    "authentication_context": 6,
-    "covered_by_canonical_inputs": 1,
+    "authentication_context": 4,
+    "covered_by_canonical_inputs": 3,
     "covered_creation_only": 3,
-    "derived": 7,
-    "implemented_gap": 2,
-    "legacy_alias": 1,
-    "lifecycle_owned": 6,
-    "manual_encoding": 38,
+    "derived": 5,
+    "lifecycle_owned": 4,
+    "manual_encoding": 64,
     "other_source_subtype": 14,
-    "other_subtype": 40,
-    "related_resource": 4,
+    "other_subtype": 23,
+    "related_resource": 1,
     "separate_credential_lifecycle": 1,
-    "server_owned": 22
+    "server_owned": 18
   },
-  "note": "Composed request schemas and local refs are now resolved. Raw occurrences include both immutable source subtypes of shared receivers, manual encoding, transient aliases and lifecycle/server-owned fields. They are not missing-feature counts. Broader desired APIs remain in api-lifecycle-decisions.md.",
+  "note": "Actual registered owners and transitive typed helper calls. Raw request-field occurrences include manual encoding, source/subtype fields and server-owned lifecycle values; this is not a missing-feature count. Remaining durable API domains and product-aligned consolidation are still in progress.",
   "review": [
+    {
+      "resource": "archestra_agent",
+      "operation": "BulkAssignTools",
+      "field": "assignments",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned tools is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_tools.go"
+    },
     {
       "resource": "archestra_agent",
       "operation": "CreateAgent",
       "field": "activationSkillPolicy",
-      "classification": "related_resource",
-      "rationale": "archestra_agent_skill_policy owns activation policy and revision semantics. Gateway/profile rows reject an activation policy.",
-      "source": "internal/provider/resource_agent_skill_policy.go"
+      "classification": "manual_encoding",
+      "rationale": "Internal-agent activation policy is managed by agent.skills with revision-aware patch operations; gateways use their separate publication settings.",
+      "source": "internal/provider/agent_relationships.go"
     },
     {
       "resource": "archestra_agent",
@@ -88,107 +94,219 @@
     },
     {
       "resource": "archestra_agent",
-      "operation": "UpdateAgent",
-      "field": "agentType",
-      "classification": "derived",
-      "rationale": "The resource constructor selects the agent-table subtype; changing subtype would change the managed identity.",
-      "source": "internal/provider/resource_agent.go"
-    },
-    {
-      "resource": "archestra_agent",
-      "operation": "UpdateAgent",
-      "field": "builtInAgentConfig",
-      "classification": "server_owned",
-      "rationale": "The create route strips this trust attribute; ordinary updates ignore it. Existing built-in configuration is reported as computed metadata.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_agent",
-      "operation": "UpdateAgent",
-      "field": "deletedAt",
-      "classification": "lifecycle_owned",
-      "rationale": "Deletion and restoration own soft-delete timestamps; setting a timestamp through a generic update is not a separate declarative capability.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_agent",
-      "operation": "UpdateAgent",
-      "field": "identityProviderId",
-      "classification": "other_subtype",
-      "rationale": "Inbound gateway JWT authentication and forwarded client headers belong to external gateway/profile resources, not internal execution agents.",
-      "source": "internal/provider/resource_agent.go"
-    },
-    {
-      "resource": "archestra_agent",
-      "operation": "UpdateAgent",
-      "field": "isPersonalProxy",
-      "classification": "server_owned",
-      "rationale": "Legacy platform-owned personal LLM proxy marker; generic proxy CRUD is rejected and the managed profile resource does not create singleton proxies.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_agent",
-      "operation": "UpdateAgent",
-      "field": "organizationId",
-      "classification": "authentication_context",
-      "rationale": "Organization identity comes from the authenticated provider connection; cross-organization writes are not a resource selector.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_agent",
-      "operation": "UpdateAgent",
-      "field": "passthroughHeaders",
-      "classification": "other_subtype",
-      "rationale": "Inbound gateway JWT authentication and forwarded client headers belong to external gateway/profile resources, not internal execution agents.",
-      "source": "internal/provider/resource_agent.go"
-    },
-    {
-      "resource": "archestra_agent_hook",
       "operation": "CreateHook",
       "field": "agentId",
       "classification": "manual_encoding",
-      "rationale": "The immutable agent_id selector is supplied to both the creation body and agent-scoped read; its composite resource ID preserves import and Crossplane adoption.",
-      "source": "internal/provider/resource_agent_hook.go"
+      "rationale": "Parent-owned hooks is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_hooks.go"
     },
     {
-      "resource": "archestra_agent_skill_policy",
+      "resource": "archestra_agent",
+      "operation": "CreateHook",
+      "field": "content",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned hooks is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_hooks.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateHook",
+      "field": "enabled",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned hooks is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_hooks.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateHook",
+      "field": "event",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned hooks is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_hooks.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateHook",
+      "field": "fileName",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned hooks is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_hooks.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateHook",
+      "field": "requirements",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned hooks is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_hooks.go"
+    },
+    {
+      "resource": "archestra_agent",
       "operation": "PatchAgentActivationSkillPolicy",
       "field": "discardUnavailable",
       "classification": "manual_encoding",
-      "rationale": "The revision-checked operation builder derives incremental operations and expectedRevision from current state; discardUnavailable is a deliberate repair choice, not persisted policy.",
-      "source": "internal/provider/resource_agent_skill_policy.go"
+      "rationale": "Parent-owned skills.mode, skills.allowed and skills.excluded; expected revision comes from the observed policy; unavailable references cannot be silently discarded is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
     },
     {
-      "resource": "archestra_agent_skill_policy",
+      "resource": "archestra_agent",
       "operation": "PatchAgentActivationSkillPolicy",
       "field": "expectedRevision",
       "classification": "manual_encoding",
-      "rationale": "The revision-checked operation builder derives incremental operations and expectedRevision from current state; discardUnavailable is a deliberate repair choice, not persisted policy.",
-      "source": "internal/provider/resource_agent_skill_policy.go"
+      "rationale": "Parent-owned skills.mode, skills.allowed and skills.excluded; expected revision comes from the observed policy; unavailable references cannot be silently discarded is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
     },
     {
-      "resource": "archestra_agent_skill_policy",
+      "resource": "archestra_agent",
+      "operation": "PatchAgentActivationSkillPolicy",
+      "field": "mode",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned skills.mode, skills.allowed and skills.excluded; expected revision comes from the observed policy; unavailable references cannot be silently discarded is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
+    },
+    {
+      "resource": "archestra_agent",
       "operation": "PatchAgentActivationSkillPolicy",
       "field": "operations",
       "classification": "manual_encoding",
-      "rationale": "The revision-checked operation builder derives incremental operations and expectedRevision from current state; discardUnavailable is a deliberate repair choice, not persisted policy.",
-      "source": "internal/provider/resource_agent_skill_policy.go"
+      "rationale": "Parent-owned skills.mode, skills.allowed and skills.excluded; expected revision comes from the observed policy; unavailable references cannot be silently discarded is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
     },
     {
-      "resource": "archestra_agent_tool",
-      "operation": "AssignToolToAgent",
-      "field": "resolveAtCallTime",
-      "classification": "legacy_alias",
-      "rationale": "The backend normalizes this legacy boolean into supported credential_resolution_mode=dynamic/static and never stores or returns the alias.",
-      "source": "internal/provider/resource_agent_tool.go"
-    },
-    {
-      "resource": "archestra_agent_tool_batch",
-      "operation": "BulkAssignTools",
-      "field": "assignments",
+      "resource": "archestra_agent",
+      "operation": "SyncAgentA2aDelegations",
+      "field": "connectionIds",
       "classification": "manual_encoding",
-      "rationale": "The resource expands installation tools into the assignments request from the configured installation and credential mode.",
-      "source": "internal/provider/resource_agent_tool_batch.go"
+      "rationale": "Parent-owned remote_agent_ids; registered IDs resolve to connection IDs is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "SyncAgentDelegations",
+      "field": "targetAgentIds",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned subagent_ids is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "agentType",
+      "classification": "derived",
+      "rationale": "The resource constructor selects the agent-table subtype; changing subtype would change the managed identity.",
+      "source": "internal/provider/resource_agent.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "builtInAgentConfig",
+      "classification": "server_owned",
+      "rationale": "The create route strips this trust attribute; ordinary updates ignore it. Existing built-in configuration is reported as computed metadata.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "deletedAt",
+      "classification": "lifecycle_owned",
+      "rationale": "Deletion and restoration own soft-delete timestamps; setting a timestamp through a generic update is not a separate declarative capability.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "identityProviderId",
+      "classification": "other_subtype",
+      "rationale": "Inbound gateway JWT authentication and forwarded client headers belong to external gateway/profile resources, not internal execution agents.",
+      "source": "internal/provider/resource_agent.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "isPersonalProxy",
+      "classification": "server_owned",
+      "rationale": "Legacy platform-owned personal LLM proxy marker; generic proxy CRUD is rejected and the managed profile resource does not create singleton proxies.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "organizationId",
+      "classification": "authentication_context",
+      "rationale": "Organization identity comes from the authenticated provider connection; cross-organization writes are not a resource selector.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "passthroughHeaders",
+      "classification": "other_subtype",
+      "rationale": "Inbound gateway JWT authentication and forwarded client headers belong to external gateway/profile resources, not internal execution agents.",
+      "source": "internal/provider/resource_agent.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgentKnowledgeSourceExclusions",
+      "field": "excludedConnectorIds",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned excluded_connector_ids is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgentSubagentExclusions",
+      "field": "excludedSubagentIds",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned excluded_subagent_ids is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgentToolExclusions",
+      "field": "excludedToolIds",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned excluded_tool_ids is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_tools.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateHook",
+      "field": "content",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned hooks is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_hooks.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateHook",
+      "field": "enabled",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned hooks is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_hooks.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateHook",
+      "field": "event",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned hooks is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_hooks.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateHook",
+      "field": "fileName",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned hooks is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_hooks.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateHook",
+      "field": "requirements",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned hooks is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_hooks.go"
     },
     {
       "resource": "archestra_environment_default",
@@ -287,244 +405,20 @@
       "source": "platform/backend/src/types/limit.ts"
     },
     {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "activationSkillPolicy",
-      "classification": "related_resource",
-      "rationale": "archestra_agent_skill_policy owns activation policy and revision semantics. Gateway/profile rows reject an activation policy.",
-      "source": "internal/provider/resource_agent_skill_policy.go"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "agentType",
-      "classification": "derived",
-      "rationale": "The resource constructor selects the agent-table subtype; changing subtype would change the managed identity.",
-      "source": "internal/provider/resource_mcp_gateway.go"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "builtInAgentConfig",
-      "classification": "server_owned",
-      "rationale": "The create route strips this trust attribute; ordinary updates ignore it. Existing built-in configuration is reported as computed metadata.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "deletedAt",
-      "classification": "lifecycle_owned",
-      "rationale": "Deletion and restoration own soft-delete timestamps; setting a timestamp through a generic update is not a separate declarative capability.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "incomingEmailAllowedDomain",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "incomingEmailEnabled",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "incomingEmailSecurityMode",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "isPersonalProxy",
-      "classification": "server_owned",
-      "rationale": "Legacy platform-owned personal LLM proxy marker; generic proxy CRUD is rejected and the managed profile resource does not create singleton proxies.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "llmApiKeyId",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "llmModel",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "modelId",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "organizationId",
-      "classification": "authentication_context",
-      "rationale": "Organization identity comes from the authenticated provider connection; cross-organization writes are not a resource selector.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "runtime",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "suggestedPrompts",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "CreateAgent",
-      "field": "systemPrompt",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "agentType",
-      "classification": "derived",
-      "rationale": "The resource constructor selects the agent-table subtype; changing subtype would change the managed identity.",
-      "source": "internal/provider/resource_mcp_gateway.go"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "builtInAgentConfig",
-      "classification": "server_owned",
-      "rationale": "The create route strips this trust attribute; ordinary updates ignore it. Existing built-in configuration is reported as computed metadata.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "deletedAt",
-      "classification": "lifecycle_owned",
-      "rationale": "Deletion and restoration own soft-delete timestamps; setting a timestamp through a generic update is not a separate declarative capability.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "incomingEmailAllowedDomain",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "incomingEmailEnabled",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "incomingEmailSecurityMode",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "isPersonalProxy",
-      "classification": "server_owned",
-      "rationale": "Legacy platform-owned personal LLM proxy marker; generic proxy CRUD is rejected and the managed profile resource does not create singleton proxies.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "llmApiKeyId",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "llmModel",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "modelId",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "organizationId",
-      "classification": "authentication_context",
-      "rationale": "Organization identity comes from the authenticated provider connection; cross-organization writes are not a resource selector.",
-      "source": "platform/backend/src/routes/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "runtime",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "suggestedPrompts",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
-    },
-    {
-      "resource": "archestra_llm_proxy_profile",
-      "operation": "UpdateAgent",
-      "field": "systemPrompt",
-      "classification": "other_subtype",
-      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
-      "source": "platform/backend/src/database/schemas/agent.ts"
+      "resource": "archestra_mcp_gateway",
+      "operation": "BulkAssignTools",
+      "field": "assignments",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned tools is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_tools.go"
     },
     {
       "resource": "archestra_mcp_gateway",
       "operation": "CreateAgent",
       "field": "activationSkillPolicy",
-      "classification": "related_resource",
-      "rationale": "archestra_agent_skill_policy owns activation policy and revision semantics. Gateway/profile rows reject an activation policy.",
-      "source": "internal/provider/resource_agent_skill_policy.go"
+      "classification": "other_subtype",
+      "rationale": "Internal-agent activation policy is managed by agent.skills with revision-aware patch operations; gateways use their separate publication settings.",
+      "source": "internal/provider/agent_relationships.go"
     },
     {
       "resource": "archestra_mcp_gateway",
@@ -640,6 +534,22 @@
     },
     {
       "resource": "archestra_mcp_gateway",
+      "operation": "SyncAgentA2aDelegations",
+      "field": "connectionIds",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned remote_agent_ids; registered IDs resolve to connection IDs is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "SyncAgentDelegations",
+      "field": "targetAgentIds",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned subagent_ids is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
       "operation": "UpdateAgent",
       "field": "agentType",
       "classification": "derived",
@@ -749,6 +659,54 @@
       "classification": "other_subtype",
       "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
       "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgentKnowledgeSourceExclusions",
+      "field": "excludedConnectorIds",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned excluded_connector_ids is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgentSkillExclusions",
+      "field": "excludedSkillIds",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned skills.excluded_ids is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/gateway_relationships.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgentSkills",
+      "field": "accessAllSkills",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned skills.mode and skills.ids is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/gateway_relationships.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgentSkills",
+      "field": "skillIds",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned skills.mode and skills.ids is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/gateway_relationships.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgentSubagentExclusions",
+      "field": "excludedSubagentIds",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned excluded_subagent_ids is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_relationships.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgentToolExclusions",
+      "field": "excludedToolIds",
+      "classification": "manual_encoding",
+      "rationale": "Parent-owned excluded_tool_ids is encoded by the shared inline lifecycle helper; verified by native and both-scope ownership probes.",
+      "source": "internal/provider/agent_tools.go"
     },
     {
       "resource": "archestra_mcp_registry_catalog_item",
@@ -954,7 +912,7 @@
       "resource": "archestra_mcp_server_installation",
       "operation": "InstallMcpServer",
       "field": "userId",
-      "classification": "implemented_gap",
+      "classification": "covered_by_canonical_inputs",
       "rationale": "Added immutable user_id for administrator-selected personal installation ownership, read from the persisted owner.",
       "source": "internal/provider/resource_mcp_server_installation.go"
     },
@@ -970,7 +928,7 @@
       "resource": "archestra_mcp_server_installation",
       "operation": "ReinstallMcpServer",
       "field": "hibernationMode",
-      "classification": "implemented_gap",
+      "classification": "covered_by_canonical_inputs",
       "rationale": "The hibernation_mode control uses the licensed reinstall endpoint and preserves installation identity and tools; native and both-scope probes cover it.",
       "source": "internal/provider/resource_mcp_server_installation.go"
     },

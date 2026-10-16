@@ -1,5 +1,7 @@
 # Provider resource scope and API review
 
+The current clean-major working surface contains **35 registered resources**, generated in both Crossplane scopes. Agent/gateway assignments, exclusions, skills and hooks are fields on their parent; eleven standalone relationship types and the obsolete proxy-profile type are retired. Further team/settings/permissions/source consolidation and naming cleanup remain in progress. The [inline native evidence](inline-ownership-native-acceptance.json) records 11 passing rc.49 cases; [both-scope runtime evidence](crossplane-inline-ownership.json) records four passing parent lifecycles with normal cleanup. Earlier 47-family counts below describe the pre-consolidation frozen checkpoint, not the current public surface.
+
 The current registry contains 47 families, all configured for both Crossplane
 scopes. The historical 29-family proof remains in `crossplane-rc48-candidate.json`;
 the six-family expansion and two existing-resource control probes pass in both

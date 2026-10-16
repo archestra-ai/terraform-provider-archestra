@@ -1,17 +1,19 @@
 # crossplane-provider-archestra
 
+The current clean-major working surface contains **35 registered resources**, generated in both Crossplane scopes. Agent/gateway assignments, exclusions, skills and hooks are fields on their parent; eleven standalone relationship types and the obsolete proxy-profile type are retired. Further team/settings/permissions/source consolidation and naming cleanup remain in progress. The [inline native evidence](../audit/inline-ownership-native-acceptance.json) records 11 passing rc.49 cases; [both-scope runtime evidence](../audit/crossplane-inline-ownership.json) records four passing parent lifecycles with normal cleanup. Earlier 47-family counts below describe the pre-consolidation frozen checkpoint, not the current public surface.
+
 Crossplane provider for [Archestra](https://archestra.ai), generated from
 [`terraform-provider-archestra`](https://registry.terraform.io/providers/archestra-ai/archestra/latest/docs)
 using the [`upjet`](https://github.com/crossplane/upjet) code-generation
 toolchain.
 
-The v3 working schema includes all 47 Terraform resources in both scopes.
-The shared configurator in [config/resources.go](config/resources.go) defines each
-group/kind and reference once for both scopes. See the [resource matrix](../README.md#resource-coverage)
-and [runtime evidence](../audit/README.md). All 47 families have real
-create/update/drift-repair/delete evidence on their recorded candidate binaries
-against Archestra 1.4.0-rc.48 and Crossplane 2.2.1; full final-candidate repetition
-remains part of release validation.
+The v3 working schema includes 35 Terraform resources in both scopes. The shared
+configurator in [config/resources.go](config/resources.go) defines each group/kind
+and reference. Gateways use the `gateway` API group so their agent references do
+not form an import cycle with agent references to MCP servers. See the current
+[resource matrix](../README.md#resource-coverage) and [runtime evidence](../audit/README.md).
+Historical lifecycle and packaging evidence applies only to its recorded binaries;
+final combined-candidate repetition remains required.
 
 The v3 package remains unreleased pending full validation. Upgrade existing state
 and manifests using [MIGRATION-v3.md](../MIGRATION-v3.md).

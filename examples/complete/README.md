@@ -57,7 +57,7 @@ Keycloak / Okta / Auth0 / etc.
 | 5 | `archestra_mcp_registry_catalog_item.filesystem` | Filesystem MCP server in the private catalog |
 | 6 | `archestra_mcp_server_installation.filesystem` | Installed instance — backend discovers ~14 tools |
 | 7 | `archestra_agent.support` | Customer-support agent backed by Ollama |
-| 8 | `archestra_agent_tool.read_text_file` | Wires the discovered `read_text_file` tool to the support agent |
+| 8 | `archestra_agent.support.tools` | Wires the discovered `read_text_file` tool to the support agent |
 | 9 | `archestra_tool_invocation_policy_default.filesystem_blocked` + `archestra_trusted_data_policy_default.filesystem_sanitize` | Per-tool default policies |
 | 10 | `archestra_limit.engineering_filesystem_calls`, `archestra_optimization_rule.support_short_prompts` | Usage cap + cheap-model routing |
 

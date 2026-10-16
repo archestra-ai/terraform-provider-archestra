@@ -18,6 +18,15 @@ Unified MCP endpoint that aggregates installed tools and (optionally) knowledge 
 # Org-wide MCP gateway — clients (Claude Desktop, Cursor, etc.) point at
 # this endpoint and Archestra federates the tools from every install behind it.
 resource "archestra_mcp_gateway" "default" {
+  # Gateway settings and assignments share the gateway's lifecycle.
+  subagent_ids           = []
+  remote_agent_ids       = []
+  tools                  = []
+  excluded_tool_ids      = []
+  excluded_subagent_ids  = []
+  excluded_connector_ids = []
+  skills                 = { mode = "manual", ids = [], excluded_ids = [] }
+
   name        = "production-mcp"
   description = "Default MCP gateway exposed to org clients."
 
@@ -37,7 +46,7 @@ resource "archestra_mcp_gateway" "authenticated" {
 }
 
 # Grant team access with archestra_resource_permission_policy. Combined
-# with `archestra_agent_tool`, this is how teams get their own tool surface.
+# with the gateway tools attribute, this is how teams get their own tool surface.
 resource "archestra_mcp_gateway" "engineering" {
   name        = "engineering-mcp"
   description = "MCP gateway scoped to engineering"
@@ -63,6 +72,9 @@ resource "archestra_mcp_gateway" "engineering" {
 - `consider_context_untrusted` (Boolean) Whether the gateway context is treated as untrusted
 - `description` (String) Human-readable description
 - `environment_id` (String) Deployment environment used to resolve MCP servers and credentials.
+- `excluded_connector_ids` (Set of String) Knowledge connectors excluded from automatic knowledge access; omit to preserve or set an empty set to clear.
+- `excluded_subagent_ids` (Set of String) Local agents excluded from automatic subagent access; omit to preserve or set an empty set to clear.
+- `excluded_tool_ids` (Set of String) Tools excluded from automatic tool access; omit to preserve or set an empty set to clear.
 - `icon` (String) Emoji or base64 image data URL
 - `identity_provider_id` (String) Identity provider used to validate inbound JWTs. Reference an `archestra_identity_provider`. Omit to disable JWT auth.
 - `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
@@ -71,7 +83,11 @@ resource "archestra_mcp_gateway" "engineering" {
 - `labels` (Attributes Set) Key/value labels for organizing gateways (see [below for nested schema](#nestedatt--labels))
 - `missing_credential_behavior` (String) Behavior when a caller has no usable tool credential.
 - `passthrough_headers` (List of String) Allowlist of HTTP header names to forward from gateway requests to downstream MCP servers
+- `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
+- `skills` (Attributes) Skills published through this gateway; omit to preserve existing publication settings. (see [below for nested schema](#nestedatt--skills))
+- `subagent_ids` (Set of String) Local agents available as subagents; omit to preserve assignments or set an empty set to clear them.
 - `tool_exposure_mode` (String) How assigned tools are exposed to clients. `full` lists every assigned tool; `search_and_run_only` (progressive tool loading) lists only `search_tools` and `run_tool` and resolves the rest on demand, which keeps a large tool set out of the client's context window.
+- `tools` (Attributes Set) Complete explicit MCP tool assignments; omit to preserve or set an empty set to clear, preserving local/remote subagents and platform-required recovery tools. (see [below for nested schema](#nestedatt--tools))
 
 ### Read-Only
 
@@ -100,6 +116,29 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+
+<a id="nestedatt--skills"></a>
+### Nested Schema for `skills`
+
+Required:
+
+- `excluded_ids` (Set of String) Skills excluded from automatic publication; an empty set clears exclusions.
+- `ids` (Set of String) Complete explicit skill selection, retained independently of automatic mode.
+- `mode` (String) Publish all eligible skills automatically, or use the explicit manual selection.
+
+
+<a id="nestedatt--tools"></a>
+### Nested Schema for `tools`
+
+Required:
+
+- `tool_id` (String) Tool UUID.
+
+Optional:
+
+- `credential_resolution_mode` (String) Credential mode: static, dynamic, or enterprise_managed.
+- `mcp_server_id` (String) Backing MCP server UUID; omit to leave the assignment unpinned.
 
 ## Import
 

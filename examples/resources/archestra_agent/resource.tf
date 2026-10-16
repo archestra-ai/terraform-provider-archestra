@@ -16,6 +16,30 @@ resource "archestra_agent" "support" {
   system_prompt = "You are a friendly customer-support agent. Be concise."
   llm_model     = "gpt-4o"
 
+  # These settings belong to the agent. Omit a collection to preserve it;
+  # declare an explicit empty collection to clear it.
+  subagent_ids           = [archestra_agent.engineering_qa.id]
+  remote_agent_ids       = []
+  excluded_subagent_ids  = []
+  tools                  = []
+  excluded_tool_ids      = []
+  excluded_connector_ids = []
+
+  skills = {
+    mode     = "manual"
+    allowed  = []
+    excluded = []
+  }
+
+  hooks = [{
+    event        = "pre_tool_use"
+    file_name    = "validate.py"
+    content      = "print('Validate tool input before use')"
+    requirements = []
+    enabled      = true
+  }]
+
+
   suggested_prompts = [
     {
       summary_title = "Refund a charge"
@@ -64,7 +88,7 @@ resource "archestra_agent" "intake" {
 # Agent Runtime worker — delegated work runs in its own container via the
 # platform's runtime backend (e.g. the Kubernetes orchestrator).
 # Auto-tool mode gives it every reachable tool; pair with
-# `archestra_agent_tool_exclusions` to carve some out.
+# `excluded_tool_ids` to carve some out.
 resource "archestra_agent" "worker" {
   name          = "repo-worker"
   description   = "Runs delegated repository work in a dedicated runtime"

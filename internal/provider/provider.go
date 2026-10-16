@@ -60,7 +60,7 @@ func (p *ArchestraProvider) Schema(ctx context.Context, req provider.SchemaReque
 				Optional: true,
 			},
 			"api_version_constraint": schema.StringAttribute{
-				MarkdownDescription: "Optional constraint on the remote Archestra server version, for example `= 1.4.0-rc.48`. Checked using GET /health before resource operations. A constraint requires readable semantic version metadata. The provider always rejects versions below its required API floor and warns about versions outside its tested interval. This does not select the Terraform provider version. See the API compatibility guide.",
+				MarkdownDescription: "Optional constraint on the remote Archestra server version, for example `= 1.4.0-rc.49`. Checked using GET /health before resource operations. A constraint requires readable semantic version metadata. The provider always rejects versions below its required API floor and warns about versions outside its tested interval. This does not select the Terraform provider version. See the API compatibility guide.",
 				Optional:            true,
 			},
 			"api_key": schema.StringAttribute{
@@ -186,7 +186,6 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 	return []func() resource.Resource{
 		NewAgentResource,
 		NewResourcePermissionPolicyResource,
-		NewHookResource,
 		NewDefaultUserLimitResource,
 		NewEnvironmentDefaultResource,
 		NewTeamVaultFolderResource,
@@ -198,9 +197,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewGitPluginResource,
 		NewMarketplaceShareLinkResource,
 		NewGithubAppConfigResource,
-		NewAgentRemoteDelegationsResource,
 		NewKnowledgeDirectoryResource,
-		NewLLMProxyProfileResource,
 		NewServiceAccountResource,
 		NewServiceAccountTokenResource,
 		NewEnvironmentResource,
@@ -219,16 +216,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewOrganizationSettingsResource,
 		NewTeamExternalGroupResource,
 		NewLLMProviderApiKeyResource,
-		NewAgentToolResource,
-		NewAgentDelegationResource,
-		NewAgentToolBatchResource,
-		NewAgentToolExclusionsResource,
-		NewAgentSkillPolicyResource,
 		NewSkillResource,
-		NewMCPGatewaySkillPublicationResource,
-		NewMCPGatewaySkillExclusionsResource,
-		NewAgentSubagentExclusionsResource,
-		NewAgentKnowledgeSourceExclusionsResource,
 		NewRuntimeCredentialResource,
 		NewIdentityProviderResource,
 	}

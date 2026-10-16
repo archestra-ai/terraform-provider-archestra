@@ -34,6 +34,14 @@ type McpGatewayResource struct {
 // gateway exposes a unified MCP endpoint backed by tool installations and
 // optional knowledge sources.
 type McpGatewayResourceModel struct {
+	SubagentIDs          types.Set    `tfsdk:"subagent_ids"`
+	RemoteAgentIDs       types.Set    `tfsdk:"remote_agent_ids"`
+	ExcludedSubagentIDs  types.Set    `tfsdk:"excluded_subagent_ids"`
+	ExcludedConnectorIDs types.Set    `tfsdk:"excluded_connector_ids"`
+	Tools                types.Set    `tfsdk:"tools"`
+	ExcludedToolIDs      types.Set    `tfsdk:"excluded_tool_ids"`
+	Skills               types.Object `tfsdk:"skills"`
+
 	InitialGrants             types.Set    `tfsdk:"initial_grants"`
 	AuthorEmail               types.String `tfsdk:"author_email"`
 	CreatedBy                 types.String `tfsdk:"created_by"`
@@ -128,6 +136,9 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 			},
 		},
 	}
+	for name, attribute := range gatewayRelationshipAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
 	for name, attribute := range currentGatewayAttributes() {
 		resp.Schema.Attributes[name] = attribute
 	}
@@ -187,11 +198,21 @@ func (r *McpGatewayResource) Create(ctx context.Context, req resource.CreateRequ
 	}
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
 	resolveInitialGrants(&data.InitialGrants)
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	partial := data
+	nullUnknownGatewayRelationships(&partial)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &partial)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.writeRelationships(ctx, &data, &McpGatewayResourceModel{}, req.Config, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -234,6 +255,10 @@ func (r *McpGatewayResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -290,7 +315,15 @@ func (r *McpGatewayResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	r.writeRelationships(ctx, &data, &stateData, req.Config, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -399,7 +432,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 // sub-objects — top-level columns only — but several Postgres `text[]`
 // columns (knowledge_base_ids, connector_ids, passthrough_headers) which are
 // atomic on the wire (Kind: List).
-var mcpGatewayAttrSpec = []AttrSpec{
+var mcpGatewayAttrSpec = append(gatewayRelationshipAttrSpecs(), []AttrSpec{
 	initialGrantsAttrSpec,
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},
@@ -423,7 +456,7 @@ var mcpGatewayAttrSpec = []AttrSpec{
 			{TFName: "value", JSONName: "value", Kind: Scalar},
 		},
 	},
-}
+}...)
 
 func (r *McpGatewayResource) refreshMetadataAfterWrite(ctx context.Context, data *McpGatewayResourceModel, diags *diag.Diagnostics) {
 	identifier, err := uuid.Parse(data.ID.ValueString())

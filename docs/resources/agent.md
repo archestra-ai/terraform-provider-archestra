@@ -31,6 +31,30 @@ resource "archestra_agent" "support" {
   system_prompt = "You are a friendly customer-support agent. Be concise."
   llm_model     = "gpt-4o"
 
+  # These settings belong to the agent. Omit a collection to preserve it;
+  # declare an explicit empty collection to clear it.
+  subagent_ids           = [archestra_agent.engineering_qa.id]
+  remote_agent_ids       = []
+  excluded_subagent_ids  = []
+  tools                  = []
+  excluded_tool_ids      = []
+  excluded_connector_ids = []
+
+  skills = {
+    mode     = "manual"
+    allowed  = []
+    excluded = []
+  }
+
+  hooks = [{
+    event        = "pre_tool_use"
+    file_name    = "validate.py"
+    content      = "print('Validate tool input before use')"
+    requirements = []
+    enabled      = true
+  }]
+
+
   suggested_prompts = [
     {
       summary_title = "Refund a charge"
@@ -79,7 +103,7 @@ resource "archestra_agent" "intake" {
 # Agent Runtime worker — delegated work runs in its own container via the
 # platform's runtime backend (e.g. the Kubernetes orchestrator).
 # Auto-tool mode gives it every reachable tool; pair with
-# `archestra_agent_tool_exclusions` to carve some out.
+# `excluded_tool_ids` to carve some out.
 resource "archestra_agent" "worker" {
   name          = "repo-worker"
   description   = "Runs delegated repository work in a dedicated runtime"
@@ -129,11 +153,15 @@ resource "archestra_agent" "worker" {
 ### Optional
 
 - `access_all_subagents` (Boolean) Whether all accessible subagents can be delegated to.
-- `access_all_tools` (Boolean) Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Pair with `archestra_agent_tool_exclusions` to carve tools out. Defaults to `false`.
+- `access_all_tools` (Boolean) Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Use excluded_tool_ids to exclude tools. Defaults to `false`.
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
 - `consider_context_untrusted` (Boolean) Whether the agent context is treated as untrusted
 - `description` (String) Human-readable description
 - `environment_id` (String) Environment UUID scoping which MCP servers and connections the agent resolves against; omit for the default environment
+- `excluded_connector_ids` (Set of String) Knowledge connectors excluded from automatic knowledge access; omit to preserve or set an empty set to clear.
+- `excluded_subagent_ids` (Set of String) Local agents excluded from automatic subagent access; omit to preserve or set an empty set to clear.
+- `excluded_tool_ids` (Set of String) Tools excluded from automatic tool access; omit to preserve or set an empty set to clear.
+- `hooks` (Attributes Set) Complete event hook configuration; omit to preserve hooks or set an empty set to remove them. (see [below for nested schema](#nestedatt--hooks))
 - `icon` (String) Emoji or base64 image data URL
 - `incoming_email_allowed_domain` (String) Allowed sender domain when `incoming_email_security_mode = "internal"`
 - `incoming_email_enabled` (Boolean) Whether incoming-email invocation is enabled
@@ -146,10 +174,14 @@ resource "archestra_agent" "worker" {
 - `llm_model` (String) Model ID used for LLM calls
 - `missing_credential_behavior` (String) What happens when a caller lacks a connection the agent's tools need: `allow` (fail only at invocation, default), `warn` (surface missing connections up front), or `block` (agent unusable until connected)
 - `model_id` (String) Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`
+- `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `runtime` (Attributes) Dedicated runtime used for interactive, delegated, and long-running work. Requires an Agent Runtime backend on the platform (e.g. the Kubernetes orchestrator). (see [below for nested schema](#nestedatt--runtime))
+- `skills` (Attributes) Skill activation mode and complete allowed/excluded references; omit to preserve the current policy. (see [below for nested schema](#nestedatt--skills))
+- `subagent_ids` (Set of String) Local agents available as subagents; omit to preserve assignments or set an empty set to clear them.
 - `suggested_prompts` (Attributes List) Suggested prompts surfaced to users in the chat UI (see [below for nested schema](#nestedatt--suggested_prompts))
 - `system_prompt` (String) System prompt that frames the agent's behavior
 - `tool_exposure_mode` (String) Tool exposure mode: full or search_and_run_only.
+- `tools` (Attributes Set) Complete explicit MCP tool assignments; omit to preserve or set an empty set to clear, preserving local/remote subagents and platform-required recovery tools. (see [below for nested schema](#nestedatt--tools))
 
 ### Read-Only
 
@@ -169,6 +201,20 @@ resource "archestra_agent" "worker" {
 - `resolved_llm_provider` (String) Server-reported resolved llm provider.
 - `resolved_llm_provider_key_name` (String) Server-reported resolved llm provider key name.
 - `sandbox_available` (Boolean) Server-reported sandbox available.
+- `skill_policy_hidden_allowed_count` (Number) Allowed skill references hidden or unavailable to the current caller.
+- `skill_policy_hidden_excluded_count` (Number) Excluded skill references hidden or unavailable to the current caller.
+
+<a id="nestedatt--hooks"></a>
+### Nested Schema for `hooks`
+
+Required:
+
+- `content` (String) Hook file content; applying configuration does not execute it.
+- `enabled` (Boolean) Whether the hook is enabled for future agent events.
+- `event` (String) Event that runs the hook.
+- `file_name` (String) Plain Python or shell filename, unique within this event.
+- `requirements` (List of String) Python dependencies; an empty list removes dependencies.
+
 
 <a id="nestedatt--initial_grants"></a>
 ### Nested Schema for `initial_grants`
@@ -260,6 +306,48 @@ Optional:
 
 
 
+<a id="nestedatt--skills"></a>
+### Nested Schema for `skills`
+
+Required:
+
+- `allowed` (Attributes Set) Explicitly allowed skills; an empty set clears the selection. (see [below for nested schema](#nestedatt--skills--allowed))
+- `excluded` (Attributes Set) Skills excluded from automatic access; an empty set clears exclusions. (see [below for nested schema](#nestedatt--skills--excluded))
+- `mode` (String) Automatic access to all skills, or an explicit manual selection.
+
+<a id="nestedatt--skills--allowed"></a>
+### Nested Schema for `skills.allowed`
+
+Required:
+
+- `source` (String) Skill source kind.
+
+Optional:
+
+- `mcp_server_id` (String) MCP server UUID for an external skill.
+- `plugin_id` (String) Plugin UUID.
+- `skill_id` (String) Native skill UUID.
+- `skill_path` (String) Skill path within the plugin.
+- `uri` (String) External MCP skill URI.
+
+
+<a id="nestedatt--skills--excluded"></a>
+### Nested Schema for `skills.excluded`
+
+Required:
+
+- `source` (String) Skill source kind.
+
+Optional:
+
+- `mcp_server_id` (String) MCP server UUID for an external skill.
+- `plugin_id` (String) Plugin UUID.
+- `skill_id` (String) Native skill UUID.
+- `skill_path` (String) Skill path within the plugin.
+- `uri` (String) External MCP skill URI.
+
+
+
 <a id="nestedatt--suggested_prompts"></a>
 ### Nested Schema for `suggested_prompts`
 
@@ -267,6 +355,19 @@ Required:
 
 - `prompt` (String) Prompt text
 - `summary_title` (String) Title shown above the prompt
+
+
+<a id="nestedatt--tools"></a>
+### Nested Schema for `tools`
+
+Required:
+
+- `tool_id` (String) Tool UUID.
+
+Optional:
+
+- `credential_resolution_mode` (String) Credential mode: static, dynamic, or enterprise_managed.
+- `mcp_server_id` (String) Backing MCP server UUID; omit to leave the assignment unpinned.
 
 ## Import
 

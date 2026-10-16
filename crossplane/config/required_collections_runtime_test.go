@@ -1,79 +1,101 @@
 package config_test
 
 import (
+	"context"
 	"encoding/json"
-	"github.com/archestra-ai/provider-archestra/config"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/archestra-ai/provider-archestra/config"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
 	ujresource "github.com/crossplane/upjet/v2/pkg/resource"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"sigs.k8s.io/yaml"
 
 	agent "github.com/archestra-ai/provider-archestra/apis/cluster/agent/v1alpha1"
-	permission "github.com/archestra-ai/provider-archestra/apis/cluster/permission/v1alpha1"
+	mcp "github.com/archestra-ai/provider-archestra/apis/cluster/gateway/v1alpha1"
 	agentnamespaced "github.com/archestra-ai/provider-archestra/apis/namespaced/agent/v1alpha1"
+	mcpnamespaced "github.com/archestra-ai/provider-archestra/apis/namespaced/gateway/v1alpha1"
 )
 
-func TestGeneratedEmptyRequiredCollectionsReachTerraform(t *testing.T) {
-	resources := []struct {
-		name   string
-		get    func() (map[string]any, error)
-		fields []string
+type inlineParameters interface {
+	GetParameters() (map[string]any, error)
+	GetMergedParameters(bool) (map[string]any, error)
+	ResolveReferences(context.Context, client.Reader) error
+}
+
+func TestGeneratedInlineCollectionsReachTerraformAndKubernetes(t *testing.T) {
+	cases := []struct {
+		name           string
+		empty, omitted inlineParameters
+		hooks          bool
 	}{
-		{"cluster skill policy", (&agent.SkillPolicy{Spec: agent.SkillPolicySpec{ForProvider: agent.SkillPolicyParameters{AllowedReferences: []agent.AllowedReferencesParameters{}, ExcludedReferences: []agent.ExcludedReferencesParameters{}}}}).GetParameters, []string{"allowed_references", "excluded_references"}},
-		{"namespaced skill policy", (&agentnamespaced.SkillPolicy{Spec: agentnamespaced.SkillPolicySpec{ForProvider: agentnamespaced.SkillPolicyParameters{AllowedReferences: []agentnamespaced.AllowedReferencesParameters{}, ExcludedReferences: []agentnamespaced.ExcludedReferencesParameters{}}}}).GetParameters, []string{"allowed_references", "excluded_references"}},
-		{"cluster subagent exclusions", (&agent.SubagentExclusions{Spec: agent.SubagentExclusionsSpec{ForProvider: agent.SubagentExclusionsParameters{ExcludedSubagentIds: []*string{}}}}).GetParameters, []string{"excluded_subagent_ids"}},
-		{"cluster grants", (&permission.Policy{Spec: permission.PolicySpec{ForProvider: permission.PolicyParameters{Grants: []permission.GrantsParameters{}}}}).GetParameters, []string{"grants"}},
+		{"cluster agent", &agent.Agent{Spec: agent.AgentSpec{ForProvider: agent.AgentParameters{SubagentIds: []*string{}, RemoteAgentIds: []*string{}, ExcludedSubagentIds: []*string{}, ExcludedConnectorIds: []*string{}, Tools: []agent.ToolsParameters{}, ExcludedToolIds: []*string{}, Hooks: []agent.HooksParameters{{Requirements: []*string{}}}, Skills: &agent.SkillsParameters{Allowed: []agent.AllowedParameters{}, Excluded: []agent.ExcludedParameters{}}}}}, &agent.Agent{}, true},
+		{"namespaced agent", &agentnamespaced.Agent{Spec: agentnamespaced.AgentSpec{ForProvider: agentnamespaced.AgentParameters{SubagentIds: []*string{}, RemoteAgentIds: []*string{}, ExcludedSubagentIds: []*string{}, ExcludedConnectorIds: []*string{}, Tools: []agentnamespaced.ToolsParameters{}, ExcludedToolIds: []*string{}, Hooks: []agentnamespaced.HooksParameters{{Requirements: []*string{}}}, Skills: &agentnamespaced.SkillsParameters{Allowed: []agentnamespaced.AllowedParameters{}, Excluded: []agentnamespaced.ExcludedParameters{}}}}}, &agentnamespaced.Agent{}, true},
+		{"cluster gateway", &mcp.Gateway{Spec: mcp.GatewaySpec{ForProvider: mcp.GatewayParameters{SubagentIds: []*string{}, RemoteAgentIds: []*string{}, ExcludedSubagentIds: []*string{}, ExcludedConnectorIds: []*string{}, Tools: []mcp.ToolsParameters{}, ExcludedToolIds: []*string{}, Skills: &mcp.SkillsParameters{Ids: []*string{}, ExcludedIds: []*string{}}}}}, &mcp.Gateway{}, false},
+		{"namespaced gateway", &mcpnamespaced.Gateway{Spec: mcpnamespaced.GatewaySpec{ForProvider: mcpnamespaced.GatewayParameters{SubagentIds: []*string{}, RemoteAgentIds: []*string{}, ExcludedSubagentIds: []*string{}, ExcludedConnectorIds: []*string{}, Tools: []mcpnamespaced.ToolsParameters{}, ExcludedToolIds: []*string{}, Skills: &mcpnamespaced.SkillsParameters{Ids: []*string{}, ExcludedIds: []*string{}}}}}, &mcpnamespaced.Gateway{}, false},
 	}
-	for _, r := range resources {
-		t.Run(r.name, func(t *testing.T) {
-			parameters, err := r.get()
+	for _, item := range cases {
+		t.Run(item.name, func(t *testing.T) {
+			parameters, err := item.empty.GetParameters()
 			if err != nil {
 				t.Fatal(err)
 			}
-			for _, name := range r.fields {
-				value, ok := parameters[name]
-				if !ok {
-					t.Fatalf("required empty set %q omitted", name)
-				}
-				items, ok := value.([]any)
-				if !ok || len(items) != 0 {
-					t.Fatalf("required empty set %q serialized as %#v", name, value)
+			encoded, err := json.Marshal(item.empty)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var wire struct {
+				Spec struct {
+					ForProvider map[string]any `json:"forProvider"`
+				} `json:"spec"`
+			}
+			if err = json.Unmarshal(encoded, &wire); err != nil {
+				t.Fatal(err)
+			}
+			for tfName, jsonName := range map[string]string{"subagent_ids": "subagentIds", "remote_agent_ids": "remoteAgentIds", "excluded_subagent_ids": "excludedSubagentIds", "excluded_connector_ids": "excludedConnectorIds", "tools": "tools", "excluded_tool_ids": "excludedToolIds"} {
+				assertEmptyCollection(t, parameters, tfName)
+				assertEmptyCollection(t, wire.Spec.ForProvider, jsonName)
+			}
+			skillKeys := []string{"ids", "excluded_ids"}
+			jsonSkillKeys := []string{"ids", "excludedIds"}
+			if item.hooks {
+				skillKeys = []string{"allowed", "excluded"}
+				jsonSkillKeys = skillKeys
+				hooks := parameters["hooks"].([]any)
+				assertEmptyCollection(t, hooks[0].(map[string]any), "requirements")
+				wireHooks := wire.Spec.ForProvider["hooks"].([]any)
+				assertEmptyCollection(t, wireHooks[0].(map[string]any), "requirements")
+			}
+			for _, name := range skillKeys {
+				assertEmptyCollection(t, parameters["skills"].(map[string]any), name)
+			}
+			for _, name := range jsonSkillKeys {
+				assertEmptyCollection(t, wire.Spec.ForProvider["skills"].(map[string]any), name)
+			}
+			if err := item.omitted.ResolveReferences(t.Context(), fake.NewClientBuilder().Build()); err != nil {
+				t.Fatal(err)
+			}
+			omitted, err := item.omitted.GetMergedParameters(true)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, name := range []string{"subagent_ids", "remote_agent_ids", "excluded_subagent_ids", "excluded_connector_ids", "tools", "excluded_tool_ids", "hooks"} {
+				if _, ok := omitted[name]; ok {
+					t.Errorf("unmanaged collection %s was emitted: %#v", name, omitted[name])
 				}
 			}
 		})
 	}
 }
-
-func TestGeneratedEmptyRequiredCollectionsSurviveKubernetesSerialization(t *testing.T) {
-	for _, value := range []any{
-		&agent.SkillPolicy{Spec: agent.SkillPolicySpec{ForProvider: agent.SkillPolicyParameters{AllowedReferences: []agent.AllowedReferencesParameters{}, ExcludedReferences: []agent.ExcludedReferencesParameters{}}}},
-		&agentnamespaced.SkillPolicy{Spec: agentnamespaced.SkillPolicySpec{ForProvider: agentnamespaced.SkillPolicyParameters{AllowedReferences: []agentnamespaced.AllowedReferencesParameters{}, ExcludedReferences: []agentnamespaced.ExcludedReferencesParameters{}}}},
-	} {
-		encoded, err := json.Marshal(value)
-		if err != nil {
-			t.Fatal(err)
-		}
-		var decoded struct {
-			Spec struct {
-				ForProvider map[string]any `json:"forProvider"`
-			} `json:"spec"`
-		}
-		if err := json.Unmarshal(encoded, &decoded); err != nil {
-			t.Fatal(err)
-		}
-		for _, name := range []string{"allowedReferences", "excludedReferences"} {
-			v, ok := decoded.Spec.ForProvider[name]
-			if !ok {
-				t.Fatalf("Kubernetes JSON omitted required empty set %q", name)
-			}
-			items, ok := v.([]any)
-			if !ok || len(items) != 0 {
-				t.Fatalf("Kubernetes JSON set %q: %#v", name, v)
-			}
-		}
+func assertEmptyCollection(t *testing.T, parameters map[string]any, name string) {
+	t.Helper()
+	items, ok := parameters[name].([]any)
+	if !ok || len(items) != 0 {
+		t.Fatalf("explicit empty collection %s was dropped or changed: %#v", name, parameters[name])
 	}
 }
 

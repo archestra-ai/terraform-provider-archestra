@@ -33,6 +33,7 @@ type ServiceAccountResource struct {
 }
 
 type ServiceAccountResourceModel struct {
+	TeamID           types.String      `tfsdk:"team_id"`
 	InitialGrants    types.Set         `tfsdk:"initial_grants"`
 	Labels           []AgentLabelModel `tfsdk:"labels"`
 	CreatedBy        types.String      `tfsdk:"created_by"`
@@ -58,7 +59,8 @@ func (r *ServiceAccountResource) Schema(_ context.Context, _ resource.SchemaRequ
 		MarkdownDescription: "Non-human organization identity with a role and explicit permission grants; credentials are managed separately with archestra_service_account_token.",
 		Attributes: map[string]schema.Attribute{
 			"initial_grants": initialGrantsAttribute(),
-			"labels":         schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Knowledge-base labels.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
+			"team_id":        schema.StringAttribute{Optional: true, MarkdownDescription: "Owning team; remove this field to return to organization ownership.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
+			"labels":         schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Service-account labels.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
 			"created_by":     schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
 			"id": schema.StringAttribute{
 				Computed:            true,
@@ -70,14 +72,14 @@ func (r *ServiceAccountResource) Schema(_ context.Context, _ resource.SchemaRequ
 				MarkdownDescription: "Human-readable name of the service account.",
 				Validators: []validator.String{
 					// Mirrors backend `z.string().min(1)`; no upper bound.
-					stringvalidator.LengthAtLeast(1),
+					stringvalidator.LengthBetween(1, 256),
 				},
 			},
 			"icon": schema.StringAttribute{
 				Optional:            true,
 				MarkdownDescription: "Emoji or image icon.",
 			},
-			"role":               schema.StringAttribute{Required: true, MarkdownDescription: "Organization role assigned to the service account."},
+			"role":               schema.StringAttribute{Required: true, MarkdownDescription: "Organization role assigned to the service account.", Validators: []validator.String{stringvalidator.LengthBetween(1, 256)}},
 			"disabled":           schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether the identity is disabled."},
 			"token_count":        schema.Int64Attribute{Computed: true, MarkdownDescription: "Total issued tokens."},
 			"active_token_count": schema.Int64Attribute{Computed: true, MarkdownDescription: "Tokens currently able to authenticate."},
@@ -339,6 +341,7 @@ func mapServiceAccountResponse(data *ServiceAccountResourceModel, body []byte) e
 			Value   string              `json:"value"`
 			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 		} `json:"labels"`
+		TeamID           *string        `json:"teamId"`
 		CreatedBy        map[string]any `json:"createdBy"`
 		CreatedAt        time.Time      `json:"createdAt"`
 		Icon             *string        `json:"icon"`
@@ -368,6 +371,7 @@ func mapServiceAccountResponse(data *ServiceAccountResourceModel, body []byte) e
 	data.Name = types.StringValue(src.Name)
 	data.Icon = types.StringPointerValue(src.Icon)
 	data.Role = types.StringValue(src.Role)
+	data.TeamID = types.StringPointerValue(src.TeamID)
 	data.Disabled = types.BoolValue(src.Disabled)
 	data.TokenCount = types.Int64Value(src.TokenCount)
 	data.ActiveTokenCount = types.Int64Value(src.ActiveTokenCount)

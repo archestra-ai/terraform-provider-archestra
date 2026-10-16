@@ -4,6 +4,7 @@ import "github.com/archestra-ai/archestra/terraform-provider-archestra/internal/
 
 var serviceAccountAttrSpec = []AttrSpec{
 	initialGrantsAttrSpec,
+	{TFName: "team_id", JSONName: "teamId", Kind: Scalar},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "icon", JSONName: "icon", Kind: Scalar},
 	{TFName: "role", JSONName: "role", Kind: Scalar},

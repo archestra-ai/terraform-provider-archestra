@@ -45,6 +45,7 @@ func TestAccAgentToolDataSource_NamespacedToolName(t *testing.T) {
 func testAccAgentToolDataSourceNamespacedConfig(name string) string {
 	return fmt.Sprintf(`
 resource "archestra_agent" "test" {
+ tools=[for tool in archestra_mcp_server_installation.test.tools:{tool_id=tool.id,mcp_server_id=archestra_mcp_server_installation.test.id}]
   name  = %[1]q
 }
 
@@ -62,16 +63,11 @@ resource "archestra_mcp_server_installation" "test" {
   catalog_id = archestra_mcp_registry_catalog_item.test.id
 }
 
-resource "archestra_agent_tool_batch" "test" {
-  agent_id      = archestra_agent.test.id
-  mcp_server_id = archestra_mcp_server_installation.test.id
-  tool_ids      = toset([for t in archestra_mcp_server_installation.test.tools : t.id])
-}
 
 data "archestra_agent_tool" "test" {
   agent_id   = archestra_agent.test.id
   tool_name  = "${archestra_mcp_registry_catalog_item.test.name}__read_text_file"
-  depends_on = [archestra_agent_tool_batch.test]
+  depends_on = [archestra_agent.test]
 }
 `, name)
 }

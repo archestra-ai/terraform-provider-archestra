@@ -23,7 +23,8 @@ type collectionSchemaAttribute struct {
 	Required   bool            `json:"required"`
 	Type       json.RawMessage `json:"type"`
 	NestedType *struct {
-		NestingMode string `json:"nesting_mode"`
+		NestingMode string                               `json:"nesting_mode"`
+		Attributes  map[string]collectionSchemaAttribute `json:"attributes"`
 	} `json:"nested_type"`
 }
 type collectionSchemaResource struct {
@@ -50,20 +51,19 @@ func PreserveRequiredCollections(root string, providers ...*ujconfig.Provider) e
 			scope = "namespaced"
 		}
 		for name, r := range pc.Resources {
-			if err := preserveResourceCollections(root, scope, r, requiredCollectionNames(resources[name])); err != nil {
+			if err := preserveResourceCollections(root, scope, r, resources[name]); err != nil {
 				return err
 			}
 		}
 	}
 	return nil
 }
-func preserveResourceCollections(root, scope string, r *ujconfig.Resource, required map[string]bool) error {
-	optional := optionalCredentialCollections(r.Name)
+
+func preserveResourceCollections(root, scope string, r *ujconfig.Resource, shape collectionSchemaResource) error {
+	required := requiredCollectionNames(shape)
+	optional := optionalOwnedCollections(r.Name, shape)
 	for _, name := range optional {
 		required[name] = false
-	}
-	if len(required) == 0 {
-		return nil
 	}
 	files, err := filepath.Glob(filepath.Join(root, "apis", scope, r.ShortGroup, "*", "zz_"+strings.ToLower(r.Kind)+"_types.go"))
 	if err != nil {
@@ -73,26 +73,53 @@ func preserveResourceCollections(root, scope string, r *ujconfig.Resource, requi
 		return fmt.Errorf("no generated %s %s types", scope, r.Kind)
 	}
 	for _, file := range files {
-		if err := rewriteRequiredCollectionTags(file, r.Kind+"Parameters", required); err != nil {
+		if err := preserveCollectionFile(file, r.Kind, shape, required, optional); err != nil {
 			return err
-		}
-		if required["initial_grants"] || len(optional) > 0 {
-			initCollections := map[string]bool{}
-			if required["initial_grants"] {
-				initCollections["initial_grants"] = true
-			}
-			for _, name := range optional {
-				initCollections[name] = false
-			}
-			if err := rewriteRequiredCollectionTags(file, r.Kind+"InitParameters", initCollections); err != nil {
-				return err
-			}
-			if err := normalizeCreationGrantParameterMaps(strings.Replace(file, "_types.go", "_terraformed.go", 1), optional...); err != nil {
-				return err
-			}
 		}
 	}
 	return nil
+}
+func optionalOwnedCollections(name string, shape collectionSchemaResource) []string {
+	optional := optionalCredentialCollections(name)
+	for name, attribute := range shape.Block.Attributes {
+		if attribute.Optional && attribute.Computed && isCollection(attribute) && name != "initial_grants" {
+			optional = append(optional, name)
+		}
+	}
+	sort.Strings(optional)
+	return optional
+}
+func isCollection(attribute collectionSchemaAttribute) bool {
+	switch collectionMode(attribute) {
+	case "set", "list", "map":
+		return true
+	}
+	return false
+}
+func preserveCollectionFile(file, kind string, shape collectionSchemaResource, required map[string]bool, optional []string) error {
+	if err := rewriteRequiredCollectionTags(file, kind+"Parameters", required); err != nil {
+		return err
+	}
+	if err := rewriteNestedRequiredCollections(file, kind+"Parameters", shape.Block.Attributes); err != nil {
+		return err
+	}
+	if !required["initial_grants"] && len(optional) == 0 {
+		return nil
+	}
+	initCollections := map[string]bool{}
+	if required["initial_grants"] {
+		initCollections["initial_grants"] = true
+	}
+	for _, name := range optional {
+		initCollections[name] = false
+	}
+	if err := rewriteRequiredCollectionTags(file, kind+"InitParameters", initCollections); err != nil {
+		return err
+	}
+	if err := rewriteNestedRequiredCollections(file, kind+"InitParameters", shape.Block.Attributes); err != nil {
+		return err
+	}
+	return normalizeCreationGrantParameterMaps(strings.Replace(file, "_types.go", "_terraformed.go", 1), optional...)
 }
 func collectionMode(attribute collectionSchemaAttribute) string {
 	if attribute.NestedType != nil {
@@ -232,10 +259,7 @@ func normalizeCreationGrantParameterMaps(file string, optional ...string) error 
 		return err
 	}
 	keys := append([]string{"initial_grants"}, optional...)
-	quoted := make([]string, len(keys))
-	for i, key := range keys {
-		quoted[i] = strconv.Quote(key)
-	}
+	quoted := quotedCollectionKeys(keys)
 	snippet, err := parser.ParseFile(token.NewFileSet(), "normalize.go", `package normalize
 func normalize() {
  err = json.TFParser.Unmarshal(p, &base)
@@ -291,4 +315,104 @@ func optionalCredentialCollections(name string) []string {
 	default:
 		return nil
 	}
+}
+
+// Nested authoritative sets must survive JSON and TF serialization when empty.
+
+func rewriteNestedRequiredCollections(file, parameters string, attributes map[string]collectionSchemaAttribute) error {
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, file, nil, parser.ParseComments)
+	if err != nil {
+		return err
+	}
+	rewriter := nestedCollectionRewriter{structures: generatedStructures(node)}
+	rewriter.visit(parameters, attributes)
+	if !rewriter.changed {
+		return nil
+	}
+	return writeGeneratedCollectionTypes(file, fset, node)
+}
+
+type nestedCollectionRewriter struct {
+	structures map[string]*ast.StructType
+	changed    bool
+}
+
+func generatedStructures(node *ast.File) map[string]*ast.StructType {
+	structures := map[string]*ast.StructType{}
+	ast.Inspect(node, func(n ast.Node) bool {
+		spec, ok := n.(*ast.TypeSpec)
+		if !ok {
+			return true
+		}
+		structure, ok := spec.Type.(*ast.StructType)
+		if ok {
+			structures[spec.Name.Name] = structure
+		}
+		return false
+	})
+	return structures
+}
+func generatedFieldName(field *ast.Field) string {
+	if field.Tag == nil {
+		return ""
+	}
+	raw, err := strconv.Unquote(field.Tag.Value)
+	if err != nil {
+		return ""
+	}
+	key, _, _ := strings.Cut(reflect.StructTag(raw).Get("tf"), ",")
+	return key
+}
+func generatedFieldType(target ast.Expr) string {
+	switch value := target.(type) {
+	case *ast.ArrayType:
+		return generatedFieldType(value.Elt)
+	case *ast.StarExpr:
+		return generatedFieldType(value.X)
+	case *ast.Ident:
+		return value.Name
+	}
+	return ""
+}
+func nestedRequiredCollections(attributes map[string]collectionSchemaAttribute) map[string]bool {
+	required := map[string]bool{}
+	for child, definition := range attributes {
+		if definition.Required && isCollection(definition) {
+			required[child] = true
+		}
+	}
+	return required
+}
+func (r *nestedCollectionRewriter) visit(name string, attributes map[string]collectionSchemaAttribute) {
+	structure := r.structures[name]
+	if structure == nil {
+		return
+	}
+	for _, field := range structure.Fields.List {
+		attribute := attributes[generatedFieldName(field)]
+		if attribute.NestedType == nil {
+			continue
+		}
+		kind := generatedFieldType(field.Type)
+		nested := r.structures[kind]
+		if nested == nil {
+			continue
+		}
+		required := nestedRequiredCollections(attribute.NestedType.Attributes)
+		for _, child := range nested.Fields.List {
+			if preserveRequiredFieldTag(child, required) {
+				r.changed = true
+			}
+		}
+		r.visit(kind, attribute.NestedType.Attributes)
+	}
+}
+
+func quotedCollectionKeys(keys []string) []string {
+	quoted := make([]string, len(keys))
+	for i, key := range keys {
+		quoted[i] = strconv.Quote(key)
+	}
+	return quoted
 }

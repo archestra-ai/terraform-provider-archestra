@@ -19,6 +19,7 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'inline-owners': {'AgentInlineOwnership', 'GatewayInlineOwnership'},
     'project-files': {'ProjectFileText','ProjectFileBinary'},
     'marketplace-share-links': {'ShareLinkSkills','ShareLinkPlugins','ShareLinkExpiry'},
     'repository-plugins': {'RepositoryPackage'},
@@ -85,7 +86,7 @@ def main():
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility', 'manual-plugins', 'repository-plugins', 'marketplace-share-links', 'project-files'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('inline-owners', 'catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility', 'manual-plugins', 'repository-plugins', 'marketplace-share-links', 'project-files'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
     parser.add_argument('--scopes', nargs='+', choices=('cluster', 'namespaced'), default=['cluster', 'namespaced'])
     parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'RepositoryPackage', 'ManualPackage', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
@@ -160,12 +161,16 @@ def main():
             time.sleep(1)
         raise RuntimeError('Timed out: ' + description)
 
-    def create(scope, group, kind, plural, fields, suffix_name="", init_fields=None):
+    def create(scope, group, kind, plural, fields, suffix_name="", init_fields=None, external_name=None):
+        if kind == 'Gateway':
+            group = 'gateway'
         suffix = '.m' if scope == 'namespaced' else ''
         api_group = group + '.archestra' + suffix + '.crossplane.io'
         name = 'cp-proof-' + kind.lower() + suffix_name + '-' + scope + '-' + run
         namespace = ['-n', args.namespace] if scope == 'namespaced' else []
         metadata = {'name': name, 'labels': {'provider-test-run': run}}
+        if external_name is not None:
+            metadata['annotations'] = {'crossplane.io/external-name': external_name}
         config = {'name': args.provider_config}
         if scope == 'namespaced':
             metadata['namespace'] = args.namespace
@@ -249,6 +254,124 @@ def main():
             raise RuntimeError('Unable to read the isolated test organization')
         for scope in args.scopes:
             scope_cases = set(args.cases) - completed_cases(results, scope)
+            if 'inline-owners' in scope_cases:
+                child, child_id, _ = create(scope, 'agent', 'Agent', 'agents', {'name': 'cp-inline-child-' + run + '-' + scope}, '-child')
+                remote, remote_id, _ = create(scope, 'a2a', 'RemoteAgent', 'remoteagents', {'source': json.dumps(a2a_source('cp-inline-remote-' + run + '-' + scope))})
+                skill, skill_id, _ = create(scope, 'skill', 'Skill', 'skills', {'name': 'cp-inline-skill-' + run + '-' + scope, 'description': 'Synthetic ownership fixture', 'content': 'Inspect only local synthetic fixtures.', 'files': {}, 'environmentIds': [], 'labels': []})
+                catalog, catalog_id, _ = create(scope, 'mcp', 'RegistryCatalogItem', 'registrycatalogitems', {'name': 'cp-inline-tools-' + run + '-' + scope, 'multitenant': False, 'remoteConfig': {'url': args.mcp_url}})
+                server, server_id, _ = create(scope, 'mcp', 'ServerInstallation', 'serverinstallations', {'name': 'cp-inline-server-' + run + '-' + scope, 'catalogId': catalog_id, 'scope': 'org'})
+                code, discovered = api('/api/mcp_server/' + server_id + '/tools')
+                if code != 200 or len(discovered) < 2:
+                    raise RuntimeError('Inline tool fixture did not advertise two tools')
+                tool_ids = sorted(item['id'] for item in discovered)[:2]
+                code, connector = api('/api/connectors', {'name': 'cp-inline-connector-' + run + '-' + scope, 'connectorType': 'web_crawler', 'enabled': False, 'config': {'type': 'web_crawler', 'startUrl': 'http://127.0.0.1:19999/', 'allowPrivateNetwork': True, 'maxPages': 1}}, 'POST')
+                if code != 200 or connector.get('enabled') is not False:
+                    raise RuntimeError('Disabled local connector fixture was not created')
+                connector_lease = ([], 'api-fixture', '/api/connectors/' + connector['id'])
+                leases.append(connector_lease)
+                required_names = {'get_remedy_plans', 'execute_remedy_plan', 'list_peer_messages', 'read_peer_message', 'yell'}
+                def checked(path):
+                    code, value = api(path)
+                    if code != 200:
+                        raise RuntimeError('Inline state read failed: ' + path + ': HTTP ' + str(code))
+                    return value
+                for owner_kind, owner_group, owner_plural in [('Agent', 'agent', 'agents'), ('Gateway', 'gateway', 'gateways')]:
+                    owner_name = 'cp-inline-' + owner_kind.lower() + '-' + run + '-' + scope
+                    fields = {'name': owner_name, 'subagentIdsRefs': [{'name': child[2]}], 'remoteAgentIdsRefs': [{'name': remote[2]}], 'excludedSubagentIds': [child_id], 'excludedConnectorIds': [connector['id']], 'tools': [{'toolId': tool_id, 'mcpServerIdRef': {'name': server[2]}, 'credentialResolutionMode': 'static'} for tool_id in tool_ids], 'excludedToolIds': []}
+                    fields['skills'] = {'mode': 'manual', 'allowed': [{'source': 'native', 'skillIdRef': {'name': skill[2]}}], 'excluded': []} if owner_kind == 'Agent' else {'mode': 'manual', 'idsRefs': [{'name': skill[2]}], 'excludedIds': []}
+                    if owner_kind == 'Agent':
+                        fields['hooks'] = [{'event': 'session_start', 'fileName': 'verify.sh', 'content': 'echo initial', 'requirements': [], 'enabled': False}]
+                    owner, owner_id, _ = create(scope, owner_group, owner_kind, owner_plural, fields, '-inline')
+                    path = '/api/agents/' + owner_id
+                    def state():
+                        agent = checked(path)
+                        ordinary, required = set(), set()
+                        for tool in agent['tools']:
+                            mandatory = tool.get('catalogId') == '00000000-0000-4000-8000-000000000001' and tool['name'].split('__')[-1] in required_names
+                            if mandatory:
+                                required.add(tool['id'])
+                            elif not tool.get('delegateToAgentId') and not tool.get('delegateToA2aConnectionId'):
+                                ordinary.add(tool['id'])
+                        assignments = checked('/api/agent-tools?agentId=' + owner_id + '&limit=100&offset=0')['data']
+                        selected = {row['tool']['id']: (row.get('mcpServerId'), row['credentialResolutionMode']) for row in assignments if row['tool']['id'] in ordinary}
+                        skill_state = checked(path + ('/activation-skill-policy' if owner_kind == 'Agent' else '/skills'))
+                        if owner_kind == 'Agent':
+                            mode = skill_state['mode']
+                            allowed = {item['skillId'] for item in skill_state['allowedReferences']}
+                            excluded = {item['skillId'] for item in skill_state['excludedReferences']}
+                        else:
+                            mode = 'all' if skill_state['accessAllSkills'] else 'manual'
+                            allowed = set(skill_state['skillIds'])
+                            excluded = set(checked(path + '/skill-exclusions')['excludedSkillIds'])
+                        value = {'local': {row['id'] for row in checked(path + '/delegations')}, 'remote': {row['remoteAgentId'] for row in checked(path + '/a2a-delegations')}, 'excludedLocal': set(checked(path + '/subagent-exclusions')['excludedSubagentIds']), 'excludedConnectors': set(checked(path + '/knowledge-source-exclusions')['excludedConnectorIds']), 'tools': selected, 'excludedTools': set(checked(path + '/tool-exclusions')['excludedToolIds']), 'required': required, 'mode': mode, 'allowed': allowed, 'excluded': excluded}
+                        if owner_kind == 'Agent':
+                            value['hooks'] = [(hook['id'], hook['content'], hook['requirements'], hook['enabled']) for hook in checked('/api/hooks?agentId=' + owner_id)]
+                        return value
+                    initial = state()
+                    expected = {'local': {child_id}, 'remote': {remote_id}, 'excludedLocal': {child_id}, 'excludedConnectors': {connector['id']}, 'tools': {tool_id: (server_id, 'static') for tool_id in tool_ids}, 'excludedTools': set(), 'mode': 'manual', 'allowed': {skill_id}, 'excluded': set()}
+                    if any(initial[key] != value for key, value in expected.items()):
+                        raise RuntimeError('Inline parent create or reference resolution did not persist')
+                    if owner_kind == 'Agent' and not initial['required']:
+                        raise RuntimeError('Agent fixture has no required recovery tools')
+                    patch(owner, {'tools': [{'toolId': tool_ids[0], 'credentialResolutionMode': 'dynamic'}], 'excludedToolIds': [tool_ids[1]]})
+                    wait('Inline unpin and selection update', lambda: state()['tools'] == {tool_ids[0]: (None, 'dynamic')} and state()['excludedTools'] == {tool_ids[1]})
+                    patch(owner, {'tools': []})
+                    wait('Ordinary tool clear preserves subagents', lambda: not state()['tools'] and state()['local'] == {child_id} and state()['remote'] == {remote_id} and state()['required'] == initial['required'])
+                    new_skills = {'mode': 'all', 'allowed': [], 'excluded': [{'source': 'native', 'skillId': skill_id}]} if owner_kind == 'Agent' else {'mode': 'all', 'ids': [], 'excludedIds': [skill_id]}
+                    replace_fields(owner, {'skills': new_skills})
+                    if owner_kind == 'Agent':
+                        patch(owner, {'hooks': [{'event': 'session_start', 'fileName': 'verify.sh', 'content': 'echo updated', 'requirements': [], 'enabled': False}]})
+                    wait('Inline skill and hook update', lambda: state()['mode'] == 'all' and state()['excluded'] == {skill_id} and (owner_kind != 'Agent' or state()['hooks'][0][1] == 'echo updated'))
+                    if owner_kind == 'Agent' and state()['hooks'][0][0] != initial['hooks'][0][0]:
+                        raise RuntimeError('Inline hook content update replaced the hook')
+                    for endpoint, payload in [('/delegations', {'targetAgentIds': []}), ('/a2a-delegations', {'connectionIds': []})]:
+                        if api(path + endpoint, payload, 'POST')[0] != 200:
+                            raise RuntimeError('Unable to write inline assignment drift')
+                    if api(path + '/tool-exclusions', {'excludedToolIds': []}, 'PUT')[0] != 200:
+                        raise RuntimeError('Unable to write inline exclusion drift')
+                    wait('Inline relationship drift repair', lambda: state()['local'] == {child_id} and state()['remote'] == {remote_id} and state()['excludedTools'] == {tool_ids[1]})
+                    managed_names = ['subagentIds', 'subagentIdsRefs', 'remoteAgentIds', 'remoteAgentIdsRefs', 'excludedSubagentIds', 'excludedConnectorIds', 'tools', 'excludedToolIds', 'skills'] + (['hooks'] if owner_kind == 'Agent' else [])
+                    before_omit = state()
+                    patch(owner, {**dict.fromkeys(managed_names), 'name': owner_name + '-omitted'})
+                    wait('Inline omitted-field update', lambda: checked(path)['name'] == owner_name + '-omitted' and condition(owner, 'True'))
+                    time.sleep(7)
+                    after_omit = state()
+                    if after_omit != before_omit:
+                        evidence['inline_omission_difference'] = {key: {'before': repr(before_omit[key]), 'after': repr(after_omit[key])} for key in before_omit if after_omit[key] != before_omit[key]}
+                        raise RuntimeError('Omitting inline fields changed existing configuration')
+                    if any(name in observation(owner)['spec']['forProvider'] for name in managed_names):
+                        raise RuntimeError('Inline omitted relationships were late initialized into managed inputs')
+                    empty = {'name': owner_name + '-cleared', 'subagentIds': [], 'remoteAgentIds': [], 'excludedSubagentIds': [], 'excludedConnectorIds': [], 'tools': [], 'excludedToolIds': [], 'skills': {'mode': 'manual', 'allowed': [], 'excluded': []} if owner_kind == 'Agent' else {'mode': 'manual', 'ids': [], 'excludedIds': []}}
+                    if owner_kind == 'Agent':
+                        empty['hooks'] = []
+                    patch(owner, empty)
+                    def cleared():
+                        value = state()
+                        return not any(value[key] for key in ['local', 'remote', 'excludedLocal', 'excludedConnectors', 'tools', 'excludedTools', 'allowed', 'excluded'] + (['hooks'] if owner_kind == 'Agent' else [])) and value['mode'] == 'manual' and value['required'] == initial['required'] and condition(owner, 'True')
+                    wait('All inline collections clear', cleared)
+                    if observation(owner)['metadata']['annotations']['crossplane.io/external-name'] != owner_id:
+                        raise RuntimeError('Inline configuration update replaced the parent')
+                    kube(*owner[0], 'patch', owner[1], owner[2], '--type=merge', '-p', json.dumps({'spec': {'managementPolicies': ['Create', 'Observe', 'Update', 'LateInitialize']}}))
+                    if 'Delete' in observation(owner)['spec']['managementPolicies']:
+                        raise RuntimeError('Orphan policy was not retained by the CRD')
+                    fallback = ([], 'api-fixture', path)
+                    leases.append(fallback)
+                    delete(owner)
+                    if api(path)[0] != 200:
+                        raise RuntimeError('Orphan deleted its existing parent')
+                    adopted, adopted_id, _ = create(scope, owner_group, owner_kind, owner_plural, empty, '-adopt', external_name=owner_id)
+                    leases.remove(fallback)
+                    owner = adopted
+                    if adopted_id != owner_id or not cleared():
+                        raise RuntimeError('Inline adoption changed identity or persisted configuration')
+                    delete(adopted)
+                    if api(path)[0] != 404:
+                        raise RuntimeError('Normal inline parent deletion retained the API object')
+                    record(owner_kind + 'InlineOwnership', scope, create='passed', native_references='passed', update='passed', tool_unpin='passed', ordinary_tool_clear_preserves_subagents='passed', recovery_tools_preserved='passed', drift_repair='passed', omission_preserves_unmanaged='passed', empty_collections_clear='passed', orphan_adoption='passed', identity_preserved=True, delete='passed', execution='not_invoked')
+                for fixture in [connector_lease, server, catalog, skill, remote, child]:
+                    delete(fixture)
+
+
             cases = [
                 ('mcp', 'RegistryCatalogItem', 'registrycatalogitems', '/api/internal_mcp_catalog/',
                  {'name': 'cp-catalog-' + run + '-' + scope, 'multitenant': False,

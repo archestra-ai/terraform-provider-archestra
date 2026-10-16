@@ -139,23 +139,3 @@ func TestAccRemoteAgentRejectsProtobufCard(t *testing.T) {
 	config := fmt.Sprintf(`resource "archestra_remote_agent" "test" {source=%q}`, string(encoded))
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{{Config: config, PlanOnly: true, ExpectError: regexp.MustCompile("Unsupported Agent Card representation")}}})
 }
-func TestAccAgentRemoteDelegationsResource(t *testing.T) {
-	config := func(ids string) string {
-		return fmt.Sprintf(`
- resource "archestra_agent" "parent" {name="tf-remote-parent"}
- resource "archestra_remote_agent" "first" {source=%q}
- resource "archestra_remote_agent" "second" {source=%q}
- resource "archestra_agent_remote_delegations" "test" {
- agent_id=archestra_agent.parent.id
- connection_ids=%s
- }`, testRemoteCard("tf-remote-first"), testRemoteCard("tf-remote-second"), ids)
-	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: config("[archestra_remote_agent.first.connection_id]"), Check: resource.TestCheckResourceAttr("archestra_agent_remote_delegations.test", "connection_ids.#", "1")},
-		{ResourceName: "archestra_agent_remote_delegations.test", ImportState: true, ImportStateVerify: true},
-		{Config: config("[archestra_remote_agent.first.connection_id,archestra_remote_agent.second.connection_id]"), Check: resource.TestCheckResourceAttr("archestra_agent_remote_delegations.test", "connection_ids.#", "2")},
-		{Config: config("[archestra_remote_agent.second.connection_id]"), Check: resource.TestCheckResourceAttr("archestra_agent_remote_delegations.test", "connection_ids.#", "1")},
-		{Config: config("[]"), Check: resource.TestCheckResourceAttr("archestra_agent_remote_delegations.test", "connection_ids.#", "0")},
-		{Config: config("[]"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
-	}})
-}

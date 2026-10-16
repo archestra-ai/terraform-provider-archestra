@@ -1,5 +1,7 @@
 # Archestra Provider
 
+The current clean-major working surface contains **35 registered resources**, generated in both Crossplane scopes. Agent/gateway assignments, exclusions, skills and hooks are fields on their parent; eleven standalone relationship types and the obsolete proxy-profile type are retired. Further team/settings/permissions/source consolidation and naming cleanup remain in progress. The [inline native evidence](audit/inline-ownership-native-acceptance.json) records 11 passing rc.49 cases; [both-scope runtime evidence](audit/crossplane-inline-ownership.json) records four passing parent lifecycles with normal cleanup. Earlier 47-family counts below describe the pre-consolidation frozen checkpoint, not the current public surface.
+
 [![Crossplane mappings](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
 
 Source for two artifacts, both regenerated from a single Terraform
@@ -15,29 +17,22 @@ API versions are independent of provider versions. See the [compatibility matrix
 
 ## Resource coverage
 
-This v3 branch is under development. The schema registers 47 resource families,
-all configured in both Crossplane scopes. The [29-family baseline](audit/crossplane-rc48-candidate.json)
-and [full 35-family sweep](audit/crossplane-35-family-candidate.json) have recorded
-real both-scope lifecycles. The [A2A and environment bindings](audit/crossplane-a2a-environment-bindings.json)
-add four tested families in both scopes, with separate candidate hashes.
-[Credential routing](audit/crossplane-credential-routing.json) adds virtual LLM keys
-and unified OAuth clients, including both grant modes and credential rotation.
-[Stored GitHub configurations and API constraints](audit/crossplane-github-registrations-compatibility.json)
-add two verified families and deployment-constraint rejection/recovery in both scopes. Both Linux runtime
-images and embedded xpkgs pass [packaging and image reconciliation checks](audit/runtime-package-validation.json).
-[Further persistent API work](audit/api-lifecycle-decisions.md), final candidate
-repetition, normal review and publication remain open. This count does not establish
-complete coverage of the wider Archestra API.
+This v3 branch has 35 registered resources and seven data sources. Both Crossplane
+scopes are generated from the same Terraform schema. Agent and gateway relationships
+are inline; the legacy combined proxy-profile resource is removed.
+
+The new [ownership runtime matrix](audit/crossplane-inline-ownership.json) verifies
+parent creation, reference resolution, updates, drift repair, omission, explicit
+empty collections, orphan/adoption and normal deletion in both scopes against
+Archestra 1.4.0-rc.49. [Targeted native acceptance](audit/inline-ownership-native-acceptance.json)
+also covers hooks, tool binding, import and service-account team ownership.
+Historical runtime and package proofs retain their original binary boundaries in
+[the audit](audit/README.md). Further product-aligned consolidation, missing APIs,
+final combined-candidate validation, review and publication remain in progress.
 
 | Terraform | Crossplane group / kind |
 |---|---|
 | `archestra_agent` | `agent` / `Agent` |
-| `archestra_agent_delegation` | `agent` / `Delegation` |
-| `archestra_agent_tool` | `agent` / `Tool` |
-| `archestra_agent_tool_batch` | `agent` / `ToolBatch` |
-| `archestra_agent_tool_exclusions` | `agent` / `ToolExclusions` |
-| `archestra_agent_skill_policy` | `agent` / `SkillPolicy` |
-| `archestra_agent_subagent_exclusions` | `agent` / `SubagentExclusions` |
 | `archestra_api_key` | `credential` / `APIKey` |
 | `archestra_environment` | `environment` / `Environment` |
 | `archestra_identity_provider` | `identity` / `Provider` |
@@ -45,7 +40,7 @@ complete coverage of the wider Archestra API.
 | `archestra_limit` | `limit` / `Limit` |
 | `archestra_llm_model` | `llm` / `ModelOverride` |
 | `archestra_llm_provider_api_key` | `llm` / `ProviderKey` |
-| `archestra_mcp_gateway` | `mcp` / `Gateway` |
+| `archestra_mcp_gateway` | `gateway` / `Gateway` |
 | `archestra_mcp_registry_catalog_item` | `mcp` / `RegistryCatalogItem` |
 | `archestra_mcp_server_installation` | `mcp` / `ServerInstallation` |
 | `archestra_organization_settings` | `organization` / `Settings` |
@@ -58,17 +53,11 @@ complete coverage of the wider Archestra API.
 | `archestra_schedule_trigger` | `schedule` / `Trigger` |
 | `archestra_team` | `team` / `Team` |
 | `archestra_team_external_group` | `team` / `ExternalGroup` |
-| `archestra_agent_hook` | `agent` / `Hook` |
-| `archestra_agent_knowledge_source_exclusions` | `agent` / `KnowledgeSourceExclusions` |
 | `archestra_default_user_limit` | `limit` / `DefaultUserLimit` |
 | `archestra_knowledge_directory` | `knowledge` / `Directory` |
-| `archestra_llm_proxy_profile` | `llm` / `ProxyProfile` |
-| `archestra_mcp_gateway_skill_publication` | `mcp` / `SkillPublication` |
-| `archestra_mcp_gateway_skill_exclusions` | `mcp` / `SkillExclusions` |
 | `archestra_service_account` | `identity` / `ServiceAccount` |
 | `archestra_service_account_token` | `credential` / `ServiceAccountToken` |
 | `archestra_remote_agent` | `a2a` / `RemoteAgent` |
-| `archestra_agent_remote_delegations` | `agent` / `RemoteDelegations` |
 | `archestra_environment_default` | `environment` / `ResourceDefault` |
 | `archestra_team_vault_folder` | `team` / `VaultFolder` |
 | `archestra_virtual_api_key` | `llm` / `VirtualKey` |

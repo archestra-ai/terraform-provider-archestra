@@ -5110,8 +5110,9 @@ type CreateServiceAccountJSONBody struct {
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 	} `json:"labels,omitempty"`
-	Name string `json:"name"`
-	Role string `json:"role"`
+	Name   string  `json:"name"`
+	Role   string  `json:"role"`
+	TeamId *string `json:"teamId"`
 }
 
 // CreateServiceAccountJSONBodyInitialGrantsActions defines parameters for CreateServiceAccount.
@@ -5180,8 +5181,9 @@ type UpdateServiceAccountJSONBody struct {
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 	} `json:"labels,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Role *string `json:"role,omitempty"`
+	Name   *string `json:"name,omitempty"`
+	Role   *string `json:"role,omitempty"`
+	TeamId *string `json:"teamId"`
 }
 
 // CreateServiceAccountTokenJSONBody defines parameters for CreateServiceAccountToken.
@@ -33119,6 +33121,7 @@ type CreateServiceAccountResponse struct {
 		OrganizationId  string     `json:"organizationId"`
 		Role            string     `json:"role"`
 		SoonestExpiryAt *time.Time `json:"soonestExpiryAt"`
+		TeamId          *string    `json:"teamId"`
 		TokenCount      int        `json:"tokenCount"`
 		Tokens          []struct {
 			CreatedAt  time.Time          `json:"createdAt"`
@@ -33298,6 +33301,7 @@ type GetServiceAccountResponse struct {
 		OrganizationId  string     `json:"organizationId"`
 		Role            string     `json:"role"`
 		SoonestExpiryAt *time.Time `json:"soonestExpiryAt"`
+		TeamId          *string    `json:"teamId"`
 		TokenCount      int        `json:"tokenCount"`
 		Tokens          []struct {
 			CreatedAt  time.Time          `json:"createdAt"`
@@ -33404,6 +33408,7 @@ type UpdateServiceAccountResponse struct {
 		OrganizationId  string     `json:"organizationId"`
 		Role            string     `json:"role"`
 		SoonestExpiryAt *time.Time `json:"soonestExpiryAt"`
+		TeamId          *string    `json:"teamId"`
 		TokenCount      int        `json:"tokenCount"`
 		Tokens          []struct {
 			CreatedAt  time.Time          `json:"createdAt"`
@@ -57423,6 +57428,7 @@ func ParseCreateServiceAccountResponse(rsp *http.Response) (*CreateServiceAccoun
 			OrganizationId  string     `json:"organizationId"`
 			Role            string     `json:"role"`
 			SoonestExpiryAt *time.Time `json:"soonestExpiryAt"`
+			TeamId          *string    `json:"teamId"`
 			TokenCount      int        `json:"tokenCount"`
 			Tokens          []struct {
 				CreatedAt  time.Time          `json:"createdAt"`
@@ -57669,6 +57675,7 @@ func ParseGetServiceAccountResponse(rsp *http.Response) (*GetServiceAccountRespo
 			OrganizationId  string     `json:"organizationId"`
 			Role            string     `json:"role"`
 			SoonestExpiryAt *time.Time `json:"soonestExpiryAt"`
+			TeamId          *string    `json:"teamId"`
 			TokenCount      int        `json:"tokenCount"`
 			Tokens          []struct {
 				CreatedAt  time.Time          `json:"createdAt"`
@@ -57808,6 +57815,7 @@ func ParseUpdateServiceAccountResponse(rsp *http.Response) (*UpdateServiceAccoun
 			OrganizationId  string     `json:"organizationId"`
 			Role            string     `json:"role"`
 			SoonestExpiryAt *time.Time `json:"soonestExpiryAt"`
+			TeamId          *string    `json:"teamId"`
 			TokenCount      int        `json:"tokenCount"`
 			Tokens          []struct {
 				CreatedAt  time.Time          `json:"createdAt"`

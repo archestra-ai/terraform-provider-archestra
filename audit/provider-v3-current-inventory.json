@@ -1,5 +1,5 @@
 {
-  "crossplane_configured_count": 47,
+  "crossplane_configured_count": 35,
   "evidence_level": "static inventory; no runtime coverage implied",
   "format_version": 1,
   "resources": [
@@ -9,6 +9,22 @@
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
       "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "BulkAssignTools",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/agents/tools/bulk-assign",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "assignments"
+          ],
+          "request_fields_without_declared_mapping": [
+            "assignments"
+          ],
+          "retired_request_fields": []
+        },
         {
           "api_forbidden_request_fields": [
             "scope",
@@ -93,6 +109,32 @@
         },
         {
           "api_forbidden_request_fields": [],
+          "builder": "CreateHook",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/hooks",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "agentId",
+            "content",
+            "enabled",
+            "event",
+            "fileName",
+            "requirements"
+          ],
+          "request_fields_without_declared_mapping": [
+            "agentId",
+            "content",
+            "enabled",
+            "event",
+            "fileName",
+            "requirements"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
           "builder": "DeleteAgent",
           "declared_request_field_mappings": {},
           "method": "DELETE",
@@ -105,10 +147,209 @@
         },
         {
           "api_forbidden_request_fields": [],
+          "builder": "DeleteHook",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/hooks/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetA2aRemoteAgent",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/a2a/remote-agents/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
           "builder": "GetAgent",
           "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/agents/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentA2aDelegations",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/a2a-delegations",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentActivationSkillPolicy",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/activation-skill-policy",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentDelegations",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/delegations",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentKnowledgeSourceExclusions",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/knowledge-source-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentSubagentExclusions",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/subagent-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentToolExclusions",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/tool-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAllAgentTools",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agent-tools",
+          "present_in_upstream": true,
+          "query_parameters": [
+            "agentId",
+            "excludeArchestraTools",
+            "limit",
+            "mcpServerOwnerId",
+            "offset",
+            "origin",
+            "search",
+            "skipPagination",
+            "sortBy",
+            "sortDirection"
+          ],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetHooks",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/hooks",
+          "present_in_upstream": true,
+          "query_parameters": [
+            "agentId"
+          ],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "PatchAgentActivationSkillPolicy",
+          "declared_request_field_mappings": {},
+          "method": "PATCH",
+          "path": "/api/agents/{}/activation-skill-policy",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "discardUnavailable",
+            "expectedRevision",
+            "mode",
+            "operations"
+          ],
+          "request_fields_without_declared_mapping": [
+            "discardUnavailable",
+            "expectedRevision",
+            "mode",
+            "operations"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "SyncAgentA2aDelegations",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/agents/{}/a2a-delegations",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "connectionIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "connectionIds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "SyncAgentDelegations",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/agents/{}/delegations",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "targetAgentIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "targetAgentIds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UnassignToolFromAgent",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/agents/{}/tools/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
@@ -190,6 +431,78 @@
             "isPersonalProxy",
             "organizationId",
             "passthroughHeaders"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateAgentKnowledgeSourceExclusions",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/agents/{}/knowledge-source-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "excludedConnectorIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "excludedConnectorIds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateAgentSubagentExclusions",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/agents/{}/subagent-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "excludedSubagentIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "excludedSubagentIds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateAgentToolExclusions",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/agents/{}/tool-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "excludedToolIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "excludedToolIds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateHook",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/hooks/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "content",
+            "enabled",
+            "event",
+            "fileName",
+            "requirements"
+          ],
+          "request_fields_without_declared_mapping": [
+            "content",
+            "enabled",
+            "event",
+            "fileName",
+            "requirements"
           ],
           "retired_request_fields": []
         }
@@ -304,6 +617,78 @@
           "optional": true,
           "path": "environment_id",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "excluded_connector_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "excluded_subagent_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "excluded_tool_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "hooks",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "hooks.content",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "hooks.enabled",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "hooks.event",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "hooks.file_name",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "hooks.requirements",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },
@@ -480,6 +865,14 @@
           "optional": false,
           "path": "name",
           "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "remote_agent_ids",
+          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -740,6 +1133,158 @@
           "write_only": false
         },
         {
+          "computed": true,
+          "optional": false,
+          "path": "skill_policy_hidden_allowed_count",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "skill_policy_hidden_excluded_count",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "skills",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "skills.allowed",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "skills.allowed.mcp_server_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "skills.allowed.plugin_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "skills.allowed.skill_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "skills.allowed.skill_path",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "skills.allowed.source",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "skills.allowed.uri",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "skills.excluded",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "skills.excluded.mcp_server_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "skills.excluded.plugin_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "skills.excluded.skill_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "skills.excluded.skill_path",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "skills.excluded.source",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "skills.excluded.uri",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "skills.mode",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "subagent_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
           "computed": false,
           "optional": true,
           "path": "suggested_prompts",
@@ -778,6 +1323,38 @@
           "required": false,
           "sensitive": false,
           "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "tools",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "tools.credential_resolution_mode",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "tools.mcp_server_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "tools.tool_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
         }
       ],
       "import_implemented": true,
@@ -785,950 +1362,6 @@
       "schema_version": 1,
       "source": "internal/provider/resource_agent.go",
       "terraform_resource": "archestra_agent"
-    },
-    {
-      "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 1,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "CreateAgentDelegation",
-          "declared_request_field_mappings": {},
-          "method": "POST",
-          "path": "/api/agents/{}/delegations/{}",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "DeleteAgentDelegation",
-          "declared_request_field_mappings": {},
-          "method": "DELETE",
-          "path": "/api/agents/{}/delegations/{}",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetAgentDelegations",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/agents/{}/delegations",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "target_agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
-      "source": "internal/provider/resource_agent_delegation.go",
-      "terraform_resource": "archestra_agent_delegation"
-    },
-    {
-      "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 0,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "CreateHook",
-          "declared_request_field_mappings": {
-            "content": "content",
-            "enabled": "enabled",
-            "event": "event",
-            "fileName": "file_name",
-            "requirements": "requirements"
-          },
-          "method": "POST",
-          "path": "/api/hooks",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "agentId",
-            "content",
-            "enabled",
-            "event",
-            "fileName",
-            "requirements"
-          ],
-          "request_fields_without_declared_mapping": [
-            "agentId"
-          ],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "DeleteHook",
-          "declared_request_field_mappings": {},
-          "method": "DELETE",
-          "path": "/api/hooks/{}",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetHooks",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/hooks",
-          "present_in_upstream": true,
-          "query_parameters": [
-            "agentId"
-          ],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "UpdateHook",
-          "declared_request_field_mappings": {
-            "content": "content",
-            "enabled": "enabled",
-            "event": "event",
-            "fileName": "file_name",
-            "requirements": "requirements"
-          },
-          "method": "PUT",
-          "path": "/api/hooks/{}",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "content",
-            "enabled",
-            "event",
-            "fileName",
-            "requirements"
-          ],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "content",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "event",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "file_name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "organization_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "requirements",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "updated_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
-      "source": "internal/provider/resource_agent_hook.go",
-      "terraform_resource": "archestra_agent_hook"
-    },
-    {
-      "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 1,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetAgentKnowledgeSourceExclusions",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/agents/{}/knowledge-source-exclusions",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "UpdateAgentKnowledgeSourceExclusions",
-          "declared_request_field_mappings": {
-            "excludedConnectorIds": "excluded_connector_ids"
-          },
-          "method": "PUT",
-          "path": "/api/agents/{}/knowledge-source-exclusions",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "excludedConnectorIds"
-          ],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "excluded_connector_ids",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
-      "source": "internal/provider/resource_agent_knowledge_source_exclusions.go",
-      "terraform_resource": "archestra_agent_knowledge_source_exclusions"
-    },
-    {
-      "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 0,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetAgentA2aDelegations",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/agents/{}/a2a-delegations",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "SyncAgentA2aDelegations",
-          "declared_request_field_mappings": {
-            "connectionIds": "connection_ids"
-          },
-          "method": "POST",
-          "path": "/api/agents/{}/a2a-delegations",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "connectionIds"
-          ],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "connection_ids",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
-      "source": "internal/provider/resource_agent_remote_delegations.go",
-      "terraform_resource": "archestra_agent_remote_delegations"
-    },
-    {
-      "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 1,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetAgentActivationSkillPolicy",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/agents/{}/activation-skill-policy",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "PatchAgentActivationSkillPolicy",
-          "declared_request_field_mappings": {
-            "mode": "mode"
-          },
-          "method": "PATCH",
-          "path": "/api/agents/{}/activation-skill-policy",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "discardUnavailable",
-            "expectedRevision",
-            "mode",
-            "operations"
-          ],
-          "request_fields_without_declared_mapping": [
-            "discardUnavailable",
-            "expectedRevision",
-            "operations"
-          ],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "allowed_references",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "allowed_references.mcp_server_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "allowed_references.plugin_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "allowed_references.skill_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "allowed_references.skill_path",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "allowed_references.source",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "allowed_references.uri",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "excluded_references",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "excluded_references.mcp_server_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "excluded_references.plugin_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "excluded_references.skill_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "excluded_references.skill_path",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "excluded_references.source",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "excluded_references.uri",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "mode",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "revision",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
-      "source": "internal/provider/resource_agent_skill_policy.go",
-      "terraform_resource": "archestra_agent_skill_policy"
-    },
-    {
-      "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 1,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetAgentSubagentExclusions",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/agents/{}/subagent-exclusions",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "UpdateAgentSubagentExclusions",
-          "declared_request_field_mappings": {
-            "excludedSubagentIds": "excluded_subagent_ids"
-          },
-          "method": "PUT",
-          "path": "/api/agents/{}/subagent-exclusions",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "excludedSubagentIds"
-          ],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "excluded_subagent_ids",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
-      "source": "internal/provider/resource_agent_subagent_exclusions.go",
-      "terraform_resource": "archestra_agent_subagent_exclusions"
-    },
-    {
-      "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 1,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "AssignToolToAgent",
-          "declared_request_field_mappings": {
-            "credentialResolutionMode": "credential_resolution_mode",
-            "mcpServerId": "mcp_server_id"
-          },
-          "method": "POST",
-          "path": "/api/agents/{}/tools/{}",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "credentialResolutionMode",
-            "mcpServerId",
-            "resolveAtCallTime"
-          ],
-          "request_fields_without_declared_mapping": [
-            "resolveAtCallTime"
-          ],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetAllAgentTools",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/agent-tools",
-          "present_in_upstream": true,
-          "query_parameters": [
-            "agentId",
-            "excludeArchestraTools",
-            "limit",
-            "mcpServerOwnerId",
-            "offset",
-            "origin",
-            "search",
-            "skipPagination",
-            "sortBy",
-            "sortDirection"
-          ],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "UnassignToolFromAgent",
-          "declared_request_field_mappings": {},
-          "method": "DELETE",
-          "path": "/api/agents/{}/tools/{}",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "UpdateAgentTool",
-          "declared_request_field_mappings": {
-            "credentialResolutionMode": "credential_resolution_mode",
-            "mcpServerId": "mcp_server_id"
-          },
-          "method": "PATCH",
-          "path": "/api/agent-tools/{}",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "credentialResolutionMode",
-            "mcpServerId"
-          ],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "credential_resolution_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "mcp_server_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "tool_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
-      "source": "internal/provider/resource_agent_tool.go",
-      "terraform_resource": "archestra_agent_tool"
-    },
-    {
-      "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 1,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "BulkAssignTools",
-          "declared_request_field_mappings": {},
-          "method": "POST",
-          "path": "/api/agents/tools/bulk-assign",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "assignments"
-          ],
-          "request_fields_without_declared_mapping": [
-            "assignments"
-          ],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetAllAgentTools",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/agent-tools",
-          "present_in_upstream": true,
-          "query_parameters": [
-            "agentId",
-            "excludeArchestraTools",
-            "limit",
-            "mcpServerOwnerId",
-            "offset",
-            "origin",
-            "search",
-            "skipPagination",
-            "sortBy",
-            "sortDirection"
-          ],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "UnassignToolFromAgent",
-          "declared_request_field_mappings": {},
-          "method": "DELETE",
-          "path": "/api/agents/{}/tools/{}",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "credential_resolution_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "mcp_server_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "tool_ids",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
-      "source": "internal/provider/resource_agent_tool_batch.go",
-      "terraform_resource": "archestra_agent_tool_batch"
-    },
-    {
-      "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 1,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetAgentToolExclusions",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/agents/{}/tool-exclusions",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "UpdateAgentToolExclusions",
-          "declared_request_field_mappings": {
-            "excludedToolIds": "excluded_tool_ids"
-          },
-          "method": "PUT",
-          "path": "/api/agents/{}/tool-exclusions",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "excludedToolIds"
-          ],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "excluded_tool_ids",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
-      "source": "internal/provider/resource_agent_tool_exclusions.go",
-      "terraform_resource": "archestra_agent_tool_exclusions"
     },
     {
       "acceptance_execution": "unverified",
@@ -5333,429 +4966,6 @@
     },
     {
       "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 2,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [
-            "scope",
-            "teams",
-            "users"
-          ],
-          "builder": "CreateAgent",
-          "declared_request_field_mappings": {
-            "accessAllSubagents": "access_all_subagents",
-            "accessAllTools": "access_all_tools",
-            "connectorIds": "connector_ids",
-            "description": "description",
-            "environmentId": "environment_id",
-            "icon": "icon",
-            "identityProviderId": "identity_provider_id",
-            "initialGrants": "initial_grants",
-            "isDefault": "is_default",
-            "knowledgeBaseIds": "knowledge_base_ids",
-            "labels": "labels",
-            "missingCredentialBehavior": "missing_credential_behavior",
-            "name": "name",
-            "passthroughHeaders": "passthrough_headers",
-            "toolExposureMode": "tool_exposure_mode"
-          },
-          "method": "POST",
-          "path": "/api/agents",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "accessAllSubagents",
-            "accessAllTools",
-            "activationSkillPolicy",
-            "agentType",
-            "builtInAgentConfig",
-            "connectorIds",
-            "deletedAt",
-            "description",
-            "environmentId",
-            "icon",
-            "identityProviderId",
-            "incomingEmailAllowedDomain",
-            "incomingEmailEnabled",
-            "incomingEmailSecurityMode",
-            "initialGrants",
-            "isDefault",
-            "isPersonalProxy",
-            "knowledgeBaseIds",
-            "labels",
-            "llmApiKeyId",
-            "llmModel",
-            "missingCredentialBehavior",
-            "modelId",
-            "name",
-            "organizationId",
-            "passthroughHeaders",
-            "runtime",
-            "scope",
-            "suggestedPrompts",
-            "systemPrompt",
-            "teams",
-            "toolExposureMode",
-            "users"
-          ],
-          "request_fields_without_declared_mapping": [
-            "activationSkillPolicy",
-            "agentType",
-            "builtInAgentConfig",
-            "deletedAt",
-            "incomingEmailAllowedDomain",
-            "incomingEmailEnabled",
-            "incomingEmailSecurityMode",
-            "isPersonalProxy",
-            "llmApiKeyId",
-            "llmModel",
-            "modelId",
-            "organizationId",
-            "runtime",
-            "suggestedPrompts",
-            "systemPrompt"
-          ],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "DeleteAgent",
-          "declared_request_field_mappings": {},
-          "method": "DELETE",
-          "path": "/api/agents/{}",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetAgent",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/agents/{}",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [
-            "scope",
-            "teams",
-            "users"
-          ],
-          "builder": "UpdateAgent",
-          "declared_request_field_mappings": {
-            "accessAllSubagents": "access_all_subagents",
-            "accessAllTools": "access_all_tools",
-            "connectorIds": "connector_ids",
-            "description": "description",
-            "environmentId": "environment_id",
-            "icon": "icon",
-            "identityProviderId": "identity_provider_id",
-            "isDefault": "is_default",
-            "knowledgeBaseIds": "knowledge_base_ids",
-            "labels": "labels",
-            "missingCredentialBehavior": "missing_credential_behavior",
-            "name": "name",
-            "passthroughHeaders": "passthrough_headers",
-            "toolExposureMode": "tool_exposure_mode"
-          },
-          "method": "PUT",
-          "path": "/api/agents/{}",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "accessAllSubagents",
-            "accessAllTools",
-            "agentType",
-            "builtInAgentConfig",
-            "connectorIds",
-            "deletedAt",
-            "description",
-            "environmentId",
-            "icon",
-            "identityProviderId",
-            "incomingEmailAllowedDomain",
-            "incomingEmailEnabled",
-            "incomingEmailSecurityMode",
-            "isDefault",
-            "isPersonalProxy",
-            "knowledgeBaseIds",
-            "labels",
-            "llmApiKeyId",
-            "llmModel",
-            "missingCredentialBehavior",
-            "modelId",
-            "name",
-            "organizationId",
-            "passthroughHeaders",
-            "runtime",
-            "scope",
-            "suggestedPrompts",
-            "systemPrompt",
-            "teams",
-            "toolExposureMode",
-            "users"
-          ],
-          "request_fields_without_declared_mapping": [
-            "agentType",
-            "builtInAgentConfig",
-            "deletedAt",
-            "incomingEmailAllowedDomain",
-            "incomingEmailEnabled",
-            "incomingEmailSecurityMode",
-            "isPersonalProxy",
-            "llmApiKeyId",
-            "llmModel",
-            "modelId",
-            "organizationId",
-            "runtime",
-            "suggestedPrompts",
-            "systemPrompt"
-          ],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": true,
-          "path": "access_all_subagents",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "access_all_tools",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "author_email",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "connector_ids",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "consider_context_untrusted",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by_service_account_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "deleted_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "environment_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "icon",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "identity_provider_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "initial_grants",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "initial_grants.actions",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "initial_grants.subject_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "initial_grants.subject_type",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "is_default",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "knowledge_base_ids",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "labels",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "last_used_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "latest_version",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "missing_credential_behavior",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "passthrough_headers",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "tool_exposure_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 1,
-      "source": "internal/provider/resource_mcp_gateway.go",
-      "terraform_resource": "archestra_llm_proxy_profile"
-    },
-    {
-      "acceptance_execution": "unverified",
       "acceptance_tests_declared": 3,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
@@ -5994,6 +5204,22 @@
       "crossplane_reconciliation": "unverified",
       "endpoints": [
         {
+          "api_forbidden_request_fields": [],
+          "builder": "BulkAssignTools",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/agents/tools/bulk-assign",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "assignments"
+          ],
+          "request_fields_without_declared_mapping": [
+            "assignments"
+          ],
+          "retired_request_fields": []
+        },
+        {
           "api_forbidden_request_fields": [
             "scope",
             "teams",
@@ -6089,10 +5315,173 @@
         },
         {
           "api_forbidden_request_fields": [],
+          "builder": "GetA2aRemoteAgent",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/a2a/remote-agents/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
           "builder": "GetAgent",
           "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/agents/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentA2aDelegations",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/a2a-delegations",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentDelegations",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/delegations",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentKnowledgeSourceExclusions",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/knowledge-source-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentSkillExclusions",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/skill-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentSkills",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/skills",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentSubagentExclusions",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/subagent-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentToolExclusions",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/tool-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAllAgentTools",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agent-tools",
+          "present_in_upstream": true,
+          "query_parameters": [
+            "agentId",
+            "excludeArchestraTools",
+            "limit",
+            "mcpServerOwnerId",
+            "offset",
+            "origin",
+            "search",
+            "skipPagination",
+            "sortBy",
+            "sortDirection"
+          ],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "SyncAgentA2aDelegations",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/agents/{}/a2a-delegations",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "connectionIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "connectionIds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "SyncAgentDelegations",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/agents/{}/delegations",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "targetAgentIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "targetAgentIds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UnassignToolFromAgent",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/agents/{}/tools/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
@@ -6176,6 +5565,88 @@
             "systemPrompt"
           ],
           "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateAgentKnowledgeSourceExclusions",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/agents/{}/knowledge-source-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "excludedConnectorIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "excludedConnectorIds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateAgentSkillExclusions",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/agents/{}/skill-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "excludedSkillIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "excludedSkillIds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateAgentSkills",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/agents/{}/skills",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "accessAllSkills",
+            "skillIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "accessAllSkills",
+            "skillIds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateAgentSubagentExclusions",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/agents/{}/subagent-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "excludedSubagentIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "excludedSubagentIds"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateAgentToolExclusions",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/agents/{}/tool-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "excludedToolIds"
+          ],
+          "request_fields_without_declared_mapping": [
+            "excludedToolIds"
+          ],
+          "retired_request_fields": []
         }
       ],
       "fields": [
@@ -6255,6 +5726,30 @@
           "computed": false,
           "optional": true,
           "path": "environment_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "excluded_connector_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "excluded_subagent_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "excluded_tool_ids",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -6398,8 +5893,88 @@
         {
           "computed": true,
           "optional": true,
+          "path": "remote_agent_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "skills",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "skills.excluded_ids",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "skills.ids",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "skills.mode",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "subagent_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
           "path": "tool_exposure_mode",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "tools",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "tools.credential_resolution_mode",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "tools.mcp_server_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "tools.tool_id",
+          "required": true,
           "sensitive": false,
           "write_only": false
         }
@@ -6409,150 +5984,6 @@
       "schema_version": 1,
       "source": "internal/provider/resource_mcp_gateway.go",
       "terraform_resource": "archestra_mcp_gateway"
-    },
-    {
-      "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 0,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetAgentSkillExclusions",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/agents/{}/skill-exclusions",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "UpdateAgentSkillExclusions",
-          "declared_request_field_mappings": {
-            "excludedSkillIds": "excluded_skill_ids"
-          },
-          "method": "PUT",
-          "path": "/api/agents/{}/skill-exclusions",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "excludedSkillIds"
-          ],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "excluded_skill_ids",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "gateway_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
-      "source": "internal/provider/resource_mcp_gateway_skill_exclusions.go",
-      "terraform_resource": "archestra_mcp_gateway_skill_exclusions"
-    },
-    {
-      "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 1,
-      "crossplane_configured": true,
-      "crossplane_reconciliation": "unverified",
-      "endpoints": [
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "GetAgentSkills",
-          "declared_request_field_mappings": {},
-          "method": "GET",
-          "path": "/api/agents/{}/skills",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        },
-        {
-          "api_forbidden_request_fields": [],
-          "builder": "UpdateAgentSkills",
-          "declared_request_field_mappings": {
-            "accessAllSkills": "access_all_skills",
-            "skillIds": "skill_ids"
-          },
-          "method": "PUT",
-          "path": "/api/agents/{}/skills",
-          "present_in_upstream": true,
-          "query_parameters": [],
-          "request_fields": [
-            "accessAllSkills",
-            "skillIds"
-          ],
-          "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
-        }
-      ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "access_all_skills",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "gateway_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "skill_ids",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
-      "import_implemented": true,
-      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
-      "source": "internal/provider/resource_mcp_gateway_skill_publication.go",
-      "terraform_resource": "archestra_mcp_gateway_skill_publication"
     },
     {
       "acceptance_execution": "unverified",
@@ -10476,7 +9907,7 @@
     },
     {
       "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 3,
+      "acceptance_tests_declared": 2,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
       "endpoints": [
@@ -11543,7 +10974,7 @@
     },
     {
       "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 2,
+      "acceptance_tests_declared": 3,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
       "endpoints": [
@@ -11555,7 +10986,8 @@
             "initialGrants": "initial_grants",
             "labels": "labels",
             "name": "name",
-            "role": "role"
+            "role": "role",
+            "teamId": "team_id"
           },
           "method": "POST",
           "path": "/api/service-accounts",
@@ -11566,7 +10998,8 @@
             "initialGrants",
             "labels",
             "name",
-            "role"
+            "role",
+            "teamId"
           ],
           "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
@@ -11603,7 +11036,8 @@
             "icon": "icon",
             "labels": "labels",
             "name": "name",
-            "role": "role"
+            "role": "role",
+            "teamId": "team_id"
           },
           "method": "PATCH",
           "path": "/api/service-accounts/{}",
@@ -11614,7 +11048,8 @@
             "icon",
             "labels",
             "name",
-            "role"
+            "role",
+            "teamId"
           ],
           "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
@@ -11753,6 +11188,14 @@
           "computed": true,
           "optional": false,
           "path": "soonest_expiry_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "team_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -13297,7 +12740,7 @@
       "terraform_resource": "archestra_virtual_api_key"
     }
   ],
-  "terraform_count": 47,
+  "terraform_count": 35,
   "unreferenced_mutating_operations": [
     {
       "method": "DELETE",
@@ -13313,6 +12756,11 @@
       "method": "DELETE",
       "operation_id": "bulkDeleteAgents",
       "path": "/api/agents/bulk"
+    },
+    {
+      "method": "DELETE",
+      "operation_id": "deleteAgentDelegation",
+      "path": "/api/agents/{}/delegations/{}"
     },
     {
       "method": "DELETE",
@@ -13636,6 +13084,11 @@
     },
     {
       "method": "PATCH",
+      "operation_id": "updateAgentTool",
+      "path": "/api/agent-tools/{}"
+    },
+    {
+      "method": "PATCH",
       "operation_id": "updateApp",
       "path": "/api/apps/{}"
     },
@@ -13766,8 +13219,8 @@
     },
     {
       "method": "POST",
-      "operation_id": "syncAgentDelegations",
-      "path": "/api/agents/{}/delegations"
+      "operation_id": "createAgentDelegation",
+      "path": "/api/agents/{}/delegations/{}"
     },
     {
       "method": "POST",
@@ -13788,6 +13241,11 @@
       "method": "POST",
       "operation_id": "completeClaudeCodeSignIn",
       "path": "/api/agents/{}/runtime/claude-code/account/complete"
+    },
+    {
+      "method": "POST",
+      "operation_id": "assignToolToAgent",
+      "path": "/api/agents/{}/tools/{}"
     },
     {
       "method": "POST",
@@ -14328,11 +13786,6 @@
       "method": "POST",
       "operation_id": "completeAppaGithubApp",
       "path": "/api/openappa/github-app/manifest/complete"
-    },
-    {
-      "method": "POST",
-      "operation_id": "acceptHeldAppaGithubPull",
-      "path": "/api/openappa/github-sync/accept-held"
     },
     {
       "method": "POST",
@@ -15199,5 +14652,7 @@
       "operation_id": "updateSiteNotification",
       "path": "/api/site-notification/{}"
     }
-  ]
+  ],
+  "upstream_version": "1.4.0-rc.49",
+  "canonical_spec_sha256": "07cdcb4f84a8371029a0a5f65be43af7b515cfb052a16e38520340d8b690d0c9"
 }

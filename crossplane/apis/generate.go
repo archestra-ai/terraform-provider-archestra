@@ -20,6 +20,9 @@
 // Generate crossplane-runtime methodsets (resource.Claim, etc)
 //go:generate go run -tags generate github.com/crossplane/crossplane-tools/cmd/angryjet generate-methodsets --header-file=../hack/boilerplate.go.txt ./...
 
+// Preserve unmanaged reference collections after angryjet emits resolvers.
+//go:generate go run ../cmd/generator/main.go --references ..
+
 package apis
 
 import (

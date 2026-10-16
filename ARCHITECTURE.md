@@ -130,10 +130,10 @@ When `TestApiCoverage` flags a wire field, you have two choices:
 **Add to `KnownIntentionallySkipped()`** with a Why-comment — preferred when the field belongs to a different conceptual domain or is duplicated elsewhere. Acceptable categories:
 
 - Audit timestamps you've decided not to surface yet (`createdAt`, `updatedAt`).
-- Discriminators the provider uses internally (e.g. `agentType` to split one backend table into three resources).
+- Discriminators the provider uses internally (e.g. `agentType` to split one backend table into resources).
 - Backend bookkeeping (`limit.lastCleanup` cleanup-scheduler state).
 - Synthetic-wrapper decomposition (e.g. catalog_item's `oauthConfig` is wire top-level but HCL-nested under `remote_config`).
-- m2m-relationship duplicates (e.g. `agent.tools` is managed by `archestra_agent_tool`; surfacing it on the agent would create phantom diffs).
+- m2m-relationship duplicates (e.g. `agent.tools` is managed by `archestra_agent.tools`; surfacing it on the agent would create phantom diffs).
 - TFName↔JSONName renames where the AttrSpec doesn't include it (because the field is Computed-only with no merge-patch involvement).
 
 The skip-list comment matters. A future maintainer reading it should be able to decide whether the original reasoning still holds.

@@ -1,6 +1,8 @@
 # Provider modernization audit
 
-Current v3 configuration covers **47 registered resources in both scopes**.
+The current clean-major working surface contains **35 registered resources**, generated in both Crossplane scopes. Agent/gateway assignments, exclusions, skills and hooks are fields on their parent; eleven standalone relationship types and the obsolete proxy-profile type are retired. Further team/settings/permissions/source consolidation and naming cleanup remain in progress. The [inline native evidence](inline-ownership-native-acceptance.json) records 11 passing rc.49 cases; [both-scope runtime evidence](crossplane-inline-ownership.json) records four passing parent lifecycles with normal cleanup. Earlier 47-family counts below describe the pre-consolidation frozen checkpoint, not the current public surface.
+
+The pre-consolidation checkpoint covered **47 registered resources in both scopes**.
 The [current inventory](provider-v3-current-inventory.md) records the schema and
 API call coverage. The [29-family baseline](crossplane-rc48-candidate.json) and
 [six-family expansion](crossplane-persistent-extensions.json) have separate recorded
@@ -51,7 +53,7 @@ source counts. Test declarations are explicitly distinguished from executed test
 Direct calls are inventoried; shared helper calls, every request/response field,
 permissions, import formats and delete behavior still need manual reconciliation.
 
-## Current API domains and meaningful-resource review
+## Historical baseline API-domain review
 
 The API has 683 paths, not 683 managed resources. This is the review queue for a
 complete supported-resource denominator; it is not a claim of completed coverage.
