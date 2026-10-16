@@ -35,6 +35,7 @@ type AgentResource struct {
 // AgentResourceModel is the schema for an internal Archestra agent (chat agent
 // with prompts, knowledge sources, optional email triggers, etc.).
 type AgentResourceModel struct {
+	InitialGrants                        types.Set    `tfsdk:"initial_grants"`
 	AuthorEmail                          types.String `tfsdk:"author_email"`
 	CreatedBy                            types.String `tfsdk:"created_by"`
 	CreatedByServiceAccountId            types.String `tfsdk:"created_by_service_account_id"`
@@ -86,6 +87,7 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 		Version:             1,
 		MarkdownDescription: "Internal chat agent — system prompt + LLM, optionally augmented with knowledge bases, connectors, and email triggers.",
 		Attributes: map[string]schema.Attribute{
+			"initial_grants": initialGrantsAttribute(),
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Agent identifier",
@@ -257,6 +259,7 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -265,6 +268,7 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -303,6 +307,7 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	}
 
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -362,6 +367,7 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -526,6 +532,7 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 //     `if (field !== undefined)` per-field guards. Merge-patch's "omit when
 //     equal, emit when changed" lines up with that exactly.
 var agentAttrSpec = []AttrSpec{
+	initialGrantsAttrSpec,
 	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar, OmitOnNull: true},
 

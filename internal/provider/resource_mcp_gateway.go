@@ -33,6 +33,7 @@ type McpGatewayResource struct {
 // gateway exposes a unified MCP endpoint backed by tool installations and
 // optional knowledge sources.
 type McpGatewayResourceModel struct {
+	InitialGrants             types.Set    `tfsdk:"initial_grants"`
 	AuthorEmail               types.String `tfsdk:"author_email"`
 	CreatedBy                 types.String `tfsdk:"created_by"`
 	CreatedByServiceAccountId types.String `tfsdk:"created_by_service_account_id"`
@@ -66,6 +67,7 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 		Version:             1,
 		MarkdownDescription: "Unified MCP endpoint that aggregates installed tools and (optionally) knowledge sources, with optional inbound JWT auth via `identity_provider_id`.",
 		Attributes: map[string]schema.Attribute{
+			"initial_grants": initialGrantsAttribute(),
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "MCP gateway identifier",
@@ -177,6 +179,7 @@ func (r *McpGatewayResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -185,6 +188,7 @@ func (r *McpGatewayResource) Create(ctx context.Context, req resource.CreateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -223,6 +227,7 @@ func (r *McpGatewayResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -282,6 +287,7 @@ func (r *McpGatewayResource) Update(ctx context.Context, req resource.UpdateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -382,6 +388,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 // columns (knowledge_base_ids, connector_ids, passthrough_headers) which are
 // atomic on the wire (Kind: List).
 var mcpGatewayAttrSpec = []AttrSpec{
+	initialGrantsAttrSpec,
 	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},
 	{TFName: "missing_credential_behavior", JSONName: "missingCredentialBehavior", Kind: Scalar, OmitOnNull: true},
 	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar, OmitOnNull: false},

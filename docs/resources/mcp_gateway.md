@@ -64,6 +64,7 @@ resource "archestra_mcp_gateway" "engineering" {
 - `environment_id` (String) Deployment environment used to resolve MCP servers and credentials.
 - `icon` (String) Emoji or base64 image data URL
 - `identity_provider_id` (String) Identity provider used to validate inbound JWTs. Reference an `archestra_identity_provider`. Omit to disable JWT auth.
+- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `is_default` (Boolean) Whether this is the default MCP gateway
 - `knowledge_base_ids` (List of String) Knowledge base IDs the gateway has access to
 - `labels` (Attributes Set) Key/value labels for organizing gateways (see [below for nested schema](#nestedatt--labels))
@@ -80,6 +81,16 @@ resource "archestra_mcp_gateway" "engineering" {
 - `id` (String) MCP gateway identifier
 - `last_used_at` (String) Server-reported last used at.
 - `latest_version` (Number) Server-reported latest version.
+
+<a id="nestedatt--initial_grants"></a>
+### Nested Schema for `initial_grants`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

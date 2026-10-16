@@ -50,6 +50,7 @@ resource "archestra_skill" "procedure" {
 - `allowed_tools` (Set of String) Tools pre-approved by the skill manifest.
 - `compatibility` (String) Manifest compatibility information.
 - `icon` (String) Display emoji or image data URL.
+- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `license` (String) Manifest license.
 - `metadata` (Map of String) Manifest metadata entries.
 - `templated` (Boolean) Whether the instruction body uses Handlebars rendering.
@@ -99,6 +100,16 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+
+<a id="nestedatt--initial_grants"></a>
+### Nested Schema for `initial_grants`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
 
 ## Import
 

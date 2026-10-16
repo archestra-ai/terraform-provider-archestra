@@ -15,7 +15,7 @@ import (
 func currentCatalogAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
 		"environment_id":                    schema.StringAttribute{Optional: true, MarkdownDescription: "Deployment environment for this catalog item."},
-		"multitenant":                       schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.RequiresReplace()}, MarkdownDescription: "Whether installations share one runtime; immutable after creation."},
+		"multitenant":                       schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown(), boolplanmodifier.RequiresReplace()}, MarkdownDescription: "Whether installations share one runtime; immutable after creation."},
 		"cloned_from":                       schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Source catalog item copied when this item is created."},
 		"dynamic_connection_mcp_server_id":  schema.StringAttribute{Optional: true, MarkdownDescription: "Default non-personal server connection for dynamic credential resolution."},
 		"catalog_item_approval_reason":      schema.StringAttribute{Computed: true, MarkdownDescription: "Catalog item approval reason."},

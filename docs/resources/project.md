@@ -32,6 +32,7 @@ resource "archestra_project" "reports" {
 - `default_agent_id` (String)
 - `description` (String)
 - `icon` (String)
+- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `instructions` (String) Project chat instructions; omit to preserve existing content, or set an empty string to clear it.
 - `labels` (Attributes Set) (see [below for nested schema](#nestedatt--labels))
 
@@ -42,6 +43,16 @@ resource "archestra_project" "reports" {
 - `id` (String) The ID of this resource.
 - `owner_name` (String)
 - `viewer_role` (String)
+
+<a id="nestedatt--initial_grants"></a>
+### Nested Schema for `initial_grants`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

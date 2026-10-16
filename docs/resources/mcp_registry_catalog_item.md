@@ -254,6 +254,7 @@ resource "archestra_mcp_registry_catalog_item" "private_registry" {
 - `enterprise_managed_config` (Attributes) Enterprise-managed credential configuration. Binds this catalog item to an identity provider that issues credentials at runtime rather than using static secrets. (see [below for nested schema](#nestedatt--enterprise_managed_config))
 - `environment_id` (String) Deployment environment for this catalog item.
 - `icon` (String) Icon string for the MCP server
+- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `installation_command` (String) Installation command for the MCP server (e.g., npm install -g @example/mcp-server)
 - `instructions` (String) Installation instructions text for the MCP server
 - `labels` (Attributes List) Labels for the MCP server catalog item (see [below for nested schema](#nestedatt--labels))
@@ -319,6 +320,16 @@ Optional:
 - `response_field_path` (String)
 - `scopes` (List of String)
 - `token_injection_mode` (String) How the token is injected into the downstream request. One of `authorization_bearer`, `raw_authorization`, `header`, `env`, `body_field`.
+
+
+<a id="nestedatt--initial_grants"></a>
+### Nested Schema for `initial_grants`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
 
 
 <a id="nestedatt--labels"></a>

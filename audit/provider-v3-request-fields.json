@@ -26,6 +26,7 @@
             "incomingEmailAllowedDomain": "incoming_email_allowed_domain",
             "incomingEmailEnabled": "incoming_email_enabled",
             "incomingEmailSecurityMode": "incoming_email_security_mode",
+            "initialGrants": "initial_grants",
             "isDefault": "is_default",
             "knowledgeBaseIds": "knowledge_base_ids",
             "labels": "labels",
@@ -84,7 +85,6 @@
             "builtInAgentConfig",
             "deletedAt",
             "identityProviderId",
-            "initialGrants",
             "isPersonalProxy",
             "organizationId",
             "passthroughHeaders"
@@ -344,6 +344,38 @@
           "optional": true,
           "path": "incoming_email_security_mode",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },
@@ -2653,6 +2685,7 @@
           "builder": "CreateKnowledgeBase",
           "declared_request_field_mappings": {
             "description": "description",
+            "initialGrants": "initial_grants",
             "labels": "labels",
             "name": "name"
           },
@@ -2666,9 +2699,7 @@
             "labels",
             "name"
           ],
-          "request_fields_without_declared_mapping": [
-            "initialGrants"
-          ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -2767,6 +2798,38 @@
           "optional": false,
           "path": "id",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },
@@ -3474,6 +3537,7 @@
             "baseUrl": "base_url",
             "extraHeaders": "extra_headers",
             "inferenceBaseUrl": "inference_base_url",
+            "initialGrants": "initial_grants",
             "isPrimary": "is_primary",
             "labels": "labels",
             "name": "name",
@@ -3503,9 +3567,7 @@
             "vaultSecretKey",
             "vaultSecretPath"
           ],
-          "request_fields_without_declared_mapping": [
-            "initialGrants"
-          ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -3654,6 +3716,38 @@
         },
         {
           "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
           "optional": false,
           "path": "is_agent_key",
           "required": false,
@@ -3791,6 +3885,7 @@
             "environmentId": "environment_id",
             "icon": "icon",
             "identityProviderId": "identity_provider_id",
+            "initialGrants": "initial_grants",
             "isDefault": "is_default",
             "knowledgeBaseIds": "knowledge_base_ids",
             "labels": "labels",
@@ -3847,7 +3942,6 @@
             "incomingEmailAllowedDomain",
             "incomingEmailEnabled",
             "incomingEmailSecurityMode",
-            "initialGrants",
             "isPersonalProxy",
             "llmApiKeyId",
             "llmModel",
@@ -4056,6 +4150,38 @@
           "optional": true,
           "path": "identity_provider_id",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },
@@ -4322,6 +4448,7 @@
             "enterpriseManagedConfig": "enterprise_managed_config",
             "environmentId": "environment_id",
             "icon": "icon",
+            "initialGrants": "initial_grants",
             "installationCommand": "installation_command",
             "instructions": "instructions",
             "labels": "labels",
@@ -4381,7 +4508,6 @@
           "request_fields_without_declared_mapping": [
             "catalogReinstallRequired",
             "id",
-            "initialGrants",
             "oauthConfig",
             "serverType",
             "serverUrl"
@@ -4827,6 +4953,38 @@
           "optional": false,
           "path": "id",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },
@@ -6698,6 +6856,7 @@
             "defaultAgentId": "default_agent_id",
             "description": "description",
             "icon": "icon",
+            "initialGrants": "initial_grants",
             "labels": "labels",
             "name": "name"
           },
@@ -6713,9 +6872,7 @@
             "labels",
             "name"
           ],
-          "request_fields_without_declared_mapping": [
-            "initialGrants"
-          ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -6841,6 +6998,38 @@
           "optional": false,
           "path": "id",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },
@@ -7194,6 +7383,7 @@
             "githubUrl": "github_url",
             "gitlabUrl": "gitlab_url",
             "icon": "icon",
+            "initialGrants": "initial_grants",
             "installationId": "installation_id",
             "key": "key",
             "kind": "kind",
@@ -7219,9 +7409,7 @@
             "kind",
             "name"
           ],
-          "request_fields_without_declared_mapping": [
-            "initialGrants"
-          ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -7340,6 +7528,14 @@
         },
         {
           "computed": true,
+          "optional": false,
+          "path": "definition_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
           "optional": true,
           "path": "description",
           "required": false,
@@ -7391,6 +7587,38 @@
           "optional": false,
           "path": "id",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },
@@ -7646,6 +7874,7 @@
             "environmentIds": "environment_ids",
             "files": "files",
             "icon": "icon",
+            "initialGrants": "initial_grants",
             "labels": "labels"
           },
           "method": "POST",
@@ -7662,8 +7891,7 @@
             "labels"
           ],
           "request_fields_without_declared_mapping": [
-            "allowedTools",
-            "initialGrants"
+            "allowedTools"
           ],
           "retired_request_fields": []
         },
@@ -7903,6 +8131,38 @@
           "optional": false,
           "path": "id",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },

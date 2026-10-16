@@ -138,6 +138,7 @@ resource "archestra_agent" "worker" {
 - `incoming_email_allowed_domain` (String) Allowed sender domain when `incoming_email_security_mode = "internal"`
 - `incoming_email_enabled` (Boolean) Whether incoming-email invocation is enabled
 - `incoming_email_security_mode` (String) Email-trigger security mode. One of `private` (only the agent owner can email it), `internal` (any sender from `incoming_email_allowed_domain` can), or `public` (any sender). Defaults to `private`.
+- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `is_default` (Boolean) Whether this is the default agent for its type
 - `knowledge_base_ids` (List of String) Knowledge base IDs the agent has access to
 - `labels` (Attributes Set) Key/value labels for organizing agents (see [below for nested schema](#nestedatt--labels))
@@ -168,6 +169,16 @@ resource "archestra_agent" "worker" {
 - `resolved_llm_provider` (String) Server-reported resolved llm provider.
 - `resolved_llm_provider_key_name` (String) Server-reported resolved llm provider key name.
 - `sandbox_available` (Boolean) Server-reported sandbox available.
+
+<a id="nestedatt--initial_grants"></a>
+### Nested Schema for `initial_grants`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

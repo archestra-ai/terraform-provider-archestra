@@ -21,8 +21,14 @@ import (
 // Every entry needs a reason — the default of RemoveOnConfigNullList is
 // safer; allowlisting asserts the field has no "remove = clear" semantic.
 var useStateForUnknownAllowlist = map[string]map[string]string{
-	"archestra_project":              {"instructions": "The separate instructions file is unmanaged when omitted; only explicit empty content clears it."},
-	"archestra_llm_provider_api_key": {"shared": "Creation-only ownership selector; importing or omitting this field must preserve the existing owner without replacement."},
+	"archestra_agent":              {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
+	"archestra_mcp_gateway":        {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
+	"archestra_knowledge_base":     {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
+	"archestra_runtime_credential": {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
+	"archestra_skill":              {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
+
+	"archestra_project":              {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy.", "instructions": "The separate instructions file is unmanaged when omitted; only explicit empty content clears it."},
+	"archestra_llm_provider_api_key": {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy.", "shared": "Creation-only ownership selector; importing or omitting this field must preserve the existing owner without replacement."},
 	"archestra_llm_model": {
 		"llm_provider": "immutable adoption selector; omitting it retains the already adopted model and its provider rather than selecting another provider with the same model name.",
 	},
@@ -30,6 +36,8 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 		"mcp_server_id": "credential binding chosen at Create time; remove-from-config has no clear semantic — preserve prior state.",
 	},
 	"archestra_mcp_registry_catalog_item": { //nolint:gosec // G101 false-positive — nested keys are schema attribute names.
+		"multitenant":            "Immutable creation selector; omission preserves the observed mode so metadata updates do not replace an existing catalog item.",
+		"initial_grants":         "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy.",
 		"client_secret_id":       "computed when the backend auto-creates a BYOS vault reference for an inline `oauth_config.client_secret`; sticky once issued so removing the inline secret doesn't accidentally drop the stored reference.",
 		"local_config_secret_id": "computed when the backend auto-creates a BYOS vault reference for inline `local_config` env values; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
 	},

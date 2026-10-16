@@ -32,6 +32,7 @@ func NewSkillResource() resource.Resource { return &SkillResource{} }
 
 type SkillResource struct{ client *client.ClientWithResponses }
 type SkillResourceModel struct {
+	InitialGrants             types.Set         `tfsdk:"initial_grants"`
 	ID                        types.String      `tfsdk:"id"`
 	Name                      types.String      `tfsdk:"name"`
 	Description               types.String      `tfsdk:"description"`
@@ -129,6 +130,7 @@ type skillAPIWire struct {
 
 var skillFileType = types.ObjectType{AttrTypes: map[string]attr.Type{"content": types.StringType, "encoding": types.StringType}}
 var skillAttrSpec = []AttrSpec{
+	initialGrantsAttrSpec,
 	{TFName: "name", Kind: Synthetic}, {TFName: "description", Kind: Synthetic},
 	{TFName: "license", Kind: Synthetic}, {TFName: "compatibility", Kind: Synthetic}, {TFName: "agent_name", Kind: Synthetic},
 	{TFName: "templated", Kind: Synthetic}, {TFName: "metadata", Kind: Synthetic}, {TFName: "allowed_tools", Kind: Synthetic},
@@ -144,17 +146,18 @@ func (r *SkillResource) Metadata(_ context.Context, req resource.MetadataRequest
 }
 func (r *SkillResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	attributes := map[string]schema.Attribute{
-		"id":            schema.StringAttribute{Computed: true, MarkdownDescription: "Skill UUID.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
-		"name":          schema.StringAttribute{Required: true, MarkdownDescription: "Skill name rendered into manifest frontmatter.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
-		"description":   schema.StringAttribute{Required: true, MarkdownDescription: "Skill description rendered into manifest frontmatter.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
-		"content":       schema.StringAttribute{Required: true, MarkdownDescription: "Markdown instruction body without frontmatter."},
-		"icon":          schema.StringAttribute{Optional: true, MarkdownDescription: "Display emoji or image data URL."},
-		"license":       schema.StringAttribute{Optional: true, MarkdownDescription: "Manifest license."},
-		"compatibility": schema.StringAttribute{Optional: true, MarkdownDescription: "Manifest compatibility information."},
-		"agent_name":    schema.StringAttribute{Optional: true, MarkdownDescription: "Agent name used when activating this skill delegates execution."},
-		"templated":     schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Whether the instruction body uses Handlebars rendering."},
-		"metadata":      schema.MapAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "Manifest metadata entries."},
-		"allowed_tools": schema.SetAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "Tools pre-approved by the skill manifest.", Validators: []validator.Set{setvalidator.ValueStringsAre(stringvalidator.RegexMatches(regexp.MustCompile(`^\S+$`), "tool names cannot contain whitespace"))}},
+		"initial_grants": initialGrantsAttribute(),
+		"id":             schema.StringAttribute{Computed: true, MarkdownDescription: "Skill UUID.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
+		"name":           schema.StringAttribute{Required: true, MarkdownDescription: "Skill name rendered into manifest frontmatter.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
+		"description":    schema.StringAttribute{Required: true, MarkdownDescription: "Skill description rendered into manifest frontmatter.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
+		"content":        schema.StringAttribute{Required: true, MarkdownDescription: "Markdown instruction body without frontmatter."},
+		"icon":           schema.StringAttribute{Optional: true, MarkdownDescription: "Display emoji or image data URL."},
+		"license":        schema.StringAttribute{Optional: true, MarkdownDescription: "Manifest license."},
+		"compatibility":  schema.StringAttribute{Optional: true, MarkdownDescription: "Manifest compatibility information."},
+		"agent_name":     schema.StringAttribute{Optional: true, MarkdownDescription: "Agent name used when activating this skill delegates execution."},
+		"templated":      schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Whether the instruction body uses Handlebars rendering."},
+		"metadata":       schema.MapAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "Manifest metadata entries."},
+		"allowed_tools":  schema.SetAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "Tools pre-approved by the skill manifest.", Validators: []validator.Set{setvalidator.ValueStringsAre(stringvalidator.RegexMatches(regexp.MustCompile(`^\S+$`), "tool names cannot contain whitespace"))}},
 		"files": schema.MapNestedAttribute{Required: true, MarkdownDescription: "Complete resource files keyed by relative path; an empty map clears files.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
 			"content":  schema.StringAttribute{Required: true, MarkdownDescription: "Resource file content in the specified encoding."},
 			"encoding": schema.StringAttribute{Required: true, MarkdownDescription: "Resource file content encoding.", Validators: []validator.String{stringvalidator.OneOf("utf8", "base64")}},
@@ -222,6 +225,7 @@ func (r *SkillResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 	plan.populate(ctx, result.Body, &resp.Diagnostics)
 	if !resp.Diagnostics.HasError() {
+		resolveInitialGrants(&plan.InitialGrants)
 		resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 	}
 }
@@ -255,6 +259,7 @@ func (r *SkillResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	}
 	data.populate(ctx, result.Body, &resp.Diagnostics)
 	if !resp.Diagnostics.HasError() {
+		resolveInitialGrants(&data.InitialGrants)
 		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	}
 }
@@ -295,6 +300,7 @@ func (r *SkillResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	}
 	plan.populate(ctx, result.Body, &resp.Diagnostics)
 	if !resp.Diagnostics.HasError() {
+		resolveInitialGrants(&plan.InitialGrants)
 		resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 	}
 }

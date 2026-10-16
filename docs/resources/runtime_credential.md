@@ -92,14 +92,25 @@ resource "archestra_runtime_credential" "github_user" {
 - `github_url` (String) GitHub API base URL.
 - `gitlab_url` (String) GitLab host for a GitLab-token credential definition.
 - `icon` (String) Emoji or base64 image data URL
+- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `installation_id` (String) GitHub App installation ID.
 - `kind` (String) Credential type: secret, github_app, github_app_user, or gitlab_token.
 - `organization_value` (String, Sensitive) The organization-scoped secret value. Only valid with `allow_organization = true`. Write-only: the backend never echoes it, so out-of-band rotation is invisible to Terraform (out-of-band *deletion* is detected via `organization_configured`). Removing the attribute disconnects the stored value.
 
 ### Read-Only
 
+- `definition_id` (String) Underlying credential definition UUID for permission policies.
 - `id` (String) Same as `key` — the backend addresses definitions by key
 - `organization_configured` (Boolean) Whether an organization-scoped value is currently deposited
+
+<a id="nestedatt--initial_grants"></a>
+### Nested Schema for `initial_grants`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
 
 ## Import
 

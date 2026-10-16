@@ -11,6 +11,7 @@ import (
 // `z.string().nullable().optional()`), so MergePatch's "only-changed-
 // fields" output is a valid wire body without finalize hacks.
 var knowledgeBaseAttrSpec = []AttrSpec{
+	initialGrantsAttrSpec,
 	{TFName: "labels", JSONName: "labels", Kind: Set, OmitOnNull: true, Children: []AttrSpec{{TFName: "key", JSONName: "key", Kind: Scalar}, {TFName: "value", JSONName: "value", Kind: Scalar}}},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},

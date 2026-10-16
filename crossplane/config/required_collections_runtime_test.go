@@ -2,7 +2,13 @@ package config_test
 
 import (
 	"encoding/json"
+	"os"
+	"path/filepath"
 	"testing"
+
+	ujresource "github.com/crossplane/upjet/v2/pkg/resource"
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"sigs.k8s.io/yaml"
 
 	agent "github.com/archestra-ai/provider-archestra/apis/cluster/agent/v1alpha1"
 	permission "github.com/archestra-ai/provider-archestra/apis/cluster/permission/v1alpha1"
@@ -66,6 +72,123 @@ func TestGeneratedEmptyRequiredCollectionsSurviveKubernetesSerialization(t *test
 			if !ok || len(items) != 0 {
 				t.Fatalf("Kubernetes JSON set %q: %#v", name, v)
 			}
+		}
+	}
+}
+
+func TestGeneratedInitialGrantsPreserveExplicitEmptyAndUnmanagedValues(t *testing.T) {
+	cluster := &agent.Agent{Spec: agent.AgentSpec{ForProvider: agent.AgentParameters{InitialGrants: []agent.InitialGrantsParameters{}}}}
+	namespaced := &agentnamespaced.Agent{Spec: agentnamespaced.AgentSpec{ForProvider: agentnamespaced.AgentParameters{InitialGrants: []agentnamespaced.InitialGrantsParameters{}}}}
+	for _, value := range []interface {
+		GetParameters() (map[string]any, error)
+	}{cluster, namespaced} {
+		parameters, err := value.GetParameters()
+		if err != nil {
+			t.Fatal(err)
+		}
+		values, ok := parameters["initial_grants"].([]any)
+		if !ok || len(values) != 0 {
+			t.Fatalf("explicit empty initial grants must reach Terraform: %#v", parameters["initial_grants"])
+		}
+		encoded, err := json.Marshal(value)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var wire struct {
+			Spec struct {
+				ForProvider map[string]any `json:"forProvider"`
+			} `json:"spec"`
+		}
+		if err = json.Unmarshal(encoded, &wire); err != nil {
+			t.Fatal(err)
+		}
+		if values, ok := wire.Spec.ForProvider["initialGrants"].([]any); !ok || len(values) != 0 {
+			t.Fatalf("explicit empty initial grants must survive Kubernetes JSON: %s", encoded)
+		}
+	}
+	for _, value := range []interface {
+		GetMergedParameters(bool) (map[string]any, error)
+	}{
+		&agent.Agent{},
+		&agentnamespaced.Agent{},
+	} {
+		parameters, err := value.GetMergedParameters(true)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, present := parameters["initial_grants"]; present {
+			t.Fatalf("omitted creation grants must be absent for Upjet ignore_changes: %#v", parameters["initial_grants"])
+		}
+		ignored := ujresource.GetTerraformIgnoreChanges(parameters, map[string]any{"initial_grants": []any{}})
+		if len(ignored) != 1 || ignored[0] != "initial_grants" {
+			t.Fatalf("initProvider creation grants must be ignored after create: %#v", ignored)
+		}
+	}
+	for _, value := range []interface {
+		GetMergedParameters(bool) (map[string]any, error)
+	}{
+		&agent.Agent{Spec: agent.AgentSpec{InitProvider: agent.AgentInitParameters{InitialGrants: []agent.InitialGrantsInitParameters{}}}},
+		&agentnamespaced.Agent{Spec: agentnamespaced.AgentSpec{InitProvider: agentnamespaced.AgentInitParameters{InitialGrants: []agentnamespaced.InitialGrantsInitParameters{}}}},
+	} {
+		parameters, err := value.GetMergedParameters(true)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if values, ok := parameters["initial_grants"].([]any); !ok || len(values) != 0 {
+			t.Fatalf("explicit empty initProvider grants were dropped: %#v", parameters["initial_grants"])
+		}
+	}
+}
+
+func TestGeneratedInitialGrantCRDsKeepUnmanagedInputsOptional(t *testing.T) {
+	files, err := filepath.Glob("../package/crds/*.yaml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	checked := 0
+	for _, file := range files {
+		body, err := os.ReadFile(file)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var crd apiextensions.CustomResourceDefinition
+		if err = yaml.Unmarshal(body, &crd); err != nil {
+			t.Fatal(err)
+		}
+		for _, version := range crd.Spec.Versions {
+			fields := version.Schema.OpenAPIV3Schema.Properties["spec"].Properties
+			if _, ok := fields["forProvider"].Properties["initialGrants"]; !ok {
+				continue
+			}
+			for _, source := range []string{"forProvider", "initProvider"} {
+				for _, required := range fields[source].Required {
+					if required == "initialGrants" {
+						t.Fatalf("%s %s rejects an unmanaged creation policy", crd.Name, source)
+					}
+				}
+			}
+			checked++
+		}
+	}
+	if checked != 16 {
+		t.Fatalf("expected both-scope creation-grant schemas for eight families, checked %d", checked)
+	}
+}
+
+func TestGeneratedCreationGrantsAreNotLateInitialized(t *testing.T) {
+	for _, value := range []interface {
+		LateInitialize([]byte) (bool, error)
+		GetParameters() (map[string]any, error)
+	}{&agent.Agent{}, &agentnamespaced.Agent{}} {
+		if _, err := value.LateInitialize([]byte(`{"initial_grants": []}`)); err != nil {
+			t.Fatal(err)
+		}
+		parameters, err := value.GetParameters()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, ok := parameters["initial_grants"]; ok {
+			t.Fatal("creation grants moved from initProvider to managed forProvider inputs")
 		}
 	}
 }

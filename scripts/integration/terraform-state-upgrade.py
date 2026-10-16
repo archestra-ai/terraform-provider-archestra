@@ -22,12 +22,15 @@ def main():
     p.add_argument('--old-provider-directory', type=Path, required=True)
     p.add_argument('--new-provider-directory', type=Path, required=True)
     p.add_argument('--evidence', type=Path, required=True)
+    p.add_argument('--vault-secret-path', help='Existing isolated Vault fixture path for read-only Vault backends')
+    p.add_argument('--vault-secret-key', default='api_key')
     p.add_argument('--case', choices=('base', 'identity', 'model'), default='base')
     args = p.parse_args()
     for endpoint in (args.api_url, args.model_url):
         url = urllib.parse.urlparse(endpoint)
-        if url.scheme != 'http' or url.hostname not in ('127.0.0.1', 'localhost', '::1'):
-            p.error('Only isolated loopback HTTP endpoints are supported')
+        kind_model_fixture = endpoint == args.model_url and url.hostname == 'ollama-mock.default.svc.cluster.local' and url.port == 11434
+        if url.scheme != 'http' or (url.hostname not in ('127.0.0.1', 'localhost', '::1') and not kind_model_fixture):
+            p.error('Only loopback APIs and the fixed private Kind model fixture are supported')
     work = Path(tempfile.mkdtemp(prefix='provider-state-upgrade-'))
     os.chmod(work, 0o700)
     env = dict(os.environ, ARCHESTRA_BASE_URL=args.api_url,
@@ -67,6 +70,9 @@ resource "archestra_organization_settings" "test" {
  color_theme = "cosmic-night"
 }
 '''.replace('NAME', name).replace('MODEL', json.dumps(args.model_url)))
+    if args.vault_secret_path:
+        config = (work / 'main.tf').read_text().replace(' llm_provider = "ollama"', ' llm_provider = "ollama"\n vault_secret_path = ' + json.dumps(args.vault_secret_path) + '\n vault_secret_key = ' + json.dumps(args.vault_secret_key))
+        (work / 'main.tf').write_text(config)
     if args.case == 'identity':
         (work / 'main.tf').write_text('''terraform {
  required_providers {
@@ -129,6 +135,18 @@ resource "archestra_llm_model" "test" {
             os.chmod(work / 'saved-secret.tfstate', 0o600)
             run('restore-synthetic-saved-secret', 'state', 'push', 'saved-secret.tfstate')
             evidence['identity_fixture_source'] = 'Actual v2 import; synthetic saved secret restored because v2 cannot read current redacted secrets. This models saved pre-redaction state, not a successful v2 create against the current API.'
+        if args.vault_secret_path and args.case != 'identity':
+            for resource in old['resources']:
+                if resource['type'] == 'archestra_llm_provider_api_key':
+                    attributes = resource['instances'][0]['attributes']
+                    attributes['vault_secret_path'] = args.vault_secret_path
+                    attributes['vault_secret_key'] = args.vault_secret_key
+            old['serial'] += 1
+            saved = work / 'saved-vault-reference.tfstate'
+            saved.write_text(json.dumps(old))
+            os.chmod(saved, 0o600)
+            run('restore-synthetic-saved-vault-reference', 'state', 'push', str(saved))
+            evidence['vault_fixture_source'] = 'Actual v2 import with the configured synthetic Vault reference restored to saved state; the current API redacts write-only Vault reference inputs.'
         for resource in old['resources']:
             if resource['instances'][0]['schema_version'] != 0:
                 raise RuntimeError('Old fixture did not use a v2 schema-zero state')

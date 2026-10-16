@@ -123,6 +123,7 @@ resource "archestra_llm_provider_api_key" "azure_openai" {
 - `base_url` (String) Custom base URL for the LLM provider endpoint
 - `extra_headers` (Map of String, Sensitive) Additional HTTP headers sent to the provider endpoint.
 - `inference_base_url` (String) Runtime endpoint override, separate from the discovery base URL.
+- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `is_primary` (Boolean) Whether this API key is the primary key for the provider
 - `labels` (Attributes Set) Labels assigned to the provider key. (see [below for nested schema](#nestedatt--labels))
 - `shared` (Boolean) Create an organization-owned provider key; ownership changes require replacement and omission preserves existing ownership.
@@ -139,6 +140,16 @@ resource "archestra_llm_provider_api_key" "azure_openai" {
 - `scope` (String) Backend credential scope.
 - `subscription_kind` (String) Subscription credential type, when applicable.
 - `team_id` (String) Backend team association, when present.
+
+<a id="nestedatt--initial_grants"></a>
+### Nested Schema for `initial_grants`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

@@ -2,6 +2,9 @@
   "additional_credential_cli_evidence": [
     "sigv4-live.json"
   ],
+  "additional_native_concurrency_evidence": [
+    "delegation-atomic-native.json"
+  ],
   "additional_runtime_probe_evidence": [
     "crossplane-current-catalog-limit.json",
     "crossplane-current-llm.json",
@@ -33,8 +36,14 @@
     "storage_version": "v1alpha1",
     "version_conversion_required": false
   },
+  "api_prerequisite": {
+    "head": "b71c4e62c8967d9e8e73820886e292f45916d92c",
+    "published": false,
+    "url": "https://github.com/archestra-ai/archestra/pull/9038"
+  },
   "baseline_crossplane_configured": 5,
   "baseline_terraform_count": 22,
+  "creation_grants_status": "Implemented on eight resource families; native acceptance passes. Final both-scope rc.48 repetition pending.",
   "crossplane_results": [
     {
       "backend_read_after_delete": 404,
@@ -357,6 +366,7 @@
     "TestAccCurrentAgentControls",
     "TestAccCurrentGatewayControls"
   ],
+  "published_api_acceptance_evidence": "published-api-full-acceptance.json",
   "remaining_release_gates": [
     "Resolve the additional persistent API lifecycle queue in api-resource-scope.md",
     "Publish the atomic delegation API prerequisite and pin its released OpenAPI/image",
@@ -367,13 +377,5 @@
   "runtime_probe_controller_sha256": "9faacea7aba5b8caa12008f8904c53eb4c50d2266d638ab8fabd1295a0d656c7",
   "runtime_probe_provider_sha256": "61eca82bd743de061bf9d3c4eb7730914f3cb9b1c83af4745c93f51b88c63df1",
   "runtime_probe_version_note": "Accumulated proofs cover 29 registered families across recorded candidate hashes. The latest atomic delegation and knowledge-source exclusion probes use the unpublished API prerequisite. Full final-candidate repetition and published prerequisite pinning remain release gates.",
-  "status": "draft_work_in_progress_not_release_coverage",
-  "additional_native_concurrency_evidence": [
-    "delegation-atomic-native.json"
-  ],
-  "api_prerequisite": {
-    "url": "https://github.com/archestra-ai/archestra/pull/9038",
-    "head": "b71c4e62c8967d9e8e73820886e292f45916d92c",
-    "published": false
-  }
+  "status": "draft_work_in_progress_not_release_coverage"
 }

@@ -14,6 +14,7 @@ import (
 // RequiresReplace — Update never sees it change, but it ships in the Create
 // body as `provider`.
 var llmProviderApiKeyAttrSpec = []AttrSpec{
+	initialGrantsAttrSpec,
 	{TFName: "aws_access_key_id", JSONName: "awsAccessKeyId", Kind: Scalar, Sensitive: true, OmitOnNull: true},
 	{TFName: "aws_secret_access_key", JSONName: "awsSecretAccessKey", Kind: Scalar, Sensitive: true, OmitOnNull: true},
 	{TFName: "aws_session_token", JSONName: "awsSessionToken", Kind: Scalar, Sensitive: true, OmitOnNull: true},

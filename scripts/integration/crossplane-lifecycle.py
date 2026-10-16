@@ -22,8 +22,10 @@ def main():
     parser.add_argument('--api-url', required=True)
     parser.add_argument('--key-file', type=Path, required=True)
     parser.add_argument('--llm-base-url', required=True)
+    parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'skill', 'gateway-skills', 'project-instructions'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
     parser.add_argument('--kubeconfig', type=Path, required=True)
     parser.add_argument('--provider-config', required=True)
     parser.add_argument('--namespace', default='crossplane-system')
@@ -36,10 +38,12 @@ def main():
         parser.error('Only an isolated loopback HTTP API is supported')
     for endpoint in (args.mcp_url, args.llm_base_url):
         parsed = urllib.parse.urlparse(endpoint)
-        if parsed.scheme != 'http' or parsed.hostname not in ('127.0.0.1', 'localhost', '::1'):
-            parser.error('Fixture endpoints must use loopback HTTP')
+        kind_fixture = (parsed.hostname, parsed.port) in (('ollama-mock.default.svc.cluster.local', 11434), ('provider-mcp-mock.default.svc.cluster.local', 19006))
+        if parsed.scheme != 'http' or (parsed.hostname not in ('127.0.0.1', 'localhost', '::1') and not kind_fixture):
+            parser.error('Fixture endpoints must use loopback or a fixed private Kind fixture')
     env = dict(os.environ, KUBECONFIG=str(args.kubeconfig.resolve()))
     token = args.key_file.read_text().strip()
+    vault_fixture = {'vaultSecretPath': 'secret/data/test/ollama', 'vaultSecretKey': 'api_key'} if args.readonly_vault else {}
     run = uuid.uuid4().hex[:8]
     leases = []
     results = []
@@ -93,7 +97,7 @@ def main():
             time.sleep(1)
         raise RuntimeError('Timed out: ' + description)
 
-    def create(scope, group, kind, plural, fields, suffix_name=""):
+    def create(scope, group, kind, plural, fields, suffix_name="", init_fields=None):
         suffix = '.m' if scope == 'namespaced' else ''
         api_group = group + '.archestra' + suffix + '.crossplane.io'
         name = 'cp-proof-' + kind.lower() + suffix_name + '-' + scope + '-' + run
@@ -105,6 +109,8 @@ def main():
             config['kind'] = 'ClusterProviderConfig'
         manifest = {'apiVersion': api_group + '/v1alpha1', 'kind': kind,
                     'metadata': metadata, 'spec': {'forProvider': fields, 'providerConfigRef': config}}
+        if init_fields is not None:
+            manifest['spec']['initProvider'] = init_fields
         kube('apply', '-f', '-', payload=manifest)
         lease = (namespace, plural + '.' + api_group, name)
         leases.append(lease)
@@ -227,7 +233,7 @@ def main():
                 key_lease, key_id, key_obj = create(scope, 'llm', 'ProviderKey', 'providerkeys',
                         {'name': key_name, 'llmProvider': 'ollama-native',
                          'baseUrl': args.llm_base_url, 'extraHeadersSecretRef': secret_ref,
-                         'labels': [{'key': 'provider-test', 'value': run}]})
+                         'labels': [{'key': 'provider-test', 'value': run}], **vault_fixture})
                 key_path = '/api/llm-provider-api-keys/' + key_id
                 status, key_wire = api(key_path)
                 if status != 200 or key_wire.get('extraHeaders', {}).get('X-Provider-Test') != header_value:
@@ -371,6 +377,118 @@ def main():
                     raise RuntimeError('Project deletion left the fixture readable')
                 record('ProjectInstructions', scope, create='passed', update='passed', drift_repair='passed',
                        empty_content_clear='passed', parent_delete='passed', backend_after_delete=404)
+
+            if 'initial-grant-defaults' in args.cases:
+                for label in ('default', 'empty', 'init-empty'):
+                    explicit_empty = label != 'default'
+                    fields = {'name': 'cp-grant-' + label + '-' + run + '-' + scope,
+                              'key': 'cp-grant-' + label + '-' + run + '-' + scope}
+                    if label == 'empty':
+                        fields['initialGrants'] = []
+                    lease, _, obj = create(scope, 'credential', 'RuntimeCredential', 'runtimecredentials', fields, '-' + label,
+                                           init_fields={'initialGrants': []} if label == 'init-empty' else None)
+                    definition_id = obj.get('status', {}).get('atProvider', {}).get('definitionId')
+                    if not definition_id:
+                        raise RuntimeError('Credential definition UUID was not observed')
+                    code, policy = api('/api/resource-permissions/credential/' + definition_id)
+                    non_owner_grants = [item for item in policy['grants'] if item['subject']['id'] != policy.get('ownerId')]
+                    if code != 200 or bool(non_owner_grants) == explicit_empty:
+                        raise RuntimeError('Explicit empty and omitted credential grants lost their distinct creation semantics')
+                    patch(lease, {'description': 'Updated grant defaults fixture.'})
+                    def default_metadata_updated():
+                        code, definitions = api('/api/credentials')
+                        return code == 200 and any(item['key'] == fields['key'] and item['description'] == 'Updated grant defaults fixture.' for item in definitions)
+                    wait('Credential default grant metadata update', lambda: condition(lease, 'True') and default_metadata_updated())
+                    if api('/api/resource-permissions/credential/' + definition_id)[1]['grants'] != policy['grants']:
+                        raise RuntimeError('Metadata update changed creation grants')
+                    init_update = 'not_applicable'
+                    if label == 'init-empty':
+                        kube(*lease[0], 'patch', lease[1], lease[2], '--type=merge', '-p', json.dumps({'spec': {'initProvider': {'initialGrants': [{'subjectType': 'organization', 'subjectId': '*', 'actions': ['read']}]}}}))
+                        def init_change_reconciled():
+                            current = observation(lease)
+                            return any(item.get('type') == 'Synced' and item.get('status') == 'True' and item.get('observedGeneration') == current['metadata']['generation'] for item in current.get('status', {}).get('conditions', []))
+                        wait('initProvider creation grant update ignored', init_change_reconciled)
+                        if api('/api/resource-permissions/credential/' + definition_id)[1]['grants'] != policy['grants']:
+                            raise RuntimeError('initProvider update changed already-created grants')
+                        init_update = 'passed'
+                    delete(lease)
+                    record('RuntimeCredentialInitialGrantDefaults', scope, parameter_source=label, explicit_empty=explicit_empty,
+                           metadata_update_preserves_grants='passed', init_provider_update_ignored=init_update,
+                           persisted_grants=len(policy['grants']), owner_grant_preserved=True, create='passed', delete='passed')
+
+            if 'initial-grants' in args.cases:
+                team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-grant-team-' + run + '-' + scope}, '-grant')
+                grant = {'subjectType': 'team', 'subjectId': team_id, 'actions': ['read']}
+                secret_name = 'cp-grant-key-' + run + '-' + scope
+                kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
+                     'metadata': {'name': secret_name, 'namespace': args.namespace, 'labels': {'provider-test-run': run}},
+                     'stringData': {'api-key': 'synthetic-loopback-only'}})
+                secret = (['-n', args.namespace], 'secrets', secret_name)
+                leases.append(secret)
+                secret_ref = {'name': secret_name, 'key': 'api-key'}
+                if scope == 'cluster':
+                    secret_ref['namespace'] = args.namespace
+                cases = [
+                    ('agent', 'Agent', 'agents', 'agent', {}),
+                    ('mcp', 'Gateway', 'gateways', 'mcpGateway', {}),
+                    ('project', 'Project', 'projects', 'project', {}),
+                    ('knowledge', 'KnowledgeBase', 'knowledgebases', 'knowledgeBase', {}),
+                    ('mcp', 'RegistryCatalogItem', 'registrycatalogitems', 'mcpRegistry', {'remoteConfig': {'url': 'http://127.0.0.1:19999/mcp'}}),
+                    ('skill', 'Skill', 'skills', 'skill', {'description': 'Synthetic initial grants', 'content': 'Synthetic body.', 'files': {}, 'environmentIds': [], 'labels': []}),
+                    ('credential', 'RuntimeCredential', 'runtimecredentials', 'credential', {'key': 'cp-grant-' + run + '-' + scope}),
+                    ('llm', 'ProviderKey', 'providerkeys', 'llmProviderApiKey', {'llmProvider': 'ollama', 'shared': True,
+                        **(vault_fixture if args.readonly_vault else {'apiKeySecretRef': secret_ref}), 'baseUrl': args.llm_base_url}),
+                ]
+                for group, kind, plural, resource_type, extra in cases:
+                    if args.grant_kinds and kind not in args.grant_kinds:
+                        continue
+                    fields = {'name': 'cp-grant-' + kind.lower() + '-' + run + '-' + scope,
+                              'initialGrants': [grant], **extra}
+                    lease, identifier, obj = create(scope, group, kind, plural, fields, '-grant')
+                    policy_id = obj.get('status', {}).get('atProvider', {}).get('definitionId') if resource_type == 'credential' else identifier
+                    if not policy_id:
+                        raise RuntimeError('Credential definition UUID was not observed')
+                    path = '/api/resource-permissions/' + resource_type + '/' + policy_id
+
+                    def has_initial_grant():
+                        code, policy = api(path)
+                        if code != 200:
+                            raise RuntimeError('Unable to read initial grant policy for ' + kind)
+                        return any(item['subject'] == {'type': 'team', 'id': team_id} and item['actions'] == ['read'] for item in policy['grants'])
+
+                    if not has_initial_grant():
+                        raise RuntimeError('Initial grant was not persisted for ' + kind)
+                    updated_name = 'updated-' + fields['name']
+                    metadata_field = 'description' if kind in ('RegistryCatalogItem', 'RuntimeCredential') else 'name'
+                    patch(lease, {metadata_field: updated_name})
+
+                    def metadata_updated():
+                        if resource_type == 'credential':
+                            code, definitions = api('/api/credentials')
+                            return code == 200 and any(item['key'] == identifier and item[metadata_field] == updated_name for item in definitions)
+                        prefix = {'agent': '/api/agents/', 'mcpGateway': '/api/agents/', 'project': '/api/projects/',
+                                  'knowledgeBase': '/api/knowledge-bases/', 'mcpRegistry': '/api/internal_mcp_catalog/',
+                                  'skill': '/api/skills/', 'llmProviderApiKey': '/api/llm-provider-api-keys/'}[resource_type]
+                        code, current = api(prefix + identifier)
+                        return code == 200 and current[metadata_field] == updated_name
+
+                    try:
+                        wait('Initial grant survives metadata update ' + kind,
+                             lambda: condition(lease, 'True') and metadata_updated() and has_initial_grant())
+                    except RuntimeError:
+                        print(json.dumps({'kind': kind, 'conditions': observation(lease).get('status', {}).get('conditions', []),
+                                          'backend_metadata_updated': metadata_updated()}), flush=True)
+                        raise
+                    if observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != identifier:
+                        raise RuntimeError('Metadata update replaced initial-grant resource ' + kind)
+                    immutable_update(lease, {'initialGrants': []}, {'initialGrants': [grant]})
+                    if not has_initial_grant():
+                        raise RuntimeError('Refused grant replacement changed the policy')
+                    delete(lease)
+                    record(kind + 'InitialGrants', scope, create_with_policy='passed', metadata_update_preserves_grants='passed',
+                           grant_change_requires_replacement='passed', delete='passed')
+                delete(secret)
+                delete(team)
 
             if 'gateway-skills' in args.cases:
                 gateway, gateway_id, _ = create(scope, 'mcp', 'Gateway', 'gateways',
@@ -710,7 +828,7 @@ def main():
             if 'api-key' in args.cases:
                 key_name = 'cp-test-api-key-' + run + '-' + scope
                 lease, identifier, obj = create(scope, 'credential', 'APIKey', 'apikeys',
-                    {'name': key_name, 'expiresInSeconds': 3600})
+                    {'name': key_name, 'expiresInSeconds': 86400})
 
                 def path():
                     return '/api/api-keys/' + observation(lease)['metadata']['annotations']['crossplane.io/external-name']

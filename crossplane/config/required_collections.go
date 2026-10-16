@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -17,6 +18,8 @@ import (
 )
 
 type collectionSchemaAttribute struct {
+	Optional   bool            `json:"optional"`
+	Computed   bool            `json:"computed"`
 	Required   bool            `json:"required"`
 	Type       json.RawMessage `json:"type"`
 	NestedType *struct {
@@ -47,41 +50,61 @@ func PreserveRequiredCollections(root string, providers ...*ujconfig.Provider) e
 			scope = "namespaced"
 		}
 		for name, r := range pc.Resources {
-			required := requiredCollectionNames(resources[name])
-			if len(required) == 0 {
-				continue
-			}
-			files, err := filepath.Glob(filepath.Join(root, "apis", scope, r.ShortGroup, "*", "zz_"+strings.ToLower(r.Kind)+"_types.go"))
-			if err != nil {
+			if err := preserveResourceCollections(root, scope, r, requiredCollectionNames(resources[name])); err != nil {
 				return err
-			}
-			if len(files) == 0 {
-				return fmt.Errorf("no generated %s %s types", scope, r.Kind)
-			}
-			for _, file := range files {
-				if err := rewriteRequiredCollectionTags(file, r.Kind+"Parameters", required); err != nil {
-					return err
-				}
 			}
 		}
 	}
 	return nil
 }
+func preserveResourceCollections(root, scope string, r *ujconfig.Resource, required map[string]bool) error {
+	if len(required) == 0 {
+		return nil
+	}
+	files, err := filepath.Glob(filepath.Join(root, "apis", scope, r.ShortGroup, "*", "zz_"+strings.ToLower(r.Kind)+"_types.go"))
+	if err != nil {
+		return err
+	}
+	if len(files) == 0 {
+		return fmt.Errorf("no generated %s %s types", scope, r.Kind)
+	}
+	for _, file := range files {
+		if err := rewriteRequiredCollectionTags(file, r.Kind+"Parameters", required); err != nil {
+			return err
+		}
+		if required["initial_grants"] {
+			if err := rewriteRequiredCollectionTags(file, r.Kind+"InitParameters", map[string]bool{"initial_grants": true}); err != nil {
+				return err
+			}
+			if err := normalizeCreationGrantParameterMaps(strings.Replace(file, "_types.go", "_terraformed.go", 1)); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+func collectionMode(attribute collectionSchemaAttribute) string {
+	if attribute.NestedType != nil {
+		return attribute.NestedType.NestingMode
+	}
+	var shape []json.RawMessage
+	if json.Unmarshal(attribute.Type, &shape) != nil || len(shape) == 0 {
+		return ""
+	}
+	var mode string
+	_ = json.Unmarshal(shape[0], &mode)
+	return mode
+}
+
 func requiredCollectionNames(resource collectionSchemaResource) map[string]bool {
 	result := map[string]bool{}
 	for name, attribute := range resource.Block.Attributes {
-		if !attribute.Required {
+		// Empty creation grants must not fall through to API defaults. Null remains unmanaged.
+		creationGrants := name == "initial_grants" && attribute.Optional && attribute.Computed
+		if !attribute.Required && !creationGrants {
 			continue
 		}
-		mode := ""
-		if attribute.NestedType != nil {
-			mode = attribute.NestedType.NestingMode
-		} else {
-			var shape []json.RawMessage
-			if json.Unmarshal(attribute.Type, &shape) == nil && len(shape) > 0 {
-				_ = json.Unmarshal(shape[0], &mode)
-			}
-		}
+		mode := collectionMode(attribute)
 		if mode == "set" || mode == "list" || mode == "map" {
 			result[name] = true
 		}
@@ -103,6 +126,9 @@ func preserveRequiredFieldTag(field *ast.Field, required map[string]bool) bool {
 	}
 	jsonTag := reflect.StructTag(raw).Get("json")
 	tfReplacement, jsonReplacement := strings.ReplaceAll(tag, ",omitempty", ""), strings.ReplaceAll(jsonTag, ",omitempty", "")
+	if name == "initial_grants" {
+		jsonReplacement = strings.ReplaceAll(jsonTag, ",omitempty", ",omitzero")
+	}
 	if tfReplacement == tag && jsonReplacement == jsonTag {
 		return false
 	}
@@ -131,14 +157,27 @@ func rewriteRequiredCollectionTags(file, parameters string, required map[string]
 			if preserveRequiredFieldTag(field, required) {
 				changed = true
 			}
+			if comment := markOptionalInitialGrants(parameters, field, required); comment != nil {
+				node.Comments = append(node.Comments, comment)
+				changed = true
+			}
 		}
 		return false
 	})
 	if !changed {
 		return nil
 	}
+	sort.Slice(node.Comments, func(i, j int) bool { return node.Comments[i].Pos() < node.Comments[j].Pos() })
 	return writeGeneratedCollectionTypes(file, fset, node)
 }
+func markOptionalInitialGrants(parameters string, field *ast.Field, required map[string]bool) *ast.CommentGroup {
+	if !strings.HasSuffix(parameters, "InitParameters") || len(field.Names) == 0 || field.Names[0].Name != "InitialGrants" || !required["initial_grants"] || field.Doc != nil {
+		return nil
+	}
+	field.Doc = &ast.CommentGroup{List: []*ast.Comment{{Slash: field.Pos() - 1, Text: "// +kubebuilder:validation:Optional"}}}
+	return field.Doc
+}
+
 func writeGeneratedCollectionTypes(file string, fset *token.FileSet, node *ast.File) error {
 	root, err := os.OpenRoot(filepath.Dir(file))
 	if err != nil {
@@ -154,4 +193,53 @@ func writeGeneratedCollectionTypes(file string, fset *token.FileSet, node *ast.F
 		return err
 	}
 	return out.Close()
+}
+
+// Omitted creation grants must be absent from parameter maps. Upjet compares
+// initProvider collection types before merging, so a present nil value panics.
+func normalizeCreationGrantParameterMaps(file string) error {
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, file, nil, parser.ParseComments)
+	if err != nil {
+		return err
+	}
+	snippet, err := parser.ParseFile(token.NewFileSet(), "normalize.go", `package normalize
+func normalize() {
+ err = json.TFParser.Unmarshal(p, &base)
+ if base["initial_grants"] == nil { delete(base, "initial_grants") }
+ return base, err
+}`, 0)
+	if err != nil {
+		return err
+	}
+	statements := snippet.Decls[0].(*ast.FuncDecl).Body.List
+	changed := false
+	for _, declaration := range node.Decls {
+		method, ok := declaration.(*ast.FuncDecl)
+		if !ok || (method.Name.Name != "GetParameters" && method.Name.Name != "GetInitParameters") {
+			continue
+		}
+		replaced, err := replaceCreationGrantReturn(method, statements)
+		if err != nil {
+			return fmt.Errorf("%s: %w", file, err)
+		}
+		changed = changed || replaced
+	}
+	if !changed {
+		return nil
+	}
+	return writeGeneratedCollectionTypes(file, fset, node)
+}
+
+func replaceCreationGrantReturn(method *ast.FuncDecl, statements []ast.Stmt) (bool, error) {
+	last := len(method.Body.List) - 1
+	result, ok := method.Body.List[last].(*ast.ReturnStmt)
+	if !ok || len(result.Results) != 2 {
+		return false, fmt.Errorf("unexpected generated parameter method %s", method.Name.Name)
+	}
+	if _, ok := result.Results[1].(*ast.CallExpr); !ok {
+		return false, nil
+	}
+	method.Body.List = append(method.Body.List[:last], statements...)
+	return true, nil
 }

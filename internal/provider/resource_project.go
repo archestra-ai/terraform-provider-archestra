@@ -27,6 +27,7 @@ func NewProjectResource() resource.Resource { return &ProjectResource{} }
 
 type ProjectResource struct{ client *client.ClientWithResponses }
 type ProjectResourceModel struct {
+	InitialGrants     types.Set         `tfsdk:"initial_grants"`
 	ID                types.String      `tfsdk:"id"`
 	Instructions      types.String      `tfsdk:"instructions"`
 	Name              types.String      `tfsdk:"name"`
@@ -41,6 +42,7 @@ type ProjectResourceModel struct {
 }
 
 var projectAttrSpec = []AttrSpec{
+	initialGrantsAttrSpec,
 	{TFName: "instructions", Kind: Synthetic},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
@@ -62,6 +64,7 @@ func (r *ProjectResource) Metadata(_ context.Context, req resource.MetadataReque
 }
 func (r *ProjectResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{MarkdownDescription: "A project containing conversations and schedules. Configure sharing with a separate archestra_resource_permission_policy. Destroy uses the project's soft-delete API; retain backups of project content before deleting it.", Attributes: map[string]schema.Attribute{
+		"initial_grants":   initialGrantsAttribute(),
 		"id":               schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 		"instructions":     schema.StringAttribute{Optional: true, Computed: true, MarkdownDescription: "Project chat instructions; omit to preserve existing content, or set an empty string to clear it.", Validators: []validator.String{stringvalidator.LengthAtMost(100000)}, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 		"name":             schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 64)}},
@@ -122,6 +125,7 @@ func (r *ProjectResource) Create(ctx context.Context, req resource.CreateRequest
 	if data.Instructions.IsUnknown() {
 		data.Instructions = types.StringNull()
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	if !data.Instructions.IsNull() && !r.writeInstructions(ctx, &data, &resp.Diagnostics) {
 		return
@@ -129,6 +133,7 @@ func (r *ProjectResource) Create(ctx context.Context, req resource.CreateRequest
 	if !r.refresh(ctx, &data, &resp.Diagnostics) {
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 func (r *ProjectResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -148,6 +153,7 @@ func (r *ProjectResource) Read(ctx context.Context, req resource.ReadRequest, re
 		}
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 func (r *ProjectResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -190,6 +196,7 @@ func (r *ProjectResource) Update(ctx context.Context, req resource.UpdateRequest
 	if !r.refresh(ctx, &data, &resp.Diagnostics) {
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 func (r *ProjectResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {

@@ -33,6 +33,7 @@ type KnowledgeBaseResource struct {
 }
 
 type KnowledgeBaseResourceModel struct {
+	InitialGrants             types.Set         `tfsdk:"initial_grants"`
 	Labels                    []AgentLabelModel `tfsdk:"labels"`
 	CreatedBy                 types.String      `tfsdk:"created_by"`
 	CreatedByServiceAccountID types.String      `tfsdk:"created_by_service_account_id"`
@@ -53,6 +54,7 @@ func (r *KnowledgeBaseResource) Schema(_ context.Context, _ resource.SchemaReque
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "A knowledge base groups documents and connectors that agents can search over.",
 		Attributes: map[string]schema.Attribute{
+			"initial_grants":                initialGrantsAttribute(),
 			"labels":                        schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Knowledge-base labels.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
 			"created_by":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
 			"created_by_service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Service account that created the knowledge base."},
@@ -142,6 +144,7 @@ func (r *KnowledgeBaseResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("API Response Decode Error", err.Error())
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -183,6 +186,7 @@ func (r *KnowledgeBaseResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError("API Response Decode Error", err.Error())
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -233,6 +237,7 @@ func (r *KnowledgeBaseResource) Update(ctx context.Context, req resource.UpdateR
 			resp.Diagnostics.AddError("API Response Decode Error", err.Error())
 			return
 		}
+		resolveInitialGrants(&data.InitialGrants)
 		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 		return
 	}
@@ -268,6 +273,7 @@ func (r *KnowledgeBaseResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError("API Response Decode Error", err.Error())
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 

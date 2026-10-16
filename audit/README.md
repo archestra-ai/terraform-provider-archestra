@@ -3,8 +3,9 @@
 The sections below retain the initial baseline. Current v3 configuration is
 **29/29 resources in both scopes**, with real both-scope lifecycle evidence for
 **29/29**. See [the current inventory](provider-v3-inventory.md) and
-[secret-free runtime evidence](v3-runtime-evidence.json). Full API-field checks
-and remaining lifecycle/migration/release gates are still open.
+[secret-free runtime evidence](v3-runtime-evidence.json). The published rc.48 full Terraform suite passes 118 acceptance tests with no
+skips. Eight distinct v2.4.1 state schema upgrades pass. Full API-field checks
+and remaining lifecycle/packaging/release gates are still open.
 
 
 The [API lifecycle scope review](api-resource-scope.md) distinguishes the verified

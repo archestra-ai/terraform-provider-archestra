@@ -40,6 +40,8 @@ type RuntimeCredentialResource struct {
 // (a named secret slot that agent `runtime.credentials` bindings
 // reference by key) plus, optionally, its organization-scoped value.
 type RuntimeCredentialResourceModel struct {
+	DefinitionID           types.String `tfsdk:"definition_id"`
+	InitialGrants          types.Set    `tfsdk:"initial_grants"`
 	GitlabURL              types.String `tfsdk:"gitlab_url"`
 	Kind                   types.String `tfsdk:"kind"`
 	AppId                  types.String `tfsdk:"app_id"`
@@ -67,6 +69,8 @@ func (r *RuntimeCredentialResource) Schema(_ context.Context, _ resource.SchemaR
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Runtime credential definition for Agent Runtime runs. Declares a named secret slot that `runtime.credentials` bindings reference by `key`; the value is deposited per-user in the UI (`allow_personal`) or once for the whole organization via `organization_value` (`allow_organization`). Supports secret slots, GitHub Apps, GitHub OAuth connections and GitLab tokens.",
 		Attributes: map[string]schema.Attribute{
+			"definition_id":             schema.StringAttribute{Computed: true, MarkdownDescription: "Underlying credential definition UUID for permission policies.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
+			"initial_grants":            initialGrantsAttribute(),
 			"kind":                      schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Credential type: secret, github_app, github_app_user, or gitlab_token.", Computed: true, Default: stringdefault.StaticString("secret"), Validators: []validator.String{stringvalidator.OneOf("secret", "github_app", "github_app_user", "gitlab_token")}},
 			"app_id":                    schema.StringAttribute{Optional: true, MarkdownDescription: "GitHub App ID."},
 			"installation_id":           schema.StringAttribute{Optional: true, MarkdownDescription: "GitHub App installation ID."},
@@ -218,6 +222,7 @@ func (r *RuntimeCredentialResource) Create(ctx context.Context, req resource.Cre
 	}
 
 	plan.ID = types.StringValue(apiResp.JSON200.Key)
+	plan.DefinitionID = types.StringValue(apiResp.JSON200.Id.String())
 	plan.Description = types.StringValue(apiResp.JSON200.Description)
 
 	if !plan.OrganizationValue.IsNull() {
@@ -225,6 +230,7 @@ func (r *RuntimeCredentialResource) Create(ctx context.Context, req resource.Cre
 			// Keep the definition in state so a retry converges instead of
 			// orphaning the created row.
 			plan.OrganizationConfigured = types.BoolValue(false)
+			resolveInitialGrants(&plan.InitialGrants)
 			resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 			return
 		}
@@ -232,6 +238,8 @@ func (r *RuntimeCredentialResource) Create(ctx context.Context, req resource.Cre
 	} else {
 		plan.OrganizationConfigured = types.BoolValue(false)
 	}
+
+	resolveInitialGrants(&plan.InitialGrants)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
@@ -256,6 +264,7 @@ func (r *RuntimeCredentialResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
+	data.DefinitionID = types.StringValue(view.Id.String())
 	data.Kind = types.StringValue(string(view.Kind))
 	optionalStringFromAPI(&data.AppId, view.AppId)
 	optionalStringFromAPI(&data.InstallationId, view.InstallationId)
@@ -278,6 +287,8 @@ func (r *RuntimeCredentialResource) Read(ctx context.Context, req resource.ReadR
 	if !view.OrganizationConfigured {
 		data.OrganizationValue = types.StringNull()
 	}
+
+	resolveInitialGrants(&data.InitialGrants)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -347,6 +358,8 @@ func (r *RuntimeCredentialResource) Update(ctx context.Context, req resource.Upd
 		plan.OrganizationConfigured = state.OrganizationConfigured
 	}
 
+	resolveInitialGrants(&plan.InitialGrants)
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
@@ -404,6 +417,7 @@ func (r *RuntimeCredentialResource) KnownIntentionallySkipped() []string {
 // ever appear in Create patches (RequiresReplace keeps them out of Update
 // ones). GitHub configuration fields can be updated in place.
 var runtimeCredentialAttrSpec = []AttrSpec{
+	initialGrantsAttrSpec,
 	{TFName: "kind", JSONName: "kind", Kind: Scalar, OmitOnNull: true},
 	{TFName: "app_id", JSONName: "appId", Kind: Scalar},
 	{TFName: "installation_id", JSONName: "installationId", Kind: Scalar},

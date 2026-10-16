@@ -5,7 +5,7 @@ Crossplane scopes and backed by accumulated real lifecycle evidence. The latest
 candidate adds gateway skill publication/exclusions, project instructions and
 knowledge-source exclusions. Atomic delegation additionally passes a two-process
 Terraform lost-update regression and both-scope drift/deletion probes against the
-unpublished API prerequisite in Archestra PR #9038. These are accumulated proofs,
+published API 1.4.0-rc.48, following Archestra PR #9038. These are accumulated proofs,
 not final-candidate or complete Archestra API coverage.
 
 ## Current release resource families
@@ -23,8 +23,10 @@ The detailed schema, import, sensitivity, request-field and executed-runtime
 records are linked from `README.md`. Schema guards do not replace runtime proof.
 Provider keys now include shared ownership and SigV4 inputs, teams include role
 assignments, models include embedding dimensions, and runtime definitions include
-GitLab host management. Their validation and migration evidence is separate from
-the earlier full-suite result.
+GitLab host management. Creation-time grants are now configurable on eight families. The published
+rc.48 full Terraform suite passes 118 acceptance tests with zero skips; eight
+distinct v2.4.1 schema upgrades preserve identity with no-op plans. Crossplane
+creation-grant repetition and complete-candidate packaging remain release gates.
 
 ## Additional persistent API lifecycles
 

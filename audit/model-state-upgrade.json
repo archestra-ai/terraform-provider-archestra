@@ -52,7 +52,9 @@
       "upgrade_plan": "no changes"
     }
   ],
-  "old_binary_sha256": "e04256348eed8fe6bd6cf28b894b3e2ff877e6aafc1210cf1e98777faf76905e",
-  "new_binary_sha256": "c33575691bcc65468e6b9f3bb37db998d9ca00698bd285c9dceb49a182f636d0",
-  "second_plan": "no changes"
+  "old_binary_sha256": "334862a5dc716e12c9b71708dc55208042468fa400c481c785b1b57f7b596e10",
+  "new_binary_sha256": "cbaf30c9d2f53bee1c90c1a96ee05a7c2fbec24025b5ef5f571e825b918a40da",
+  "vault_fixture_source": "Actual v2 import with the configured synthetic Vault reference restored to saved state; the current API redacts write-only Vault reference inputs.",
+  "second_plan": "no changes",
+  "api_version": "1.4.0-rc.48"
 }

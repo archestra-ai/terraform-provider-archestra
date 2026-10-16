@@ -40,6 +40,7 @@ type MCPServerRegistryResource struct {
 }
 
 type MCPServerRegistryResourceModel struct {
+	InitialGrants                 types.Set    `tfsdk:"initial_grants"`
 	CatalogItemApprovalReason     types.String `tfsdk:"catalog_item_approval_reason"`
 	CatalogItemApprovalReviewedAt types.String `tfsdk:"catalog_item_approval_reviewed_at"`
 	CatalogItemApprovalReviewedBy types.String `tfsdk:"catalog_item_approval_reviewed_by"`
@@ -309,6 +310,7 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "Catalog entry / template for an MCP server in the Private MCP Registry. The catalog item alone doesn't run anything; pair it with `archestra_mcp_server_installation` to run an instance.",
 
 		Attributes: map[string]schema.Attribute{
+			"initial_grants": initialGrantsAttribute(),
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "MCP server catalog identifier",
@@ -908,6 +910,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -1328,6 +1331,8 @@ func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
+	resolveInitialGrants(&data.InitialGrants)
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -1397,6 +1402,8 @@ func (r *MCPServerRegistryResource) Update(ctx context.Context, req resource.Upd
 		)
 		return
 	}
+
+	resolveInitialGrants(&data.InitialGrants)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	readReq := resource.ReadRequest{State: resp.State}

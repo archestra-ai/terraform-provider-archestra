@@ -18,7 +18,7 @@ func projectInstructionsTestState(t *testing.T, r *ProjectResource) (tfsdk.State
 	t.Helper()
 	var schema resource.SchemaResponse
 	r.Schema(t.Context(), resource.SchemaRequest{}, &schema)
-	value := ProjectResourceModel{ID: types.StringValue("11111111-1111-4111-8111-111111111111"), Name: types.StringValue("fixture"), Instructions: types.StringValue("original")}
+	value := ProjectResourceModel{InitialGrants: types.SetNull(permissionGrantObjectType), ID: types.StringValue("11111111-1111-4111-8111-111111111111"), Name: types.StringValue("fixture"), Instructions: types.StringValue("original")}
 	state := tfsdk.State{Schema: schema.Schema}
 	if d := state.Set(t.Context(), &value); d.HasError() {
 		t.Fatal(d)

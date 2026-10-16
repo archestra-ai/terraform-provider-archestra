@@ -33,6 +33,7 @@ type LLMProviderApiKeyResource struct {
 }
 
 type LLMProviderApiKeyResourceModel struct {
+	InitialGrants             types.Set         `tfsdk:"initial_grants"`
 	AWSAccessKeyID            types.String      `tfsdk:"aws_access_key_id"`
 	AWSSecretAccessKey        types.String      `tfsdk:"aws_secret_access_key"`
 	AWSSessionToken           types.String      `tfsdk:"aws_session_token"`
@@ -67,6 +68,7 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "API key for an LLM provider (OpenAI, Anthropic, etc.). Models are auto-discovered after creation.",
 
 		Attributes: map[string]schema.Attribute{
+			"initial_grants":                initialGrantsAttribute(),
 			"aws_access_key_id":             sigV4Attribute("AWS access key identifier for Bedrock SigV4 authentication.", "aws_secret_access_key"),
 			"aws_secret_access_key":         sigV4Attribute("AWS secret access key for Bedrock SigV4 authentication.", "aws_access_key_id"),
 			"aws_session_token":             sigV4Attribute("Optional AWS session token for temporary Bedrock credentials.", "aws_access_key_id", "aws_secret_access_key"),
@@ -202,11 +204,13 @@ func (r *LLMProviderApiKeyResource) Create(ctx context.Context, req resource.Cre
 	}
 
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 	r.refreshKey(ctx, &data, &resp.Diagnostics)
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 
 }
@@ -251,6 +255,8 @@ func (r *LLMProviderApiKeyResource) Read(ctx context.Context, req resource.ReadR
 
 	r.flattenKey(ctx, &data, apiResp, &resp.Diagnostics)
 
+	resolveInitialGrants(&data.InitialGrants)
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -284,6 +290,7 @@ func (r *LLMProviderApiKeyResource) Update(ctx context.Context, req resource.Upd
 		if resp.Diagnostics.HasError() {
 			return
 		}
+		resolveInitialGrants(&data.InitialGrants)
 		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 		return
 	}
@@ -317,6 +324,7 @@ func (r *LLMProviderApiKeyResource) Update(ctx context.Context, req resource.Upd
 	}
 
 	r.refreshKey(ctx, &data, &resp.Diagnostics)
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 
 }
