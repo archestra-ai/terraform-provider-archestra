@@ -2,7 +2,7 @@
 
 static inventory; no runtime coverage implied
 
-Terraform: 43; Crossplane configured: 43.
+Terraform: 44; Crossplane configured: 44.
 
 Mapping counts are configuration coverage, not successful CRUD or reconciliation coverage.
 
@@ -38,6 +38,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_mcp_server_installation` | True | True | none detected | InstallMcpServer: accessToken, agentIds, catalogId, createdByServiceAccountId, environmentValues, isByosVault, localInstallationError, localInstallationStatus, name, ownerId, reinstallRequired, scope, secretId, teamId, userConfigValues, userId; ReinstallMcpServer: environmentValues, hibernationMode, isByosVault, userConfigValues | 3 |
 | `archestra_oauth_client` | True | True | none detected | none detected | 0 |
 | `archestra_organization_settings` | True | True | none detected | none detected | 9 |
+| `archestra_plugin` | True | True | none detected | UpdatePlugin: githubSource | 2 |
 | `archestra_project` | True | True | none detected | SetProjectInstructions: content | 2 |
 | `archestra_remote_agent` | True | True | none detected | none detected | 3 |
 | `archestra_resource_permission_policy` | True | True | none detected | UpdateResourcePermissions: grants, revision | 1 |

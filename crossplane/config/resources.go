@@ -7,6 +7,11 @@ const mcpGroup = "mcp"
 
 // ConfigureResources applies the same API names and references in both scopes.
 func ConfigureResources(p *ujconfig.Provider) {
+	p.AddResourceConfigurator("archestra_plugin", func(r *ujconfig.Resource) {
+		r.ShortGroup = "plugin"
+		r.Kind = "ManualPackage"
+		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "labels")
+	})
 	p.AddResourceConfigurator("archestra_github_pat", func(r *ujconfig.Resource) { r.ShortGroup = "credential"; r.Kind = "GitHubPAT" })
 	p.AddResourceConfigurator("archestra_github_app_config", func(r *ujconfig.Resource) { r.ShortGroup = "credential"; r.Kind = "GitHubAppConfig" })
 	p.AddResourceConfigurator("archestra_virtual_api_key", func(r *ujconfig.Resource) {
@@ -41,7 +46,7 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.Kind = "VaultFolder"
 		r.References["team_id"] = ujconfig.Reference{TerraformName: "archestra_team"}
 	})
-	for _, name := range []string{"archestra_virtual_api_key", "archestra_oauth_client", "archestra_remote_agent", "archestra_service_account", "archestra_llm_proxy_profile", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_mcp_registry_catalog_item", "archestra_skill", "archestra_runtime_credential", "archestra_llm_provider_api_key"} {
+	for _, name := range []string{"archestra_plugin", "archestra_virtual_api_key", "archestra_oauth_client", "archestra_remote_agent", "archestra_service_account", "archestra_llm_proxy_profile", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_mcp_registry_catalog_item", "archestra_skill", "archestra_runtime_credential", "archestra_llm_provider_api_key"} {
 		p.AddResourceConfigurator(name, func(r *ujconfig.Resource) {
 			// Keep creation inputs in initProvider so later changes stay ignored.
 			r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "initial_grants")

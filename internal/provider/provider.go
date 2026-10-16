@@ -194,6 +194,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewVirtualAPIKeyResource,
 		NewOauthClientResource,
 		NewGithubPatResource,
+		NewPluginResource,
 		NewGithubAppConfigResource,
 		NewAgentRemoteDelegationsResource,
 		NewKnowledgeDirectoryResource,

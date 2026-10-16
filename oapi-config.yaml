@@ -163,3 +163,7 @@ output-options:
     - getGithubAppConfig
     - updateGithubAppConfig
     - deleteGithubAppConfig
+    - createPlugin
+    - getPlugin
+    - updatePlugin
+    - deletePlugin

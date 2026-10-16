@@ -19,7 +19,7 @@ import (
 	"testing"
 )
 
-func githubMetadataGuard(t *testing.T, endpoint, secretField string) (*atomic.Bool, *atomic.Bool) {
+func metadataWriteGuard(t *testing.T, endpoint, secretField string) (*atomic.Bool, *atomic.Bool) {
 	t.Helper()
 	metadata := &atomic.Bool{}
 	resent := &atomic.Bool{}
@@ -56,7 +56,7 @@ func githubMetadataGuard(t *testing.T, endpoint, secretField string) (*atomic.Bo
 	return metadata, resent
 }
 func TestAccGithubPatResource(t *testing.T) {
-	phase, resent := githubMetadataGuard(t, "/api/github-pats/", "token")
+	phase, resent := metadataWriteGuard(t, "/api/github-pats/", "token")
 	config := func(name, token string) string {
 		input := ""
 		if token != "" {
@@ -90,7 +90,7 @@ func TestAccGithubPatResource(t *testing.T) {
 	}})
 }
 func TestAccGithubAppConfigResource(t *testing.T) {
-	phase, resent := githubMetadataGuard(t, "/api/github-app-configs/", "privateKey")
+	phase, resent := metadataWriteGuard(t, "/api/github-app-configs/", "privateKey")
 	config := func(name, key, installation string) string {
 		input := ""
 		if key != "" {

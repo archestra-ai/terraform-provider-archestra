@@ -1,9 +1,9 @@
 {
   "format_version": 1,
   "upstream_version": "1.4.0-rc.48",
-  "registered_resources": 43,
-  "crossplane_configured": 43,
-  "raw_occurrences": 127,
+  "registered_resources": 44,
+  "crossplane_configured": 44,
+  "raw_occurrences": 128,
   "unclassified": 0,
   "classification_counts": {
     "authentication_context": 6,
@@ -13,11 +13,12 @@
     "legacy_alias": 1,
     "lifecycle_owned": 6,
     "manual_encoding": 36,
+    "other_source_subtype": 1,
     "other_subtype": 40,
     "related_resource": 4,
     "server_owned": 22
   },
-  "note": "The current 127 raw rows include shared profile/reinstall schemas and five dynamic environment-default selector keys. They are not directly comparable to the 90-row baseline and are not a missing-capability count.",
+  "note": "Raw request occurrences include subtype-only controls, manual encoding and lifecycle/server-owned fields. They are not missing-feature counts; broader desired APIs remain in api-lifecycle-decisions.md.",
   "review": [
     {
       "resource": "archestra_agent",
@@ -946,6 +947,14 @@
       "classification": "covered_creation_only",
       "rationale": "This secret/configuration input is supported by the installation resource at creation. Changes deliberately replace the connection; the alternate reinstall input is not a separate resource, and redacted credentials do not provide an observable clear/update contract.",
       "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "UpdatePlugin",
+      "field": "githubSource",
+      "classification": "other_source_subtype",
+      "rationale": "The backend rejects Git source settings on a manual plugin with409. Manual files and Git-derived content have different immutable source kinds; repository declarations require their own source resource.",
+      "source": "internal/provider/resource_plugin.go"
     },
     {
       "resource": "archestra_project",

@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	clustercredential "github.com/archestra-ai/provider-archestra/apis/cluster/credential/v1alpha1"
 	clusterllm "github.com/archestra-ai/provider-archestra/apis/cluster/llm/v1alpha1"
+	clusterplugin "github.com/archestra-ai/provider-archestra/apis/cluster/plugin/v1alpha1"
 	namespacedcredential "github.com/archestra-ai/provider-archestra/apis/namespaced/credential/v1alpha1"
 	namespacedllm "github.com/archestra-ai/provider-archestra/apis/namespaced/llm/v1alpha1"
+	namespacedplugin "github.com/archestra-ai/provider-archestra/apis/namespaced/plugin/v1alpha1"
 	"testing"
 )
 
@@ -22,6 +24,8 @@ func TestCredentialOptionalCollectionsKeepOmissionAndEmptyDistinct(t *testing.T)
 		newResource func() credentialParameters
 		fields      map[string]string
 	}{
+		{"cluster plugin", func() credentialParameters { return &clusterplugin.ManualPackage{} }, map[string]string{"labels": "labels"}},
+		{"namespaced plugin", func() credentialParameters { return &namespacedplugin.ManualPackage{} }, map[string]string{"labels": "labels"}},
 		{"cluster virtual", func() credentialParameters { return &clusterllm.VirtualKey{} }, map[string]string{"providerApiKeys": "provider_api_keys", "labels": "labels"}},
 		{"namespaced virtual", func() credentialParameters { return &namespacedllm.VirtualKey{} }, map[string]string{"providerApiKeys": "provider_api_keys", "labels": "labels"}},
 		{"cluster OAuth", func() credentialParameters { return &clustercredential.OAuthClient{} }, map[string]string{"providerApiKeys": "provider_api_keys", "labels": "labels", "allowedGatewayIds": "allowed_gateway_ids", "redirectUris": "redirect_uris"}},

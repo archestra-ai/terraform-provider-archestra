@@ -1499,6 +1499,99 @@ const (
 	Unrestricted UpdateDefaultEnvironmentJSONBodyNetworkPolicyEgressMode = "unrestricted"
 )
 
+// Defines values for CreatePluginJSONBodyClientType.
+const (
+	ClaudeCode    CreatePluginJSONBodyClientType = "claude-code"
+	ClaudeDesktop CreatePluginJSONBodyClientType = "claude-desktop"
+	Codex         CreatePluginJSONBodyClientType = "codex"
+	CopilotCli    CreatePluginJSONBodyClientType = "copilot-cli"
+	Cursor        CreatePluginJSONBodyClientType = "cursor"
+)
+
+// Defines values for CreatePluginJSONBodyFilesEncoding.
+const (
+	CreatePluginJSONBodyFilesEncodingBase64 CreatePluginJSONBodyFilesEncoding = "base64"
+	CreatePluginJSONBodyFilesEncodingUtf8   CreatePluginJSONBodyFilesEncoding = "utf8"
+)
+
+// Defines values for CreatePluginJSONBodyFilesMode.
+const (
+	CreatePluginJSONBodyFilesModeN100644 CreatePluginJSONBodyFilesMode = "100644"
+	CreatePluginJSONBodyFilesModeN100755 CreatePluginJSONBodyFilesMode = "100755"
+)
+
+// Defines values for CreatePluginJSONBodyInitialGrantsActions.
+const (
+	CreatePluginJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreatePluginJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	CreatePluginJSONBodyInitialGrantsActionsDelete                  CreatePluginJSONBodyInitialGrantsActions = "delete"
+	CreatePluginJSONBodyInitialGrantsActionsManagePermissions       CreatePluginJSONBodyInitialGrantsActions = "manage-permissions"
+	CreatePluginJSONBodyInitialGrantsActionsRead                    CreatePluginJSONBodyInitialGrantsActions = "read"
+	CreatePluginJSONBodyInitialGrantsActionsUpdate                  CreatePluginJSONBodyInitialGrantsActions = "update"
+	CreatePluginJSONBodyInitialGrantsActionsUse                     CreatePluginJSONBodyInitialGrantsActions = "use"
+)
+
+// Defines values for CreatePluginJSONBodyInitialGrantsSubject0Type.
+const (
+	CreatePluginJSONBodyInitialGrantsSubject0TypeUser CreatePluginJSONBodyInitialGrantsSubject0Type = "user"
+)
+
+// Defines values for CreatePluginJSONBodyInitialGrantsSubject1Type.
+const (
+	CreatePluginJSONBodyInitialGrantsSubject1TypeTeam CreatePluginJSONBodyInitialGrantsSubject1Type = "team"
+)
+
+// Defines values for CreatePluginJSONBodyInitialGrantsSubject2Type.
+const (
+	CreatePluginJSONBodyInitialGrantsSubject2TypeServiceAccount CreatePluginJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+)
+
+// Defines values for CreatePluginJSONBodyInitialGrantsSubject3Type.
+const (
+	CreatePluginJSONBodyInitialGrantsSubject3TypeRole CreatePluginJSONBodyInitialGrantsSubject3Type = "role"
+)
+
+// Defines values for CreatePluginJSONBodyInitialGrantsSubject4Id.
+const (
+	CreatePluginJSONBodyInitialGrantsSubject4IdAsterisk CreatePluginJSONBodyInitialGrantsSubject4Id = "*"
+)
+
+// Defines values for CreatePluginJSONBodyInitialGrantsSubject4Type.
+const (
+	CreatePluginJSONBodyInitialGrantsSubject4TypeOrganization CreatePluginJSONBodyInitialGrantsSubject4Type = "organization"
+)
+
+// Defines values for CreatePluginJSONBodySupportedPlatforms.
+const (
+	CreatePluginJSONBodySupportedPlatformsPosix   CreatePluginJSONBodySupportedPlatforms = "posix"
+	CreatePluginJSONBodySupportedPlatformsWindows CreatePluginJSONBodySupportedPlatforms = "windows"
+)
+
+// Defines values for UpdatePluginJSONBodyFilesEncoding.
+const (
+	UpdatePluginJSONBodyFilesEncodingBase64 UpdatePluginJSONBodyFilesEncoding = "base64"
+	UpdatePluginJSONBodyFilesEncodingUtf8   UpdatePluginJSONBodyFilesEncoding = "utf8"
+)
+
+// Defines values for UpdatePluginJSONBodyFilesMode.
+const (
+	UpdatePluginJSONBodyFilesModeN100644 UpdatePluginJSONBodyFilesMode = "100644"
+	UpdatePluginJSONBodyFilesModeN100755 UpdatePluginJSONBodyFilesMode = "100755"
+)
+
+// Defines values for UpdatePluginJSONBodyGithubSourceSyncInterval.
+const (
+	LessThannil UpdatePluginJSONBodyGithubSourceSyncInterval = "<nil>"
+	N15m        UpdatePluginJSONBodyGithubSourceSyncInterval = "15m"
+	N1d         UpdatePluginJSONBodyGithubSourceSyncInterval = "1d"
+	N1h         UpdatePluginJSONBodyGithubSourceSyncInterval = "1h"
+)
+
+// Defines values for UpdatePluginJSONBodySupportedPlatforms.
+const (
+	UpdatePluginJSONBodySupportedPlatformsPosix   UpdatePluginJSONBodySupportedPlatforms = "posix"
+	UpdatePluginJSONBodySupportedPlatformsWindows UpdatePluginJSONBodySupportedPlatforms = "windows"
+)
+
 // Defines values for CreateProjectJSONBodyInitialGrantsActions.
 const (
 	CreateProjectJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateProjectJSONBodyInitialGrantsActions = "configure-deployment-spec"
@@ -1701,42 +1794,42 @@ const (
 
 // Defines values for CreateSkillJSONBodyInitialGrantsActions.
 const (
-	CreateSkillJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateSkillJSONBodyInitialGrantsActions = "configure-deployment-spec"
-	CreateSkillJSONBodyInitialGrantsActionsDelete                  CreateSkillJSONBodyInitialGrantsActions = "delete"
-	CreateSkillJSONBodyInitialGrantsActionsManagePermissions       CreateSkillJSONBodyInitialGrantsActions = "manage-permissions"
-	CreateSkillJSONBodyInitialGrantsActionsRead                    CreateSkillJSONBodyInitialGrantsActions = "read"
-	CreateSkillJSONBodyInitialGrantsActionsUpdate                  CreateSkillJSONBodyInitialGrantsActions = "update"
-	CreateSkillJSONBodyInitialGrantsActionsUse                     CreateSkillJSONBodyInitialGrantsActions = "use"
+	ConfigureDeploymentSpec CreateSkillJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	Delete                  CreateSkillJSONBodyInitialGrantsActions = "delete"
+	ManagePermissions       CreateSkillJSONBodyInitialGrantsActions = "manage-permissions"
+	Read                    CreateSkillJSONBodyInitialGrantsActions = "read"
+	Update                  CreateSkillJSONBodyInitialGrantsActions = "update"
+	Use                     CreateSkillJSONBodyInitialGrantsActions = "use"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject0Type.
 const (
-	CreateSkillJSONBodyInitialGrantsSubject0TypeUser CreateSkillJSONBodyInitialGrantsSubject0Type = "user"
+	User CreateSkillJSONBodyInitialGrantsSubject0Type = "user"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject1Type.
 const (
-	Team CreateSkillJSONBodyInitialGrantsSubject1Type = "team"
+	CreateSkillJSONBodyInitialGrantsSubject1TypeTeam CreateSkillJSONBodyInitialGrantsSubject1Type = "team"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject2Type.
 const (
-	ServiceAccount CreateSkillJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+	CreateSkillJSONBodyInitialGrantsSubject2TypeServiceAccount CreateSkillJSONBodyInitialGrantsSubject2Type = "serviceAccount"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject3Type.
 const (
-	CreateSkillJSONBodyInitialGrantsSubject3TypeRole CreateSkillJSONBodyInitialGrantsSubject3Type = "role"
+	Role CreateSkillJSONBodyInitialGrantsSubject3Type = "role"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject4Id.
 const (
-	CreateSkillJSONBodyInitialGrantsSubject4IdAsterisk CreateSkillJSONBodyInitialGrantsSubject4Id = "*"
+	Asterisk CreateSkillJSONBodyInitialGrantsSubject4Id = "*"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject4Type.
 const (
-	CreateSkillJSONBodyInitialGrantsSubject4TypeOrganization CreateSkillJSONBodyInitialGrantsSubject4Type = "organization"
+	Organization CreateSkillJSONBodyInitialGrantsSubject4Type = "organization"
 )
 
 // Defines values for UpdateSkillJSONBodyFilesEncoding.
@@ -4492,6 +4585,146 @@ type UpdateSkillsSettingsJSONBody struct {
 	SkillMarketplaceAnonymousAccess *bool `json:"skillMarketplaceAnonymousAccess,omitempty"`
 }
 
+// CreatePluginJSONBody defines parameters for CreatePlugin.
+type CreatePluginJSONBody struct {
+	ClientType  CreatePluginJSONBodyClientType `json:"clientType"`
+	Description *string                        `json:"description,omitempty"`
+	DisplayName string                         `json:"displayName"`
+	Files       []struct {
+		Content  string                             `json:"content"`
+		Encoding *CreatePluginJSONBodyFilesEncoding `json:"encoding,omitempty"`
+		Mode     *CreatePluginJSONBodyFilesMode     `json:"mode,omitempty"`
+		Path     string                             `json:"path"`
+	} `json:"files"`
+
+	// Icon Emoji or base64 image data URL shown with the name.
+	Icon          *string `json:"icon"`
+	InitialGrants *[]struct {
+		Actions []CreatePluginJSONBodyInitialGrantsActions `json:"actions"`
+		Subject CreatePluginJSONBody_InitialGrants_Subject `json:"subject"`
+	} `json:"initialGrants,omitempty"`
+	Labels *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+	SupportedPlatforms *[]CreatePluginJSONBodySupportedPlatforms `json:"supportedPlatforms,omitempty"`
+}
+
+// CreatePluginJSONBodyClientType defines parameters for CreatePlugin.
+type CreatePluginJSONBodyClientType string
+
+// CreatePluginJSONBodyFilesEncoding defines parameters for CreatePlugin.
+type CreatePluginJSONBodyFilesEncoding string
+
+// CreatePluginJSONBodyFilesMode defines parameters for CreatePlugin.
+type CreatePluginJSONBodyFilesMode string
+
+// CreatePluginJSONBodyInitialGrantsActions defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsActions string
+
+// CreatePluginJSONBodyInitialGrantsSubject0 defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject0 struct {
+	Id   string                                        `json:"id"`
+	Type CreatePluginJSONBodyInitialGrantsSubject0Type `json:"type"`
+}
+
+// CreatePluginJSONBodyInitialGrantsSubject0Type defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject0Type string
+
+// CreatePluginJSONBodyInitialGrantsSubject1 defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject1 struct {
+	Id   string                                        `json:"id"`
+	Type CreatePluginJSONBodyInitialGrantsSubject1Type `json:"type"`
+}
+
+// CreatePluginJSONBodyInitialGrantsSubject1Type defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject1Type string
+
+// CreatePluginJSONBodyInitialGrantsSubject2 defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject2 struct {
+	Id   openapi_types.UUID                            `json:"id"`
+	Type CreatePluginJSONBodyInitialGrantsSubject2Type `json:"type"`
+}
+
+// CreatePluginJSONBodyInitialGrantsSubject2Type defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject2Type string
+
+// CreatePluginJSONBodyInitialGrantsSubject3 defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject3 struct {
+	Id   string                                        `json:"id"`
+	Type CreatePluginJSONBodyInitialGrantsSubject3Type `json:"type"`
+}
+
+// CreatePluginJSONBodyInitialGrantsSubject3Type defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject3Type string
+
+// CreatePluginJSONBodyInitialGrantsSubject4 defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject4 struct {
+	Id   CreatePluginJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Type CreatePluginJSONBodyInitialGrantsSubject4Type `json:"type"`
+}
+
+// CreatePluginJSONBodyInitialGrantsSubject4Id defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject4Id string
+
+// CreatePluginJSONBodyInitialGrantsSubject4Type defines parameters for CreatePlugin.
+type CreatePluginJSONBodyInitialGrantsSubject4Type string
+
+// CreatePluginJSONBody_InitialGrants_Subject defines parameters for CreatePlugin.
+type CreatePluginJSONBody_InitialGrants_Subject struct {
+	union json.RawMessage
+}
+
+// CreatePluginJSONBodySupportedPlatforms defines parameters for CreatePlugin.
+type CreatePluginJSONBodySupportedPlatforms string
+
+// UpdatePluginJSONBody defines parameters for UpdatePlugin.
+type UpdatePluginJSONBody struct {
+	Description *string `json:"description,omitempty"`
+	DisplayName *string `json:"displayName,omitempty"`
+	Enabled     *bool   `json:"enabled,omitempty"`
+	Files       *[]struct {
+		Content  string                             `json:"content"`
+		Encoding *UpdatePluginJSONBodyFilesEncoding `json:"encoding,omitempty"`
+		Mode     *UpdatePluginJSONBodyFilesMode     `json:"mode,omitempty"`
+		Path     string                             `json:"path"`
+	} `json:"files,omitempty"`
+	GithubSource *struct {
+		Authentication *struct {
+			GithubAppConfigId *openapi_types.UUID `json:"githubAppConfigId"`
+			GithubPatId       *openapi_types.UUID `json:"githubPatId"`
+			GitlabTokenId     *openapi_types.UUID `json:"gitlabTokenId"`
+		} `json:"authentication,omitempty"`
+		Ref          string                                       `json:"ref"`
+		RepoUrl      string                                       `json:"repoUrl"`
+		SyncInterval UpdatePluginJSONBodyGithubSourceSyncInterval `json:"syncInterval"`
+	} `json:"githubSource,omitempty"`
+
+	// Icon Emoji or base64 image data URL shown with the name.
+	Icon   *string `json:"icon"`
+	Labels *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+	SupportedPlatforms *[]UpdatePluginJSONBodySupportedPlatforms `json:"supportedPlatforms,omitempty"`
+}
+
+// UpdatePluginJSONBodyFilesEncoding defines parameters for UpdatePlugin.
+type UpdatePluginJSONBodyFilesEncoding string
+
+// UpdatePluginJSONBodyFilesMode defines parameters for UpdatePlugin.
+type UpdatePluginJSONBodyFilesMode string
+
+// UpdatePluginJSONBodyGithubSourceSyncInterval defines parameters for UpdatePlugin.
+type UpdatePluginJSONBodyGithubSourceSyncInterval string
+
+// UpdatePluginJSONBodySupportedPlatforms defines parameters for UpdatePlugin.
+type UpdatePluginJSONBodySupportedPlatforms string
+
 // CreateProjectJSONBody defines parameters for CreateProject.
 type CreateProjectJSONBody struct {
 	DefaultAgentId *openapi_types.UUID `json:"defaultAgentId"`
@@ -5199,6 +5432,12 @@ type UpdateSecuritySettingsJSONRequestBody UpdateSecuritySettingsJSONBody
 // UpdateSkillsSettingsJSONRequestBody defines body for UpdateSkillsSettings for application/json ContentType.
 type UpdateSkillsSettingsJSONRequestBody UpdateSkillsSettingsJSONBody
 
+// CreatePluginJSONRequestBody defines body for CreatePlugin for application/json ContentType.
+type CreatePluginJSONRequestBody CreatePluginJSONBody
+
+// UpdatePluginJSONRequestBody defines body for UpdatePlugin for application/json ContentType.
+type UpdatePluginJSONRequestBody UpdatePluginJSONBody
+
 // CreateProjectJSONRequestBody defines body for CreateProject for application/json ContentType.
 type CreateProjectJSONRequestBody CreateProjectJSONBody
 
@@ -5799,6 +6038,22 @@ type ClientInterface interface {
 	UpdateSkillsSettingsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateSkillsSettings(ctx context.Context, body UpdateSkillsSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreatePluginWithBody request with any body
+	CreatePluginWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreatePlugin(ctx context.Context, body CreatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeletePlugin request
+	DeletePlugin(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetPlugin request
+	GetPlugin(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdatePluginWithBody request with any body
+	UpdatePluginWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdatePlugin(ctx context.Context, id openapi_types.UUID, body UpdatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateProjectWithBody request with any body
 	CreateProjectWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -8069,6 +8324,78 @@ func (c *Client) UpdateSkillsSettingsWithBody(ctx context.Context, contentType s
 
 func (c *Client) UpdateSkillsSettings(ctx context.Context, body UpdateSkillsSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateSkillsSettingsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreatePluginWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePluginRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreatePlugin(ctx context.Context, body CreatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePluginRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeletePlugin(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeletePluginRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetPlugin(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPluginRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdatePluginWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdatePluginRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdatePlugin(ctx context.Context, id openapi_types.UUID, body UpdatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdatePluginRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -13863,6 +14190,161 @@ func NewUpdateSkillsSettingsRequestWithBody(server string, contentType string, b
 	return req, nil
 }
 
+// NewCreatePluginRequest calls the generic CreatePlugin builder with application/json body
+func NewCreatePluginRequest(server string, body CreatePluginJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreatePluginRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreatePluginRequestWithBody generates requests for CreatePlugin with any type of body
+func NewCreatePluginRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/plugins")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeletePluginRequest generates requests for DeletePlugin
+func NewDeletePluginRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/plugins/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetPluginRequest generates requests for GetPlugin
+func NewGetPluginRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/plugins/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdatePluginRequest calls the generic UpdatePlugin builder with application/json body
+func NewUpdatePluginRequest(server string, id openapi_types.UUID, body UpdatePluginJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdatePluginRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdatePluginRequestWithBody generates requests for UpdatePlugin with any type of body
+func NewUpdatePluginRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/plugins/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewCreateProjectRequest calls the generic CreateProject builder with application/json body
 func NewCreateProjectRequest(server string, body CreateProjectJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -16227,6 +16709,22 @@ type ClientWithResponsesInterface interface {
 	UpdateSkillsSettingsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSkillsSettingsResponse, error)
 
 	UpdateSkillsSettingsWithResponse(ctx context.Context, body UpdateSkillsSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSkillsSettingsResponse, error)
+
+	// CreatePluginWithBodyWithResponse request with any body
+	CreatePluginWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePluginResponse, error)
+
+	CreatePluginWithResponse(ctx context.Context, body CreatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePluginResponse, error)
+
+	// DeletePluginWithResponse request
+	DeletePluginWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeletePluginResponse, error)
+
+	// GetPluginWithResponse request
+	GetPluginWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetPluginResponse, error)
+
+	// UpdatePluginWithBodyWithResponse request with any body
+	UpdatePluginWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePluginResponse, error)
+
+	UpdatePluginWithResponse(ctx context.Context, id openapi_types.UUID, body UpdatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePluginResponse, error)
 
 	// CreateProjectWithBodyWithResponse request with any body
 	CreateProjectWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProjectResponse, error)
@@ -29436,6 +29934,535 @@ func (r UpdateSkillsSettingsResponse) StatusCode() int {
 	return 0
 }
 
+type CreatePluginResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		ApprovedAt          *time.Time                `json:"approvedAt"`
+		ApprovedBy          *string                   `json:"approvedBy"`
+		ApprovedContentHash *string                   `json:"approvedContentHash"`
+		AuthorId            *string                   `json:"authorId"`
+		ClientType          CreatePlugin200ClientType `json:"clientType"`
+		ContentHash         string                    `json:"contentHash"`
+		CreatedAt           time.Time                 `json:"createdAt"`
+		CreatedBy           *struct {
+			Email *string                       `json:"email"`
+			Id    string                        `json:"id"`
+			Name  *string                       `json:"name"`
+			Type  *CreatePlugin200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               string              `json:"description"`
+		DisplayName               string              `json:"displayName"`
+		Enabled                   bool                `json:"enabled"`
+		Files                     []struct {
+			Content  string                       `json:"content"`
+			Digest   string                       `json:"digest"`
+			Encoding CreatePlugin200FilesEncoding `json:"encoding"`
+			Id       openapi_types.UUID           `json:"id"`
+			Mode     CreatePlugin200FilesMode     `json:"mode"`
+			Path     string                       `json:"path"`
+			PluginId openapi_types.UUID           `json:"pluginId"`
+		} `json:"files"`
+		GithubAppConfigId  *openapi_types.UUID               `json:"githubAppConfigId"`
+		GithubPatId        *openapi_types.UUID               `json:"githubPatId"`
+		GithubSyncInterval CreatePlugin200GithubSyncInterval `json:"githubSyncInterval"`
+		GithubSyncRef      *string                           `json:"githubSyncRef"`
+		GitlabTokenId      *openapi_types.UUID               `json:"gitlabTokenId"`
+		Icon               *string                           `json:"icon"`
+		Id                 openapi_types.UUID                `json:"id"`
+		Labels             []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastSyncError               *string                             `json:"lastSyncError"`
+		LastSyncedAt                *time.Time                          `json:"lastSyncedAt"`
+		OrganizationId              string                              `json:"organizationId"`
+		PendingContentHash          *string                             `json:"pendingContentHash"`
+		PendingDetectedAt           *time.Time                          `json:"pendingDetectedAt"`
+		PendingSourceSha            *string                             `json:"pendingSourceSha"`
+		PluginSlug                  string                              `json:"pluginSlug"`
+		Scope                       CreatePlugin200Scope                `json:"scope"`
+		SourceExclude               []string                            `json:"sourceExclude"`
+		SourceId                    *string                             `json:"sourceId"`
+		SourceKind                  CreatePlugin200SourceKind           `json:"sourceKind"`
+		SourceMarketplacePath       *string                             `json:"sourceMarketplacePath"`
+		SourceMarketplacePluginName *string                             `json:"sourceMarketplacePluginName"`
+		SourceMarketplaceRepo       *string                             `json:"sourceMarketplaceRepo"`
+		SourceOrigin                *string                             `json:"sourceOrigin"`
+		SourceProvider              CreatePlugin200SourceProvider       `json:"sourceProvider"`
+		SourceRef                   *string                             `json:"sourceRef"`
+		SourceRepo                  *string                             `json:"sourceRepo"`
+		SourceSha                   *string                             `json:"sourceSha"`
+		SourceSubdir                *string                             `json:"sourceSubdir"`
+		SupportedPlatforms          []CreatePlugin200SupportedPlatforms `json:"supportedPlatforms"`
+		Teams                       []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		UpdatedAt time.Time `json:"updatedAt"`
+		Users     []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         CreatePlugin400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         CreatePlugin401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}  `json:"details,omitempty"`
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         CreatePlugin403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         CreatePlugin404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         CreatePlugin409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         CreatePlugin500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreatePlugin200ClientType string
+type CreatePlugin200CreatedByType string
+type CreatePlugin200FilesEncoding string
+type CreatePlugin200FilesMode string
+type CreatePlugin200GithubSyncInterval string
+type CreatePlugin200Scope string
+type CreatePlugin200SourceKind string
+type CreatePlugin200SourceProvider string
+type CreatePlugin200SupportedPlatforms string
+type CreatePlugin400ErrorType string
+type CreatePlugin401ErrorType string
+type CreatePlugin403ErrorType string
+type CreatePlugin404ErrorType string
+type CreatePlugin409ErrorType string
+type CreatePlugin500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreatePluginResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreatePluginResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeletePluginResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         DeletePlugin400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         DeletePlugin401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}  `json:"details,omitempty"`
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         DeletePlugin403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         DeletePlugin404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         DeletePlugin409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         DeletePlugin500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeletePlugin400ErrorType string
+type DeletePlugin401ErrorType string
+type DeletePlugin403ErrorType string
+type DeletePlugin404ErrorType string
+type DeletePlugin409ErrorType string
+type DeletePlugin500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeletePluginResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeletePluginResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetPluginResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		ApprovedAt          *time.Time             `json:"approvedAt"`
+		ApprovedBy          *string                `json:"approvedBy"`
+		ApprovedContentHash *string                `json:"approvedContentHash"`
+		AuthorId            *string                `json:"authorId"`
+		ClientType          GetPlugin200ClientType `json:"clientType"`
+		ContentHash         string                 `json:"contentHash"`
+		CreatedAt           time.Time              `json:"createdAt"`
+		CreatedBy           *struct {
+			Email *string                    `json:"email"`
+			Id    string                     `json:"id"`
+			Name  *string                    `json:"name"`
+			Type  *GetPlugin200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               string              `json:"description"`
+		DisplayName               string              `json:"displayName"`
+		Enabled                   bool                `json:"enabled"`
+		Files                     []struct {
+			Content  string                    `json:"content"`
+			Digest   string                    `json:"digest"`
+			Encoding GetPlugin200FilesEncoding `json:"encoding"`
+			Id       openapi_types.UUID        `json:"id"`
+			Mode     GetPlugin200FilesMode     `json:"mode"`
+			Path     string                    `json:"path"`
+			PluginId openapi_types.UUID        `json:"pluginId"`
+		} `json:"files"`
+		GithubAppConfigId  *openapi_types.UUID            `json:"githubAppConfigId"`
+		GithubPatId        *openapi_types.UUID            `json:"githubPatId"`
+		GithubSyncInterval GetPlugin200GithubSyncInterval `json:"githubSyncInterval"`
+		GithubSyncRef      *string                        `json:"githubSyncRef"`
+		GitlabTokenId      *openapi_types.UUID            `json:"gitlabTokenId"`
+		Icon               *string                        `json:"icon"`
+		Id                 openapi_types.UUID             `json:"id"`
+		Labels             []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastSyncError               *string                          `json:"lastSyncError"`
+		LastSyncedAt                *time.Time                       `json:"lastSyncedAt"`
+		OrganizationId              string                           `json:"organizationId"`
+		PendingContentHash          *string                          `json:"pendingContentHash"`
+		PendingDetectedAt           *time.Time                       `json:"pendingDetectedAt"`
+		PendingSourceSha            *string                          `json:"pendingSourceSha"`
+		PluginSlug                  string                           `json:"pluginSlug"`
+		Scope                       GetPlugin200Scope                `json:"scope"`
+		SourceExclude               []string                         `json:"sourceExclude"`
+		SourceId                    *string                          `json:"sourceId"`
+		SourceKind                  GetPlugin200SourceKind           `json:"sourceKind"`
+		SourceMarketplacePath       *string                          `json:"sourceMarketplacePath"`
+		SourceMarketplacePluginName *string                          `json:"sourceMarketplacePluginName"`
+		SourceMarketplaceRepo       *string                          `json:"sourceMarketplaceRepo"`
+		SourceOrigin                *string                          `json:"sourceOrigin"`
+		SourceProvider              GetPlugin200SourceProvider       `json:"sourceProvider"`
+		SourceRef                   *string                          `json:"sourceRef"`
+		SourceRepo                  *string                          `json:"sourceRepo"`
+		SourceSha                   *string                          `json:"sourceSha"`
+		SourceSubdir                *string                          `json:"sourceSubdir"`
+		SupportedPlatforms          []GetPlugin200SupportedPlatforms `json:"supportedPlatforms"`
+		Teams                       []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		UpdatedAt time.Time `json:"updatedAt"`
+		Users     []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         GetPlugin400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         GetPlugin401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         GetPlugin403ErrorType   `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         GetPlugin404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         GetPlugin409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         GetPlugin500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetPlugin200ClientType string
+type GetPlugin200CreatedByType string
+type GetPlugin200FilesEncoding string
+type GetPlugin200FilesMode string
+type GetPlugin200GithubSyncInterval string
+type GetPlugin200Scope string
+type GetPlugin200SourceKind string
+type GetPlugin200SourceProvider string
+type GetPlugin200SupportedPlatforms string
+type GetPlugin400ErrorType string
+type GetPlugin401ErrorType string
+type GetPlugin403ErrorType string
+type GetPlugin404ErrorType string
+type GetPlugin409ErrorType string
+type GetPlugin500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetPluginResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetPluginResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdatePluginResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		ApprovedAt          *time.Time                `json:"approvedAt"`
+		ApprovedBy          *string                   `json:"approvedBy"`
+		ApprovedContentHash *string                   `json:"approvedContentHash"`
+		AuthorId            *string                   `json:"authorId"`
+		ClientType          UpdatePlugin200ClientType `json:"clientType"`
+		ContentHash         string                    `json:"contentHash"`
+		CreatedAt           time.Time                 `json:"createdAt"`
+		CreatedBy           *struct {
+			Email *string                       `json:"email"`
+			Id    string                        `json:"id"`
+			Name  *string                       `json:"name"`
+			Type  *UpdatePlugin200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               string              `json:"description"`
+		DisplayName               string              `json:"displayName"`
+		Enabled                   bool                `json:"enabled"`
+		Files                     []struct {
+			Content  string                       `json:"content"`
+			Digest   string                       `json:"digest"`
+			Encoding UpdatePlugin200FilesEncoding `json:"encoding"`
+			Id       openapi_types.UUID           `json:"id"`
+			Mode     UpdatePlugin200FilesMode     `json:"mode"`
+			Path     string                       `json:"path"`
+			PluginId openapi_types.UUID           `json:"pluginId"`
+		} `json:"files"`
+		GithubAppConfigId  *openapi_types.UUID               `json:"githubAppConfigId"`
+		GithubPatId        *openapi_types.UUID               `json:"githubPatId"`
+		GithubSyncInterval UpdatePlugin200GithubSyncInterval `json:"githubSyncInterval"`
+		GithubSyncRef      *string                           `json:"githubSyncRef"`
+		GitlabTokenId      *openapi_types.UUID               `json:"gitlabTokenId"`
+		Icon               *string                           `json:"icon"`
+		Id                 openapi_types.UUID                `json:"id"`
+		Labels             []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastSyncError               *string                             `json:"lastSyncError"`
+		LastSyncedAt                *time.Time                          `json:"lastSyncedAt"`
+		OrganizationId              string                              `json:"organizationId"`
+		PendingContentHash          *string                             `json:"pendingContentHash"`
+		PendingDetectedAt           *time.Time                          `json:"pendingDetectedAt"`
+		PendingSourceSha            *string                             `json:"pendingSourceSha"`
+		PluginSlug                  string                              `json:"pluginSlug"`
+		Scope                       UpdatePlugin200Scope                `json:"scope"`
+		SourceExclude               []string                            `json:"sourceExclude"`
+		SourceId                    *string                             `json:"sourceId"`
+		SourceKind                  UpdatePlugin200SourceKind           `json:"sourceKind"`
+		SourceMarketplacePath       *string                             `json:"sourceMarketplacePath"`
+		SourceMarketplacePluginName *string                             `json:"sourceMarketplacePluginName"`
+		SourceMarketplaceRepo       *string                             `json:"sourceMarketplaceRepo"`
+		SourceOrigin                *string                             `json:"sourceOrigin"`
+		SourceProvider              UpdatePlugin200SourceProvider       `json:"sourceProvider"`
+		SourceRef                   *string                             `json:"sourceRef"`
+		SourceRepo                  *string                             `json:"sourceRepo"`
+		SourceSha                   *string                             `json:"sourceSha"`
+		SourceSubdir                *string                             `json:"sourceSubdir"`
+		SupportedPlatforms          []UpdatePlugin200SupportedPlatforms `json:"supportedPlatforms"`
+		Teams                       []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		UpdatedAt time.Time `json:"updatedAt"`
+		Users     []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         UpdatePlugin400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         UpdatePlugin401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}  `json:"details,omitempty"`
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         UpdatePlugin403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         UpdatePlugin404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         UpdatePlugin409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                  `json:"internal_code,omitempty"`
+			Message      string                   `json:"message"`
+			Type         UpdatePlugin500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdatePlugin200ClientType string
+type UpdatePlugin200CreatedByType string
+type UpdatePlugin200FilesEncoding string
+type UpdatePlugin200FilesMode string
+type UpdatePlugin200GithubSyncInterval string
+type UpdatePlugin200Scope string
+type UpdatePlugin200SourceKind string
+type UpdatePlugin200SourceProvider string
+type UpdatePlugin200SupportedPlatforms string
+type UpdatePlugin400ErrorType string
+type UpdatePlugin401ErrorType string
+type UpdatePlugin403ErrorType string
+type UpdatePlugin404ErrorType string
+type UpdatePlugin409ErrorType string
+type UpdatePlugin500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdatePluginResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdatePluginResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type CreateProjectResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -34899,6 +35926,58 @@ func (c *ClientWithResponses) UpdateSkillsSettingsWithResponse(ctx context.Conte
 		return nil, err
 	}
 	return ParseUpdateSkillsSettingsResponse(rsp)
+}
+
+// CreatePluginWithBodyWithResponse request with arbitrary body returning *CreatePluginResponse
+func (c *ClientWithResponses) CreatePluginWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePluginResponse, error) {
+	rsp, err := c.CreatePluginWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreatePluginResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreatePluginWithResponse(ctx context.Context, body CreatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePluginResponse, error) {
+	rsp, err := c.CreatePlugin(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreatePluginResponse(rsp)
+}
+
+// DeletePluginWithResponse request returning *DeletePluginResponse
+func (c *ClientWithResponses) DeletePluginWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeletePluginResponse, error) {
+	rsp, err := c.DeletePlugin(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeletePluginResponse(rsp)
+}
+
+// GetPluginWithResponse request returning *GetPluginResponse
+func (c *ClientWithResponses) GetPluginWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetPluginResponse, error) {
+	rsp, err := c.GetPlugin(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetPluginResponse(rsp)
+}
+
+// UpdatePluginWithBodyWithResponse request with arbitrary body returning *UpdatePluginResponse
+func (c *ClientWithResponses) UpdatePluginWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePluginResponse, error) {
+	rsp, err := c.UpdatePluginWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdatePluginResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdatePluginWithResponse(ctx context.Context, id openapi_types.UUID, body UpdatePluginJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePluginResponse, error) {
+	rsp, err := c.UpdatePlugin(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdatePluginResponse(rsp)
 }
 
 // CreateProjectWithBodyWithResponse request with arbitrary body returning *CreateProjectResponse
@@ -51709,6 +52788,644 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 				InternalCode *string                          `json:"internal_code,omitempty"`
 				Message      string                           `json:"message"`
 				Type         UpdateSkillsSettings500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreatePluginResponse parses an HTTP response from a CreatePluginWithResponse call
+func ParseCreatePluginResponse(rsp *http.Response) (*CreatePluginResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreatePluginResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			ApprovedAt          *time.Time                `json:"approvedAt"`
+			ApprovedBy          *string                   `json:"approvedBy"`
+			ApprovedContentHash *string                   `json:"approvedContentHash"`
+			AuthorId            *string                   `json:"authorId"`
+			ClientType          CreatePlugin200ClientType `json:"clientType"`
+			ContentHash         string                    `json:"contentHash"`
+			CreatedAt           time.Time                 `json:"createdAt"`
+			CreatedBy           *struct {
+				Email *string                       `json:"email"`
+				Id    string                        `json:"id"`
+				Name  *string                       `json:"name"`
+				Type  *CreatePlugin200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               string              `json:"description"`
+			DisplayName               string              `json:"displayName"`
+			Enabled                   bool                `json:"enabled"`
+			Files                     []struct {
+				Content  string                       `json:"content"`
+				Digest   string                       `json:"digest"`
+				Encoding CreatePlugin200FilesEncoding `json:"encoding"`
+				Id       openapi_types.UUID           `json:"id"`
+				Mode     CreatePlugin200FilesMode     `json:"mode"`
+				Path     string                       `json:"path"`
+				PluginId openapi_types.UUID           `json:"pluginId"`
+			} `json:"files"`
+			GithubAppConfigId  *openapi_types.UUID               `json:"githubAppConfigId"`
+			GithubPatId        *openapi_types.UUID               `json:"githubPatId"`
+			GithubSyncInterval CreatePlugin200GithubSyncInterval `json:"githubSyncInterval"`
+			GithubSyncRef      *string                           `json:"githubSyncRef"`
+			GitlabTokenId      *openapi_types.UUID               `json:"gitlabTokenId"`
+			Icon               *string                           `json:"icon"`
+			Id                 openapi_types.UUID                `json:"id"`
+			Labels             []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastSyncError               *string                             `json:"lastSyncError"`
+			LastSyncedAt                *time.Time                          `json:"lastSyncedAt"`
+			OrganizationId              string                              `json:"organizationId"`
+			PendingContentHash          *string                             `json:"pendingContentHash"`
+			PendingDetectedAt           *time.Time                          `json:"pendingDetectedAt"`
+			PendingSourceSha            *string                             `json:"pendingSourceSha"`
+			PluginSlug                  string                              `json:"pluginSlug"`
+			Scope                       CreatePlugin200Scope                `json:"scope"`
+			SourceExclude               []string                            `json:"sourceExclude"`
+			SourceId                    *string                             `json:"sourceId"`
+			SourceKind                  CreatePlugin200SourceKind           `json:"sourceKind"`
+			SourceMarketplacePath       *string                             `json:"sourceMarketplacePath"`
+			SourceMarketplacePluginName *string                             `json:"sourceMarketplacePluginName"`
+			SourceMarketplaceRepo       *string                             `json:"sourceMarketplaceRepo"`
+			SourceOrigin                *string                             `json:"sourceOrigin"`
+			SourceProvider              CreatePlugin200SourceProvider       `json:"sourceProvider"`
+			SourceRef                   *string                             `json:"sourceRef"`
+			SourceRepo                  *string                             `json:"sourceRepo"`
+			SourceSha                   *string                             `json:"sourceSha"`
+			SourceSubdir                *string                             `json:"sourceSubdir"`
+			SupportedPlatforms          []CreatePlugin200SupportedPlatforms `json:"supportedPlatforms"`
+			Teams                       []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			UpdatedAt time.Time `json:"updatedAt"`
+			Users     []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         CreatePlugin400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         CreatePlugin401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}  `json:"details,omitempty"`
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         CreatePlugin403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         CreatePlugin404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         CreatePlugin409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         CreatePlugin500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeletePluginResponse parses an HTTP response from a DeletePluginWithResponse call
+func ParseDeletePluginResponse(rsp *http.Response) (*DeletePluginResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeletePluginResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         DeletePlugin400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         DeletePlugin401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}  `json:"details,omitempty"`
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         DeletePlugin403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         DeletePlugin404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         DeletePlugin409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         DeletePlugin500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetPluginResponse parses an HTTP response from a GetPluginWithResponse call
+func ParseGetPluginResponse(rsp *http.Response) (*GetPluginResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetPluginResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			ApprovedAt          *time.Time             `json:"approvedAt"`
+			ApprovedBy          *string                `json:"approvedBy"`
+			ApprovedContentHash *string                `json:"approvedContentHash"`
+			AuthorId            *string                `json:"authorId"`
+			ClientType          GetPlugin200ClientType `json:"clientType"`
+			ContentHash         string                 `json:"contentHash"`
+			CreatedAt           time.Time              `json:"createdAt"`
+			CreatedBy           *struct {
+				Email *string                    `json:"email"`
+				Id    string                     `json:"id"`
+				Name  *string                    `json:"name"`
+				Type  *GetPlugin200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               string              `json:"description"`
+			DisplayName               string              `json:"displayName"`
+			Enabled                   bool                `json:"enabled"`
+			Files                     []struct {
+				Content  string                    `json:"content"`
+				Digest   string                    `json:"digest"`
+				Encoding GetPlugin200FilesEncoding `json:"encoding"`
+				Id       openapi_types.UUID        `json:"id"`
+				Mode     GetPlugin200FilesMode     `json:"mode"`
+				Path     string                    `json:"path"`
+				PluginId openapi_types.UUID        `json:"pluginId"`
+			} `json:"files"`
+			GithubAppConfigId  *openapi_types.UUID            `json:"githubAppConfigId"`
+			GithubPatId        *openapi_types.UUID            `json:"githubPatId"`
+			GithubSyncInterval GetPlugin200GithubSyncInterval `json:"githubSyncInterval"`
+			GithubSyncRef      *string                        `json:"githubSyncRef"`
+			GitlabTokenId      *openapi_types.UUID            `json:"gitlabTokenId"`
+			Icon               *string                        `json:"icon"`
+			Id                 openapi_types.UUID             `json:"id"`
+			Labels             []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastSyncError               *string                          `json:"lastSyncError"`
+			LastSyncedAt                *time.Time                       `json:"lastSyncedAt"`
+			OrganizationId              string                           `json:"organizationId"`
+			PendingContentHash          *string                          `json:"pendingContentHash"`
+			PendingDetectedAt           *time.Time                       `json:"pendingDetectedAt"`
+			PendingSourceSha            *string                          `json:"pendingSourceSha"`
+			PluginSlug                  string                           `json:"pluginSlug"`
+			Scope                       GetPlugin200Scope                `json:"scope"`
+			SourceExclude               []string                         `json:"sourceExclude"`
+			SourceId                    *string                          `json:"sourceId"`
+			SourceKind                  GetPlugin200SourceKind           `json:"sourceKind"`
+			SourceMarketplacePath       *string                          `json:"sourceMarketplacePath"`
+			SourceMarketplacePluginName *string                          `json:"sourceMarketplacePluginName"`
+			SourceMarketplaceRepo       *string                          `json:"sourceMarketplaceRepo"`
+			SourceOrigin                *string                          `json:"sourceOrigin"`
+			SourceProvider              GetPlugin200SourceProvider       `json:"sourceProvider"`
+			SourceRef                   *string                          `json:"sourceRef"`
+			SourceRepo                  *string                          `json:"sourceRepo"`
+			SourceSha                   *string                          `json:"sourceSha"`
+			SourceSubdir                *string                          `json:"sourceSubdir"`
+			SupportedPlatforms          []GetPlugin200SupportedPlatforms `json:"supportedPlatforms"`
+			Teams                       []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			UpdatedAt time.Time `json:"updatedAt"`
+			Users     []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         GetPlugin400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         GetPlugin401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         GetPlugin403ErrorType   `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         GetPlugin404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         GetPlugin409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         GetPlugin500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdatePluginResponse parses an HTTP response from a UpdatePluginWithResponse call
+func ParseUpdatePluginResponse(rsp *http.Response) (*UpdatePluginResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdatePluginResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			ApprovedAt          *time.Time                `json:"approvedAt"`
+			ApprovedBy          *string                   `json:"approvedBy"`
+			ApprovedContentHash *string                   `json:"approvedContentHash"`
+			AuthorId            *string                   `json:"authorId"`
+			ClientType          UpdatePlugin200ClientType `json:"clientType"`
+			ContentHash         string                    `json:"contentHash"`
+			CreatedAt           time.Time                 `json:"createdAt"`
+			CreatedBy           *struct {
+				Email *string                       `json:"email"`
+				Id    string                        `json:"id"`
+				Name  *string                       `json:"name"`
+				Type  *UpdatePlugin200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               string              `json:"description"`
+			DisplayName               string              `json:"displayName"`
+			Enabled                   bool                `json:"enabled"`
+			Files                     []struct {
+				Content  string                       `json:"content"`
+				Digest   string                       `json:"digest"`
+				Encoding UpdatePlugin200FilesEncoding `json:"encoding"`
+				Id       openapi_types.UUID           `json:"id"`
+				Mode     UpdatePlugin200FilesMode     `json:"mode"`
+				Path     string                       `json:"path"`
+				PluginId openapi_types.UUID           `json:"pluginId"`
+			} `json:"files"`
+			GithubAppConfigId  *openapi_types.UUID               `json:"githubAppConfigId"`
+			GithubPatId        *openapi_types.UUID               `json:"githubPatId"`
+			GithubSyncInterval UpdatePlugin200GithubSyncInterval `json:"githubSyncInterval"`
+			GithubSyncRef      *string                           `json:"githubSyncRef"`
+			GitlabTokenId      *openapi_types.UUID               `json:"gitlabTokenId"`
+			Icon               *string                           `json:"icon"`
+			Id                 openapi_types.UUID                `json:"id"`
+			Labels             []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastSyncError               *string                             `json:"lastSyncError"`
+			LastSyncedAt                *time.Time                          `json:"lastSyncedAt"`
+			OrganizationId              string                              `json:"organizationId"`
+			PendingContentHash          *string                             `json:"pendingContentHash"`
+			PendingDetectedAt           *time.Time                          `json:"pendingDetectedAt"`
+			PendingSourceSha            *string                             `json:"pendingSourceSha"`
+			PluginSlug                  string                              `json:"pluginSlug"`
+			Scope                       UpdatePlugin200Scope                `json:"scope"`
+			SourceExclude               []string                            `json:"sourceExclude"`
+			SourceId                    *string                             `json:"sourceId"`
+			SourceKind                  UpdatePlugin200SourceKind           `json:"sourceKind"`
+			SourceMarketplacePath       *string                             `json:"sourceMarketplacePath"`
+			SourceMarketplacePluginName *string                             `json:"sourceMarketplacePluginName"`
+			SourceMarketplaceRepo       *string                             `json:"sourceMarketplaceRepo"`
+			SourceOrigin                *string                             `json:"sourceOrigin"`
+			SourceProvider              UpdatePlugin200SourceProvider       `json:"sourceProvider"`
+			SourceRef                   *string                             `json:"sourceRef"`
+			SourceRepo                  *string                             `json:"sourceRepo"`
+			SourceSha                   *string                             `json:"sourceSha"`
+			SourceSubdir                *string                             `json:"sourceSubdir"`
+			SupportedPlatforms          []UpdatePlugin200SupportedPlatforms `json:"supportedPlatforms"`
+			Teams                       []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			UpdatedAt time.Time `json:"updatedAt"`
+			Users     []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         UpdatePlugin400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         UpdatePlugin401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}  `json:"details,omitempty"`
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         UpdatePlugin403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         UpdatePlugin404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         UpdatePlugin409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                  `json:"internal_code,omitempty"`
+				Message      string                   `json:"message"`
+				Type         UpdatePlugin500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

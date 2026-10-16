@@ -1,6 +1,6 @@
 # Provider resource scope and API review
 
-The current registry contains 43 families, all configured for both Crossplane
+The current registry contains 44 families, all configured for both Crossplane
 scopes. The historical 29-family proof remains in `crossplane-rc48-candidate.json`;
 the six-family expansion and two existing-resource control probes pass in both
 scopes in `crossplane-persistent-extensions.json`. Those evidence sets have distinct
@@ -16,7 +16,7 @@ implementation queue. They classify all 15 additional API review areas, includin
 consolidated OAuth client facades and the platform-owned LLM proxy singleton.
 The original 90 raw unmapped request-field occurrences are fully classified in
 `request-field-review.md`; they were not 90 confirmed missing capabilities. The
-current 43-family inventory has 127 raw occurrences, all classified in
+current 44-family inventory has 128 raw occurrences, all classified in
 `current-request-field-review.json`. Additional routes and shared profile schemas
 increase that raw count. Gateway subagent controls and installation personal-user
 selection/hibernation now have native and both-scope runtime regressions.
@@ -36,12 +36,12 @@ The detailed schema, import, sensitivity, request-field and executed-runtime rec
 are linked from `README.md`. Schema guards do not replace runtime proof. Provider
 keys now include shared ownership and SigV4 inputs, teams include role assignments,
 models include embedding dimensions, and runtime definitions include GitLab host
-management. Creation-time grants are configurable on thirteen families. The historical
+management. Creation-time grants are configurable on fourteen families. The historical
 29-family rc.48 Terraform suite passed 118 acceptance tests with zero skips, and
 the 35-family expansion passed 126; the 39-family suite passed 131
-with zero failures or skips (`a2a-environment-native-acceptance.json`). The current
+with zero failures or skips (`a2a-environment-native-acceptance.json`). The
 41-family suite passed all 137 (`credential-routing-full-native-acceptance.json`);
-the current 43-family suite passes all 140 (`github-registrations-full-native-acceptance.json`);
+the 43-family suite passed all 140 (`github-registrations-full-native-acceptance.json`);
 all 16 retained v2.4.1 resource families preserve identity with no-op migration
 plans. The full 35-family Crossplane sweep passes 102 records, including 26 grant cases;
 the four-family A2A/environment binding wave adds ten passing records with normal
@@ -108,3 +108,5 @@ preferences are user activity, not organization infrastructure configuration.
 Bulk APIs, clone, restore and permanent-delete endpoints are alternate operations on
 existing resource lifecycles. Count the underlying managed identity once; record the
 chosen soft-delete, retention and adoption behavior explicitly.
+
+Manual plugin packages add one family in both scopes, including creation grants, authoritative file replacement and executable-mode preservation ([runtime proof](crossplane-manual-plugins.json)). The full 44-family native suite passes all 142 acceptance cases with zero failures or skips ([native proof](manual-plugins-full-native-acceptance.json)). Both records retain their exact frozen candidate hashes; current Linux packaging and the final combined sweep remain release gates.

@@ -19,6 +19,7 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'manual-plugins': {'ManualPackage'},
     'github-registrations': {'GitHubPAT','GitHubAppConfig'},
     'api-compatibility': {'APICompatibilityConstraint'},
     'routing-credentials': {'VirtualKey','OAuthClient'},
@@ -34,7 +35,7 @@ CASE_RESOURCES = {
     'skill-policy': {'SkillPolicy'}, 'subagent-exclusions': {'SubagentExclusions'},
     'knowledge-exclusions': {'KnowledgeSourceExclusions'}, 'skill': {'Skill'},
     'gateway-skills': {'SkillPublication', 'SkillExclusions'}, 'project-instructions': {'ProjectInstructions'},
-    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
+    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'ManualPackage', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
 }
 
 
@@ -73,10 +74,10 @@ def main():
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility', 'manual-plugins'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
     parser.add_argument('--scopes', nargs='+', choices=('cluster', 'namespaced'), default=['cluster', 'namespaced'])
-    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
+    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'ManualPackage', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
     parser.add_argument('--kubeconfig', type=Path, required=True)
     parser.add_argument('--provider-config', required=True)
     parser.add_argument('--namespace', default='crossplane-system')
@@ -281,6 +282,54 @@ def main():
                 results.append(result)
                 save()
                 print(json.dumps(result), flush=True)
+
+            if 'manual-plugins' in scope_cases:
+                plugin_files = {
+                    '.claude-plugin/plugin.json': {'content': '{"name":"synthetic-plugin","version":"1.0.0"}', 'encoding': 'utf8', 'mode': '100644'},
+                    'README.md': {'content': 'Synthetic plugin fixture.', 'encoding': 'utf8', 'mode': '100644'},
+                    'scripts/example0.sh': {'content': '#!/bin/sh\nprintf "synthetic\\n"\n', 'encoding': 'utf8', 'mode': '100755'},
+                    'assets/icon.bin': {'content': 'AAECAwQ=', 'encoding': 'base64', 'mode': '100644'},
+                }
+                package, package_id, _ = create(scope, 'plugin', 'ManualPackage', 'manualpackages', {
+                    'displayName': 'cp-plugin-' + run + '-' + scope, 'clientType': 'claude-code', 'supportedPlatforms': ['posix'],
+                    'enabled': False, 'files': plugin_files, 'labels': [{'key': 'purpose', 'value': 'plugin'}]})
+                path = '/api/plugins/' + package_id
+                initial = api(path)[1]
+                initial_hash = initial['contentHash']
+                if initial['enabled'] or next(item for item in initial['files'] if item['path'] == 'scripts/example0.sh')['mode'] != '100755':
+                    raise RuntimeError('Plugin initial disablement or executable mode was lost')
+                patch(package, {'displayName': 'Updated plugin ' + run, 'description': 'Metadata only', 'enabled': True})
+                wait('Plugin metadata update', lambda: api(path)[1]['displayName'] == 'Updated plugin ' + run and api(path)[1]['enabled'])
+                if api(path)[1]['contentHash'] != initial_hash:
+                    raise RuntimeError('Plugin metadata update changed file bytes')
+                if api(path, {'displayName': 'Out of band plugin', 'enabled': False}, 'PUT')[0] != 200:
+                    raise RuntimeError('Unable to inject owned plugin metadata drift')
+                wait('Plugin metadata drift repair', lambda: api(path)[1]['displayName'] == 'Updated plugin ' + run and api(path)[1]['enabled'])
+                desired_files = json.loads(json.dumps(plugin_files))
+                desired_files.pop('assets/icon.bin')
+                desired_files['README.md']['content'] = 'Desired updated bytes.'
+                desired_files['scripts/example0.sh']['mode'] = '100644'
+                replace_fields(package, {'files': desired_files})
+                patch(package, {'labels': []})
+                def desired_package():
+                    code, value = api(path)
+                    if code != 200:
+                        return False
+                    observed = {item['path']: {key: item[key] for key in ('content', 'encoding', 'mode')} for item in value['files']}
+                    return observed == desired_files and value['contentHash'] != initial_hash and not value['labels']
+                wait('Authoritative plugin file and label update', desired_package)
+                drift_files = [{'path': name, **item} for name, item in desired_files.items()]
+                next(item for item in drift_files if item['path'] == 'README.md')['content'] = 'Out of band bytes.'
+                if api(path, {'files': drift_files}, 'PUT')[0] != 200:
+                    raise RuntimeError('Unable to inject owned plugin file drift')
+                wait('Plugin byte drift repair', desired_package)
+                immutable_update(package, {'clientType': 'codex'}, {'clientType': 'claude-code'})
+                delete(package)
+                if api(path)[0] != 404:
+                    raise RuntimeError('Plugin package survived deletion')
+                record('ManualPackage', scope, create='passed', initially_disabled='passed', utf8_base64_and_executable_mode='passed',
+                       metadata_update_preserves_hash=True, update='passed', drift_repair='passed', authoritative_file_removal='passed',
+                       empty_labels_clear='passed', client_format_replacement_refused='passed', delete='passed', hooks_executed=False)
 
             if 'github-registrations' in scope_cases:
                 for kind, plural, endpoint, secret_field, wire_secret, extra in [
@@ -977,6 +1026,7 @@ def main():
                     ('a2a', 'RemoteAgent', 'remoteagents', 'externalAgent', {'source': json.dumps(a2a_source('cp-grant-remote-' + run + '-' + scope))}),
                     ('llm', 'VirtualKey', 'virtualkeys', 'llmVirtualKey', {'includeFutureProviders': True, 'providerApiKeys': []}),
                     ('credential', 'OAuthClient', 'oauthclients', 'oauthClient', {'scopes': ['llm:proxy'], 'includeFutureProviders': True, 'providerApiKeys': []}),
+                    ('plugin', 'ManualPackage', 'manualpackages', 'plugin', {'clientType': 'claude-code', 'supportedPlatforms': ['posix'], 'files': {'.claude-plugin/plugin.json': {'content': '{"name":"synthetic-plugin","version":"1.0.0"}', 'encoding': 'utf8', 'mode': '100644'}}}),
                     ('project', 'Project', 'projects', 'project', {}),
                     ('knowledge', 'KnowledgeBase', 'knowledgebases', 'knowledgeBase', {}),
                     ('mcp', 'RegistryCatalogItem', 'registrycatalogitems', 'mcpRegistry', {'remoteConfig': {'url': 'http://127.0.0.1:19999/mcp'}}),
@@ -992,6 +1042,8 @@ def main():
                         continue
                     fields = {'name': 'cp-grant-' + kind.lower() + '-' + run + '-' + scope,
                               'initialGrants': [grant], **extra}
+                    if kind == 'ManualPackage':
+                        fields['displayName'] = fields.pop('name')
                     lease, identifier, obj = create(scope, group, kind, plural, fields, '-grant')
                     policy_id = obj.get('status', {}).get('atProvider', {}).get('definitionId') if resource_type == 'credential' else identifier
                     if not policy_id:
@@ -1006,8 +1058,8 @@ def main():
 
                     if not has_initial_grant():
                         raise RuntimeError('Initial grant was not persisted for ' + kind)
-                    updated_name = 'updated-' + fields['name']
-                    metadata_field = 'description' if kind in ('RegistryCatalogItem', 'RuntimeCredential') else 'name'
+                    updated_name = 'updated-' + (fields['displayName'] if kind == 'ManualPackage' else fields['name'])
+                    metadata_field = 'displayName' if kind == 'ManualPackage' else 'description' if kind in ('RegistryCatalogItem', 'RuntimeCredential') else 'name'
                     patch(lease, {metadata_field: updated_name})
 
                     def metadata_updated():
@@ -1017,7 +1069,7 @@ def main():
                         if resource_type == 'oauthClient':
                             code, page = api('/api/oauth-clients?limit=100')
                             return code == 200 and any(item['id'] == identifier and item[metadata_field] == updated_name for item in page['data'])
-                        prefix = {'llmVirtualKey': '/api/llm-virtual-keys/', 'agent': '/api/agents/', 'mcpGateway': '/api/agents/', 'project': '/api/projects/',
+                        prefix = {'plugin': '/api/plugins/', 'llmVirtualKey': '/api/llm-virtual-keys/', 'agent': '/api/agents/', 'mcpGateway': '/api/agents/', 'project': '/api/projects/',
                                   'knowledgeBase': '/api/knowledge-bases/', 'mcpRegistry': '/api/internal_mcp_catalog/', 'serviceAccount': '/api/service-accounts/', 'externalAgent': '/api/a2a/remote-agents/',
                                   'skill': '/api/skills/', 'llmProviderApiKey': '/api/llm-provider-api-keys/'}[resource_type]
                         code, current = api(prefix + identifier)

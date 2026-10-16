@@ -282,6 +282,8 @@ func replaceCreationGrantReturn(method *ast.FuncDecl, statements []ast.Stmt) (bo
 // These optional collections distinguish an unmanaged omission from an explicit empty set.
 func optionalCredentialCollections(name string) []string {
 	switch name {
+	case "archestra_plugin":
+		return []string{"labels"}
 	case "archestra_virtual_api_key":
 		return []string{"provider_api_keys", "labels"}
 	case "archestra_oauth_client":
