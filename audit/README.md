@@ -1,11 +1,14 @@
 # Provider modernization audit
 
 The sections below retain the initial baseline. Current v3 configuration is
-**29/29 resources in both scopes**, with real both-scope lifecycle evidence for
+**29/29 resources in both scopes**, with real both-scope lifecycle proof for
 **29/29**. See [the current inventory](provider-v3-inventory.md) and
-[secret-free runtime evidence](v3-runtime-evidence.json). The published rc.48 full Terraform suite passes 118 acceptance tests with no
-skips. Eight distinct v2.4.1 state schema upgrades pass. Full API-field checks
-and remaining lifecycle/packaging/release gates are still open.
+[same-candidate rc.48 lifecycle proof](crossplane-rc48-candidate.json).
+The published rc.48 full Terraform suite passes 118 acceptance tests with no skips.
+All 16 retained v2.4.1 resource families pass no-op migration probes. The 22-case
+creation-grant matrix and Agent CRD orphan/adoption migration also pass.
+Full platform API extensions, field review, runtime-image packaging, and normal
+review/release gates remain open.
 
 
 The [API lifecycle scope review](api-resource-scope.md) distinguishes the verified

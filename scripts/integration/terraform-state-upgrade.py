@@ -24,7 +24,7 @@ def main():
     p.add_argument('--evidence', type=Path, required=True)
     p.add_argument('--vault-secret-path', help='Existing isolated Vault fixture path for read-only Vault backends')
     p.add_argument('--vault-secret-key', default='api_key')
-    p.add_argument('--case', choices=('base', 'identity', 'model'), default='base')
+    p.add_argument('--case', choices=('base', 'identity', 'model', 'retained'), default='base')
     args = p.parse_args()
     for endpoint in (args.api_url, args.model_url):
         url = urllib.parse.urlparse(endpoint)
@@ -102,6 +102,70 @@ resource "archestra_llm_model" "test" {
 }
 ''')
 
+    if args.case == 'retained':
+        class NoRedirect(urllib.request.HTTPRedirectHandler):
+            def redirect_request(self, req, fp, code, msg, headers, newurl):
+                raise RuntimeError('Local API redirects are refused')
+        request = urllib.request.Request(args.api_url.rstrip('/') + '/api/organization',
+                    headers={'Authorization': env['ARCHESTRA_API_KEY']})
+        with urllib.request.build_opener(NoRedirect()).open(request, timeout=15) as response:
+            organization_id = json.load(response)['id']
+        (work / 'main.tf').write_text('''terraform {
+ required_providers { archestra = { source = "archestra-ai/archestra" } }
+}
+provider "archestra" {}
+resource "archestra_agent" "parent" { name="NAME-parent" }
+resource "archestra_agent" "target" { name="NAME-target" }
+resource "archestra_agent" "batch" { name="NAME-batch" }
+resource "archestra_agent" "tool" {
+ name="NAME-tool"
+ access_all_tools=true
+}
+resource "archestra_team" "test" { name="NAME-team" }
+resource "archestra_mcp_registry_catalog_item" "test" {
+ name="NAME-catalog"
+ remote_config={url="http://provider-mcp-mock.default.svc.cluster.local:19006/mcp"}
+}
+resource "archestra_mcp_server_installation" "test" {
+ name="NAME-install"
+ catalog_id=archestra_mcp_registry_catalog_item.test.id
+ scope="org"
+}
+resource "archestra_agent_delegation" "test" {
+ agent_id=archestra_agent.parent.id
+ target_agent_id=archestra_agent.target.id
+}
+resource "archestra_agent_tool" "test" {
+ agent_id=archestra_agent.tool.id
+ tool_id=archestra_mcp_server_installation.test.tools[0].id
+ mcp_server_id=archestra_mcp_server_installation.test.id
+}
+resource "archestra_agent_tool_batch" "test" {
+ agent_id=archestra_agent.batch.id
+ mcp_server_id=archestra_mcp_server_installation.test.id
+ tool_ids=[archestra_mcp_server_installation.test.tools[1].id]
+}
+resource "archestra_agent_tool_exclusions" "test" {
+ agent_id=archestra_agent.tool.id
+ excluded_tool_ids=[archestra_mcp_server_installation.test.tools[1].id]
+}
+resource "archestra_limit" "test" {
+ entity_id="ORG"
+ entity_type="organization"
+ limit_type="token_cost"
+ limit_value=100000
+ model=["NAME"]
+}
+resource "archestra_runtime_credential" "test" {
+ key="NAME-credential"
+ name="Synthetic retained-schema credential slot"
+}
+resource "archestra_team_external_group" "test" {
+ team_id=archestra_team.test.id
+ external_group_id="NAME-external-group"
+}
+'''.replace('NAME', name).replace('ORG', organization_id))
+
     def select(directory):
         (work / 'terraform.rc').write_text('provider_installation {\n dev_overrides {\n "archestra-ai/archestra" = '
                          + json.dumps(str(directory.resolve())) + '\n }\n direct {}\n }\n')
@@ -117,15 +181,17 @@ resource "archestra_llm_model" "test" {
         return result.stdout
 
     identifiers = {}
+    installation_imports = {}
     try:
         select(args.new_provider_directory)
         run('create', 'apply', '-auto-approve', '-input=false', '-no-color')
         current = json.loads(run('state-v3', 'state', 'pull'))
         identifiers = {r['type'] + '.' + r['name']: r['instances'][0]['attributes']['id'] for r in current['resources']}
+        installation_imports = {r['type'] + '.' + r['name']: r['instances'][0]['attributes']['id'] + ':' + r['instances'][0]['attributes']['name'] for r in current['resources'] if r['type'] == 'archestra_mcp_server_installation'}
         run('forget-synthetic-bindings', 'state', 'rm', *identifiers)
         select(args.old_provider_directory)
         for address, identifier in identifiers.items():
-            import_id = 'llama3' if address == 'archestra_llm_model.test' else identifier
+            import_id = installation_imports.get(address, 'llama3' if address == 'archestra_llm_model.test' else identifier)
             run('v2-import-' + address, 'import', address, import_id)
         old = json.loads(run('state-v2', 'state', 'pull'))
         if args.case == 'identity':
@@ -147,6 +213,16 @@ resource "archestra_llm_model" "test" {
             os.chmod(saved, 0o600)
             run('restore-synthetic-saved-vault-reference', 'state', 'push', str(saved))
             evidence['vault_fixture_source'] = 'Actual v2 import with the configured synthetic Vault reference restored to saved state; the current API redacts write-only Vault reference inputs.'
+        if args.case == 'retained':
+            for resource in old['resources']:
+                if resource['type'] == 'archestra_mcp_server_installation':
+                    resource['instances'][0]['attributes']['service_account'] = True
+            old['serial'] += 1
+            saved = work / 'saved-legacy-install-input.tfstate'
+            saved.write_text(json.dumps(old))
+            os.chmod(saved, 0o600)
+            run('restore-saved-legacy-install-input', 'state', 'push', str(saved))
+            evidence['installation_fixture_source'] = 'Actual v2 import of an org-scoped installation with the legacy service_account=true saved input restored. No service account or external credential was created.'
         for resource in old['resources']:
             if resource['instances'][0]['schema_version'] != 0:
                 raise RuntimeError('Old fixture did not use a v2 schema-zero state')
@@ -182,7 +258,7 @@ resource "archestra_llm_model" "test" {
             bound = {r['type'] + '.' + r['name'] for r in current.get('resources', [])}
             for address, identifier in identifiers.items():
                 if address not in bound:
-                    run('restore-cleanup-' + address, 'import', address, identifier)
+                    run('restore-cleanup-' + address, 'import', address, installation_imports.get(address, identifier))
             run('cleanup-v3', 'destroy', '-auto-approve', '-input=false', '-no-color')
             class NoRedirect(urllib.request.HTTPRedirectHandler):
                 def redirect_request(self, *unused):
@@ -191,7 +267,8 @@ resource "archestra_llm_model" "test" {
             paths = {'archestra_agent': '/api/agents/', 'archestra_mcp_gateway': '/api/agents/',
                      'archestra_team': '/api/teams/', 'archestra_llm_provider_api_key': '/api/llm-provider-api-keys/',
                      'archestra_identity_provider': '/api/identity-providers/',
-                     'archestra_mcp_registry_catalog_item': '/api/internal_mcp_catalog/'}
+                     'archestra_mcp_registry_catalog_item': '/api/internal_mcp_catalog/',
+                     'archestra_mcp_server_installation': '/api/mcp_server/', 'archestra_limit': '/api/limits/'}
             for address, identifier in identifiers.items():
                 kind = address.split('.')[0]
                 endpoint = paths[kind] + identifier if kind in paths else '/api/organization'
@@ -205,6 +282,12 @@ resource "archestra_llm_model" "test" {
                     status = error.code
                 if status != (404 if kind in paths else 200):
                     raise RuntimeError('Backend cleanup verification failed: ' + kind)
+            credential_keys = [identifier for address, identifier in identifiers.items() if address.startswith('archestra_runtime_credential.')]
+            if credential_keys:
+                request = urllib.request.Request(args.api_url.rstrip('/') + '/api/credentials', headers={'Authorization': env['ARCHESTRA_API_KEY']})
+                with opener.open(request, timeout=15) as response:
+                    if any(item['key'] in credential_keys for item in json.load(response)):
+                        raise RuntimeError('Owned credential definition survived cleanup')
             evidence['cleanup'] = 'passed'
         except Exception:
             evidence['cleanup'] = 'failed; retain private diagnostics: ' + str(work)

@@ -1,0 +1,45 @@
+{
+  "result": "schema package built",
+  "runtime_image_embedded": false,
+  "package_sha256": "f54b2bd32ebbba9babdedd7e8c230c3f9d18b8fb8018b20c86b2c4af92343148",
+  "layers": [
+    {
+      "entry_count": 1,
+      "entries": [
+        "package.yaml"
+      ]
+    },
+    {
+      "entry_count": 1,
+      "entries": [
+        ".up/examples.yaml"
+      ]
+    }
+  ],
+  "linux_binaries": [
+    {
+      "kind": "terraform",
+      "architecture": "linux_amd64",
+      "size": 23298232,
+      "sha256": "ba2e352088e6cde7a91af7e69d1c0a92cb6b29dfdfa378b89959e195f5f21128"
+    },
+    {
+      "kind": "terraform",
+      "architecture": "linux_arm64",
+      "size": 21889208,
+      "sha256": "f436caf96d8dbe06ef03b843cf04daff69f950a58f4bf2f0a7e4a12c3ff3cce9"
+    },
+    {
+      "kind": "crossplane",
+      "architecture": "linux_amd64",
+      "size": 58728632,
+      "sha256": "b44f8cd7db8685e72b89a6d0ea91f64e422c7a51268783be29d2507417c323df"
+    }
+  ],
+  "remaining": "Complete Crossplane arm64 runtime-image and both-architecture xpkg validation. arm64 cross-compile was interrupted by disk exhaustion; no package publication performed.",
+  "crds_in_package": 63,
+  "expected_managed_resource_crds": 58,
+  "expected_provider_configuration_crds": 5,
+  "validation_level": "Schema package plus native Linux amd64/arm64 and controller Linux amd64 cross-compiles. Runtime images and release publication unverified.",
+  "ci_architecture_gate": ".github/workflows/crossplane.yml enforces Linux amd64 and arm64 runtime compilation on the PR head. Local cross-compile records here are partial historical preflight evidence."
+}

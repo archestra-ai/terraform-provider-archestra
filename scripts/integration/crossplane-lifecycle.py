@@ -17,6 +17,40 @@ import urllib.request
 import uuid
 
 
+
+CASE_RESOURCES = {
+    'core': {'Agent', 'Environment', 'Team', 'Gateway', 'Project', 'KnowledgeBase', 'Role'},
+    'catalog': {'RegistryCatalogItem'}, 'limit': {'Limit'}, 'llm': {'ModelOverride', 'ProviderKey'},
+    'permissions': {'Policy'}, 'organization': {'Settings'}, 'external-groups': {'ExternalGroup'},
+    'delegation': {'Delegation'}, 'identity': {'Provider'},
+    'tools': {'Tool', 'ToolBatch', 'ToolExclusions', 'ServerInstallation'},
+    'credential': {'RuntimeCredential'}, 'schedule': {'Trigger'}, 'api-key': {'APIKey'},
+    'skill-policy': {'SkillPolicy'}, 'subagent-exclusions': {'SubagentExclusions'},
+    'knowledge-exclusions': {'KnowledgeSourceExclusions'}, 'skill': {'Skill'},
+    'gateway-skills': {'SkillPublication', 'SkillExclusions'}, 'project-instructions': {'ProjectInstructions'},
+    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
+}
+
+
+def resume_results(path, evidence):
+    previous = json.loads(path.read_text())
+    for key in ('terraform_sha256', 'controller_sha256', 'kubernetes_context', 'api_url', 'api_spec_sha256'):
+        if previous.get(key) != evidence.get(key):
+            raise ValueError('Resume refused: different ' + key)
+    if previous.get('cleanup') != 'passed':
+        raise ValueError('Resume refused: previous owned fixtures need normal cleanup')
+    return previous['results']
+
+
+def completed_cases(results, scope):
+    done = {item['resource'] for item in results if item['scope'] == scope}
+    completed = {case for case, expected in CASE_RESOURCES.items() if expected.issubset(done)}
+    defaults = {item.get('parameter_source') for item in results if item['scope'] == scope and item['resource'] == 'RuntimeCredentialInitialGrantDefaults'}
+    if {'default', 'empty', 'init-empty'}.issubset(defaults):
+        completed.add('initial-grant-defaults')
+    return completed
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--api-url', required=True)
@@ -25,6 +59,8 @@ def main():
     parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
     parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
+    parser.add_argument('--scopes', nargs='+', choices=('cluster', 'namespaced'), default=['cluster', 'namespaced'])
     parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
     parser.add_argument('--kubeconfig', type=Path, required=True)
     parser.add_argument('--provider-config', required=True)
@@ -117,10 +153,8 @@ def main():
         try:
             kube(*namespace, 'wait', '--for=condition=Ready', lease[1] + '/' + name, '--timeout=75s')
         except RuntimeError:
-            if kind in ('SkillPolicy', 'SubagentExclusions', 'Skill', 'SkillPublication', 'SkillExclusions'):
-                obj = json.loads(kube(*namespace, 'get', lease[1], name, '-o', 'json'))
-                raise RuntimeError(kind + ' did not become Ready: ' + json.dumps(obj.get('status', {}).get('conditions', []))) from None
-            raise
+            obj = json.loads(kube(*namespace, 'get', lease[1], name, '-o', 'json'))
+            raise RuntimeError(kind + ' did not become Ready: ' + json.dumps(obj.get('status', {}).get('conditions', []))) from None
         obj = json.loads(kube(*namespace, 'get', lease[1], name, '-o', 'json'))
         return lease, obj['metadata']['annotations']['crossplane.io/external-name'], obj
 
@@ -167,10 +201,21 @@ def main():
         print(json.dumps(results[-1]), flush=True)
 
     try:
+        status, snapshot = api('/openapi.json')
+        if status != 200:
+            raise RuntimeError('Unable to verify the isolated API snapshot')
+        evidence['api_url'] = args.api_url.rstrip('/')
+        evidence['api_spec_sha256'] = hashlib.sha256(json.dumps(snapshot, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        evidence['api_version'] = snapshot['info']['version']
+        if args.resume_from:
+            results.extend(resume_results(args.resume_from, evidence))
+            evidence['resumed_from'] = {'file': args.resume_from.name, 'sha256': hashlib.sha256(args.resume_from.read_bytes()).hexdigest()}
+            save()
         status, org = api('/api/organization')
         if status != 200:
             raise RuntimeError('Unable to read the isolated test organization')
-        for scope in ('cluster', 'namespaced'):
+        for scope in args.scopes:
+            scope_cases = set(args.cases) - completed_cases(results, scope)
             cases = [
                 ('mcp', 'RegistryCatalogItem', 'registrycatalogitems', '/api/internal_mcp_catalog/',
                  {'name': 'cp-catalog-' + run + '-' + scope, 'multitenant': False,
@@ -191,7 +236,7 @@ def main():
             ]:
                 cases.append((group, kind, plural, endpoint, dict(name='cp-' + kind.lower() + '-' + run + '-' + scope, **extra), 'name', 'name', method))
             for group, kind, plural, endpoint, fields, desired_field, wire_field, method in cases:
-                if ('catalog' if kind == 'RegistryCatalogItem' else 'limit' if kind == 'Limit' else 'core') not in args.cases:
+                if ('catalog' if kind == 'RegistryCatalogItem' else 'limit' if kind == 'Limit' else 'core') not in scope_cases:
                     continue
                 lease, identifier, obj = create(scope, group, kind, plural, fields)
                 path = endpoint + identifier
@@ -216,7 +261,7 @@ def main():
                 save()
                 print(json.dumps(result), flush=True)
 
-            if 'llm' in args.cases:
+            if 'llm' in scope_cases:
                 secret_name = 'cp-proof-headers-' + scope + '-' + run
                 header_value = 'synthetic-' + run + '-initial'
                 secret = {'apiVersion': 'v1', 'kind': 'Secret',
@@ -296,7 +341,7 @@ def main():
                 print(json.dumps(results[-1]), flush=True)
 
 
-            if 'permissions' in args.cases:
+            if 'permissions' in scope_cases:
                 parent, environment_id, _ = create(scope, 'environment', 'Environment', 'environments',
                          {'name': 'cp-policy-environment-' + run + '-' + scope, 'namespace': 'default'})
                 grant = {'subjectType': 'organization', 'subjectId': '*', 'actions': ['read', 'use']}
@@ -328,7 +373,7 @@ def main():
                 record('Policy', scope, create='passed', update='passed', drift_repair='passed',
                        delete_revokes_direct_grants='passed', target_preserved=True)
 
-            if 'organization' in args.cases:
+            if 'organization' in scope_cases:
                 original = api('/api/organization')[1].get('appName')
                 lease = None
                 try:
@@ -352,7 +397,7 @@ def main():
                     if api('/api/organization/appearance-settings', {'appName': original})[0] != 200:
                         raise RuntimeError('Unable to restore original isolated test appearance')
 
-            if 'project-instructions' in args.cases:
+            if 'project-instructions' in scope_cases:
                 initial_content = 'Synthetic project instructions.'
                 lease, identifier, _ = create(scope, 'project', 'Project', 'projects',
                         {'name': 'cp-instructions-' + run + '-' + scope, 'instructions': initial_content})
@@ -378,8 +423,10 @@ def main():
                 record('ProjectInstructions', scope, create='passed', update='passed', drift_repair='passed',
                        empty_content_clear='passed', parent_delete='passed', backend_after_delete=404)
 
-            if 'initial-grant-defaults' in args.cases:
+            if 'initial-grant-defaults' in scope_cases:
                 for label in ('default', 'empty', 'init-empty'):
+                    if any(item['scope'] == scope and item['resource'] == 'RuntimeCredentialInitialGrantDefaults' and item.get('parameter_source') == label for item in results):
+                        continue
                     explicit_empty = label != 'default'
                     fields = {'name': 'cp-grant-' + label + '-' + run + '-' + scope,
                               'key': 'cp-grant-' + label + '-' + run + '-' + scope}
@@ -416,7 +463,7 @@ def main():
                            metadata_update_preserves_grants='passed', init_provider_update_ignored=init_update,
                            persisted_grants=len(policy['grants']), owner_grant_preserved=True, create='passed', delete='passed')
 
-            if 'initial-grants' in args.cases:
+            if 'initial-grants' in scope_cases:
                 team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-grant-team-' + run + '-' + scope}, '-grant')
                 grant = {'subjectType': 'team', 'subjectId': team_id, 'actions': ['read']}
                 secret_name = 'cp-grant-key-' + run + '-' + scope
@@ -440,6 +487,8 @@ def main():
                         **(vault_fixture if args.readonly_vault else {'apiKeySecretRef': secret_ref}), 'baseUrl': args.llm_base_url}),
                 ]
                 for group, kind, plural, resource_type, extra in cases:
+                    if any(item['scope'] == scope and item['resource'] == kind + 'InitialGrants' for item in results):
+                        continue
                     if args.grant_kinds and kind not in args.grant_kinds:
                         continue
                     fields = {'name': 'cp-grant-' + kind.lower() + '-' + run + '-' + scope,
@@ -490,7 +539,7 @@ def main():
                 delete(secret)
                 delete(team)
 
-            if 'gateway-skills' in args.cases:
+            if 'gateway-skills' in scope_cases:
                 gateway, gateway_id, _ = create(scope, 'mcp', 'Gateway', 'gateways',
                         {'name': 'cp-skill-gateway-' + run + '-' + scope})
                 skill_fields = {'description': 'Synthetic publication fixture', 'content': 'Inspect only synthetic local data.',
@@ -551,7 +600,7 @@ def main():
                 delete(first)
                 delete(gateway)
 
-            if 'skill' in args.cases:
+            if 'skill' in scope_cases:
                 skill_name = 'cp-content-' + run + '-' + scope
                 original_content = 'Inspect only synthetic local fixtures.'
                 files = {'references/README.md': {'content': 'Synthetic reference', 'encoding': 'utf8'},
@@ -596,7 +645,7 @@ def main():
                        immutable_first_version_preserved=True, stale_version_refused=409,
                        delete='soft-delete passed', backend_after_delete=404)
 
-            if 'knowledge-exclusions' in args.cases:
+            if 'knowledge-exclusions' in scope_cases:
                 fixtures = []
                 for label in ('first', 'second'):
                     code, connector = api('/api/connectors', {
@@ -642,7 +691,7 @@ def main():
                        drift_repair='passed', empty_set_clear='passed', delete_clears_exclusions='passed',
                        agent_preserved=True, external_credentials_created=False)
 
-            if 'subagent-exclusions' in args.cases:
+            if 'subagent-exclusions' in scope_cases:
                 parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
                         {'name': 'cp-auto-subagents-' + run + '-' + scope, 'accessAllSubagents': True}, '-parent')
                 first, first_id, _ = create(scope, 'agent', 'Agent', 'agents',
@@ -677,7 +726,7 @@ def main():
                 record('SubagentExclusions', scope, create='passed', update='passed', drift_repair='passed',
                        empty_set_clear='passed', delete_clears_exclusions='passed', agent_preserved=True)
 
-            if 'skill-policy' in args.cases:
+            if 'skill-policy' in scope_cases:
                 code, skill = api('/api/skills', {'content': '---\nname: cp-skill-' + run + '-' + scope + '\ndescription: Synthetic policy fixture\n---\nInspect only local synthetic fixtures.\n'}, 'POST')
                 if code != 200:
                     raise RuntimeError('Unable to create local skill fixture: HTTP ' + str(code))
@@ -715,7 +764,7 @@ def main():
                 record('SkillPolicy', scope, create='passed', update='passed', drift_repair='passed',
                        delete_resets_policy='passed', agent_preserved=True)
 
-            if 'external-groups' in args.cases:
+            if 'external-groups' in scope_cases:
                 parent, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-group-team-' + run + '-' + scope})
                 external = 'cp-group-' + run
                 lease, identifier, _ = create(scope, 'team', 'ExternalGroup', 'externalgroups',
@@ -745,7 +794,7 @@ def main():
                 record('ExternalGroup', scope, create='passed', immutable_update_refused='passed',
                        deleted_mapping_recreated='passed', delete='passed')
 
-            if 'delegation' in args.cases:
+            if 'delegation' in scope_cases:
                 parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
                         {'name': 'cp-delegator-' + run + '-' + scope}, '-parent')
                 target, target_id, _ = create(scope, 'agent', 'Agent', 'agents',
@@ -780,7 +829,7 @@ def main():
                        deleted_edge_recreated='passed', delete='passed')
 
 
-            if 'credential' in args.cases:
+            if 'credential' in scope_cases:
                 credential_key = 'cp-credential-' + run + '-' + scope
                 lease, identifier, _ = create(scope, 'credential', 'RuntimeCredential', 'runtimecredentials',
                     {'key': credential_key, 'name': 'Synthetic credential slot', 'description': 'initial'})
@@ -804,12 +853,15 @@ def main():
                 record('RuntimeCredential', scope, create='passed', update='passed', drift_repair='passed', delete='passed',
                        external_authorization='not_requested; synthetic secret slot only')
 
-            if 'schedule' in args.cases:
+            if 'schedule' in scope_cases:
                 parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
                     {'name': 'cp-scheduled-agent-' + run + '-' + scope}, '-schedule')
+                project, project_id, _ = create(scope, 'project', 'Project', 'projects',
+                    {'name': 'cp-scheduled-project-' + run + '-' + scope, 'defaultAgentId': agent_id}, '-schedule')
                 lease, identifier, _ = create(scope, 'schedule', 'Trigger', 'triggers',
-                    {'name': 'cp-schedule-' + run + '-' + scope, 'agentId': agent_id,
-                     'cronExpression': '0 8 * * *', 'timezone': 'Etc/UTC', 'enabled': False})
+                    {'name': 'cp-schedule-' + run + '-' + scope, 'agentId': agent_id, 'projectId': project_id,
+                     'cronExpression': '0 8 * * *', 'timezone': 'Etc/UTC', 'enabled': False,
+                     'messageTemplate': 'Synthetic disabled schedule; do not execute.'})
                 path = '/api/schedule-triggers/' + identifier
                 if api(path)[0] != 200 or api(path)[1]['enabled']:
                     raise RuntimeError('Schedule fixture was not created disabled')
@@ -821,11 +873,12 @@ def main():
                 delete(lease)
                 if api(path)[0] != 404:
                     raise RuntimeError('Schedule survived deletion')
+                delete(project)
                 delete(parent)
                 record('Trigger', scope, create_disabled='passed', update='passed', drift_repair='passed', delete='passed',
                        scheduled_runs='not_executed')
 
-            if 'api-key' in args.cases:
+            if 'api-key' in scope_cases:
                 key_name = 'cp-key-' + run + '-' + scope[0]
                 lease, identifier, obj = create(scope, 'credential', 'APIKey', 'apikeys',
                     {'name': key_name, 'expiresInSeconds': 86400})
@@ -849,7 +902,7 @@ def main():
                        deleted_key_recreated='passed', delete='passed', key_absent_from_status=True)
 
 
-            if 'tools' in args.cases:
+            if 'tools' in scope_cases:
                 catalog, catalog_id, _ = create(scope, 'mcp', 'RegistryCatalogItem', 'registrycatalogitems',
                     {'name': 'cp-tools-' + run + '-' + scope, 'multitenant': False,
                      'remoteConfig': {'url': args.mcp_url}})
@@ -951,7 +1004,7 @@ def main():
                 delete(catalog)
 
 
-            if 'identity' in args.cases:
+            if 'identity' in scope_cases:
                 secret_name = 'cp-identity-secret-' + run + '-' + scope
                 synthetic_secret = 'synthetic-identity-' + run
                 kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',

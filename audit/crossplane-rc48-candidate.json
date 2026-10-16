@@ -1,0 +1,645 @@
+{
+  "terraform_sha256": "cbaf30c9d2f53bee1c90c1a96ee05a7c2fbec24025b5ef5f571e825b918a40da",
+  "controller_sha256": "cbee56b28d800444c9bcc92b48cf85c1ebc3804b51490fab9708623f252c423d",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "api_version": "1.4.0-rc.48",
+  "api_spec_sha256": "d88e74f5d3633eaeaf53e01c1c32a32d6e3fe013864d37e636324aac5633f73e",
+  "outcome": "passed",
+  "cleanup": "passed",
+  "registered_families_per_scope": 29,
+  "managed_family_lifecycles": 58,
+  "additional_project_instruction_lifecycles": 2,
+  "execution": "Real Terraform CLI and Crossplane controllers against published rc.48. Guarded resumption and independent scope runs; no finalizers removed.",
+  "source_evidence_sha256": {
+    "rc48-crossplane-cluster-final-r3.json": "b63ed8a0fd0b2acfef81e3560ecba2bd92f0152964c1310e7ad2681f512d3070",
+    "rc48-crossplane-cluster-final-r2.json": "fea07a597c72a336cb37e82b631b5a7263c106c562fbab43dd9c6197f102f1c5",
+    "rc48-crossplane-cluster-final.json": "42b3893b89b9c8241ed8c59235e3736790c288d608896b1c0aa324845edff05e",
+    "rc48-crossplane-all-lifecycles-r3.json": "5cf9ce9501b24a3302755eb7234459dbcd273391cf79130b662ba64d19a2efd7",
+    "rc48-crossplane-all-lifecycles-r2.json": "9ff0b5ab8ee796ae653aed73d17d5fdc001725260a1a797b5eb23d88ad26300d",
+    "rc48-crossplane-namespaced-final-r3.json": "003214efe0a2a0d8f7247784de4f1de4d1584c8bbce78d897e334b0503255481",
+    "rc48-crossplane-namespaced-final-r2.json": "9354dd28c5aa9effcf39ed7479ab5cbf7206fde037f5d376e16ef47e1b834ff4",
+    "rc48-crossplane-namespaced-final.json": "8502f2e3afe801bac5bf1416dce65d8895c45356092777917768b86e886d34e9"
+  },
+  "family_mapping": {
+    "cluster": {
+      "Policy": "archestra_resource_permission_policy",
+      "Environment": "archestra_environment",
+      "KnowledgeBase": "archestra_knowledge_base",
+      "ExternalGroup": "archestra_team_external_group",
+      "Team": "archestra_team",
+      "Project": "archestra_project",
+      "RegistryCatalogItem": "archestra_mcp_registry_catalog_item",
+      "SkillPublication": "archestra_mcp_gateway_skill_publication",
+      "SkillExclusions": "archestra_mcp_gateway_skill_exclusions",
+      "ServerInstallation": "archestra_mcp_server_installation",
+      "Gateway": "archestra_mcp_gateway",
+      "SubagentExclusions": "archestra_agent_subagent_exclusions",
+      "SkillPolicy": "archestra_agent_skill_policy",
+      "Tool": "archestra_agent_tool",
+      "ToolBatch": "archestra_agent_tool_batch",
+      "Agent": "archestra_agent",
+      "KnowledgeSourceExclusions": "archestra_agent_knowledge_source_exclusions",
+      "Delegation": "archestra_agent_delegation",
+      "ToolExclusions": "archestra_agent_tool_exclusions",
+      "Limit": "archestra_limit",
+      "Skill": "archestra_skill",
+      "Role": "archestra_role",
+      "Provider": "archestra_identity_provider",
+      "ProviderKey": "archestra_llm_provider_api_key",
+      "ModelOverride": "archestra_llm_model",
+      "Trigger": "archestra_schedule_trigger",
+      "RuntimeCredential": "archestra_runtime_credential",
+      "APIKey": "archestra_api_key",
+      "Settings": "archestra_organization_settings"
+    },
+    "namespaced": {
+      "Policy": "archestra_resource_permission_policy",
+      "Environment": "archestra_environment",
+      "KnowledgeBase": "archestra_knowledge_base",
+      "ExternalGroup": "archestra_team_external_group",
+      "Team": "archestra_team",
+      "Project": "archestra_project",
+      "RegistryCatalogItem": "archestra_mcp_registry_catalog_item",
+      "SkillPublication": "archestra_mcp_gateway_skill_publication",
+      "SkillExclusions": "archestra_mcp_gateway_skill_exclusions",
+      "ServerInstallation": "archestra_mcp_server_installation",
+      "Gateway": "archestra_mcp_gateway",
+      "SubagentExclusions": "archestra_agent_subagent_exclusions",
+      "SkillPolicy": "archestra_agent_skill_policy",
+      "Tool": "archestra_agent_tool",
+      "ToolBatch": "archestra_agent_tool_batch",
+      "Agent": "archestra_agent",
+      "KnowledgeSourceExclusions": "archestra_agent_knowledge_source_exclusions",
+      "Delegation": "archestra_agent_delegation",
+      "ToolExclusions": "archestra_agent_tool_exclusions",
+      "Limit": "archestra_limit",
+      "Skill": "archestra_skill",
+      "Role": "archestra_role",
+      "Provider": "archestra_identity_provider",
+      "ProviderKey": "archestra_llm_provider_api_key",
+      "ModelOverride": "archestra_llm_model",
+      "Trigger": "archestra_schedule_trigger",
+      "RuntimeCredential": "archestra_runtime_credential",
+      "APIKey": "archestra_api_key",
+      "Settings": "archestra_organization_settings"
+    }
+  },
+  "results": [
+    {
+      "resource": "APIKey",
+      "scope": "cluster",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_key_recreated": "passed",
+      "delete": "passed",
+      "key_absent_from_status": true
+    },
+    {
+      "resource": "Agent",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Delegation",
+      "scope": "cluster",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_edge_recreated": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Environment",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "ExternalGroup",
+      "scope": "cluster",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_mapping_recreated": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Gateway",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "KnowledgeBase",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "KnowledgeSourceExclusions",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_exclusions": "passed",
+      "agent_preserved": true,
+      "external_credentials_created": false
+    },
+    {
+      "resource": "Limit",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "ModelOverride",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_reset": "passed",
+      "adopted_model_preserved": true
+    },
+    {
+      "resource": "Policy",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_revokes_direct_grants": "passed",
+      "target_preserved": true
+    },
+    {
+      "resource": "Project",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "ProjectInstructions",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_content_clear": "passed",
+      "parent_delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Provider",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "secret_absent_from_status": true,
+      "live_oauth_consent": "not_exercised; synthetic configuration only"
+    },
+    {
+      "resource": "ProviderKey",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "sensitive_header_secret_rotation": "passed",
+      "sensitive_header_absent_from_status": true
+    },
+    {
+      "resource": "RegistryCatalogItem",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Role",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "RuntimeCredential",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "external_authorization": "not_requested; synthetic secret slot only"
+    },
+    {
+      "resource": "ServerInstallation",
+      "scope": "cluster",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "tools_discovered": 2,
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Settings",
+      "scope": "cluster",
+      "adopt": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_preserves_singleton": "passed"
+    },
+    {
+      "resource": "Skill",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "terraform_import": "separate CLI test",
+      "empty_files_clear": "passed",
+      "immutable_first_version_preserved": true,
+      "stale_version_refused": 409,
+      "delete": "soft-delete passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "SkillExclusions",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_exclusions": "passed",
+      "gateway_preserved": true
+    },
+    {
+      "resource": "SkillPolicy",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_resets_policy": "passed",
+      "agent_preserved": true
+    },
+    {
+      "resource": "SkillPublication",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "mode_flip_retains_manual_assignments": true,
+      "empty_set_clear": "passed",
+      "delete_disables_and_clears": "passed",
+      "exclusions_preserved": true
+    },
+    {
+      "resource": "SubagentExclusions",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_exclusions": "passed",
+      "agent_preserved": true
+    },
+    {
+      "resource": "Team",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Tool",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ToolBatch",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ToolExclusions",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_clears_exclusions": "passed",
+      "agent_preserved": true
+    },
+    {
+      "resource": "Trigger",
+      "scope": "cluster",
+      "create_disabled": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "scheduled_runs": "not_executed"
+    },
+    {
+      "resource": "APIKey",
+      "scope": "namespaced",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_key_recreated": "passed",
+      "delete": "passed",
+      "key_absent_from_status": true
+    },
+    {
+      "resource": "Agent",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Delegation",
+      "scope": "namespaced",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_edge_recreated": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Environment",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "ExternalGroup",
+      "scope": "namespaced",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_mapping_recreated": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Gateway",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "KnowledgeBase",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "KnowledgeSourceExclusions",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_exclusions": "passed",
+      "agent_preserved": true,
+      "external_credentials_created": false
+    },
+    {
+      "resource": "Limit",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "ModelOverride",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_reset": "passed",
+      "adopted_model_preserved": true
+    },
+    {
+      "resource": "Policy",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_revokes_direct_grants": "passed",
+      "target_preserved": true
+    },
+    {
+      "resource": "Project",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "ProjectInstructions",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_content_clear": "passed",
+      "parent_delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Provider",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "secret_absent_from_status": true,
+      "live_oauth_consent": "not_exercised; synthetic configuration only"
+    },
+    {
+      "resource": "ProviderKey",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "sensitive_header_secret_rotation": "passed",
+      "sensitive_header_absent_from_status": true
+    },
+    {
+      "resource": "RegistryCatalogItem",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Role",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "RuntimeCredential",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "external_authorization": "not_requested; synthetic secret slot only"
+    },
+    {
+      "resource": "ServerInstallation",
+      "scope": "namespaced",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "tools_discovered": 2,
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Settings",
+      "scope": "namespaced",
+      "adopt": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_preserves_singleton": "passed"
+    },
+    {
+      "resource": "Skill",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "terraform_import": "separate CLI test",
+      "empty_files_clear": "passed",
+      "immutable_first_version_preserved": true,
+      "stale_version_refused": 409,
+      "delete": "soft-delete passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "SkillExclusions",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_exclusions": "passed",
+      "gateway_preserved": true
+    },
+    {
+      "resource": "SkillPolicy",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_resets_policy": "passed",
+      "agent_preserved": true
+    },
+    {
+      "resource": "SkillPublication",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "mode_flip_retains_manual_assignments": true,
+      "empty_set_clear": "passed",
+      "delete_disables_and_clears": "passed",
+      "exclusions_preserved": true
+    },
+    {
+      "resource": "SubagentExclusions",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_exclusions": "passed",
+      "agent_preserved": true
+    },
+    {
+      "resource": "Team",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Tool",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ToolBatch",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ToolExclusions",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_clears_exclusions": "passed",
+      "agent_preserved": true
+    },
+    {
+      "resource": "Trigger",
+      "scope": "namespaced",
+      "create_disabled": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "scheduled_runs": "not_executed"
+    }
+  ]
+}

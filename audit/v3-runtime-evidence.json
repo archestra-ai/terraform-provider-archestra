@@ -17,14 +17,20 @@
     "crossplane-gateway-skills.json",
     "crossplane-project-instructions.json",
     "crossplane-atomic-delegation.json",
-    "crossplane-knowledge-exclusions.json"
+    "crossplane-knowledge-exclusions.json",
+    "crossplane-initial-grants.json",
+    "crossplane-rc48-candidate.json"
   ],
   "additional_state_migration_evidence": [
     "native-state-upgrades.json",
     "identity-state-upgrade.json",
-    "model-state-upgrade.json"
+    "model-state-upgrade.json",
+    "retained-state-upgrades.json"
   ],
   "agent_crd_migration": {
+    "api_version": "1.4.0-rc.48",
+    "cleanup": "passed",
+    "controller_sha256": "cbee56b28d800444c9bcc92b48cf85c1ebc3804b51490fab9708623f252c423d",
     "cross_scope_observe_adoption": true,
     "explicit_delete_after_adoption": 404,
     "new_schema": "3.0.0-working-tree",
@@ -34,6 +40,7 @@
     "resource": "Agent",
     "same_remote_id_updated": true,
     "storage_version": "v1alpha1",
+    "terraform_sha256": "cbaf30c9d2f53bee1c90c1a96ee05a7c2fbec24025b5ef5f571e825b918a40da",
     "version_conversion_required": false
   },
   "api_prerequisite": {
@@ -43,7 +50,9 @@
   },
   "baseline_crossplane_configured": 5,
   "baseline_terraform_count": 22,
-  "creation_grants_status": "Implemented on eight resource families; native acceptance passes. Final both-scope rc.48 repetition pending.",
+  "candidate_runtime_evidence": "crossplane-rc48-candidate.json",
+  "candidate_runtime_status": "All 29 registered families passed in both scopes on the same native/controller binaries and published rc.48 snapshot; 58 family lifecycles plus two project-instructions checks. Normal cleanup passed.",
+  "creation_grants_status": "Passed 22 cases against published rc.48 across both scopes: eight resource families plus omitted/empty/initProvider creation semantics; normal cleanup passed.",
   "crossplane_results": [
     {
       "backend_read_after_delete": 404,
@@ -374,8 +383,9 @@
     "Repeat state upgrades and verify version-matched package artifacts for the final candidate",
     "Pass exact-head protected CI and review, then release Terraform and both Crossplane package architectures"
   ],
-  "runtime_probe_controller_sha256": "9faacea7aba5b8caa12008f8904c53eb4c50d2266d638ab8fabd1295a0d656c7",
-  "runtime_probe_provider_sha256": "61eca82bd743de061bf9d3c4eb7730914f3cb9b1c83af4745c93f51b88c63df1",
-  "runtime_probe_version_note": "Accumulated proofs cover 29 registered families across recorded candidate hashes. The latest atomic delegation and knowledge-source exclusion probes use the unpublished API prerequisite. Full final-candidate repetition and published prerequisite pinning remain release gates.",
-  "status": "draft_work_in_progress_not_release_coverage"
+  "retained_v2_resource_migration_status": "All 16 retained v2.4.1 resource families covered across versioned and schema-zero probes; no-op upgrade plans and preserved identities. Legacy installation service_account=true fixture included; synthetic saved-secret/reference limitations recorded.",
+  "runtime_probe_controller_sha256": "cbee56b28d800444c9bcc92b48cf85c1ebc3804b51490fab9708623f252c423d",
+  "runtime_probe_provider_sha256": "cbaf30c9d2f53bee1c90c1a96ee05a7c2fbec24025b5ef5f571e825b918a40da",
+  "runtime_probe_version_note": "All registered-family lifecycle proofs now use identical candidate native/controller binaries and the published rc.48 snapshot. Earlier individual probe files are retained as history. Full platform API extensions and runtime-image packaging remain open.",
+  "status": "draft_registered_family_runtime_verified_full_platform_extensions_and_release_gates_open"
 }
