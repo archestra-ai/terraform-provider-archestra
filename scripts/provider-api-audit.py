@@ -41,7 +41,7 @@ def schema_fields(block, prefix=""):
     return result
 
 
-def audit(root, spec, terraform_schema=None):
+def audit(root, spec, terraform_schema=None, wire_contracts=None):
     operations = {
         (method.upper(), canonical_path(path)): operation
         for path, methods in spec["paths"].items()
@@ -67,6 +67,9 @@ def audit(root, spec, terraform_schema=None):
             continue
         name = "archestra" + name[1]
         calls = sorted(set(re.findall(r'r.client\.(\w+?)(?:WithBody)?WithResponse\(', source)))
+        contract = (wire_contracts or {}).get(name)
+        if contract is not None:
+            calls = contract.get('api_methods', calls)
         runtime_schema = (terraform_schema or {}).get("provider_schemas", {}).get("registry.terraform.io/archestra-ai/archestra", {}).get("resource_schemas", {}).get(name)
         runtime_fields = runtime_schema.get("block", {}).get("attributes", {}) if runtime_schema else None
         endpoints = []
@@ -79,6 +82,8 @@ def audit(root, spec, terraform_schema=None):
             properties = request.get("properties", {})
             endpoints.append({
                 "request_fields": sorted(properties),
+                "declared_request_field_mappings": {field: contract['wire_fields'][field] for field in sorted(properties) if contract and field in contract['wire_fields']} if contract else None,
+                "request_fields_without_declared_mapping": sorted(field for field, shape in properties.items() if shape.get('not') != {} and field not in contract['wire_fields']) if contract else None,
                 "api_forbidden_request_fields": sorted(key for key, value in properties.items() if value.get("not") == {}),
                 "retired_request_fields": sorted(key for key, value in properties.items() if value.get("not") == {} and (runtime_fields is None or any(v.get("optional") or v.get("required") for n,v in runtime_fields.items() if n == re.sub(r"(?<!^)(?=[A-Z])", "_", key).lower()))),
                 "query_parameters": sorted(parameter["name"] for parameter in operation.get("parameters", []) if parameter.get("in") == "query"),
@@ -101,7 +106,7 @@ def audit(root, spec, terraform_schema=None):
             "acceptance_tests_declared": len(re.findall(r"func TestAcc", test_source)),
             "acceptance_execution": "unverified",
             "crossplane_reconciliation": "unverified",
-            "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+            "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review." if contract else "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
         })
     return {
         "format_version": 1,
@@ -121,14 +126,17 @@ def markdown(report):
     lines = ["# Provider API inventory", "", report["evidence_level"], "",
              f"Terraform: {report['terraform_count']}; Crossplane configured: {report['crossplane_configured_count']}.", "",
              "Mapping counts are configuration coverage, not successful CRUD or reconciliation coverage.", "",
-             "| Terraform resource | Crossplane configured | Import | Missing direct API calls / retired request fields | Acceptance tests declared |",
-             "|---|---|---|---|---|"]
+             "| Terraform resource | Crossplane configured | Import | Missing direct API calls / retired request fields | Request fields needing review | Acceptance tests declared |",
+             "|---|---|---|---|---|---|"]
     for r in report["resources"]:
         missing = [f"{e['method']} {e['path']}" for e in r["endpoints"] if e["present_in_upstream"] is False]
         missing += [f"{e['builder']}: retired {', '.join(e.get('retired_request_fields', []))}" for e in r["endpoints"] if e.get("retired_request_fields")]
-        lines.append(f"| `{r['terraform_resource']}` | {r['crossplane_configured']} | {r['import_implemented']} | {'; '.join(missing) or 'none detected'} | {r['acceptance_tests_declared']} |")
+        requests = [f"{e['builder']}: {', '.join(e['request_fields_without_declared_mapping'])}" for e in r['endpoints'] if e.get('request_fields_without_declared_mapping')]
+        reviewed = '; '.join(requests) or ('none detected' if all(e.get('request_fields_without_declared_mapping') is not None for e in r['endpoints']) else 'wire contracts not supplied')
+        lines.append(f"| `{r['terraform_resource']}` | {r['crossplane_configured']} | {r['import_implemented']} | {'; '.join(missing) or 'none detected'} | {reviewed} | {r['acceptance_tests_declared']} |")
     lines += ["", "Unreferenced mutations are review candidates, not an automatically inferred resource denominator.",
-              "RPCs, inference, OAuth flows, logs and transient executions must not become managed resources just to increase a percentage."]
+              "RPCs, inference, OAuth flows, logs and transient executions must not become managed resources just to increase a percentage.",
+              "Request fields without a declared mapping require review: derived wire values and backend-owned fields need explicit justification; a clean GET-field gate alone does not prove write coverage."]
     return "\n".join(lines) + "\n"
 
 
@@ -137,11 +145,13 @@ def main():
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--spec", type=Path, required=True)
     parser.add_argument("--terraform-schema", type=Path)
+    parser.add_argument("--wire-contracts", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--markdown", type=Path)
     args = parser.parse_args()
     report = audit(args.root, json.loads(args.spec.read_text()),
-                   json.loads(args.terraform_schema.read_text()) if args.terraform_schema else None)
+                   json.loads(args.terraform_schema.read_text()) if args.terraform_schema else None,
+                   json.loads(args.wire_contracts.read_text()) if args.wire_contracts else None)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
     if args.markdown:
         args.markdown.write_text(markdown(report))

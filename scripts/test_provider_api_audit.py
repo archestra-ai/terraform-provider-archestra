@@ -57,5 +57,23 @@ class AuditTests(unittest.TestCase):
 
 
 
+    def test_wire_contracts_include_helper_calls_and_flag_unmapped_writes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for directory in ['internal/client', 'internal/provider', 'crossplane/config']:
+                (root / directory).mkdir(parents=True)
+            (root / 'internal/client/client.go').write_text('func NewUpdateThingRequestWithBody(server string) {\n operationPath := fmt.Sprintf("/api/things/%s", id)\n req, err := http.NewRequest("PATCH", queryURL.String(), body)\n}')
+            (root / 'internal/provider/resource_thing.go').write_text('resp.TypeName = req.ProviderTypeName + "_thing"')
+            (root / 'crossplane/config/external_name.go').write_text('')
+            upstream = {'paths': {'/api/things/{id}': {'patch': {'requestBody': {'content': {'application/json': {'schema': {'properties': {'name': {'type': 'string'}, 'scope': {'not': {}}, 'newCapability': {'type': 'boolean'}}}}}}}}}}
+            contracts = {'archestra_thing': {'api_methods': ['UpdateThing'], 'wire_fields': {'name': 'display_name'}, 'synthetic_fields': []}}
+            report = audit.audit(root, upstream, wire_contracts=contracts)
+            endpoint = report['resources'][0]['endpoints'][0]
+            self.assertTrue(endpoint['present_in_upstream'])
+            self.assertEqual(endpoint['declared_request_field_mappings'], {'name': 'display_name'})
+            self.assertEqual(endpoint['request_fields_without_declared_mapping'], ['newCapability'])
+            self.assertIn('newCapability', audit.markdown(report))
+
+
 if __name__ == '__main__':
     unittest.main()
