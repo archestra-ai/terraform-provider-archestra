@@ -13,7 +13,7 @@ func TestListBackedResourceTimestampImport(t *testing.T) {
 		`{"id":"11111111-1111-4111-8111-111111111111","agentId":"22222222-2222-4222-8222-222222222222","model":[],"createdAt":"2026-10-16T13:30:50.600Z","updatedAt":"2026-10-16T13:30:50.600Z"}`,
 		`{"id":"11111111-1111-4111-8111-111111111111","agentId":"22222222-2222-4222-8222-222222222222","model":[],"createdAt":"2026-10-16T13:30:50.6Z","updatedAt":"2026-10-16T13:30:50.6Z"}`,
 	}
-	for _, kind := range []string{"default limit", "hook", "directory"} {
+	for _, kind := range []string{"default limit", "hook", "directory", "service account token"} {
 		t.Run(kind, func(t *testing.T) {
 			var prior any
 			for _, body := range bodies {
@@ -27,6 +27,10 @@ func TestListBackedResourceTimestampImport(t *testing.T) {
 				case "hook":
 					model := HookResourceModel{}
 					(&HookResource{}).flatten(context.Background(), &model, []byte(body), &d)
+					current = model
+				case "service account token":
+					model := ServiceAccountTokenResourceModel{}
+					(&ServiceAccountTokenResource{}).flatten(&model, []byte(body), &d)
 					current = model
 				case "directory":
 					model := KnowledgeDirectoryResourceModel{}

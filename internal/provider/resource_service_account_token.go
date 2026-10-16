@@ -289,8 +289,8 @@ func (r *ServiceAccountTokenResource) flatten(data *ServiceAccountTokenResourceM
 	} else if data.Token.IsUnknown() {
 		data.Token = types.StringNull()
 	}
-	data.CreatedAt = types.StringValue(value.CreatedAt)
-	data.LastUsedAt = types.StringPointerValue(value.LastUsedAt)
+	data.CreatedAt = canonicalTokenTime(&value.CreatedAt)
+	data.LastUsedAt = canonicalTokenTime(value.LastUsedAt)
 }
 
 func canonicalTokenTime(value *string) types.String {
