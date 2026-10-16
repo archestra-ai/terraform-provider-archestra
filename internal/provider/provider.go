@@ -186,6 +186,12 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 	return []func() resource.Resource{
 		NewAgentResource,
 		NewResourcePermissionPolicyResource,
+		NewHookResource,
+		NewDefaultUserLimitResource,
+		NewKnowledgeDirectoryResource,
+		NewLLMProxyProfileResource,
+		NewServiceAccountResource,
+		NewServiceAccountTokenResource,
 		NewEnvironmentResource,
 		NewProjectResource,
 		NewKnowledgeBaseResource,

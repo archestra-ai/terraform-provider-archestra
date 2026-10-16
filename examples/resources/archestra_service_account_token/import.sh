@@ -1,0 +1,1 @@
+terraform import archestra_service_account_token.example service_account_uuid:token_uuid

@@ -19,6 +19,7 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'extensions': {'ProxyProfile','Directory','DefaultUserLimit','Hook','ServiceAccount','ServiceAccountToken','GatewaySubagentControl','InstallationControls'},
     'core': {'Agent', 'Environment', 'Team', 'Gateway', 'Project', 'KnowledgeBase', 'Role'},
     'catalog': {'RegistryCatalogItem'}, 'limit': {'Limit'}, 'llm': {'ModelOverride', 'ProviderKey'},
     'permissions': {'Policy'}, 'organization': {'Settings'}, 'external-groups': {'ExternalGroup'},
@@ -28,7 +29,7 @@ CASE_RESOURCES = {
     'skill-policy': {'SkillPolicy'}, 'subagent-exclusions': {'SubagentExclusions'},
     'knowledge-exclusions': {'KnowledgeSourceExclusions'}, 'skill': {'Skill'},
     'gateway-skills': {'SkillPublication', 'SkillExclusions'}, 'project-instructions': {'ProjectInstructions'},
-    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
+    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
 }
 
 
@@ -58,10 +59,10 @@ def main():
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
     parser.add_argument('--scopes', nargs='+', choices=('cluster', 'namespaced'), default=['cluster', 'namespaced'])
-    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
+    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
     parser.add_argument('--kubeconfig', type=Path, required=True)
     parser.add_argument('--provider-config', required=True)
     parser.add_argument('--namespace', default='crossplane-system')
@@ -147,6 +148,12 @@ def main():
                     'metadata': metadata, 'spec': {'forProvider': fields, 'providerConfigRef': config}}
         if init_fields is not None:
             manifest['spec']['initProvider'] = init_fields
+        if kind == 'ServiceAccountToken':
+            ref = {'name': name + '-connection'}
+            if scope == 'cluster':
+                ref['namespace'] = args.namespace
+            manifest['spec']['writeConnectionSecretToRef'] = ref
+            leases.append((['-n', args.namespace], 'secrets', ref['name']))
         kube('apply', '-f', '-', payload=manifest)
         lease = (namespace, plural + '.' + api_group, name)
         leases.append(lease)
@@ -173,7 +180,7 @@ def main():
                 raise RuntimeError('Unable to remove owned API fixture: HTTP ' + str(status))
             leases.remove(lease)
             return
-        kube(*lease[0], 'delete', lease[1], lease[2], '--wait=true', '--timeout=75s')
+        kube(*lease[0], 'delete', lease[1], lease[2], '--ignore-not-found', '--wait=true', '--timeout=75s')
         leases.remove(lease)
 
     def observation(lease):
@@ -260,6 +267,147 @@ def main():
                 results.append(result)
                 save()
                 print(json.dumps(result), flush=True)
+
+            if 'extensions' in scope_cases:
+                # Each selector reads the authoritative API projection, not Kubernetes status.
+                def collection(path, identifier):
+                    code, values = api(path)
+                    if code != 200:
+                        raise RuntimeError('Collection read failed: HTTP ' + str(code))
+                    return next((item for item in values if item['id'] == identifier), None)
+
+                profile, profile_id, _ = create(scope, 'llm', 'ProxyProfile', 'proxyprofiles',
+                    {'name': 'cp-profile-' + run + '-' + scope, 'accessAllSubagents': False, 'passthroughHeaders': ['x-request-id']})
+                path = '/api/agents/' + profile_id
+                if api(path)[1].get('agentType') != 'profile':
+                    raise RuntimeError('External profile subtype was not persisted')
+                patch(profile, {'name': 'Updated profile ' + run})
+                wait('Profile metadata update', lambda: api(path)[1]['name'] == 'Updated profile ' + run)
+                api(path, {'name': 'Out of band profile'}, 'PUT')
+                wait('Profile drift repair', lambda: api(path)[1]['name'] == 'Updated profile ' + run)
+                delete(profile)
+                if api(path)[0] != 404:
+                    raise RuntimeError('External profile survived deletion')
+                record('ProxyProfile', scope, create='passed', subtype='profile', update='passed', drift_repair='passed', delete='passed')
+
+                directory, directory_id, _ = create(scope, 'knowledge', 'Directory', 'directories', {'name': 'cp-directory-' + run + '-' + scope})
+                path = '/api/knowledge-directories/' + directory_id
+                patch(directory, {'name': 'Updated directory ' + run})
+                wait('Directory update', lambda: collection('/api/knowledge-directories', directory_id)['name'] == 'Updated directory ' + run)
+                api(path, {'name': 'Out of band directory'}, 'PATCH')
+                wait('Directory drift repair', lambda: collection('/api/knowledge-directories', directory_id)['name'] == 'Updated directory ' + run)
+                delete(directory)
+                if collection('/api/knowledge-directories', directory_id) is not None:
+                    raise RuntimeError('Directory survived deletion')
+                record('Directory', scope, create='passed', update='passed', drift_repair='passed', delete='passed')
+
+                environment, environment_id, _ = create(scope, 'environment', 'Environment', 'environments', {'name': 'cp-default-limit-' + run + '-' + scope})
+                limit, limit_id, _ = create(scope, 'limit', 'DefaultUserLimit', 'defaultuserlimits',
+                    {'environmentId': environment_id, 'limitValue': 100, 'cleanupInterval': 'calendar_month', 'model': ['test-model']})
+                path = '/api/default-user-limits/' + limit_id
+                patch(limit, {'limitValue': 250})
+                wait('Default limit update', lambda: collection('/api/default-user-limits', limit_id)['limitValue'] == 250)
+                api(path, {'limitValue': 125}, 'PATCH')
+                wait('Default limit drift repair', lambda: collection('/api/default-user-limits', limit_id)['limitValue'] == 250)
+                delete(limit)
+                if collection('/api/default-user-limits', limit_id) is not None:
+                    raise RuntimeError('Default limit survived deletion')
+                delete(environment)
+                record('DefaultUserLimit', scope, create='passed', update='passed', drift_repair='passed', delete='passed')
+
+                parent, parent_id, _ = create(scope, 'agent', 'Agent', 'agents', {'name': 'cp-hook-parent-' + run + '-' + scope})
+                hook, hook_id, _ = create(scope, 'agent', 'Hook', 'hooks',
+                    {'agentId': parent_id, 'event': 'pre_tool_use', 'fileName': 'validate.py', 'content': 'print("initial")', 'enabled': False, 'requirements': []})
+                hook_id = hook_id.split(':', 1)[0]
+                path = '/api/hooks/' + hook_id
+                listing = '/api/hooks?agentId=' + parent_id
+                patch(hook, {'content': 'print("updated")'})
+                wait('Hook update', lambda: collection(listing, hook_id)['content'] == 'print("updated")')
+                api(path, {'content': 'print("drift")'}, 'PUT')
+                wait('Hook drift repair', lambda: collection(listing, hook_id)['content'] == 'print("updated")')
+                delete(hook)
+                if collection(listing, hook_id) is not None:
+                    raise RuntimeError('Hook survived deletion')
+                delete(parent)
+                record('Hook', scope, create='passed', update='passed', drift_repair='passed', delete='passed', execution='not_invoked')
+
+                account, account_id, _ = create(scope, 'identity', 'ServiceAccount', 'serviceaccounts',
+                    {'name': 'cp-account-' + run + '-' + scope, 'role': 'member', 'disabled': False})
+                account_path = '/api/service-accounts/' + account_id
+                patch(account, {'name': 'Updated account ' + run})
+                wait('Account update', lambda: api(account_path)[1]['name'] == 'Updated account ' + run)
+                api(account_path, {'disabled': True}, 'PATCH')
+                wait('Account disabled drift repair', lambda: not api(account_path)[1]['disabled'])
+                token_lease, token_id, obj = create(scope, 'credential', 'ServiceAccountToken', 'serviceaccounttokens',
+                    {'serviceAccountId': account_id, 'name': 'cp-token-' + run, 'expiresIn': 3600, 'disabled': False})
+                token_uuid = token_id.split(':')[1]
+                token_path = account_path + '/tokens/' + token_uuid
+                connection_name = token_lease[2] + '-connection'
+                def issued_token():
+                    value = json.loads(kube('-n', args.namespace, 'get', 'secret', connection_name, '-o', 'json'))
+                    return __import__('base64').b64decode(value['data']['attribute.token']).decode()
+                secret_value = wait('Token connection secret publication', issued_token)
+                def token_auth(expected):
+                    req = urllib.request.Request(args.api_url.rstrip('/') + '/api/organization', headers={'Authorization': secret_value})
+                    try:
+                        with opener.open(req, timeout=20) as response:
+                            return response.status == expected
+                    except urllib.error.HTTPError as error:
+                        return error.code == expected
+                if not token_auth(200) or secret_value in json.dumps(obj.get('status', {})):
+                    raise RuntimeError('Issued token failed authentication or leaked into status')
+                patch(token_lease, {'name': 'Updated token ' + run})
+                wait('Token metadata update', lambda: next(item for item in api(account_path)[1]['tokens'] if item['id'] == token_uuid)['name'] == 'Updated token ' + run)
+                if issued_token() != secret_value:
+                    raise RuntimeError('Metadata update changed the issued token secret')
+                api(token_path, {'name': 'Out of band token'}, 'PATCH')
+                wait('Token drift repair', lambda: next(item for item in api(account_path)[1]['tokens'] if item['id'] == token_uuid)['name'] == 'Updated token ' + run)
+                patch(token_lease, {'disabled': True})
+                wait('Token disablement', lambda: token_auth(401))
+                delete(token_lease)
+                if any(item['id'] == token_uuid for item in api(account_path)[1]['tokens']) or not token_auth(401):
+                    raise RuntimeError('Deleted token still exists or authenticates')
+                record('ServiceAccountToken', scope, create='passed', authentication='passed', update='passed', drift_repair='passed', secret_preserved='passed', secret_absent_from_status=True, disable='passed', delete='passed', revoked_authentication=401)
+                delete(account)
+                if api(account_path)[0] != 404:
+                    raise RuntimeError('Service account survived deletion')
+                record('ServiceAccount', scope, create='passed', update='passed', drift_repair='passed', delete='passed')
+
+                gateway, gateway_id, _ = create(scope, 'mcp', 'Gateway', 'gateways',
+                    {'name': 'cp-delegation-gateway-' + run + '-' + scope, 'accessAllSubagents': False})
+                path = '/api/agents/' + gateway_id
+                patch(gateway, {'accessAllSubagents': True})
+                wait('Gateway subagent control', lambda: api(path)[1]['accessAllSubagents'])
+                api(path, {'accessAllSubagents': False}, 'PUT')
+                wait('Gateway subagent control drift repair', lambda: api(path)[1]['accessAllSubagents'])
+                delete(gateway)
+                record('GatewaySubagentControl', scope, create='passed', update='passed', drift_repair='passed', delete='passed')
+
+                catalog, catalog_id, _ = create(scope, 'mcp', 'RegistryCatalogItem', 'registrycatalogitems',
+                    {'name': 'cp-hibernation-' + run + '-' + scope, 'multitenant': False,
+                     'localConfig': {'command': 'npx', 'arguments': ['-y', '@modelcontextprotocol/server-filesystem', '/tmp']}})
+                keys_status, api_keys = api('/api/api-keys')
+                owners = {item['userId'] for item in api_keys} if keys_status == 200 else set()
+                if len(owners) != 1:
+                    raise RuntimeError('Unable to resolve one owner from the authenticated user API-key list')
+                caller = owners.pop()
+                installation, installation_id, _ = create(scope, 'mcp', 'ServerInstallation', 'serverinstallations',
+                    {'name': 'cp-hibernation-' + run + '-' + scope, 'catalogId': catalog_id,
+                     'scope': 'personal', 'userId': caller, 'hibernationMode': 'disabled'})
+                path = '/api/mcp_server/' + installation_id
+                if api(path)[1]['ownerId'] != caller or api(path)[1]['hibernationMode'] != 'disabled':
+                    raise RuntimeError('Personal owner or initial hibernation override was not persisted')
+                patch(installation, {'hibernationMode': 'enabled'})
+                wait('Installation hibernation update', lambda: api(path)[1]['hibernationMode'] == 'enabled')
+                api(path + '/reinstall', {'hibernationMode': 'inherit'}, 'POST')
+                wait('Installation hibernation drift repair', lambda: api(path)[1]['hibernationMode'] == 'enabled')
+                if observation(installation)['metadata']['annotations']['crossplane.io/external-name'] != installation_id:
+                    raise RuntimeError('Hibernation update replaced the installation')
+                delete(installation)
+                if api(path)[0] != 404:
+                    raise RuntimeError('Installation survived deletion')
+                delete(catalog)
+                record('InstallationControls', scope, create='passed', personal_user='passed', update='passed', drift_repair='passed', identity_preserved=True, delete='passed')
 
             if 'llm' in scope_cases:
                 secret_name = 'cp-proof-headers-' + scope + '-' + run
@@ -478,6 +626,8 @@ def main():
                 cases = [
                     ('agent', 'Agent', 'agents', 'agent', {}),
                     ('mcp', 'Gateway', 'gateways', 'mcpGateway', {}),
+                    ('llm', 'ProxyProfile', 'proxyprofiles', 'agent', {}),
+                    ('identity', 'ServiceAccount', 'serviceaccounts', 'serviceAccount', {'role': 'member'}),
                     ('project', 'Project', 'projects', 'project', {}),
                     ('knowledge', 'KnowledgeBase', 'knowledgebases', 'knowledgeBase', {}),
                     ('mcp', 'RegistryCatalogItem', 'registrycatalogitems', 'mcpRegistry', {'remoteConfig': {'url': 'http://127.0.0.1:19999/mcp'}}),
@@ -516,7 +666,7 @@ def main():
                             code, definitions = api('/api/credentials')
                             return code == 200 and any(item['key'] == identifier and item[metadata_field] == updated_name for item in definitions)
                         prefix = {'agent': '/api/agents/', 'mcpGateway': '/api/agents/', 'project': '/api/projects/',
-                                  'knowledgeBase': '/api/knowledge-bases/', 'mcpRegistry': '/api/internal_mcp_catalog/',
+                                  'knowledgeBase': '/api/knowledge-bases/', 'mcpRegistry': '/api/internal_mcp_catalog/', 'serviceAccount': '/api/service-accounts/',
                                   'skill': '/api/skills/', 'llmProviderApiKey': '/api/llm-provider-api-keys/'}[resource_type]
                         code, current = api(prefix + identifier)
                         return code == 200 and current[metadata_field] == updated_name

@@ -75,5 +75,19 @@ class AuditTests(unittest.TestCase):
             self.assertIn('newCapability', audit.markdown(report))
 
 
+    def test_registered_subtypes_share_source_without_literal_metadata(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for directory in ['internal/client', 'internal/provider', 'crossplane/config']:
+                (root / directory).mkdir(parents=True)
+            (root / 'internal/provider/resource_gateway.go').write_text('resp.TypeName = req.ProviderTypeName + resourceSuffix()')
+            (root / 'crossplane/config/external_name.go').write_text('"archestra_gateway": identifier\n"archestra_profile": identifier')
+            contract = {'resource_source': 'internal/provider/resource_gateway.go', 'import_implemented': True, 'api_methods': [], 'wire_fields': {}}
+            report = audit.audit(root, {'paths': {}}, wire_contracts={'archestra_gateway': contract, 'archestra_profile': contract})
+            self.assertEqual(report['terraform_count'], 2)
+            self.assertEqual(report['crossplane_configured_count'], 2)
+            self.assertTrue(all(item['import_implemented'] for item in report['resources']))
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -72,6 +72,7 @@ func readAPIVersion(ctx context.Context, httpClient *http.Client, baseURL string
 	}
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
+	// #nosec G704 -- The practitioner explicitly configures the API destination; no remote response supplies it.
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
 	if err != nil {
 		return "", err
@@ -80,6 +81,7 @@ func readAPIVersion(ctx context.Context, httpClient *http.Client, baseURL string
 	// page or another host. Reuse the configured transport and its TLS settings.
 	probe := *httpClient
 	probe.CheckRedirect = func(_ *http.Request, _ []*http.Request) error { return http.ErrUseLastResponse }
+	// #nosec G704 -- This unauthenticated probe uses the configured API destination and refuses all redirects.
 	response, err := probe.Do(request)
 	if err != nil {
 		return "", err

@@ -21,21 +21,24 @@ import (
 type wireSpec interface{ AttrSpecs() []provider.AttrSpec }
 
 type contract struct {
-	APIMethods      []string          `json:"api_methods"`
-	WireFields      map[string]string `json:"wire_fields"`
-	SyntheticFields []string          `json:"synthetic_fields"`
+	ResourceSource    string            `json:"resource_source"`
+	ImportImplemented bool              `json:"import_implemented"`
+	APIMethods        []string          `json:"api_methods"`
+	WireFields        map[string]string `json:"wire_fields"`
+	SyntheticFields   []string          `json:"synthetic_fields"`
 }
 
 func main() {
 	ctx := context.Background()
 	p := provider.New("audit")()
 	contracts := map[string]contract{}
-	methods := resourceAPIMethods()
+	methods, sources := resourceAPIMethods()
 	for _, newResource := range p.Resources(ctx) {
 		r := newResource()
 		var meta resource.MetadataResponse
 		r.Metadata(ctx, resource.MetadataRequest{ProviderTypeName: "archestra"}, &meta)
-		entry := contract{APIMethods: methods[reflect.TypeOf(r).Elem().Name()], WireFields: map[string]string{}, SyntheticFields: []string{}}
+		_, imports := r.(resource.ResourceWithImportState)
+		entry := contract{ResourceSource: sources[reflect.TypeOf(r).Elem().Name()], ImportImplemented: imports, APIMethods: methods[reflect.TypeOf(r).Elem().Name()], WireFields: map[string]string{}, SyntheticFields: []string{}}
 		if specified, ok := r.(wireSpec); ok {
 			for _, spec := range specified.AttrSpecs() {
 				if spec.Kind == provider.Synthetic {
@@ -57,7 +60,8 @@ func main() {
 	}
 }
 
-func resourceAPIMethods() map[string][]string {
+func resourceAPIMethods() (map[string][]string, map[string]string) {
+	sources := map[string]string{}
 	result := map[string][]string{}
 	files, err := filepath.Glob("internal/provider/*.go")
 	if err != nil {
@@ -84,6 +88,9 @@ func resourceAPIMethods() map[string][]string {
 			kind, ok := pointer.X.(*ast.Ident)
 			if !ok {
 				continue
+			}
+			if fn.Name.Name == "Metadata" {
+				sources[kind.Name] = file
 			}
 			ast.Inspect(fn.Body, func(node ast.Node) bool {
 				selector, ok := node.(*ast.SelectorExpr)
@@ -118,5 +125,5 @@ func resourceAPIMethods() map[string][]string {
 		}
 		result[name] = unique
 	}
-	return result
+	return result, sources
 }

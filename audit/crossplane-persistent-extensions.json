@@ -1,0 +1,163 @@
+{
+  "run_id": "94d3f891",
+  "terraform_sha256": "6d48ee066822af7e4dca7c5030a3e9956996a4d5af43fdf10381543bfc1f5209",
+  "controller_sha256": "86f4a0a257a23a6f3dc57f172c81c175c51d87337becee06a44e9b17123bd9f3",
+  "results": [
+    {
+      "resource": "ProxyProfile",
+      "scope": "cluster",
+      "create": "passed",
+      "subtype": "profile",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Directory",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "DefaultUserLimit",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Hook",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "execution": "not_invoked"
+    },
+    {
+      "resource": "ServiceAccountToken",
+      "scope": "cluster",
+      "create": "passed",
+      "authentication": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "secret_preserved": "passed",
+      "secret_absent_from_status": true,
+      "disable": "passed",
+      "delete": "passed",
+      "revoked_authentication": 401
+    },
+    {
+      "resource": "ServiceAccount",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "GatewaySubagentControl",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "InstallationControls",
+      "scope": "cluster",
+      "create": "passed",
+      "personal_user": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "identity_preserved": true,
+      "delete": "passed"
+    },
+    {
+      "resource": "ProxyProfile",
+      "scope": "namespaced",
+      "create": "passed",
+      "subtype": "profile",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Directory",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "DefaultUserLimit",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Hook",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "execution": "not_invoked"
+    },
+    {
+      "resource": "ServiceAccountToken",
+      "scope": "namespaced",
+      "create": "passed",
+      "authentication": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "secret_preserved": "passed",
+      "secret_absent_from_status": true,
+      "disable": "passed",
+      "delete": "passed",
+      "revoked_authentication": 401
+    },
+    {
+      "resource": "ServiceAccount",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "GatewaySubagentControl",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "InstallationControls",
+      "scope": "namespaced",
+      "create": "passed",
+      "personal_user": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "identity_preserved": true,
+      "delete": "passed"
+    }
+  ],
+  "cleanup": "passed",
+  "api_spec_sha256": "d88e74f5d3633eaeaf53e01c1c32a32d6e3fe013864d37e636324aac5633f73e",
+  "api_version": "1.4.0-rc.48",
+  "outcome": "passed",
+  "registered_families": 35,
+  "new_family_lifecycles": 12,
+  "existing_control_lifecycles": 4,
+  "evidence_scope": "Six new families and two existing-resource controls in both scopes. Historical 29-family evidence remains tied to its earlier binaries.",
+  "source_evidence_sha256": "143cfa6be5f9b4e323ea6b437f73f234e6487ffafcbcb5b4d76a75362bddd33e",
+  "candidate_boundary": "Recorded binary hashes predate compatibility commit ff13bdd. Combined-head unit/lint and exact-head CI are separate; final candidate repetition remains required."
+}

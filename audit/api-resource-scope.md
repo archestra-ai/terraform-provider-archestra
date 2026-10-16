@@ -1,15 +1,22 @@
 # Provider resource scope and API review
 
-The current Terraform registry contains 29 families, all configured for both
-Crossplane scopes and backed by same-candidate lifecycle proof against published API
-1.4.0-rc.48: 58 family lifecycles plus two project-instructions checks. The latest
-candidate adds gateway skill publication/exclusions, project instructions and
-knowledge-source exclusions. Atomic delegation additionally passes a two-process
-Terraform lost-update regression and both-scope drift/deletion probes against the
-published API 1.4.0-rc.48, following Archestra PR #9038. The registered-family proof
-uses identical native/controller hashes and a canonical API snapshot; guarded
-resumption after test-environment recovery is recorded. Complete Archestra platform
-API coverage remains open.
+The current registry contains 35 families, all configured for both Crossplane
+scopes. The historical 29-family proof remains in `crossplane-rc48-candidate.json`;
+the six-family expansion and two existing-resource control probes pass in both
+scopes in `crossplane-persistent-extensions.json`. Those evidence sets have distinct
+recorded candidate hashes. Both actual Linux runtime images and their embedded
+xpkgs also pass `runtime-package-validation.json`. Final full-family repetition,
+normal protected review and publication remain open.
+
+The [lifecycle decisions](api-lifecycle-decisions.md) are the authoritative current
+implementation queue. They classify all 15 additional API review areas, including
+consolidated OAuth client facades and the platform-owned LLM proxy singleton.
+The original 90 raw unmapped request-field occurrences are fully classified in
+`request-field-review.md`; they were not 90 confirmed missing capabilities. The
+expanded 35-family inventory has 122 raw occurrences, all classified in
+`current-request-field-review.json`. Additional routes and shared profile schemas
+increase that raw count. Gateway subagent controls and installation personal-user
+selection/hibernation now have native and both-scope runtime regressions.
 
 ## Current release resource families
 
@@ -26,14 +33,15 @@ The detailed schema, import, sensitivity, request-field and executed-runtime rec
 are linked from `README.md`. Schema guards do not replace runtime proof. Provider
 keys now include shared ownership and SigV4 inputs, teams include role assignments,
 models include embedding dimensions, and runtime definitions include GitLab host
-management. Creation-time grants are now configurable on eight families. The
+management. Creation-time grants are configurable on ten families. The
 published rc.48 full Terraform suite passes 118 acceptance tests with zero skips;
 all 16 retained v2.4.1 resource families preserve identity with no-op migration
 plans. The 22-case Crossplane creation-grant matrix also passes in both scopes with
-normal cleanup. Registered-family repetition is complete; runtime-image packaging
-and full platform API extensions remain release gates.
+normal cleanup. Registered-family repetition is complete; full platform API extensions and final candidate repetition remain release gates.
 
 ## Additional persistent API lifecycles
+
+This original review queue is retained for traceability; use [current decisions](api-lifecycle-decisions.md) for implemented status and exclusions.
 
 These are remaining requested persistent API lifecycles, not counted as covered.
 Completing the full platform coverage requires resource design, implementation and

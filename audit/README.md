@@ -1,19 +1,21 @@
 # Provider modernization audit
 
-The sections below retain the initial baseline. Current v3 configuration is
-**29/29 resources in both scopes**, with real both-scope lifecycle proof for
-**29/29**. See [the current inventory](provider-v3-inventory.md) and
-[same-candidate rc.48 lifecycle proof](crossplane-rc48-candidate.json).
-The published rc.48 full Terraform suite passes 118 acceptance tests with no skips.
-All 16 retained v2.4.1 resource families pass no-op migration probes. The 22-case
-creation-grant matrix and Agent CRD orphan/adoption migration also pass.
-Full platform API extensions, field review, runtime-image packaging, and normal
-review/release gates remain open.
+Current v3 configuration covers **35 registered resources in both scopes**.
+The [current inventory](provider-v3-current-inventory.md) records the schema and
+API call coverage. The [29-family baseline](crossplane-rc48-candidate.json) and
+[six-family expansion](crossplane-persistent-extensions.json) have separate recorded
+binary hashes and real both-scope lifecycle evidence. Both Linux runtime images
+and embedded xpkgs pass [packaging and actual image reconciliation](runtime-package-validation.json).
 
+The [API lifecycle decisions](api-lifecycle-decisions.md) track every broader
+persistent API area. [Request-field review](request-field-review.md) classifies all
+90 baseline raw occurrences; `current-request-field-review.json` classifies all
+122 expansion occurrences. These raw counts include manual encoding, other agent
+subtypes and server-owned state. They are not counts of missing capabilities.
+The expansion full native suite passes 126 acceptance tests with zero failures or skips (`persistent-extensions-native-acceptance.json`). New profile/service-account creation grants pass in both scopes (`crossplane-persistent-extension-grants.json`). Final full-candidate repetition, remaining justified API implementations, normal
+protected review and publication remain open. The sections below retain the
+original audit baseline for traceability.
 
-The [API lifecycle scope review](api-resource-scope.md) distinguishes the verified
-29-resource provider denominator from additional persistent API areas. It must
-not be interpreted as 100% coverage of every Archestra API lifecycle.
 
 Audit inputs: Terraform `2e34cde000894e9c96793da0ec1f2c90b9193636` (v2.4.0),
 Archestra `35e36afd3f8a29cd568bc486a9e448bb29028414` (main, platform 1.4.0-rc.43).

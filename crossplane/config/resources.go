@@ -7,7 +7,7 @@ const mcpGroup = "mcp"
 
 // ConfigureResources applies the same API names and references in both scopes.
 func ConfigureResources(p *ujconfig.Provider) {
-	for _, name := range []string{"archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_mcp_registry_catalog_item", "archestra_skill", "archestra_runtime_credential", "archestra_llm_provider_api_key"} {
+	for _, name := range []string{"archestra_service_account", "archestra_llm_proxy_profile", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_mcp_registry_catalog_item", "archestra_skill", "archestra_runtime_credential", "archestra_llm_provider_api_key"} {
 		p.AddResourceConfigurator(name, func(r *ujconfig.Resource) {
 			// Keep creation inputs in initProvider so later changes stay ignored.
 			r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "initial_grants")
@@ -61,6 +61,28 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.References["project_id"] = ujconfig.Reference{TerraformName: "archestra_project"}
 	})
 
+	p.AddResourceConfigurator("archestra_agent_hook", func(r *ujconfig.Resource) {
+		r.ShortGroup = "agent"
+		r.Kind = "Hook"
+		r.References["agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
+	})
+	p.AddResourceConfigurator("archestra_default_user_limit", func(r *ujconfig.Resource) {
+		r.ShortGroup = "limit"
+		r.Kind = "DefaultUserLimit"
+		r.References["environment_id"] = ujconfig.Reference{TerraformName: "archestra_environment"}
+	})
+	p.AddResourceConfigurator("archestra_knowledge_directory", func(r *ujconfig.Resource) { r.ShortGroup = "knowledge"; r.Kind = "Directory" })
+	p.AddResourceConfigurator("archestra_llm_proxy_profile", func(r *ujconfig.Resource) {
+		r.ShortGroup = "llm"
+		r.Kind = "ProxyProfile"
+		r.References["identity_provider_id"] = ujconfig.Reference{TerraformName: "archestra_identity_provider"}
+	})
+	p.AddResourceConfigurator("archestra_service_account", func(r *ujconfig.Resource) { r.ShortGroup = "identity"; r.Kind = "ServiceAccount" })
+	p.AddResourceConfigurator("archestra_service_account_token", func(r *ujconfig.Resource) {
+		r.ShortGroup = "credential"
+		r.Kind = "ServiceAccountToken"
+		r.References["service_account_id"] = ujconfig.Reference{TerraformName: "archestra_service_account"}
+	})
 	p.AddResourceConfigurator("archestra_environment", func(r *ujconfig.Resource) { r.ShortGroup = "environment"; r.Kind = "Environment" })
 	p.AddResourceConfigurator("archestra_agent", func(r *ujconfig.Resource) {
 		r.ShortGroup = agentGroup

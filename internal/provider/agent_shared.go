@@ -28,6 +28,7 @@ type agentAPIResponse struct {
 	IncomingEmailSecurityMode  string              `json:"incomingEmailSecurityMode"`
 	ConsiderContextUntrusted   bool                `json:"considerContextUntrusted"`
 	ToolExposureMode           *string             `json:"toolExposureMode"`
+	AccessAllSubagents         bool                `json:"accessAllSubagents"`
 	AccessAllTools             bool                `json:"accessAllTools"`
 	MissingCredentialBehavior  string              `json:"missingCredentialBehavior"`
 	ModelId                    *openapi_types.UUID `json:"modelId"`

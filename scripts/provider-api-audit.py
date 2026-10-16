@@ -58,14 +58,23 @@ def audit(root, spec, terraform_schema=None, wire_contracts=None):
     ))
     resources = []
     referenced = set()
+    declared = {}
     for file in sorted((root / "internal/provider").glob("resource_*.go")):
         if file.name.endswith("_test.go"):
             continue
         source = file.read_text()
         name = re.search(r'TypeName\s*=\s*req.ProviderTypeName\s*\+\s*"(_[a-z_]+)"', source)
-        if not name:
-            continue
-        name = "archestra" + name[1]
+        if name:
+            declared["archestra" + name[1]] = file
+    if wire_contracts is not None:
+        for name, contract in wire_contracts.items():
+            if contract.get("resource_source"):
+                declared[name] = root / contract["resource_source"]
+            elif name not in declared:
+                raise ValueError("Registered resource has no auditable source: " + name)
+        declared = {name: declared[name] for name in wire_contracts}
+    for name, file in sorted(declared.items()):
+        source = file.read_text()
         calls = sorted(set(re.findall(r'r.client\.(\w+?)(?:WithBody)?WithResponse\(', source)))
         contract = (wire_contracts or {}).get(name)
         if contract is not None:
@@ -102,7 +111,7 @@ def audit(root, spec, terraform_schema=None, wire_contracts=None):
             "source": str(file.relative_to(root)),
             "crossplane_configured": name in mappings,
             "endpoints": endpoints,
-            "import_implemented": " ImportState(" in source,
+            "import_implemented": contract.get("import_implemented", " ImportState(" in source) if contract else " ImportState(" in source,
             "acceptance_tests_declared": len(re.findall(r"func TestAcc", test_source)),
             "acceptance_execution": "unverified",
             "crossplane_reconciliation": "unverified",

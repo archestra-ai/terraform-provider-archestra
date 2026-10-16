@@ -1,0 +1,46 @@
+{
+  "run_id": "eb987d71",
+  "terraform_sha256": "6d48ee066822af7e4dca7c5030a3e9956996a4d5af43fdf10381543bfc1f5209",
+  "controller_sha256": "86f4a0a257a23a6f3dc57f172c81c175c51d87337becee06a44e9b17123bd9f3",
+  "results": [
+    {
+      "resource": "ProxyProfileInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ServiceAccountInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ProxyProfileInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ServiceAccountInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    }
+  ],
+  "cleanup": "passed",
+  "api_spec_sha256": "d88e74f5d3633eaeaf53e01c1c32a32d6e3fe013864d37e636324aac5633f73e",
+  "api_version": "1.4.0-rc.48",
+  "outcome": "passed",
+  "evidence_scope": "Two new grant-bearing families in both scopes. The historical eight-family grant matrix has its own candidate hashes.",
+  "source_evidence_sha256": "0e521d4b3f1b87a230c046dbf487ce253db8ec2db7080fecb854bc9c4530be7b",
+  "candidate_boundary": "Recorded binary hashes predate compatibility commit ff13bdd. Combined-head unit/lint and exact-head CI are separate; final candidate repetition remains required."
+}

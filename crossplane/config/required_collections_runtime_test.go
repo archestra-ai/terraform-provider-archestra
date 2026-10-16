@@ -2,6 +2,7 @@ package config_test
 
 import (
 	"encoding/json"
+	"github.com/archestra-ai/provider-archestra/config"
 	"os"
 	"path/filepath"
 	"testing"
@@ -170,8 +171,14 @@ func TestGeneratedInitialGrantCRDsKeepUnmanagedInputsOptional(t *testing.T) {
 			checked++
 		}
 	}
-	if checked != 16 {
-		t.Fatalf("expected both-scope creation-grant schemas for eight families, checked %d", checked)
+	expected := 0
+	for _, r := range config.GetProvider().Resources {
+		if _, ok := r.TerraformResource.Schema["initial_grants"]; ok {
+			expected += 2
+		}
+	}
+	if checked != expected || expected == 0 {
+		t.Fatalf("expected %d both-scope creation-grant schemas, checked %d", expected, checked)
 	}
 }
 

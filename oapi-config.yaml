@@ -65,6 +65,7 @@ output-options:
     - getTeamMembers
     - getToolsWithAssignments
     - installMcpServer
+    - reinstallMcpServer
     - listEnvironments
     - listRuntimeCredentials
     - removeTeamExternalGroup
@@ -116,3 +117,22 @@ output-options:
     - updateConnectionSettings
     - updateIntegrationSettings
     - updateDefaultEnvironment
+    - createHook
+    - updateHook
+    - deleteHook
+    - getHooks
+    - createDefaultUserLimit
+    - updateDefaultUserLimit
+    - deleteDefaultUserLimit
+    - listDefaultUserLimits
+    - createKnowledgeDirectory
+    - updateKnowledgeDirectory
+    - deleteKnowledgeDirectory
+    - getKnowledgeDirectories
+    - createServiceAccount
+    - getServiceAccount
+    - updateServiceAccount
+    - deleteServiceAccount
+    - createServiceAccountToken
+    - updateServiceAccountToken
+    - deleteServiceAccountToken

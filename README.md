@@ -11,13 +11,18 @@ schema and shipped together on every `vX.Y.Z` tag:
 End users install from those. This README walks a new contributor
 through extending the provider.
 
+API versions are independent of provider versions. See the [compatibility matrix](COMPATIBILITY.md) for the required API capability floor and exact tested releases.
+
 ## Resource coverage
 
-This v3 branch is under development. The current Terraform schema registers 26
-resources and all 26 are configured in both Crossplane scopes. Real lifecycle
-proof currently covers all 26 resources in both scopes. Remaining field, migration
-and packaging gates are listed in [the evidence report](audit/v3-runtime-evidence.json).
-This count does not establish complete coverage of the wider Archestra API.
+This v3 branch is under development. The schema registers 35 resource families,
+all configured in both Crossplane scopes. The [29-family baseline](audit/crossplane-rc48-candidate.json)
+and [six-family expansion](audit/crossplane-persistent-extensions.json) each have
+real both-scope lifecycle evidence on their recorded binaries. Both Linux runtime
+images and embedded xpkgs pass [packaging and image reconciliation checks](audit/runtime-package-validation.json).
+[Further persistent API work](audit/api-lifecycle-decisions.md), final candidate
+repetition, normal review and publication remain open. This count does not establish
+complete coverage of the wider Archestra API.
 
 | Terraform | Crossplane group / kind |
 |---|---|
@@ -47,6 +52,16 @@ This count does not establish complete coverage of the wider Archestra API.
 | `archestra_schedule_trigger` | `schedule` / `Trigger` |
 | `archestra_team` | `team` / `Team` |
 | `archestra_team_external_group` | `team` / `ExternalGroup` |
+
+| `archestra_agent_hook` | `agent` / `Hook` |
+| `archestra_agent_knowledge_source_exclusions` | `agent` / `KnowledgeSourceExclusions` |
+| `archestra_default_user_limit` | `limit` / `DefaultUserLimit` |
+| `archestra_knowledge_directory` | `knowledge` / `Directory` |
+| `archestra_llm_proxy_profile` | `llm` / `ProxyProfile` |
+| `archestra_mcp_gateway_skill_publication` | `mcp` / `SkillPublication` |
+| `archestra_mcp_gateway_skill_exclusions` | `mcp` / `SkillExclusions` |
+| `archestra_service_account` | `identity` / `ServiceAccount` |
+| `archestra_service_account_token` | `credential` / `ServiceAccountToken` |
 
 Seven Terraform data sources remain available for lookups and audit data.
 Crossplane resources use `<group>.archestra.crossplane.io` in cluster scope and

@@ -34,17 +34,19 @@ resource "archestra_mcp_gateway" "test" {
 name="tf-current-gateway-controls"
 environment_id=archestra_environment.test.id
 `
-	initial := base + `access_all_tools=true
+	initial := base + `access_all_subagents=false
+access_all_tools=true
 missing_credential_behavior="block"
 }`
-	updated := base + `access_all_tools=false
+	updated := base + `access_all_subagents=true
+access_all_tools=false
 missing_credential_behavior="warn"
 }`
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: initial, Check: resource.TestCheckResourceAttr("archestra_mcp_gateway.test", "access_all_tools", "true")},
 		{ResourceName: "archestra_mcp_gateway.test", ImportState: true, ImportStateVerify: true},
 		{Config: initial, PlanOnly: true},
-		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_mcp_gateway.test", "missing_credential_behavior", "warn")},
+		{Config: updated, Check: resource.ComposeTestCheckFunc(resource.TestCheckResourceAttr("archestra_mcp_gateway.test", "missing_credential_behavior", "warn"), resource.TestCheckResourceAttr("archestra_mcp_gateway.test", "access_all_subagents", "true"))},
 		{Config: updated, PlanOnly: true},
 	}})
 }

@@ -26,7 +26,8 @@ var _ resource.ResourceWithImportState = &McpGatewayResource{}
 func NewMcpGatewayResource() resource.Resource { return &McpGatewayResource{} }
 
 type McpGatewayResource struct {
-	client *client.ClientWithResponses
+	agentType string
+	client    *client.ClientWithResponses
 }
 
 // McpGatewayResourceModel is the schema for an Archestra MCP gateway. The
@@ -40,6 +41,7 @@ type McpGatewayResourceModel struct {
 	DeletedAt                 types.String `tfsdk:"deleted_at"`
 	LastUsedAt                types.String `tfsdk:"last_used_at"`
 	LatestVersion             types.Int64  `tfsdk:"latest_version"`
+	AccessAllSubagents        types.Bool   `tfsdk:"access_all_subagents"`
 	AccessAllTools            types.Bool   `tfsdk:"access_all_tools"`
 	MissingCredentialBehavior types.String `tfsdk:"missing_credential_behavior"`
 	EnvironmentId             types.String `tfsdk:"environment_id"`
@@ -59,7 +61,7 @@ type McpGatewayResourceModel struct {
 }
 
 func (r *McpGatewayResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mcp_gateway"
+	resp.TypeName = req.ProviderTypeName + "_" + r.resourceSuffix()
 }
 
 func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
@@ -67,7 +69,8 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 		Version:             1,
 		MarkdownDescription: "Unified MCP endpoint that aggregates installed tools and (optionally) knowledge sources, with optional inbound JWT auth via `identity_provider_id`.",
 		Attributes: map[string]schema.Attribute{
-			"initial_grants": initialGrantsAttribute(),
+			"initial_grants":       initialGrantsAttribute(),
+			"access_all_subagents": schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether callers can delegate to any accessible internal agent, subject to subagent exclusions."},
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "MCP gateway identifier",
@@ -128,6 +131,10 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 	for name, attribute := range currentGatewayAttributes() {
 		resp.Schema.Attributes[name] = attribute
 	}
+	if r.apiAgentType() == "profile" {
+		resp.Schema.MarkdownDescription = "External LLM API gateway profile for tool routing, policy enforcement and inbound identity; the platform-owned LLM Proxy singleton is managed by Archestra."
+	}
+
 }
 
 func (r *McpGatewayResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -151,8 +158,8 @@ func (r *McpGatewayResource) Create(ctx context.Context, req resource.CreateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	patch["agentType"] = "mcp_gateway"
-	LogPatch(ctx, "archestra_mcp_gateway Create", patch, mcpGatewayAttrSpec)
+	patch["agentType"] = r.apiAgentType()
+	LogPatch(ctx, "archestra_"+r.resourceSuffix()+" Create", patch, mcpGatewayAttrSpec)
 
 	body, err := json.Marshal(patch)
 	if err != nil {
@@ -248,7 +255,7 @@ func (r *McpGatewayResource) Update(ctx context.Context, req resource.UpdateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	LogPatch(ctx, "archestra_mcp_gateway Update", patch, mcpGatewayAttrSpec)
+	LogPatch(ctx, "archestra_"+r.resourceSuffix()+" Update", patch, mcpGatewayAttrSpec)
 
 	body, err := json.Marshal(patch)
 	if err != nil {
@@ -331,6 +338,11 @@ func (r *McpGatewayResource) flatten(ctx context.Context, data *McpGatewayResour
 	if diags.HasError() {
 		return
 	}
+	if resp.AgentType != "" && resp.AgentType != r.apiAgentType() {
+		diags.AddError("Incorrect Agent Type", "The remote object is not the subtype managed by this resource.")
+		return
+	}
+	data.AccessAllSubagents = types.BoolValue(resp.AccessAllSubagents)
 	data.ID = types.StringValue(resp.Id.String())
 	data.Name = types.StringValue(resp.Name)
 	optionalStringFromAPI(&data.Description, resp.Description)
@@ -372,7 +384,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 	// Legacy visibility/skill projections and secret-storage pointers are not managed.
 	// Gateway records share an agent response, but do not run agent runtimes or inference.
 	return []string{
-		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId", "accessAllSubagents", "activationSkillMode", "activationSkillPolicyRevision", "activationSkillsCount", "llmProviderRequiresPerUserCredential", "modelId", "resolvedLlmModelName", "resolvedLlmProvider", "resolvedLlmProviderKeyName", "runtime", "sandboxAvailable",
+		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId", "activationSkillMode", "activationSkillPolicyRevision", "activationSkillsCount", "llmProviderRequiresPerUserCredential", "modelId", "resolvedLlmModelName", "resolvedLlmProvider", "resolvedLlmProviderKeyName", "runtime", "sandboxAvailable",
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "builtInAgentConfig", "suggestedPrompts",
 		"systemPrompt", "llmModel", "llmApiKeyId", "isDefault", "scope",
@@ -389,6 +401,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 // atomic on the wire (Kind: List).
 var mcpGatewayAttrSpec = []AttrSpec{
 	initialGrantsAttrSpec,
+	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
 	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},
 	{TFName: "missing_credential_behavior", JSONName: "missingCredentialBehavior", Kind: Scalar, OmitOnNull: true},
 	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar, OmitOnNull: false},

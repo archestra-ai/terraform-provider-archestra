@@ -21,6 +21,8 @@ import (
 // Every entry needs a reason — the default of RemoveOnConfigNullList is
 // safer; allowlisting asserts the field has no "remove = clear" semantic.
 var useStateForUnknownAllowlist = map[string]map[string]string{
+	"archestra_service_account":    {"initial_grants": "Creation-only grants are not echoed; permission changes use the permission-policy resource."},
+	"archestra_llm_proxy_profile":  {"initial_grants": "Creation-only grants are not echoed; permission changes use the permission-policy resource."},
 	"archestra_agent":              {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
 	"archestra_mcp_gateway":        {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
 	"archestra_knowledge_base":     {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
@@ -42,8 +44,10 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 		"local_config_secret_id": "computed when the backend auto-creates a BYOS vault reference for inline `local_config` env values; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
 	},
 	"archestra_mcp_server_installation": { //nolint:gosec // G101 false-positive — schema attribute name.
-		"secret_id": "computed when the backend auto-creates a secret to hold inline `user_config_values` / `environment_values`; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
-		"scope":     "visibility scope chosen at Create time (RequiresReplace, backend default \"personal\"); remove-from-config has no clear semantic, and planning null would replace every pre-existing install whose config never set it.",
+		"secret_id":        "computed when the backend auto-creates a secret to hold inline `user_config_values` / `environment_values`; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
+		"user_id":          "Immutable personal-install owner selected on creation; omission preserves the observed owner, while another owner requires replacement.",
+		"hibernation_mode": "Omission preserves the observed override; explicitly set inherit to follow the organization default.",
+		"scope":            "visibility scope chosen at Create time (RequiresReplace, backend default \"personal\"); remove-from-config has no clear semantic, and planning null would replace every pre-existing install whose config never set it.",
 	},
 	"archestra_identity_provider": stickyOidcDerivedEndpoints(
 		// Auto-derived from `discovery_endpoint` on the backend when omitted

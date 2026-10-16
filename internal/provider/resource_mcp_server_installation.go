@@ -101,6 +101,8 @@ type MCPServerResourceModel struct {
 	CatalogID         types.String `tfsdk:"catalog_id"`
 	Scope             types.String `tfsdk:"scope"`
 	TeamID            types.String `tfsdk:"team_id"`
+	UserID            types.String `tfsdk:"user_id"`
+	HibernationMode   types.String `tfsdk:"hibernation_mode"`
 	EnvironmentValues types.Map    `tfsdk:"environment_values"`
 	UserConfigValues  types.Map    `tfsdk:"user_config_values"`
 	SecretID          types.String `tfsdk:"secret_id"`
@@ -197,6 +199,17 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
+			},
+			"user_id": schema.StringAttribute{
+				Optional: true, Computed: true,
+				MarkdownDescription: "Member owning a personal installation; defaults to the caller and requires installation admin permission to select another member.",
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown(), stringplanmodifier.RequiresReplace()},
+			},
+			"hibernation_mode": schema.StringAttribute{
+				Optional: true, Computed: true,
+				MarkdownDescription: "Idle hibernation override: inherit, enabled, or disabled; changing it reinstalls the server while preserving its identity and tool assignments; omission preserves the override, and inherit restores the organization default.",
+				Validators:          []validator.String{stringvalidator.OneOf("inherit", "enabled", "disabled")},
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"environment_values": schema.MapAttribute{
 				MarkdownDescription: "Environment variable values for the MCP server installation",
@@ -319,6 +332,9 @@ func (r *MCPServerResource) ValidateConfig(ctx context.Context, req resource.Val
 	if data.Scope.IsUnknown() || data.TeamID.IsUnknown() {
 		return
 	}
+	if !data.UserID.IsNull() && !data.UserID.IsUnknown() && !data.Scope.IsUnknown() && !data.Scope.IsNull() && data.Scope.ValueString() != "personal" {
+		resp.Diagnostics.AddAttributeError(path.Root("user_id"), "Invalid scope for user_id", "user_id is only valid for personal installations.")
+	}
 	hasTeam := !data.TeamID.IsNull() && data.TeamID.ValueString() != ""
 	scope := data.Scope.ValueString()
 
@@ -376,6 +392,11 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 	requestBody.CatalogId = catalogUUID
+
+	if !data.UserID.IsNull() && !data.UserID.IsUnknown() {
+		value := data.UserID.ValueString()
+		requestBody.UserId = &value
+	}
 
 	if !data.TeamID.IsNull() && !data.TeamID.IsUnknown() {
 		teamId := data.TeamID.ValueString()
@@ -469,6 +490,10 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
 	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
 	data.Scope = types.StringValue(scopeFromResponseBody(apiResp.Body))
+	data.UserID = types.StringNull()
+	if data.Scope.ValueString() == "personal" {
+		data.UserID = types.StringPointerValue(apiResp.JSON200.OwnerId)
+	}
 
 	if apiResp.JSON200.TeamId != nil {
 		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
@@ -485,6 +510,16 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		data.SecretID = types.StringNull()
 	}
 
+	plannedHibernation := data.HibernationMode
+	data.HibernationMode = types.StringValue(string(apiResp.JSON200.HibernationMode))
+	data.Tools = types.ListNull(mcpServerToolObjectType)
+	data.ToolIDByName = types.MapNull(types.StringType)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	if !plannedHibernation.IsNull() && !plannedHibernation.IsUnknown() && !plannedHibernation.Equal(data.HibernationMode) {
+		if !r.setHibernation(ctx, &data, plannedHibernation, &resp.Diagnostics) {
+			return
+		}
+	}
 	tools, toolIDsByName, toolsDiags := r.waitForServerTools(ctx, apiResp.JSON200.Id.String())
 	resp.Diagnostics.Append(toolsDiags...)
 	data.Tools = tools
@@ -538,6 +573,10 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	data.DisplayName = types.StringValue(apiResp.JSON200.Name)
 	data.CatalogID = types.StringValue(apiResp.JSON200.CatalogId.String())
 	data.Scope = types.StringValue(scopeFromResponseBody(apiResp.Body))
+	data.UserID = types.StringNull()
+	if data.Scope.ValueString() == "personal" {
+		data.UserID = types.StringPointerValue(apiResp.JSON200.OwnerId)
+	}
 
 	if apiResp.JSON200.TeamId != nil {
 		data.TeamID = types.StringValue(*apiResp.JSON200.TeamId)
@@ -550,6 +589,8 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	} else {
 		data.SecretID = types.StringNull()
 	}
+
+	data.HibernationMode = types.StringValue(string(apiResp.JSON200.HibernationMode))
 
 	// EnvironmentValues, UserConfigValues, and AccessToken are write-only;
 	// preserve from prior state to avoid spurious diffs.
@@ -583,13 +624,19 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 }
 
 func (r *MCPServerResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	// NOTE: The Archestra API does not support updating MCP servers.
-	// Updates will trigger resource replacement (delete + create).
-	// This function should never be called due to RequiresReplace plan modifiers on all attributes.
-	resp.Diagnostics.AddError(
-		"Update Not Supported",
-		"MCP server updates are not supported by the API. This should have triggered a replacement.",
-	)
+	var data MCPServerResourceModel
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if !r.setHibernation(ctx, &data, data.HibernationMode, &resp.Diagnostics) {
+		return
+	}
+	tools, byName, diags := r.waitForServerTools(ctx, data.ID.ValueString())
+	resp.Diagnostics.Append(diags...)
+	data.Tools, data.ToolIDByName = tools, byName
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+
 }
 
 func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
@@ -832,4 +879,24 @@ func projectMcpServerTools(apiTools []struct {
 		return types.ListNull(mcpServerToolObjectType), types.MapNull(types.StringType), diags
 	}
 	return listValue, mapValue, diags
+}
+
+func (r *MCPServerResource) setHibernation(ctx context.Context, data *MCPServerResourceModel, mode types.String, diags *diag.Diagnostics) bool {
+	id, err := uuid.Parse(data.ID.ValueString())
+	if err != nil {
+		diags.AddError("Invalid ID", err.Error())
+		return false
+	}
+	value := client.ReinstallMcpServerJSONBodyHibernationMode(mode.ValueString())
+	result, err := r.client.ReinstallMcpServerWithResponse(ctx, id, client.ReinstallMcpServerJSONRequestBody{HibernationMode: &value})
+	if err != nil {
+		diags.AddError("MCP Reinstall Failed", err.Error())
+		return false
+	}
+	if result.JSON200 == nil {
+		diags.AddError("MCP Reinstall Failed", fmt.Sprintf("API returned status %d: %s", result.StatusCode(), result.Body))
+		return false
+	}
+	data.HibernationMode = types.StringValue(string(result.JSON200.HibernationMode))
+	return true
 }
