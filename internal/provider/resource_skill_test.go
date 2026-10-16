@@ -12,6 +12,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
@@ -75,5 +76,47 @@ resource "archestra_skill" "test" {
 		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_skill.test", "content", "Hello {{user.name}}; inspect only synthetic fixtures.\n")},
 		{Config: updated, PlanOnly: true},
 		{Config: strings.Replace(updated, `files={"references/README.md"={content="Updated synthetic reference",encoding="utf8"}}`, `files={}`, 1), Check: resource.TestCheckResourceAttr("archestra_skill.test", "files.%", "0")},
+	}})
+}
+
+func TestAccSkillManifestOnlyUpdates(t *testing.T) {
+	name := acctest.RandomWithPrefix("tf-skill-manifest")
+	var identity string
+	config := func(name, description, fields string) string {
+		return fmt.Sprintf(`resource "archestra_skill" "manifest" {
+ name=%q
+ description=%q
+ content="Unchanged synthetic instruction body."
+ files={}
+ environment_ids=[]
+ labels=[]
+ permissions=[]
+ %s
+}`, name, description, fields)
+	}
+	check := func(s *terraform.State) error {
+		row := s.RootModule().Resources["archestra_skill.manifest"].Primary
+		if identity != "" && row.ID != identity {
+			return fmt.Errorf("manifest edit replaced the skill")
+		}
+		identity = row.ID
+		if row.Attributes["latest_version"] != "1" || row.Attributes["content"] != "Unchanged synthetic instruction body." {
+			return fmt.Errorf("manifest-only edit changed content or its version")
+		}
+		return nil
+	}
+	final := config(name+"-renamed", "Updated manifest", "")
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+		{Config: config(name, "Initial manifest", ""), Check: check},
+		{Config: config(name+"-renamed", "Initial manifest", ""), Check: check},
+		{Config: final, Check: check},
+		{Config: config(name+"-renamed", "Updated manifest", `license="MIT"
+ compatibility="linux"
+ agent_name="helper"
+ templated=true
+ metadata={purpose="metadata-only"}
+ allowed_tools=["Read"]`), Check: check},
+		{Config: final, Check: check},
+		{Config: final, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
 	}})
 }

@@ -11778,7 +11778,7 @@
     },
     {
       "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 1,
+      "acceptance_tests_declared": 2,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
       "endpoints": [

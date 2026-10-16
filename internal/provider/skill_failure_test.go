@@ -116,3 +116,65 @@ func TestSkillReadFailuresAndUpdateConflict(t *testing.T) {
 		})
 	}
 }
+
+func TestSkillManifestOnlyEditsReachVersionedUpdate(t *testing.T) {
+	cases := []struct {
+		name string
+		edit func(*SkillResourceModel)
+	}{
+		{"name", func(m *SkillResourceModel) { m.Name = types.StringValue("renamed") }},
+		{"description", func(m *SkillResourceModel) { m.Description = types.StringValue("Changed description") }},
+		{"license", func(m *SkillResourceModel) { m.License = types.StringValue("MIT") }},
+		{"compatibility", func(m *SkillResourceModel) { m.Compatibility = types.StringValue("linux") }},
+		{"agent_name", func(m *SkillResourceModel) { m.AgentName = types.StringValue("helper") }},
+		{"templated", func(m *SkillResourceModel) { m.Templated = types.BoolValue(true) }},
+		{"metadata", func(m *SkillResourceModel) {
+			m.Metadata = types.MapValueMust(types.StringType, map[string]attr.Value{"purpose": types.StringValue("changed")})
+		}},
+		{"allowed_tools", func(m *SkillResourceModel) {
+			m.AllowedTools = types.SetValueMust(types.StringType, []attr.Value{types.StringValue("Read")})
+		}},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			calls := 0
+			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, request *http.Request) {
+				calls++
+				var body struct {
+					Content     string `json:"content"`
+					BaseVersion int    `json:"baseVersion"`
+				}
+				if err := json.NewDecoder(request.Body).Decode(&body); err != nil || !strings.HasPrefix(body.Content, "---\n{") || body.BaseVersion != 1 {
+					t.Error("manifest edit did not carry rendered content and the observed version", err)
+				}
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusConflict)
+				fmt.Fprint(w, `{}`)
+			}))
+			defer server.Close()
+			api, err := client.NewClientWithResponses(server.URL)
+			if err != nil {
+				t.Fatal(err)
+			}
+			r := SkillResource{client: api}
+			var responseSchema resource.SchemaResponse
+			r.Schema(t.Context(), resource.SchemaRequest{}, &responseSchema)
+			before := skillTestModel()
+			state := tfsdk.State{Schema: responseSchema.Schema}
+			if d := state.Set(t.Context(), &before); d.HasError() {
+				t.Fatal(d)
+			}
+			after := before
+			tc.edit(&after)
+			plan := tfsdk.Plan{Schema: responseSchema.Schema}
+			if d := plan.Set(t.Context(), &after); d.HasError() {
+				t.Fatal(d)
+			}
+			var response resource.UpdateResponse
+			r.Update(t.Context(), resource.UpdateRequest{Plan: plan, State: state}, &response)
+			if calls != 1 || !response.Diagnostics.HasError() {
+				t.Fatal("manifest-only update was skipped or conflict was retried", calls, response.Diagnostics)
+			}
+		})
+	}
+}

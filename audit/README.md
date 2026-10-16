@@ -1,14 +1,14 @@
 # Provider modernization audit
 
 
-The v3 review candidate has **29 resources and four data sources**, generated in both Crossplane scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](../MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The [full native acceptance proof](consolidated-native-acceptance.json) records 146 passing cases with zero failures or skips against API 1.4.0-rc.49.
+The v3 review candidate has **29 Terraform resources and four Terraform data sources**. All 29 resources have generated Crossplane types in both scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](../MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The [full native acceptance proof](consolidated-native-acceptance.json) records 147 passing cases with zero failures or skips against API 1.4.0-rc.49.
 
 Current request-field review classifies **172 raw occurrences across 29 owners**,
 with zero unclassified rows. These include manually encoded parent fields and
 server-owned values; they are not a count of missing APIs. Native and Crossplane
 results below retain their original binary boundaries.
 
-The [current organization-defaults runtime proof](crossplane-organization-defaults.json) passes in both scopes with normal cleanup.
+The [current organization-defaults runtime proof](crossplane-organization-defaults.json) and [manifest/sharing regression proof](crossplane-skill-manifest-sharing.json) pass in both scopes with normal cleanup.
 
 The pre-consolidation checkpoint covered **47 registered resources in both scopes**.
 The [current inventory](provider-v3-current-inventory.md) records the schema and

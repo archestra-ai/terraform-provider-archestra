@@ -286,7 +286,7 @@ func (r *SkillResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	if len(patch) == 0 {
+	if len(patch) == 0 && !skillManifestChanged(req.Plan.Raw, req.State.Raw) {
 		resp.State = req.State
 		return
 	}
@@ -376,6 +376,18 @@ func encodeSkillFiles(value any) any {
 	}
 	return result
 }
+
+// Manifest attributes are synthetic wire inputs. Their edits still require
+// rebuilding content when the generic field patch is otherwise empty.
+func skillManifestChanged(plan, prior tftypes.Value) bool {
+	for _, spec := range skillAttrSpec {
+		if spec.Kind == Synthetic && !lookupOrNull(plan, spec.TFName).Equal(lookupOrNull(prior, spec.TFName)) {
+			return true
+		}
+	}
+	return false
+}
+
 func (plan *SkillResourceModel) request(ctx context.Context, patch map[string]any, diags *diag.Diagnostics) []byte {
 	header := map[string]any{"name": plan.Name.ValueString(), "description": plan.Description.ValueString(), "templated": plan.Templated.ValueBool()}
 	for key, value := range map[string]types.String{"license": plan.License, "compatibility": plan.Compatibility, "agent": plan.AgentName} {
