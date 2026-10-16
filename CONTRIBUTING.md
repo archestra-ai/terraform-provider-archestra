@@ -202,7 +202,7 @@ After:
 
 - Update [provider.go](internal/provider/provider.go) registration.
 - Update cross-references in other resources' MarkdownDescriptions.
-- Add a `## Unreleased` section to [CHANGELOG.md](CHANGELOG.md) with a `### ⚠ BREAKING CHANGES` block. Include the `terraform state mv archestra_foo.<n> archestra_bar.<n>` migration step.
+- Add a `## Unreleased` section to [CHANGELOG.md](CHANGELOG.md) with a `### ⚠ BREAKING CHANGES` block. For a type rename, implement and test the Plugin Framework state-move contract or provide a verified import/adoption procedure. Plain `terraform state mv` rejects a move between different resource types; do not publish that as a migration step. Test prior-version state, no-op plans, and destroy behavior before releasing.
 - Run `make generate` to regenerate docs at the new name.
 - `go test ./...`, `make testacc` to verify.
 
@@ -218,6 +218,23 @@ scripts/bootstrap-local-stack.sh --down               # tear down
 ```
 
 Brings up the platform image + dev Vault + Ollama mock + EE license + provisioned IdP. `ARCHESTRA_VERSION` is pulled from `.github/workflows/on-pull-request.yml` so local tracks CI without re-hardcoding.
+
+When another stack is already running, isolate the test cluster and host ports:
+
+```bash
+export KIND_CLUSTER=archestra-provider-tests
+export ARCHESTRA_TEST_BACKEND_PORT=19000
+export ARCHESTRA_TEST_FRONTEND_PORT=13000
+export ARCHESTRA_TEST_METRICS_PORT=19050
+scripts/bootstrap-local-stack.sh
+eval "$(scripts/bootstrap-local-stack.sh --print-env)"
+# Run acceptance tests, then remove only this selected test cluster.
+scripts/bootstrap-local-stack.sh --down
+```
+
+The bootstrap uses a private kubeconfig for its commands and child scripts, leaving
+the user's current Kubernetes context unchanged. `ARCHESTRA_NAMESPACE` selects the
+platform's namespace inside this test cluster (default `default`).
 
 ## Manual smoke testing with `examples/complete/`
 

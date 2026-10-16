@@ -50,19 +50,21 @@ orphans="$(comm -13 <(echo "$tf") <(echo "$cp"))"
 {
   echo "# Crossplane coverage report"
   echo
-  echo "**${cp_total} / ${tf_total} Terraform resources have Crossplane managed-resource equivalents (${pct}%).**"
+  echo "**${cp_total} / ${tf_total} Terraform resources are included in the Crossplane configuration (${pct}%).**"
   echo
-  echo "## Missing Crossplane MR (drift)"
+  echo "Configuration inclusion does not establish generated CRDs, successful reconciliation, or API compatibility."
+  echo
+  echo "## Missing Crossplane configuration"
   echo
   if [ -z "$missing" ]; then
-    echo "_(none — full coverage)_"
+    echo "_(none — every Terraform resource is configured)_"
   else
     while IFS= read -r r; do
       [ -n "$r" ] && echo "- \`$r\`"
     done <<< "$missing"
   fi
   echo
-  echo "## Covered"
+  echo "## Configured"
   echo
   while IFS= read -r r; do
     [ -n "$r" ] && echo "- \`$r\`"

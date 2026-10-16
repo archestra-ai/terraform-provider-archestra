@@ -55,3 +55,6 @@ scratch-test*/
 
 # Compiled oapi-patch binary (build via `cd tools/oapi-patch && go build`).
 /tools/oapi-patch/oapi-patch
+
+# Python audit/test bytecode
+__pycache__/

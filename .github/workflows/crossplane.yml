@@ -7,10 +7,16 @@ on:
     branches: [main]
     paths:
       - 'crossplane/**'
+      - 'internal/**'
+      - 'go.mod'
+      - 'go.sum'
       - '.github/workflows/crossplane.yml'
   pull_request:
     paths:
       - 'crossplane/**'
+      - 'internal/**'
+      - 'go.mod'
+      - 'go.sum'
       - '.github/workflows/crossplane.yml'
 
 concurrency:
@@ -44,7 +50,7 @@ jobs:
         run: go build -o terraform-provider-archestra .
 
       - name: Install goimports
-        run: go install golang.org/x/tools/cmd/goimports@latest
+        run: go -C crossplane install golang.org/x/tools/cmd/goimports
 
       - name: Generate Crossplane provider
         run: make -C crossplane generate

@@ -1,0 +1,16 @@
+{
+  "status": "requires_operator_approval_and_end_to_end_validation",
+  "agent_name": "Provider Sync",
+  "agent_scope": "personal",
+  "runtime": "existing_codex_runtime",
+  "repository_read": ["archestra-ai/archestra"],
+  "repository_write": ["archestra-ai/terraform-provider-archestra"],
+  "schedule": {"name": "Daily provider synchronization", "enabled": false, "cronExpression": "0 8 * * *", "timezone": "Etc/UTC"},
+  "state_branch": "automation/provider-sync-state",
+  "work_branch": "automation/provider-sync",
+  "pull_request_mode": "draft",
+  "manual_review_required": true,
+  "automatic_merge": false,
+  "slack_notification": null,
+  "new_credentials_authorized": false
+}

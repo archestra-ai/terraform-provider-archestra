@@ -1,0 +1,28 @@
+name: Provider Audit Tooling
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/provider-api-audit.py'
+      - 'scripts/provider-sync-plan.py'
+      - 'scripts/bootstrap-local-stack.sh'
+      - 'scripts/test_*.py'
+      - '.github/provider-sync/**'
+      - '.github/workflows/provider-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Test read-only planning and local stack isolation
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'
+      - name: Check bootstrap shell syntax
+        run: bash -n scripts/bootstrap-local-stack.sh
