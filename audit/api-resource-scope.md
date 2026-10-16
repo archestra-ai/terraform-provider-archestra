@@ -37,7 +37,8 @@ keys now include shared ownership and SigV4 inputs, teams include role assignmen
 models include embedding dimensions, and runtime definitions include GitLab host
 management. Creation-time grants are configurable on eleven families. The historical
 29-family rc.48 Terraform suite passed 118 acceptance tests with zero skips, and
-the 35-family expansion passed 126;
+the 35-family expansion passed 126; the current 39-family suite passes all 131
+with zero failures or skips (`a2a-environment-native-acceptance.json`);
 all 16 retained v2.4.1 resource families preserve identity with no-op migration
 plans. The full 35-family Crossplane sweep passes 102 records, including 26 grant cases;
 the four-family A2A/environment binding wave adds ten passing records with normal

@@ -12,7 +12,7 @@ persistent API area. [Request-field review](request-field-review.md) classifies 
 90 baseline raw occurrences; `current-request-field-review.json` classifies all
 127 current occurrences. These raw counts include manual encoding, other agent
 subtypes and server-owned state. They are not counts of missing capabilities.
-The expansion full native suite passes 126 acceptance tests with zero failures or skips (`persistent-extensions-native-acceptance.json`). New profile/service-account creation grants pass in both scopes (`crossplane-persistent-extension-grants.json`). Final full-candidate repetition, remaining justified API implementations, normal
+The current 39-family full native suite passes 131 acceptance tests with zero failures or skips (`a2a-environment-native-acceptance.json`). The historical expansion has its own 126-test record (`persistent-extensions-native-acceptance.json`). New profile/service-account creation grants pass in both scopes (`crossplane-persistent-extension-grants.json`). Final full-candidate repetition, remaining justified API implementations, normal
 protected review and publication remain open. The sections below retain the
 original audit baseline for traceability.
 
