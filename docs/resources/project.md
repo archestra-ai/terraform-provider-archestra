@@ -32,6 +32,7 @@ resource "archestra_project" "reports" {
 - `default_agent_id` (String)
 - `description` (String)
 - `icon` (String)
+- `instructions` (String) Project chat instructions; omit to preserve existing content, or set an empty string to clear it.
 - `labels` (Attributes Set) (see [below for nested schema](#nestedatt--labels))
 
 ### Read-Only

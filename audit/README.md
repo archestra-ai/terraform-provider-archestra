@@ -1,14 +1,14 @@
 # Provider modernization audit
 
 The sections below retain the initial baseline. Current v3 configuration is
-**26/26 resources in both scopes**, with real both-scope lifecycle evidence for
-**26/26**. See [the current inventory](provider-v3-inventory.md) and
+**29/29 resources in both scopes**, with real both-scope lifecycle evidence for
+**29/29**. See [the current inventory](provider-v3-inventory.md) and
 [secret-free runtime evidence](v3-runtime-evidence.json). Full API-field checks
 and remaining lifecycle/migration/release gates are still open.
 
 
 The [API lifecycle scope review](api-resource-scope.md) distinguishes the verified
-26-resource provider denominator from additional persistent API areas. It must
+29-resource provider denominator from additional persistent API areas. It must
 not be interpreted as 100% coverage of every Archestra API lifecycle.
 
 Audit inputs: Terraform `2e34cde000894e9c96793da0ec1f2c90b9193636` (v2.4.0),

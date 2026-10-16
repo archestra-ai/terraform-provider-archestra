@@ -10,7 +10,11 @@
     "crossplane-current-tools.json",
     "crossplane-skill-policy.json",
     "crossplane-subagent-exclusions.json",
-    "crossplane-skill.json"
+    "crossplane-skill.json",
+    "crossplane-gateway-skills.json",
+    "crossplane-project-instructions.json",
+    "crossplane-atomic-delegation.json",
+    "crossplane-knowledge-exclusions.json"
   ],
   "additional_state_migration_evidence": [
     "native-state-upgrades.json",
@@ -255,9 +259,9 @@
       "update": "passed"
     }
   ],
-  "crossplane_runtime_both_scopes": 26,
-  "current_crossplane_configured": 26,
-  "current_terraform_count": 26,
+  "crossplane_runtime_both_scopes": 29,
+  "current_crossplane_configured": 29,
+  "current_terraform_count": 29,
   "format_version": 1,
   "llm_cli_state_migration": {
     "destroy_read_status": 404,
@@ -354,14 +358,22 @@
     "TestAccCurrentGatewayControls"
   ],
   "remaining_release_gates": [
-    "The GET-field API coverage gate now passes; see current-field-validation.json for Terraform evidence. The broader meaningful-API taxonomy and final runtime proofs remain release gates.",
-    "Repeat all 26 both-scope lifecycle proofs against the final release candidate; accumulated evidence uses several recorded candidate hashes.",
-    "Full meaningful API-domain taxonomy and justified exclusions.",
-    "Other state/CRD adoption migrations and release package smoke tests.",
-    "Live agent dry run, durable publication wiring, daily schedule and failure notification."
+    "Resolve the additional persistent API lifecycle queue in api-resource-scope.md",
+    "Publish the atomic delegation API prerequisite and pin its released OpenAPI/image",
+    "Run all registered lifecycles on one final Terraform/Crossplane candidate and published API",
+    "Repeat state upgrades and verify version-matched package artifacts for the final candidate",
+    "Pass exact-head protected CI and review, then release Terraform and both Crossplane package architectures"
   ],
   "runtime_probe_controller_sha256": "9faacea7aba5b8caa12008f8904c53eb4c50d2266d638ab8fabd1295a0d656c7",
   "runtime_probe_provider_sha256": "61eca82bd743de061bf9d3c4eb7730914f3cb9b1c83af4745c93f51b88c63df1",
-  "runtime_probe_version_note": "Accumulated proofs cover 26 registered families across recorded candidate hashes; repeat every lifecycle against the final release candidate.",
-  "status": "draft_work_in_progress_not_release_coverage"
+  "runtime_probe_version_note": "Accumulated proofs cover 29 registered families across recorded candidate hashes. The latest atomic delegation and knowledge-source exclusion probes use the unpublished API prerequisite. Full final-candidate repetition and published prerequisite pinning remain release gates.",
+  "status": "draft_work_in_progress_not_release_coverage",
+  "additional_native_concurrency_evidence": [
+    "delegation-atomic-native.json"
+  ],
+  "api_prerequisite": {
+    "url": "https://github.com/archestra-ai/archestra/pull/9038",
+    "head": "b71c4e62c8967d9e8e73820886e292f45916d92c",
+    "published": false
+  }
 }

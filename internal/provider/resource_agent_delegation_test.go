@@ -39,8 +39,8 @@ func TestAccAgentDelegationResource(t *testing.T) {
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
-			// Exercises the read-union-sync path: adding a second edge from the
-			// same delegating agent preserves the first (sequential apply — this
+			// Adding a second edge from the
+			// same delegating agent preserves the first (sequential apply; this
 			// does not exercise parallel-create racing).
 			{
 				Config: testAccAgentDelegationResourceConfigTwoEdges("tf-acc-agent-delegation"),

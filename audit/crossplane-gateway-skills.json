@@ -1,0 +1,52 @@
+{
+  "run_id": "57794e1e",
+  "terraform_sha256": "28d69ffd101e4f05de90ba6f733ba537c18ded294e5fe0d29084646a8ef93e09",
+  "controller_sha256": "2a86179ef53c57589a794e5431623154dcc518c3c95dba155720d97a66b2b499",
+  "results": [
+    {
+      "resource": "SkillPublication",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "mode_flip_retains_manual_assignments": true,
+      "empty_set_clear": "passed",
+      "delete_disables_and_clears": "passed",
+      "exclusions_preserved": true
+    },
+    {
+      "resource": "SkillExclusions",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_exclusions": "passed",
+      "gateway_preserved": true
+    },
+    {
+      "resource": "SkillPublication",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "mode_flip_retains_manual_assignments": true,
+      "empty_set_clear": "passed",
+      "delete_disables_and_clears": "passed",
+      "exclusions_preserved": true
+    },
+    {
+      "resource": "SkillExclusions",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_exclusions": "passed",
+      "gateway_preserved": true
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "outcome": "passed"
+}

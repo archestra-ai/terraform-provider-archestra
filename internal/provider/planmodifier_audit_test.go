@@ -21,6 +21,7 @@ import (
 // Every entry needs a reason — the default of RemoveOnConfigNullList is
 // safer; allowlisting asserts the field has no "remove = clear" semantic.
 var useStateForUnknownAllowlist = map[string]map[string]string{
+	"archestra_project":              {"instructions": "The separate instructions file is unmanaged when omitted; only explicit empty content clears it."},
 	"archestra_llm_provider_api_key": {"shared": "Creation-only ownership selector; importing or omitting this field must preserve the existing owner without replacement."},
 	"archestra_llm_model": {
 		"llm_provider": "immutable adoption selector; omitting it retains the already adopted model and its provider rather than selecting another provider with the same model name.",

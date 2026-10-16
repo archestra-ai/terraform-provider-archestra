@@ -23,7 +23,7 @@ def main():
     parser.add_argument('--key-file', type=Path, required=True)
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'skill'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'skill', 'gateway-skills', 'project-instructions'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--kubeconfig', type=Path, required=True)
     parser.add_argument('--provider-config', required=True)
     parser.add_argument('--namespace', default='crossplane-system')
@@ -111,7 +111,7 @@ def main():
         try:
             kube(*namespace, 'wait', '--for=condition=Ready', lease[1] + '/' + name, '--timeout=75s')
         except RuntimeError:
-            if kind in ('SkillPolicy', 'SubagentExclusions'):
+            if kind in ('SkillPolicy', 'SubagentExclusions', 'Skill', 'SkillPublication', 'SkillExclusions'):
                 obj = json.loads(kube(*namespace, 'get', lease[1], name, '-o', 'json'))
                 raise RuntimeError(kind + ' did not become Ready: ' + json.dumps(obj.get('status', {}).get('conditions', []))) from None
             raise
@@ -146,7 +146,10 @@ def main():
     def immutable_update(lease, changed, original):
         identifier = observation(lease)['metadata']['annotations']['crossplane.io/external-name']
         patch(lease, changed)
-        wait('immutable update refusal', lambda: any(item.get('type') == 'Synced' and item.get('status') == 'False' and 'replac' in item.get('message', '').lower() for item in observation(lease).get('status', {}).get('conditions', [])))
+        wait('immutable update refusal', lambda: any(
+            item.get('type') == 'Synced' and item.get('status') == 'False'
+            and any(marker in item.get('message', '').lower() for marker in ('replac', 'prevent_destroy'))
+            for item in observation(lease).get('status', {}).get('conditions', [])))
         if observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != identifier:
             raise RuntimeError('Immutable update replaced the managed resource')
         patch(lease, original)
@@ -343,6 +346,93 @@ def main():
                     if api('/api/organization/appearance-settings', {'appName': original})[0] != 200:
                         raise RuntimeError('Unable to restore original isolated test appearance')
 
+            if 'project-instructions' in args.cases:
+                initial_content = 'Synthetic project instructions.'
+                lease, identifier, _ = create(scope, 'project', 'Project', 'projects',
+                        {'name': 'cp-instructions-' + run + '-' + scope, 'instructions': initial_content})
+                path = '/api/projects/' + identifier
+                def project_instructions():
+                    code, value = api(path + '/instructions')
+                    if code != 200:
+                        raise RuntimeError('Project instruction read failed: HTTP ' + str(code))
+                    return value['content']
+                if project_instructions() != initial_content:
+                    raise RuntimeError('Project instructions were not persisted at creation')
+                updated_content = 'Updated synthetic project instructions.'
+                patch(lease, {'instructions': updated_content})
+                wait('Project instruction update', lambda: project_instructions() == updated_content)
+                if api(path + '/instructions', {'content': 'Out-of-band synthetic instructions.'}, 'PUT')[0] != 200:
+                    raise RuntimeError('Unable to write isolated project instruction drift')
+                wait('Project instruction drift repair', lambda: project_instructions() == updated_content)
+                patch(lease, {'instructions': ''})
+                wait('Project instruction clear', lambda: project_instructions() == '')
+                delete(lease)
+                if api(path)[0] != 404:
+                    raise RuntimeError('Project deletion left the fixture readable')
+                record('ProjectInstructions', scope, create='passed', update='passed', drift_repair='passed',
+                       empty_content_clear='passed', parent_delete='passed', backend_after_delete=404)
+
+            if 'gateway-skills' in args.cases:
+                gateway, gateway_id, _ = create(scope, 'mcp', 'Gateway', 'gateways',
+                        {'name': 'cp-skill-gateway-' + run + '-' + scope})
+                skill_fields = {'description': 'Synthetic publication fixture', 'content': 'Inspect only synthetic local data.',
+                                'files': {}, 'environmentIds': [], 'labels': []}
+                first, first_id, _ = create(scope, 'skill', 'Skill', 'skills',
+                        dict(skill_fields, name='cp-publish-first-' + run + '-' + scope), '-first')
+                second, second_id, _ = create(scope, 'skill', 'Skill', 'skills',
+                        dict(skill_fields, name='cp-publish-second-' + run + '-' + scope), '-second')
+                published, identifier, _ = create(scope, 'mcp', 'SkillPublication', 'skillpublications',
+                        {'gatewayId': gateway_id, 'accessAllSkills': False, 'skillIds': [first_id]})
+                excluded, excluded_id, _ = create(scope, 'mcp', 'SkillExclusions', 'skillexclusions',
+                        {'gatewayId': gateway_id, 'excludedSkillIds': [second_id]})
+                path = '/api/agents/' + gateway_id
+                def publication():
+                    code, value = api(path + '/skills')
+                    if code != 200:
+                        raise RuntimeError('Gateway publication read failed: HTTP ' + str(code))
+                    return value
+                def skill_exclusions():
+                    code, value = api(path + '/skill-exclusions')
+                    if code != 200:
+                        raise RuntimeError('Gateway exclusion read failed: HTTP ' + str(code))
+                    return value['excludedSkillIds']
+                if identifier != gateway_id or excluded_id != gateway_id or publication()['skillIds'] != [first_id] or skill_exclusions() != [second_id]:
+                    raise RuntimeError('Gateway skill policies did not persist their requested sets')
+                patch(published, {'accessAllSkills': True, 'skillIds': [second_id]})
+                patch(excluded, {'excludedSkillIds': [first_id]})
+                wait('Gateway skill publication update', lambda: publication()['accessAllSkills'] and publication()['skillIds'] == [second_id])
+                wait('Gateway skill exclusion update', lambda: skill_exclusions() == [first_id])
+                patch(published, {'accessAllSkills': False})
+                wait('Gateway mode flip retains assignments', lambda: not publication()['accessAllSkills'] and publication()['skillIds'] == [second_id])
+                if api(path + '/skills', {'accessAllSkills': True, 'skillIds': []}, 'PUT')[0] != 200:
+                    raise RuntimeError('Unable to write isolated publication drift')
+                if api(path + '/skill-exclusions', {'excludedSkillIds': []}, 'PUT')[0] != 200:
+                    raise RuntimeError('Unable to write isolated exclusion drift')
+                wait('Gateway publication drift repair', lambda: not publication()['accessAllSkills'] and publication()['skillIds'] == [second_id])
+                wait('Gateway exclusion drift repair', lambda: skill_exclusions() == [first_id])
+                patch(published, {'skillIds': []})
+                patch(excluded, {'excludedSkillIds': []})
+                wait('Gateway publication clear', lambda: not publication()['skillIds'])
+                wait('Gateway exclusions clear', lambda: not skill_exclusions())
+                patch(published, {'accessAllSkills': True, 'skillIds': [first_id]})
+                patch(excluded, {'excludedSkillIds': [second_id]})
+                wait('Gateway publication restore', lambda: publication()['accessAllSkills'] and publication()['skillIds'] == [first_id])
+                wait('Gateway exclusions restore', lambda: skill_exclusions() == [second_id])
+                delete(published)
+                if publication()['accessAllSkills'] or publication()['skillIds'] or skill_exclusions() != [second_id]:
+                    raise RuntimeError('Publication deletion did not preserve independent exclusions')
+                record('SkillPublication', scope, create='passed', update='passed', drift_repair='passed',
+                       mode_flip_retains_manual_assignments=True, empty_set_clear='passed',
+                       delete_disables_and_clears='passed', exclusions_preserved=True)
+                delete(excluded)
+                if skill_exclusions() or api(path)[0] != 200:
+                    raise RuntimeError('Exclusion deletion did not clear while preserving gateway')
+                record('SkillExclusions', scope, create='passed', update='passed', drift_repair='passed',
+                       empty_set_clear='passed', delete_clears_exclusions='passed', gateway_preserved=True)
+                delete(second)
+                delete(first)
+                delete(gateway)
+
             if 'skill' in args.cases:
                 skill_name = 'cp-content-' + run + '-' + scope
                 original_content = 'Inspect only synthetic local fixtures.'
@@ -387,6 +477,52 @@ def main():
                        terraform_import='separate CLI test', empty_files_clear='passed',
                        immutable_first_version_preserved=True, stale_version_refused=409,
                        delete='soft-delete passed', backend_after_delete=404)
+
+            if 'knowledge-exclusions' in args.cases:
+                fixtures = []
+                for label in ('first', 'second'):
+                    code, connector = api('/api/connectors', {
+                        'name': 'cp-knowledge-' + label + '-' + run + '-' + scope,
+                        'connectorType': 'web_crawler', 'enabled': False,
+                        'config': {'type': 'web_crawler', 'startUrl': 'http://127.0.0.1:19999/',
+                                   'allowPrivateNetwork': True, 'maxPages': 1}}, 'POST')
+                    if code != 200 or connector.get('enabled') is not False:
+                        raise RuntimeError('Unable to create disabled loopback connector fixture')
+                    fixture = ([], 'api-fixture', '/api/connectors/' + connector['id'])
+                    leases.append(fixture)
+                    fixtures.append((fixture, connector['id']))
+                parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
+                    {'name': 'cp-knowledge-agent-' + run + '-' + scope, 'accessAllTools': True}, '-knowledge')
+                path = '/api/agents/' + agent_id + '/knowledge-source-exclusions'
+
+                def excluded_connectors():
+                    code, current = api(path)
+                    if code != 200:
+                        raise RuntimeError('Unable to read knowledge exclusions')
+                    return sorted(current['excludedConnectorIds'])
+
+                lease, _, _ = create(scope, 'agent', 'KnowledgeSourceExclusions', 'knowledgesourceexclusions',
+                    {'agentId': agent_id, 'excludedConnectorIds': [fixtures[0][1]]})
+                if excluded_connectors() != [fixtures[0][1]]:
+                    raise RuntimeError('Knowledge exclusion create did not persist')
+                patch(lease, {'excludedConnectorIds': [fixtures[1][1]]})
+                wait('Knowledge exclusion update', lambda: excluded_connectors() == [fixtures[1][1]])
+                if api(path, {'excludedConnectorIds': []}, 'PUT')[0] != 200:
+                    raise RuntimeError('Knowledge exclusion drift mutation failed')
+                wait('Knowledge exclusion drift repair', lambda: excluded_connectors() == [fixtures[1][1]])
+                patch(lease, {'excludedConnectorIds': []})
+                wait('Knowledge exclusion empty-set clear', lambda: excluded_connectors() == [] and condition(lease, 'True'))
+                patch(lease, {'excludedConnectorIds': [fixtures[0][1]]})
+                wait('Knowledge exclusion re-add', lambda: excluded_connectors() == [fixtures[0][1]])
+                delete(lease)
+                if excluded_connectors() or api('/api/agents/' + agent_id)[0] != 200:
+                    raise RuntimeError('Knowledge exclusion delete failed to clear while preserving agent')
+                delete(parent)
+                for fixture, _ in reversed(fixtures):
+                    delete(fixture)
+                record('KnowledgeSourceExclusions', scope, create='passed', update='passed',
+                       drift_repair='passed', empty_set_clear='passed', delete_clears_exclusions='passed',
+                       agent_preserved=True, external_credentials_created=False)
 
             if 'subagent-exclusions' in args.cases:
                 parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',

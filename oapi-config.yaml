@@ -11,6 +11,7 @@ output-options:
     - bulkAssignTools
     - completeOnboarding
     - createAgent
+    - createAgentDelegation
     - createSkill
     - getSkill
     - updateSkill
@@ -39,8 +40,13 @@ output-options:
     - getAgentDelegations
     - getAgentActivationSkillPolicy
     - patchAgentActivationSkillPolicy
+    - getAgentKnowledgeSourceExclusions
+    - updateAgentKnowledgeSourceExclusions
     - getAgentSubagentExclusions
     - updateAgentSubagentExclusions
+    - getAgentSkills
+    - getAgentSkillExclusions
+    - updateAgentSkillExclusions
     - getAgentToolExclusions
     - getAllAgentTools
     - getIdentityProvider
@@ -101,6 +107,8 @@ output-options:
     - updateScheduleTrigger
     - createProject
     - getProject
+    - getProjectInstructions
+    - setProjectInstructions
     - updateProject
     - deleteProject
     - updateAuthSettings

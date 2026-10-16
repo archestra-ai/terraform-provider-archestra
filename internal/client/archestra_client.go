@@ -1936,6 +1936,18 @@ type PatchAgentActivationSkillPolicyJSONBody_Operations_Reference struct {
 	union json.RawMessage
 }
 
+// UpdateAgentKnowledgeSourceExclusionsJSONBody defines parameters for UpdateAgentKnowledgeSourceExclusions.
+type UpdateAgentKnowledgeSourceExclusionsJSONBody struct {
+	// ExcludedConnectorIds Knowledge connector IDs excluded from the agent's Auto knowledge surface
+	ExcludedConnectorIds []openapi_types.UUID `json:"excludedConnectorIds"`
+}
+
+// UpdateAgentSkillExclusionsJSONBody defines parameters for UpdateAgentSkillExclusions.
+type UpdateAgentSkillExclusionsJSONBody struct {
+	// ExcludedSkillIds Individual skill IDs excluded from the agent's skill surface
+	ExcludedSkillIds []openapi_types.UUID `json:"excludedSkillIds"`
+}
+
 // UpdateAgentSkillsJSONBody defines parameters for UpdateAgentSkills.
 type UpdateAgentSkillsJSONBody struct {
 	// AccessAllSkills Auto mode: expose every org-scoped skill visible in the agent's environment
@@ -3439,6 +3451,11 @@ type UpdateProjectJSONBody struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// SetProjectInstructionsJSONBody defines parameters for SetProjectInstructions.
+type SetProjectInstructionsJSONBody struct {
+	Content string `json:"content"`
+}
+
 // GetResourcePermissionsParamsResource defines parameters for GetResourcePermissions.
 type GetResourcePermissionsParamsResource string
 
@@ -3787,6 +3804,12 @@ type UpdateAgentJSONRequestBody UpdateAgentJSONBody
 // PatchAgentActivationSkillPolicyJSONRequestBody defines body for PatchAgentActivationSkillPolicy for application/json ContentType.
 type PatchAgentActivationSkillPolicyJSONRequestBody PatchAgentActivationSkillPolicyJSONBody
 
+// UpdateAgentKnowledgeSourceExclusionsJSONRequestBody defines body for UpdateAgentKnowledgeSourceExclusions for application/json ContentType.
+type UpdateAgentKnowledgeSourceExclusionsJSONRequestBody UpdateAgentKnowledgeSourceExclusionsJSONBody
+
+// UpdateAgentSkillExclusionsJSONRequestBody defines body for UpdateAgentSkillExclusions for application/json ContentType.
+type UpdateAgentSkillExclusionsJSONRequestBody UpdateAgentSkillExclusionsJSONBody
+
 // UpdateAgentSkillsJSONRequestBody defines body for UpdateAgentSkills for application/json ContentType.
 type UpdateAgentSkillsJSONRequestBody UpdateAgentSkillsJSONBody
 
@@ -3888,6 +3911,9 @@ type CreateProjectJSONRequestBody CreateProjectJSONBody
 
 // UpdateProjectJSONRequestBody defines body for UpdateProject for application/json ContentType.
 type UpdateProjectJSONRequestBody UpdateProjectJSONBody
+
+// SetProjectInstructionsJSONRequestBody defines body for SetProjectInstructions for application/json ContentType.
+type SetProjectInstructionsJSONRequestBody SetProjectInstructionsJSONBody
 
 // UpdateResourcePermissionsJSONRequestBody defines body for UpdateResourcePermissions for application/json ContentType.
 type UpdateResourcePermissionsJSONRequestBody UpdateResourcePermissionsJSONBody
@@ -4027,6 +4053,9 @@ type ClientInterface interface {
 	// DeleteAgentDelegation request
 	DeleteAgentDelegation(ctx context.Context, agentId openapi_types.UUID, targetAgentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateAgentDelegation request
+	CreateAgentDelegation(ctx context.Context, agentId openapi_types.UUID, targetAgentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// UnassignToolFromAgent request
 	UnassignToolFromAgent(ctx context.Context, agentId openapi_types.UUID, toolId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4053,6 +4082,25 @@ type ClientInterface interface {
 	PatchAgentActivationSkillPolicyWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PatchAgentActivationSkillPolicy(ctx context.Context, id openapi_types.UUID, body PatchAgentActivationSkillPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAgentKnowledgeSourceExclusions request
+	GetAgentKnowledgeSourceExclusions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateAgentKnowledgeSourceExclusionsWithBody request with any body
+	UpdateAgentKnowledgeSourceExclusionsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateAgentKnowledgeSourceExclusions(ctx context.Context, id openapi_types.UUID, body UpdateAgentKnowledgeSourceExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAgentSkillExclusions request
+	GetAgentSkillExclusions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateAgentSkillExclusionsWithBody request with any body
+	UpdateAgentSkillExclusionsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateAgentSkillExclusions(ctx context.Context, id openapi_types.UUID, body UpdateAgentSkillExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAgentSkills request
+	GetAgentSkills(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateAgentSkillsWithBody request with any body
 	UpdateAgentSkillsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4311,6 +4359,14 @@ type ClientInterface interface {
 
 	UpdateProject(ctx context.Context, id openapi_types.UUID, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetProjectInstructions request
+	GetProjectInstructions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetProjectInstructionsWithBody request with any body
+	SetProjectInstructionsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SetProjectInstructions(ctx context.Context, id openapi_types.UUID, body SetProjectInstructionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetResourcePermissions request
 	GetResourcePermissions(ctx context.Context, resource GetResourcePermissionsParamsResource, scope string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4546,6 +4602,18 @@ func (c *Client) DeleteAgentDelegation(ctx context.Context, agentId openapi_type
 	return c.Client.Do(req)
 }
 
+func (c *Client) CreateAgentDelegation(ctx context.Context, agentId openapi_types.UUID, targetAgentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAgentDelegationRequest(c.Server, agentId, targetAgentId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) UnassignToolFromAgent(ctx context.Context, agentId openapi_types.UUID, toolId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUnassignToolFromAgentRequest(c.Server, agentId, toolId)
 	if err != nil {
@@ -4656,6 +4724,90 @@ func (c *Client) PatchAgentActivationSkillPolicyWithBody(ctx context.Context, id
 
 func (c *Client) PatchAgentActivationSkillPolicy(ctx context.Context, id openapi_types.UUID, body PatchAgentActivationSkillPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPatchAgentActivationSkillPolicyRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAgentKnowledgeSourceExclusions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAgentKnowledgeSourceExclusionsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAgentKnowledgeSourceExclusionsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAgentKnowledgeSourceExclusionsRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAgentKnowledgeSourceExclusions(ctx context.Context, id openapi_types.UUID, body UpdateAgentKnowledgeSourceExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAgentKnowledgeSourceExclusionsRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAgentSkillExclusions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAgentSkillExclusionsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAgentSkillExclusionsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAgentSkillExclusionsRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAgentSkillExclusions(ctx context.Context, id openapi_types.UUID, body UpdateAgentSkillExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAgentSkillExclusionsRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAgentSkills(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAgentSkillsRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -5830,6 +5982,42 @@ func (c *Client) UpdateProject(ctx context.Context, id openapi_types.UUID, body 
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetProjectInstructions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProjectInstructionsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetProjectInstructionsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetProjectInstructionsRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetProjectInstructions(ctx context.Context, id openapi_types.UUID, body SetProjectInstructionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetProjectInstructionsRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetResourcePermissions(ctx context.Context, resource GetResourcePermissionsParamsResource, scope string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetResourcePermissionsRequest(c.Server, resource, scope)
 	if err != nil {
@@ -6728,6 +6916,47 @@ func NewDeleteAgentDelegationRequest(server string, agentId openapi_types.UUID, 
 	return req, nil
 }
 
+// NewCreateAgentDelegationRequest generates requests for CreateAgentDelegation
+func NewCreateAgentDelegationRequest(server string, agentId openapi_types.UUID, targetAgentId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "agentId", runtime.ParamLocationPath, agentId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "targetAgentId", runtime.ParamLocationPath, targetAgentId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/delegations/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewUnassignToolFromAgentRequest generates requests for UnassignToolFromAgent
 func NewUnassignToolFromAgentRequest(server string, agentId openapi_types.UUID, toolId openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -7015,6 +7244,202 @@ func NewPatchAgentActivationSkillPolicyRequestWithBody(server string, id openapi
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetAgentKnowledgeSourceExclusionsRequest generates requests for GetAgentKnowledgeSourceExclusions
+func NewGetAgentKnowledgeSourceExclusionsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/knowledge-source-exclusions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateAgentKnowledgeSourceExclusionsRequest calls the generic UpdateAgentKnowledgeSourceExclusions builder with application/json body
+func NewUpdateAgentKnowledgeSourceExclusionsRequest(server string, id openapi_types.UUID, body UpdateAgentKnowledgeSourceExclusionsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateAgentKnowledgeSourceExclusionsRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateAgentKnowledgeSourceExclusionsRequestWithBody generates requests for UpdateAgentKnowledgeSourceExclusions with any type of body
+func NewUpdateAgentKnowledgeSourceExclusionsRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/knowledge-source-exclusions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetAgentSkillExclusionsRequest generates requests for GetAgentSkillExclusions
+func NewGetAgentSkillExclusionsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/skill-exclusions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateAgentSkillExclusionsRequest calls the generic UpdateAgentSkillExclusions builder with application/json body
+func NewUpdateAgentSkillExclusionsRequest(server string, id openapi_types.UUID, body UpdateAgentSkillExclusionsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateAgentSkillExclusionsRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateAgentSkillExclusionsRequestWithBody generates requests for UpdateAgentSkillExclusions with any type of body
+func NewUpdateAgentSkillExclusionsRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/skill-exclusions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetAgentSkillsRequest generates requests for GetAgentSkills
+func NewGetAgentSkillsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/skills", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -9653,6 +10078,87 @@ func NewUpdateProjectRequestWithBody(server string, id openapi_types.UUID, conte
 	return req, nil
 }
 
+// NewGetProjectInstructionsRequest generates requests for GetProjectInstructions
+func NewGetProjectInstructionsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/projects/%s/instructions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSetProjectInstructionsRequest calls the generic SetProjectInstructions builder with application/json body
+func NewSetProjectInstructionsRequest(server string, id openapi_types.UUID, body SetProjectInstructionsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSetProjectInstructionsRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewSetProjectInstructionsRequestWithBody generates requests for SetProjectInstructions with any type of body
+func NewSetProjectInstructionsRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/projects/%s/instructions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetResourcePermissionsRequest generates requests for GetResourcePermissions
 func NewGetResourcePermissionsRequest(server string, resource GetResourcePermissionsParamsResource, scope string) (*http.Request, error) {
 	var err error
@@ -10931,6 +11437,9 @@ type ClientWithResponsesInterface interface {
 	// DeleteAgentDelegationWithResponse request
 	DeleteAgentDelegationWithResponse(ctx context.Context, agentId openapi_types.UUID, targetAgentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteAgentDelegationResponse, error)
 
+	// CreateAgentDelegationWithResponse request
+	CreateAgentDelegationWithResponse(ctx context.Context, agentId openapi_types.UUID, targetAgentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*CreateAgentDelegationResponse, error)
+
 	// UnassignToolFromAgentWithResponse request
 	UnassignToolFromAgentWithResponse(ctx context.Context, agentId openapi_types.UUID, toolId openapi_types.UUID, reqEditors ...RequestEditorFn) (*UnassignToolFromAgentResponse, error)
 
@@ -10957,6 +11466,25 @@ type ClientWithResponsesInterface interface {
 	PatchAgentActivationSkillPolicyWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchAgentActivationSkillPolicyResponse, error)
 
 	PatchAgentActivationSkillPolicyWithResponse(ctx context.Context, id openapi_types.UUID, body PatchAgentActivationSkillPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchAgentActivationSkillPolicyResponse, error)
+
+	// GetAgentKnowledgeSourceExclusionsWithResponse request
+	GetAgentKnowledgeSourceExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentKnowledgeSourceExclusionsResponse, error)
+
+	// UpdateAgentKnowledgeSourceExclusionsWithBodyWithResponse request with any body
+	UpdateAgentKnowledgeSourceExclusionsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAgentKnowledgeSourceExclusionsResponse, error)
+
+	UpdateAgentKnowledgeSourceExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateAgentKnowledgeSourceExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAgentKnowledgeSourceExclusionsResponse, error)
+
+	// GetAgentSkillExclusionsWithResponse request
+	GetAgentSkillExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentSkillExclusionsResponse, error)
+
+	// UpdateAgentSkillExclusionsWithBodyWithResponse request with any body
+	UpdateAgentSkillExclusionsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAgentSkillExclusionsResponse, error)
+
+	UpdateAgentSkillExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateAgentSkillExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAgentSkillExclusionsResponse, error)
+
+	// GetAgentSkillsWithResponse request
+	GetAgentSkillsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentSkillsResponse, error)
 
 	// UpdateAgentSkillsWithBodyWithResponse request with any body
 	UpdateAgentSkillsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAgentSkillsResponse, error)
@@ -11214,6 +11742,14 @@ type ClientWithResponsesInterface interface {
 	UpdateProjectWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
 
 	UpdateProjectWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
+
+	// GetProjectInstructionsWithResponse request
+	GetProjectInstructionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetProjectInstructionsResponse, error)
+
+	// SetProjectInstructionsWithBodyWithResponse request with any body
+	SetProjectInstructionsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetProjectInstructionsResponse, error)
+
+	SetProjectInstructionsWithResponse(ctx context.Context, id openapi_types.UUID, body SetProjectInstructionsJSONRequestBody, reqEditors ...RequestEditorFn) (*SetProjectInstructionsResponse, error)
 
 	// GetResourcePermissionsWithResponse request
 	GetResourcePermissionsWithResponse(ctx context.Context, resource GetResourcePermissionsParamsResource, scope string, reqEditors ...RequestEditorFn) (*GetResourcePermissionsResponse, error)
@@ -12034,6 +12570,79 @@ func (r DeleteAgentDelegationResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r DeleteAgentDelegationResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateAgentDelegationResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Created bool `json:"created"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateAgentDelegation400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateAgentDelegation401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}           `json:"details,omitempty"`
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateAgentDelegation403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateAgentDelegation404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateAgentDelegation409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateAgentDelegation500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateAgentDelegation400ErrorType string
+type CreateAgentDelegation401ErrorType string
+type CreateAgentDelegation403ErrorType string
+type CreateAgentDelegation404ErrorType string
+type CreateAgentDelegation409ErrorType string
+type CreateAgentDelegation500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateAgentDelegationResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateAgentDelegationResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -13199,6 +13808,415 @@ func (r PatchAgentActivationSkillPolicyResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r PatchAgentActivationSkillPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAgentKnowledgeSourceExclusionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// ExcludedConnectorIds Knowledge connector IDs excluded from the agent's Auto knowledge surface
+		ExcludedConnectorIds []openapi_types.UUID `json:"excludedConnectorIds"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetAgentKnowledgeSourceExclusions400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetAgentKnowledgeSourceExclusions401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                       `json:"details,omitempty"`
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetAgentKnowledgeSourceExclusions403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetAgentKnowledgeSourceExclusions404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetAgentKnowledgeSourceExclusions409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         GetAgentKnowledgeSourceExclusions500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAgentKnowledgeSourceExclusions400ErrorType string
+type GetAgentKnowledgeSourceExclusions401ErrorType string
+type GetAgentKnowledgeSourceExclusions403ErrorType string
+type GetAgentKnowledgeSourceExclusions404ErrorType string
+type GetAgentKnowledgeSourceExclusions409ErrorType string
+type GetAgentKnowledgeSourceExclusions500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAgentKnowledgeSourceExclusionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAgentKnowledgeSourceExclusionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateAgentKnowledgeSourceExclusionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// ExcludedConnectorIds Knowledge connector IDs excluded from the agent's Auto knowledge surface
+		ExcludedConnectorIds []openapi_types.UUID `json:"excludedConnectorIds"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         UpdateAgentKnowledgeSourceExclusions400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         UpdateAgentKnowledgeSourceExclusions401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                          `json:"details,omitempty"`
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         UpdateAgentKnowledgeSourceExclusions403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         UpdateAgentKnowledgeSourceExclusions404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         UpdateAgentKnowledgeSourceExclusions409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                          `json:"internal_code,omitempty"`
+			Message      string                                           `json:"message"`
+			Type         UpdateAgentKnowledgeSourceExclusions500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateAgentKnowledgeSourceExclusions400ErrorType string
+type UpdateAgentKnowledgeSourceExclusions401ErrorType string
+type UpdateAgentKnowledgeSourceExclusions403ErrorType string
+type UpdateAgentKnowledgeSourceExclusions404ErrorType string
+type UpdateAgentKnowledgeSourceExclusions409ErrorType string
+type UpdateAgentKnowledgeSourceExclusions500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateAgentKnowledgeSourceExclusionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateAgentKnowledgeSourceExclusionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAgentSkillExclusionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// ExcludedSkillIds Individual skill IDs excluded from the agent's skill surface
+		ExcludedSkillIds []openapi_types.UUID `json:"excludedSkillIds"`
+
+		// Skills The excluded skills themselves, in `excludedSkillIds` order
+		Skills []struct {
+			AgentName   *string                               `json:"agentName"`
+			AuthorId    *string                               `json:"authorId"`
+			Description string                                `json:"description"`
+			Id          openapi_types.UUID                    `json:"id"`
+			Name        string                                `json:"name"`
+			Scope       GetAgentSkillExclusions200SkillsScope `json:"scope"`
+			Templated   bool                                  `json:"templated"`
+		} `json:"skills"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         GetAgentSkillExclusions400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         GetAgentSkillExclusions401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}             `json:"details,omitempty"`
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         GetAgentSkillExclusions403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         GetAgentSkillExclusions404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         GetAgentSkillExclusions409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         GetAgentSkillExclusions500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAgentSkillExclusions200SkillsScope string
+type GetAgentSkillExclusions400ErrorType string
+type GetAgentSkillExclusions401ErrorType string
+type GetAgentSkillExclusions403ErrorType string
+type GetAgentSkillExclusions404ErrorType string
+type GetAgentSkillExclusions409ErrorType string
+type GetAgentSkillExclusions500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAgentSkillExclusionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAgentSkillExclusionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateAgentSkillExclusionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// ExcludedSkillIds Individual skill IDs excluded from the agent's skill surface
+		ExcludedSkillIds []openapi_types.UUID `json:"excludedSkillIds"`
+
+		// Skills The excluded skills themselves, in `excludedSkillIds` order
+		Skills []struct {
+			AgentName   *string                                  `json:"agentName"`
+			AuthorId    *string                                  `json:"authorId"`
+			Description string                                   `json:"description"`
+			Id          openapi_types.UUID                       `json:"id"`
+			Name        string                                   `json:"name"`
+			Scope       UpdateAgentSkillExclusions200SkillsScope `json:"scope"`
+			Templated   bool                                     `json:"templated"`
+		} `json:"skills"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         UpdateAgentSkillExclusions400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         UpdateAgentSkillExclusions401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                `json:"details,omitempty"`
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         UpdateAgentSkillExclusions403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         UpdateAgentSkillExclusions404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         UpdateAgentSkillExclusions409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         UpdateAgentSkillExclusions500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateAgentSkillExclusions200SkillsScope string
+type UpdateAgentSkillExclusions400ErrorType string
+type UpdateAgentSkillExclusions401ErrorType string
+type UpdateAgentSkillExclusions403ErrorType string
+type UpdateAgentSkillExclusions404ErrorType string
+type UpdateAgentSkillExclusions409ErrorType string
+type UpdateAgentSkillExclusions500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateAgentSkillExclusionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateAgentSkillExclusionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAgentSkillsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// AccessAllSkills Auto mode: expose every org-scoped skill visible in the agent's environment
+		AccessAllSkills bool `json:"accessAllSkills"`
+
+		// SkillIds Skills explicitly assigned to the agent (Custom mode)
+		SkillIds []openapi_types.UUID `json:"skillIds"`
+
+		// Skills The assigned skills themselves, in `skillIds` order
+		Skills []struct {
+			AgentName   *string                      `json:"agentName"`
+			AuthorId    *string                      `json:"authorId"`
+			Description string                       `json:"description"`
+			Id          openapi_types.UUID           `json:"id"`
+			Name        string                       `json:"name"`
+			Scope       GetAgentSkills200SkillsScope `json:"scope"`
+			Templated   bool                         `json:"templated"`
+		} `json:"skills"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetAgentSkills400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetAgentSkills401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}    `json:"details,omitempty"`
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetAgentSkills403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetAgentSkills404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetAgentSkills409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetAgentSkills500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAgentSkills200SkillsScope string
+type GetAgentSkills400ErrorType string
+type GetAgentSkills401ErrorType string
+type GetAgentSkills403ErrorType string
+type GetAgentSkills404ErrorType string
+type GetAgentSkills409ErrorType string
+type GetAgentSkills500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAgentSkillsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAgentSkillsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -20846,6 +21864,153 @@ func (r UpdateProjectResponse) StatusCode() int {
 	return 0
 }
 
+type GetProjectInstructionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Content string `json:"content"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetProjectInstructions400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetProjectInstructions401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}            `json:"details,omitempty"`
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetProjectInstructions403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetProjectInstructions404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetProjectInstructions409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetProjectInstructions500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetProjectInstructions400ErrorType string
+type GetProjectInstructions401ErrorType string
+type GetProjectInstructions403ErrorType string
+type GetProjectInstructions404ErrorType string
+type GetProjectInstructions409ErrorType string
+type GetProjectInstructions500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetProjectInstructionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetProjectInstructionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SetProjectInstructionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Ok SetProjectInstructions200Ok `json:"ok"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         SetProjectInstructions400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         SetProjectInstructions401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}            `json:"details,omitempty"`
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         SetProjectInstructions403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         SetProjectInstructions404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         SetProjectInstructions409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         SetProjectInstructions500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type SetProjectInstructions200Ok bool
+type SetProjectInstructions400ErrorType string
+type SetProjectInstructions401ErrorType string
+type SetProjectInstructions403ErrorType string
+type SetProjectInstructions404ErrorType string
+type SetProjectInstructions409ErrorType string
+type SetProjectInstructions500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r SetProjectInstructionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetProjectInstructionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetResourcePermissionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -23531,6 +24696,15 @@ func (c *ClientWithResponses) DeleteAgentDelegationWithResponse(ctx context.Cont
 	return ParseDeleteAgentDelegationResponse(rsp)
 }
 
+// CreateAgentDelegationWithResponse request returning *CreateAgentDelegationResponse
+func (c *ClientWithResponses) CreateAgentDelegationWithResponse(ctx context.Context, agentId openapi_types.UUID, targetAgentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*CreateAgentDelegationResponse, error) {
+	rsp, err := c.CreateAgentDelegation(ctx, agentId, targetAgentId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateAgentDelegationResponse(rsp)
+}
+
 // UnassignToolFromAgentWithResponse request returning *UnassignToolFromAgentResponse
 func (c *ClientWithResponses) UnassignToolFromAgentWithResponse(ctx context.Context, agentId openapi_types.UUID, toolId openapi_types.UUID, reqEditors ...RequestEditorFn) (*UnassignToolFromAgentResponse, error) {
 	rsp, err := c.UnassignToolFromAgent(ctx, agentId, toolId, reqEditors...)
@@ -23616,6 +24790,67 @@ func (c *ClientWithResponses) PatchAgentActivationSkillPolicyWithResponse(ctx co
 		return nil, err
 	}
 	return ParsePatchAgentActivationSkillPolicyResponse(rsp)
+}
+
+// GetAgentKnowledgeSourceExclusionsWithResponse request returning *GetAgentKnowledgeSourceExclusionsResponse
+func (c *ClientWithResponses) GetAgentKnowledgeSourceExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentKnowledgeSourceExclusionsResponse, error) {
+	rsp, err := c.GetAgentKnowledgeSourceExclusions(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAgentKnowledgeSourceExclusionsResponse(rsp)
+}
+
+// UpdateAgentKnowledgeSourceExclusionsWithBodyWithResponse request with arbitrary body returning *UpdateAgentKnowledgeSourceExclusionsResponse
+func (c *ClientWithResponses) UpdateAgentKnowledgeSourceExclusionsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAgentKnowledgeSourceExclusionsResponse, error) {
+	rsp, err := c.UpdateAgentKnowledgeSourceExclusionsWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAgentKnowledgeSourceExclusionsResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateAgentKnowledgeSourceExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateAgentKnowledgeSourceExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAgentKnowledgeSourceExclusionsResponse, error) {
+	rsp, err := c.UpdateAgentKnowledgeSourceExclusions(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAgentKnowledgeSourceExclusionsResponse(rsp)
+}
+
+// GetAgentSkillExclusionsWithResponse request returning *GetAgentSkillExclusionsResponse
+func (c *ClientWithResponses) GetAgentSkillExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentSkillExclusionsResponse, error) {
+	rsp, err := c.GetAgentSkillExclusions(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAgentSkillExclusionsResponse(rsp)
+}
+
+// UpdateAgentSkillExclusionsWithBodyWithResponse request with arbitrary body returning *UpdateAgentSkillExclusionsResponse
+func (c *ClientWithResponses) UpdateAgentSkillExclusionsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAgentSkillExclusionsResponse, error) {
+	rsp, err := c.UpdateAgentSkillExclusionsWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAgentSkillExclusionsResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateAgentSkillExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateAgentSkillExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAgentSkillExclusionsResponse, error) {
+	rsp, err := c.UpdateAgentSkillExclusions(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAgentSkillExclusionsResponse(rsp)
+}
+
+// GetAgentSkillsWithResponse request returning *GetAgentSkillsResponse
+func (c *ClientWithResponses) GetAgentSkillsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentSkillsResponse, error) {
+	rsp, err := c.GetAgentSkills(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAgentSkillsResponse(rsp)
 }
 
 // UpdateAgentSkillsWithBodyWithResponse request with arbitrary body returning *UpdateAgentSkillsResponse
@@ -24455,6 +25690,32 @@ func (c *ClientWithResponses) UpdateProjectWithResponse(ctx context.Context, id 
 		return nil, err
 	}
 	return ParseUpdateProjectResponse(rsp)
+}
+
+// GetProjectInstructionsWithResponse request returning *GetProjectInstructionsResponse
+func (c *ClientWithResponses) GetProjectInstructionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetProjectInstructionsResponse, error) {
+	rsp, err := c.GetProjectInstructions(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetProjectInstructionsResponse(rsp)
+}
+
+// SetProjectInstructionsWithBodyWithResponse request with arbitrary body returning *SetProjectInstructionsResponse
+func (c *ClientWithResponses) SetProjectInstructionsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetProjectInstructionsResponse, error) {
+	rsp, err := c.SetProjectInstructionsWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetProjectInstructionsResponse(rsp)
+}
+
+func (c *ClientWithResponses) SetProjectInstructionsWithResponse(ctx context.Context, id openapi_types.UUID, body SetProjectInstructionsJSONRequestBody, reqEditors ...RequestEditorFn) (*SetProjectInstructionsResponse, error) {
+	rsp, err := c.SetProjectInstructions(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetProjectInstructionsResponse(rsp)
 }
 
 // GetResourcePermissionsWithResponse request returning *GetResourcePermissionsResponse
@@ -25713,6 +26974,113 @@ func ParseDeleteAgentDelegationResponse(rsp *http.Response) (*DeleteAgentDelegat
 	return response, nil
 }
 
+// ParseCreateAgentDelegationResponse parses an HTTP response from a CreateAgentDelegationWithResponse call
+func ParseCreateAgentDelegationResponse(rsp *http.Response) (*CreateAgentDelegationResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateAgentDelegationResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Created bool `json:"created"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateAgentDelegation400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateAgentDelegation401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}           `json:"details,omitempty"`
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateAgentDelegation403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateAgentDelegation404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateAgentDelegation409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateAgentDelegation500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseUnassignToolFromAgentResponse parses an HTTP response from a UnassignToolFromAgentWithResponse call
 func ParseUnassignToolFromAgentResponse(rsp *http.Response) (*UnassignToolFromAgentResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -26770,6 +28138,582 @@ func ParsePatchAgentActivationSkillPolicyResponse(rsp *http.Response) (*PatchAge
 				InternalCode *string                                     `json:"internal_code,omitempty"`
 				Message      string                                      `json:"message"`
 				Type         PatchAgentActivationSkillPolicy500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAgentKnowledgeSourceExclusionsResponse parses an HTTP response from a GetAgentKnowledgeSourceExclusionsWithResponse call
+func ParseGetAgentKnowledgeSourceExclusionsResponse(rsp *http.Response) (*GetAgentKnowledgeSourceExclusionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAgentKnowledgeSourceExclusionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// ExcludedConnectorIds Knowledge connector IDs excluded from the agent's Auto knowledge surface
+			ExcludedConnectorIds []openapi_types.UUID `json:"excludedConnectorIds"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetAgentKnowledgeSourceExclusions400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetAgentKnowledgeSourceExclusions401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                       `json:"details,omitempty"`
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetAgentKnowledgeSourceExclusions403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetAgentKnowledgeSourceExclusions404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetAgentKnowledgeSourceExclusions409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         GetAgentKnowledgeSourceExclusions500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateAgentKnowledgeSourceExclusionsResponse parses an HTTP response from a UpdateAgentKnowledgeSourceExclusionsWithResponse call
+func ParseUpdateAgentKnowledgeSourceExclusionsResponse(rsp *http.Response) (*UpdateAgentKnowledgeSourceExclusionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateAgentKnowledgeSourceExclusionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// ExcludedConnectorIds Knowledge connector IDs excluded from the agent's Auto knowledge surface
+			ExcludedConnectorIds []openapi_types.UUID `json:"excludedConnectorIds"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         UpdateAgentKnowledgeSourceExclusions400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         UpdateAgentKnowledgeSourceExclusions401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                          `json:"details,omitempty"`
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         UpdateAgentKnowledgeSourceExclusions403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         UpdateAgentKnowledgeSourceExclusions404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         UpdateAgentKnowledgeSourceExclusions409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                          `json:"internal_code,omitempty"`
+				Message      string                                           `json:"message"`
+				Type         UpdateAgentKnowledgeSourceExclusions500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAgentSkillExclusionsResponse parses an HTTP response from a GetAgentSkillExclusionsWithResponse call
+func ParseGetAgentSkillExclusionsResponse(rsp *http.Response) (*GetAgentSkillExclusionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAgentSkillExclusionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// ExcludedSkillIds Individual skill IDs excluded from the agent's skill surface
+			ExcludedSkillIds []openapi_types.UUID `json:"excludedSkillIds"`
+
+			// Skills The excluded skills themselves, in `excludedSkillIds` order
+			Skills []struct {
+				AgentName   *string                               `json:"agentName"`
+				AuthorId    *string                               `json:"authorId"`
+				Description string                                `json:"description"`
+				Id          openapi_types.UUID                    `json:"id"`
+				Name        string                                `json:"name"`
+				Scope       GetAgentSkillExclusions200SkillsScope `json:"scope"`
+				Templated   bool                                  `json:"templated"`
+			} `json:"skills"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         GetAgentSkillExclusions400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         GetAgentSkillExclusions401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}             `json:"details,omitempty"`
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         GetAgentSkillExclusions403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         GetAgentSkillExclusions404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         GetAgentSkillExclusions409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         GetAgentSkillExclusions500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateAgentSkillExclusionsResponse parses an HTTP response from a UpdateAgentSkillExclusionsWithResponse call
+func ParseUpdateAgentSkillExclusionsResponse(rsp *http.Response) (*UpdateAgentSkillExclusionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateAgentSkillExclusionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// ExcludedSkillIds Individual skill IDs excluded from the agent's skill surface
+			ExcludedSkillIds []openapi_types.UUID `json:"excludedSkillIds"`
+
+			// Skills The excluded skills themselves, in `excludedSkillIds` order
+			Skills []struct {
+				AgentName   *string                                  `json:"agentName"`
+				AuthorId    *string                                  `json:"authorId"`
+				Description string                                   `json:"description"`
+				Id          openapi_types.UUID                       `json:"id"`
+				Name        string                                   `json:"name"`
+				Scope       UpdateAgentSkillExclusions200SkillsScope `json:"scope"`
+				Templated   bool                                     `json:"templated"`
+			} `json:"skills"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         UpdateAgentSkillExclusions400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         UpdateAgentSkillExclusions401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                `json:"details,omitempty"`
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         UpdateAgentSkillExclusions403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         UpdateAgentSkillExclusions404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         UpdateAgentSkillExclusions409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         UpdateAgentSkillExclusions500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAgentSkillsResponse parses an HTTP response from a GetAgentSkillsWithResponse call
+func ParseGetAgentSkillsResponse(rsp *http.Response) (*GetAgentSkillsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAgentSkillsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// AccessAllSkills Auto mode: expose every org-scoped skill visible in the agent's environment
+			AccessAllSkills bool `json:"accessAllSkills"`
+
+			// SkillIds Skills explicitly assigned to the agent (Custom mode)
+			SkillIds []openapi_types.UUID `json:"skillIds"`
+
+			// Skills The assigned skills themselves, in `skillIds` order
+			Skills []struct {
+				AgentName   *string                      `json:"agentName"`
+				AuthorId    *string                      `json:"authorId"`
+				Description string                       `json:"description"`
+				Id          openapi_types.UUID           `json:"id"`
+				Name        string                       `json:"name"`
+				Scope       GetAgentSkills200SkillsScope `json:"scope"`
+				Templated   bool                         `json:"templated"`
+			} `json:"skills"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetAgentSkills400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetAgentSkills401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}    `json:"details,omitempty"`
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetAgentSkills403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetAgentSkills404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetAgentSkills409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetAgentSkills500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -36278,6 +38222,220 @@ func ParseUpdateProjectResponse(rsp *http.Response) (*UpdateProjectResponse, err
 				InternalCode *string                   `json:"internal_code,omitempty"`
 				Message      string                    `json:"message"`
 				Type         UpdateProject500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetProjectInstructionsResponse parses an HTTP response from a GetProjectInstructionsWithResponse call
+func ParseGetProjectInstructionsResponse(rsp *http.Response) (*GetProjectInstructionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetProjectInstructionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Content string `json:"content"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetProjectInstructions400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetProjectInstructions401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}            `json:"details,omitempty"`
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetProjectInstructions403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetProjectInstructions404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetProjectInstructions409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetProjectInstructions500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSetProjectInstructionsResponse parses an HTTP response from a SetProjectInstructionsWithResponse call
+func ParseSetProjectInstructionsResponse(rsp *http.Response) (*SetProjectInstructionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetProjectInstructionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Ok SetProjectInstructions200Ok `json:"ok"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         SetProjectInstructions400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         SetProjectInstructions401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}            `json:"details,omitempty"`
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         SetProjectInstructions403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         SetProjectInstructions404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         SetProjectInstructions409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         SetProjectInstructions500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

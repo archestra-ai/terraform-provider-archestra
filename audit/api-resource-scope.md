@@ -1,18 +1,18 @@
 # Provider resource scope and API review
 
-The verified Crossplane denominator is the Terraform resource registry: 22 in
-v2, of which five were configured for Crossplane; v3 retires six removed API
-resources and adds seven current resource families, producing 23. Two additional declarative lifecycles (skill policy and subagent
-exclusions) raise the registry to 25. Versioned skill content and files raise the current registry
-to 26. All 26 have
-accumulated real lifecycle evidence in both scopes. This does not establish that
-every persistent Archestra API lifecycle has a Terraform resource.
+The current Terraform registry contains 29 families, all configured for both
+Crossplane scopes and backed by accumulated real lifecycle evidence. The latest
+candidate adds gateway skill publication/exclusions, project instructions and
+knowledge-source exclusions. Atomic delegation additionally passes a two-process
+Terraform lost-update regression and both-scope drift/deletion probes against the
+unpublished API prerequisite in Archestra PR #9038. These are accumulated proofs,
+not final-candidate or complete Archestra API coverage.
 
 ## Current release resource families
 
 | Area | Registered Terraform resource families |
 |---|---|
-| Agents | Agent, MCP gateway, delegation, individual tool binding, authoritative tool batch, tool exclusions, skill activation policy, subagent exclusions |
+| Agents | Agent, MCP gateway, delegation, individual tool binding, authoritative tool batch, tool exclusions, skill activation policy, subagent exclusions, knowledge-source exclusions, gateway skill publication and exclusions |
 | Organization and access | Organization settings, environment, team, external-group mapping, role, object permission policy |
 | MCP | Registry catalog item, server installation |
 | LLM | Provider key, discovered-model overrides, limit |
@@ -34,11 +34,9 @@ resource design and runtime validation; generation of types would not close them
 
 | Area | API examples | Decision still required |
 |---|---|---|
-| Skill bindings | `/api/agents/{id}/skills` | Explicit assignments vs auto-access mode; activation policy has a separate tested authoritative resource |
-| Agent knowledge exclusions | `/api/agents/{id}/knowledge-source-exclusions` | Full-set connector ownership and revocation; subagent exclusions are implemented and tested |
 | Plugins and externally synchronized skills | `/api/skills`, `/api/plugins` | Manual skill content/files are covered; plugin packages and external source synchronization remain open |
 | Apps and tool bindings | `/api/apps`, `/api/apps/{appId}/tools/{toolId}` | Versioned source, enable/lock behavior, bindings and deletion |
-| Project instructions, files and apps | `/api/projects/{id}/instructions`, `/api/projects/{id}/files`, `/api/projects/{id}/apps/{appId}` | Embedded attributes vs independent bindings and content ownership |
+| Project files and apps | `/api/projects/{id}/files`, `/api/projects/{id}/apps/{appId}` | Attachment and binding ownership; project instructions are implemented and tested as an attribute |
 | Connectors and knowledge associations | `/api/connectors`, `/api/connectors/{id}/knowledge-bases`, `/api/connectors/{id}/member-overrides` | Secret preservation, provider-specific configuration, permission sync and associations |
 | Knowledge documents and directories | `/api/knowledge-files`, `/api/knowledge-directories` | Binary/content transport, hashes, async indexing, hierarchy and deletion |
 | Remote A2A agents | `/api/a2a/remote-agents` | Persistent declaration vs inspection, credentials and visibility |
@@ -54,7 +52,7 @@ resource design and runtime validation; generation of types would not close them
 This table is a lifecycle review queue, not a numerical denominator inferred from
 path counts. Some rows contain several resources; others may belong as attributes
 or bindings on an existing family. A release claiming all declarative Archestra
-API lifecycles must resolve every row rather than divide by 26.
+API lifecycles must resolve every row rather than divide by 29.
 
 ## Justified operation exclusions
 

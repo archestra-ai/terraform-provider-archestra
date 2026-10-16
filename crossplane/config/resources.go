@@ -3,9 +3,27 @@ package config
 import ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
 const agentGroup = "agent"
+const mcpGroup = "mcp"
 
 // ConfigureResources applies the same API names and references in both scopes.
 func ConfigureResources(p *ujconfig.Provider) {
+	p.AddResourceConfigurator("archestra_agent_knowledge_source_exclusions", func(r *ujconfig.Resource) {
+		r.ShortGroup = agentGroup
+		r.Kind = "KnowledgeSourceExclusions"
+		r.References["agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
+	})
+	p.AddResourceConfigurator("archestra_mcp_gateway_skill_publication", func(r *ujconfig.Resource) {
+		r.ShortGroup = mcpGroup
+		r.Kind = "SkillPublication"
+		r.References["gateway_id"] = ujconfig.Reference{TerraformName: "archestra_mcp_gateway"}
+		r.References["skill_ids"] = ujconfig.Reference{TerraformName: "archestra_skill"}
+	})
+	p.AddResourceConfigurator("archestra_mcp_gateway_skill_exclusions", func(r *ujconfig.Resource) {
+		r.ShortGroup = mcpGroup
+		r.Kind = "SkillExclusions"
+		r.References["gateway_id"] = ujconfig.Reference{TerraformName: "archestra_mcp_gateway"}
+		r.References["excluded_skill_ids"] = ujconfig.Reference{TerraformName: "archestra_skill"}
+	})
 	p.AddResourceConfigurator("archestra_skill", func(r *ujconfig.Resource) {
 		r.ShortGroup = "skill"
 		r.Kind = "Skill"
@@ -84,16 +102,16 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.Kind = "ProviderKey"
 	})
 	p.AddResourceConfigurator("archestra_mcp_gateway", func(r *ujconfig.Resource) {
-		r.ShortGroup = "mcp"
+		r.ShortGroup = mcpGroup
 		r.Kind = "Gateway"
 		r.References["identity_provider_id"] = ujconfig.Reference{TerraformName: "archestra_identity_provider"}
 	})
 	p.AddResourceConfigurator("archestra_mcp_registry_catalog_item", func(r *ujconfig.Resource) {
-		r.ShortGroup = "mcp"
+		r.ShortGroup = mcpGroup
 		r.Kind = "RegistryCatalogItem"
 	})
 	p.AddResourceConfigurator("archestra_mcp_server_installation", func(r *ujconfig.Resource) {
-		r.ShortGroup = "mcp"
+		r.ShortGroup = mcpGroup
 		r.Kind = "ServerInstallation"
 		r.References["catalog_id"] = ujconfig.Reference{TerraformName: "archestra_mcp_registry_catalog_item"}
 	})

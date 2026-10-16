@@ -4,43 +4,19 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"sync"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 var _ resource.Resource = &AgentDelegationResource{}
 var _ resource.ResourceWithImportState = &AgentDelegationResource{}
-
-// The backend has no single-edge create endpoint — only a full-replace sync
-// (POST /api/agents/:id/delegations). Create therefore reads the current
-// target set and syncs it back with the new edge added, and this mutex map
-// (one mutex per delegating agent) serializes those read-modify-write cycles
-// so several archestra_agent_delegation resources on the same agent applied
-// in parallel cannot overwrite each other's edges. Cross-process applies are
-// not protected — same as any Terraform state shared without locking.
-var agentDelegationSyncMu sync.Map // map[string]*sync.Mutex, keyed by agent UUID
-
-func lockAgentDelegations(agentID string) func() {
-	mu, _ := agentDelegationSyncMu.LoadOrStore(agentID, &sync.Mutex{})
-	m, ok := mu.(*sync.Mutex)
-	if !ok {
-		// Unreachable: the map only ever stores *sync.Mutex. Satisfies the
-		// forcetypeassert linter without a bare assertion.
-		m = &sync.Mutex{}
-	}
-	m.Lock()
-	return m.Unlock
-}
 
 func NewAgentDelegationResource() resource.Resource {
 	return &AgentDelegationResource{}
@@ -67,10 +43,7 @@ func (r *AgentDelegationResource) Schema(_ context.Context, _ resource.SchemaReq
 			"delegation surface as several of these.\n\n" +
 			"Agents, MCP gateways, and profiles may delegate (the `agent_id` side); the delegation **target** must be " +
 			"an internal agent. LLM proxies cannot delegate at all.\n\n" +
-			"~> The backend only exposes a full-replace sync for delegation writes, so Create re-reads the agent's " +
-			"current targets and syncs them back with the new edge added. Manage all of an agent's delegations from " +
-			"one place, with credentials that can see every existing target — a non-admin caller with hidden targets, " +
-			"or a concurrent out-of-band edit, can silently drop edges.",
+			"Each resource adds or removes only its own edge, preserving other targets even when independent Terraform processes reconcile concurrently.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -135,29 +108,17 @@ func (r *AgentDelegationResource) Create(ctx context.Context, req resource.Creat
 		return
 	}
 
-	unlock := lockAgentDelegations(agentUUID.String())
-	defer unlock()
-
-	current, ok := r.listTargets(ctx, agentUUID, &resp.Diagnostics)
-	if !ok {
+	created, err := r.client.CreateAgentDelegationWithResponse(ctx, agentUUID, targetUUID)
+	if err != nil {
+		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to create agent delegation: %s", err))
 		return
 	}
-
-	targets := make([]openapi_types.UUID, 0, len(current)+1)
-	for _, t := range current {
-		if t == targetUUID {
-			resp.Diagnostics.AddError(
-				"Delegation Already Exists",
-				fmt.Sprintf("Agent %s already delegates to %s. Import it instead:\n\n"+
-					"  terraform import <address> %s:%s", agentUUID, targetUUID, agentUUID, targetUUID),
-			)
-			return
-		}
-		targets = append(targets, t)
+	if created.JSON200 == nil {
+		resp.Diagnostics.AddError("Unexpected API Response", fmt.Sprintf("CreateAgentDelegation: Expected 200 OK, got status %d: %s", created.StatusCode(), string(created.Body)))
+		return
 	}
-	targets = append(targets, targetUUID)
-
-	if !r.syncTargets(ctx, agentUUID, targets, &resp.Diagnostics) {
+	if !created.JSON200.Created {
+		resp.Diagnostics.AddError("Delegation Already Exists", fmt.Sprintf("Agent %s already delegates to %s. Import it instead:\n\n  terraform import <address> %s:%s", agentUUID, targetUUID, agentUUID, targetUUID))
 		return
 	}
 
@@ -260,9 +221,6 @@ func (r *AgentDelegationResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	unlock := lockAgentDelegations(agentUUID.String())
-	defer unlock()
-
 	delResp, err := r.client.DeleteAgentDelegationWithResponse(ctx, agentUUID, targetUUID)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to remove delegation, got error: %s", err))
@@ -297,43 +255,4 @@ func (r *AgentDelegationResource) ImportState(ctx context.Context, req resource.
 		}
 	}
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
-}
-
-func (r *AgentDelegationResource) listTargets(ctx context.Context, agentUUID uuid.UUID, diags *diag.Diagnostics) ([]openapi_types.UUID, bool) {
-	delResp, err := r.client.GetAgentDelegationsWithResponse(ctx, agentUUID)
-	if err != nil {
-		diags.AddError("API Error", fmt.Sprintf("Unable to read agent delegations: %s", err))
-		return nil, false
-	}
-	if delResp.JSON200 == nil {
-		diags.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("GetAgentDelegations: Expected 200 OK, got status %d: %s", delResp.StatusCode(), string(delResp.Body)),
-		)
-		return nil, false
-	}
-
-	targets := make([]openapi_types.UUID, 0, len(*delResp.JSON200))
-	for _, t := range *delResp.JSON200 {
-		targets = append(targets, t.Id)
-	}
-	return targets, true
-}
-
-func (r *AgentDelegationResource) syncTargets(ctx context.Context, agentUUID uuid.UUID, targets []openapi_types.UUID, diags *diag.Diagnostics) bool {
-	syncResp, err := r.client.SyncAgentDelegationsWithResponse(ctx, agentUUID, client.SyncAgentDelegationsJSONRequestBody{
-		TargetAgentIds: targets,
-	})
-	if err != nil {
-		diags.AddError("API Error", fmt.Sprintf("Unable to sync agent delegations: %s", err))
-		return false
-	}
-	if syncResp.JSON200 == nil {
-		diags.AddError(
-			"Unexpected API Response",
-			fmt.Sprintf("SyncAgentDelegations: Expected 200 OK, got status %d: %s", syncResp.StatusCode(), string(syncResp.Body)),
-		)
-		return false
-	}
-	return true
 }

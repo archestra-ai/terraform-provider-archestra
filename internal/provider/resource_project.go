@@ -28,6 +28,7 @@ func NewProjectResource() resource.Resource { return &ProjectResource{} }
 type ProjectResource struct{ client *client.ClientWithResponses }
 type ProjectResourceModel struct {
 	ID                types.String      `tfsdk:"id"`
+	Instructions      types.String      `tfsdk:"instructions"`
 	Name              types.String      `tfsdk:"name"`
 	Description       types.String      `tfsdk:"description"`
 	Icon              types.String      `tfsdk:"icon"`
@@ -40,6 +41,7 @@ type ProjectResourceModel struct {
 }
 
 var projectAttrSpec = []AttrSpec{
+	{TFName: "instructions", Kind: Synthetic},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
 	{TFName: "icon", JSONName: "icon", Kind: Scalar},
@@ -61,6 +63,7 @@ func (r *ProjectResource) Metadata(_ context.Context, req resource.MetadataReque
 func (r *ProjectResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{MarkdownDescription: "A project containing conversations and schedules. Configure sharing with a separate archestra_resource_permission_policy. Destroy uses the project's soft-delete API; retain backups of project content before deleting it.", Attributes: map[string]schema.Attribute{
 		"id":               schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
+		"instructions":     schema.StringAttribute{Optional: true, Computed: true, MarkdownDescription: "Project chat instructions; omit to preserve existing content, or set an empty string to clear it.", Validators: []validator.String{stringvalidator.LengthAtMost(100000)}, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 		"name":             schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 64)}},
 		"description":      schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.LengthAtMost(200)}},
 		"icon":             schema.StringAttribute{Optional: true},
@@ -116,7 +119,13 @@ func (r *ProjectResource) Create(ctx context.Context, req resource.CreateRequest
 	data.OwnerName = types.StringNull()
 	data.ConversationCount = types.Int64Null()
 	data.CreatedAt = types.StringNull()
+	if data.Instructions.IsUnknown() {
+		data.Instructions = types.StringNull()
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	if !data.Instructions.IsNull() && !r.writeInstructions(ctx, &data, &resp.Diagnostics) {
+		return
+	}
 	if !r.refresh(ctx, &data, &resp.Diagnostics) {
 		return
 	}
@@ -142,8 +151,9 @@ func (r *ProjectResource) Read(ctx context.Context, req resource.ReadRequest, re
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 func (r *ProjectResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data ProjectResourceModel
+	var data, prior ProjectResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	resp.Diagnostics.Append(req.State.Get(ctx, &prior)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -151,24 +161,31 @@ func (r *ProjectResource) Update(ctx context.Context, req resource.UpdateRequest
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	body, err := json.Marshal(patch)
-	if err != nil {
-		resp.Diagnostics.AddError("Request Encoding Failed", err.Error())
-		return
+	if len(patch) > 0 {
+		body, err := json.Marshal(patch)
+		if err != nil {
+			resp.Diagnostics.AddError("Request Encoding Failed", err.Error())
+			return
+		}
+		id, err := uuid.Parse(data.ID.ValueString())
+		if err != nil {
+			resp.Diagnostics.AddError("Invalid Project ID", err.Error())
+			return
+		}
+		updated, err := r.client.UpdateProjectWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(body))
+		if err != nil {
+			resp.Diagnostics.AddError("API Error", err.Error())
+			return
+		}
+		if updated.StatusCode() != 200 {
+			resp.Diagnostics.AddError("Project Update Failed", fmt.Sprintf("API returned status %d. Refresh before retrying.", updated.StatusCode()))
+			return
+		}
 	}
-	id, err := uuid.Parse(data.ID.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("Invalid Project ID", err.Error())
-		return
-	}
-	updated, err := r.client.UpdateProjectWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(body))
-	if err != nil {
-		resp.Diagnostics.AddError("API Error", err.Error())
-		return
-	}
-	if updated.StatusCode() != 200 {
-		resp.Diagnostics.AddError("Project Update Failed", fmt.Sprintf("API returned status %d. Refresh before retrying.", updated.StatusCode()))
-		return
+	if !data.Instructions.IsNull() && !data.Instructions.IsUnknown() && !data.Instructions.Equal(prior.Instructions) {
+		if !r.writeInstructions(ctx, &data, &resp.Diagnostics) {
+			return
+		}
 	}
 	if !r.refresh(ctx, &data, &resp.Diagnostics) {
 		return
@@ -236,5 +253,5 @@ func (r *ProjectResource) refresh(ctx context.Context, data *ProjectResourceMode
 	data.OwnerName = types.StringPointerValue(wire.OwnerName)
 	data.ConversationCount = types.Int64Value(int64(wire.ConversationCount))
 	data.CreatedAt = types.StringValue(wire.CreatedAt.Format(time.RFC3339Nano))
-	return true
+	return r.readInstructions(ctx, data, ds)
 }
