@@ -31,6 +31,8 @@ type LlmModelResource struct {
 }
 
 type LlmModelResourceModel struct {
+	EmbeddingDimensions             types.Int64          `tfsdk:"embedding_dimensions"`
+	EffectiveEmbeddingDimensions    types.Int64          `tfsdk:"effective_embedding_dimensions"`
 	EffectiveInputModalities        types.List           `tfsdk:"effective_input_modalities"`
 	EffectiveOutputModalities       types.List           `tfsdk:"effective_output_modalities"`
 	CustomPricePerMillionCacheRead  types.String         `tfsdk:"custom_price_per_million_cache_read"`
@@ -76,6 +78,7 @@ func (r *LlmModelResource) Metadata(ctx context.Context, req resource.MetadataRe
 
 func (r *LlmModelResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version:             1,
 		MarkdownDescription: "Pricing and settings override for an LLM model auto-discovered from an `archestra_llm_provider_api_key`. Adopt-only — `terraform destroy` reverts the override; the model itself is never deleted.",
 
 		Attributes: map[string]schema.Attribute{
@@ -356,6 +359,9 @@ func (r *LlmModelResource) Delete(ctx context.Context, req resource.DeleteReques
 	}
 	if !data.InputModalities.IsNull() {
 		patch["inputModalities"] = nil
+	}
+	if !data.EmbeddingDimensions.IsNull() {
+		patch["embeddingDimensions"] = nil
 	}
 	if !data.OutputModalities.IsNull() {
 		patch["outputModalities"] = nil

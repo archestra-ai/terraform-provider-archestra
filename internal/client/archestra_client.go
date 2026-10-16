@@ -123,8 +123,8 @@ const (
 
 // Defines values for CreateAgentJSONBodyActivationSkillPolicyMode.
 const (
-	All    CreateAgentJSONBodyActivationSkillPolicyMode = "all"
-	Manual CreateAgentJSONBodyActivationSkillPolicyMode = "manual"
+	CreateAgentJSONBodyActivationSkillPolicyModeAll    CreateAgentJSONBodyActivationSkillPolicyMode = "all"
+	CreateAgentJSONBodyActivationSkillPolicyModeManual CreateAgentJSONBodyActivationSkillPolicyMode = "manual"
 )
 
 // Defines values for CreateAgentJSONBodyAgentType.
@@ -335,6 +335,45 @@ const (
 const (
 	UpdateAgentJSONBodyToolExposureModeFull             UpdateAgentJSONBodyToolExposureMode = "full"
 	UpdateAgentJSONBodyToolExposureModeSearchAndRunOnly UpdateAgentJSONBodyToolExposureMode = "search_and_run_only"
+)
+
+// Defines values for PatchAgentActivationSkillPolicyJSONBodyDiscardUnavailable.
+const (
+	PatchAgentActivationSkillPolicyJSONBodyDiscardUnavailableAllow   PatchAgentActivationSkillPolicyJSONBodyDiscardUnavailable = "allow"
+	PatchAgentActivationSkillPolicyJSONBodyDiscardUnavailableExclude PatchAgentActivationSkillPolicyJSONBodyDiscardUnavailable = "exclude"
+)
+
+// Defines values for PatchAgentActivationSkillPolicyJSONBodyMode.
+const (
+	PatchAgentActivationSkillPolicyJSONBodyModeAll    PatchAgentActivationSkillPolicyJSONBodyMode = "all"
+	PatchAgentActivationSkillPolicyJSONBodyModeManual PatchAgentActivationSkillPolicyJSONBodyMode = "manual"
+)
+
+// Defines values for PatchAgentActivationSkillPolicyJSONBodyOperationsDisposition.
+const (
+	PatchAgentActivationSkillPolicyJSONBodyOperationsDispositionAllow   PatchAgentActivationSkillPolicyJSONBodyOperationsDisposition = "allow"
+	PatchAgentActivationSkillPolicyJSONBodyOperationsDispositionExclude PatchAgentActivationSkillPolicyJSONBodyOperationsDisposition = "exclude"
+)
+
+// Defines values for PatchAgentActivationSkillPolicyJSONBodyOperationsOp.
+const (
+	Add    PatchAgentActivationSkillPolicyJSONBodyOperationsOp = "add"
+	Remove PatchAgentActivationSkillPolicyJSONBodyOperationsOp = "remove"
+)
+
+// Defines values for PatchAgentActivationSkillPolicyJSONBodyOperationsReference0Source.
+const (
+	Native PatchAgentActivationSkillPolicyJSONBodyOperationsReference0Source = "native"
+)
+
+// Defines values for PatchAgentActivationSkillPolicyJSONBodyOperationsReference1Source.
+const (
+	ExternalMcp PatchAgentActivationSkillPolicyJSONBodyOperationsReference1Source = "external_mcp"
+)
+
+// Defines values for PatchAgentActivationSkillPolicyJSONBodyOperationsReference2Source.
+const (
+	PatchAgentActivationSkillPolicyJSONBodyOperationsReference2SourcePlugin PatchAgentActivationSkillPolicyJSONBodyOperationsReference2Source = "plugin"
 )
 
 // Defines values for ListRuntimeCredentialsParamsAccess.
@@ -1110,7 +1149,7 @@ const (
 
 // Defines values for UpdateResourcePermissionsJSONBodyGrantsSubject0Type.
 const (
-	User UpdateResourcePermissionsJSONBodyGrantsSubject0Type = "user"
+	UpdateResourcePermissionsJSONBodyGrantsSubject0TypeUser UpdateResourcePermissionsJSONBodyGrantsSubject0Type = "user"
 )
 
 // Defines values for UpdateResourcePermissionsJSONBodyGrantsSubject1Type.
@@ -1125,17 +1164,17 @@ const (
 
 // Defines values for UpdateResourcePermissionsJSONBodyGrantsSubject3Type.
 const (
-	Role UpdateResourcePermissionsJSONBodyGrantsSubject3Type = "role"
+	UpdateResourcePermissionsJSONBodyGrantsSubject3TypeRole UpdateResourcePermissionsJSONBodyGrantsSubject3Type = "role"
 )
 
 // Defines values for UpdateResourcePermissionsJSONBodyGrantsSubject4Id.
 const (
-	Asterisk UpdateResourcePermissionsJSONBodyGrantsSubject4Id = "*"
+	UpdateResourcePermissionsJSONBodyGrantsSubject4IdAsterisk UpdateResourcePermissionsJSONBodyGrantsSubject4Id = "*"
 )
 
 // Defines values for UpdateResourcePermissionsJSONBodyGrantsSubject4Type.
 const (
-	Organization UpdateResourcePermissionsJSONBodyGrantsSubject4Type = "organization"
+	UpdateResourcePermissionsJSONBodyGrantsSubject4TypeOrganization UpdateResourcePermissionsJSONBodyGrantsSubject4Type = "organization"
 )
 
 // Defines values for CreateRoleJSONBodyPermission.
@@ -1164,6 +1203,58 @@ const (
 	UpdateRoleJSONBodyPermissionUpdate      UpdateRoleJSONBodyPermission = "update"
 )
 
+// Defines values for CreateSkillJSONBodyFilesEncoding.
+const (
+	CreateSkillJSONBodyFilesEncodingBase64 CreateSkillJSONBodyFilesEncoding = "base64"
+	CreateSkillJSONBodyFilesEncodingUtf8   CreateSkillJSONBodyFilesEncoding = "utf8"
+)
+
+// Defines values for CreateSkillJSONBodyInitialGrantsActions.
+const (
+	CreateSkillJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateSkillJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	CreateSkillJSONBodyInitialGrantsActionsDelete                  CreateSkillJSONBodyInitialGrantsActions = "delete"
+	CreateSkillJSONBodyInitialGrantsActionsManagePermissions       CreateSkillJSONBodyInitialGrantsActions = "manage-permissions"
+	CreateSkillJSONBodyInitialGrantsActionsRead                    CreateSkillJSONBodyInitialGrantsActions = "read"
+	CreateSkillJSONBodyInitialGrantsActionsUpdate                  CreateSkillJSONBodyInitialGrantsActions = "update"
+	CreateSkillJSONBodyInitialGrantsActionsUse                     CreateSkillJSONBodyInitialGrantsActions = "use"
+)
+
+// Defines values for CreateSkillJSONBodyInitialGrantsSubject0Type.
+const (
+	CreateSkillJSONBodyInitialGrantsSubject0TypeUser CreateSkillJSONBodyInitialGrantsSubject0Type = "user"
+)
+
+// Defines values for CreateSkillJSONBodyInitialGrantsSubject1Type.
+const (
+	Team CreateSkillJSONBodyInitialGrantsSubject1Type = "team"
+)
+
+// Defines values for CreateSkillJSONBodyInitialGrantsSubject2Type.
+const (
+	CreateSkillJSONBodyInitialGrantsSubject2TypeServiceAccount CreateSkillJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+)
+
+// Defines values for CreateSkillJSONBodyInitialGrantsSubject3Type.
+const (
+	CreateSkillJSONBodyInitialGrantsSubject3TypeRole CreateSkillJSONBodyInitialGrantsSubject3Type = "role"
+)
+
+// Defines values for CreateSkillJSONBodyInitialGrantsSubject4Id.
+const (
+	CreateSkillJSONBodyInitialGrantsSubject4IdAsterisk CreateSkillJSONBodyInitialGrantsSubject4Id = "*"
+)
+
+// Defines values for CreateSkillJSONBodyInitialGrantsSubject4Type.
+const (
+	CreateSkillJSONBodyInitialGrantsSubject4TypeOrganization CreateSkillJSONBodyInitialGrantsSubject4Type = "organization"
+)
+
+// Defines values for UpdateSkillJSONBodyFilesEncoding.
+const (
+	UpdateSkillJSONBodyFilesEncodingBase64 UpdateSkillJSONBodyFilesEncoding = "base64"
+	UpdateSkillJSONBodyFilesEncodingUtf8   UpdateSkillJSONBodyFilesEncoding = "utf8"
+)
+
 // Defines values for AddTeamMemberJSONBodyRole.
 const (
 	AddTeamMemberJSONBodyRoleAdmin  AddTeamMemberJSONBodyRole = "admin"
@@ -1172,8 +1263,8 @@ const (
 
 // Defines values for UpdateTeamMemberJSONBodyRole.
 const (
-	Admin  UpdateTeamMemberJSONBodyRole = "admin"
-	Member UpdateTeamMemberJSONBodyRole = "member"
+	UpdateTeamMemberJSONBodyRoleAdmin  UpdateTeamMemberJSONBodyRole = "admin"
+	UpdateTeamMemberJSONBodyRoleMember UpdateTeamMemberJSONBodyRole = "member"
 )
 
 // Defines values for GetToolsWithAssignmentsParamsSortBy.
@@ -1772,6 +1863,94 @@ type UpdateAgentJSONBodyRuntimeSteerMode string
 // UpdateAgentJSONBodyToolExposureMode defines parameters for UpdateAgent.
 type UpdateAgentJSONBodyToolExposureMode string
 
+// PatchAgentActivationSkillPolicyJSONBody defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBody struct {
+	DiscardUnavailable *[]PatchAgentActivationSkillPolicyJSONBodyDiscardUnavailable `json:"discardUnavailable,omitempty"`
+	ExpectedRevision   int                                                          `json:"expectedRevision"`
+	Mode               *PatchAgentActivationSkillPolicyJSONBodyMode                 `json:"mode,omitempty"`
+	Operations         *[]struct {
+		Disposition PatchAgentActivationSkillPolicyJSONBodyOperationsDisposition `json:"disposition"`
+		Op          PatchAgentActivationSkillPolicyJSONBodyOperationsOp          `json:"op"`
+
+		// Reference Stable source identity: native uses skillId, external_mcp uses mcpServerId and uri, and plugin uses pluginId and skillPath.
+		Reference PatchAgentActivationSkillPolicyJSONBody_Operations_Reference `json:"reference"`
+	} `json:"operations,omitempty"`
+}
+
+// PatchAgentActivationSkillPolicyJSONBodyDiscardUnavailable defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBodyDiscardUnavailable string
+
+// PatchAgentActivationSkillPolicyJSONBodyMode defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBodyMode string
+
+// PatchAgentActivationSkillPolicyJSONBodyOperationsDisposition defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBodyOperationsDisposition string
+
+// PatchAgentActivationSkillPolicyJSONBodyOperationsOp defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBodyOperationsOp string
+
+// PatchAgentActivationSkillPolicyJSONBodyOperationsReference0 defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBodyOperationsReference0 struct {
+	// SkillId The skill-library skill ID.
+	SkillId openapi_types.UUID `json:"skillId"`
+
+	// Source A skill-library skill.
+	Source PatchAgentActivationSkillPolicyJSONBodyOperationsReference0Source `json:"source"`
+}
+
+// PatchAgentActivationSkillPolicyJSONBodyOperationsReference0Source defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBodyOperationsReference0Source string
+
+// PatchAgentActivationSkillPolicyJSONBodyOperationsReference1 defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBodyOperationsReference1 struct {
+	// McpServerId The MCP server installation ID.
+	McpServerId openapi_types.UUID `json:"mcpServerId"`
+
+	// Source A skill from an MCP server.
+	Source PatchAgentActivationSkillPolicyJSONBodyOperationsReference1Source `json:"source"`
+
+	// Uri The skill resource URI.
+	Uri string `json:"uri"`
+}
+
+// PatchAgentActivationSkillPolicyJSONBodyOperationsReference1Source defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBodyOperationsReference1Source string
+
+// PatchAgentActivationSkillPolicyJSONBodyOperationsReference2 defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBodyOperationsReference2 struct {
+	// PluginId The plugin ID.
+	PluginId openapi_types.UUID `json:"pluginId"`
+
+	// SkillPath The skill root inside the plugin.
+	SkillPath string `json:"skillPath"`
+
+	// Source A skill bundled in a plugin.
+	Source PatchAgentActivationSkillPolicyJSONBodyOperationsReference2Source `json:"source"`
+}
+
+// PatchAgentActivationSkillPolicyJSONBodyOperationsReference2Source defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBodyOperationsReference2Source string
+
+// PatchAgentActivationSkillPolicyJSONBody_Operations_Reference defines parameters for PatchAgentActivationSkillPolicy.
+type PatchAgentActivationSkillPolicyJSONBody_Operations_Reference struct {
+	union json.RawMessage
+}
+
+// UpdateAgentSkillsJSONBody defines parameters for UpdateAgentSkills.
+type UpdateAgentSkillsJSONBody struct {
+	// AccessAllSkills Auto mode: expose every org-scoped skill visible in the agent's environment
+	AccessAllSkills bool `json:"accessAllSkills"`
+
+	// SkillIds Skills explicitly assigned to the agent (Custom mode)
+	SkillIds []openapi_types.UUID `json:"skillIds"`
+}
+
+// UpdateAgentSubagentExclusionsJSONBody defines parameters for UpdateAgentSubagentExclusions.
+type UpdateAgentSubagentExclusionsJSONBody struct {
+	// ExcludedSubagentIds Target agent IDs excluded from the agent's Auto delegation surface
+	ExcludedSubagentIds []openapi_types.UUID `json:"excludedSubagentIds"`
+}
+
 // UpdateAgentToolExclusionsJSONBody defines parameters for UpdateAgentToolExclusions.
 type UpdateAgentToolExclusionsJSONBody struct {
 	// ExcludedToolIds Individual tool IDs excluded from the agent's surface
@@ -1886,6 +2065,7 @@ type UpdateRuntimeCredentialJSONBody struct {
 	GithubAppCredentialKey *string `json:"githubAppCredentialKey"`
 	GithubClientId         *string `json:"githubClientId"`
 	GithubUrl              *string `json:"githubUrl"`
+	GitlabUrl              *string `json:"gitlabUrl"`
 	Icon                   *string `json:"icon"`
 	InstallationId         *string `json:"installationId"`
 	Name                   *string `json:"name,omitempty"`
@@ -3372,6 +3552,137 @@ type UpdateScheduleTriggerJSONBody struct {
 	Timezone        *string             `json:"timezone,omitempty"`
 }
 
+// CreateSkillJSONBody defines parameters for CreateSkill.
+type CreateSkillJSONBody struct {
+	// AllowedTools Tools the skill expects, overriding the SKILL.md `allowed-tools` frontmatter. Omit to use the frontmatter; pass [] to clear.
+	AllowedTools *[]string `json:"allowedTools,omitempty"`
+
+	// Content A complete SKILL.md manifest: a YAML frontmatter block with `name` and `description` (and optional `license`, `compatibility`, `allowed-tools`, `agent`, `templated`, `metadata`), followed by the Markdown instruction body. Set `templated: true` to render the body through Handlebars (e.g. `{{user.name}}`) at activation. `allowed-tools` is a space-separated list of tools the skill is pre-approved to use. `agent` names an agent the skill runs in — when set, activating the skill delegates it to that agent instead of loading the instructions into the caller's context.
+	Content string `json:"content"`
+
+	// EnvironmentIds Environments the skill is restricted to. Empty (or omitted on create) makes the skill available to agents in every environment; otherwise only agents in one of the listed environments see it.
+	EnvironmentIds *[]openapi_types.UUID `json:"environmentIds,omitempty"`
+	Files          *[]struct {
+		// Content Text content of the file
+		Content  string                            `json:"content"`
+		Encoding *CreateSkillJSONBodyFilesEncoding `json:"encoding,omitempty"`
+
+		// Path Resource path, e.g. references/API.md or scripts/run.py
+		Path string `json:"path"`
+	} `json:"files,omitempty"`
+
+	// Icon Emoji or base64 image data URL shown with the name. Omit to leave it untouched; null clears it.
+	Icon          *string `json:"icon"`
+	InitialGrants *[]struct {
+		Actions []CreateSkillJSONBodyInitialGrantsActions `json:"actions"`
+		Subject CreateSkillJSONBody_InitialGrants_Subject `json:"subject"`
+	} `json:"initialGrants,omitempty"`
+
+	// Labels Key/value labels. Omit to leave existing labels untouched; pass [] to clear them.
+	Labels *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+}
+
+// CreateSkillJSONBodyFilesEncoding defines parameters for CreateSkill.
+type CreateSkillJSONBodyFilesEncoding string
+
+// CreateSkillJSONBodyInitialGrantsActions defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsActions string
+
+// CreateSkillJSONBodyInitialGrantsSubject0 defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject0 struct {
+	Id   string                                       `json:"id"`
+	Type CreateSkillJSONBodyInitialGrantsSubject0Type `json:"type"`
+}
+
+// CreateSkillJSONBodyInitialGrantsSubject0Type defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject0Type string
+
+// CreateSkillJSONBodyInitialGrantsSubject1 defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject1 struct {
+	Id   string                                       `json:"id"`
+	Type CreateSkillJSONBodyInitialGrantsSubject1Type `json:"type"`
+}
+
+// CreateSkillJSONBodyInitialGrantsSubject1Type defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject1Type string
+
+// CreateSkillJSONBodyInitialGrantsSubject2 defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject2 struct {
+	Id   openapi_types.UUID                           `json:"id"`
+	Type CreateSkillJSONBodyInitialGrantsSubject2Type `json:"type"`
+}
+
+// CreateSkillJSONBodyInitialGrantsSubject2Type defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject2Type string
+
+// CreateSkillJSONBodyInitialGrantsSubject3 defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject3 struct {
+	Id   string                                       `json:"id"`
+	Type CreateSkillJSONBodyInitialGrantsSubject3Type `json:"type"`
+}
+
+// CreateSkillJSONBodyInitialGrantsSubject3Type defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject3Type string
+
+// CreateSkillJSONBodyInitialGrantsSubject4 defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject4 struct {
+	Id   CreateSkillJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Type CreateSkillJSONBodyInitialGrantsSubject4Type `json:"type"`
+}
+
+// CreateSkillJSONBodyInitialGrantsSubject4Id defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject4Id string
+
+// CreateSkillJSONBodyInitialGrantsSubject4Type defines parameters for CreateSkill.
+type CreateSkillJSONBodyInitialGrantsSubject4Type string
+
+// CreateSkillJSONBody_InitialGrants_Subject defines parameters for CreateSkill.
+type CreateSkillJSONBody_InitialGrants_Subject struct {
+	union json.RawMessage
+}
+
+// UpdateSkillJSONBody defines parameters for UpdateSkill.
+type UpdateSkillJSONBody struct {
+	// AllowedTools Tools the skill expects, overriding the SKILL.md `allowed-tools` frontmatter. Omit to use the frontmatter; pass [] to clear.
+	AllowedTools *[]string `json:"allowedTools,omitempty"`
+
+	// BaseVersion The skill's `latestVersion` when this edit was composed. Rejected with 409 if the skill has moved past it. Omit only when the payload owes nothing to a prior read of the skill.
+	BaseVersion *int `json:"baseVersion,omitempty"`
+
+	// Content A complete SKILL.md manifest: a YAML frontmatter block with `name` and `description` (and optional `license`, `compatibility`, `allowed-tools`, `agent`, `templated`, `metadata`), followed by the Markdown instruction body. Set `templated: true` to render the body through Handlebars (e.g. `{{user.name}}`) at activation. `allowed-tools` is a space-separated list of tools the skill is pre-approved to use. `agent` names an agent the skill runs in — when set, activating the skill delegates it to that agent instead of loading the instructions into the caller's context.
+	Content string `json:"content"`
+
+	// EnvironmentIds Environments the skill is restricted to. Empty (or omitted on create) makes the skill available to agents in every environment; otherwise only agents in one of the listed environments see it.
+	EnvironmentIds *[]openapi_types.UUID `json:"environmentIds,omitempty"`
+	Files          *[]struct {
+		// Content Text content of the file
+		Content  string                            `json:"content"`
+		Encoding *UpdateSkillJSONBodyFilesEncoding `json:"encoding,omitempty"`
+
+		// Path Resource path, e.g. references/API.md or scripts/run.py
+		Path string `json:"path"`
+	} `json:"files,omitempty"`
+
+	// Icon Emoji or base64 image data URL shown with the name. Omit to leave it untouched; null clears it.
+	Icon *string `json:"icon"`
+
+	// Labels Key/value labels. Omit to leave existing labels untouched; pass [] to clear them.
+	Labels *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+}
+
+// UpdateSkillJSONBodyFilesEncoding defines parameters for UpdateSkill.
+type UpdateSkillJSONBodyFilesEncoding string
+
 // CreateTeamJSONBody defines parameters for CreateTeam.
 type CreateTeamJSONBody struct {
 	Description *string `json:"description,omitempty"`
@@ -3472,6 +3783,15 @@ type AssignToolToAgentJSONRequestBody AssignToolToAgentJSONBody
 
 // UpdateAgentJSONRequestBody defines body for UpdateAgent for application/json ContentType.
 type UpdateAgentJSONRequestBody UpdateAgentJSONBody
+
+// PatchAgentActivationSkillPolicyJSONRequestBody defines body for PatchAgentActivationSkillPolicy for application/json ContentType.
+type PatchAgentActivationSkillPolicyJSONRequestBody PatchAgentActivationSkillPolicyJSONBody
+
+// UpdateAgentSkillsJSONRequestBody defines body for UpdateAgentSkills for application/json ContentType.
+type UpdateAgentSkillsJSONRequestBody UpdateAgentSkillsJSONBody
+
+// UpdateAgentSubagentExclusionsJSONRequestBody defines body for UpdateAgentSubagentExclusions for application/json ContentType.
+type UpdateAgentSubagentExclusionsJSONRequestBody UpdateAgentSubagentExclusionsJSONBody
 
 // UpdateAgentToolExclusionsJSONRequestBody defines body for UpdateAgentToolExclusions for application/json ContentType.
 type UpdateAgentToolExclusionsJSONRequestBody UpdateAgentToolExclusionsJSONBody
@@ -3583,6 +3903,12 @@ type CreateScheduleTriggerJSONRequestBody CreateScheduleTriggerJSONBody
 
 // UpdateScheduleTriggerJSONRequestBody defines body for UpdateScheduleTrigger for application/json ContentType.
 type UpdateScheduleTriggerJSONRequestBody UpdateScheduleTriggerJSONBody
+
+// CreateSkillJSONRequestBody defines body for CreateSkill for application/json ContentType.
+type CreateSkillJSONRequestBody CreateSkillJSONBody
+
+// UpdateSkillJSONRequestBody defines body for UpdateSkill for application/json ContentType.
+type UpdateSkillJSONRequestBody UpdateSkillJSONBody
 
 // CreateTeamJSONRequestBody defines body for CreateTeam for application/json ContentType.
 type CreateTeamJSONRequestBody CreateTeamJSONBody
@@ -3719,6 +4045,27 @@ type ClientInterface interface {
 	UpdateAgentWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateAgent(ctx context.Context, id openapi_types.UUID, body UpdateAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAgentActivationSkillPolicy request
+	GetAgentActivationSkillPolicy(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PatchAgentActivationSkillPolicyWithBody request with any body
+	PatchAgentActivationSkillPolicyWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PatchAgentActivationSkillPolicy(ctx context.Context, id openapi_types.UUID, body PatchAgentActivationSkillPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateAgentSkillsWithBody request with any body
+	UpdateAgentSkillsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateAgentSkills(ctx context.Context, id openapi_types.UUID, body UpdateAgentSkillsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAgentSubagentExclusions request
+	GetAgentSubagentExclusions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateAgentSubagentExclusionsWithBody request with any body
+	UpdateAgentSubagentExclusionsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateAgentSubagentExclusions(ctx context.Context, id openapi_types.UUID, body UpdateAgentSubagentExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetAgentToolExclusions request
 	GetAgentToolExclusions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4004,6 +4351,22 @@ type ClientInterface interface {
 
 	UpdateScheduleTrigger(ctx context.Context, id openapi_types.UUID, body UpdateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateSkillWithBody request with any body
+	CreateSkillWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateSkill(ctx context.Context, body CreateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteSkill request
+	DeleteSkill(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSkill request
+	GetSkill(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSkillWithBody request with any body
+	UpdateSkillWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateSkill(ctx context.Context, id openapi_types.UUID, body UpdateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CreateTeamWithBody request with any body
 	CreateTeamWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4257,6 +4620,102 @@ func (c *Client) UpdateAgentWithBody(ctx context.Context, id openapi_types.UUID,
 
 func (c *Client) UpdateAgent(ctx context.Context, id openapi_types.UUID, body UpdateAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateAgentRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAgentActivationSkillPolicy(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAgentActivationSkillPolicyRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PatchAgentActivationSkillPolicyWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPatchAgentActivationSkillPolicyRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PatchAgentActivationSkillPolicy(ctx context.Context, id openapi_types.UUID, body PatchAgentActivationSkillPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPatchAgentActivationSkillPolicyRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAgentSkillsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAgentSkillsRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAgentSkills(ctx context.Context, id openapi_types.UUID, body UpdateAgentSkillsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAgentSkillsRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAgentSubagentExclusions(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAgentSubagentExclusionsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAgentSubagentExclusionsWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAgentSubagentExclusionsRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAgentSubagentExclusions(ctx context.Context, id openapi_types.UUID, body UpdateAgentSubagentExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAgentSubagentExclusionsRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -5551,6 +6010,78 @@ func (c *Client) UpdateScheduleTrigger(ctx context.Context, id openapi_types.UUI
 	return c.Client.Do(req)
 }
 
+func (c *Client) CreateSkillWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSkillRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSkill(ctx context.Context, body CreateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSkillRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteSkill(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSkillRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetSkill(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSkillRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSkillWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSkillRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSkill(ctx context.Context, id openapi_types.UUID, body UpdateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSkillRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) CreateTeamWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateTeamRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -6388,6 +6919,215 @@ func NewUpdateAgentRequestWithBody(server string, id openapi_types.UUID, content
 	}
 
 	operationPath := fmt.Sprintf("/api/agents/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetAgentActivationSkillPolicyRequest generates requests for GetAgentActivationSkillPolicy
+func NewGetAgentActivationSkillPolicyRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/activation-skill-policy", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPatchAgentActivationSkillPolicyRequest calls the generic PatchAgentActivationSkillPolicy builder with application/json body
+func NewPatchAgentActivationSkillPolicyRequest(server string, id openapi_types.UUID, body PatchAgentActivationSkillPolicyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPatchAgentActivationSkillPolicyRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewPatchAgentActivationSkillPolicyRequestWithBody generates requests for PatchAgentActivationSkillPolicy with any type of body
+func NewPatchAgentActivationSkillPolicyRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/activation-skill-policy", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUpdateAgentSkillsRequest calls the generic UpdateAgentSkills builder with application/json body
+func NewUpdateAgentSkillsRequest(server string, id openapi_types.UUID, body UpdateAgentSkillsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateAgentSkillsRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateAgentSkillsRequestWithBody generates requests for UpdateAgentSkills with any type of body
+func NewUpdateAgentSkillsRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/skills", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetAgentSubagentExclusionsRequest generates requests for GetAgentSubagentExclusions
+func NewGetAgentSubagentExclusionsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/subagent-exclusions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateAgentSubagentExclusionsRequest calls the generic UpdateAgentSubagentExclusions builder with application/json body
+func NewUpdateAgentSubagentExclusionsRequest(server string, id openapi_types.UUID, body UpdateAgentSubagentExclusionsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateAgentSubagentExclusionsRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateAgentSubagentExclusionsRequestWithBody generates requests for UpdateAgentSubagentExclusions with any type of body
+func NewUpdateAgentSubagentExclusionsRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/subagent-exclusions", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -9318,6 +10058,161 @@ func NewUpdateScheduleTriggerRequestWithBody(server string, id openapi_types.UUI
 	return req, nil
 }
 
+// NewCreateSkillRequest calls the generic CreateSkill builder with application/json body
+func NewCreateSkillRequest(server string, body CreateSkillJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateSkillRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateSkillRequestWithBody generates requests for CreateSkill with any type of body
+func NewCreateSkillRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skills")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteSkillRequest generates requests for DeleteSkill
+func NewDeleteSkillRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skills/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetSkillRequest generates requests for GetSkill
+func NewGetSkillRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skills/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateSkillRequest calls the generic UpdateSkill builder with application/json body
+func NewUpdateSkillRequest(server string, id openapi_types.UUID, body UpdateSkillJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateSkillRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateSkillRequestWithBody generates requests for UpdateSkill with any type of body
+func NewUpdateSkillRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skills/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewCreateTeamRequest calls the generic CreateTeam builder with application/json body
 func NewCreateTeamRequest(server string, body CreateTeamJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -10055,6 +10950,27 @@ type ClientWithResponsesInterface interface {
 
 	UpdateAgentWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAgentResponse, error)
 
+	// GetAgentActivationSkillPolicyWithResponse request
+	GetAgentActivationSkillPolicyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentActivationSkillPolicyResponse, error)
+
+	// PatchAgentActivationSkillPolicyWithBodyWithResponse request with any body
+	PatchAgentActivationSkillPolicyWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchAgentActivationSkillPolicyResponse, error)
+
+	PatchAgentActivationSkillPolicyWithResponse(ctx context.Context, id openapi_types.UUID, body PatchAgentActivationSkillPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchAgentActivationSkillPolicyResponse, error)
+
+	// UpdateAgentSkillsWithBodyWithResponse request with any body
+	UpdateAgentSkillsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAgentSkillsResponse, error)
+
+	UpdateAgentSkillsWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateAgentSkillsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAgentSkillsResponse, error)
+
+	// GetAgentSubagentExclusionsWithResponse request
+	GetAgentSubagentExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentSubagentExclusionsResponse, error)
+
+	// UpdateAgentSubagentExclusionsWithBodyWithResponse request with any body
+	UpdateAgentSubagentExclusionsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAgentSubagentExclusionsResponse, error)
+
+	UpdateAgentSubagentExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateAgentSubagentExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAgentSubagentExclusionsResponse, error)
+
 	// GetAgentToolExclusionsWithResponse request
 	GetAgentToolExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentToolExclusionsResponse, error)
 
@@ -10338,6 +11254,22 @@ type ClientWithResponsesInterface interface {
 	UpdateScheduleTriggerWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateScheduleTriggerResponse, error)
 
 	UpdateScheduleTriggerWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateScheduleTriggerJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateScheduleTriggerResponse, error)
+
+	// CreateSkillWithBodyWithResponse request with any body
+	CreateSkillWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSkillResponse, error)
+
+	CreateSkillWithResponse(ctx context.Context, body CreateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSkillResponse, error)
+
+	// DeleteSkillWithResponse request
+	DeleteSkillWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteSkillResponse, error)
+
+	// GetSkillWithResponse request
+	GetSkillWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetSkillResponse, error)
+
+	// UpdateSkillWithBodyWithResponse request with any body
+	UpdateSkillWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSkillResponse, error)
+
+	UpdateSkillWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSkillResponse, error)
 
 	// CreateTeamWithBodyWithResponse request with any body
 	CreateTeamWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTeamResponse, error)
@@ -11771,6 +12703,745 @@ func (r UpdateAgentResponse) StatusCode() int {
 	return 0
 }
 
+type GetAgentActivationSkillPolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AllowedReferences []GetAgentActivationSkillPolicy_200_AllowedReferences_Item `json:"allowedReferences"`
+		AllowedSkills     []struct {
+			// ActivationName The exact name to pass to load_skill.
+			ActivationName string `json:"activationName"`
+
+			// Description The skill description.
+			Description string `json:"description"`
+
+			// Name The declared, human-facing skill name.
+			Name string `json:"name"`
+
+			// ProviderName Plugin or MCP server name; null for a skill-library entry.
+			ProviderName *string `json:"providerName"`
+
+			// Reference Stable source identity: native uses skillId, external_mcp uses mcpServerId and uri, and plugin uses pluginId and skillPath.
+			Reference GetAgentActivationSkillPolicy_200_AllowedSkills_Reference `json:"reference"`
+
+			// Scope The visibility scope through which the skill is shared.
+			Scope GetAgentActivationSkillPolicy200AllowedSkillsScope `json:"scope"`
+		} `json:"allowedSkills"`
+		ExcludedReferences []GetAgentActivationSkillPolicy_200_ExcludedReferences_Item `json:"excludedReferences"`
+		ExcludedSkills     []struct {
+			// ActivationName The exact name to pass to load_skill.
+			ActivationName string `json:"activationName"`
+
+			// Description The skill description.
+			Description string `json:"description"`
+
+			// Name The declared, human-facing skill name.
+			Name string `json:"name"`
+
+			// ProviderName Plugin or MCP server name; null for a skill-library entry.
+			ProviderName *string `json:"providerName"`
+
+			// Reference Stable source identity: native uses skillId, external_mcp uses mcpServerId and uri, and plugin uses pluginId and skillPath.
+			Reference GetAgentActivationSkillPolicy_200_ExcludedSkills_Reference `json:"reference"`
+
+			// Scope The visibility scope through which the skill is shared.
+			Scope GetAgentActivationSkillPolicy200ExcludedSkillsScope `json:"scope"`
+		} `json:"excludedSkills"`
+		HiddenAllowedCount  int                                  `json:"hiddenAllowedCount"`
+		HiddenExcludedCount int                                  `json:"hiddenExcludedCount"`
+		Mode                GetAgentActivationSkillPolicy200Mode `json:"mode"`
+		Revision            int                                  `json:"revision"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetAgentActivationSkillPolicy400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetAgentActivationSkillPolicy401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                   `json:"details,omitempty"`
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetAgentActivationSkillPolicy403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetAgentActivationSkillPolicy404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetAgentActivationSkillPolicy409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         GetAgentActivationSkillPolicy500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAgentActivationSkillPolicy200AllowedReferences0 struct {
+	// SkillId The skill-library skill ID.
+	SkillId openapi_types.UUID `json:"skillId"`
+
+	// Source A skill-library skill.
+	Source GetAgentActivationSkillPolicy200AllowedReferences0Source `json:"source"`
+}
+type GetAgentActivationSkillPolicy200AllowedReferences0Source string
+type GetAgentActivationSkillPolicy200AllowedReferences1 struct {
+	// McpServerId The MCP server installation ID.
+	McpServerId openapi_types.UUID `json:"mcpServerId"`
+
+	// Source A skill from an MCP server.
+	Source GetAgentActivationSkillPolicy200AllowedReferences1Source `json:"source"`
+
+	// Uri The skill resource URI.
+	Uri string `json:"uri"`
+}
+type GetAgentActivationSkillPolicy200AllowedReferences1Source string
+type GetAgentActivationSkillPolicy200AllowedReferences2 struct {
+	// PluginId The plugin ID.
+	PluginId openapi_types.UUID `json:"pluginId"`
+
+	// SkillPath The skill root inside the plugin.
+	SkillPath string `json:"skillPath"`
+
+	// Source A skill bundled in a plugin.
+	Source GetAgentActivationSkillPolicy200AllowedReferences2Source `json:"source"`
+}
+type GetAgentActivationSkillPolicy200AllowedReferences2Source string
+type GetAgentActivationSkillPolicy_200_AllowedReferences_Item struct {
+	union json.RawMessage
+}
+type GetAgentActivationSkillPolicy200AllowedSkillsReference0 struct {
+	// SkillId The skill-library skill ID.
+	SkillId openapi_types.UUID `json:"skillId"`
+
+	// Source A skill-library skill.
+	Source GetAgentActivationSkillPolicy200AllowedSkillsReference0Source `json:"source"`
+}
+type GetAgentActivationSkillPolicy200AllowedSkillsReference0Source string
+type GetAgentActivationSkillPolicy200AllowedSkillsReference1 struct {
+	// McpServerId The MCP server installation ID.
+	McpServerId openapi_types.UUID `json:"mcpServerId"`
+
+	// Source A skill from an MCP server.
+	Source GetAgentActivationSkillPolicy200AllowedSkillsReference1Source `json:"source"`
+
+	// Uri The skill resource URI.
+	Uri string `json:"uri"`
+}
+type GetAgentActivationSkillPolicy200AllowedSkillsReference1Source string
+type GetAgentActivationSkillPolicy200AllowedSkillsReference2 struct {
+	// PluginId The plugin ID.
+	PluginId openapi_types.UUID `json:"pluginId"`
+
+	// SkillPath The skill root inside the plugin.
+	SkillPath string `json:"skillPath"`
+
+	// Source A skill bundled in a plugin.
+	Source GetAgentActivationSkillPolicy200AllowedSkillsReference2Source `json:"source"`
+}
+type GetAgentActivationSkillPolicy200AllowedSkillsReference2Source string
+type GetAgentActivationSkillPolicy_200_AllowedSkills_Reference struct {
+	union json.RawMessage
+}
+type GetAgentActivationSkillPolicy200AllowedSkillsScope string
+type GetAgentActivationSkillPolicy200ExcludedReferences0 struct {
+	// SkillId The skill-library skill ID.
+	SkillId openapi_types.UUID `json:"skillId"`
+
+	// Source A skill-library skill.
+	Source GetAgentActivationSkillPolicy200ExcludedReferences0Source `json:"source"`
+}
+type GetAgentActivationSkillPolicy200ExcludedReferences0Source string
+type GetAgentActivationSkillPolicy200ExcludedReferences1 struct {
+	// McpServerId The MCP server installation ID.
+	McpServerId openapi_types.UUID `json:"mcpServerId"`
+
+	// Source A skill from an MCP server.
+	Source GetAgentActivationSkillPolicy200ExcludedReferences1Source `json:"source"`
+
+	// Uri The skill resource URI.
+	Uri string `json:"uri"`
+}
+type GetAgentActivationSkillPolicy200ExcludedReferences1Source string
+type GetAgentActivationSkillPolicy200ExcludedReferences2 struct {
+	// PluginId The plugin ID.
+	PluginId openapi_types.UUID `json:"pluginId"`
+
+	// SkillPath The skill root inside the plugin.
+	SkillPath string `json:"skillPath"`
+
+	// Source A skill bundled in a plugin.
+	Source GetAgentActivationSkillPolicy200ExcludedReferences2Source `json:"source"`
+}
+type GetAgentActivationSkillPolicy200ExcludedReferences2Source string
+type GetAgentActivationSkillPolicy_200_ExcludedReferences_Item struct {
+	union json.RawMessage
+}
+type GetAgentActivationSkillPolicy200ExcludedSkillsReference0 struct {
+	// SkillId The skill-library skill ID.
+	SkillId openapi_types.UUID `json:"skillId"`
+
+	// Source A skill-library skill.
+	Source GetAgentActivationSkillPolicy200ExcludedSkillsReference0Source `json:"source"`
+}
+type GetAgentActivationSkillPolicy200ExcludedSkillsReference0Source string
+type GetAgentActivationSkillPolicy200ExcludedSkillsReference1 struct {
+	// McpServerId The MCP server installation ID.
+	McpServerId openapi_types.UUID `json:"mcpServerId"`
+
+	// Source A skill from an MCP server.
+	Source GetAgentActivationSkillPolicy200ExcludedSkillsReference1Source `json:"source"`
+
+	// Uri The skill resource URI.
+	Uri string `json:"uri"`
+}
+type GetAgentActivationSkillPolicy200ExcludedSkillsReference1Source string
+type GetAgentActivationSkillPolicy200ExcludedSkillsReference2 struct {
+	// PluginId The plugin ID.
+	PluginId openapi_types.UUID `json:"pluginId"`
+
+	// SkillPath The skill root inside the plugin.
+	SkillPath string `json:"skillPath"`
+
+	// Source A skill bundled in a plugin.
+	Source GetAgentActivationSkillPolicy200ExcludedSkillsReference2Source `json:"source"`
+}
+type GetAgentActivationSkillPolicy200ExcludedSkillsReference2Source string
+type GetAgentActivationSkillPolicy_200_ExcludedSkills_Reference struct {
+	union json.RawMessage
+}
+type GetAgentActivationSkillPolicy200ExcludedSkillsScope string
+type GetAgentActivationSkillPolicy200Mode string
+type GetAgentActivationSkillPolicy400ErrorType string
+type GetAgentActivationSkillPolicy401ErrorType string
+type GetAgentActivationSkillPolicy403ErrorType string
+type GetAgentActivationSkillPolicy404ErrorType string
+type GetAgentActivationSkillPolicy409ErrorType string
+type GetAgentActivationSkillPolicy500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAgentActivationSkillPolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAgentActivationSkillPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PatchAgentActivationSkillPolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AllowedReferences []PatchAgentActivationSkillPolicy_200_AllowedReferences_Item `json:"allowedReferences"`
+		AllowedSkills     []struct {
+			// ActivationName The exact name to pass to load_skill.
+			ActivationName string `json:"activationName"`
+
+			// Description The skill description.
+			Description string `json:"description"`
+
+			// Name The declared, human-facing skill name.
+			Name string `json:"name"`
+
+			// ProviderName Plugin or MCP server name; null for a skill-library entry.
+			ProviderName *string `json:"providerName"`
+
+			// Reference Stable source identity: native uses skillId, external_mcp uses mcpServerId and uri, and plugin uses pluginId and skillPath.
+			Reference PatchAgentActivationSkillPolicy_200_AllowedSkills_Reference `json:"reference"`
+
+			// Scope The visibility scope through which the skill is shared.
+			Scope PatchAgentActivationSkillPolicy200AllowedSkillsScope `json:"scope"`
+		} `json:"allowedSkills"`
+		ExcludedReferences []PatchAgentActivationSkillPolicy_200_ExcludedReferences_Item `json:"excludedReferences"`
+		ExcludedSkills     []struct {
+			// ActivationName The exact name to pass to load_skill.
+			ActivationName string `json:"activationName"`
+
+			// Description The skill description.
+			Description string `json:"description"`
+
+			// Name The declared, human-facing skill name.
+			Name string `json:"name"`
+
+			// ProviderName Plugin or MCP server name; null for a skill-library entry.
+			ProviderName *string `json:"providerName"`
+
+			// Reference Stable source identity: native uses skillId, external_mcp uses mcpServerId and uri, and plugin uses pluginId and skillPath.
+			Reference PatchAgentActivationSkillPolicy_200_ExcludedSkills_Reference `json:"reference"`
+
+			// Scope The visibility scope through which the skill is shared.
+			Scope PatchAgentActivationSkillPolicy200ExcludedSkillsScope `json:"scope"`
+		} `json:"excludedSkills"`
+		HiddenAllowedCount  int                                    `json:"hiddenAllowedCount"`
+		HiddenExcludedCount int                                    `json:"hiddenExcludedCount"`
+		Mode                PatchAgentActivationSkillPolicy200Mode `json:"mode"`
+		Revision            int                                    `json:"revision"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         PatchAgentActivationSkillPolicy400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         PatchAgentActivationSkillPolicy401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                     `json:"details,omitempty"`
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         PatchAgentActivationSkillPolicy403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         PatchAgentActivationSkillPolicy404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         PatchAgentActivationSkillPolicy409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                     `json:"internal_code,omitempty"`
+			Message      string                                      `json:"message"`
+			Type         PatchAgentActivationSkillPolicy500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type PatchAgentActivationSkillPolicy200AllowedReferences0 struct {
+	// SkillId The skill-library skill ID.
+	SkillId openapi_types.UUID `json:"skillId"`
+
+	// Source A skill-library skill.
+	Source PatchAgentActivationSkillPolicy200AllowedReferences0Source `json:"source"`
+}
+type PatchAgentActivationSkillPolicy200AllowedReferences0Source string
+type PatchAgentActivationSkillPolicy200AllowedReferences1 struct {
+	// McpServerId The MCP server installation ID.
+	McpServerId openapi_types.UUID `json:"mcpServerId"`
+
+	// Source A skill from an MCP server.
+	Source PatchAgentActivationSkillPolicy200AllowedReferences1Source `json:"source"`
+
+	// Uri The skill resource URI.
+	Uri string `json:"uri"`
+}
+type PatchAgentActivationSkillPolicy200AllowedReferences1Source string
+type PatchAgentActivationSkillPolicy200AllowedReferences2 struct {
+	// PluginId The plugin ID.
+	PluginId openapi_types.UUID `json:"pluginId"`
+
+	// SkillPath The skill root inside the plugin.
+	SkillPath string `json:"skillPath"`
+
+	// Source A skill bundled in a plugin.
+	Source PatchAgentActivationSkillPolicy200AllowedReferences2Source `json:"source"`
+}
+type PatchAgentActivationSkillPolicy200AllowedReferences2Source string
+type PatchAgentActivationSkillPolicy_200_AllowedReferences_Item struct {
+	union json.RawMessage
+}
+type PatchAgentActivationSkillPolicy200AllowedSkillsReference0 struct {
+	// SkillId The skill-library skill ID.
+	SkillId openapi_types.UUID `json:"skillId"`
+
+	// Source A skill-library skill.
+	Source PatchAgentActivationSkillPolicy200AllowedSkillsReference0Source `json:"source"`
+}
+type PatchAgentActivationSkillPolicy200AllowedSkillsReference0Source string
+type PatchAgentActivationSkillPolicy200AllowedSkillsReference1 struct {
+	// McpServerId The MCP server installation ID.
+	McpServerId openapi_types.UUID `json:"mcpServerId"`
+
+	// Source A skill from an MCP server.
+	Source PatchAgentActivationSkillPolicy200AllowedSkillsReference1Source `json:"source"`
+
+	// Uri The skill resource URI.
+	Uri string `json:"uri"`
+}
+type PatchAgentActivationSkillPolicy200AllowedSkillsReference1Source string
+type PatchAgentActivationSkillPolicy200AllowedSkillsReference2 struct {
+	// PluginId The plugin ID.
+	PluginId openapi_types.UUID `json:"pluginId"`
+
+	// SkillPath The skill root inside the plugin.
+	SkillPath string `json:"skillPath"`
+
+	// Source A skill bundled in a plugin.
+	Source PatchAgentActivationSkillPolicy200AllowedSkillsReference2Source `json:"source"`
+}
+type PatchAgentActivationSkillPolicy200AllowedSkillsReference2Source string
+type PatchAgentActivationSkillPolicy_200_AllowedSkills_Reference struct {
+	union json.RawMessage
+}
+type PatchAgentActivationSkillPolicy200AllowedSkillsScope string
+type PatchAgentActivationSkillPolicy200ExcludedReferences0 struct {
+	// SkillId The skill-library skill ID.
+	SkillId openapi_types.UUID `json:"skillId"`
+
+	// Source A skill-library skill.
+	Source PatchAgentActivationSkillPolicy200ExcludedReferences0Source `json:"source"`
+}
+type PatchAgentActivationSkillPolicy200ExcludedReferences0Source string
+type PatchAgentActivationSkillPolicy200ExcludedReferences1 struct {
+	// McpServerId The MCP server installation ID.
+	McpServerId openapi_types.UUID `json:"mcpServerId"`
+
+	// Source A skill from an MCP server.
+	Source PatchAgentActivationSkillPolicy200ExcludedReferences1Source `json:"source"`
+
+	// Uri The skill resource URI.
+	Uri string `json:"uri"`
+}
+type PatchAgentActivationSkillPolicy200ExcludedReferences1Source string
+type PatchAgentActivationSkillPolicy200ExcludedReferences2 struct {
+	// PluginId The plugin ID.
+	PluginId openapi_types.UUID `json:"pluginId"`
+
+	// SkillPath The skill root inside the plugin.
+	SkillPath string `json:"skillPath"`
+
+	// Source A skill bundled in a plugin.
+	Source PatchAgentActivationSkillPolicy200ExcludedReferences2Source `json:"source"`
+}
+type PatchAgentActivationSkillPolicy200ExcludedReferences2Source string
+type PatchAgentActivationSkillPolicy_200_ExcludedReferences_Item struct {
+	union json.RawMessage
+}
+type PatchAgentActivationSkillPolicy200ExcludedSkillsReference0 struct {
+	// SkillId The skill-library skill ID.
+	SkillId openapi_types.UUID `json:"skillId"`
+
+	// Source A skill-library skill.
+	Source PatchAgentActivationSkillPolicy200ExcludedSkillsReference0Source `json:"source"`
+}
+type PatchAgentActivationSkillPolicy200ExcludedSkillsReference0Source string
+type PatchAgentActivationSkillPolicy200ExcludedSkillsReference1 struct {
+	// McpServerId The MCP server installation ID.
+	McpServerId openapi_types.UUID `json:"mcpServerId"`
+
+	// Source A skill from an MCP server.
+	Source PatchAgentActivationSkillPolicy200ExcludedSkillsReference1Source `json:"source"`
+
+	// Uri The skill resource URI.
+	Uri string `json:"uri"`
+}
+type PatchAgentActivationSkillPolicy200ExcludedSkillsReference1Source string
+type PatchAgentActivationSkillPolicy200ExcludedSkillsReference2 struct {
+	// PluginId The plugin ID.
+	PluginId openapi_types.UUID `json:"pluginId"`
+
+	// SkillPath The skill root inside the plugin.
+	SkillPath string `json:"skillPath"`
+
+	// Source A skill bundled in a plugin.
+	Source PatchAgentActivationSkillPolicy200ExcludedSkillsReference2Source `json:"source"`
+}
+type PatchAgentActivationSkillPolicy200ExcludedSkillsReference2Source string
+type PatchAgentActivationSkillPolicy_200_ExcludedSkills_Reference struct {
+	union json.RawMessage
+}
+type PatchAgentActivationSkillPolicy200ExcludedSkillsScope string
+type PatchAgentActivationSkillPolicy200Mode string
+type PatchAgentActivationSkillPolicy400ErrorType string
+type PatchAgentActivationSkillPolicy401ErrorType string
+type PatchAgentActivationSkillPolicy403ErrorType string
+type PatchAgentActivationSkillPolicy404ErrorType string
+type PatchAgentActivationSkillPolicy409ErrorType string
+type PatchAgentActivationSkillPolicy500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r PatchAgentActivationSkillPolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PatchAgentActivationSkillPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateAgentSkillsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// AccessAllSkills Auto mode: expose every org-scoped skill visible in the agent's environment
+		AccessAllSkills bool `json:"accessAllSkills"`
+
+		// SkillIds Skills explicitly assigned to the agent (Custom mode)
+		SkillIds []openapi_types.UUID `json:"skillIds"`
+
+		// Skills The assigned skills themselves, in `skillIds` order
+		Skills []struct {
+			AgentName   *string                         `json:"agentName"`
+			AuthorId    *string                         `json:"authorId"`
+			Description string                          `json:"description"`
+			Id          openapi_types.UUID              `json:"id"`
+			Name        string                          `json:"name"`
+			Scope       UpdateAgentSkills200SkillsScope `json:"scope"`
+			Templated   bool                            `json:"templated"`
+		} `json:"skills"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateAgentSkills400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateAgentSkills401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}       `json:"details,omitempty"`
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateAgentSkills403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateAgentSkills404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateAgentSkills409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateAgentSkills500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateAgentSkills200SkillsScope string
+type UpdateAgentSkills400ErrorType string
+type UpdateAgentSkills401ErrorType string
+type UpdateAgentSkills403ErrorType string
+type UpdateAgentSkills404ErrorType string
+type UpdateAgentSkills409ErrorType string
+type UpdateAgentSkills500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateAgentSkillsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateAgentSkillsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAgentSubagentExclusionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// ExcludedSubagentIds Target agent IDs excluded from the agent's Auto delegation surface
+		ExcludedSubagentIds []openapi_types.UUID `json:"excludedSubagentIds"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         GetAgentSubagentExclusions400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         GetAgentSubagentExclusions401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                `json:"details,omitempty"`
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         GetAgentSubagentExclusions403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         GetAgentSubagentExclusions404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         GetAgentSubagentExclusions409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                `json:"internal_code,omitempty"`
+			Message      string                                 `json:"message"`
+			Type         GetAgentSubagentExclusions500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAgentSubagentExclusions400ErrorType string
+type GetAgentSubagentExclusions401ErrorType string
+type GetAgentSubagentExclusions403ErrorType string
+type GetAgentSubagentExclusions404ErrorType string
+type GetAgentSubagentExclusions409ErrorType string
+type GetAgentSubagentExclusions500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAgentSubagentExclusionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAgentSubagentExclusionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateAgentSubagentExclusionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// ExcludedSubagentIds Target agent IDs excluded from the agent's Auto delegation surface
+		ExcludedSubagentIds []openapi_types.UUID `json:"excludedSubagentIds"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         UpdateAgentSubagentExclusions400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         UpdateAgentSubagentExclusions401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                   `json:"details,omitempty"`
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         UpdateAgentSubagentExclusions403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         UpdateAgentSubagentExclusions404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         UpdateAgentSubagentExclusions409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                   `json:"internal_code,omitempty"`
+			Message      string                                    `json:"message"`
+			Type         UpdateAgentSubagentExclusions500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateAgentSubagentExclusions400ErrorType string
+type UpdateAgentSubagentExclusions401ErrorType string
+type UpdateAgentSubagentExclusions403ErrorType string
+type UpdateAgentSubagentExclusions404ErrorType string
+type UpdateAgentSubagentExclusions409ErrorType string
+type UpdateAgentSubagentExclusions500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateAgentSubagentExclusionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateAgentSubagentExclusionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetAgentToolExclusionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -12173,6 +13844,7 @@ type ListRuntimeCredentialsResponse struct {
 		GithubAppCredentialKey *string                       `json:"githubAppCredentialKey"`
 		GithubClientId         *string                       `json:"githubClientId"`
 		GithubUrl              *string                       `json:"githubUrl"`
+		GitlabUrl              *string                       `json:"gitlabUrl"`
 		Icon                   *string                       `json:"icon"`
 		Id                     openapi_types.UUID            `json:"id"`
 		InstallationId         *string                       `json:"installationId"`
@@ -20212,6 +21884,523 @@ func (r UpdateScheduleTriggerResponse) StatusCode() int {
 	return 0
 }
 
+type CreateSkillResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AgentName     *string   `json:"agentName"`
+		AllowedTools  *string   `json:"allowedTools"`
+		AuthorId      *string   `json:"authorId"`
+		Compatibility *string   `json:"compatibility"`
+		Content       string    `json:"content"`
+		CreatedAt     time.Time `json:"createdAt"`
+		CreatedBy     *struct {
+			Email *string                      `json:"email"`
+			Id    string                       `json:"id"`
+			Name  *string                      `json:"name"`
+			Type  *CreateSkill200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               string              `json:"description"`
+		Digest                    *string             `json:"digest"`
+		Environments              []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"environments"`
+		Files []struct {
+			Content   string                      `json:"content"`
+			CreatedAt time.Time                   `json:"createdAt"`
+			Digest    *string                     `json:"digest"`
+			Encoding  CreateSkill200FilesEncoding `json:"encoding"`
+			Id        openapi_types.UUID          `json:"id"`
+			Kind      CreateSkill200FilesKind     `json:"kind"`
+			Path      string                      `json:"path"`
+			SkillId   openapi_types.UUID          `json:"skillId"`
+		} `json:"files"`
+		GithubAppConfigId  *openapi_types.UUID              `json:"githubAppConfigId"`
+		GithubPatId        *openapi_types.UUID              `json:"githubPatId"`
+		GithubSyncInterval CreateSkill200GithubSyncInterval `json:"githubSyncInterval"`
+		GithubSyncRef      *string                          `json:"githubSyncRef"`
+		GitlabTokenId      *openapi_types.UUID              `json:"gitlabTokenId"`
+		Icon               *string                          `json:"icon"`
+		Id                 openapi_types.UUID               `json:"id"`
+		Labels             []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastSyncError  *string                      `json:"lastSyncError"`
+		LastSyncedAt   *time.Time                   `json:"lastSyncedAt"`
+		LastUsedAt     *time.Time                   `json:"lastUsedAt"`
+		LatestVersion  int                          `json:"latestVersion"`
+		License        *string                      `json:"license"`
+		Metadata       map[string]string            `json:"metadata"`
+		Name           string                       `json:"name"`
+		OrganizationId string                       `json:"organizationId"`
+		Scope          CreateSkill200Scope          `json:"scope"`
+		SourceCommit   *string                      `json:"sourceCommit"`
+		SourceOrigin   *string                      `json:"sourceOrigin"`
+		SourceProvider CreateSkill200SourceProvider `json:"sourceProvider"`
+		SourceRef      *string                      `json:"sourceRef"`
+		SourceType     CreateSkill200SourceType     `json:"sourceType"`
+		Teams          []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		Templated  bool      `json:"templated"`
+		UpdatedAt  time.Time `json:"updatedAt"`
+		UsageCount int       `json:"usageCount"`
+		Users      []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         CreateSkill400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         CreateSkill401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         CreateSkill403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         CreateSkill404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         CreateSkill409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         CreateSkill500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateSkill200CreatedByType string
+type CreateSkill200FilesEncoding string
+type CreateSkill200FilesKind string
+type CreateSkill200GithubSyncInterval string
+type CreateSkill200Scope string
+type CreateSkill200SourceProvider string
+type CreateSkill200SourceType string
+type CreateSkill400ErrorType string
+type CreateSkill401ErrorType string
+type CreateSkill403ErrorType string
+type CreateSkill404ErrorType string
+type CreateSkill409ErrorType string
+type CreateSkill500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateSkillResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateSkillResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteSkillResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         DeleteSkill400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         DeleteSkill401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         DeleteSkill403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         DeleteSkill404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         DeleteSkill409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         DeleteSkill500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteSkill400ErrorType string
+type DeleteSkill401ErrorType string
+type DeleteSkill403ErrorType string
+type DeleteSkill404ErrorType string
+type DeleteSkill409ErrorType string
+type DeleteSkill500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteSkillResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteSkillResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetSkillResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AgentName     *string   `json:"agentName"`
+		AllowedTools  *string   `json:"allowedTools"`
+		AuthorId      *string   `json:"authorId"`
+		Compatibility *string   `json:"compatibility"`
+		Content       string    `json:"content"`
+		CreatedAt     time.Time `json:"createdAt"`
+		CreatedBy     *struct {
+			Email *string                   `json:"email"`
+			Id    string                    `json:"id"`
+			Name  *string                   `json:"name"`
+			Type  *GetSkill200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               string              `json:"description"`
+		Digest                    *string             `json:"digest"`
+		Environments              []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"environments"`
+		Files []struct {
+			Content   string                   `json:"content"`
+			CreatedAt time.Time                `json:"createdAt"`
+			Digest    *string                  `json:"digest"`
+			Encoding  GetSkill200FilesEncoding `json:"encoding"`
+			Id        openapi_types.UUID       `json:"id"`
+			Kind      GetSkill200FilesKind     `json:"kind"`
+			Path      string                   `json:"path"`
+			SkillId   openapi_types.UUID       `json:"skillId"`
+		} `json:"files"`
+		GithubAppConfigId  *openapi_types.UUID           `json:"githubAppConfigId"`
+		GithubPatId        *openapi_types.UUID           `json:"githubPatId"`
+		GithubSyncInterval GetSkill200GithubSyncInterval `json:"githubSyncInterval"`
+		GithubSyncRef      *string                       `json:"githubSyncRef"`
+		GitlabTokenId      *openapi_types.UUID           `json:"gitlabTokenId"`
+		Icon               *string                       `json:"icon"`
+		Id                 openapi_types.UUID            `json:"id"`
+		Labels             []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastSyncError  *string                   `json:"lastSyncError"`
+		LastSyncedAt   *time.Time                `json:"lastSyncedAt"`
+		LastUsedAt     *time.Time                `json:"lastUsedAt"`
+		LatestVersion  int                       `json:"latestVersion"`
+		License        *string                   `json:"license"`
+		Metadata       map[string]string         `json:"metadata"`
+		Name           string                    `json:"name"`
+		OrganizationId string                    `json:"organizationId"`
+		Scope          GetSkill200Scope          `json:"scope"`
+		SourceCommit   *string                   `json:"sourceCommit"`
+		SourceOrigin   *string                   `json:"sourceOrigin"`
+		SourceProvider GetSkill200SourceProvider `json:"sourceProvider"`
+		SourceRef      *string                   `json:"sourceRef"`
+		SourceType     GetSkill200SourceType     `json:"sourceType"`
+		Teams          []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		Templated  bool      `json:"templated"`
+		UpdatedAt  time.Time `json:"updatedAt"`
+		UsageCount int       `json:"usageCount"`
+		Users      []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string              `json:"internal_code,omitempty"`
+			Message      string               `json:"message"`
+			Type         GetSkill400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string              `json:"internal_code,omitempty"`
+			Message      string               `json:"message"`
+			Type         GetSkill401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         GetSkill403ErrorType    `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string              `json:"internal_code,omitempty"`
+			Message      string               `json:"message"`
+			Type         GetSkill404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string              `json:"internal_code,omitempty"`
+			Message      string               `json:"message"`
+			Type         GetSkill409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string              `json:"internal_code,omitempty"`
+			Message      string               `json:"message"`
+			Type         GetSkill500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetSkill200CreatedByType string
+type GetSkill200FilesEncoding string
+type GetSkill200FilesKind string
+type GetSkill200GithubSyncInterval string
+type GetSkill200Scope string
+type GetSkill200SourceProvider string
+type GetSkill200SourceType string
+type GetSkill400ErrorType string
+type GetSkill401ErrorType string
+type GetSkill403ErrorType string
+type GetSkill404ErrorType string
+type GetSkill409ErrorType string
+type GetSkill500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetSkillResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSkillResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateSkillResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AgentName     *string   `json:"agentName"`
+		AllowedTools  *string   `json:"allowedTools"`
+		AuthorId      *string   `json:"authorId"`
+		Compatibility *string   `json:"compatibility"`
+		Content       string    `json:"content"`
+		CreatedAt     time.Time `json:"createdAt"`
+		CreatedBy     *struct {
+			Email *string                      `json:"email"`
+			Id    string                       `json:"id"`
+			Name  *string                      `json:"name"`
+			Type  *UpdateSkill200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               string              `json:"description"`
+		Digest                    *string             `json:"digest"`
+		Environments              []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"environments"`
+		Files []struct {
+			Content   string                      `json:"content"`
+			CreatedAt time.Time                   `json:"createdAt"`
+			Digest    *string                     `json:"digest"`
+			Encoding  UpdateSkill200FilesEncoding `json:"encoding"`
+			Id        openapi_types.UUID          `json:"id"`
+			Kind      UpdateSkill200FilesKind     `json:"kind"`
+			Path      string                      `json:"path"`
+			SkillId   openapi_types.UUID          `json:"skillId"`
+		} `json:"files"`
+		GithubAppConfigId  *openapi_types.UUID              `json:"githubAppConfigId"`
+		GithubPatId        *openapi_types.UUID              `json:"githubPatId"`
+		GithubSyncInterval UpdateSkill200GithubSyncInterval `json:"githubSyncInterval"`
+		GithubSyncRef      *string                          `json:"githubSyncRef"`
+		GitlabTokenId      *openapi_types.UUID              `json:"gitlabTokenId"`
+		Icon               *string                          `json:"icon"`
+		Id                 openapi_types.UUID               `json:"id"`
+		Labels             []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastSyncError  *string                      `json:"lastSyncError"`
+		LastSyncedAt   *time.Time                   `json:"lastSyncedAt"`
+		LastUsedAt     *time.Time                   `json:"lastUsedAt"`
+		LatestVersion  int                          `json:"latestVersion"`
+		License        *string                      `json:"license"`
+		Metadata       map[string]string            `json:"metadata"`
+		Name           string                       `json:"name"`
+		OrganizationId string                       `json:"organizationId"`
+		Scope          UpdateSkill200Scope          `json:"scope"`
+		SourceCommit   *string                      `json:"sourceCommit"`
+		SourceOrigin   *string                      `json:"sourceOrigin"`
+		SourceProvider UpdateSkill200SourceProvider `json:"sourceProvider"`
+		SourceRef      *string                      `json:"sourceRef"`
+		SourceType     UpdateSkill200SourceType     `json:"sourceType"`
+		Teams          []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		Templated  bool      `json:"templated"`
+		UpdatedAt  time.Time `json:"updatedAt"`
+		UsageCount int       `json:"usageCount"`
+		Users      []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         UpdateSkill400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         UpdateSkill401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         UpdateSkill403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         UpdateSkill404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         UpdateSkill409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         UpdateSkill500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateSkill200CreatedByType string
+type UpdateSkill200FilesEncoding string
+type UpdateSkill200FilesKind string
+type UpdateSkill200GithubSyncInterval string
+type UpdateSkill200Scope string
+type UpdateSkill200SourceProvider string
+type UpdateSkill200SourceType string
+type UpdateSkill400ErrorType string
+type UpdateSkill401ErrorType string
+type UpdateSkill403ErrorType string
+type UpdateSkill404ErrorType string
+type UpdateSkill409ErrorType string
+type UpdateSkill500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateSkillResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSkillResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type CreateTeamResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -21403,6 +23592,75 @@ func (c *ClientWithResponses) UpdateAgentWithResponse(ctx context.Context, id op
 	return ParseUpdateAgentResponse(rsp)
 }
 
+// GetAgentActivationSkillPolicyWithResponse request returning *GetAgentActivationSkillPolicyResponse
+func (c *ClientWithResponses) GetAgentActivationSkillPolicyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentActivationSkillPolicyResponse, error) {
+	rsp, err := c.GetAgentActivationSkillPolicy(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAgentActivationSkillPolicyResponse(rsp)
+}
+
+// PatchAgentActivationSkillPolicyWithBodyWithResponse request with arbitrary body returning *PatchAgentActivationSkillPolicyResponse
+func (c *ClientWithResponses) PatchAgentActivationSkillPolicyWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchAgentActivationSkillPolicyResponse, error) {
+	rsp, err := c.PatchAgentActivationSkillPolicyWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePatchAgentActivationSkillPolicyResponse(rsp)
+}
+
+func (c *ClientWithResponses) PatchAgentActivationSkillPolicyWithResponse(ctx context.Context, id openapi_types.UUID, body PatchAgentActivationSkillPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchAgentActivationSkillPolicyResponse, error) {
+	rsp, err := c.PatchAgentActivationSkillPolicy(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePatchAgentActivationSkillPolicyResponse(rsp)
+}
+
+// UpdateAgentSkillsWithBodyWithResponse request with arbitrary body returning *UpdateAgentSkillsResponse
+func (c *ClientWithResponses) UpdateAgentSkillsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAgentSkillsResponse, error) {
+	rsp, err := c.UpdateAgentSkillsWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAgentSkillsResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateAgentSkillsWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateAgentSkillsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAgentSkillsResponse, error) {
+	rsp, err := c.UpdateAgentSkills(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAgentSkillsResponse(rsp)
+}
+
+// GetAgentSubagentExclusionsWithResponse request returning *GetAgentSubagentExclusionsResponse
+func (c *ClientWithResponses) GetAgentSubagentExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentSubagentExclusionsResponse, error) {
+	rsp, err := c.GetAgentSubagentExclusions(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAgentSubagentExclusionsResponse(rsp)
+}
+
+// UpdateAgentSubagentExclusionsWithBodyWithResponse request with arbitrary body returning *UpdateAgentSubagentExclusionsResponse
+func (c *ClientWithResponses) UpdateAgentSubagentExclusionsWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAgentSubagentExclusionsResponse, error) {
+	rsp, err := c.UpdateAgentSubagentExclusionsWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAgentSubagentExclusionsResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateAgentSubagentExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateAgentSubagentExclusionsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAgentSubagentExclusionsResponse, error) {
+	rsp, err := c.UpdateAgentSubagentExclusions(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAgentSubagentExclusionsResponse(rsp)
+}
+
 // GetAgentToolExclusionsWithResponse request returning *GetAgentToolExclusionsResponse
 func (c *ClientWithResponses) GetAgentToolExclusionsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentToolExclusionsResponse, error) {
 	rsp, err := c.GetAgentToolExclusions(ctx, id, reqEditors...)
@@ -22327,6 +24585,58 @@ func (c *ClientWithResponses) UpdateScheduleTriggerWithResponse(ctx context.Cont
 		return nil, err
 	}
 	return ParseUpdateScheduleTriggerResponse(rsp)
+}
+
+// CreateSkillWithBodyWithResponse request with arbitrary body returning *CreateSkillResponse
+func (c *ClientWithResponses) CreateSkillWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSkillResponse, error) {
+	rsp, err := c.CreateSkillWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSkillResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateSkillWithResponse(ctx context.Context, body CreateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSkillResponse, error) {
+	rsp, err := c.CreateSkill(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSkillResponse(rsp)
+}
+
+// DeleteSkillWithResponse request returning *DeleteSkillResponse
+func (c *ClientWithResponses) DeleteSkillWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteSkillResponse, error) {
+	rsp, err := c.DeleteSkill(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteSkillResponse(rsp)
+}
+
+// GetSkillWithResponse request returning *GetSkillResponse
+func (c *ClientWithResponses) GetSkillWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetSkillResponse, error) {
+	rsp, err := c.GetSkill(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSkillResponse(rsp)
+}
+
+// UpdateSkillWithBodyWithResponse request with arbitrary body returning *UpdateSkillResponse
+func (c *ClientWithResponses) UpdateSkillWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSkillResponse, error) {
+	rsp, err := c.UpdateSkillWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSkillResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateSkillWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSkillResponse, error) {
+	rsp, err := c.UpdateSkill(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSkillResponse(rsp)
 }
 
 // CreateTeamWithBodyWithResponse request with arbitrary body returning *CreateTeamResponse
@@ -24172,6 +26482,644 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 	return response, nil
 }
 
+// ParseGetAgentActivationSkillPolicyResponse parses an HTTP response from a GetAgentActivationSkillPolicyWithResponse call
+func ParseGetAgentActivationSkillPolicyResponse(rsp *http.Response) (*GetAgentActivationSkillPolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAgentActivationSkillPolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AllowedReferences []GetAgentActivationSkillPolicy_200_AllowedReferences_Item `json:"allowedReferences"`
+			AllowedSkills     []struct {
+				// ActivationName The exact name to pass to load_skill.
+				ActivationName string `json:"activationName"`
+
+				// Description The skill description.
+				Description string `json:"description"`
+
+				// Name The declared, human-facing skill name.
+				Name string `json:"name"`
+
+				// ProviderName Plugin or MCP server name; null for a skill-library entry.
+				ProviderName *string `json:"providerName"`
+
+				// Reference Stable source identity: native uses skillId, external_mcp uses mcpServerId and uri, and plugin uses pluginId and skillPath.
+				Reference GetAgentActivationSkillPolicy_200_AllowedSkills_Reference `json:"reference"`
+
+				// Scope The visibility scope through which the skill is shared.
+				Scope GetAgentActivationSkillPolicy200AllowedSkillsScope `json:"scope"`
+			} `json:"allowedSkills"`
+			ExcludedReferences []GetAgentActivationSkillPolicy_200_ExcludedReferences_Item `json:"excludedReferences"`
+			ExcludedSkills     []struct {
+				// ActivationName The exact name to pass to load_skill.
+				ActivationName string `json:"activationName"`
+
+				// Description The skill description.
+				Description string `json:"description"`
+
+				// Name The declared, human-facing skill name.
+				Name string `json:"name"`
+
+				// ProviderName Plugin or MCP server name; null for a skill-library entry.
+				ProviderName *string `json:"providerName"`
+
+				// Reference Stable source identity: native uses skillId, external_mcp uses mcpServerId and uri, and plugin uses pluginId and skillPath.
+				Reference GetAgentActivationSkillPolicy_200_ExcludedSkills_Reference `json:"reference"`
+
+				// Scope The visibility scope through which the skill is shared.
+				Scope GetAgentActivationSkillPolicy200ExcludedSkillsScope `json:"scope"`
+			} `json:"excludedSkills"`
+			HiddenAllowedCount  int                                  `json:"hiddenAllowedCount"`
+			HiddenExcludedCount int                                  `json:"hiddenExcludedCount"`
+			Mode                GetAgentActivationSkillPolicy200Mode `json:"mode"`
+			Revision            int                                  `json:"revision"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetAgentActivationSkillPolicy400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetAgentActivationSkillPolicy401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                   `json:"details,omitempty"`
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetAgentActivationSkillPolicy403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetAgentActivationSkillPolicy404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetAgentActivationSkillPolicy409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         GetAgentActivationSkillPolicy500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePatchAgentActivationSkillPolicyResponse parses an HTTP response from a PatchAgentActivationSkillPolicyWithResponse call
+func ParsePatchAgentActivationSkillPolicyResponse(rsp *http.Response) (*PatchAgentActivationSkillPolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PatchAgentActivationSkillPolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AllowedReferences []PatchAgentActivationSkillPolicy_200_AllowedReferences_Item `json:"allowedReferences"`
+			AllowedSkills     []struct {
+				// ActivationName The exact name to pass to load_skill.
+				ActivationName string `json:"activationName"`
+
+				// Description The skill description.
+				Description string `json:"description"`
+
+				// Name The declared, human-facing skill name.
+				Name string `json:"name"`
+
+				// ProviderName Plugin or MCP server name; null for a skill-library entry.
+				ProviderName *string `json:"providerName"`
+
+				// Reference Stable source identity: native uses skillId, external_mcp uses mcpServerId and uri, and plugin uses pluginId and skillPath.
+				Reference PatchAgentActivationSkillPolicy_200_AllowedSkills_Reference `json:"reference"`
+
+				// Scope The visibility scope through which the skill is shared.
+				Scope PatchAgentActivationSkillPolicy200AllowedSkillsScope `json:"scope"`
+			} `json:"allowedSkills"`
+			ExcludedReferences []PatchAgentActivationSkillPolicy_200_ExcludedReferences_Item `json:"excludedReferences"`
+			ExcludedSkills     []struct {
+				// ActivationName The exact name to pass to load_skill.
+				ActivationName string `json:"activationName"`
+
+				// Description The skill description.
+				Description string `json:"description"`
+
+				// Name The declared, human-facing skill name.
+				Name string `json:"name"`
+
+				// ProviderName Plugin or MCP server name; null for a skill-library entry.
+				ProviderName *string `json:"providerName"`
+
+				// Reference Stable source identity: native uses skillId, external_mcp uses mcpServerId and uri, and plugin uses pluginId and skillPath.
+				Reference PatchAgentActivationSkillPolicy_200_ExcludedSkills_Reference `json:"reference"`
+
+				// Scope The visibility scope through which the skill is shared.
+				Scope PatchAgentActivationSkillPolicy200ExcludedSkillsScope `json:"scope"`
+			} `json:"excludedSkills"`
+			HiddenAllowedCount  int                                    `json:"hiddenAllowedCount"`
+			HiddenExcludedCount int                                    `json:"hiddenExcludedCount"`
+			Mode                PatchAgentActivationSkillPolicy200Mode `json:"mode"`
+			Revision            int                                    `json:"revision"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         PatchAgentActivationSkillPolicy400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         PatchAgentActivationSkillPolicy401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                     `json:"details,omitempty"`
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         PatchAgentActivationSkillPolicy403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         PatchAgentActivationSkillPolicy404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         PatchAgentActivationSkillPolicy409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                     `json:"internal_code,omitempty"`
+				Message      string                                      `json:"message"`
+				Type         PatchAgentActivationSkillPolicy500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateAgentSkillsResponse parses an HTTP response from a UpdateAgentSkillsWithResponse call
+func ParseUpdateAgentSkillsResponse(rsp *http.Response) (*UpdateAgentSkillsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateAgentSkillsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// AccessAllSkills Auto mode: expose every org-scoped skill visible in the agent's environment
+			AccessAllSkills bool `json:"accessAllSkills"`
+
+			// SkillIds Skills explicitly assigned to the agent (Custom mode)
+			SkillIds []openapi_types.UUID `json:"skillIds"`
+
+			// Skills The assigned skills themselves, in `skillIds` order
+			Skills []struct {
+				AgentName   *string                         `json:"agentName"`
+				AuthorId    *string                         `json:"authorId"`
+				Description string                          `json:"description"`
+				Id          openapi_types.UUID              `json:"id"`
+				Name        string                          `json:"name"`
+				Scope       UpdateAgentSkills200SkillsScope `json:"scope"`
+				Templated   bool                            `json:"templated"`
+			} `json:"skills"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateAgentSkills400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateAgentSkills401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}       `json:"details,omitempty"`
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateAgentSkills403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateAgentSkills404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateAgentSkills409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateAgentSkills500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAgentSubagentExclusionsResponse parses an HTTP response from a GetAgentSubagentExclusionsWithResponse call
+func ParseGetAgentSubagentExclusionsResponse(rsp *http.Response) (*GetAgentSubagentExclusionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAgentSubagentExclusionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// ExcludedSubagentIds Target agent IDs excluded from the agent's Auto delegation surface
+			ExcludedSubagentIds []openapi_types.UUID `json:"excludedSubagentIds"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         GetAgentSubagentExclusions400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         GetAgentSubagentExclusions401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                `json:"details,omitempty"`
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         GetAgentSubagentExclusions403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         GetAgentSubagentExclusions404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         GetAgentSubagentExclusions409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                `json:"internal_code,omitempty"`
+				Message      string                                 `json:"message"`
+				Type         GetAgentSubagentExclusions500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateAgentSubagentExclusionsResponse parses an HTTP response from a UpdateAgentSubagentExclusionsWithResponse call
+func ParseUpdateAgentSubagentExclusionsResponse(rsp *http.Response) (*UpdateAgentSubagentExclusionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateAgentSubagentExclusionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// ExcludedSubagentIds Target agent IDs excluded from the agent's Auto delegation surface
+			ExcludedSubagentIds []openapi_types.UUID `json:"excludedSubagentIds"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         UpdateAgentSubagentExclusions400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         UpdateAgentSubagentExclusions401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                   `json:"details,omitempty"`
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         UpdateAgentSubagentExclusions403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         UpdateAgentSubagentExclusions404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         UpdateAgentSubagentExclusions409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                   `json:"internal_code,omitempty"`
+				Message      string                                    `json:"message"`
+				Type         UpdateAgentSubagentExclusions500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetAgentToolExclusionsResponse parses an HTTP response from a GetAgentToolExclusionsWithResponse call
 func ParseGetAgentToolExclusionsResponse(rsp *http.Response) (*GetAgentToolExclusionsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -24756,6 +27704,7 @@ func ParseListRuntimeCredentialsResponse(rsp *http.Response) (*ListRuntimeCreden
 			GithubAppCredentialKey *string                       `json:"githubAppCredentialKey"`
 			GithubClientId         *string                       `json:"githubClientId"`
 			GithubUrl              *string                       `json:"githubUrl"`
+			GitlabUrl              *string                       `json:"gitlabUrl"`
 			Icon                   *string                       `json:"icon"`
 			Id                     openapi_types.UUID            `json:"id"`
 			InstallationId         *string                       `json:"installationId"`
@@ -34522,6 +37471,638 @@ func ParseUpdateScheduleTriggerResponse(rsp *http.Response) (*UpdateScheduleTrig
 				InternalCode *string                           `json:"internal_code,omitempty"`
 				Message      string                            `json:"message"`
 				Type         UpdateScheduleTrigger500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateSkillResponse parses an HTTP response from a CreateSkillWithResponse call
+func ParseCreateSkillResponse(rsp *http.Response) (*CreateSkillResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateSkillResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AgentName     *string   `json:"agentName"`
+			AllowedTools  *string   `json:"allowedTools"`
+			AuthorId      *string   `json:"authorId"`
+			Compatibility *string   `json:"compatibility"`
+			Content       string    `json:"content"`
+			CreatedAt     time.Time `json:"createdAt"`
+			CreatedBy     *struct {
+				Email *string                      `json:"email"`
+				Id    string                       `json:"id"`
+				Name  *string                      `json:"name"`
+				Type  *CreateSkill200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               string              `json:"description"`
+			Digest                    *string             `json:"digest"`
+			Environments              []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"environments"`
+			Files []struct {
+				Content   string                      `json:"content"`
+				CreatedAt time.Time                   `json:"createdAt"`
+				Digest    *string                     `json:"digest"`
+				Encoding  CreateSkill200FilesEncoding `json:"encoding"`
+				Id        openapi_types.UUID          `json:"id"`
+				Kind      CreateSkill200FilesKind     `json:"kind"`
+				Path      string                      `json:"path"`
+				SkillId   openapi_types.UUID          `json:"skillId"`
+			} `json:"files"`
+			GithubAppConfigId  *openapi_types.UUID              `json:"githubAppConfigId"`
+			GithubPatId        *openapi_types.UUID              `json:"githubPatId"`
+			GithubSyncInterval CreateSkill200GithubSyncInterval `json:"githubSyncInterval"`
+			GithubSyncRef      *string                          `json:"githubSyncRef"`
+			GitlabTokenId      *openapi_types.UUID              `json:"gitlabTokenId"`
+			Icon               *string                          `json:"icon"`
+			Id                 openapi_types.UUID               `json:"id"`
+			Labels             []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastSyncError  *string                      `json:"lastSyncError"`
+			LastSyncedAt   *time.Time                   `json:"lastSyncedAt"`
+			LastUsedAt     *time.Time                   `json:"lastUsedAt"`
+			LatestVersion  int                          `json:"latestVersion"`
+			License        *string                      `json:"license"`
+			Metadata       map[string]string            `json:"metadata"`
+			Name           string                       `json:"name"`
+			OrganizationId string                       `json:"organizationId"`
+			Scope          CreateSkill200Scope          `json:"scope"`
+			SourceCommit   *string                      `json:"sourceCommit"`
+			SourceOrigin   *string                      `json:"sourceOrigin"`
+			SourceProvider CreateSkill200SourceProvider `json:"sourceProvider"`
+			SourceRef      *string                      `json:"sourceRef"`
+			SourceType     CreateSkill200SourceType     `json:"sourceType"`
+			Teams          []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			Templated  bool      `json:"templated"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			UsageCount int       `json:"usageCount"`
+			Users      []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         CreateSkill400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         CreateSkill401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         CreateSkill403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         CreateSkill404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         CreateSkill409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         CreateSkill500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteSkillResponse parses an HTTP response from a DeleteSkillWithResponse call
+func ParseDeleteSkillResponse(rsp *http.Response) (*DeleteSkillResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteSkillResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         DeleteSkill400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         DeleteSkill401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         DeleteSkill403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         DeleteSkill404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         DeleteSkill409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         DeleteSkill500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetSkillResponse parses an HTTP response from a GetSkillWithResponse call
+func ParseGetSkillResponse(rsp *http.Response) (*GetSkillResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSkillResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AgentName     *string   `json:"agentName"`
+			AllowedTools  *string   `json:"allowedTools"`
+			AuthorId      *string   `json:"authorId"`
+			Compatibility *string   `json:"compatibility"`
+			Content       string    `json:"content"`
+			CreatedAt     time.Time `json:"createdAt"`
+			CreatedBy     *struct {
+				Email *string                   `json:"email"`
+				Id    string                    `json:"id"`
+				Name  *string                   `json:"name"`
+				Type  *GetSkill200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               string              `json:"description"`
+			Digest                    *string             `json:"digest"`
+			Environments              []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"environments"`
+			Files []struct {
+				Content   string                   `json:"content"`
+				CreatedAt time.Time                `json:"createdAt"`
+				Digest    *string                  `json:"digest"`
+				Encoding  GetSkill200FilesEncoding `json:"encoding"`
+				Id        openapi_types.UUID       `json:"id"`
+				Kind      GetSkill200FilesKind     `json:"kind"`
+				Path      string                   `json:"path"`
+				SkillId   openapi_types.UUID       `json:"skillId"`
+			} `json:"files"`
+			GithubAppConfigId  *openapi_types.UUID           `json:"githubAppConfigId"`
+			GithubPatId        *openapi_types.UUID           `json:"githubPatId"`
+			GithubSyncInterval GetSkill200GithubSyncInterval `json:"githubSyncInterval"`
+			GithubSyncRef      *string                       `json:"githubSyncRef"`
+			GitlabTokenId      *openapi_types.UUID           `json:"gitlabTokenId"`
+			Icon               *string                       `json:"icon"`
+			Id                 openapi_types.UUID            `json:"id"`
+			Labels             []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastSyncError  *string                   `json:"lastSyncError"`
+			LastSyncedAt   *time.Time                `json:"lastSyncedAt"`
+			LastUsedAt     *time.Time                `json:"lastUsedAt"`
+			LatestVersion  int                       `json:"latestVersion"`
+			License        *string                   `json:"license"`
+			Metadata       map[string]string         `json:"metadata"`
+			Name           string                    `json:"name"`
+			OrganizationId string                    `json:"organizationId"`
+			Scope          GetSkill200Scope          `json:"scope"`
+			SourceCommit   *string                   `json:"sourceCommit"`
+			SourceOrigin   *string                   `json:"sourceOrigin"`
+			SourceProvider GetSkill200SourceProvider `json:"sourceProvider"`
+			SourceRef      *string                   `json:"sourceRef"`
+			SourceType     GetSkill200SourceType     `json:"sourceType"`
+			Teams          []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			Templated  bool      `json:"templated"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			UsageCount int       `json:"usageCount"`
+			Users      []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string              `json:"internal_code,omitempty"`
+				Message      string               `json:"message"`
+				Type         GetSkill400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string              `json:"internal_code,omitempty"`
+				Message      string               `json:"message"`
+				Type         GetSkill401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         GetSkill403ErrorType    `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string              `json:"internal_code,omitempty"`
+				Message      string               `json:"message"`
+				Type         GetSkill404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string              `json:"internal_code,omitempty"`
+				Message      string               `json:"message"`
+				Type         GetSkill409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string              `json:"internal_code,omitempty"`
+				Message      string               `json:"message"`
+				Type         GetSkill500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateSkillResponse parses an HTTP response from a UpdateSkillWithResponse call
+func ParseUpdateSkillResponse(rsp *http.Response) (*UpdateSkillResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateSkillResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AgentName     *string   `json:"agentName"`
+			AllowedTools  *string   `json:"allowedTools"`
+			AuthorId      *string   `json:"authorId"`
+			Compatibility *string   `json:"compatibility"`
+			Content       string    `json:"content"`
+			CreatedAt     time.Time `json:"createdAt"`
+			CreatedBy     *struct {
+				Email *string                      `json:"email"`
+				Id    string                       `json:"id"`
+				Name  *string                      `json:"name"`
+				Type  *UpdateSkill200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               string              `json:"description"`
+			Digest                    *string             `json:"digest"`
+			Environments              []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"environments"`
+			Files []struct {
+				Content   string                      `json:"content"`
+				CreatedAt time.Time                   `json:"createdAt"`
+				Digest    *string                     `json:"digest"`
+				Encoding  UpdateSkill200FilesEncoding `json:"encoding"`
+				Id        openapi_types.UUID          `json:"id"`
+				Kind      UpdateSkill200FilesKind     `json:"kind"`
+				Path      string                      `json:"path"`
+				SkillId   openapi_types.UUID          `json:"skillId"`
+			} `json:"files"`
+			GithubAppConfigId  *openapi_types.UUID              `json:"githubAppConfigId"`
+			GithubPatId        *openapi_types.UUID              `json:"githubPatId"`
+			GithubSyncInterval UpdateSkill200GithubSyncInterval `json:"githubSyncInterval"`
+			GithubSyncRef      *string                          `json:"githubSyncRef"`
+			GitlabTokenId      *openapi_types.UUID              `json:"gitlabTokenId"`
+			Icon               *string                          `json:"icon"`
+			Id                 openapi_types.UUID               `json:"id"`
+			Labels             []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastSyncError  *string                      `json:"lastSyncError"`
+			LastSyncedAt   *time.Time                   `json:"lastSyncedAt"`
+			LastUsedAt     *time.Time                   `json:"lastUsedAt"`
+			LatestVersion  int                          `json:"latestVersion"`
+			License        *string                      `json:"license"`
+			Metadata       map[string]string            `json:"metadata"`
+			Name           string                       `json:"name"`
+			OrganizationId string                       `json:"organizationId"`
+			Scope          UpdateSkill200Scope          `json:"scope"`
+			SourceCommit   *string                      `json:"sourceCommit"`
+			SourceOrigin   *string                      `json:"sourceOrigin"`
+			SourceProvider UpdateSkill200SourceProvider `json:"sourceProvider"`
+			SourceRef      *string                      `json:"sourceRef"`
+			SourceType     UpdateSkill200SourceType     `json:"sourceType"`
+			Teams          []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			Templated  bool      `json:"templated"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			UsageCount int       `json:"usageCount"`
+			Users      []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         UpdateSkill400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         UpdateSkill401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         UpdateSkill403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         UpdateSkill404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         UpdateSkill409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         UpdateSkill500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

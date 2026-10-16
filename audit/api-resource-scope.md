@@ -2,7 +2,8 @@
 
 The verified Crossplane denominator is the Terraform resource registry: 22 in
 v2, of which five were configured for Crossplane; v3 retires six removed API
-resources and adds seven current resource families, producing 23. All 23 have
+resources and adds seven current resource families, producing 23. Two additional declarative lifecycles (skill policy and subagent
+exclusions) raise the current registry to 25. All 25 have
 accumulated real lifecycle evidence in both scopes. This does not establish that
 every persistent Archestra API lifecycle has a Terraform resource.
 
@@ -10,7 +11,7 @@ every persistent Archestra API lifecycle has a Terraform resource.
 
 | Area | Registered Terraform resource families |
 |---|---|
-| Agents | Agent, MCP gateway, delegation, individual tool binding, authoritative tool batch, tool exclusions |
+| Agents | Agent, MCP gateway, delegation, individual tool binding, authoritative tool batch, tool exclusions, skill activation policy, subagent exclusions |
 | Organization and access | Organization settings, environment, team, external-group mapping, role, object permission policy |
 | MCP | Registry catalog item, server installation |
 | LLM | Provider key, discovered-model overrides, limit |
@@ -32,8 +33,8 @@ resource design and runtime validation; generation of types would not close them
 
 | Area | API examples | Decision still required |
 |---|---|---|
-| Skill activation and bindings | `/api/agents/{id}/activation-skill-policy`, `/api/agents/{id}/skills` | Authoritative policy vs initial template, optimistic revisions, unavailable/hidden references |
-| Agent subagent and knowledge exclusions | `/api/agents/{id}/subagent-exclusions`, `/api/agents/{id}/knowledge-source-exclusions` | Full-set ownership, auto-access modes and revocation |
+| Skill bindings | `/api/agents/{id}/skills` | Explicit assignments vs auto-access mode; activation policy has a separate tested authoritative resource |
+| Agent knowledge exclusions | `/api/agents/{id}/knowledge-source-exclusions` | Full-set connector ownership and revocation; subagent exclusions are implemented and tested |
 | Skills and plugins | `/api/skills`, `/api/plugins` | Versioned content, package identity, upload/import and restore semantics |
 | Apps and tool bindings | `/api/apps`, `/api/apps/{appId}/tools/{toolId}` | Versioned source, enable/lock behavior, bindings and deletion |
 | Project instructions, files and apps | `/api/projects/{id}/instructions`, `/api/projects/{id}/files`, `/api/projects/{id}/apps/{appId}` | Embedded attributes vs independent bindings and content ownership |
@@ -52,7 +53,7 @@ resource design and runtime validation; generation of types would not close them
 This table is a lifecycle review queue, not a numerical denominator inferred from
 path counts. Some rows contain several resources; others may belong as attributes
 or bindings on an existing family. A release claiming all declarative Archestra
-API lifecycles must resolve every row rather than divide by 23.
+API lifecycles must resolve every row rather than divide by 25.
 
 ## Justified operation exclusions
 

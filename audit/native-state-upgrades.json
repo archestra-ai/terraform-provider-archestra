@@ -1,0 +1,51 @@
+{
+  "outcome": "passed",
+  "cleanup": "passed",
+  "resources": [
+    {
+      "resource": "archestra_agent",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_llm_provider_api_key",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_team",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    }
+  ],
+  "old_binary_sha256": "e04256348eed8fe6bd6cf28b894b3e2ff877e6aafc1210cf1e98777faf76905e",
+  "new_binary_sha256": "21f58ec0bee8e5c741c9569848c38b376c5ff4c72e0c764d6dfb90adfd9bd35b",
+  "second_plan": "no changes"
+}

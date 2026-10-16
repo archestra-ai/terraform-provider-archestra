@@ -67,6 +67,7 @@ output "gpt4o_price_source" {
 - `custom_price_per_million_cache_write` (String) Custom price per million cache write.
 - `custom_price_per_million_input` (String) Custom price per million input tokens (overrides provider pricing)
 - `custom_price_per_million_output` (String) Custom price per million output tokens (overrides provider pricing)
+- `embedding_dimensions` (Number) Embedding dimension override; removing it clears the dimension configuration.
 - `ignored` (Boolean) Whether the model is ignored (hidden from model selection)
 - `input_modalities` (List of String) Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.
 - `labels` (Attributes Set) Labels assigned to the model. (see [below for nested schema](#nestedatt--labels))
@@ -82,6 +83,7 @@ output "gpt4o_price_source" {
 - `default_parameters` (String) Default parameters as JSON.
 - `description` (String) Model description
 - `effective_context_length` (Number) Context window after applying configured limits.
+- `effective_embedding_dimensions` (Number) Current dimensions reported by the model API.
 - `effective_input_modalities` (List of String) Current model input modalities, including provider-discovered values.
 - `effective_output_modalities` (List of String) Current model output modalities, including provider-discovered values.
 - `embedding_client_image_capable` (Boolean) Embedding client image capable.

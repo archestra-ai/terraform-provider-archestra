@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -69,7 +70,7 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			"labels":                        schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Resource labels.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
 			"created_by_service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Service account that created the team."},
 			"my_role":                       schema.StringAttribute{Computed: true, MarkdownDescription: "Effective role of the current API caller."},
-			"roles":                         schema.SetAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Roles available for the team."},
+			"roles":                         schema.SetAttribute{Optional: true, Computed: true, ElementType: types.StringType, PlanModifiers: []planmodifier.Set{setplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Role identifiers assigned to the team; omit to preserve existing assignments, or set an empty set to revoke them."},
 			"descendant_teams":              schema.ListNestedAttribute{Computed: true, MarkdownDescription: "Descendant teams in the hierarchy.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"id": schema.StringAttribute{Computed: true}, "name": schema.StringAttribute{Computed: true}}}},
 			"id": schema.StringAttribute{
 				Computed:            true,

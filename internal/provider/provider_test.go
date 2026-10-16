@@ -42,7 +42,7 @@ func testAccRequireByosEnabled(t *testing.T) {
 // API and a configured runtime backend.
 func testAccRequireAgentRuntimeEnabled(t *testing.T) {
 	if os.Getenv("ARCHESTRA_AGENT_RUNTIME_ENABLED") != "true" {
-		t.Skip("requires ARCHESTRA_AGENT_RUNTIME_ENABLED=true and a configured Agent Runtime backend")
+		t.Fatal("requires ARCHESTRA_AGENT_RUNTIME_ENABLED=true and a configured Agent Runtime backend")
 	}
 }
 

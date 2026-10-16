@@ -1,5 +1,5 @@
 {
-  "crossplane_configured_count": 23,
+  "crossplane_configured_count": 25,
   "evidence_level": "static inventory; no runtime coverage implied",
   "format_version": 1,
   "resources": [
@@ -16,6 +16,29 @@
             "users"
           ],
           "builder": "CreateAgent",
+          "declared_request_field_mappings": {
+            "accessAllSubagents": "access_all_subagents",
+            "accessAllTools": "access_all_tools",
+            "connectorIds": "connector_ids",
+            "description": "description",
+            "environmentId": "environment_id",
+            "icon": "icon",
+            "incomingEmailAllowedDomain": "incoming_email_allowed_domain",
+            "incomingEmailEnabled": "incoming_email_enabled",
+            "incomingEmailSecurityMode": "incoming_email_security_mode",
+            "isDefault": "is_default",
+            "knowledgeBaseIds": "knowledge_base_ids",
+            "labels": "labels",
+            "llmApiKeyId": "llm_api_key_id",
+            "llmModel": "llm_model",
+            "missingCredentialBehavior": "missing_credential_behavior",
+            "modelId": "model_id",
+            "name": "name",
+            "runtime": "runtime",
+            "suggestedPrompts": "suggested_prompts",
+            "systemPrompt": "system_prompt",
+            "toolExposureMode": "tool_exposure_mode"
+          },
           "method": "POST",
           "path": "/api/agents",
           "present_in_upstream": true,
@@ -55,26 +78,41 @@
             "toolExposureMode",
             "users"
           ],
+          "request_fields_without_declared_mapping": [
+            "activationSkillPolicy",
+            "agentType",
+            "builtInAgentConfig",
+            "deletedAt",
+            "identityProviderId",
+            "initialGrants",
+            "isPersonalProxy",
+            "organizationId",
+            "passthroughHeaders"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteAgent",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/agents/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetAgent",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/agents/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -84,6 +122,29 @@
             "users"
           ],
           "builder": "UpdateAgent",
+          "declared_request_field_mappings": {
+            "accessAllSubagents": "access_all_subagents",
+            "accessAllTools": "access_all_tools",
+            "connectorIds": "connector_ids",
+            "description": "description",
+            "environmentId": "environment_id",
+            "icon": "icon",
+            "incomingEmailAllowedDomain": "incoming_email_allowed_domain",
+            "incomingEmailEnabled": "incoming_email_enabled",
+            "incomingEmailSecurityMode": "incoming_email_security_mode",
+            "isDefault": "is_default",
+            "knowledgeBaseIds": "knowledge_base_ids",
+            "labels": "labels",
+            "llmApiKeyId": "llm_api_key_id",
+            "llmModel": "llm_model",
+            "missingCredentialBehavior": "missing_credential_behavior",
+            "modelId": "model_id",
+            "name": "name",
+            "runtime": "runtime",
+            "suggestedPrompts": "suggested_prompts",
+            "systemPrompt": "system_prompt",
+            "toolExposureMode": "tool_exposure_mode"
+          },
           "method": "PUT",
           "path": "/api/agents/{}",
           "present_in_upstream": true,
@@ -120,6 +181,15 @@
             "teams",
             "toolExposureMode",
             "users"
+          ],
+          "request_fields_without_declared_mapping": [
+            "agentType",
+            "builtInAgentConfig",
+            "deletedAt",
+            "identityProviderId",
+            "isPersonalProxy",
+            "organizationId",
+            "passthroughHeaders"
           ],
           "retired_request_fields": []
         }
@@ -679,7 +749,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 1,
       "source": "internal/provider/resource_agent.go",
       "terraform_resource": "archestra_agent"
@@ -693,31 +763,39 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteAgentDelegation",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/agents/{}/delegations/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetAgentDelegations",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/agents/{}/delegations",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "SyncAgentDelegations",
+          "declared_request_field_mappings": {},
           "method": "POST",
           "path": "/api/agents/{}/delegations",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [
+            "targetAgentIds"
+          ],
+          "request_fields_without_declared_mapping": [
             "targetAgentIds"
           ],
           "retired_request_fields": []
@@ -750,7 +828,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_agent_delegation.go",
       "terraform_resource": "archestra_agent_delegation"
@@ -763,7 +841,272 @@
       "endpoints": [
         {
           "api_forbidden_request_fields": [],
+          "builder": "GetAgentActivationSkillPolicy",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/activation-skill-policy",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "PatchAgentActivationSkillPolicy",
+          "declared_request_field_mappings": {
+            "mode": "mode"
+          },
+          "method": "PATCH",
+          "path": "/api/agents/{}/activation-skill-policy",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "discardUnavailable",
+            "expectedRevision",
+            "mode",
+            "operations"
+          ],
+          "request_fields_without_declared_mapping": [
+            "discardUnavailable",
+            "expectedRevision",
+            "operations"
+          ],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": false,
+          "optional": false,
+          "path": "agent_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "allowed_references",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "allowed_references.mcp_server_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "allowed_references.plugin_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "allowed_references.skill_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "allowed_references.skill_path",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "allowed_references.source",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "allowed_references.uri",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "excluded_references",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "excluded_references.mcp_server_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "excluded_references.plugin_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "excluded_references.skill_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "excluded_references.skill_path",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "excluded_references.source",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "excluded_references.uri",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "mode",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "revision",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_agent_skill_policy.go",
+      "terraform_resource": "archestra_agent_skill_policy"
+    },
+    {
+      "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 1,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentSubagentExclusions",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/subagent-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateAgentSubagentExclusions",
+          "declared_request_field_mappings": {
+            "excludedSubagentIds": "excluded_subagent_ids"
+          },
+          "method": "PUT",
+          "path": "/api/agents/{}/subagent-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "excludedSubagentIds"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": false,
+          "optional": false,
+          "path": "agent_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "excluded_subagent_ids",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_agent_subagent_exclusions.go",
+      "terraform_resource": "archestra_agent_subagent_exclusions"
+    },
+    {
+      "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 1,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
           "builder": "AssignToolToAgent",
+          "declared_request_field_mappings": {
+            "credentialResolutionMode": "credential_resolution_mode",
+            "mcpServerId": "mcp_server_id"
+          },
           "method": "POST",
           "path": "/api/agents/{}/tools/{}",
           "present_in_upstream": true,
@@ -773,11 +1116,15 @@
             "mcpServerId",
             "resolveAtCallTime"
           ],
+          "request_fields_without_declared_mapping": [
+            "resolveAtCallTime"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetAllAgentTools",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/agent-tools",
           "present_in_upstream": true,
@@ -794,21 +1141,28 @@
             "sortDirection"
           ],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UnassignToolFromAgent",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/agents/{}/tools/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateAgentTool",
+          "declared_request_field_mappings": {
+            "credentialResolutionMode": "credential_resolution_mode",
+            "mcpServerId": "mcp_server_id"
+          },
           "method": "PATCH",
           "path": "/api/agent-tools/{}",
           "present_in_upstream": true,
@@ -817,6 +1171,7 @@
             "credentialResolutionMode",
             "mcpServerId"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -863,7 +1218,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_agent_tool.go",
       "terraform_resource": "archestra_agent_tool"
@@ -877,6 +1232,7 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "BulkAssignTools",
+          "declared_request_field_mappings": {},
           "method": "POST",
           "path": "/api/agents/tools/bulk-assign",
           "present_in_upstream": true,
@@ -884,11 +1240,15 @@
           "request_fields": [
             "assignments"
           ],
+          "request_fields_without_declared_mapping": [
+            "assignments"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetAllAgentTools",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/agent-tools",
           "present_in_upstream": true,
@@ -905,16 +1265,19 @@
             "sortDirection"
           ],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UnassignToolFromAgent",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/agents/{}/tools/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -961,7 +1324,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_agent_tool_batch.go",
       "terraform_resource": "archestra_agent_tool_batch"
@@ -975,16 +1338,21 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "GetAgentToolExclusions",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/agents/{}/tool-exclusions",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateAgentToolExclusions",
+          "declared_request_field_mappings": {
+            "excludedToolIds": "excluded_tool_ids"
+          },
           "method": "PUT",
           "path": "/api/agents/{}/tool-exclusions",
           "present_in_upstream": true,
@@ -992,6 +1360,7 @@
           "request_fields": [
             "excludedToolIds"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -1022,7 +1391,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_agent_tool_exclusions.go",
       "terraform_resource": "archestra_agent_tool_exclusions"
@@ -1036,6 +1405,10 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "CreateApiKey",
+          "declared_request_field_mappings": {
+            "expiresIn": "expires_in_seconds",
+            "name": "name"
+          },
           "method": "POST",
           "path": "/api/api-keys",
           "present_in_upstream": true,
@@ -1044,26 +1417,31 @@
             "expiresIn",
             "name"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteApiKey",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/api-keys/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetApiKey",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/api-keys/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -1158,7 +1536,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_api_key.go",
       "terraform_resource": "archestra_api_key"
@@ -1174,6 +1552,15 @@
             "restricted"
           ],
           "builder": "CreateEnvironment",
+          "declared_request_field_mappings": {
+            "description": "description",
+            "labels": "labels",
+            "name": "name",
+            "namespace": "namespace",
+            "networkPolicy": "network_policy",
+            "trustedImageRegistries": "trusted_image_registries",
+            "validationRegex": "validation_regex"
+          },
           "method": "POST",
           "path": "/api/environments",
           "present_in_upstream": true,
@@ -1188,26 +1575,31 @@
             "trustedImageRegistries",
             "validationRegex"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteEnvironment",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/environments/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetEnvironment",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/environments/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -1215,6 +1607,15 @@
             "restricted"
           ],
           "builder": "UpdateEnvironment",
+          "declared_request_field_mappings": {
+            "description": "description",
+            "labels": "labels",
+            "name": "name",
+            "namespace": "namespace",
+            "networkPolicy": "network_policy",
+            "trustedImageRegistries": "trusted_image_registries",
+            "validationRegex": "validation_regex"
+          },
           "method": "PATCH",
           "path": "/api/environments/{}",
           "present_in_upstream": true,
@@ -1229,6 +1630,7 @@
             "trustedImageRegistries",
             "validationRegex"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -1379,7 +1781,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_environment.go",
       "terraform_resource": "archestra_environment"
@@ -1393,6 +1795,18 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "CreateIdentityProvider",
+          "declared_request_field_mappings": {
+            "domain": "domain",
+            "domainVerified": "domain_verified",
+            "issuer": "issuer",
+            "oidcConfig": "oidc_config",
+            "providerId": "provider_id",
+            "roleMapping": "role_mapping",
+            "samlConfig": "saml_config",
+            "ssoLoginEnabled": "sso_login_enabled",
+            "teamSyncConfig": "team_sync_config",
+            "userId": "user_id"
+          },
           "method": "POST",
           "path": "/api/identity-providers",
           "present_in_upstream": true,
@@ -1409,31 +1823,47 @@
             "teamSyncConfig",
             "userId"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteIdentityProvider",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/identity-providers/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetIdentityProvider",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/identity-providers/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateIdentityProvider",
+          "declared_request_field_mappings": {
+            "domain": "domain",
+            "domainVerified": "domain_verified",
+            "issuer": "issuer",
+            "oidcConfig": "oidc_config",
+            "providerId": "provider_id",
+            "roleMapping": "role_mapping",
+            "samlConfig": "saml_config",
+            "ssoLoginEnabled": "sso_login_enabled",
+            "teamSyncConfig": "team_sync_config"
+          },
           "method": "PUT",
           "path": "/api/identity-providers/{}",
           "present_in_upstream": true,
@@ -1449,6 +1879,7 @@
             "ssoLoginEnabled",
             "teamSyncConfig"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -2143,20 +2574,25 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 1,
       "source": "internal/provider/resource_identity_provider.go",
       "terraform_resource": "archestra_identity_provider"
     },
     {
       "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 3,
+      "acceptance_tests_declared": 4,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
       "endpoints": [
         {
           "api_forbidden_request_fields": [],
           "builder": "CreateKnowledgeBase",
+          "declared_request_field_mappings": {
+            "description": "description",
+            "labels": "labels",
+            "name": "name"
+          },
           "method": "POST",
           "path": "/api/knowledge-bases",
           "present_in_upstream": true,
@@ -2167,26 +2603,33 @@
             "labels",
             "name"
           ],
+          "request_fields_without_declared_mapping": [
+            "initialGrants"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteKnowledgeBase",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/knowledge-bases/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetKnowledgeBase",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/knowledge-bases/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -2195,6 +2638,11 @@
             "visibility"
           ],
           "builder": "UpdateKnowledgeBase",
+          "declared_request_field_mappings": {
+            "description": "description",
+            "labels": "labels",
+            "name": "name"
+          },
           "method": "PUT",
           "path": "/api/knowledge-bases/{}",
           "present_in_upstream": true,
@@ -2206,6 +2654,7 @@
             "teamIds",
             "visibility"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -2214,6 +2663,30 @@
           "computed": true,
           "optional": false,
           "path": "created_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "deleted_at",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -2231,6 +2704,30 @@
           "optional": false,
           "path": "id",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "labels",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.value",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },
@@ -2260,7 +2757,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_knowledge_base.go",
       "terraform_resource": "archestra_knowledge_base"
@@ -2274,6 +2771,17 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "CreateLimit",
+          "declared_request_field_mappings": {
+            "cleanupInterval": "cleanup_interval",
+            "entityId": "entity_id",
+            "entityType": "entity_type",
+            "labels": "labels",
+            "limitType": "limit_type",
+            "limitValue": "limit_value",
+            "mcpServerName": "mcp_server_name",
+            "model": "model",
+            "toolName": "tool_name"
+          },
           "method": "POST",
           "path": "/api/limits",
           "present_in_upstream": true,
@@ -2290,31 +2798,47 @@
             "model",
             "toolName"
           ],
+          "request_fields_without_declared_mapping": [
+            "lastCleanup"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteLimit",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/limits/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetLimit",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/limits/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateLimit",
+          "declared_request_field_mappings": {
+            "cleanupInterval": "cleanup_interval",
+            "labels": "labels",
+            "limitType": "limit_type",
+            "limitValue": "limit_value",
+            "mcpServerName": "mcp_server_name",
+            "model": "model",
+            "toolName": "tool_name"
+          },
           "method": "PATCH",
           "path": "/api/limits/{}",
           "present_in_upstream": true,
@@ -2329,10 +2853,21 @@
             "model",
             "toolName"
           ],
+          "request_fields_without_declared_mapping": [
+            "lastCleanup"
+          ],
           "retired_request_fields": []
         }
       ],
       "fields": [
+        {
+          "computed": true,
+          "optional": true,
+          "path": "cleanup_interval",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
         {
           "computed": false,
           "optional": false,
@@ -2354,6 +2889,30 @@
           "optional": false,
           "path": "id",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "labels",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.value",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },
@@ -2390,6 +2949,46 @@
           "write_only": false
         },
         {
+          "computed": true,
+          "optional": false,
+          "path": "model_usage",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "model_usage.cost",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "model_usage.model",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "model_usage.tokens_in",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "model_usage.tokens_out",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
           "computed": false,
           "optional": true,
           "path": "tool_name",
@@ -2399,7 +2998,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_limit.go",
       "terraform_resource": "archestra_limit"
@@ -2413,6 +3012,7 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "GetModelsWithApiKeys",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/llm-models",
           "present_in_upstream": true,
@@ -2421,6 +3021,7 @@
             "sharedWith"
           ],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -2428,6 +3029,20 @@
             "teamIds"
           ],
           "builder": "UpdateModel",
+          "declared_request_field_mappings": {
+            "configuredParameters": "configured_parameters",
+            "customContextLength": "custom_context_length",
+            "customOutputLength": "custom_output_length",
+            "customPricePerMillionCacheRead": "custom_price_per_million_cache_read",
+            "customPricePerMillionCacheWrite": "custom_price_per_million_cache_write",
+            "customPricePerMillionInput": "custom_price_per_million_input",
+            "customPricePerMillionOutput": "custom_price_per_million_output",
+            "embeddingDimensions": "embedding_dimensions",
+            "ignored": "ignored",
+            "inputModalities": "input_modalities",
+            "labels": "labels",
+            "outputModalities": "output_modalities"
+          },
           "method": "PATCH",
           "path": "/api/llm-models/{}",
           "present_in_upstream": true,
@@ -2447,6 +3062,7 @@
             "outputModalities",
             "teamIds"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -2454,7 +3070,71 @@
         {
           "computed": true,
           "optional": false,
+          "path": "cache_price_source",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "cache_read_price_per_token",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "cache_write_price_per_token",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "configured_parameters",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
           "path": "context_length",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "custom_context_length",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "custom_output_length",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "custom_price_per_million_cache_read",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "custom_price_per_million_cache_write",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -2478,7 +3158,63 @@
         {
           "computed": true,
           "optional": false,
+          "path": "default_parameters",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
           "path": "description",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "effective_context_length",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "effective_embedding_dimensions",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "effective_input_modalities",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "effective_output_modalities",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "embedding_client_image_capable",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "embedding_dimensions",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -2500,7 +3236,7 @@
           "write_only": false
         },
         {
-          "computed": true,
+          "computed": false,
           "optional": true,
           "path": "input_modalities",
           "required": false,
@@ -2518,6 +3254,38 @@
         {
           "computed": true,
           "optional": false,
+          "path": "is_free",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "labels",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.value",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
           "path": "llm_provider",
           "required": false,
           "sensitive": false,
@@ -2533,8 +3301,32 @@
         },
         {
           "computed": true,
+          "optional": false,
+          "path": "output_length",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
           "optional": true,
           "path": "output_modalities",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "price_per_million_cache_read",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "price_per_million_cache_write",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -2562,11 +3354,43 @@
           "required": false,
           "sensitive": false,
           "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "supported_endpoints",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "supports_reasoning_effort",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "teams",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "users",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
-      "schema_version": 0,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 1,
       "source": "internal/provider/resource_llm_model.go",
       "terraform_resource": "archestra_llm_model"
     },
@@ -2579,6 +3403,22 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "CreateLlmProviderApiKey",
+          "declared_request_field_mappings": {
+            "apiKey": "api_key",
+            "awsAccessKeyId": "aws_access_key_id",
+            "awsSecretAccessKey": "aws_secret_access_key",
+            "awsSessionToken": "aws_session_token",
+            "baseUrl": "base_url",
+            "extraHeaders": "extra_headers",
+            "inferenceBaseUrl": "inference_base_url",
+            "isPrimary": "is_primary",
+            "labels": "labels",
+            "name": "name",
+            "provider": "llm_provider",
+            "shared": "shared",
+            "vaultSecretKey": "vault_secret_key",
+            "vaultSecretPath": "vault_secret_path"
+          },
           "method": "POST",
           "path": "/api/llm-provider-api-keys",
           "present_in_upstream": true,
@@ -2600,31 +3440,52 @@
             "vaultSecretKey",
             "vaultSecretPath"
           ],
+          "request_fields_without_declared_mapping": [
+            "initialGrants"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteLlmProviderApiKey",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/llm-provider-api-keys/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetLlmProviderApiKey",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/llm-provider-api-keys/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateLlmProviderApiKey",
+          "declared_request_field_mappings": {
+            "apiKey": "api_key",
+            "awsAccessKeyId": "aws_access_key_id",
+            "awsSecretAccessKey": "aws_secret_access_key",
+            "awsSessionToken": "aws_session_token",
+            "baseUrl": "base_url",
+            "extraHeaders": "extra_headers",
+            "inferenceBaseUrl": "inference_base_url",
+            "isPrimary": "is_primary",
+            "labels": "labels",
+            "name": "name",
+            "vaultSecretKey": "vault_secret_key",
+            "vaultSecretPath": "vault_secret_path"
+          },
           "method": "PATCH",
           "path": "/api/llm-provider-api-keys/{}",
           "present_in_upstream": true,
@@ -2643,6 +3504,7 @@
             "vaultSecretKey",
             "vaultSecretPath"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -2658,6 +3520,30 @@
         {
           "computed": false,
           "optional": true,
+          "path": "aws_access_key_id",
+          "required": false,
+          "sensitive": true,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "aws_secret_access_key",
+          "required": false,
+          "sensitive": true,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "aws_session_token",
+          "required": false,
+          "sensitive": true,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
           "path": "base_url",
           "required": false,
           "sensitive": false,
@@ -2666,7 +3552,39 @@
         {
           "computed": true,
           "optional": false,
+          "path": "created_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "extra_headers",
+          "required": false,
+          "sensitive": true,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
           "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "inference_base_url",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -2689,6 +3607,30 @@
         },
         {
           "computed": false,
+          "optional": true,
+          "path": "labels",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.value",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
           "optional": false,
           "path": "llm_provider",
           "required": true,
@@ -2706,7 +3648,31 @@
         {
           "computed": true,
           "optional": false,
+          "path": "requires_reauthentication",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
           "path": "scope",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "shared",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "subscription_kind",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -2737,7 +3703,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 1,
       "source": "internal/provider/resource_llm_provider_api_key.go",
       "terraform_resource": "archestra_llm_provider_api_key"
@@ -2755,6 +3721,21 @@
             "users"
           ],
           "builder": "CreateAgent",
+          "declared_request_field_mappings": {
+            "accessAllTools": "access_all_tools",
+            "connectorIds": "connector_ids",
+            "description": "description",
+            "environmentId": "environment_id",
+            "icon": "icon",
+            "identityProviderId": "identity_provider_id",
+            "isDefault": "is_default",
+            "knowledgeBaseIds": "knowledge_base_ids",
+            "labels": "labels",
+            "missingCredentialBehavior": "missing_credential_behavior",
+            "name": "name",
+            "passthroughHeaders": "passthrough_headers",
+            "toolExposureMode": "tool_exposure_mode"
+          },
           "method": "POST",
           "path": "/api/agents",
           "present_in_upstream": true,
@@ -2794,26 +3775,49 @@
             "toolExposureMode",
             "users"
           ],
+          "request_fields_without_declared_mapping": [
+            "accessAllSubagents",
+            "activationSkillPolicy",
+            "agentType",
+            "builtInAgentConfig",
+            "deletedAt",
+            "incomingEmailAllowedDomain",
+            "incomingEmailEnabled",
+            "incomingEmailSecurityMode",
+            "initialGrants",
+            "isPersonalProxy",
+            "llmApiKeyId",
+            "llmModel",
+            "modelId",
+            "organizationId",
+            "runtime",
+            "suggestedPrompts",
+            "systemPrompt"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteAgent",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/agents/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetAgent",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/agents/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -2823,6 +3827,21 @@
             "users"
           ],
           "builder": "UpdateAgent",
+          "declared_request_field_mappings": {
+            "accessAllTools": "access_all_tools",
+            "connectorIds": "connector_ids",
+            "description": "description",
+            "environmentId": "environment_id",
+            "icon": "icon",
+            "identityProviderId": "identity_provider_id",
+            "isDefault": "is_default",
+            "knowledgeBaseIds": "knowledge_base_ids",
+            "labels": "labels",
+            "missingCredentialBehavior": "missing_credential_behavior",
+            "name": "name",
+            "passthroughHeaders": "passthrough_headers",
+            "toolExposureMode": "tool_exposure_mode"
+          },
           "method": "PUT",
           "path": "/api/agents/{}",
           "present_in_upstream": true,
@@ -2859,6 +3878,23 @@
             "teams",
             "toolExposureMode",
             "users"
+          ],
+          "request_fields_without_declared_mapping": [
+            "accessAllSubagents",
+            "agentType",
+            "builtInAgentConfig",
+            "deletedAt",
+            "incomingEmailAllowedDomain",
+            "incomingEmailEnabled",
+            "incomingEmailSecurityMode",
+            "isPersonalProxy",
+            "llmApiKeyId",
+            "llmModel",
+            "modelId",
+            "organizationId",
+            "runtime",
+            "suggestedPrompts",
+            "systemPrompt"
           ],
           "retired_request_fields": []
         }
@@ -3050,7 +4086,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 1,
       "source": "internal/provider/resource_mcp_gateway.go",
       "terraform_resource": "archestra_mcp_gateway"
@@ -3067,6 +4103,34 @@
             "teams"
           ],
           "builder": "CreateInternalMcpCatalogItem",
+          "declared_request_field_mappings": {
+            "authDescription": "auth_description",
+            "authFields": "auth_fields",
+            "clientSecretId": "client_secret_id",
+            "clonedFrom": "cloned_from",
+            "deploymentSpecYaml": "deployment_spec_yaml",
+            "description": "description",
+            "docsUrl": "docs_url",
+            "dynamicConnectionMcpServerId": "dynamic_connection_mcp_server_id",
+            "enterpriseManagedConfig": "enterprise_managed_config",
+            "environmentId": "environment_id",
+            "icon": "icon",
+            "installationCommand": "installation_command",
+            "instructions": "instructions",
+            "labels": "labels",
+            "localConfig": "local_config",
+            "localConfigSecretId": "local_config_secret_id",
+            "localConfigVaultKey": "local_config_vault_key",
+            "localConfigVaultPath": "local_config_vault_path",
+            "multitenant": "multitenant",
+            "name": "name",
+            "oauthClientSecretVaultKey": "oauth_client_secret_vault_key",
+            "oauthClientSecretVaultPath": "oauth_client_secret_vault_path",
+            "repository": "repository",
+            "requiresAuth": "requires_auth",
+            "userConfig": "user_config",
+            "version": "version"
+          },
           "method": "POST",
           "path": "/api/internal_mcp_catalog",
           "present_in_upstream": true,
@@ -3107,26 +4171,38 @@
             "userConfig",
             "version"
           ],
+          "request_fields_without_declared_mapping": [
+            "catalogReinstallRequired",
+            "id",
+            "initialGrants",
+            "oauthConfig",
+            "serverType",
+            "serverUrl"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteInternalMcpCatalogItem",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/internal_mcp_catalog/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetInternalMcpCatalogItem",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/internal_mcp_catalog/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -3135,6 +4211,33 @@
             "teams"
           ],
           "builder": "UpdateInternalMcpCatalogItem",
+          "declared_request_field_mappings": {
+            "authDescription": "auth_description",
+            "authFields": "auth_fields",
+            "clientSecretId": "client_secret_id",
+            "deploymentSpecYaml": "deployment_spec_yaml",
+            "description": "description",
+            "docsUrl": "docs_url",
+            "dynamicConnectionMcpServerId": "dynamic_connection_mcp_server_id",
+            "enterpriseManagedConfig": "enterprise_managed_config",
+            "environmentId": "environment_id",
+            "icon": "icon",
+            "installationCommand": "installation_command",
+            "instructions": "instructions",
+            "labels": "labels",
+            "localConfig": "local_config",
+            "localConfigSecretId": "local_config_secret_id",
+            "localConfigVaultKey": "local_config_vault_key",
+            "localConfigVaultPath": "local_config_vault_path",
+            "multitenant": "multitenant",
+            "name": "name",
+            "oauthClientSecretVaultKey": "oauth_client_secret_vault_key",
+            "oauthClientSecretVaultPath": "oauth_client_secret_vault_path",
+            "repository": "repository",
+            "requiresAuth": "requires_auth",
+            "userConfig": "user_config",
+            "version": "version"
+          },
           "method": "PUT",
           "path": "/api/internal_mcp_catalog/{}",
           "present_in_upstream": true,
@@ -3172,6 +4275,13 @@
             "teams",
             "userConfig",
             "version"
+          ],
+          "request_fields_without_declared_mapping": [
+            "catalogReinstallRequired",
+            "hibernationMode",
+            "oauthConfig",
+            "serverType",
+            "serverUrl"
           ],
           "retired_request_fields": []
         }
@@ -3235,8 +4345,88 @@
         },
         {
           "computed": true,
+          "optional": false,
+          "path": "catalog_item_approval_reason",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "catalog_item_approval_reviewed_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "catalog_item_approval_reviewed_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "catalog_item_approval_status",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "catalog_reinstall_required",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
           "optional": true,
           "path": "client_secret_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "cloned_from",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "deleted_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "deployment_name",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -3261,6 +4451,14 @@
           "computed": false,
           "optional": true,
           "path": "docs_url",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "dynamic_connection_mcp_server_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -3397,6 +4595,14 @@
           "computed": false,
           "optional": true,
           "path": "enterprise_managed_config.token_injection_mode",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "environment_id",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -3709,6 +4915,14 @@
           "computed": false,
           "optional": true,
           "path": "local_config_vault_path",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "multitenant",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -4043,7 +5257,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 1,
       "source": "internal/provider/resource_mcp_registry_catalog_item.go",
       "terraform_resource": "archestra_mcp_registry_catalog_item"
@@ -4057,51 +5271,78 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteMcpServer",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/mcp_server/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetMcpServer",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/mcp_server/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetMcpServerInstallationStatus",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/mcp_server/{}/installation-status",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetMcpServerTools",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/mcp_server/{}/tools",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "InstallMcpServer",
+          "declared_request_field_mappings": {},
           "method": "POST",
           "path": "/api/mcp_server",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [
+            "accessToken",
+            "agentIds",
+            "catalogId",
+            "createdByServiceAccountId",
+            "environmentValues",
+            "isByosVault",
+            "localInstallationError",
+            "localInstallationStatus",
+            "name",
+            "ownerId",
+            "reinstallRequired",
+            "scope",
+            "secretId",
+            "teamId",
+            "userConfigValues",
+            "userId"
+          ],
+          "request_fields_without_declared_mapping": [
             "accessToken",
             "agentIds",
             "catalogId",
@@ -4309,20 +5550,23 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_mcp_server_installation.go",
       "terraform_resource": "archestra_mcp_server_installation"
     },
     {
       "acceptance_execution": "unverified",
-      "acceptance_tests_declared": 8,
+      "acceptance_tests_declared": 9,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
       "endpoints": [
         {
           "api_forbidden_request_fields": [],
           "builder": "CompleteOnboarding",
+          "declared_request_field_mappings": {
+            "onboardingComplete": "onboarding_complete"
+          },
           "method": "POST",
           "path": "/api/organization/complete-onboarding",
           "present_in_upstream": true,
@@ -4330,21 +5574,29 @@
           "request_fields": [
             "onboardingComplete"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetOrganization",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/organization",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateAgentSettings",
+          "declared_request_field_mappings": {
+            "defaultAgentId": "default_agent_id",
+            "defaultLlmApiKeyId": "default_llm_api_key_id",
+            "defaultModelId": "default_model_id"
+          },
           "method": "PATCH",
           "path": "/api/organization/agent-settings",
           "present_in_upstream": true,
@@ -4354,11 +5606,30 @@
             "defaultLlmApiKeyId",
             "defaultModelId"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateAppearanceSettings",
+          "declared_request_field_mappings": {
+            "animateChatPlaceholders": "animate_chat_placeholders",
+            "appName": "app_name",
+            "chatErrorSupportMessage": "chat_error_support_message",
+            "chatLinks": "chat_links",
+            "chatPlaceholders": "chat_placeholders",
+            "customFont": "font",
+            "favicon": "favicon",
+            "footerText": "footer_text",
+            "iconLogo": "icon_logo",
+            "iconLogoDark": "icon_logo_dark",
+            "logo": "logo",
+            "logoDark": "logo_dark",
+            "ogDescription": "og_description",
+            "onboardingWizard": "onboarding_wizard",
+            "slimChatErrorUi": "slim_chat_error_ui",
+            "theme": "color_theme"
+          },
           "method": "PATCH",
           "path": "/api/organization/appearance-settings",
           "present_in_upstream": true,
@@ -4381,11 +5652,18 @@
             "slimChatErrorUi",
             "theme"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateAuthSettings",
+          "declared_request_field_mappings": {
+            "defaultMemberRole": "default_member_role",
+            "oauthAccessTokenLifetimeSeconds": "oauth_access_token_lifetime_seconds",
+            "requireTwoFactor": "require_two_factor",
+            "sessionMaxAgeSeconds": "session_max_age_seconds"
+          },
           "method": "PATCH",
           "path": "/api/organization/auth-settings",
           "present_in_upstream": true,
@@ -4396,6 +5674,7 @@
             "requireTwoFactor",
             "sessionMaxAgeSeconds"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -4403,6 +5682,20 @@
             "connectionShownProviders"
           ],
           "builder": "UpdateConnectionSettings",
+          "declared_request_field_mappings": {
+            "connectionBaseUrls": "connection_base_urls",
+            "connectionClientFutureProviders": "connection_client_future_providers",
+            "connectionClientOrder": "connection_client_order",
+            "connectionClientProviderKeys": "connection_client_provider_keys",
+            "connectionDefaultClientId": "connection_default_client_id",
+            "connectionDefaultMcpGatewayId": "connection_default_mcp_gateway_id",
+            "connectionLlmProxyEnabled": "connection_llm_proxy_enabled",
+            "connectionPluginsEnabled": "connection_plugins_enabled",
+            "connectionRuntimeHandoffEnabled": "connection_runtime_handoff_enabled",
+            "connectionRuntimeHandoffInstructions": "connection_runtime_handoff_instructions",
+            "connectionShownClientIds": "connection_shown_client_ids",
+            "connectionSkillsEnabled": "connection_skills_enabled"
+          },
           "method": "PATCH",
           "path": "/api/organization/connection-settings",
           "present_in_upstream": true,
@@ -4422,6 +5715,7 @@
             "connectionShownProviders",
             "connectionSkillsEnabled"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -4429,6 +5723,14 @@
             "restricted"
           ],
           "builder": "UpdateDefaultEnvironment",
+          "declared_request_field_mappings": {
+            "description": "default_environment_description",
+            "name": "default_environment_name",
+            "namespace": "default_environment_namespace",
+            "networkPolicy": "default_network_policy",
+            "trustedImageRegistries": "default_environment_trusted_image_registries",
+            "validationRegex": "default_environment_validation_regex"
+          },
           "method": "PATCH",
           "path": "/api/organization/default-environment",
           "present_in_upstream": true,
@@ -4442,11 +5744,18 @@
             "trustedImageRegistries",
             "validationRegex"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateIntegrationSettings",
+          "declared_request_field_mappings": {
+            "knowledgeConnectorOverrides": "knowledge_connector_overrides",
+            "messagingChannelOverrides": "messaging_channel_overrides",
+            "modelProviderOverrides": "model_provider_overrides",
+            "popularAgentOverrides": "popular_agent_overrides"
+          },
           "method": "PATCH",
           "path": "/api/organization/integration-settings",
           "present_in_upstream": true,
@@ -4457,11 +5766,23 @@
             "modelProviderOverrides",
             "popularAgentOverrides"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateKnowledgeSettings",
+          "declared_request_field_mappings": {
+            "embeddingChatApiKeyId": "embedding_chat_api_key_id",
+            "embeddingModel": "embedding_model",
+            "kbBm25B": "kb_bm25_b",
+            "kbBm25K1": "kb_bm25_k1",
+            "kbContextualRetrievalMode": "kb_contextual_retrieval_mode",
+            "ocrChatApiKeyId": "ocr_chat_api_key_id",
+            "ocrModel": "ocr_model",
+            "rerankerChatApiKeyId": "reranker_chat_api_key_id",
+            "rerankerModel": "reranker_model"
+          },
           "method": "PATCH",
           "path": "/api/organization/knowledge-settings",
           "present_in_upstream": true,
@@ -4477,11 +5798,16 @@
             "rerankerChatApiKeyId",
             "rerankerModel"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateMcpSettings",
+          "declared_request_field_mappings": {
+            "mcpIdleHibernationEnabled": "mcp_idle_hibernation_enabled",
+            "onlineMcpCatalogEnabled": "online_mcp_catalog_enabled"
+          },
           "method": "PATCH",
           "path": "/api/organization/mcp-settings",
           "present_in_upstream": true,
@@ -4490,11 +5816,19 @@
             "mcpIdleHibernationEnabled",
             "onlineMcpCatalogEnabled"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateSecuritySettings",
+          "declared_request_field_mappings": {
+            "allowChatFileUploads": "allow_chat_file_uploads",
+            "allowToolAutoAssignment": "allow_tool_auto_assignment",
+            "appsHackathonRecorderEnabled": "apps_hackathon_recorder_enabled",
+            "newAppsDisabledByDefault": "new_apps_disabled_by_default",
+            "newAppsLockedByDefault": "new_apps_locked_by_default"
+          },
           "method": "PATCH",
           "path": "/api/organization/security-settings",
           "present_in_upstream": true,
@@ -4506,11 +5840,16 @@
             "newAppsDisabledByDefault",
             "newAppsLockedByDefault"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateSkillsSettings",
+          "declared_request_field_mappings": {
+            "onlineSkillCatalogEnabled": "online_skill_catalog_enabled",
+            "skillMarketplaceAnonymousAccess": "skill_marketplace_anonymous_access"
+          },
           "method": "PATCH",
           "path": "/api/organization/skills-settings",
           "present_in_upstream": true,
@@ -4519,6 +5858,7 @@
             "onlineSkillCatalogEnabled",
             "skillMarketplaceAnonymousAccess"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -5133,7 +6473,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 1,
       "source": "internal/provider/resource_organization_settings.go",
       "terraform_resource": "archestra_organization_settings"
@@ -5147,6 +6487,13 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "CreateProject",
+          "declared_request_field_mappings": {
+            "defaultAgentId": "default_agent_id",
+            "description": "description",
+            "icon": "icon",
+            "labels": "labels",
+            "name": "name"
+          },
           "method": "POST",
           "path": "/api/projects",
           "present_in_upstream": true,
@@ -5159,31 +6506,45 @@
             "labels",
             "name"
           ],
+          "request_fields_without_declared_mapping": [
+            "initialGrants"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteProject",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/projects/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetProject",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/projects/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateProject",
+          "declared_request_field_mappings": {
+            "defaultAgentId": "default_agent_id",
+            "description": "description",
+            "icon": "icon",
+            "labels": "labels",
+            "name": "name"
+          },
           "method": "PATCH",
           "path": "/api/projects/{}",
           "present_in_upstream": true,
@@ -5195,6 +6556,7 @@
             "labels",
             "name"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -5297,7 +6659,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_project.go",
       "terraform_resource": "archestra_project"
@@ -5311,21 +6673,28 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "GetResourcePermissions",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/resource-permissions/{}/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateResourcePermissions",
+          "declared_request_field_mappings": {},
           "method": "PUT",
           "path": "/api/resource-permissions/{}/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [
+            "grants",
+            "revision"
+          ],
+          "request_fields_without_declared_mapping": [
             "grants",
             "revision"
           ],
@@ -5415,7 +6784,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_resource_permission_policy.go",
       "terraform_resource": "archestra_resource_permission_policy"
@@ -5429,6 +6798,11 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "CreateRole",
+          "declared_request_field_mappings": {
+            "description": "description",
+            "name": "name",
+            "permission": "permission"
+          },
           "method": "POST",
           "path": "/api/roles",
           "present_in_upstream": true,
@@ -5438,31 +6812,41 @@
             "name",
             "permission"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteRole",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/roles/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetRole",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/roles/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateRole",
+          "declared_request_field_mappings": {
+            "description": "description",
+            "name": "name",
+            "permission": "permission"
+          },
           "method": "PUT",
           "path": "/api/roles/{}",
           "present_in_upstream": true,
@@ -5472,6 +6856,7 @@
             "name",
             "permission"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -5542,7 +6927,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_role.go",
       "terraform_resource": "archestra_role"
@@ -5556,6 +6941,21 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "CreateRuntimeCredential",
+          "declared_request_field_mappings": {
+            "allowOrganization": "allow_organization",
+            "allowPersonal": "allow_personal",
+            "appId": "app_id",
+            "description": "description",
+            "githubAppCredentialKey": "github_app_credential_key",
+            "githubClientId": "github_client_id",
+            "githubUrl": "github_url",
+            "gitlabUrl": "gitlab_url",
+            "icon": "icon",
+            "installationId": "installation_id",
+            "key": "key",
+            "kind": "kind",
+            "name": "name"
+          },
           "method": "POST",
           "path": "/api/credentials",
           "present_in_upstream": true,
@@ -5576,31 +6976,39 @@
             "kind",
             "name"
           ],
+          "request_fields_without_declared_mapping": [
+            "initialGrants"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteOrganizationRuntimeCredentialConnection",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/credentials/{}/organization",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteRuntimeCredential",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/credentials/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "ListRuntimeCredentials",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/credentials",
           "present_in_upstream": true,
@@ -5610,11 +7018,13 @@
             "sharedWith"
           ],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "SetOrganizationRuntimeCredentialConnection",
+          "declared_request_field_mappings": {},
           "method": "PUT",
           "path": "/api/credentials/{}/organization",
           "present_in_upstream": true,
@@ -5622,11 +7032,25 @@
           "request_fields": [
             "value"
           ],
+          "request_fields_without_declared_mapping": [
+            "value"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateRuntimeCredential",
+          "declared_request_field_mappings": {
+            "appId": "app_id",
+            "description": "description",
+            "githubAppCredentialKey": "github_app_credential_key",
+            "githubClientId": "github_client_id",
+            "githubUrl": "github_url",
+            "gitlabUrl": "gitlab_url",
+            "icon": "icon",
+            "installationId": "installation_id",
+            "name": "name"
+          },
           "method": "PATCH",
           "path": "/api/credentials/{}",
           "present_in_upstream": true,
@@ -5637,10 +7061,12 @@
             "githubAppCredentialKey",
             "githubClientId",
             "githubUrl",
+            "gitlabUrl",
             "icon",
             "installationId",
             "name"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -5697,6 +7123,14 @@
           "computed": false,
           "optional": true,
           "path": "github_url",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "gitlab_url",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -5767,7 +7201,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_runtime_credential.go",
       "terraform_resource": "archestra_runtime_credential"
@@ -5781,6 +7215,15 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "CreateScheduleTrigger",
+          "declared_request_field_mappings": {
+            "agentId": "agent_id",
+            "cronExpression": "cron_expression",
+            "enabled": "enabled",
+            "messageTemplate": "message_template",
+            "name": "name",
+            "projectId": "project_id",
+            "timezone": "timezone"
+          },
           "method": "POST",
           "path": "/api/schedule-triggers",
           "present_in_upstream": true,
@@ -5794,31 +7237,45 @@
             "projectId",
             "timezone"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteScheduleTrigger",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/schedule-triggers/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetScheduleTrigger",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/schedule-triggers/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateScheduleTrigger",
+          "declared_request_field_mappings": {
+            "agentId": "agent_id",
+            "cronExpression": "cron_expression",
+            "enabled": "enabled",
+            "messageTemplate": "message_template",
+            "name": "name",
+            "projectId": "project_id",
+            "timezone": "timezone"
+          },
           "method": "PUT",
           "path": "/api/schedule-triggers/{}",
           "present_in_upstream": true,
@@ -5832,6 +7289,7 @@
             "projectId",
             "timezone"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -5926,7 +7384,7 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_schedule_trigger.go",
       "terraform_resource": "archestra_schedule_trigger"
@@ -5940,6 +7398,7 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "AddTeamMember",
+          "declared_request_field_mappings": {},
           "method": "POST",
           "path": "/api/teams/{}/members",
           "present_in_upstream": true,
@@ -5948,11 +7407,22 @@
             "role",
             "userId"
           ],
+          "request_fields_without_declared_mapping": [
+            "role",
+            "userId"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "CreateTeam",
+          "declared_request_field_mappings": {
+            "description": "description",
+            "labels": "labels",
+            "name": "name",
+            "parentId": "parent_id",
+            "roles": "roles"
+          },
           "method": "POST",
           "path": "/api/teams",
           "present_in_upstream": true,
@@ -5964,51 +7434,67 @@
             "parentId",
             "roles"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "DeleteTeam",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/teams/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetTeam",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/teams/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetTeamMembers",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/teams/{}/members",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "RemoveTeamMember",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/teams/{}/members/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateTeam",
+          "declared_request_field_mappings": {
+            "description": "description",
+            "labels": "labels",
+            "name": "name",
+            "parentId": "parent_id",
+            "roles": "roles"
+          },
           "method": "PUT",
           "path": "/api/teams/{}",
           "present_in_upstream": true,
@@ -6020,16 +7506,21 @@
             "parentId",
             "roles"
           ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "UpdateTeamMember",
+          "declared_request_field_mappings": {},
           "method": "PUT",
           "path": "/api/teams/{}/members/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [
+            "role"
+          ],
+          "request_fields_without_declared_mapping": [
             "role"
           ],
           "retired_request_fields": []
@@ -6040,6 +7531,38 @@
           "computed": true,
           "optional": false,
           "path": "created_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "descendant_teams",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "descendant_teams.id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "descendant_teams.name",
           "required": false,
           "sensitive": false,
           "write_only": false
@@ -6057,6 +7580,30 @@
           "optional": false,
           "path": "id",
           "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "labels",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.value",
+          "required": true,
           "sensitive": false,
           "write_only": false
         },
@@ -6085,6 +7632,14 @@
           "write_only": false
         },
         {
+          "computed": true,
+          "optional": false,
+          "path": "my_role",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
           "computed": false,
           "optional": false,
           "path": "name",
@@ -6099,10 +7654,26 @@
           "required": false,
           "sensitive": false,
           "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "parent_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "roles",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 1,
       "source": "internal/provider/resource_team.go",
       "terraform_resource": "archestra_team"
@@ -6116,6 +7687,7 @@
         {
           "api_forbidden_request_fields": [],
           "builder": "AddTeamExternalGroup",
+          "declared_request_field_mappings": {},
           "method": "POST",
           "path": "/api/teams/{}/external-groups",
           "present_in_upstream": true,
@@ -6123,26 +7695,33 @@
           "request_fields": [
             "groupIdentifier"
           ],
+          "request_fields_without_declared_mapping": [
+            "groupIdentifier"
+          ],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "GetTeamExternalGroups",
+          "declared_request_field_mappings": {},
           "method": "GET",
           "path": "/api/teams/{}/external-groups",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
           "api_forbidden_request_fields": [],
           "builder": "RemoveTeamExternalGroup",
+          "declared_request_field_mappings": {},
           "method": "DELETE",
           "path": "/api/teams/{}/external-groups/{}",
           "present_in_upstream": true,
           "query_parameters": [],
           "request_fields": [],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
@@ -6173,13 +7752,13 @@
         }
       ],
       "import_implemented": true,
-      "note": "Direct call inventory; shared helpers, fields, permissions and lifecycle need review.",
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
       "schema_version": 0,
       "source": "internal/provider/resource_team_external_group.go",
       "terraform_resource": "archestra_team_external_group"
     }
   ],
-  "terraform_count": 23,
+  "terraform_count": 25,
   "unreferenced_mutating_operations": [
     {
       "method": "DELETE",
@@ -6590,11 +8169,6 @@
       "method": "PATCH",
       "operation_id": "updateAgentRun",
       "path": "/api/agent-runs/{}"
-    },
-    {
-      "method": "PATCH",
-      "operation_id": "patchAgentActivationSkillPolicy",
-      "path": "/api/agents/{}/activation-skill-policy"
     },
     {
       "method": "PATCH",
@@ -8160,11 +9734,6 @@
       "method": "PUT",
       "operation_id": "updateAgentSkills",
       "path": "/api/agents/{}/skills"
-    },
-    {
-      "method": "PUT",
-      "operation_id": "updateAgentSubagentExclusions",
-      "path": "/api/agents/{}/subagent-exclusions"
     },
     {
       "method": "PUT",

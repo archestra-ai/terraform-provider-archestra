@@ -1,5 +1,5 @@
 {
-  "crossplane_configured_count": 23,
+  "crossplane_configured_count": 25,
   "evidence_level": "static inventory; no runtime coverage implied",
   "format_version": 1,
   "resources": [
@@ -89,7 +89,11 @@
             "organizationId",
             "passthroughHeaders"
           ],
-          "retired_request_fields": []
+          "retired_request_fields": [
+            "scope",
+            "teams",
+            "users"
+          ]
         },
         {
           "api_forbidden_request_fields": [],
@@ -191,566 +195,17 @@
             "organizationId",
             "passthroughHeaders"
           ],
-          "retired_request_fields": []
+          "retired_request_fields": [
+            "scope",
+            "teams",
+            "users"
+          ]
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": true,
-          "path": "access_all_subagents",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "access_all_tools",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "activation_skill_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "activation_skill_policy_revision",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "activation_skills_count",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "author_email",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "built_in_agent_config",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "connector_ids",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "consider_context_untrusted",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by_service_account_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "deleted_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "environment_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "icon",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "incoming_email_allowed_domain",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "incoming_email_enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "incoming_email_security_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "is_default",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "knowledge_base_ids",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "labels",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "last_used_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "latest_version",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "llm_api_key_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "llm_model",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "llm_provider_requires_per_user_credential",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "missing_credential_behavior",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "model_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "resolved_llm_model_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "resolved_llm_provider",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "resolved_llm_provider_key_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "runtime.backend",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.claude_code",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "runtime.claude_code.authentication",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.claude_code.model",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.command",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.credentials",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.credentials.credential_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.credentials.description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "runtime.credentials.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "runtime.credentials.label",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "runtime.credentials.required",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "runtime.credentials.scope",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.environment",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "runtime.environment.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "runtime.environment.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.idle_timeout_minutes",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "runtime.image",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "runtime.inference_protocol",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.max_cost_usd",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "runtime.privileged",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.resources",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.resources.cpu_limit",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.resources.cpu_request",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.resources.memory_limit",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.resources.memory_request",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "runtime.steer_mode",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "runtime.ttl_hours",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "sandbox_available",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "suggested_prompts",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "suggested_prompts.prompt",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "suggested_prompts.summary_title",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "system_prompt",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "tool_exposure_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 1,
+      "schema_version": null,
       "source": "internal/provider/resource_agent.go",
       "terraform_resource": "archestra_agent"
     },
@@ -801,37 +256,103 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "target_agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_agent_delegation.go",
       "terraform_resource": "archestra_agent_delegation"
+    },
+    {
+      "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 1,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentActivationSkillPolicy",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/activation-skill-policy",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "PatchAgentActivationSkillPolicy",
+          "declared_request_field_mappings": {
+            "mode": "mode"
+          },
+          "method": "PATCH",
+          "path": "/api/agents/{}/activation-skill-policy",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "discardUnavailable",
+            "expectedRevision",
+            "mode",
+            "operations"
+          ],
+          "request_fields_without_declared_mapping": [
+            "discardUnavailable",
+            "expectedRevision",
+            "operations"
+          ],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": null,
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": null,
+      "source": "internal/provider/resource_agent_skill_policy.go",
+      "terraform_resource": "archestra_agent_skill_policy"
+    },
+    {
+      "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 1,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentSubagentExclusions",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/subagent-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateAgentSubagentExclusions",
+          "declared_request_field_mappings": {
+            "excludedSubagentIds": "excluded_subagent_ids"
+          },
+          "method": "PUT",
+          "path": "/api/agents/{}/subagent-exclusions",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "excludedSubagentIds"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": null,
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": null,
+      "source": "internal/provider/resource_agent_subagent_exclusions.go",
+      "terraform_resource": "archestra_agent_subagent_exclusions"
     },
     {
       "acceptance_execution": "unverified",
@@ -914,51 +435,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "credential_resolution_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "mcp_server_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "tool_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_agent_tool.go",
       "terraform_resource": "archestra_agent_tool"
     },
@@ -1020,51 +500,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "credential_resolution_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "mcp_server_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "tool_ids",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_agent_tool_batch.go",
       "terraform_resource": "archestra_agent_tool_batch"
     },
@@ -1103,35 +542,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "excluded_tool_ids",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_agent_tool_exclusions.go",
       "terraform_resource": "archestra_agent_tool_exclusions"
     },
@@ -1184,99 +598,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "expires_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "expires_in_seconds",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "key",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "last_request",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "prefix",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "start",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "updated_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_api_key.go",
       "terraform_resource": "archestra_api_key"
     },
@@ -1315,7 +640,9 @@
             "validationRegex"
           ],
           "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
+          "retired_request_fields": [
+            "restricted"
+          ]
         },
         {
           "api_forbidden_request_fields": [],
@@ -1370,158 +697,15 @@
             "validationRegex"
           ],
           "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
+          "retired_request_fields": [
+            "restricted"
+          ]
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "labels",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "namespace",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "network_policy",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "network_policy.allowed_cidrs",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "network_policy.allowed_domains",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "network_policy.domain_preset",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "network_policy.egress_mode",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "organization_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "sort_order",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "trusted_image_registries",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "updated_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "validation_regex",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_environment.go",
       "terraform_resource": "archestra_environment"
     },
@@ -1622,699 +806,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": false,
-          "path": "configured_secret_paths",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "domain",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "domain_verified",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "issuer",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "organization_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "provider_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "sso_login_enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "user_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "oidc_config.authorization_endpoint",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.client_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.client_secret",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.discovery_endpoint",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "oidc_config.enable_rp_initiated_logout",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.hd",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.issuer",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "oidc_config.jwks_endpoint",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "oidc_config.override_user_info",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "oidc_config.pkce",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.scopes",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "oidc_config.skip_discovery",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "oidc_config.token_endpoint",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "oidc_config.token_endpoint_authentication",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "oidc_config.user_info_endpoint",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.enterprise_managed_credentials.client_assertion_audience",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.enterprise_managed_credentials.client_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.enterprise_managed_credentials.client_secret",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.enterprise_managed_credentials.exchange_strategy",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.enterprise_managed_credentials.private_key_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.enterprise_managed_credentials.private_key_pem",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.enterprise_managed_credentials.subject_token_type",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.enterprise_managed_credentials.token_endpoint",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.enterprise_managed_credentials.token_endpoint_authentication",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.mapping.email",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.mapping.email_verified",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.mapping.extra_fields",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "oidc_config.mapping.id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.mapping.image",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oidc_config.mapping.name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "role_mapping.default_role",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "role_mapping.rules",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "role_mapping.rules.expression",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "role_mapping.rules.role",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "role_mapping.skip_role_sync",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "role_mapping.strict_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.additional_params",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.audience",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.callback_url",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.cert",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.decryption_pvk",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.digest_algorithm",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.entry_point",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.identifier_format",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.issuer",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.private_key",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.signature_algorithm",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.want_assertions_signed",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.idp_metadata.cert",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.idp_metadata.enc_private_key",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.idp_metadata.enc_private_key_pass",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.idp_metadata.entity_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.idp_metadata.entity_url",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.idp_metadata.is_assertion_encrypted",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.idp_metadata.metadata",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.idp_metadata.private_key",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.idp_metadata.private_key_pass",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.idp_metadata.redirect_url",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "saml_config.idp_metadata.single_sign_on_service.binding",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "saml_config.idp_metadata.single_sign_on_service.location",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.mapping.email",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.mapping.email_verified",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.mapping.extra_fields",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.mapping.first_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "saml_config.mapping.id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.mapping.last_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.mapping.name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.sp_metadata.binding",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.sp_metadata.enc_private_key",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.sp_metadata.enc_private_key_pass",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.sp_metadata.entity_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.sp_metadata.is_assertion_encrypted",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.sp_metadata.metadata",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.sp_metadata.private_key",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "saml_config.sp_metadata.private_key_pass",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "team_sync_config.enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "team_sync_config.groups_expression",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 1,
+      "schema_version": null,
       "source": "internal/provider/resource_identity_provider.go",
       "terraform_resource": "archestra_identity_provider"
     },
@@ -2394,110 +889,16 @@
             "visibility"
           ],
           "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
+          "retired_request_fields": [
+            "teamIds",
+            "visibility"
+          ]
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by_service_account_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "deleted_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "labels",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "status",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "updated_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_knowledge_base.go",
       "terraform_resource": "archestra_knowledge_base"
     },
@@ -2598,147 +999,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": true,
-          "path": "cleanup_interval",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "entity_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "entity_type",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "labels",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "limit_type",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "limit_value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "mcp_server_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "model",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "model_usage",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "model_usage.cost",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "model_usage.model",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "model_usage.tokens_in",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "model_usage.tokens_out",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "tool_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_limit.go",
       "terraform_resource": "archestra_limit"
     },
@@ -2776,6 +1040,7 @@
             "customPricePerMillionCacheWrite": "custom_price_per_million_cache_write",
             "customPricePerMillionInput": "custom_price_per_million_input",
             "customPricePerMillionOutput": "custom_price_per_million_output",
+            "embeddingDimensions": "embedding_dimensions",
             "ignored": "ignored",
             "inputModalities": "input_modalities",
             "labels": "labels",
@@ -2800,321 +1065,16 @@
             "outputModalities",
             "teamIds"
           ],
-          "request_fields_without_declared_mapping": [
-            "embeddingDimensions"
-          ],
-          "retired_request_fields": []
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": [
+            "teamIds"
+          ]
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": false,
-          "path": "cache_price_source",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "cache_read_price_per_token",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "cache_write_price_per_token",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "configured_parameters",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "context_length",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "custom_context_length",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "custom_output_length",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "custom_price_per_million_cache_read",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "custom_price_per_million_cache_write",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "custom_price_per_million_input",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "custom_price_per_million_output",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "default_parameters",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "effective_context_length",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "effective_input_modalities",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "effective_output_modalities",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "embedding_client_image_capable",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "ignored",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "input_modalities",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "is_custom_price",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "is_free",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "labels",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "llm_provider",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "model_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "output_length",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "output_modalities",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "price_per_million_cache_read",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "price_per_million_cache_write",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "price_per_million_input",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "price_per_million_output",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "price_source",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "supported_endpoints",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "supports_reasoning_effort",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "teams",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "users",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_llm_model.go",
       "terraform_resource": "archestra_llm_model"
     },
@@ -3129,6 +1089,9 @@
           "builder": "CreateLlmProviderApiKey",
           "declared_request_field_mappings": {
             "apiKey": "api_key",
+            "awsAccessKeyId": "aws_access_key_id",
+            "awsSecretAccessKey": "aws_secret_access_key",
+            "awsSessionToken": "aws_session_token",
             "baseUrl": "base_url",
             "extraHeaders": "extra_headers",
             "inferenceBaseUrl": "inference_base_url",
@@ -3136,6 +1099,7 @@
             "labels": "labels",
             "name": "name",
             "provider": "llm_provider",
+            "shared": "shared",
             "vaultSecretKey": "vault_secret_key",
             "vaultSecretPath": "vault_secret_path"
           },
@@ -3161,11 +1125,7 @@
             "vaultSecretPath"
           ],
           "request_fields_without_declared_mapping": [
-            "awsAccessKeyId",
-            "awsSecretAccessKey",
-            "awsSessionToken",
-            "initialGrants",
-            "shared"
+            "initialGrants"
           ],
           "retired_request_fields": []
         },
@@ -3198,6 +1158,9 @@
           "builder": "UpdateLlmProviderApiKey",
           "declared_request_field_mappings": {
             "apiKey": "api_key",
+            "awsAccessKeyId": "aws_access_key_id",
+            "awsSecretAccessKey": "aws_secret_access_key",
+            "awsSessionToken": "aws_session_token",
             "baseUrl": "base_url",
             "extraHeaders": "extra_headers",
             "inferenceBaseUrl": "inference_base_url",
@@ -3225,179 +1188,14 @@
             "vaultSecretKey",
             "vaultSecretPath"
           ],
-          "request_fields_without_declared_mapping": [
-            "awsAccessKeyId",
-            "awsSecretAccessKey",
-            "awsSessionToken"
-          ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": true,
-          "path": "api_key",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "base_url",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by_service_account_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "extra_headers",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "inference_base_url",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "is_agent_key",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "is_primary",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "labels",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "llm_provider",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "requires_reauthentication",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "scope",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "subscription_kind",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "team_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "vault_secret_key",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "vault_secret_path",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 1,
+      "schema_version": null,
       "source": "internal/provider/resource_llm_provider_api_key.go",
       "terraform_resource": "archestra_llm_provider_api_key"
     },
@@ -3487,7 +1285,11 @@
             "suggestedPrompts",
             "systemPrompt"
           ],
-          "retired_request_fields": []
+          "retired_request_fields": [
+            "scope",
+            "teams",
+            "users"
+          ]
         },
         {
           "api_forbidden_request_fields": [],
@@ -3589,198 +1391,17 @@
             "suggestedPrompts",
             "systemPrompt"
           ],
-          "retired_request_fields": []
+          "retired_request_fields": [
+            "scope",
+            "teams",
+            "users"
+          ]
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": true,
-          "path": "access_all_tools",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "author_email",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "connector_ids",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "consider_context_untrusted",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by_service_account_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "deleted_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "environment_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "icon",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "identity_provider_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "is_default",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "knowledge_base_ids",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "labels",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "last_used_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "latest_version",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "missing_credential_behavior",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "passthrough_headers",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "tool_exposure_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 1,
+      "schema_version": null,
       "source": "internal/provider/resource_mcp_gateway.go",
       "terraform_resource": "archestra_mcp_gateway"
     },
@@ -3872,7 +1493,10 @@
             "serverType",
             "serverUrl"
           ],
-          "retired_request_fields": []
+          "retired_request_fields": [
+            "scope",
+            "teams"
+          ]
         },
         {
           "api_forbidden_request_fields": [],
@@ -3976,982 +1600,16 @@
             "serverType",
             "serverUrl"
           ],
-          "retired_request_fields": []
+          "retired_request_fields": [
+            "scope",
+            "teams"
+          ]
         }
       ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": true,
-          "path": "auth_description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "auth_fields",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "auth_fields.description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "auth_fields.label",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "auth_fields.name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "auth_fields.required",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "auth_fields.type",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "catalog_item_approval_reason",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "catalog_item_approval_reviewed_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "catalog_item_approval_reviewed_by",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "catalog_item_approval_status",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "catalog_reinstall_required",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "client_secret_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "cloned_from",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by_service_account_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "deleted_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "deployment_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "deployment_spec_yaml",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "docs_url",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "dynamic_connection_mcp_server_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.assertion_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.audience",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.body_field_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.cache_ttl_seconds",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.client_id_override",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.env_var_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.fallback_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.header_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.identity_provider_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.requested_credential_type",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.requested_issuer",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.resource_identifier",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.resource_type",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.response_field_path",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.scopes",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "enterprise_managed_config.token_injection_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "environment_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "icon",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "installation_command",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "instructions",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "labels",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.arguments",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.command",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.docker_image",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.env_from",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "local_config.env_from.name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.env_from.prefix",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "local_config.env_from.type",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.environment",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.environment.default",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.environment.description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "local_config.environment.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.environment.mounted",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "local_config.environment.prompt_on_installation",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.environment.required",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "local_config.environment.type",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.environment.value",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.http_path",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.http_port",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.image_pull_secrets",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.image_pull_secrets.email",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.image_pull_secrets.name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.image_pull_secrets.password",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.image_pull_secrets.server",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "local_config.image_pull_secrets.source",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.image_pull_secrets.username",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.node_port",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.service_account",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config.transport_type",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "local_config_secret_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config_vault_key",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "local_config_vault_path",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "multitenant",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oauth_client_secret_vault_key",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "oauth_client_secret_vault_path",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.access_token_env_var",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.audience",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.auth_server_url",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.authorization_endpoint",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.browser_auth",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.client_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.client_secret",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.default_scopes",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.generic_oauth",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.grant_type",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.provider_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "remote_config.oauth_config.redirect_uris",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.requires_proxy",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.resource_metadata_url",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.scopes",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.streamable_http_port",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.streamable_http_url",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "remote_config.oauth_config.supports_resource_metadata",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.token_endpoint",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "remote_config.oauth_config.well_known_url",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "remote_config.url",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "repository",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "requires_auth",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "user_config",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "user_config.default",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "user_config.description",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "user_config.header_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "user_config.max",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "user_config.min",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "user_config.multiple",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "user_config.prompt_on_installation",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "user_config.required",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "user_config.sensitive",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "user_config.title",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "user_config.type",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "version",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 1,
+      "schema_version": null,
       "source": "internal/provider/resource_mcp_registry_catalog_item.go",
       "terraform_resource": "archestra_mcp_registry_catalog_item"
     },
@@ -5056,195 +1714,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": true,
-          "path": "access_token",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "agent_ids",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "catalog_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "display_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "environment_values",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "is_byos_vault",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "scope",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "secret_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "team_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "tool_id_by_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "tools",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "tools.assigned_agent_count",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "tools.assigned_agents",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "tools.assigned_agents.id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "tools.assigned_agents.name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "tools.created_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "tools.description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "tools.id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "tools.name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "tools.parameters",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "user_config_values",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_mcp_server_installation.go",
       "terraform_resource": "archestra_mcp_server_installation"
     },
@@ -5409,7 +1882,9 @@
             "connectionSkillsEnabled"
           ],
           "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
+          "retired_request_fields": [
+            "connectionShownProviders"
+          ]
         },
         {
           "api_forbidden_request_fields": [
@@ -5438,7 +1913,9 @@
             "validationRegex"
           ],
           "request_fields_without_declared_mapping": [],
-          "retired_request_fields": []
+          "retired_request_fields": [
+            "restricted"
+          ]
         },
         {
           "api_forbidden_request_fields": [],
@@ -5555,619 +2032,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": true,
-          "path": "allow_chat_file_uploads",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "allow_tool_auto_assignment",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "animate_chat_placeholders",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "app_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "apps_hackathon_recorder_enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "chat_error_support_message",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "chat_links",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "chat_links.label",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "chat_links.url",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "chat_placeholders",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "color_theme",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_base_urls",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_base_urls.description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_base_urls.is_default",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "connection_base_urls.url",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_base_urls.visible",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_client_future_providers",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_client_order",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_client_provider_keys",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_default_client_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_default_mcp_gateway_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_llm_proxy_enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_plugins_enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_runtime_handoff_enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_runtime_handoff_instructions",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_shown_client_ids",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "connection_skills_enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "default_agent_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "default_environment_description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "default_environment_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "default_environment_namespace",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "default_environment_trusted_image_registries",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "default_environment_validation_regex",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "default_llm_api_key_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "default_member_role",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "default_model_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "default_network_policy",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "embedding_chat_api_key_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "embedding_dimensions",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "embedding_model",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "favicon",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "font",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "footer_text",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "icon_logo",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "icon_logo_dark",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "kb_bm25_b",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "kb_bm25_k1",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "kb_contextual_retrieval_mode",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "knowledge_connector_overrides",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "logo",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "logo_dark",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "mcp_idle_hibernation_enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "messaging_channel_overrides",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "metadata",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "model_provider_overrides",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "new_apps_disabled_by_default",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "new_apps_locked_by_default",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "oauth_access_token_lifetime_seconds",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "ocr_chat_api_key_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "ocr_model",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "og_description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "onboarding_complete",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "onboarding_wizard",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "online_mcp_catalog_enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "online_skill_catalog_enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "popular_agent_overrides",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "require_two_factor",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "reranker_chat_api_key_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "reranker_model",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "session_max_age_seconds",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "skill_marketplace_anonymous_access",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "slim_chat_error_ui",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "slug",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 1,
+      "schema_version": null,
       "source": "internal/provider/resource_organization_settings.go",
       "terraform_resource": "archestra_organization_settings"
     },
@@ -6253,107 +2121,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": false,
-          "path": "conversation_count",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "default_agent_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "icon",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "labels",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "owner_name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "viewer_role",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_project.go",
       "terraform_resource": "archestra_project"
     },
@@ -6394,91 +2165,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": false,
-          "path": "effective_actions",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "grants",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "grants.actions",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "grants.subject_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "grants.subject_type",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "owner_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "resource_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "resource_type",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "revision",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_resource_permission_policy.go",
       "terraform_resource": "archestra_resource_permission_policy"
     },
@@ -6553,75 +2243,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "permission",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "predefined",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "role",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "updated_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_role.go",
       "terraform_resource": "archestra_role"
     },
@@ -6642,6 +2267,7 @@
             "githubAppCredentialKey": "github_app_credential_key",
             "githubClientId": "github_client_id",
             "githubUrl": "github_url",
+            "gitlabUrl": "gitlab_url",
             "icon": "icon",
             "installationId": "installation_id",
             "key": "key",
@@ -6669,7 +2295,6 @@
             "name"
           ],
           "request_fields_without_declared_mapping": [
-            "gitlabUrl",
             "initialGrants"
           ],
           "retired_request_fields": []
@@ -6739,6 +2364,7 @@
             "githubAppCredentialKey": "github_app_credential_key",
             "githubClientId": "github_client_id",
             "githubUrl": "github_url",
+            "gitlabUrl": "gitlab_url",
             "icon": "icon",
             "installationId": "installation_id",
             "name": "name"
@@ -6758,137 +2384,14 @@
             "installationId",
             "name"
           ],
-          "request_fields_without_declared_mapping": [
-            "gitlabUrl"
-          ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": true,
-          "path": "allow_organization",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "allow_personal",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "app_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "github_app_credential_key",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "github_client_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "github_url",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "icon",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "installation_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "kind",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "organization_configured",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "organization_value",
-          "required": false,
-          "sensitive": true,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_runtime_credential.go",
       "terraform_resource": "archestra_runtime_credential"
     },
@@ -6979,99 +2482,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": false,
-          "path": "actor_user_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "agent_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "cron_expression",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "enabled",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "last_executed_at",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "message_template",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "project_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "timezone",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_schedule_trigger.go",
       "terraform_resource": "archestra_schedule_trigger"
     },
@@ -7106,7 +2520,8 @@
             "description": "description",
             "labels": "labels",
             "name": "name",
-            "parentId": "parent_id"
+            "parentId": "parent_id",
+            "roles": "roles"
           },
           "method": "POST",
           "path": "/api/teams",
@@ -7119,9 +2534,7 @@
             "parentId",
             "roles"
           ],
-          "request_fields_without_declared_mapping": [
-            "roles"
-          ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -7179,7 +2592,8 @@
             "description": "description",
             "labels": "labels",
             "name": "name",
-            "parentId": "parent_id"
+            "parentId": "parent_id",
+            "roles": "roles"
           },
           "method": "PUT",
           "path": "/api/teams/{}",
@@ -7192,9 +2606,7 @@
             "parentId",
             "roles"
           ],
-          "request_fields_without_declared_mapping": [
-            "roles"
-          ],
+          "request_fields_without_declared_mapping": [],
           "retired_request_fields": []
         },
         {
@@ -7214,155 +2626,10 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "created_by_service_account_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "descendant_teams",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "descendant_teams.id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "descendant_teams.name",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "description",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "labels",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.key",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "labels.value",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "members",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": true,
-          "path": "members.role",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "members.user_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "my_role",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "name",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "organization_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": true,
-          "path": "parent_id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "roles",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 1,
+      "schema_version": null,
       "source": "internal/provider/resource_team.go",
       "terraform_resource": "archestra_team"
     },
@@ -7413,40 +2680,15 @@
           "retired_request_fields": []
         }
       ],
-      "fields": [
-        {
-          "computed": false,
-          "optional": false,
-          "path": "external_group_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": true,
-          "optional": false,
-          "path": "id",
-          "required": false,
-          "sensitive": false,
-          "write_only": false
-        },
-        {
-          "computed": false,
-          "optional": false,
-          "path": "team_id",
-          "required": true,
-          "sensitive": false,
-          "write_only": false
-        }
-      ],
+      "fields": null,
       "import_implemented": true,
       "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
-      "schema_version": 0,
+      "schema_version": null,
       "source": "internal/provider/resource_team_external_group.go",
       "terraform_resource": "archestra_team_external_group"
     }
   ],
-  "terraform_count": 23,
+  "terraform_count": 25,
   "unreferenced_mutating_operations": [
     {
       "method": "DELETE",
@@ -7857,11 +3099,6 @@
       "method": "PATCH",
       "operation_id": "updateAgentRun",
       "path": "/api/agent-runs/{}"
-    },
-    {
-      "method": "PATCH",
-      "operation_id": "patchAgentActivationSkillPolicy",
-      "path": "/api/agents/{}/activation-skill-policy"
     },
     {
       "method": "PATCH",
@@ -9427,11 +4664,6 @@
       "method": "PUT",
       "operation_id": "updateAgentSkills",
       "path": "/api/agents/{}/skills"
-    },
-    {
-      "method": "PUT",
-      "operation_id": "updateAgentSubagentExclusions",
-      "path": "/api/agents/{}/subagent-exclusions"
     },
     {
       "method": "PUT",

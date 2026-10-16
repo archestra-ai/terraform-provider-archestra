@@ -41,9 +41,7 @@
     "shared_typecheck": "passed",
     "test_imports": "passed"
   },
-  "remaining_api_field_gaps": 0,
-  "remaining_gap_resources": [],
-  "crossplane_runtime_evidence": "23/23 configured resources have accumulated both-scope lifecycle proofs, recorded with binary hashes in v3-runtime-evidence.json and its additional probe files. Final release-candidate repetition remains required.",
+  "crossplane_runtime_evidence": "25/25 registered resources have accumulated both-scope lifecycle proofs with candidate hashes; final release-candidate repetition remains required.",
   "release_status": "blocked pending remaining coverage, lifecycle, migration, CI, package and deployed sync validation",
   "model_runtime_assertions": [
     "provider-qualified native model adoption",
@@ -60,5 +58,14 @@
     "ambiguous model adoption/import refuses to write"
   ],
   "api_coverage_limit": "GET field coverage is a schema guard, not proof that every meaningful API resource, request-only field or controller lifecycle is supported.",
-  "request_field_audit": "provider-v3-request-fields.json; unmapped writes require explicit implementation or justification before full API coverage can be claimed"
+  "request_field_audit": "provider-v3-request-fields.json; unmapped writes require explicit implementation or justification before full API coverage can be claimed",
+  "remaining_get_field_guard_gaps": 0,
+  "remaining_get_field_guard_resources": [],
+  "request_field_review_candidates": {
+    "occurrences": 94,
+    "operations": 22,
+    "resource_families": 16,
+    "evidence": "provider-v3-request-fields.json",
+    "note": "Review candidates include derived payloads and backend-owned fields; this is not a count of confirmed missing mutable capabilities."
+  }
 }

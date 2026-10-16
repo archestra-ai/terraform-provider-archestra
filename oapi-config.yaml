@@ -11,6 +11,11 @@ output-options:
     - bulkAssignTools
     - completeOnboarding
     - createAgent
+    - createSkill
+    - getSkill
+    - updateSkill
+    - deleteSkill
+    - updateAgentSkills
     - createEnvironment
     - createIdentityProvider
     - createInternalMcpCatalogItem
@@ -32,6 +37,10 @@ output-options:
     - getAgent
     - getEnvironment
     - getAgentDelegations
+    - getAgentActivationSkillPolicy
+    - patchAgentActivationSkillPolicy
+    - getAgentSubagentExclusions
+    - updateAgentSubagentExclusions
     - getAgentToolExclusions
     - getAllAgentTools
     - getIdentityProvider

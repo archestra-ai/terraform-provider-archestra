@@ -21,6 +21,7 @@ import (
 // Every entry needs a reason — the default of RemoveOnConfigNullList is
 // safer; allowlisting asserts the field has no "remove = clear" semantic.
 var useStateForUnknownAllowlist = map[string]map[string]string{
+	"archestra_llm_provider_api_key": {"shared": "Creation-only ownership selector; importing or omitting this field must preserve the existing owner without replacement."},
 	"archestra_llm_model": {
 		"llm_provider": "immutable adoption selector; omitting it retains the already adopted model and its provider rather than selecting another provider with the same model name.",
 	},
@@ -48,6 +49,7 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 		"oidc_config.token_endpoint_authentication",
 		"oidc_config.skip_discovery",
 	),
+	"archestra_team": {"roles": "Role assignments are unmanaged when omitted; an explicit empty set revokes all direct team role assignments."},
 	"archestra_organization_settings": stickyOrgSettings(
 		"kb_bm25_b", "kb_bm25_k1",
 		"online_mcp_catalog_enabled",

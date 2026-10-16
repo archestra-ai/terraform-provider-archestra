@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -32,6 +33,10 @@ type LLMProviderApiKeyResource struct {
 }
 
 type LLMProviderApiKeyResourceModel struct {
+	AWSAccessKeyID            types.String      `tfsdk:"aws_access_key_id"`
+	AWSSecretAccessKey        types.String      `tfsdk:"aws_secret_access_key"`
+	AWSSessionToken           types.String      `tfsdk:"aws_session_token"`
+	Shared                    types.Bool        `tfsdk:"shared"`
 	ExtraHeaders              types.Map         `tfsdk:"extra_headers"`
 	InferenceBaseURL          types.String      `tfsdk:"inference_base_url"`
 	Labels                    []AgentLabelModel `tfsdk:"labels"`
@@ -62,6 +67,10 @@ func (r *LLMProviderApiKeyResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "API key for an LLM provider (OpenAI, Anthropic, etc.). Models are auto-discovered after creation.",
 
 		Attributes: map[string]schema.Attribute{
+			"aws_access_key_id":             sigV4Attribute("AWS access key identifier for Bedrock SigV4 authentication.", "aws_secret_access_key"),
+			"aws_secret_access_key":         sigV4Attribute("AWS secret access key for Bedrock SigV4 authentication.", "aws_access_key_id"),
+			"aws_session_token":             sigV4Attribute("Optional AWS session token for temporary Bedrock credentials.", "aws_access_key_id", "aws_secret_access_key"),
+			"shared":                        schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown(), boolplanmodifier.RequiresReplace()}, MarkdownDescription: "Create an organization-owned provider key; ownership changes require replacement and omission preserves existing ownership."},
 			"extra_headers":                 schema.MapAttribute{Optional: true, Sensitive: true, ElementType: types.StringType, MarkdownDescription: "Additional HTTP headers sent to the provider endpoint."},
 			"inference_base_url":            schema.StringAttribute{Optional: true, MarkdownDescription: "Runtime endpoint override, separate from the discovery base URL."},
 			"labels":                        schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Labels assigned to the provider key.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
@@ -261,10 +270,20 @@ func (r *LLMProviderApiKeyResource) Update(ctx context.Context, req resource.Upd
 	}
 
 	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, llmProviderApiKeyAttrSpec, &resp.Diagnostics)
+	var prior LLMProviderApiKeyResourceModel
+	resp.Diagnostics.Append(req.State.Get(ctx, &prior)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	prepareSigV4Patch(&data, &prior, patch)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 	if len(patch) == 0 {
+		r.refreshKey(ctx, &data, &resp.Diagnostics)
+		if resp.Diagnostics.HasError() {
+			return
+		}
 		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 		return
 	}

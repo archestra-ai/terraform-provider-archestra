@@ -55,6 +55,8 @@ base_url=%q
  configured_parameters=jsonencode({temperature=0.8,num_ctx=2048})
  labels=[{key="stage",value="updated"}]`)
 	cleared := config(`labels=[]`)
+	embedding := strings.Replace(updated, "labels=[", "embedding_dimensions=768\n output_modalities=[]\nlabels=[", 1)
+	embeddingUpdated := strings.Replace(embedding, "embedding_dimensions=768", "embedding_dimensions=1024", 1)
 	withModalities := strings.Replace(updated, "depends_on=", "input_modalities=[\"text\",\"image\"]\noutput_modalities=[\"text\"]\ndepends_on=", 1)
 	resource.Test(t, resource.TestCase{PreCheck: func() {
 		testAccPreCheck(t)
@@ -81,12 +83,16 @@ base_url=%q
 			}
 		}},
 		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_llm_model.test", "custom_context_length", "4096")},
+		{Config: embedding, Check: resource.TestCheckResourceAttr("archestra_llm_model.test", "embedding_dimensions", "768")},
+		{Config: embedding, PlanOnly: true},
+		{Config: embeddingUpdated, Check: resource.TestCheckResourceAttr("archestra_llm_model.test", "effective_embedding_dimensions", "1024")},
+		{Config: updated, Check: resource.TestCheckNoResourceAttr("archestra_llm_model.test", "embedding_dimensions")},
 		{Config: withModalities, Check: resource.TestCheckResourceAttr("archestra_llm_model.test", "input_modalities.#", "2")},
 		{Config: updated, Check: resource.TestCheckNoResourceAttr("archestra_llm_model.test", "input_modalities")},
 		{Config: updated, PlanOnly: true},
 		{Config: cleared, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckNoResourceAttr("archestra_llm_model.test", "custom_context_length"), resource.TestCheckNoResourceAttr("archestra_llm_model.test", "configured_parameters"))},
 		{Config: cleared, PlanOnly: true},
-		{Config: updated},
+		{Config: embeddingUpdated},
 		{Config: keyOnly, Check: func(_ *terraform.State) error {
 			result, err := apiClient().GetModelsWithApiKeysWithResponse(t.Context(), nil)
 			if err != nil {
@@ -97,7 +103,7 @@ base_url=%q
 			}
 			for _, model := range *result.JSON200 {
 				if model.Id.String() == modelUUID {
-					if model.CustomContextLength != nil || model.CustomOutputLength != nil || model.ConfiguredParameters != nil || model.CustomPricePerMillionCacheRead != nil || model.CustomPricePerMillionCacheWrite != nil || model.Ignored || len(model.Labels) != 0 {
+					if model.EmbeddingDimensions != nil || model.CustomContextLength != nil || model.CustomOutputLength != nil || model.ConfiguredParameters != nil || model.CustomPricePerMillionCacheRead != nil || model.CustomPricePerMillionCacheWrite != nil || model.Ignored || len(model.Labels) != 0 {
 						return fmt.Errorf("destroy left model overrides behind")
 					}
 					return nil

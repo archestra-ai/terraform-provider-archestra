@@ -39,6 +39,7 @@ resource "archestra_team" "support" {
 - `labels` (Attributes Set) Resource labels. (see [below for nested schema](#nestedatt--labels))
 - `members` (Attributes List) List of team members (see [below for nested schema](#nestedatt--members))
 - `parent_id` (String) Parent team identifier in the team hierarchy.
+- `roles` (Set of String) Role identifiers assigned to the team; omit to preserve existing assignments, or set an empty set to revoke them.
 
 ### Read-Only
 
@@ -48,7 +49,6 @@ resource "archestra_team" "support" {
 - `id` (String) Team identifier
 - `my_role` (String) Effective role of the current API caller.
 - `organization_id` (String) The organization ID this team belongs to
-- `roles` (Set of String) Roles available for the team.
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

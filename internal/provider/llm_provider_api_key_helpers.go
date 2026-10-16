@@ -14,6 +14,10 @@ import (
 // RequiresReplace — Update never sees it change, but it ships in the Create
 // body as `provider`.
 var llmProviderApiKeyAttrSpec = []AttrSpec{
+	{TFName: "aws_access_key_id", JSONName: "awsAccessKeyId", Kind: Scalar, Sensitive: true, OmitOnNull: true},
+	{TFName: "aws_secret_access_key", JSONName: "awsSecretAccessKey", Kind: Scalar, Sensitive: true, OmitOnNull: true},
+	{TFName: "aws_session_token", JSONName: "awsSessionToken", Kind: Scalar, Sensitive: true, OmitOnNull: true},
+	{TFName: "shared", JSONName: "shared", Kind: Scalar, OmitOnNull: true},
 	{TFName: "extra_headers", JSONName: "extraHeaders", Kind: Map, Sensitive: true},
 	{TFName: "inference_base_url", JSONName: "inferenceBaseUrl", Kind: Scalar},
 	{TFName: "labels", JSONName: "labels", Kind: Set, OmitOnNull: true, Children: []AttrSpec{{TFName: "key", JSONName: "key", Kind: Scalar}, {TFName: "value", JSONName: "value", Kind: Scalar}}},
@@ -80,6 +84,7 @@ func (r *LLMProviderApiKeyResource) flattenKey(ctx context.Context, data *LLMPro
 	data.IsPrimary = types.BoolValue(wire.IsPrimary)
 	data.IsAgentKey = types.BoolValue(wire.IsAgentKey != nil && *wire.IsAgentKey)
 	data.Scope = types.StringValue(string(wire.Scope))
+	data.Shared = types.BoolValue(string(wire.Scope) != "personal")
 	data.BaseUrl = types.StringPointerValue(wire.BaseUrl)
 	data.TeamID = types.StringPointerValue(wire.TeamId)
 	data.InferenceBaseURL = types.StringPointerValue(wire.InferenceBaseUrl)

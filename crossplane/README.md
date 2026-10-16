@@ -5,11 +5,11 @@ Crossplane provider for [Archestra](https://archestra.ai), generated from
 using the [`upjet`](https://github.com/crossplane/upjet) code-generation
 toolchain.
 
-The v3 working schema includes all 23 Terraform resources in both scopes.
+The v3 working schema includes all 25 Terraform resources in both scopes.
 The shared configurator in [config/resources.go](config/resources.go) defines each
 group/kind and reference once for both scopes. See the [resource matrix](../README.md#resource-coverage)
 and [runtime evidence](../audit/v3-runtime-evidence.json). Configuration inclusion
-and generated CRDs do not establish lifecycle coverage; 10 resources currently
+and generated CRDs do not establish lifecycle coverage; all 25 resources currently
 have real create/update/drift/delete evidence in both scopes on Crossplane 2.2.1.
 
 The v3 package remains unreleased pending full validation. Upgrade existing state
@@ -219,3 +219,11 @@ alongside each Terraform provider release.
 ## License
 
 Apache 2.0 — see [`LICENSE`](./LICENSE).
+
+## Required collection serialization
+
+The generator preserves required collection tags for both Terraform parameters
+and Kubernetes JSON. Explicit empty sets and maps must survive reconciliation:
+omitting them can fail Terraform validation or Kubernetes object updates. Optional
+collections retain their normal omission behavior. Regression tests exercise the
+actual generated parameter and Kubernetes JSON serializers in both scopes.

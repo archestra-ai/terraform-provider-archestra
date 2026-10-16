@@ -40,6 +40,7 @@ type RuntimeCredentialResource struct {
 // (a named secret slot that agent `runtime.credentials` bindings
 // reference by key) plus, optionally, its organization-scoped value.
 type RuntimeCredentialResourceModel struct {
+	GitlabURL              types.String `tfsdk:"gitlab_url"`
 	Kind                   types.String `tfsdk:"kind"`
 	AppId                  types.String `tfsdk:"app_id"`
 	InstallationId         types.String `tfsdk:"installation_id"`
@@ -64,12 +65,13 @@ func (r *RuntimeCredentialResource) Metadata(_ context.Context, req resource.Met
 
 func (r *RuntimeCredentialResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Runtime credential definition for Agent Runtime runs. Declares a named secret slot that `runtime.credentials` bindings reference by `key`; the value is deposited per-user in the UI (`allow_personal`) or once for the whole organization via `organization_value` (`allow_organization`). Supports secrets, GitHub Apps, and personal GitHub OAuth connections.",
+		MarkdownDescription: "Runtime credential definition for Agent Runtime runs. Declares a named secret slot that `runtime.credentials` bindings reference by `key`; the value is deposited per-user in the UI (`allow_personal`) or once for the whole organization via `organization_value` (`allow_organization`). Supports secret slots, GitHub Apps, GitHub OAuth connections and GitLab tokens.",
 		Attributes: map[string]schema.Attribute{
-			"kind":                      schema.StringAttribute{Optional: true, MarkdownDescription: "Credential type: secret, github_app, or github_app_user.", Computed: true, Default: stringdefault.StaticString("secret"), Validators: []validator.String{stringvalidator.OneOf("secret", "github_app", "github_app_user")}},
+			"kind":                      schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Credential type: secret, github_app, github_app_user, or gitlab_token.", Computed: true, Default: stringdefault.StaticString("secret"), Validators: []validator.String{stringvalidator.OneOf("secret", "github_app", "github_app_user", "gitlab_token")}},
 			"app_id":                    schema.StringAttribute{Optional: true, MarkdownDescription: "GitHub App ID."},
 			"installation_id":           schema.StringAttribute{Optional: true, MarkdownDescription: "GitHub App installation ID."},
 			"github_url":                schema.StringAttribute{Optional: true, MarkdownDescription: "GitHub API base URL."},
+			"gitlab_url":                schema.StringAttribute{Optional: true, MarkdownDescription: "GitLab host for a GitLab-token credential definition."},
 			"github_client_id":          schema.StringAttribute{Optional: true, MarkdownDescription: "GitHub App OAuth client ID."},
 			"github_app_credential_key": schema.StringAttribute{Optional: true, MarkdownDescription: "Organization GitHub App credential used for personal OAuth connections."},
 
@@ -258,6 +260,7 @@ func (r *RuntimeCredentialResource) Read(ctx context.Context, req resource.ReadR
 	optionalStringFromAPI(&data.AppId, view.AppId)
 	optionalStringFromAPI(&data.InstallationId, view.InstallationId)
 	optionalStringFromAPI(&data.GithubUrl, view.GithubUrl)
+	optionalStringFromAPI(&data.GitlabURL, view.GitlabUrl)
 	optionalStringFromAPI(&data.GithubClientId, view.GithubClientId)
 	optionalStringFromAPI(&data.GithubAppCredentialKey, view.GithubAppCredentialKey)
 
@@ -292,8 +295,8 @@ func (r *RuntimeCredentialResource) Update(ctx context.Context, req resource.Upd
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	// key/name/allow_* are RequiresReplace, so only the PATCH-able fields
-	// (description, icon) can appear here.
+	// The key, kind and connection scopes are immutable; remaining metadata
+	// uses the definition PATCH endpoint.
 	if len(patch) > 0 {
 		LogPatch(ctx, "archestra_runtime_credential Update", patch, runtimeCredentialAttrSpec)
 		body, err := json.Marshal(patch)
@@ -405,6 +408,7 @@ var runtimeCredentialAttrSpec = []AttrSpec{
 	{TFName: "app_id", JSONName: "appId", Kind: Scalar},
 	{TFName: "installation_id", JSONName: "installationId", Kind: Scalar},
 	{TFName: "github_url", JSONName: "githubUrl", Kind: Scalar},
+	{TFName: "gitlab_url", JSONName: "gitlabUrl", Kind: Scalar},
 	{TFName: "github_client_id", JSONName: "githubClientId", Kind: Scalar},
 	{TFName: "github_app_credential_key", JSONName: "githubAppCredentialKey", Kind: Scalar},
 
@@ -432,6 +436,7 @@ type runtimeCredentialView struct {
 	GithubAppCredentialKey *string                              `json:"githubAppCredentialKey"`
 	GithubClientId         *string                              `json:"githubClientId"`
 	GithubUrl              *string                              `json:"githubUrl"`
+	GitlabUrl              *string                              `json:"gitlabUrl"`
 	Icon                   *string                              `json:"icon"`
 	Id                     openapi_types.UUID                   `json:"id"`
 	InstallationId         *string                              `json:"installationId"`

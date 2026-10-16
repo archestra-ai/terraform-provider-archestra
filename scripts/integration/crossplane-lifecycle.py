@@ -23,7 +23,7 @@ def main():
     parser.add_argument('--key-file', type=Path, required=True)
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--kubeconfig', type=Path, required=True)
     parser.add_argument('--provider-config', required=True)
     parser.add_argument('--namespace', default='crossplane-system')
@@ -108,7 +108,13 @@ def main():
         kube('apply', '-f', '-', payload=manifest)
         lease = (namespace, plural + '.' + api_group, name)
         leases.append(lease)
-        kube(*namespace, 'wait', '--for=condition=Ready', lease[1] + '/' + name, '--timeout=75s')
+        try:
+            kube(*namespace, 'wait', '--for=condition=Ready', lease[1] + '/' + name, '--timeout=75s')
+        except RuntimeError:
+            if kind in ('SkillPolicy', 'SubagentExclusions'):
+                obj = json.loads(kube(*namespace, 'get', lease[1], name, '-o', 'json'))
+                raise RuntimeError(kind + ' did not become Ready: ' + json.dumps(obj.get('status', {}).get('conditions', []))) from None
+            raise
         obj = json.loads(kube(*namespace, 'get', lease[1], name, '-o', 'json'))
         return lease, obj['metadata']['annotations']['crossplane.io/external-name'], obj
 
@@ -116,6 +122,12 @@ def main():
         kube(*lease[0], 'patch', lease[1], lease[2], '--type=merge', '-p', json.dumps({'spec': {'forProvider': fields}}))
 
     def delete(lease):
+        if lease[1] == 'api-fixture':
+            status, _ = api(lease[2], method='DELETE')
+            if status not in (200, 204, 404):
+                raise RuntimeError('Unable to remove owned API fixture: HTTP ' + str(status))
+            leases.remove(lease)
+            return
         kube(*lease[0], 'delete', lease[1], lease[2], '--wait=true', '--timeout=75s')
         leases.remove(lease)
 
@@ -129,7 +141,7 @@ def main():
     def immutable_update(lease, changed, original):
         identifier = observation(lease)['metadata']['annotations']['crossplane.io/external-name']
         patch(lease, changed)
-        wait('immutable update refusal', lambda: condition(lease, 'False'))
+        wait('immutable update refusal', lambda: any(item.get('type') == 'Synced' and item.get('status') == 'False' and 'replac' in item.get('message', '').lower() for item in observation(lease).get('status', {}).get('conditions', [])))
         if observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != identifier:
             raise RuntimeError('Immutable update replaced the managed resource')
         patch(lease, original)
@@ -154,13 +166,25 @@ def main():
                   'limitValue': 100000, 'model': ['cp-model-' + run + '-' + scope], 'cleanupInterval': 'calendar_day'},
                  'cleanupInterval', 'cleanupInterval', 'PATCH'),
             ]
+            for group, kind, plural, endpoint, method, extra in [
+                ('agent', 'Agent', 'agents', '/api/agents/', 'PUT', {'systemPrompt': 'Synthetic controller fixture.'}),
+                ('environment', 'Environment', 'environments', '/api/environments/', 'PATCH', {'namespace': 'default'}),
+                ('team', 'Team', 'teams', '/api/teams/', 'PUT', {}),
+                ('mcp', 'Gateway', 'gateways', '/api/agents/', 'PUT', {}),
+                ('project', 'Project', 'projects', '/api/projects/', 'PATCH', {}),
+                ('knowledge', 'KnowledgeBase', 'knowledgebases', '/api/knowledge-bases/', 'PUT', {}),
+                ('identity', 'Role', 'roles', '/api/roles/', 'PUT', {'permission': {'agent': ['read']}}),
+            ]:
+                cases.append((group, kind, plural, endpoint, dict(name='cp-' + kind.lower() + '-' + run + '-' + scope, **extra), 'name', 'name', method))
             for group, kind, plural, endpoint, fields, desired_field, wire_field, method in cases:
-                if ('catalog' if kind == 'RegistryCatalogItem' else 'limit') not in args.cases:
+                if ('catalog' if kind == 'RegistryCatalogItem' else 'limit' if kind == 'Limit' else 'core') not in args.cases:
                     continue
                 lease, identifier, obj = create(scope, group, kind, plural, fields)
                 path = endpoint + identifier
                 if api(path)[0] != 200:
                     raise RuntimeError(kind + ' create did not produce a readable object')
+                if kind in ('Agent', 'Gateway') and api(path)[1].get('agentType') != ('agent' if kind == 'Agent' else 'mcp_gateway'):
+                    raise RuntimeError('Agent subtype does not match the requested resource')
                 desired = 'calendar_month' if kind == 'Limit' else 'Updated ' + run
                 patch(lease, {desired_field: desired})
                 wait(kind + ' update', lambda: api(path)[1].get(wire_field) == desired)
@@ -314,6 +338,79 @@ def main():
                     if api('/api/organization/appearance-settings', {'appName': original})[0] != 200:
                         raise RuntimeError('Unable to restore original isolated test appearance')
 
+            if 'subagent-exclusions' in args.cases:
+                parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
+                        {'name': 'cp-auto-subagents-' + run + '-' + scope, 'accessAllSubagents': True}, '-parent')
+                first, first_id, _ = create(scope, 'agent', 'Agent', 'agents',
+                        {'name': 'cp-subagent-first-' + run + '-' + scope}, '-first')
+                second, second_id, _ = create(scope, 'agent', 'Agent', 'agents',
+                        {'name': 'cp-subagent-second-' + run + '-' + scope}, '-second')
+                lease, identifier, _ = create(scope, 'agent', 'SubagentExclusions', 'subagentexclusions',
+                        {'agentId': agent_id, 'excludedSubagentIds': [first_id]})
+                path = '/api/agents/' + agent_id + '/subagent-exclusions'
+                def excluded_subagents():
+                    code, value = api(path)
+                    if code != 200:
+                        raise RuntimeError('Subagent exclusions read failed: HTTP ' + str(code))
+                    return value['excludedSubagentIds']
+                if identifier != agent_id or excluded_subagents() != [first_id]:
+                    raise RuntimeError('Subagent exclusion create did not persist')
+                patch(lease, {'excludedSubagentIds': [second_id]})
+                wait('Subagent exclusions update', lambda: excluded_subagents() == [second_id])
+                if api(path, {'excludedSubagentIds': []}, 'PUT')[0] != 200:
+                    raise RuntimeError('Unable to write isolated subagent drift')
+                wait('Subagent exclusions drift repair', lambda: excluded_subagents() == [second_id])
+                patch(lease, {'excludedSubagentIds': []})
+                wait('Subagent exclusions clear', lambda: not excluded_subagents())
+                patch(lease, {'excludedSubagentIds': [first_id]})
+                wait('Subagent exclusions restore', lambda: excluded_subagents() == [first_id])
+                delete(lease)
+                if excluded_subagents() or api('/api/agents/' + agent_id)[0] != 200:
+                    raise RuntimeError('Subagent exclusions deletion did not clear while preserving agent')
+                delete(second)
+                delete(first)
+                delete(parent)
+                record('SubagentExclusions', scope, create='passed', update='passed', drift_repair='passed',
+                       empty_set_clear='passed', delete_clears_exclusions='passed', agent_preserved=True)
+
+            if 'skill-policy' in args.cases:
+                code, skill = api('/api/skills', {'content': '---\nname: cp-skill-' + run + '-' + scope + '\ndescription: Synthetic policy fixture\n---\nInspect only local synthetic fixtures.\n'}, 'POST')
+                if code != 200:
+                    raise RuntimeError('Unable to create local skill fixture: HTTP ' + str(code))
+                fixture = ([], 'api-fixture', '/api/skills/' + skill['id'])
+                leases.append(fixture)
+                parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
+                        {'name': 'cp-skill-policy-' + run + '-' + scope})
+                ref = {'source': 'native', 'skillId': skill['id']}
+                lease, identifier, _ = create(scope, 'agent', 'SkillPolicy', 'skillpolicies',
+                        {'agentId': agent_id, 'mode': 'manual',
+                         'allowedReferences': [ref], 'excludedReferences': []})
+                path = '/api/agents/' + agent_id + '/activation-skill-policy'
+                def policy():
+                    code, value = api(path)
+                    if code != 200:
+                        raise RuntimeError('Policy read failed: HTTP ' + str(code))
+                    return value
+                if identifier != agent_id or policy()['allowedReferences'] != [ref]:
+                    raise RuntimeError('Policy create did not persist its stable reference')
+                patch(lease, {'mode': 'all', 'allowedReferences': [], 'excludedReferences': [ref]})
+                wait('Skill policy update', lambda: policy()['mode'] == 'all' and policy()['excludedReferences'] == [ref] and not policy()['allowedReferences'])
+                current = policy()
+                code, _ = api(path, {'expectedRevision': current['revision'], 'mode': 'manual', 'operations': []})
+                if code != 200:
+                    raise RuntimeError('Unable to write isolated policy drift')
+                wait('Skill policy drift repair', lambda: policy()['mode'] == 'all')
+                delete(lease)
+                reset = policy()
+                if reset['mode'] != 'manual' or reset['allowedReferences'] or reset['excludedReferences']:
+                    raise RuntimeError('Policy deletion did not reset to manual with empty references')
+                if api('/api/agents/' + agent_id)[0] != 200:
+                    raise RuntimeError('Policy deletion removed its agent')
+                delete(parent)
+                delete(fixture)
+                record('SkillPolicy', scope, create='passed', update='passed', drift_repair='passed',
+                       delete_resets_policy='passed', agent_preserved=True)
+
             if 'external-groups' in args.cases:
                 parent, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-group-team-' + run + '-' + scope})
                 external = 'cp-group-' + run
@@ -377,6 +474,75 @@ def main():
                 delete(parent)
                 record('Delegation', scope, create='passed', immutable_update_refused='passed',
                        deleted_edge_recreated='passed', delete='passed')
+
+
+            if 'credential' in args.cases:
+                credential_key = 'cp-credential-' + run + '-' + scope
+                lease, identifier, _ = create(scope, 'credential', 'RuntimeCredential', 'runtimecredentials',
+                    {'key': credential_key, 'name': 'Synthetic credential slot', 'description': 'initial'})
+
+                def credential():
+                    code, entries = api('/api/credentials')
+                    if code != 200:
+                        raise RuntimeError('Credential definition list failed')
+                    return next((entry for entry in entries if entry['key'] == credential_key), None)
+
+                if identifier != credential_key or credential() is None:
+                    raise RuntimeError('Credential key identity did not persist')
+                patch(lease, {'description': 'updated'})
+                wait('Credential metadata update', lambda: credential().get('description') == 'updated')
+                if api('/api/credentials/' + credential_key, {'description': 'drift'})[0] != 200:
+                    raise RuntimeError('Credential drift mutation failed')
+                wait('Credential drift repair', lambda: credential().get('description') == 'updated')
+                delete(lease)
+                if credential() is not None:
+                    raise RuntimeError('Credential definition survived deletion')
+                record('RuntimeCredential', scope, create='passed', update='passed', drift_repair='passed', delete='passed',
+                       external_authorization='not_requested; synthetic secret slot only')
+
+            if 'schedule' in args.cases:
+                parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
+                    {'name': 'cp-scheduled-agent-' + run + '-' + scope}, '-schedule')
+                lease, identifier, _ = create(scope, 'schedule', 'Trigger', 'triggers',
+                    {'name': 'cp-schedule-' + run + '-' + scope, 'agentId': agent_id,
+                     'cronExpression': '0 8 * * *', 'timezone': 'Etc/UTC', 'enabled': False})
+                path = '/api/schedule-triggers/' + identifier
+                if api(path)[0] != 200 or api(path)[1]['enabled']:
+                    raise RuntimeError('Schedule fixture was not created disabled')
+                patch(lease, {'cronExpression': '0 9 * * *'})
+                wait('Schedule update', lambda: api(path)[1]['cronExpression'] == '0 9 * * *')
+                if api(path, {'cronExpression': '0 10 * * *'}, 'PUT')[0] != 200:
+                    raise RuntimeError('Schedule drift mutation failed')
+                wait('Schedule drift repair', lambda: api(path)[1]['cronExpression'] == '0 9 * * *')
+                delete(lease)
+                if api(path)[0] != 404:
+                    raise RuntimeError('Schedule survived deletion')
+                delete(parent)
+                record('Trigger', scope, create_disabled='passed', update='passed', drift_repair='passed', delete='passed',
+                       scheduled_runs='not_executed')
+
+            if 'api-key' in args.cases:
+                key_name = 'cp-test-api-key-' + run + '-' + scope
+                lease, identifier, obj = create(scope, 'credential', 'APIKey', 'apikeys',
+                    {'name': key_name, 'expiresInSeconds': 3600})
+
+                def path():
+                    return '/api/api-keys/' + observation(lease)['metadata']['annotations']['crossplane.io/external-name']
+
+                if api(path())[0] != 200 or 'key' in obj.get('status', {}).get('atProvider', {}):
+                    raise RuntimeError('API key create or secret status isolation failed')
+                immutable_update(lease, {'name': key_name + '-replacement'}, {'name': key_name})
+                if api(path())[0] != 200:
+                    raise RuntimeError('Immutable update deleted the existing test API key')
+                if api(path(), method='DELETE')[0] != 200:
+                    raise RuntimeError('API key drift deletion failed')
+                wait('Deleted API key recreation', lambda: observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != identifier and api(path())[0] == 200)
+                final_path = path()
+                delete(lease)
+                if api(final_path)[0] != 404:
+                    raise RuntimeError('Test API key survived deletion')
+                record('APIKey', scope, create='passed', immutable_update_refused='passed',
+                       deleted_key_recreated='passed', delete='passed', key_absent_from_status=True)
 
 
             if 'tools' in args.cases:

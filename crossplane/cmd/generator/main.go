@@ -19,5 +19,9 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("cannot calculate the absolute path with %s", rootDir))
 	}
-	pipeline.Run(config.GetProvider(), config.GetProviderNamespaced(), absRootDir)
+	cluster, namespaced := config.GetProvider(), config.GetProviderNamespaced()
+	pipeline.Run(cluster, namespaced, absRootDir)
+	if err := config.PreserveRequiredCollections(absRootDir, cluster, namespaced); err != nil {
+		panic(err)
+	}
 }

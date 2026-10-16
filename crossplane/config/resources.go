@@ -2,8 +2,21 @@ package config
 
 import ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
+const agentGroup = "agent"
+
 // ConfigureResources applies the same API names and references in both scopes.
 func ConfigureResources(p *ujconfig.Provider) {
+	p.AddResourceConfigurator("archestra_agent_subagent_exclusions", func(r *ujconfig.Resource) {
+		r.ShortGroup = agentGroup
+		r.Kind = "SubagentExclusions"
+		r.References["agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
+		r.References["excluded_subagent_ids"] = ujconfig.Reference{TerraformName: "archestra_agent"}
+	})
+	p.AddResourceConfigurator("archestra_agent_skill_policy", func(r *ujconfig.Resource) {
+		r.ShortGroup = agentGroup
+		r.Kind = "SkillPolicy"
+		r.References["agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
+	})
 	p.AddResourceConfigurator("archestra_project", func(r *ujconfig.Resource) {
 		r.ShortGroup = "project"
 		r.Kind = "Project"
@@ -21,31 +34,31 @@ func ConfigureResources(p *ujconfig.Provider) {
 
 	p.AddResourceConfigurator("archestra_environment", func(r *ujconfig.Resource) { r.ShortGroup = "environment"; r.Kind = "Environment" })
 	p.AddResourceConfigurator("archestra_agent", func(r *ujconfig.Resource) {
-		r.ShortGroup = "agent"
+		r.ShortGroup = agentGroup
 		r.Kind = "Agent"
 		r.References["knowledge_base_ids"] = ujconfig.Reference{TerraformName: "archestra_knowledge_base"}
 		r.References["environment_id"] = ujconfig.Reference{TerraformName: "archestra_environment"}
 		r.References["llm_api_key_id"] = ujconfig.Reference{TerraformName: "archestra_llm_provider_api_key"}
 	})
 	p.AddResourceConfigurator("archestra_agent_delegation", func(r *ujconfig.Resource) {
-		r.ShortGroup = "agent"
+		r.ShortGroup = agentGroup
 		r.Kind = "Delegation"
 		r.References["agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
 		r.References["target_agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
 	})
 	p.AddResourceConfigurator("archestra_agent_tool", func(r *ujconfig.Resource) {
-		r.ShortGroup = "agent"
+		r.ShortGroup = agentGroup
 		r.Kind = "Tool"
 		r.References["agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
 	})
 	p.AddResourceConfigurator("archestra_agent_tool_batch", func(r *ujconfig.Resource) {
-		r.ShortGroup = "agent"
+		r.ShortGroup = agentGroup
 		r.Kind = "ToolBatch"
 		r.References["agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
 		r.References["mcp_server_id"] = ujconfig.Reference{TerraformName: "archestra_mcp_server_installation"}
 	})
 	p.AddResourceConfigurator("archestra_agent_tool_exclusions", func(r *ujconfig.Resource) {
-		r.ShortGroup = "agent"
+		r.ShortGroup = agentGroup
 		r.Kind = "ToolExclusions"
 		r.References["agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
 	})

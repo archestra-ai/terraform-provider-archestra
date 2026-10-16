@@ -3,12 +3,12 @@
 page_title: "archestra_runtime_credential Resource - archestra"
 subcategory: ""
 description: |-
-  Runtime credential definition for Agent Runtime runs. Declares a named secret slot that runtime.credentials bindings reference by key; the value is deposited per-user in the UI (allow_personal) or once for the whole organization via organization_value (allow_organization). Supports secrets, GitHub Apps, and personal GitHub OAuth connections.
+  Runtime credential definition for Agent Runtime runs. Declares a named secret slot that runtime.credentials bindings reference by key; the value is deposited per-user in the UI (allow_personal) or once for the whole organization via organization_value (allow_organization). Supports secret slots, GitHub Apps, GitHub OAuth connections and GitLab tokens.
 ---
 
 # archestra_runtime_credential (Resource)
 
-Runtime credential definition for Agent Runtime runs. Declares a named secret slot that `runtime.credentials` bindings reference by `key`; the value is deposited per-user in the UI (`allow_personal`) or once for the whole organization via `organization_value` (`allow_organization`). Supports secrets, GitHub Apps, and personal GitHub OAuth connections.
+Runtime credential definition for Agent Runtime runs. Declares a named secret slot that `runtime.credentials` bindings reference by `key`; the value is deposited per-user in the UI (`allow_personal`) or once for the whole organization via `organization_value` (`allow_organization`). Supports secret slots, GitHub Apps, GitHub OAuth connections and GitLab tokens.
 
 ## Example Usage
 
@@ -90,9 +90,10 @@ resource "archestra_runtime_credential" "github_user" {
 - `github_app_credential_key` (String) Organization GitHub App credential used for personal OAuth connections.
 - `github_client_id` (String) GitHub App OAuth client ID.
 - `github_url` (String) GitHub API base URL.
+- `gitlab_url` (String) GitLab host for a GitLab-token credential definition.
 - `icon` (String) Emoji or base64 image data URL
 - `installation_id` (String) GitHub App installation ID.
-- `kind` (String) Credential type: secret, github_app, or github_app_user.
+- `kind` (String) Credential type: secret, github_app, github_app_user, or gitlab_token.
 - `organization_value` (String, Sensitive) The organization-scoped secret value. Only valid with `allow_organization = true`. Write-only: the backend never echoes it, so out-of-band rotation is invisible to Terraform (out-of-band *deletion* is detected via `organization_configured`). Removing the attribute disconnects the stored value.
 
 ### Read-Only

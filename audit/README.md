@@ -1,14 +1,14 @@
 # Provider modernization audit
 
 The sections below retain the initial baseline. Current v3 configuration is
-**23/23 resources in both scopes**, with real both-scope lifecycle evidence for
-**23/23**. See [the current inventory](provider-v3-inventory.md) and
+**25/25 resources in both scopes**, with real both-scope lifecycle evidence for
+**25/25**. See [the current inventory](provider-v3-inventory.md) and
 [secret-free runtime evidence](v3-runtime-evidence.json). Full API-field checks
 and remaining lifecycle/migration/release gates are still open.
 
 
 The [API lifecycle scope review](api-resource-scope.md) distinguishes the verified
-23-resource provider denominator from additional persistent API areas. It must
+25-resource provider denominator from additional persistent API areas. It must
 not be interpreted as 100% coverage of every Archestra API lifecycle.
 
 Audit inputs: Terraform `2e34cde000894e9c96793da0ec1f2c90b9193636` (v2.4.0),
@@ -21,7 +21,7 @@ Archestra `35e36afd3f8a29cd568bc486a9e448bb29028414` (main, platform 1.4.0-rc.43
   consumes the executable Terraform schema; generated types, controllers and CRDs
   are ignored and rebuilt for both cluster and namespaced scopes. The build
   submodule is Crossplane's shared build system, not the Archestra provider.
-- The current registry has **22 Terraform resources and seven data sources**.
+- The baseline registry had **22 Terraform resources and seven data sources**.
   Five Terraform resources are configured for Crossplane: **5/22 = 22.7%**.
   This is configuration inclusion only. One included policy kind calls removed APIs.
   Generation/build/module checks pass for those five kinds in both scopes (10 managed-resource CRDs, plus five provider/configuration CRDs). The module has no behavioral tests. No reconciliation or runtime coverage percentage is established.

@@ -15,7 +15,7 @@ type schemaResource interface {
 
 // Preserve existing bindings and secret values while dropping retired schema
 // fields. This transforms state only; it never calls the API or deletes objects.
-func v3StateUpgrade(r schemaResource, agent bool) map[int64]resource.StateUpgrader {
+func v3StateUpgrade(r schemaResource, agent bool, transform ...func(map[string]json.RawMessage)) map[int64]resource.StateUpgrader {
 	return map[int64]resource.StateUpgrader{0: {StateUpgrader: func(ctx context.Context, req resource.UpgradeStateRequest, resp *resource.UpgradeStateResponse) {
 		if req.RawState == nil || len(req.RawState.JSON) == 0 {
 			resp.Diagnostics.AddError("Missing Previous State", "Expected JSON state from provider v2.")
@@ -40,6 +40,9 @@ func v3StateUpgrade(r schemaResource, agent bool) map[int64]resource.StateUpgrad
 				}
 				values["built_in_agent_config"] = encoded
 			}
+		}
+		for _, convert := range transform {
+			convert(values)
 		}
 		var current resource.SchemaResponse
 		r.Schema(ctx, resource.SchemaRequest{}, &current)
@@ -141,4 +144,18 @@ func (r *OrganizationSettingsResource) UpgradeState(context.Context) map[int64]r
 }
 func (r *IdentityProviderResource) UpgradeState(context.Context) map[int64]resource.StateUpgrader {
 	return v3StateUpgrade(r, false)
+}
+
+// v2 mixed discovered modalities with managed inputs. Preserve the discovered
+// values as metadata, leaving undeclared inputs unmanaged during upgrade.
+func (r *LlmModelResource) UpgradeState(context.Context) map[int64]resource.StateUpgrader {
+	return v3StateUpgrade(r, false, func(values map[string]json.RawMessage) {
+		for _, kind := range []string{"input", "output"} {
+			name := kind + "_modalities"
+			if old := values[name]; len(old) > 0 {
+				values["effective_"+name] = old
+			}
+			values[name] = json.RawMessage("null")
+		}
+	})
 }

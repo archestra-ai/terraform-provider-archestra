@@ -14,6 +14,8 @@ import (
 
 func currentModelAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
+		"embedding_dimensions":                 schema.Int64Attribute{Optional: true, Validators: []validator.Int64{int64validator.OneOf(3072, 1536, 1408, 1024, 768, 384)}, MarkdownDescription: "Embedding dimension override; removing it clears the dimension configuration."},
+		"effective_embedding_dimensions":       schema.Int64Attribute{Computed: true, MarkdownDescription: "Current dimensions reported by the model API."},
 		"effective_input_modalities":           schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Current model input modalities, including provider-discovered values."},
 		"effective_output_modalities":          schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Current model output modalities, including provider-discovered values."},
 		"custom_price_per_million_cache_read":  schema.StringAttribute{Optional: true, MarkdownDescription: "Custom price per million cache read."},
@@ -45,6 +47,7 @@ func flattenCurrentModelFields(ctx context.Context, data *LlmModelResourceModel,
 		return
 	}
 	var wire struct {
+		EmbeddingDimensions             *int64          `json:"embeddingDimensions"`
 		InputModalities                 []string        `json:"inputModalities"`
 		OutputModalities                []string        `json:"outputModalities"`
 		CustomPricePerMillionCacheRead  *string         `json:"customPricePerMillionCacheRead"`
@@ -76,6 +79,12 @@ func flattenCurrentModelFields(ctx context.Context, data *LlmModelResourceModel,
 	if err := json.Unmarshal(encoded, &wire); err != nil {
 		diags.AddError("Invalid Model Response", "Unable to decode model metadata.")
 		return
+	}
+	data.EffectiveEmbeddingDimensions = types.Int64PointerValue(wire.EmbeddingDimensions)
+	if !data.EmbeddingDimensions.IsNull() && !data.EmbeddingDimensions.IsUnknown() {
+		data.EmbeddingDimensions = types.Int64PointerValue(wire.EmbeddingDimensions)
+	} else {
+		data.EmbeddingDimensions = types.Int64Null()
 	}
 	data.CustomPricePerMillionCacheRead = types.StringPointerValue(wire.CustomPricePerMillionCacheRead)
 	data.CustomPricePerMillionCacheWrite = types.StringPointerValue(wire.CustomPricePerMillionCacheWrite)

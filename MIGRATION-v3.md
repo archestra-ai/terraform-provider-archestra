@@ -14,7 +14,7 @@ provider and Crossplane package to the tested release until that work is complet
    Remove obsolete bindings and configuration without running a legacy destroy
    against the newer API. Do not rely on a resource rename to preserve security.
 3. Upgrade Archestra to the exact release pinned in the final compatibility matrix.
-   The tested prerequisite is 1.4.0-rc.46, including the environment and label-read
+   The tested prerequisite is 1.4.0-rc.47, including the environment, GitLab credential-host and label-read
    API fixes. Its published image and the full isolated Terraform acceptance suite
    are verified in `audit/published-api-full-acceptance.json`. Additional API
    capabilities in this working branch can raise the final minimum version.
@@ -210,3 +210,61 @@ Identity-provider CRDs were not in the released v2 five-resource inventory.
 For an experimental manifest using an array, export it before upgrading and
 change it to an object before applying the new schema; verify the stored
 manifest was not pruned and that its external-name annotation is preserved.
+
+## Current role and credential capabilities
+
+Teams accept `roles` as a set of role identifiers, such as
+`[archestra_role.reader.role]`. Omit it to leave existing assignments unmanaged;
+set `roles = []` to revoke the team's assigned roles. Team membership roles and
+organization roles are separate controls.
+
+Provider keys accept `shared = true` to create a key owned by the organization.
+Its audience is controlled by its permission policy. Ownership is immutable;
+changing `shared` requires replacement. Omitting it after import preserves the
+current ownership, including keys created before this attribute existed.
+
+Bedrock keys accept sensitive `aws_access_key_id`, `aws_secret_access_key` and
+optional `aws_session_token` inputs. They cannot be combined with an inline API
+key or Vault reference. Token rotation resends the pair because Archestra
+replaces the complete SigV4 secret; ordinary metadata updates do not resend it.
+Removing all three attributes stops managing these write-only inputs and clears
+them from Terraform state. It does not revoke the credentials stored remotely;
+delete the provider key to remove its stored credential. Import cannot recover
+secret values: redeclare them to resume managing rotation.
+
+Models accept `embedding_dimensions` using the dimensions supported by the
+current API. `effective_embedding_dimensions` reports the live API value even
+when the override is unmanaged. Removing a declared dimension clears it; destroy
+clears it only if Terraform was managing it. Models used by knowledge-base
+embedding configuration cannot change dimensions until that configuration is
+removed; the provider surfaces the API refusal. As with modality overrides,
+import cannot infer whether an existing dimension was explicitly managed.
+
+### Model modality state upgrade
+
+V2 stored provider-discovered modalities in the same state fields as explicit
+modality overrides. V3 upgrades that state to schema version 1, preserving those
+values as `effective_input_modalities` / `effective_output_modalities` and making
+undeclared override inputs null. This state-only conversion does not clear the
+live model. Explicit overrides in configuration are reapplied to establish their
+management intent; review that plan before applying. Verify a second plan is a
+no-op. The real CLI probe is recorded in `audit/model-state-upgrade.json`.
+
+Identity-provider saved-secret migration is recorded separately in
+`audit/identity-state-upgrade.json`. V2 cannot collect redacted secrets from the
+current API, so that probe restores a synthetic saved secret into actual v2
+imported state to model pre-redaction saved state. The v3 upgrade preserves it
+and the remote identity; it does not recover a lost secret from the API.
+
+### New authoritative agent policies
+
+`archestra_agent_skill_policy` manages mode and stable native, external-MCP or
+plugin skill references with optimistic revisions. Declare one per internal
+agent; import by agent UUID. A caller with hidden or unavailable references must
+restore visibility or remove those references explicitly before management.
+Destroy resets to manual mode and clears references without deleting the agent.
+
+`archestra_agent_subagent_exclusions` owns the complete Auto-delegation exclusion
+set. Import by parent agent UUID. Empty sets clear exclusions; destroy also clears
+them while preserving the agent. Invalid, missing, cross-organization and self
+references are not silently accepted as successful managed state.

@@ -12,6 +12,7 @@ import (
 // price_per_million_*, is_custom_price, price_source) are excluded by
 // the drift-check helper.
 var llmModelAttrSpec = []AttrSpec{
+	{TFName: "embedding_dimensions", JSONName: "embeddingDimensions", Kind: Scalar},
 	{TFName: "llm_provider", Kind: Synthetic},
 	{TFName: "custom_price_per_million_cache_read", JSONName: "customPricePerMillionCacheRead", Kind: Scalar},
 	{TFName: "custom_price_per_million_cache_write", JSONName: "customPricePerMillionCacheWrite", Kind: Scalar},
@@ -39,7 +40,7 @@ func (r *LlmModelResource) APIShape() any { return client.GetModelsWithApiKeysRe
 //   - apiKeys: list of associated API keys; managed via the separate
 //     archestra_llm_provider_api_key resource.
 //   - createdAt/updatedAt/lastSyncedAt: audit timestamps.
-//   - bestModelId/isBest/isFastest/discoveredViaLlmProxy/embeddingDimensions/
+//   - bestModelId/isBest/isFastest/discoveredViaLlmProxy/
 //     externalId/supportsToolCalling/promptPricePerToken/
 //     completionPricePerToken: backend-derived metadata exposed in the UI
 //     for sorting/filtering, not part of the manage-this-model surface.
@@ -48,7 +49,7 @@ func (r *LlmModelResource) KnownIntentionallySkipped() []string {
 	return []string{
 		"provider", "apiKeys", "createdAt", "updatedAt", "lastSyncedAt",
 		"bestModelId", "isBest", "isFastest", "discoveredViaLlmProxy",
-		"embeddingDimensions", "externalId", "supportsToolCalling",
+		"externalId", "supportsToolCalling",
 		"promptPricePerToken", "completionPricePerToken",
 	}
 }

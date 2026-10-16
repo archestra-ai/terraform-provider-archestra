@@ -24,6 +24,7 @@ func TestV3StateUpgradesPreserveBindingAndSecrets(t *testing.T) {
 		{"catalog", &MCPServerRegistryResource{}, `{"id":"existing-id","name":"catalog","scope":"org","teams":["team"]}`},
 		{"team", &TeamResource{}, `{"id":"existing-id","name":"team","convert_tool_results_to_toon":true}`},
 		{"organization", &OrganizationSettingsResource{}, `{"id":"existing-id","compression_scope":"team","global_tool_policy":"restrictive"}`},
+		{"model", &LlmModelResource{}, `{"id":"existing-id","model_id":"llama3","input_modalities":["text"],"output_modalities":["text"]}`},
 		{"identity", &IdentityProviderResource{}, `{"id":"existing-id","oidc_config":{"client_secret":"state-secret-must-survive","client_id":"client"}}`},
 	}
 	for _, item := range resources {
@@ -43,7 +44,7 @@ func TestV3StateUpgradesPreserveBindingAndSecrets(t *testing.T) {
 			}
 
 			for _, retired := range []string{"scope", "teams", "convert_tool_results_to_toon", "compression_scope", "global_tool_policy"} {
-				if _, ok := values[retired]; ok {
+				if _, ok := values[retired]; ok && (item.name != "model" || retired != "teams") {
 					t.Errorf("retired attribute %s remains", retired)
 				}
 			}
@@ -55,6 +56,17 @@ func TestV3StateUpgradesPreserveBindingAndSecrets(t *testing.T) {
 				var metadata map[string]any
 				if err := json.Unmarshal([]byte(builtin), &metadata); err != nil || metadata["name"] != "dual-llm-main-agent" {
 					t.Fatalf("lost metadata: %s", builtin)
+				}
+			}
+			if item.name == "model" {
+				for _, kind := range []string{"input", "output"} {
+					if !values[kind+"_modalities"].IsNull() {
+						t.Fatal("legacy discovered modalities became managed overrides")
+					}
+					var effective []string
+					if d := result.State.GetAttribute(t.Context(), path.Root("effective_"+kind+"_modalities"), &effective); d.HasError() || len(effective) != 1 || effective[0] != "text" {
+						t.Fatal("lost discovered metadata", d)
+					}
 				}
 			}
 			if item.name == "identity" {

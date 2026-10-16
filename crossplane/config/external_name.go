@@ -27,6 +27,8 @@ var ExternalNameConfigs = map[string]ujconfig.ExternalName{
 	"archestra_agent_delegation":           ujconfig.IdentifierFromProvider,
 	"archestra_agent_tool":                 ujconfig.IdentifierFromProvider,
 	"archestra_agent_tool_batch":           ujconfig.IdentifierFromProvider,
+	"archestra_agent_subagent_exclusions":  ujconfig.IdentifierFromProvider,
+	"archestra_agent_skill_policy":         ujconfig.IdentifierFromProvider,
 	"archestra_agent_tool_exclusions":      ujconfig.IdentifierFromProvider,
 	"archestra_identity_provider":          ujconfig.IdentifierFromProvider,
 	"archestra_limit":                      ujconfig.IdentifierFromProvider,

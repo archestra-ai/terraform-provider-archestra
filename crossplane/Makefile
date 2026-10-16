@@ -127,7 +127,7 @@ $(TERRAFORM): check-terraform-version
 # binary in the parent directory rather than fetching from the public registry.
 TF_PROVIDER_BIN ?= ../terraform-provider-archestra
 
-$(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
+$(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM) $(TF_PROVIDER_BIN)
 	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 	@TERRAFORM="$(abspath $(TERRAFORM))" ./hack/generate-schema.sh "$(TF_PROVIDER_BIN)" > $(TERRAFORM_PROVIDER_SCHEMA)
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)

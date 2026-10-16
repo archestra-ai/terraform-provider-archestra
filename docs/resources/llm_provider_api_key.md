@@ -117,11 +117,15 @@ resource "archestra_llm_provider_api_key" "azure_openai" {
 ### Optional
 
 - `api_key` (String, Sensitive) The API key value. Mutually exclusive with `vault_secret_path`/`vault_secret_key`. In BYOS (READONLY_VAULT) mode the backend requires the vault pair and rejects inline `api_key`.
+- `aws_access_key_id` (String, Sensitive) AWS access key identifier for Bedrock SigV4 authentication.
+- `aws_secret_access_key` (String, Sensitive) AWS secret access key for Bedrock SigV4 authentication.
+- `aws_session_token` (String, Sensitive) Optional AWS session token for temporary Bedrock credentials.
 - `base_url` (String) Custom base URL for the LLM provider endpoint
 - `extra_headers` (Map of String, Sensitive) Additional HTTP headers sent to the provider endpoint.
 - `inference_base_url` (String) Runtime endpoint override, separate from the discovery base URL.
 - `is_primary` (Boolean) Whether this API key is the primary key for the provider
 - `labels` (Attributes Set) Labels assigned to the provider key. (see [below for nested schema](#nestedatt--labels))
+- `shared` (Boolean) Create an organization-owned provider key; ownership changes require replacement and omission preserves existing ownership.
 - `vault_secret_key` (String) Key within the vault secret. Must be set together with `vault_secret_path` and cannot be combined with `api_key`.
 - `vault_secret_path` (String) Path to the secret in the vault. Must be set together with `vault_secret_key` and cannot be combined with `api_key`.
 

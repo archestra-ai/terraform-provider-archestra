@@ -28,6 +28,8 @@ archestra:
     ARCHESTRA_AUTH_SECRET: "acceptance-test-auth-secret-32chars"
 
     ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
+    # Leave CPU headroom for Kind system pods and the Helm probe hooks.
+    ARCHESTRA_DAGGER_RUNTIME_ENGINE_CPU_REQUEST: "250m"
 
     # BYOS vault (READONLY_VAULT) so tests that exercise vault-backed catalog
     # fields can run. The Vault server is deployed as a sidecar in the CI
