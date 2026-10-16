@@ -1512,7 +1512,7 @@ const (
 
 // Defines values for CompleteOnboardingJSONBodyOnboardingComplete.
 const (
-	True CompleteOnboardingJSONBodyOnboardingComplete = true
+	CompleteOnboardingJSONBodyOnboardingCompleteTrue CompleteOnboardingJSONBodyOnboardingComplete = true
 )
 
 // Defines values for UpdateConnectionSettingsJSONBodyConnectionClientProviderKeysProvider.
@@ -1675,8 +1675,8 @@ const (
 
 // Defines values for ImportGithubPluginJSONBodyProvider.
 const (
-	Github ImportGithubPluginJSONBodyProvider = "github"
-	Gitlab ImportGithubPluginJSONBodyProvider = "gitlab"
+	ImportGithubPluginJSONBodyProviderGithub ImportGithubPluginJSONBodyProvider = "github"
+	ImportGithubPluginJSONBodyProviderGitlab ImportGithubPluginJSONBodyProvider = "gitlab"
 )
 
 // Defines values for ImportGithubPluginJSONBodySupportedPlatforms.
@@ -1699,10 +1699,10 @@ const (
 
 // Defines values for UpdatePluginJSONBodyGithubSourceSyncInterval.
 const (
-	LessThannil UpdatePluginJSONBodyGithubSourceSyncInterval = "<nil>"
-	N15m        UpdatePluginJSONBodyGithubSourceSyncInterval = "15m"
-	N1d         UpdatePluginJSONBodyGithubSourceSyncInterval = "1d"
-	N1h         UpdatePluginJSONBodyGithubSourceSyncInterval = "1h"
+	UpdatePluginJSONBodyGithubSourceSyncIntervalLessThannil UpdatePluginJSONBodyGithubSourceSyncInterval = "<nil>"
+	UpdatePluginJSONBodyGithubSourceSyncIntervalN15m        UpdatePluginJSONBodyGithubSourceSyncInterval = "15m"
+	UpdatePluginJSONBodyGithubSourceSyncIntervalN1d         UpdatePluginJSONBodyGithubSourceSyncInterval = "1d"
+	UpdatePluginJSONBodyGithubSourceSyncIntervalN1h         UpdatePluginJSONBodyGithubSourceSyncInterval = "1h"
 )
 
 // Defines values for UpdatePluginJSONBodySupportedPlatforms.
@@ -1939,7 +1939,7 @@ const (
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject2Type.
 const (
-	ServiceAccount CreateSkillJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+	CreateSkillJSONBodyInitialGrantsSubject2TypeServiceAccount CreateSkillJSONBodyInitialGrantsSubject2Type = "serviceAccount"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject3Type.
@@ -1957,10 +1957,86 @@ const (
 	CreateSkillJSONBodyInitialGrantsSubject4TypeOrganization CreateSkillJSONBodyInitialGrantsSubject4Type = "organization"
 )
 
+// Defines values for ImportGithubSkillsJSONBodyInitialGrantsActions.
+const (
+	ConfigureDeploymentSpec ImportGithubSkillsJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	Delete                  ImportGithubSkillsJSONBodyInitialGrantsActions = "delete"
+	ManagePermissions       ImportGithubSkillsJSONBodyInitialGrantsActions = "manage-permissions"
+	Read                    ImportGithubSkillsJSONBodyInitialGrantsActions = "read"
+	Update                  ImportGithubSkillsJSONBodyInitialGrantsActions = "update"
+	Use                     ImportGithubSkillsJSONBodyInitialGrantsActions = "use"
+)
+
+// Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject0Type.
+const (
+	User ImportGithubSkillsJSONBodyInitialGrantsSubject0Type = "user"
+)
+
+// Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject1Type.
+const (
+	Team ImportGithubSkillsJSONBodyInitialGrantsSubject1Type = "team"
+)
+
+// Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject2Type.
+const (
+	ImportGithubSkillsJSONBodyInitialGrantsSubject2TypeServiceAccount ImportGithubSkillsJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+)
+
+// Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject3Type.
+const (
+	Role ImportGithubSkillsJSONBodyInitialGrantsSubject3Type = "role"
+)
+
+// Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject4Id.
+const (
+	Asterisk ImportGithubSkillsJSONBodyInitialGrantsSubject4Id = "*"
+)
+
+// Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject4Type.
+const (
+	Organization ImportGithubSkillsJSONBodyInitialGrantsSubject4Type = "organization"
+)
+
+// Defines values for ImportGithubSkillsJSONBodyProvider.
+const (
+	ImportGithubSkillsJSONBodyProviderGithub ImportGithubSkillsJSONBodyProvider = "github"
+	ImportGithubSkillsJSONBodyProviderGitlab ImportGithubSkillsJSONBodyProvider = "gitlab"
+)
+
+// Defines values for ImportGithubSkillsJSONBodySyncInterval.
+const (
+	ImportGithubSkillsJSONBodySyncIntervalN15m ImportGithubSkillsJSONBodySyncInterval = "15m"
+	ImportGithubSkillsJSONBodySyncIntervalN1d  ImportGithubSkillsJSONBodySyncInterval = "1d"
+	ImportGithubSkillsJSONBodySyncIntervalN1h  ImportGithubSkillsJSONBodySyncInterval = "1h"
+)
+
 // Defines values for UpdateSkillJSONBodyFilesEncoding.
 const (
 	UpdateSkillJSONBodyFilesEncodingBase64 UpdateSkillJSONBodyFilesEncoding = "base64"
 	UpdateSkillJSONBodyFilesEncodingUtf8   UpdateSkillJSONBodyFilesEncoding = "utf8"
+)
+
+// Defines values for UpdateSkillGithubSyncJSONBodyDisconnect.
+const (
+	UpdateSkillGithubSyncJSONBodyDisconnectTrue UpdateSkillGithubSyncJSONBodyDisconnect = true
+)
+
+// Defines values for UpdateSkillGithubSyncJSONBodyInterval.
+const (
+	N15m UpdateSkillGithubSyncJSONBodyInterval = "15m"
+	N1d  UpdateSkillGithubSyncJSONBodyInterval = "1d"
+	N1h  UpdateSkillGithubSyncJSONBodyInterval = "1h"
+)
+
+// Defines values for UpdateSkillGithubSyncJSONBodySourceProvider.
+const (
+	Github UpdateSkillGithubSyncJSONBodySourceProvider = "github"
+	Gitlab UpdateSkillGithubSyncJSONBodySourceProvider = "gitlab"
+)
+
+// Defines values for UpdateSkillGithubSyncJSONBodySyncNow.
+const (
+	True UpdateSkillGithubSyncJSONBodySyncNow = true
 )
 
 // Defines values for AddTeamMemberJSONBodyRole.
@@ -5464,6 +5540,91 @@ type CreateSkillJSONBody_InitialGrants_Subject struct {
 	union json.RawMessage
 }
 
+// ImportGithubSkillsJSONBody defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBody struct {
+	GithubAppConfigId *openapi_types.UUID `json:"githubAppConfigId,omitempty"`
+	GithubPatId       *openapi_types.UUID `json:"githubPatId,omitempty"`
+	GithubToken       *string             `json:"githubToken,omitempty"`
+	GitlabTokenId     *openapi_types.UUID `json:"gitlabTokenId,omitempty"`
+	InitialGrants     *[]struct {
+		Actions []ImportGithubSkillsJSONBodyInitialGrantsActions `json:"actions"`
+		Subject ImportGithubSkillsJSONBody_InitialGrants_Subject `json:"subject"`
+	} `json:"initialGrants,omitempty"`
+	Path *string `json:"path,omitempty"`
+
+	// Provider Git host of a public repository; defaults to github. Ignored when a credential is given.
+	Provider   *ImportGithubSkillsJSONBodyProvider `json:"provider,omitempty"`
+	RepoUrl    string                              `json:"repoUrl"`
+	SkillPaths []string                            `json:"skillPaths"`
+
+	// Sync Pull schedule for the imported skills. Every import is synced from the repo and read-only in the app until disconnected. Defaults to daily.
+	Sync *struct {
+		Interval ImportGithubSkillsJSONBodySyncInterval `json:"interval"`
+	} `json:"sync,omitempty"`
+}
+
+// ImportGithubSkillsJSONBodyInitialGrantsActions defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsActions string
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject0 defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject0 struct {
+	Id   string                                              `json:"id"`
+	Type ImportGithubSkillsJSONBodyInitialGrantsSubject0Type `json:"type"`
+}
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject0Type defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject0Type string
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject1 defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject1 struct {
+	Id   string                                              `json:"id"`
+	Type ImportGithubSkillsJSONBodyInitialGrantsSubject1Type `json:"type"`
+}
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject1Type defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject1Type string
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject2 defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject2 struct {
+	Id   openapi_types.UUID                                  `json:"id"`
+	Type ImportGithubSkillsJSONBodyInitialGrantsSubject2Type `json:"type"`
+}
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject2Type defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject2Type string
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject3 defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject3 struct {
+	Id   string                                              `json:"id"`
+	Type ImportGithubSkillsJSONBodyInitialGrantsSubject3Type `json:"type"`
+}
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject3Type defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject3Type string
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject4 defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject4 struct {
+	Id   ImportGithubSkillsJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Type ImportGithubSkillsJSONBodyInitialGrantsSubject4Type `json:"type"`
+}
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject4Id defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject4Id string
+
+// ImportGithubSkillsJSONBodyInitialGrantsSubject4Type defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyInitialGrantsSubject4Type string
+
+// ImportGithubSkillsJSONBody_InitialGrants_Subject defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBody_InitialGrants_Subject struct {
+	union json.RawMessage
+}
+
+// ImportGithubSkillsJSONBodyProvider defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodyProvider string
+
+// ImportGithubSkillsJSONBodySyncInterval defines parameters for ImportGithubSkills.
+type ImportGithubSkillsJSONBodySyncInterval string
+
 // UpdateSkillJSONBody defines parameters for UpdateSkill.
 type UpdateSkillJSONBody struct {
 	// AllowedTools Tools the skill expects, overriding the SKILL.md `allowed-tools` frontmatter. Omit to use the frontmatter; pass [] to clear.
@@ -5500,6 +5661,46 @@ type UpdateSkillJSONBody struct {
 
 // UpdateSkillJSONBodyFilesEncoding defines parameters for UpdateSkill.
 type UpdateSkillJSONBodyFilesEncoding string
+
+// UpdateSkillGithubSyncJSONBody defines parameters for UpdateSkillGithubSync.
+type UpdateSkillGithubSyncJSONBody struct {
+	// Disconnect Disconnect the skill from its GitHub source: it keeps its content and becomes editable in the app.
+	Disconnect *UpdateSkillGithubSyncJSONBodyDisconnect `json:"disconnect,omitempty"`
+
+	// Interval New pull frequency.
+	Interval *UpdateSkillGithubSyncJSONBodyInterval `json:"interval,omitempty"`
+
+	// Source Pull the skill from another repository, branch, folder, or credential. It is fetched before anything changes, so a location without the skill is refused.
+	Source *struct {
+		GithubAppConfigId *openapi_types.UUID `json:"githubAppConfigId,omitempty"`
+		GithubPatId       *openapi_types.UUID `json:"githubPatId,omitempty"`
+		GithubToken       *string             `json:"githubToken,omitempty"`
+		GitlabTokenId     *openapi_types.UUID `json:"gitlabTokenId,omitempty"`
+		Path              *string             `json:"path,omitempty"`
+
+		// Provider Git host of a public repository; defaults to github. Ignored when a credential is given.
+		Provider *UpdateSkillGithubSyncJSONBodySourceProvider `json:"provider,omitempty"`
+		RepoUrl  string                                       `json:"repoUrl"`
+
+		// SkillPath The skill's folder from the repository root; empty when the skill is the repository.
+		SkillPath string `json:"skillPath"`
+	} `json:"source,omitempty"`
+
+	// SyncNow Trigger an immediate pull from the source repo.
+	SyncNow *UpdateSkillGithubSyncJSONBodySyncNow `json:"syncNow,omitempty"`
+}
+
+// UpdateSkillGithubSyncJSONBodyDisconnect defines parameters for UpdateSkillGithubSync.
+type UpdateSkillGithubSyncJSONBodyDisconnect bool
+
+// UpdateSkillGithubSyncJSONBodyInterval defines parameters for UpdateSkillGithubSync.
+type UpdateSkillGithubSyncJSONBodyInterval string
+
+// UpdateSkillGithubSyncJSONBodySourceProvider defines parameters for UpdateSkillGithubSync.
+type UpdateSkillGithubSyncJSONBodySourceProvider string
+
+// UpdateSkillGithubSyncJSONBodySyncNow defines parameters for UpdateSkillGithubSync.
+type UpdateSkillGithubSyncJSONBodySyncNow bool
 
 // CreateTeamJSONBody defines parameters for CreateTeam.
 type CreateTeamJSONBody struct {
@@ -5826,8 +6027,14 @@ type CreateSkillShareLinkJSONRequestBody CreateSkillShareLinkJSONBody
 // CreateSkillJSONRequestBody defines body for CreateSkill for application/json ContentType.
 type CreateSkillJSONRequestBody CreateSkillJSONBody
 
+// ImportGithubSkillsJSONRequestBody defines body for ImportGithubSkills for application/json ContentType.
+type ImportGithubSkillsJSONRequestBody ImportGithubSkillsJSONBody
+
 // UpdateSkillJSONRequestBody defines body for UpdateSkill for application/json ContentType.
 type UpdateSkillJSONRequestBody UpdateSkillJSONBody
+
+// UpdateSkillGithubSyncJSONRequestBody defines body for UpdateSkillGithubSync for application/json ContentType.
+type UpdateSkillGithubSyncJSONRequestBody UpdateSkillGithubSyncJSONBody
 
 // CreateTeamJSONRequestBody defines body for CreateTeam for application/json ContentType.
 type CreateTeamJSONRequestBody CreateTeamJSONBody
@@ -6540,6 +6747,11 @@ type ClientInterface interface {
 
 	CreateSkill(ctx context.Context, body CreateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ImportGithubSkillsWithBody request with any body
+	ImportGithubSkillsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ImportGithubSkills(ctx context.Context, body ImportGithubSkillsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// DeleteSkill request
 	DeleteSkill(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -6550,6 +6762,11 @@ type ClientInterface interface {
 	UpdateSkillWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateSkill(ctx context.Context, id openapi_types.UUID, body UpdateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateSkillGithubSyncWithBody request with any body
+	UpdateSkillGithubSyncWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateSkillGithubSync(ctx context.Context, id openapi_types.UUID, body UpdateSkillGithubSyncJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateTeamWithBody request with any body
 	CreateTeamWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -9405,6 +9622,30 @@ func (c *Client) CreateSkill(ctx context.Context, body CreateSkillJSONRequestBod
 	return c.Client.Do(req)
 }
 
+func (c *Client) ImportGithubSkillsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewImportGithubSkillsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ImportGithubSkills(ctx context.Context, body ImportGithubSkillsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewImportGithubSkillsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) DeleteSkill(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteSkillRequest(c.Server, id)
 	if err != nil {
@@ -9443,6 +9684,30 @@ func (c *Client) UpdateSkillWithBody(ctx context.Context, id openapi_types.UUID,
 
 func (c *Client) UpdateSkill(ctx context.Context, id openapi_types.UUID, body UpdateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateSkillRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSkillGithubSyncWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSkillGithubSyncRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateSkillGithubSync(ctx context.Context, id openapi_types.UUID, body UpdateSkillGithubSyncJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSkillGithubSyncRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -16654,6 +16919,46 @@ func NewCreateSkillRequestWithBody(server string, contentType string, body io.Re
 	return req, nil
 }
 
+// NewImportGithubSkillsRequest calls the generic ImportGithubSkills builder with application/json body
+func NewImportGithubSkillsRequest(server string, body ImportGithubSkillsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewImportGithubSkillsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewImportGithubSkillsRequestWithBody generates requests for ImportGithubSkills with any type of body
+func NewImportGithubSkillsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skills/github/import")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewDeleteSkillRequest generates requests for DeleteSkill
 func NewDeleteSkillRequest(server string, id openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -16760,6 +17065,53 @@ func NewUpdateSkillRequestWithBody(server string, id openapi_types.UUID, content
 	}
 
 	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUpdateSkillGithubSyncRequest calls the generic UpdateSkillGithubSync builder with application/json body
+func NewUpdateSkillGithubSyncRequest(server string, id openapi_types.UUID, body UpdateSkillGithubSyncJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateSkillGithubSyncRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateSkillGithubSyncRequestWithBody generates requests for UpdateSkillGithubSync with any type of body
+func NewUpdateSkillGithubSyncRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skills/%s/github-sync", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -18193,6 +18545,11 @@ type ClientWithResponsesInterface interface {
 
 	CreateSkillWithResponse(ctx context.Context, body CreateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSkillResponse, error)
 
+	// ImportGithubSkillsWithBodyWithResponse request with any body
+	ImportGithubSkillsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ImportGithubSkillsResponse, error)
+
+	ImportGithubSkillsWithResponse(ctx context.Context, body ImportGithubSkillsJSONRequestBody, reqEditors ...RequestEditorFn) (*ImportGithubSkillsResponse, error)
+
 	// DeleteSkillWithResponse request
 	DeleteSkillWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteSkillResponse, error)
 
@@ -18203,6 +18560,11 @@ type ClientWithResponsesInterface interface {
 	UpdateSkillWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSkillResponse, error)
 
 	UpdateSkillWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateSkillJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSkillResponse, error)
+
+	// UpdateSkillGithubSyncWithBodyWithResponse request with any body
+	UpdateSkillGithubSyncWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSkillGithubSyncResponse, error)
+
+	UpdateSkillGithubSyncWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateSkillGithubSyncJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSkillGithubSyncResponse, error)
 
 	// CreateTeamWithBodyWithResponse request with any body
 	CreateTeamWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateTeamResponse, error)
@@ -35139,6 +35501,125 @@ func (r CreateSkillResponse) StatusCode() int {
 	return 0
 }
 
+type ImportGithubSkillsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Created []struct {
+			AgentName                 *string                                        `json:"agentName"`
+			AllowedTools              *string                                        `json:"allowedTools"`
+			AuthorId                  *string                                        `json:"authorId"`
+			Compatibility             *string                                        `json:"compatibility"`
+			Content                   string                                         `json:"content"`
+			CreatedAt                 time.Time                                      `json:"createdAt"`
+			CreatedByServiceAccountId *openapi_types.UUID                            `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time                                     `json:"deletedAt"`
+			Description               string                                         `json:"description"`
+			Digest                    *string                                        `json:"digest"`
+			GithubAppConfigId         *openapi_types.UUID                            `json:"githubAppConfigId"`
+			GithubPatId               *openapi_types.UUID                            `json:"githubPatId"`
+			GithubSyncInterval        ImportGithubSkills200CreatedGithubSyncInterval `json:"githubSyncInterval"`
+			GithubSyncRef             *string                                        `json:"githubSyncRef"`
+			GitlabTokenId             *openapi_types.UUID                            `json:"gitlabTokenId"`
+			Icon                      *string                                        `json:"icon"`
+			Id                        openapi_types.UUID                             `json:"id"`
+			LastSyncError             *string                                        `json:"lastSyncError"`
+			LastSyncedAt              *time.Time                                     `json:"lastSyncedAt"`
+			LastUsedAt                *time.Time                                     `json:"lastUsedAt"`
+			LatestVersion             int                                            `json:"latestVersion"`
+			License                   *string                                        `json:"license"`
+			Metadata                  map[string]string                              `json:"metadata"`
+			Name                      string                                         `json:"name"`
+			OrganizationId            string                                         `json:"organizationId"`
+			Scope                     ImportGithubSkills200CreatedScope              `json:"scope"`
+			SourceCommit              *string                                        `json:"sourceCommit"`
+			SourceOrigin              *string                                        `json:"sourceOrigin"`
+			SourceProvider            ImportGithubSkills200CreatedSourceProvider     `json:"sourceProvider"`
+			SourceRef                 *string                                        `json:"sourceRef"`
+			SourceType                ImportGithubSkills200CreatedSourceType         `json:"sourceType"`
+			Templated                 bool                                           `json:"templated"`
+			UpdatedAt                 time.Time                                      `json:"updatedAt"`
+			UsageCount                int                                            `json:"usageCount"`
+		} `json:"created"`
+		Skipped []string `json:"skipped"`
+
+		// SkippedFiles Per created skill, resource paths not imported: oversized, beyond the per-skill file cap, or unfetchable
+		SkippedFiles []struct {
+			Files     []string `json:"files"`
+			SkillPath string   `json:"skillPath"`
+		} `json:"skippedFiles"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubSkills400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubSkills401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}        `json:"details,omitempty"`
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubSkills403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubSkills404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubSkills409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         ImportGithubSkills500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type ImportGithubSkills200CreatedGithubSyncInterval string
+type ImportGithubSkills200CreatedScope string
+type ImportGithubSkills200CreatedSourceProvider string
+type ImportGithubSkills200CreatedSourceType string
+type ImportGithubSkills400ErrorType string
+type ImportGithubSkills401ErrorType string
+type ImportGithubSkills403ErrorType string
+type ImportGithubSkills404ErrorType string
+type ImportGithubSkills409ErrorType string
+type ImportGithubSkills500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r ImportGithubSkillsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ImportGithubSkillsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type DeleteSkillResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -35502,6 +35983,154 @@ func (r UpdateSkillResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateSkillResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateSkillGithubSyncResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AgentName     *string   `json:"agentName"`
+		AllowedTools  *string   `json:"allowedTools"`
+		AuthorId      *string   `json:"authorId"`
+		Compatibility *string   `json:"compatibility"`
+		Content       string    `json:"content"`
+		CreatedAt     time.Time `json:"createdAt"`
+		CreatedBy     *struct {
+			Email *string                                `json:"email"`
+			Id    string                                 `json:"id"`
+			Name  *string                                `json:"name"`
+			Type  *UpdateSkillGithubSync200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               string              `json:"description"`
+		Digest                    *string             `json:"digest"`
+		Environments              []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"environments"`
+		Files []struct {
+			Content   string                                `json:"content"`
+			CreatedAt time.Time                             `json:"createdAt"`
+			Digest    *string                               `json:"digest"`
+			Encoding  UpdateSkillGithubSync200FilesEncoding `json:"encoding"`
+			Id        openapi_types.UUID                    `json:"id"`
+			Kind      UpdateSkillGithubSync200FilesKind     `json:"kind"`
+			Path      string                                `json:"path"`
+			SkillId   openapi_types.UUID                    `json:"skillId"`
+		} `json:"files"`
+		GithubAppConfigId  *openapi_types.UUID                        `json:"githubAppConfigId"`
+		GithubPatId        *openapi_types.UUID                        `json:"githubPatId"`
+		GithubSyncInterval UpdateSkillGithubSync200GithubSyncInterval `json:"githubSyncInterval"`
+		GithubSyncRef      *string                                    `json:"githubSyncRef"`
+		GitlabTokenId      *openapi_types.UUID                        `json:"gitlabTokenId"`
+		Icon               *string                                    `json:"icon"`
+		Id                 openapi_types.UUID                         `json:"id"`
+		Labels             []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastSyncError  *string                                `json:"lastSyncError"`
+		LastSyncedAt   *time.Time                             `json:"lastSyncedAt"`
+		LastUsedAt     *time.Time                             `json:"lastUsedAt"`
+		LatestVersion  int                                    `json:"latestVersion"`
+		License        *string                                `json:"license"`
+		Metadata       map[string]string                      `json:"metadata"`
+		Name           string                                 `json:"name"`
+		OrganizationId string                                 `json:"organizationId"`
+		Scope          UpdateSkillGithubSync200Scope          `json:"scope"`
+		SourceCommit   *string                                `json:"sourceCommit"`
+		SourceOrigin   *string                                `json:"sourceOrigin"`
+		SourceProvider UpdateSkillGithubSync200SourceProvider `json:"sourceProvider"`
+		SourceRef      *string                                `json:"sourceRef"`
+		SourceType     UpdateSkillGithubSync200SourceType     `json:"sourceType"`
+		Teams          []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		Templated  bool      `json:"templated"`
+		UpdatedAt  time.Time `json:"updatedAt"`
+		UsageCount int       `json:"usageCount"`
+		Users      []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateSkillGithubSync400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateSkillGithubSync401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}           `json:"details,omitempty"`
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateSkillGithubSync403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateSkillGithubSync404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateSkillGithubSync409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateSkillGithubSync500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateSkillGithubSync200CreatedByType string
+type UpdateSkillGithubSync200FilesEncoding string
+type UpdateSkillGithubSync200FilesKind string
+type UpdateSkillGithubSync200GithubSyncInterval string
+type UpdateSkillGithubSync200Scope string
+type UpdateSkillGithubSync200SourceProvider string
+type UpdateSkillGithubSync200SourceType string
+type UpdateSkillGithubSync400ErrorType string
+type UpdateSkillGithubSync401ErrorType string
+type UpdateSkillGithubSync403ErrorType string
+type UpdateSkillGithubSync404ErrorType string
+type UpdateSkillGithubSync409ErrorType string
+type UpdateSkillGithubSync500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateSkillGithubSyncResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateSkillGithubSyncResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -38788,6 +39417,23 @@ func (c *ClientWithResponses) CreateSkillWithResponse(ctx context.Context, body 
 	return ParseCreateSkillResponse(rsp)
 }
 
+// ImportGithubSkillsWithBodyWithResponse request with arbitrary body returning *ImportGithubSkillsResponse
+func (c *ClientWithResponses) ImportGithubSkillsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ImportGithubSkillsResponse, error) {
+	rsp, err := c.ImportGithubSkillsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseImportGithubSkillsResponse(rsp)
+}
+
+func (c *ClientWithResponses) ImportGithubSkillsWithResponse(ctx context.Context, body ImportGithubSkillsJSONRequestBody, reqEditors ...RequestEditorFn) (*ImportGithubSkillsResponse, error) {
+	rsp, err := c.ImportGithubSkills(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseImportGithubSkillsResponse(rsp)
+}
+
 // DeleteSkillWithResponse request returning *DeleteSkillResponse
 func (c *ClientWithResponses) DeleteSkillWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteSkillResponse, error) {
 	rsp, err := c.DeleteSkill(ctx, id, reqEditors...)
@@ -38821,6 +39467,23 @@ func (c *ClientWithResponses) UpdateSkillWithResponse(ctx context.Context, id op
 		return nil, err
 	}
 	return ParseUpdateSkillResponse(rsp)
+}
+
+// UpdateSkillGithubSyncWithBodyWithResponse request with arbitrary body returning *UpdateSkillGithubSyncResponse
+func (c *ClientWithResponses) UpdateSkillGithubSyncWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSkillGithubSyncResponse, error) {
+	rsp, err := c.UpdateSkillGithubSyncWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSkillGithubSyncResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateSkillGithubSyncWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateSkillGithubSyncJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSkillGithubSyncResponse, error) {
+	rsp, err := c.UpdateSkillGithubSync(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateSkillGithubSyncResponse(rsp)
 }
 
 // CreateTeamWithBodyWithResponse request with arbitrary body returning *CreateTeamResponse
@@ -60101,6 +60764,155 @@ func ParseCreateSkillResponse(rsp *http.Response) (*CreateSkillResponse, error) 
 	return response, nil
 }
 
+// ParseImportGithubSkillsResponse parses an HTTP response from a ImportGithubSkillsWithResponse call
+func ParseImportGithubSkillsResponse(rsp *http.Response) (*ImportGithubSkillsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ImportGithubSkillsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Created []struct {
+				AgentName                 *string                                        `json:"agentName"`
+				AllowedTools              *string                                        `json:"allowedTools"`
+				AuthorId                  *string                                        `json:"authorId"`
+				Compatibility             *string                                        `json:"compatibility"`
+				Content                   string                                         `json:"content"`
+				CreatedAt                 time.Time                                      `json:"createdAt"`
+				CreatedByServiceAccountId *openapi_types.UUID                            `json:"createdByServiceAccountId"`
+				DeletedAt                 *time.Time                                     `json:"deletedAt"`
+				Description               string                                         `json:"description"`
+				Digest                    *string                                        `json:"digest"`
+				GithubAppConfigId         *openapi_types.UUID                            `json:"githubAppConfigId"`
+				GithubPatId               *openapi_types.UUID                            `json:"githubPatId"`
+				GithubSyncInterval        ImportGithubSkills200CreatedGithubSyncInterval `json:"githubSyncInterval"`
+				GithubSyncRef             *string                                        `json:"githubSyncRef"`
+				GitlabTokenId             *openapi_types.UUID                            `json:"gitlabTokenId"`
+				Icon                      *string                                        `json:"icon"`
+				Id                        openapi_types.UUID                             `json:"id"`
+				LastSyncError             *string                                        `json:"lastSyncError"`
+				LastSyncedAt              *time.Time                                     `json:"lastSyncedAt"`
+				LastUsedAt                *time.Time                                     `json:"lastUsedAt"`
+				LatestVersion             int                                            `json:"latestVersion"`
+				License                   *string                                        `json:"license"`
+				Metadata                  map[string]string                              `json:"metadata"`
+				Name                      string                                         `json:"name"`
+				OrganizationId            string                                         `json:"organizationId"`
+				Scope                     ImportGithubSkills200CreatedScope              `json:"scope"`
+				SourceCommit              *string                                        `json:"sourceCommit"`
+				SourceOrigin              *string                                        `json:"sourceOrigin"`
+				SourceProvider            ImportGithubSkills200CreatedSourceProvider     `json:"sourceProvider"`
+				SourceRef                 *string                                        `json:"sourceRef"`
+				SourceType                ImportGithubSkills200CreatedSourceType         `json:"sourceType"`
+				Templated                 bool                                           `json:"templated"`
+				UpdatedAt                 time.Time                                      `json:"updatedAt"`
+				UsageCount                int                                            `json:"usageCount"`
+			} `json:"created"`
+			Skipped []string `json:"skipped"`
+
+			// SkippedFiles Per created skill, resource paths not imported: oversized, beyond the per-skill file cap, or unfetchable
+			SkippedFiles []struct {
+				Files     []string `json:"files"`
+				SkillPath string   `json:"skillPath"`
+			} `json:"skippedFiles"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubSkills400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubSkills401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}        `json:"details,omitempty"`
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubSkills403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubSkills404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubSkills409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         ImportGithubSkills500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseDeleteSkillResponse parses an HTTP response from a DeleteSkillWithResponse call
 func ParseDeleteSkillResponse(rsp *http.Response) (*DeleteSkillResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -60546,6 +61358,181 @@ func ParseUpdateSkillResponse(rsp *http.Response) (*UpdateSkillResponse, error) 
 				InternalCode *string                 `json:"internal_code,omitempty"`
 				Message      string                  `json:"message"`
 				Type         UpdateSkill500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateSkillGithubSyncResponse parses an HTTP response from a UpdateSkillGithubSyncWithResponse call
+func ParseUpdateSkillGithubSyncResponse(rsp *http.Response) (*UpdateSkillGithubSyncResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateSkillGithubSyncResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AgentName     *string   `json:"agentName"`
+			AllowedTools  *string   `json:"allowedTools"`
+			AuthorId      *string   `json:"authorId"`
+			Compatibility *string   `json:"compatibility"`
+			Content       string    `json:"content"`
+			CreatedAt     time.Time `json:"createdAt"`
+			CreatedBy     *struct {
+				Email *string                                `json:"email"`
+				Id    string                                 `json:"id"`
+				Name  *string                                `json:"name"`
+				Type  *UpdateSkillGithubSync200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               string              `json:"description"`
+			Digest                    *string             `json:"digest"`
+			Environments              []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"environments"`
+			Files []struct {
+				Content   string                                `json:"content"`
+				CreatedAt time.Time                             `json:"createdAt"`
+				Digest    *string                               `json:"digest"`
+				Encoding  UpdateSkillGithubSync200FilesEncoding `json:"encoding"`
+				Id        openapi_types.UUID                    `json:"id"`
+				Kind      UpdateSkillGithubSync200FilesKind     `json:"kind"`
+				Path      string                                `json:"path"`
+				SkillId   openapi_types.UUID                    `json:"skillId"`
+			} `json:"files"`
+			GithubAppConfigId  *openapi_types.UUID                        `json:"githubAppConfigId"`
+			GithubPatId        *openapi_types.UUID                        `json:"githubPatId"`
+			GithubSyncInterval UpdateSkillGithubSync200GithubSyncInterval `json:"githubSyncInterval"`
+			GithubSyncRef      *string                                    `json:"githubSyncRef"`
+			GitlabTokenId      *openapi_types.UUID                        `json:"gitlabTokenId"`
+			Icon               *string                                    `json:"icon"`
+			Id                 openapi_types.UUID                         `json:"id"`
+			Labels             []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastSyncError  *string                                `json:"lastSyncError"`
+			LastSyncedAt   *time.Time                             `json:"lastSyncedAt"`
+			LastUsedAt     *time.Time                             `json:"lastUsedAt"`
+			LatestVersion  int                                    `json:"latestVersion"`
+			License        *string                                `json:"license"`
+			Metadata       map[string]string                      `json:"metadata"`
+			Name           string                                 `json:"name"`
+			OrganizationId string                                 `json:"organizationId"`
+			Scope          UpdateSkillGithubSync200Scope          `json:"scope"`
+			SourceCommit   *string                                `json:"sourceCommit"`
+			SourceOrigin   *string                                `json:"sourceOrigin"`
+			SourceProvider UpdateSkillGithubSync200SourceProvider `json:"sourceProvider"`
+			SourceRef      *string                                `json:"sourceRef"`
+			SourceType     UpdateSkillGithubSync200SourceType     `json:"sourceType"`
+			Teams          []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			Templated  bool      `json:"templated"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			UsageCount int       `json:"usageCount"`
+			Users      []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateSkillGithubSync400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateSkillGithubSync401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}           `json:"details,omitempty"`
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateSkillGithubSync403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateSkillGithubSync404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateSkillGithubSync409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateSkillGithubSync500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

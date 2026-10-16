@@ -5,11 +5,7 @@ All 29 resources generate in both Crossplane scopes. The [resource matrix](../RE
 and [migration guide](../MIGRATION-v3.md) define the current names and ownership;
 the historical table below does not register retired resource types.
 
-Reviewed against published API **1.4.0-rc.49**. All **147 native acceptance cases**
-pass. All 29 current resource families also pass in both scopes with
-[frozen-binary lifecycle evidence](consolidated-crossplane-runtime.json), normal
-cleanup and restored global test settings. Missing product APIs, final packages,
-protected review and release remain open.
+The reviewed milestone 411935f passed **147 native cases** and all 29 families in both scopes against published API **1.4.0-rc.49**, with [frozen-binary evidence](consolidated-crossplane-runtime.json), normal cleanup and restored settings. The Git Skill stage passes [all 151 native cases](skill-git-native-acceptance.json) and [eight both-scope Skill records](crossplane-skill-git-source.json). Each proof retains its exact frozen source/binary boundary. Missing product APIs, the final expanded-candidate sweep, packages, protected review and release remain open.
 
 | Product area | Current resource model | Remaining work or boundary |
 |---|---|---|
@@ -20,7 +16,7 @@ protected review and release remain open.
 | Organization defaults | `organization_settings` owns default environments, member spending defaults and global access policies. | Omitted slots preserve; explicit empties clear/reset. Singleton deletion leaves configuration intact. |
 | MCP | `mcp_registry_entry` owns a catalog definition; `mcp_server` owns a deployed connection/installation. Agent/gateway tool bindings are parent fields. | Inspection, test calls and runtime tool invocation are operations, not resource families. |
 | Models and credentials | `model_provider`, `model`, `virtual_key`, `oauth_client`, `limit`, `credential`, API keys and stored GitHub registrations keep independent credential, adoption or revocation lifecycles. | Model deletion resets managed overrides and retains discovery. Interactive consent and external credential/app setup are separate authorization steps. |
-| Skills and plugins | One `plugin` supports files or `git_source`. Native skill content/files use `skill`; activation policies and gateway publication are parent fields. | Git-backed skill configuration remains pending on the Skill rather than a separate Git-skill resource. Plugin/external-MCP activation references are not duplicate native skill identities. |
+| Skills and plugins | One `plugin` supports files or `git_source`. One `skill` supports authored instructions/files or `git_source`; activation policies and gateway publication are parent fields. | Source changes retain identity; authored/Git ownership changes replace it. Public sources and existing saved credentials are supported. Plugin/external-MCP activation references are not duplicate native skill identities. |
 | Projects and files | `project` owns instructions; `project_file` owns explicit text or binary content with an independent file identity. Schedules remain independently enabled/disabled objects. | App associations belong on their owning parent; implementation remains pending. |
 | Apps | Intended independent versioned app source/configuration with tool bindings on the App. | Implementation pending. Rendering diagnostics, screenshots, pinning and execution are commands/preferences. |
 | Knowledge | `knowledge_base` and `knowledge_directory` exist. Connectors and files are reusable identities; associations belong on an owner. | Connector/file implementation pending, including existing authorized connections, redacted secrets, content/hash and indexing observation. Sync runs are not separate resources. |
@@ -29,7 +25,7 @@ protected review and release remain open.
 | Site notifications | Persistent privileged notification configuration requires a scope and ownership decision. | Implementation pending. Preserve inactive creation; notification delivery is not an automatic test/setup action. |
 | Share links and operational reads | `share_link` has an independently revocable, secret-once lifecycle. Data sources are `agent`, `team`, `tool`, `mcp_tool_calls`. | Alert dismissals, personal preferences, inference, messages, telemetry, run cancellation and bulk facades are not additional managed-object identities. |
 
-The 172 raw request-field occurrences have explicit dispositions in
+The 185 unmapped request-field occurrences have explicit dispositions in
 [current-request-field-review.json](current-request-field-review.json). This count
 includes manual encoders and server-owned fields; it is not a missing-feature count.
 Further entity lookups and Crossplane reference ergonomics require review against

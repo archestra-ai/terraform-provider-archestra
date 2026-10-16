@@ -63,6 +63,10 @@ func ConfigureResources(p *ujconfig.Provider) {
 	p.AddResourceConfigurator("archestra_skill", func(r *ujconfig.Resource) {
 		r.ShortGroup = "skill"
 		r.Kind = "Skill"
+		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "git_source", "name", "description", "content", "license", "compatibility", "agent_name", "templated", "metadata", "allowed_tools", "files")
+		r.References["git_source.github_app_id"] = ujconfig.Reference{TerraformName: "archestra_github_app"}
+		r.References["git_source.github_pat_id"] = ujconfig.Reference{TerraformName: "archestra_github_pat"}
+		r.References["git_source.gitlab_token_id"] = ujconfig.Reference{TerraformName: "archestra_credential", Extractor: `github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("definition_id", true)`}
 		r.References["environment_ids"] = ujconfig.Reference{TerraformName: "archestra_environment"}
 	})
 	p.AddResourceConfigurator("archestra_project", func(r *ujconfig.Resource) {

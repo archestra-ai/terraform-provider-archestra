@@ -32,6 +32,7 @@ func NewSkillResource() resource.Resource { return &SkillResource{} }
 
 type SkillResource struct{ client *client.ClientWithResponses }
 type SkillResourceModel struct {
+	GitSource                 types.Object      `tfsdk:"git_source"`
 	InitialGrants             types.Set         `tfsdk:"permissions"`
 	ID                        types.String      `tfsdk:"id"`
 	Name                      types.String      `tfsdk:"name"`
@@ -130,6 +131,7 @@ type skillAPIWire struct {
 
 var skillFileType = types.ObjectType{AttrTypes: map[string]attr.Type{"content": types.StringType, "encoding": types.StringType}}
 var skillAttrSpec = []AttrSpec{
+	{TFName: "git_source", Kind: Synthetic},
 	initialGrantsAttrSpec,
 	{TFName: "name", Kind: Synthetic}, {TFName: "description", Kind: Synthetic},
 	{TFName: "license", Kind: Synthetic}, {TFName: "compatibility", Kind: Synthetic}, {TFName: "agent_name", Kind: Synthetic},
@@ -190,6 +192,10 @@ func (r *SkillResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 	attributes["created_at"] = schema.StringAttribute{Computed: true, MarkdownDescription: "Created at reported by the API."}
 	attributes["updated_at"] = schema.StringAttribute{Computed: true, MarkdownDescription: "Updated at reported by the API."}
 	attributes["deleted_at"] = schema.StringAttribute{Computed: true, MarkdownDescription: "Deleted at reported by the API."}
+	if err := configureSkillGitSchema(attributes); err != nil {
+		resp.Diagnostics.AddError("Unexpected Skill schema", err.Error())
+		return
+	}
 	resp.Schema = schema.Schema{MarkdownDescription: "A versioned skill with declarative manifest metadata, instruction body and complete resource files. Import by UUID. Updates reject stale versions. Destroy soft-deletes the skill; immutable historical versions remain under platform retention. Configure sharing through permissions on this skill. Git-synchronized content remains owned by its external source and the API rejects conflicting edits.", Attributes: attributes}
 }
 func (r *SkillResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -209,6 +215,10 @@ func (r *SkillResource) Create(ctx context.Context, req resource.CreateRequest, 
 	var plan SkillResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
+		return
+	}
+	if !plan.GitSource.IsNull() && !plan.GitSource.IsUnknown() {
+		r.createGitSkill(ctx, req, resp, plan)
 		return
 	}
 	patch := MergePatch(ctx, req.Plan.Raw, tftypes.NewValue(req.Plan.Raw.Type(), nil), skillAttrSpec, &resp.Diagnostics)
@@ -280,6 +290,10 @@ func (r *SkillResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	resp.Diagnostics.Append(req.State.Get(ctx, &prior)...)
 	if resp.Diagnostics.HasError() {
+		return
+	}
+	if !plan.GitSource.IsNull() && !plan.GitSource.IsUnknown() {
+		r.updateGitSkill(ctx, req, resp, plan, prior)
 		return
 	}
 	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, skillAttrSpec, &resp.Diagnostics)
@@ -381,7 +395,7 @@ func encodeSkillFiles(value any) any {
 // rebuilding content when the generic field patch is otherwise empty.
 func skillManifestChanged(plan, prior tftypes.Value) bool {
 	for _, spec := range skillAttrSpec {
-		if spec.Kind == Synthetic && !lookupOrNull(plan, spec.TFName).Equal(lookupOrNull(prior, spec.TFName)) {
+		if spec.Kind == Synthetic && spec.TFName != "git_source" && !lookupOrNull(plan, spec.TFName).Equal(lookupOrNull(prior, spec.TFName)) {
 			return true
 		}
 	}
@@ -391,16 +405,16 @@ func skillManifestChanged(plan, prior tftypes.Value) bool {
 func (plan *SkillResourceModel) request(ctx context.Context, patch map[string]any, diags *diag.Diagnostics) []byte {
 	header := map[string]any{"name": plan.Name.ValueString(), "description": plan.Description.ValueString(), "templated": plan.Templated.ValueBool()}
 	for key, value := range map[string]types.String{"license": plan.License, "compatibility": plan.Compatibility, "agent": plan.AgentName} {
-		if !value.IsNull() {
+		if !value.IsNull() && !value.IsUnknown() {
 			header[key] = value.ValueString()
 		}
 	}
-	if !plan.Metadata.IsNull() {
+	if !plan.Metadata.IsNull() && !plan.Metadata.IsUnknown() {
 		var metadata map[string]string
 		diags.Append(plan.Metadata.ElementsAs(ctx, &metadata, false)...)
 		header["metadata"] = metadata
 	}
-	if !plan.AllowedTools.IsNull() {
+	if !plan.AllowedTools.IsNull() && !plan.AllowedTools.IsUnknown() {
 		var tools []string
 		diags.Append(plan.AllowedTools.ElementsAs(ctx, &tools, false)...)
 		sort.Strings(tools)
@@ -514,4 +528,5 @@ func (plan *SkillResourceModel) populate(ctx context.Context, body []byte, diags
 	plan.CreatedAt = types.StringPointerValue(wire.CreatedAt)
 	plan.UpdatedAt = types.StringPointerValue(wire.UpdatedAt)
 	plan.DeletedAt = types.StringPointerValue(wire.DeletedAt)
+	plan.populateGitSource(ctx, wire, diags)
 }

@@ -1,7 +1,7 @@
 # Archestra Provider
 
 
-The v3 review candidate has **29 Terraform resources and four Terraform data sources**. All 29 resources have generated Crossplane types in both scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The [full native acceptance proof](audit/consolidated-native-acceptance.json) records 147 passing cases with zero failures or skips against API 1.4.0-rc.49.
+The v3 review candidate has **29 Terraform resources and four Terraform data sources**. All 29 resources have generated Crossplane types in both scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource; authored and Git-backed Skills also share one resource. The [migration guide](MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The reviewed milestone 411935f retains its [147-case native proof](audit/consolidated-native-acceptance.json). The [Git Skill native proof](audit/skill-git-native-acceptance.json) records all 151 cases passing with zero failures or skips against API 1.4.0-rc.49.
 
 [![Crossplane mappings](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
 
@@ -16,13 +16,15 @@ through extending the provider.
 
 API versions are independent of provider versions. See the [compatibility matrix](COMPATIBILITY.md) for the required API capability floor and exact tested releases.
 
-The [organization-defaults runtime proof](audit/crossplane-organization-defaults.json) verifies reference resolution, updates, drift, omission and explicit clears in both scopes on the current candidate.
+The [organization-defaults runtime proof](audit/crossplane-organization-defaults.json) verifies reference resolution, updates, drift, omission and explicit clears in both scopes on the reviewed milestone.
 
-The [current consolidated runtime proof](audit/consolidated-crossplane-runtime.json)
+The [reviewed milestone runtime proof](audit/consolidated-crossplane-runtime.json)
 verifies all **29 resource families in both scopes** (58 family/scope pairs,
 124 runtime records), with normal cleanup and restored global test settings.
 Variants are additional checks, not extra resource families. Remaining product
 APIs, final package validation, protected review and publication are still open.
+
+The [Git Skill runtime proof](audit/crossplane-skill-git-source.json) adds eight both-scope records for authored content, sharing, Git sources and initProvider. It covers settings without content rewrites, source updates, reconnect, drift repair, orphan/adoption and normal deletion. Switching between authored and Git ownership replaces the Skill; a Git source change retains its UUID. Final expanded-candidate and package validation remain release gates.
 
 ## Resource coverage
 

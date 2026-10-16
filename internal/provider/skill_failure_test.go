@@ -17,7 +17,7 @@ import (
 )
 
 func skillTestModel() SkillResourceModel {
-	return SkillResourceModel{InitialGrants: types.SetNull(permissionGrantObjectType), ID: types.StringValue("11111111-1111-4111-8111-111111111111"), Name: types.StringValue("fixture"), Description: types.StringValue("Synthetic fixture"), Content: types.StringValue("Synthetic body."), Templated: types.BoolValue(false), Metadata: types.MapNull(types.StringType), AllowedTools: types.SetNull(types.StringType), Files: types.MapValueMust(skillFileType, map[string]attr.Value{}), FileDigests: types.MapNull(types.StringType), EnvironmentIDs: types.SetValueMust(types.StringType, []attr.Value{}), Labels: []AgentLabelModel{}, LatestVersion: types.Int64Value(1)}
+	return SkillResourceModel{GitSource: types.ObjectNull(skillGitSourceType.AttrTypes), InitialGrants: types.SetNull(permissionGrantObjectType), ID: types.StringValue("11111111-1111-4111-8111-111111111111"), Name: types.StringValue("fixture"), Description: types.StringValue("Synthetic fixture"), Content: types.StringValue("Synthetic body."), Templated: types.BoolValue(false), Metadata: types.MapNull(types.StringType), AllowedTools: types.SetNull(types.StringType), Files: types.MapValueMust(skillFileType, map[string]attr.Value{}), FileDigests: types.MapNull(types.StringType), EnvironmentIDs: types.SetValueMust(types.StringType, []attr.Value{}), Labels: []AgentLabelModel{}, LatestVersion: types.Int64Value(1)}
 }
 func TestSkillManifestAndFileEncoding(t *testing.T) {
 	plan := skillTestModel()

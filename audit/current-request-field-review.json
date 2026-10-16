@@ -3,21 +3,22 @@
   "upstream_version": "1.4.0-rc.49",
   "registered_resources": 29,
   "crossplane_configured": 29,
-  "raw_occurrences": 172,
+  "raw_occurrences": 185,
   "unclassified": 0,
   "classification_counts": {
     "authentication_context": 4,
-    "covered_by_canonical_inputs": 2,
+    "covered_by_canonical_inputs": 3,
     "covered_creation_only": 3,
     "derived": 5,
-    "lifecycle_owned": 4,
-    "manual_encoding": 111,
+    "execution_command": 1,
+    "lifecycle_owned": 5,
+    "manual_encoding": 120,
     "other_subtype": 23,
     "related_resource": 1,
-    "separate_credential_lifecycle": 1,
+    "separate_credential_lifecycle": 2,
     "server_owned": 18
   },
-  "note": "Actual 29 registered owners and transitive typed helper calls. All 172 raw top-level request-field occurrences have an explicit disposition; manual encoding, alternate source/subtype fields and server-owned values are not missing-feature counts. Remaining durable API domains are tracked separately.",
+  "note": "Actual 29 registered owners and transitive typed helper calls. All 185 unmapped top-level request-field occurrences have explicit dispositions. This static classification is not a missing-feature count. Git Skill source-mode replacement and imperative sync boundaries are documented explicitly; other durable domains remain in scope.",
   "review": [
     {
       "resource": "archestra_agent",
@@ -1309,6 +1310,78 @@
     },
     {
       "resource": "archestra_skill",
+      "operation": "ImportGithubSkills",
+      "field": "githubAppConfigId",
+      "classification": "manual_encoding",
+      "rationale": "git_source.github_app_id selects an existing stored GitHub App credential.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "ImportGithubSkills",
+      "field": "githubPatId",
+      "classification": "manual_encoding",
+      "rationale": "git_source.github_pat_id selects an existing stored GitHub PAT.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "ImportGithubSkills",
+      "field": "githubToken",
+      "classification": "separate_credential_lifecycle",
+      "rationale": "The published import route refuses transient inline tokens because scheduled pulls cannot reuse them. Use a public repository or an existing stored credential.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "ImportGithubSkills",
+      "field": "gitlabTokenId",
+      "classification": "manual_encoding",
+      "rationale": "git_source.gitlab_token_id selects the stored Credential definition UUID, including both-scope definition-ID references.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "ImportGithubSkills",
+      "field": "path",
+      "classification": "covered_by_canonical_inputs",
+      "rationale": "The provider selects exactly one repository-root-relative git_source.skill_path; repo_url can carry the supported URL/ref selection. A separate discovery filter is not a second Skill identity.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "ImportGithubSkills",
+      "field": "provider",
+      "classification": "manual_encoding",
+      "rationale": "git_source.provider selects GitHub or GitLab and is validated against its credential.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "ImportGithubSkills",
+      "field": "repoUrl",
+      "classification": "manual_encoding",
+      "rationale": "git_source.repo_url selects the repository and optional ref; immutable URL refs are supported.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "ImportGithubSkills",
+      "field": "skillPaths",
+      "classification": "manual_encoding",
+      "rationale": "One git_source.skill_path is encoded as a one-element path list. A skipped existing name is never adopted implicitly.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "ImportGithubSkills",
+      "field": "sync",
+      "classification": "manual_encoding",
+      "rationale": "git_source.sync_interval configures the durable pull schedule. Import remains private until settings and sharing succeed.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
       "operation": "UpdateResourcePermissions",
       "field": "grants",
       "classification": "manual_encoding",
@@ -1338,6 +1411,38 @@
       "classification": "derived",
       "rationale": "Version concurrency is derived from the refreshed latest_version; users cannot select a stale write revision.",
       "source": "internal/provider/resource_skill.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "UpdateSkillGithubSync",
+      "field": "disconnect",
+      "classification": "lifecycle_owned",
+      "rationale": "Changing between authored and Git ownership is an explicit replacement boundary. External disconnects are observed and repaired; no imperative disconnect toggle is exposed.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "UpdateSkillGithubSync",
+      "field": "interval",
+      "classification": "manual_encoding",
+      "rationale": "git_source.sync_interval changes the schedule without resending source or files.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "UpdateSkillGithubSync",
+      "field": "source",
+      "classification": "manual_encoding",
+      "rationale": "The complete git_source selection/authentication changes in place; external disconnect drift reconnects through this published source contract.",
+      "source": "internal/provider/skill_git_source.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "UpdateSkillGithubSync",
+      "field": "syncNow",
+      "classification": "execution_command",
+      "rationale": "An immediate pull queues a run rather than defining persistent configuration. Desired state is the source and pull interval.",
+      "source": "internal/provider/skill_git_source.go"
     },
     {
       "resource": "archestra_team",

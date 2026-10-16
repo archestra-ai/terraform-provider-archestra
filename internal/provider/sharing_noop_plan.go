@@ -24,7 +24,11 @@ func (r *RuntimeCredentialResource) ModifyPlan(_ context.Context, req resource.M
 func (r *ProjectResource) ModifyPlan(_ context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
 	preserveManagedNoopPlan(req, resp)
 }
-func (r *SkillResource) ModifyPlan(_ context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+func (r *SkillResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+	if modifySkillContentPlan(ctx, req, resp) || resp.Diagnostics.HasError() {
+		return
+	}
+	req.Plan = resp.Plan
 	preserveManagedNoopPlan(req, resp)
 }
 func (r *LLMProviderApiKeyResource) ModifyPlan(_ context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {

@@ -11849,6 +11849,41 @@
         },
         {
           "api_forbidden_request_fields": [],
+          "builder": "ImportGithubSkills",
+          "declared_request_field_mappings": {
+            "initialGrants": "permissions"
+          },
+          "method": "POST",
+          "path": "/api/skills/github/import",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "githubAppConfigId",
+            "githubPatId",
+            "githubToken",
+            "gitlabTokenId",
+            "initialGrants",
+            "path",
+            "provider",
+            "repoUrl",
+            "skillPaths",
+            "sync"
+          ],
+          "request_fields_without_declared_mapping": [
+            "githubAppConfigId",
+            "githubPatId",
+            "githubToken",
+            "gitlabTokenId",
+            "path",
+            "provider",
+            "repoUrl",
+            "skillPaths",
+            "sync"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
           "builder": "UpdateResourcePermissions",
           "declared_request_field_mappings": {},
           "method": "PUT",
@@ -11893,11 +11928,33 @@
             "baseVersion"
           ],
           "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateSkillGithubSync",
+          "declared_request_field_mappings": {},
+          "method": "PATCH",
+          "path": "/api/skills/{}/github-sync",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "disconnect",
+            "interval",
+            "source",
+            "syncNow"
+          ],
+          "request_fields_without_declared_mapping": [
+            "disconnect",
+            "interval",
+            "source",
+            "syncNow"
+          ],
+          "retired_request_fields": []
         }
       ],
       "fields": [
         {
-          "computed": false,
+          "computed": true,
           "optional": true,
           "path": "agent_name",
           "required": false,
@@ -11905,7 +11962,7 @@
           "write_only": false
         },
         {
-          "computed": false,
+          "computed": true,
           "optional": true,
           "path": "allowed_tools",
           "required": false,
@@ -11921,7 +11978,7 @@
           "write_only": false
         },
         {
-          "computed": false,
+          "computed": true,
           "optional": true,
           "path": "compatibility",
           "required": false,
@@ -11929,10 +11986,10 @@
           "write_only": false
         },
         {
-          "computed": false,
-          "optional": false,
+          "computed": true,
+          "optional": true,
           "path": "content",
-          "required": true,
+          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -11969,10 +12026,10 @@
           "write_only": false
         },
         {
-          "computed": false,
-          "optional": false,
+          "computed": true,
+          "optional": true,
           "path": "description",
-          "required": true,
+          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -12001,10 +12058,10 @@
           "write_only": false
         },
         {
-          "computed": false,
-          "optional": false,
+          "computed": true,
+          "optional": true,
           "path": "files",
-          "required": true,
+          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -12021,6 +12078,70 @@
           "optional": false,
           "path": "files.encoding",
           "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "git_source",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "git_source.github_app_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "git_source.github_pat_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "git_source.gitlab_token_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "git_source.provider",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "git_source.repo_url",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "git_source.skill_path",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "git_source.sync_interval",
+          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -12137,7 +12258,7 @@
           "write_only": false
         },
         {
-          "computed": false,
+          "computed": true,
           "optional": true,
           "path": "license",
           "required": false,
@@ -12145,7 +12266,7 @@
           "write_only": false
         },
         {
-          "computed": false,
+          "computed": true,
           "optional": true,
           "path": "metadata",
           "required": false,
@@ -12153,10 +12274,10 @@
           "write_only": false
         },
         {
-          "computed": false,
-          "optional": false,
+          "computed": true,
+          "optional": true,
           "path": "name",
-          "required": true,
+          "required": false,
           "sensitive": false,
           "write_only": false
         },
@@ -13522,11 +13643,6 @@
       "path": "/api/service-accounts/bulk"
     },
     {
-      "method": "PATCH",
-      "operation_id": "updateSkillGithubSync",
-      "path": "/api/skills/{}/github-sync"
-    },
-    {
       "method": "POST",
       "operation_id": "inspectA2aRemoteAgent",
       "path": "/api/a2a/remote-agents/inspect"
@@ -14290,11 +14406,6 @@
       "method": "POST",
       "operation_id": "discoverGithubSkills",
       "path": "/api/skills/github/discover"
-    },
-    {
-      "method": "POST",
-      "operation_id": "importGithubSkills",
-      "path": "/api/skills/github/import"
     },
     {
       "method": "POST",

@@ -47,13 +47,13 @@ func resolverCollectionGuard(value ast.Expr) bool {
 	if !ok || inner.Op != token.LOR {
 		return false
 	}
-	var fields []string
-	for _, expression := range []ast.Expr{inner.X, inner.Y, outer.Y} {
+	var fields [3]string
+	for index, expression := range []ast.Expr{inner.X, inner.Y, outer.Y} {
 		comparison, ok := expression.(*ast.BinaryExpr)
 		if !ok || comparison.Op != token.NEQ || resolverExpression(comparison.Y) != "nil" {
 			return false
 		}
-		fields = append(fields, resolverExpression(comparison.X))
+		fields[index] = resolverExpression(comparison.X)
 	}
 	return fields[1] == fields[0]+"Refs" && fields[2] == fields[0]+"Selector"
 }
@@ -174,13 +174,13 @@ func resolverSingleGuard(value ast.Expr) bool {
 	if !ok || outer.Op != token.LOR {
 		return false
 	}
-	var fields []string
-	for _, expression := range []ast.Expr{outer.X, outer.Y} {
+	var fields [2]string
+	for index, expression := range []ast.Expr{outer.X, outer.Y} {
 		comparison, ok := expression.(*ast.BinaryExpr)
 		if !ok || comparison.Op != token.NEQ || resolverExpression(comparison.Y) != "nil" {
 			return false
 		}
-		fields = append(fields, resolverExpression(comparison.X))
+		fields[index] = resolverExpression(comparison.X)
 	}
 	return strings.HasSuffix(fields[0], "Ref") && fields[1] == strings.TrimSuffix(fields[0], "Ref")+"Selector"
 }

@@ -34,7 +34,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_service_account` | True | True | none detected | UpdateResourcePermissions: grants, revision | 3 |
 | `archestra_service_account_api_key` | True | True | none detected | none detected | 0 |
 | `archestra_share_link` | True | True | none detected | none detected | 3 |
-| `archestra_skill` | True | True | none detected | CreateSkill: allowedTools; UpdateResourcePermissions: grants, revision; UpdateSkill: allowedTools, baseVersion | 2 |
+| `archestra_skill` | True | True | none detected | CreateSkill: allowedTools; ImportGithubSkills: githubAppConfigId, githubPatId, githubToken, gitlabTokenId, path, provider, repoUrl, skillPaths, sync; UpdateResourcePermissions: grants, revision; UpdateSkill: allowedTools, baseVersion; UpdateSkillGithubSync: disconnect, interval, source, syncNow | 2 |
 | `archestra_team` | True | True | none detected | AddTeamExternalGroup: groupIdentifier; AddTeamMember: role, userId; SetTeamVaultFolder: vaultPath; UpdateTeamMember: role | 2 |
 | `archestra_virtual_key` | True | True | none detected | UpdateResourcePermissions: grants, revision | 0 |
 

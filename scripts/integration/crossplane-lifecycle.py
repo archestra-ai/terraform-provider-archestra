@@ -34,6 +34,7 @@ CASE_RESOURCES = {
     'organization': {'Settings'}, 'organization-defaults': {'OrganizationInlineDefaults'},
     'identity': {'Provider'}, 'tools': {'Server'}, 'credential': {'Credential'},
     'schedule': {'Schedule'}, 'api-key': {'APIKey'}, 'skill': {'Skill'},
+    'git-skills': {'SkillGitSource', 'SkillGitSourceInit'},
     'project-instructions': {'ProjectInstructions'},
     'parent-sharing': {kind + 'Sharing' for kind in ('Environment', 'Agent', 'Gateway', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'Plugin', 'Project', 'KnowledgeBase', 'RegistryEntry', 'Skill', 'Credential', 'ModelProvider')},
 }
@@ -1502,6 +1503,108 @@ def main():
                            sharing_clear_in_place='passed', empty_sharing_drift_repair='passed', identity_preserved=True, delete='passed')
                 delete(secret)
                 delete(team)
+
+
+            if 'git-skills' in scope_cases:
+                fixture_commit = '411935fb1648ca812dff1f3503c0be77db65bcf3'
+                alternate_commit = '453ee6fb4cb0ad3564f588114dbdaf891a10a488'
+                source = {'repoUrl': 'https://github.com/archestra-ai/terraform-provider-archestra/tree/' + fixture_commit,
+                          'skillPath': 'scripts/integration/fixtures/skills/synthetic', 'syncInterval': '1d'}
+                team, team_id, _ = create(scope, 'team', 'Team', 'teams',
+                    {'name': 'cp-git-skill-team-' + run + '-' + scope, 'members': []}, '-git-skill')
+                environment, environment_id, _ = create(scope, 'environment', 'Environment', 'environments',
+                    {'name': 'cp-git-skill-env-' + run + '-' + scope}, '-git-skill')
+                configured = {'gitSource': source, 'icon': 'book', 'environmentIds': [environment_id],
+                              'labels': [{'key': 'purpose', 'value': 'git-source'}],
+                              'permissions': [{'subjectType': 'team', 'subjectId': team_id, 'actions': ['read']}]}
+                lease, identifier, _ = create(scope, 'skill', 'Skill', 'skills', configured, '-git-source')
+                path = '/api/skills/' + identifier
+                permission_path = '/api/resource-permissions/skill/' + identifier
+
+                def git_skill_value():
+                    code, value = api(path)
+                    if code != 200:
+                        raise RuntimeError('Git Skill read failed: HTTP ' + str(code))
+                    return value
+
+                def git_skill_additional_grants():
+                    code, value = api(permission_path)
+                    if code != 200:
+                        raise RuntimeError('Git Skill permissions read failed')
+                    return [g for g in value['grants'] if g['subject'] != {'type': 'user', 'id': value.get('ownerId')}]
+
+                initial = git_skill_value()
+                if (initial['name'] != 'provider-synthetic-import' or initial['sourceCommit'] != fixture_commit
+                        or initial['latestVersion'] != 1 or initial['icon'] != 'book'
+                        or {e['id'] for e in initial['environments']} != {environment_id}
+                        or not any(g['subject'] == {'type': 'team', 'id': team_id} for g in git_skill_additional_grants())):
+                    raise RuntimeError('Git Skill import did not apply source, environment, presentation and sharing')
+                patch(lease, {'icon': 'books', 'environmentIds': [], 'labels': [], 'permissions': [],
+                              'gitSource': {'syncInterval': '1h'}})
+                wait('Git Skill settings and sharing update', lambda: condition(lease, 'True')
+                     and git_skill_value()['icon'] == 'books' and not git_skill_value()['environments']
+                     and not git_skill_value()['labels'] and not git_skill_additional_grants()
+                     and git_skill_value()['githubSyncInterval'] == '1h')
+                if git_skill_value()['latestVersion'] != 1:
+                    raise RuntimeError('Git Skill settings forked repository-owned content')
+                alternate = 'https://github.com/archestra-ai/terraform-provider-archestra/tree/' + alternate_commit
+                patch(lease, {'gitSource': {'repoUrl': alternate}})
+                wait('Git Skill source change in place', lambda: condition(lease, 'True')
+                     and git_skill_value()['sourceCommit'] == alternate_commit)
+                if api(path + '/github-sync', {'interval': '1d'}, 'PATCH')[0] != 200:
+                    raise RuntimeError('Unable to inject owned Git Skill interval drift')
+                wait('Git Skill interval drift repair', lambda: git_skill_value()['githubSyncInterval'] == '1h')
+                if api(path + '/github-sync', {'disconnect': True}, 'PATCH')[0] != 200:
+                    raise RuntimeError('Unable to inject owned Git Skill disconnect drift')
+                wait('Git Skill reconnect after external disconnect', lambda: condition(lease, 'True')
+                     and git_skill_value()['githubSyncInterval'] == '1h')
+                if observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != identifier:
+                    raise RuntimeError('Git Skill settings, source, or reconnect replaced identity')
+                immutable_update(lease,
+                    {'gitSource': None, 'name': 'cp-authored-mode-' + run, 'description': 'Authored mode',
+                     'content': 'Synthetic authored body.', 'files': {}},
+                    {'gitSource': {'repoUrl': alternate, 'skillPath': source['skillPath'], 'syncInterval': '1h'},
+                     'name': None, 'description': None, 'content': None, 'files': None})
+                kube(*lease[0], 'patch', lease[1], lease[2], '--type=merge',
+                     '-p', json.dumps({'spec': {'managementPolicies': ['Create', 'Observe', 'Update', 'LateInitialize']}}))
+                orphan = ([], 'api-fixture', path)
+                leases.append(orphan)
+                delete(lease)
+                if api(path)[0] != 200:
+                    raise RuntimeError('Orphaning deleted the owned Git Skill')
+                adopted_fields = {'gitSource': {'repoUrl': alternate, 'skillPath': source['skillPath'], 'syncInterval': '1h'},
+                                  'icon': 'books', 'environmentIds': [], 'labels': [], 'permissions': []}
+                adopted, adopted_id, _ = create(scope, 'skill', 'Skill', 'skills', adopted_fields,
+                                                '-git-adopt', external_name=identifier)
+                if adopted_id != identifier or git_skill_value()['sourceCommit'] != alternate_commit:
+                    raise RuntimeError('Git Skill UUID adoption changed source or identity')
+                leases.remove(orphan)
+                delete(adopted)
+                if api(path)[0] != 404:
+                    raise RuntimeError('Adopted Git Skill survived normal deletion')
+                delete(environment)
+                delete(team)
+                record('SkillGitSource', scope, create='passed', settings_and_sharing='passed',
+                       settings_preserve_content_version=True, environment_and_labels_clear='passed',
+                       source_change_in_place='passed', interval_drift_repair='passed',
+                       disconnected_source_reconnect='passed', authored_mode_replacement_refused='passed',
+                       orphan='passed', uuid_adoption='passed', identity_preserved=True, delete='soft-delete passed')
+
+                init, init_id, _ = create(scope, 'skill', 'Skill', 'skills',
+                    {'icon': 'book', 'environmentIds': [], 'labels': [], 'permissions': []}, '-git-init',
+                    init_fields={'gitSource': source})
+                init_path = '/api/skills/' + init_id
+                if api(init_path)[1]['sourceCommit'] != fixture_commit:
+                    raise RuntimeError('Git Skill initProvider source did not create its content')
+                patch(init, {'icon': 'books'})
+                wait('Git Skill initProvider metadata update', lambda: api(init_path)[1]['icon'] == 'books')
+                if observation(init)['metadata']['annotations']['crossplane.io/external-name'] != init_id:
+                    raise RuntimeError('Git Skill initProvider metadata changed identity')
+                delete(init)
+                if api(init_path)[0] != 404:
+                    raise RuntimeError('Git Skill initProvider fixture survived normal deletion')
+                record('SkillGitSourceInit', scope, parameter_source='initProvider', create='passed',
+                       settings_update='passed', identity_preserved=True, delete='soft-delete passed')
 
 
             if 'skill' in scope_cases:

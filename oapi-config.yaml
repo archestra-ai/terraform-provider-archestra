@@ -13,6 +13,8 @@ output-options:
     - createAgent
     - createAgentDelegation
     - createSkill
+    - importGithubSkills
+    - updateSkillGithubSync
     - getSkill
     - updateSkill
     - deleteSkill
