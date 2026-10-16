@@ -11,10 +11,10 @@
     "covered_creation_only": 3,
     "derived": 5,
     "lifecycle_owned": 4,
-    "manual_encoding": 101,
-    "other_source_subtype": 11,
+    "manual_encoding": 111,
     "other_subtype": 23,
     "related_resource": 1,
+    "separate_credential_lifecycle": 1,
     "server_owned": 18
   },
   "note": "Actual 29 registered owners and transitive typed helper calls. All 172 raw top-level request-field occurrences have an explicit disposition; manual encoding, alternate source/subtype fields and server-owned values are not missing-feature counts. Remaining durable API domains are tracked separately.",
@@ -1135,88 +1135,88 @@
       "resource": "archestra_plugin",
       "operation": "ImportGithubPlugin",
       "field": "approvedCommitSha",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "classification": "manual_encoding",
+      "rationale": "Unified plugin.git_source encodes the selected repository, approved commit, subtree, exclusions, tracking and existing credential references into the Git import request. The same resource adopts manual and Git-backed packages; source-selection changes replace approved bytes while tracking/authentication update in place.",
       "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_plugin",
       "operation": "ImportGithubPlugin",
       "field": "exclude",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "classification": "manual_encoding",
+      "rationale": "Unified plugin.git_source encodes the selected repository, approved commit, subtree, exclusions, tracking and existing credential references into the Git import request. The same resource adopts manual and Git-backed packages; source-selection changes replace approved bytes while tracking/authentication update in place.",
       "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_plugin",
       "operation": "ImportGithubPlugin",
       "field": "githubAppConfigId",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "classification": "manual_encoding",
+      "rationale": "Unified plugin.git_source encodes the selected repository, approved commit, subtree, exclusions, tracking and existing credential references into the Git import request. The same resource adopts manual and Git-backed packages; source-selection changes replace approved bytes while tracking/authentication update in place.",
       "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_plugin",
       "operation": "ImportGithubPlugin",
       "field": "githubPatId",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "classification": "manual_encoding",
+      "rationale": "Unified plugin.git_source encodes the selected repository, approved commit, subtree, exclusions, tracking and existing credential references into the Git import request. The same resource adopts manual and Git-backed packages; source-selection changes replace approved bytes while tracking/authentication update in place.",
       "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_plugin",
       "operation": "ImportGithubPlugin",
       "field": "githubToken",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "classification": "separate_credential_lifecycle",
+      "rationale": "The plugin git_source accepts existing GitHub App, PAT or GitLab credential IDs. Manage a stored credential through its own resource rather than duplicating an inline token on the Git import call.",
       "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_plugin",
       "operation": "ImportGithubPlugin",
       "field": "gitlabTokenId",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "classification": "manual_encoding",
+      "rationale": "Unified plugin.git_source encodes the selected repository, approved commit, subtree, exclusions, tracking and existing credential references into the Git import request. The same resource adopts manual and Git-backed packages; source-selection changes replace approved bytes while tracking/authentication update in place.",
       "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_plugin",
       "operation": "ImportGithubPlugin",
       "field": "provider",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "classification": "manual_encoding",
+      "rationale": "Unified plugin.git_source encodes the selected repository, approved commit, subtree, exclusions, tracking and existing credential references into the Git import request. The same resource adopts manual and Git-backed packages; source-selection changes replace approved bytes while tracking/authentication update in place.",
       "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_plugin",
       "operation": "ImportGithubPlugin",
       "field": "ref",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "classification": "manual_encoding",
+      "rationale": "Unified plugin.git_source encodes the selected repository, approved commit, subtree, exclusions, tracking and existing credential references into the Git import request. The same resource adopts manual and Git-backed packages; source-selection changes replace approved bytes while tracking/authentication update in place.",
       "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_plugin",
       "operation": "ImportGithubPlugin",
       "field": "repoUrl",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "classification": "manual_encoding",
+      "rationale": "Unified plugin.git_source encodes the selected repository, approved commit, subtree, exclusions, tracking and existing credential references into the Git import request. The same resource adopts manual and Git-backed packages; source-selection changes replace approved bytes while tracking/authentication update in place.",
       "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_plugin",
       "operation": "ImportGithubPlugin",
       "field": "subdir",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "classification": "manual_encoding",
+      "rationale": "Unified plugin.git_source encodes the selected repository, approved commit, subtree, exclusions, tracking and existing credential references into the Git import request. The same resource adopts manual and Git-backed packages; source-selection changes replace approved bytes while tracking/authentication update in place.",
       "source": "internal/provider/resource_git_plugin.go"
     },
     {
       "resource": "archestra_plugin",
       "operation": "ImportGithubPlugin",
       "field": "trackingRef",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes the Git import helper, but manual creation uses createPlugin. Its immutable source discriminator rejects Git adoption; these source inputs belong to archestra_git_plugin.",
+      "classification": "manual_encoding",
+      "rationale": "Unified plugin.git_source encodes the selected repository, approved commit, subtree, exclusions, tracking and existing credential references into the Git import request. The same resource adopts manual and Git-backed packages; source-selection changes replace approved bytes while tracking/authentication update in place.",
       "source": "internal/provider/resource_git_plugin.go"
     },
     {

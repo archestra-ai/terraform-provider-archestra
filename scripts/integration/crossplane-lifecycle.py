@@ -30,7 +30,7 @@ CASE_RESOURCES = {
     'routing-credentials': {'VirtualKey', 'OAuthClient'}, 'remote-agents': {'RemoteAgent'},
     'extensions': {'Directory', 'ServiceAccount', 'ServiceAccountAPIKey', 'GatewaySubagentControl', 'InstallationControls'},
     'core': {'Agent', 'Environment', 'Team', 'Gateway', 'Project', 'KnowledgeBase', 'Role'},
-    'catalog': {'RegistryEntry'}, 'limit': {'Limit'}, 'llm': {'Model', 'ModelProvider'},
+    'catalog': {'RegistryEntry'}, 'limit': {'Limit'}, 'llm': {'Model', 'ModelProvider', 'ModelSharing'},
     'organization': {'Settings'}, 'organization-defaults': {'OrganizationInlineDefaults'},
     'identity': {'Provider'}, 'tools': {'Server'}, 'credential': {'Credential'},
     'schedule': {'Schedule'}, 'api-key': {'APIKey'}, 'skill': {'Skill'},
@@ -45,7 +45,7 @@ def resume_results(path, evidence):
     for key in ('terraform_sha256', 'controller_sha256', 'kubernetes_context', 'api_url', 'api_spec_sha256'):
         if previous.get(key) != evidence.get(key):
             raise ValueError('Resume refused: different ' + key)
-    if previous.get('cleanup') != 'passed':
+    if previous.get('cleanup') != 'passed' or previous.get('api_cleanup') not in (None, 'passed'):
         raise ValueError('Resume refused: previous owned fixtures need normal cleanup')
     return previous['results']
 
@@ -1165,6 +1165,47 @@ def main():
                                 'adopted_model_preserved': True})
                 save()
                 print(json.dumps(results[-1]), flush=True)
+                # The discovered model has its own sharing policy even though delete only resets overrides.
+                policy_path = '/api/resource-permissions/llmModel/' + model_id
+                original_policy = api(policy_path)[1]
+                if not original_policy:
+                    raise RuntimeError('Unable to snapshot discovered-model sharing')
+                owner_subject = {'type': 'user', 'id': original_policy.get('ownerId')}
+                owner_grants = [g for g in original_policy['grants'] if g['subject'] == owner_subject]
+                injected_grants = owner_grants + [{'subject': {'type': 'organization', 'id': '*'}, 'actions': ['read']}]
+                def canonical_model_grants(grants):
+                    return sorted((g['subject']['type'], g['subject']['id'], tuple(sorted(g['actions']))) for g in grants)
+                def model_additional_grants():
+                    return [g for g in api(policy_path)[1]['grants'] if g['subject'] != owner_subject]
+                sharing_model = None
+                evidence['api_cleanup'] = 'pending'
+                try:
+                    sharing_model, adopted_id, _ = create(scope, 'llm', 'Model', 'models', {
+                        'modelId': 'llama3', 'llmProvider': 'ollama-native', 'permissions': []}, '-sharing', external_name=model_id)
+                    wait('Adopted model sharing clear', lambda: not model_additional_grants())
+                    current = api(policy_path)[1]
+                    if api(policy_path, {'revision': current['revision'], 'grants': injected_grants}, 'PUT')[0] != 200:
+                        raise RuntimeError('Unable to inject owned model sharing drift')
+                    wait('Adopted model empty-sharing drift repair', lambda: not model_additional_grants())
+                    if adopted_id != model_id or observation(sharing_model)['metadata']['annotations']['crossplane.io/external-name'] != model_id:
+                        raise RuntimeError('Sharing update replaced the adopted model')
+                    delete(sharing_model)
+                finally:
+                    if sharing_model in leases:
+                        delete(sharing_model)
+                    current = api(policy_path)[1]
+                    actual = canonical_model_grants(current['grants'])
+                    if actual not in [canonical_model_grants(value) for value in (original_policy['grants'], owner_grants, injected_grants)]:
+                        raise RuntimeError('Concurrent model sharing edit; restore refused')
+                    if actual != canonical_model_grants(original_policy['grants']):
+                        if api(policy_path, {'revision': current['revision'], 'grants': original_policy['grants']}, 'PUT')[0] != 200:
+                            raise RuntimeError('Unable to restore discovered-model sharing')
+                    if canonical_model_grants(api(policy_path)[1]['grants']) != canonical_model_grants(original_policy['grants']):
+                        raise RuntimeError('Model sharing restore was not confirmed')
+                    evidence['api_cleanup'] = 'passed'
+                record('ModelSharing', scope, adoption='passed', explicit_empty_clear='passed',
+                       sharing_only_drift_repair='passed', identity_preserved=True, delete_retains_discovered_model=True)
+
                 delete(key_lease)
                 if api(key_path)[0] != 404:
                     raise RuntimeError('ModelProvider delete did not remove the key')
@@ -1220,6 +1261,7 @@ def main():
                             raise RuntimeError('Concurrent spending-default edit; cleanup refused')
                         if api('/api/default-user-limits/' + row['id'], method='DELETE')[0] not in (200, 204, 404):
                             raise RuntimeError('Unable to delete owned spending default')
+                evidence['api_cleanup'] = 'pending'
                 try:
                     fields = {'font': org['customFont'], 'colorTheme': org['theme'],
                               'environmentDefaults': {'agentsRef': {'name': first[2]}, 'mcpGatewaysRef': {'name': second[2]}},
@@ -1258,16 +1300,19 @@ def main():
                     if obj['spec']['forProvider']['defaultUserLimits'] != {} or obj['metadata']['annotations']['crossplane.io/external-name'] != identifier or not condition(settings, 'True'):
                         raise RuntimeError('Empty collections or singleton identity changed across reconciliation')
                     delete(settings)
-                    record('OrganizationInlineDefaults', scope, create='passed', environment_references='passed', update='passed', drift_repair='passed',
-                           omission_preserves='passed', empty_collections_clear='passed', spending_row_identity_preserved=True,
-                           delete_preserves_singleton=api('/api/organization')[0] == 200)
                 finally:
                     if settings in leases:
                         delete(settings)
                     cleanup_defaults()
+                    if not same_grants(policies()['grants'], baseline_policy['grants']) or rows() or any(defaults().get(k) != baseline_defaults.get(k) for k in ('agent', 'mcpGateway')):
+                        raise RuntimeError('Organization defaults restore was not confirmed')
+                    evidence['api_cleanup'] = 'passed'
                 delete(second)
                 delete(first)
                 delete(recipient)
+                record('OrganizationInlineDefaults', scope, create='passed', environment_references='passed', update='passed', drift_repair='passed',
+                       omission_preserves='passed', empty_collections_clear='passed', spending_row_identity_preserved=True,
+                       delete_preserves_singleton=api('/api/organization')[0] == 200)
 
             if 'organization' in scope_cases:
                 original = api('/api/organization')[1].get('appName')
@@ -1655,8 +1700,8 @@ def main():
         evidence['error'] = str(error)
         raise
     finally:
-        errors = []
-        for lease in reversed(leases.copy()):
+        errors = ['Global API restore is unconfirmed; owned fixtures retained'] if evidence.get('api_cleanup') == 'pending' else []
+        for lease in ([] if errors else reversed(leases.copy())):
             try:
                 delete(lease)
             except Exception as error:

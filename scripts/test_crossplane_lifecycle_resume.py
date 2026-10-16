@@ -22,6 +22,9 @@ class ResumeEvidenceTests(unittest.TestCase):
                 with self.subTest(field=field), self.assertRaises(ValueError):
                     lifecycle.resume_results(path, {**proof, field: 'different'})
             self.assertEqual(lifecycle.resume_results(path, proof), [])
+            path.write_text(json.dumps({**proof, 'api_cleanup': 'pending'}))
+            with self.assertRaises(ValueError):
+                lifecycle.resume_results(path, proof)
             path.write_text(json.dumps({**proof, 'cleanup': 'blocked'}))
             with self.assertRaises(ValueError):
                 lifecycle.resume_results(path, proof)
@@ -30,6 +33,8 @@ class ResumeEvidenceTests(unittest.TestCase):
         records = [{'resource': 'ModelProvider', 'scope': 'cluster'}]
         self.assertNotIn('llm', lifecycle.completed_cases(records, 'cluster'))
         records.append({'resource': 'Model', 'scope': 'cluster'})
+        self.assertNotIn('llm', lifecycle.completed_cases(records, 'cluster'))
+        records.append({'resource': 'ModelSharing', 'scope': 'cluster'})
         self.assertIn('llm', lifecycle.completed_cases(records, 'cluster'))
         self.assertNotIn('llm', lifecycle.completed_cases(records, 'namespaced'))
 
