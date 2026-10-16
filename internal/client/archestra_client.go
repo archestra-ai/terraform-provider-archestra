@@ -1649,8 +1649,8 @@ const (
 
 // Defines values for UpdatePluginJSONBodySupportedPlatforms.
 const (
-	Posix   UpdatePluginJSONBodySupportedPlatforms = "posix"
-	Windows UpdatePluginJSONBodySupportedPlatforms = "windows"
+	UpdatePluginJSONBodySupportedPlatformsPosix   UpdatePluginJSONBodySupportedPlatforms = "posix"
+	UpdatePluginJSONBodySupportedPlatformsWindows UpdatePluginJSONBodySupportedPlatforms = "windows"
 )
 
 // Defines values for CreateProjectJSONBodyInitialGrantsActions.
@@ -1845,6 +1845,12 @@ const (
 // Defines values for CreateServiceAccountJSONBodyInitialGrantsSubject4Type.
 const (
 	CreateServiceAccountJSONBodyInitialGrantsSubject4TypeOrganization CreateServiceAccountJSONBodyInitialGrantsSubject4Type = "organization"
+)
+
+// Defines values for CreateSkillShareLinkJSONBodyPluginPlatform.
+const (
+	CreateSkillShareLinkJSONBodyPluginPlatformPosix   CreateSkillShareLinkJSONBodyPluginPlatform = "posix"
+	CreateSkillShareLinkJSONBodyPluginPlatformWindows CreateSkillShareLinkJSONBodyPluginPlatform = "windows"
 )
 
 // Defines values for CreateSkillJSONBodyFilesEncoding.
@@ -5184,6 +5190,23 @@ type UpdateServiceAccountTokenJSONBody struct {
 	Name      *string     `json:"name,omitempty"`
 }
 
+// GetSkillShareLinksParams defines parameters for GetSkillShareLinks.
+type GetSkillShareLinksParams struct {
+	SkillId *openapi_types.UUID `form:"skillId,omitempty" json:"skillId,omitempty"`
+}
+
+// CreateSkillShareLinkJSONBody defines parameters for CreateSkillShareLink.
+type CreateSkillShareLinkJSONBody struct {
+	ExpiresAt      *time.Time                                  `json:"expiresAt"`
+	Name           *string                                     `json:"name,omitempty"`
+	PluginIds      *[]openapi_types.UUID                       `json:"pluginIds,omitempty"`
+	PluginPlatform *CreateSkillShareLinkJSONBodyPluginPlatform `json:"pluginPlatform,omitempty"`
+	SkillIds       *[]openapi_types.UUID                       `json:"skillIds,omitempty"`
+}
+
+// CreateSkillShareLinkJSONBodyPluginPlatform defines parameters for CreateSkillShareLink.
+type CreateSkillShareLinkJSONBodyPluginPlatform string
+
 // CreateSkillJSONBody defines parameters for CreateSkill.
 type CreateSkillJSONBody struct {
 	// AllowedTools Tools the skill expects, overriding the SKILL.md `allowed-tools` frontmatter. Omit to use the frontmatter; pass [] to clear.
@@ -5627,6 +5650,9 @@ type CreateServiceAccountTokenJSONRequestBody CreateServiceAccountTokenJSONBody
 
 // UpdateServiceAccountTokenJSONRequestBody defines body for UpdateServiceAccountToken for application/json ContentType.
 type UpdateServiceAccountTokenJSONRequestBody UpdateServiceAccountTokenJSONBody
+
+// CreateSkillShareLinkJSONRequestBody defines body for CreateSkillShareLink for application/json ContentType.
+type CreateSkillShareLinkJSONRequestBody CreateSkillShareLinkJSONBody
 
 // CreateSkillJSONRequestBody defines body for CreateSkill for application/json ContentType.
 type CreateSkillJSONRequestBody CreateSkillJSONBody
@@ -6306,6 +6332,17 @@ type ClientInterface interface {
 	UpdateServiceAccountTokenWithBody(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateServiceAccountToken(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, body UpdateServiceAccountTokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetSkillShareLinks request
+	GetSkillShareLinks(ctx context.Context, params *GetSkillShareLinksParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateSkillShareLinkWithBody request with any body
+	CreateSkillShareLinkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateSkillShareLink(ctx context.Context, body CreateSkillShareLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RevokeSkillShareLink request
+	RevokeSkillShareLink(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateSkillWithBody request with any body
 	CreateSkillWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -8999,6 +9036,54 @@ func (c *Client) UpdateServiceAccountTokenWithBody(ctx context.Context, id opena
 
 func (c *Client) UpdateServiceAccountToken(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, body UpdateServiceAccountTokenJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateServiceAccountTokenRequest(c.Server, id, tokenId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetSkillShareLinks(ctx context.Context, params *GetSkillShareLinksParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSkillShareLinksRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSkillShareLinkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSkillShareLinkRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateSkillShareLink(ctx context.Context, body CreateSkillShareLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSkillShareLinkRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RevokeSkillShareLink(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRevokeSkillShareLinkRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -15506,6 +15591,129 @@ func NewUpdateServiceAccountTokenRequestWithBody(server string, id openapi_types
 	return req, nil
 }
 
+// NewGetSkillShareLinksRequest generates requests for GetSkillShareLinks
+func NewGetSkillShareLinksRequest(server string, params *GetSkillShareLinksParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skill-share-links")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.SkillId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "skillId", runtime.ParamLocationQuery, *params.SkillId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateSkillShareLinkRequest calls the generic CreateSkillShareLink builder with application/json body
+func NewCreateSkillShareLinkRequest(server string, body CreateSkillShareLinkJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateSkillShareLinkRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateSkillShareLinkRequestWithBody generates requests for CreateSkillShareLink with any type of body
+func NewCreateSkillShareLinkRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skill-share-links")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRevokeSkillShareLinkRequest generates requests for RevokeSkillShareLink
+func NewRevokeSkillShareLinkRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/skill-share-links/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCreateSkillRequest calls the generic CreateSkill builder with application/json body
 func NewCreateSkillRequest(server string, body CreateSkillJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -17046,6 +17254,17 @@ type ClientWithResponsesInterface interface {
 	UpdateServiceAccountTokenWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateServiceAccountTokenResponse, error)
 
 	UpdateServiceAccountTokenWithResponse(ctx context.Context, id openapi_types.UUID, tokenId openapi_types.UUID, body UpdateServiceAccountTokenJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateServiceAccountTokenResponse, error)
+
+	// GetSkillShareLinksWithResponse request
+	GetSkillShareLinksWithResponse(ctx context.Context, params *GetSkillShareLinksParams, reqEditors ...RequestEditorFn) (*GetSkillShareLinksResponse, error)
+
+	// CreateSkillShareLinkWithBodyWithResponse request with any body
+	CreateSkillShareLinkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSkillShareLinkResponse, error)
+
+	CreateSkillShareLinkWithResponse(ctx context.Context, body CreateSkillShareLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSkillShareLinkResponse, error)
+
+	// RevokeSkillShareLinkWithResponse request
+	RevokeSkillShareLinkWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*RevokeSkillShareLinkResponse, error)
 
 	// CreateSkillWithBodyWithResponse request with any body
 	CreateSkillWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSkillResponse, error)
@@ -33005,6 +33224,286 @@ func (r UpdateServiceAccountTokenResponse) StatusCode() int {
 	return 0
 }
 
+type GetSkillShareLinksResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Links []struct {
+			CreatedAt        time.Time          `json:"createdAt"`
+			CreatedByUserId  string             `json:"createdByUserId"`
+			ExpiresAt        *time.Time         `json:"expiresAt"`
+			Id               openapi_types.UUID `json:"id"`
+			LastUsedAt       *time.Time         `json:"lastUsedAt"`
+			MarketplaceName  string             `json:"marketplaceName"`
+			Name             *string            `json:"name"`
+			OrganizationId   string             `json:"organizationId"`
+			PluginClientType *string            `json:"pluginClientType"`
+			PluginPlatform   *string            `json:"pluginPlatform"`
+			Plugins          []struct {
+				ClientType  string             `json:"clientType"`
+				ContentHash string             `json:"contentHash"`
+				Description string             `json:"description"`
+				DisplayName string             `json:"displayName"`
+				Id          openapi_types.UUID `json:"id"`
+				PluginSlug  string             `json:"pluginSlug"`
+			} `json:"plugins"`
+			RevokedAt *time.Time `json:"revokedAt"`
+			Skills    []struct {
+				Description string `json:"description"`
+				Id          string `json:"id"`
+				Name        string `json:"name"`
+			} `json:"skills"`
+			Status     GetSkillShareLinks200LinksStatus `json:"status"`
+			TokenStart string                           `json:"tokenStart"`
+			UpdatedAt  time.Time                        `json:"updatedAt"`
+		} `json:"links"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetSkillShareLinks400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetSkillShareLinks401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}        `json:"details,omitempty"`
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetSkillShareLinks403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetSkillShareLinks404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetSkillShareLinks409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetSkillShareLinks500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetSkillShareLinks200LinksStatus string
+type GetSkillShareLinks400ErrorType string
+type GetSkillShareLinks401ErrorType string
+type GetSkillShareLinks403ErrorType string
+type GetSkillShareLinks404ErrorType string
+type GetSkillShareLinks409ErrorType string
+type GetSkillShareLinks500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetSkillShareLinksResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetSkillShareLinksResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateSkillShareLinkResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CloneUrl string `json:"cloneUrl"`
+		Link     struct {
+			CreatedAt        time.Time          `json:"createdAt"`
+			CreatedByUserId  string             `json:"createdByUserId"`
+			ExpiresAt        *time.Time         `json:"expiresAt"`
+			Id               openapi_types.UUID `json:"id"`
+			LastUsedAt       *time.Time         `json:"lastUsedAt"`
+			MarketplaceName  string             `json:"marketplaceName"`
+			Name             *string            `json:"name"`
+			OrganizationId   string             `json:"organizationId"`
+			PluginClientType *string            `json:"pluginClientType"`
+			PluginPlatform   *string            `json:"pluginPlatform"`
+			Plugins          []struct {
+				ClientType  string             `json:"clientType"`
+				ContentHash string             `json:"contentHash"`
+				Description string             `json:"description"`
+				DisplayName string             `json:"displayName"`
+				Id          openapi_types.UUID `json:"id"`
+				PluginSlug  string             `json:"pluginSlug"`
+			} `json:"plugins"`
+			RevokedAt *time.Time `json:"revokedAt"`
+			Skills    []struct {
+				Description string `json:"description"`
+				Id          string `json:"id"`
+				Name        string `json:"name"`
+			} `json:"skills"`
+			Status     CreateSkillShareLink200LinkStatus `json:"status"`
+			TokenStart string                            `json:"tokenStart"`
+			UpdatedAt  time.Time                         `json:"updatedAt"`
+		} `json:"link"`
+		MarketplaceName string `json:"marketplaceName"`
+		RawToken        string `json:"rawToken"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateSkillShareLink400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateSkillShareLink401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}          `json:"details,omitempty"`
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateSkillShareLink403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateSkillShareLink404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateSkillShareLink409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateSkillShareLink500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateSkillShareLink200LinkStatus string
+type CreateSkillShareLink400ErrorType string
+type CreateSkillShareLink401ErrorType string
+type CreateSkillShareLink403ErrorType string
+type CreateSkillShareLink404ErrorType string
+type CreateSkillShareLink409ErrorType string
+type CreateSkillShareLink500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateSkillShareLinkResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateSkillShareLinkResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RevokeSkillShareLinkResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         RevokeSkillShareLink400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         RevokeSkillShareLink401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}          `json:"details,omitempty"`
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         RevokeSkillShareLink403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         RevokeSkillShareLink404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         RevokeSkillShareLink409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         RevokeSkillShareLink500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type RevokeSkillShareLink400ErrorType string
+type RevokeSkillShareLink401ErrorType string
+type RevokeSkillShareLink403ErrorType string
+type RevokeSkillShareLink404ErrorType string
+type RevokeSkillShareLink409ErrorType string
+type RevokeSkillShareLink500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r RevokeSkillShareLinkResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RevokeSkillShareLinkResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type CreateSkillResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -36678,6 +37177,41 @@ func (c *ClientWithResponses) UpdateServiceAccountTokenWithResponse(ctx context.
 		return nil, err
 	}
 	return ParseUpdateServiceAccountTokenResponse(rsp)
+}
+
+// GetSkillShareLinksWithResponse request returning *GetSkillShareLinksResponse
+func (c *ClientWithResponses) GetSkillShareLinksWithResponse(ctx context.Context, params *GetSkillShareLinksParams, reqEditors ...RequestEditorFn) (*GetSkillShareLinksResponse, error) {
+	rsp, err := c.GetSkillShareLinks(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetSkillShareLinksResponse(rsp)
+}
+
+// CreateSkillShareLinkWithBodyWithResponse request with arbitrary body returning *CreateSkillShareLinkResponse
+func (c *ClientWithResponses) CreateSkillShareLinkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSkillShareLinkResponse, error) {
+	rsp, err := c.CreateSkillShareLinkWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSkillShareLinkResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateSkillShareLinkWithResponse(ctx context.Context, body CreateSkillShareLinkJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSkillShareLinkResponse, error) {
+	rsp, err := c.CreateSkillShareLink(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateSkillShareLinkResponse(rsp)
+}
+
+// RevokeSkillShareLinkWithResponse request returning *RevokeSkillShareLinkResponse
+func (c *ClientWithResponses) RevokeSkillShareLinkWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*RevokeSkillShareLinkResponse, error) {
+	rsp, err := c.RevokeSkillShareLink(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRevokeSkillShareLinkResponse(rsp)
 }
 
 // CreateSkillWithBodyWithResponse request with arbitrary body returning *CreateSkillResponse
@@ -56747,6 +57281,386 @@ func ParseUpdateServiceAccountTokenResponse(rsp *http.Response) (*UpdateServiceA
 				InternalCode *string                               `json:"internal_code,omitempty"`
 				Message      string                                `json:"message"`
 				Type         UpdateServiceAccountToken500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetSkillShareLinksResponse parses an HTTP response from a GetSkillShareLinksWithResponse call
+func ParseGetSkillShareLinksResponse(rsp *http.Response) (*GetSkillShareLinksResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetSkillShareLinksResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Links []struct {
+				CreatedAt        time.Time          `json:"createdAt"`
+				CreatedByUserId  string             `json:"createdByUserId"`
+				ExpiresAt        *time.Time         `json:"expiresAt"`
+				Id               openapi_types.UUID `json:"id"`
+				LastUsedAt       *time.Time         `json:"lastUsedAt"`
+				MarketplaceName  string             `json:"marketplaceName"`
+				Name             *string            `json:"name"`
+				OrganizationId   string             `json:"organizationId"`
+				PluginClientType *string            `json:"pluginClientType"`
+				PluginPlatform   *string            `json:"pluginPlatform"`
+				Plugins          []struct {
+					ClientType  string             `json:"clientType"`
+					ContentHash string             `json:"contentHash"`
+					Description string             `json:"description"`
+					DisplayName string             `json:"displayName"`
+					Id          openapi_types.UUID `json:"id"`
+					PluginSlug  string             `json:"pluginSlug"`
+				} `json:"plugins"`
+				RevokedAt *time.Time `json:"revokedAt"`
+				Skills    []struct {
+					Description string `json:"description"`
+					Id          string `json:"id"`
+					Name        string `json:"name"`
+				} `json:"skills"`
+				Status     GetSkillShareLinks200LinksStatus `json:"status"`
+				TokenStart string                           `json:"tokenStart"`
+				UpdatedAt  time.Time                        `json:"updatedAt"`
+			} `json:"links"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetSkillShareLinks400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetSkillShareLinks401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}        `json:"details,omitempty"`
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetSkillShareLinks403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetSkillShareLinks404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetSkillShareLinks409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetSkillShareLinks500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateSkillShareLinkResponse parses an HTTP response from a CreateSkillShareLinkWithResponse call
+func ParseCreateSkillShareLinkResponse(rsp *http.Response) (*CreateSkillShareLinkResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateSkillShareLinkResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CloneUrl string `json:"cloneUrl"`
+			Link     struct {
+				CreatedAt        time.Time          `json:"createdAt"`
+				CreatedByUserId  string             `json:"createdByUserId"`
+				ExpiresAt        *time.Time         `json:"expiresAt"`
+				Id               openapi_types.UUID `json:"id"`
+				LastUsedAt       *time.Time         `json:"lastUsedAt"`
+				MarketplaceName  string             `json:"marketplaceName"`
+				Name             *string            `json:"name"`
+				OrganizationId   string             `json:"organizationId"`
+				PluginClientType *string            `json:"pluginClientType"`
+				PluginPlatform   *string            `json:"pluginPlatform"`
+				Plugins          []struct {
+					ClientType  string             `json:"clientType"`
+					ContentHash string             `json:"contentHash"`
+					Description string             `json:"description"`
+					DisplayName string             `json:"displayName"`
+					Id          openapi_types.UUID `json:"id"`
+					PluginSlug  string             `json:"pluginSlug"`
+				} `json:"plugins"`
+				RevokedAt *time.Time `json:"revokedAt"`
+				Skills    []struct {
+					Description string `json:"description"`
+					Id          string `json:"id"`
+					Name        string `json:"name"`
+				} `json:"skills"`
+				Status     CreateSkillShareLink200LinkStatus `json:"status"`
+				TokenStart string                            `json:"tokenStart"`
+				UpdatedAt  time.Time                         `json:"updatedAt"`
+			} `json:"link"`
+			MarketplaceName string `json:"marketplaceName"`
+			RawToken        string `json:"rawToken"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateSkillShareLink400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateSkillShareLink401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}          `json:"details,omitempty"`
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateSkillShareLink403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateSkillShareLink404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateSkillShareLink409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateSkillShareLink500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRevokeSkillShareLinkResponse parses an HTTP response from a RevokeSkillShareLinkWithResponse call
+func ParseRevokeSkillShareLinkResponse(rsp *http.Response) (*RevokeSkillShareLinkResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RevokeSkillShareLinkResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         RevokeSkillShareLink400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         RevokeSkillShareLink401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}          `json:"details,omitempty"`
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         RevokeSkillShareLink403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         RevokeSkillShareLink404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         RevokeSkillShareLink409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         RevokeSkillShareLink500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

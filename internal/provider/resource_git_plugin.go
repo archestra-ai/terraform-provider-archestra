@@ -79,7 +79,7 @@ func gitPluginSchema(s *schema.Schema) {
 				others = append(others, path.MatchRoot(other))
 			}
 		}
-		a[name] = schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.RegexMatches(uuidRegexp, "Use a stored credential UUID."), stringvalidator.ConflictsWith(others...)}, MarkdownDescription: "Existing stored Git credential reference; omission clears this authentication method."}
+		a[name] = schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.RegexMatches(canonicalUUIDRegexp, "Use a lowercase canonical stored credential UUID."), stringvalidator.ConflictsWith(others...)}, MarkdownDescription: "Existing stored Git credential reference; omission clears this authentication method."}
 	}
 }
 

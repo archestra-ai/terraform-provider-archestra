@@ -2,7 +2,7 @@
 
 static inventory; no runtime coverage implied
 
-Terraform: 45; Crossplane configured: 45.
+Terraform: 46; Crossplane configured: 46.
 
 Mapping counts are configuration coverage, not successful CRUD or reconciliation coverage.
 
@@ -32,6 +32,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_llm_model` | True | True | none detected | none detected | 4 |
 | `archestra_llm_provider_api_key` | True | True | none detected | none detected | 5 |
 | `archestra_llm_proxy_profile` | True | True | none detected | CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; UpdateAgent: agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt | 2 |
+| `archestra_marketplace_share_link` | True | True | none detected | none detected | 3 |
 | `archestra_mcp_gateway` | True | True | none detected | CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; UpdateAgent: agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt | 2 |
 | `archestra_mcp_gateway_skill_exclusions` | True | True | none detected | none detected | 0 |
 | `archestra_mcp_gateway_skill_publication` | True | True | none detected | none detected | 1 |

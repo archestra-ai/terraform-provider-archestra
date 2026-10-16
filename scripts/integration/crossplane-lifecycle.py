@@ -19,6 +19,7 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'marketplace-share-links': {'ShareLinkSkills','ShareLinkPlugins','ShareLinkExpiry'},
     'repository-plugins': {'RepositoryPackage'},
     'manual-plugins': {'ManualPackage'},
     'github-registrations': {'GitHubPAT','GitHubAppConfig'},
@@ -83,7 +84,7 @@ def main():
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility', 'manual-plugins', 'repository-plugins'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility', 'manual-plugins', 'repository-plugins', 'marketplace-share-links'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
     parser.add_argument('--scopes', nargs='+', choices=('cluster', 'namespaced'), default=['cluster', 'namespaced'])
     parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'RepositoryPackage', 'ManualPackage', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
@@ -172,7 +173,7 @@ def main():
                     'metadata': metadata, 'spec': {'forProvider': fields, 'providerConfigRef': config}}
         if init_fields is not None:
             manifest['spec']['initProvider'] = init_fields
-        if kind in ('ServiceAccountToken', 'VirtualKey', 'OAuthClient'):
+        if kind in ('ServiceAccountToken', 'VirtualKey', 'OAuthClient', 'ShareLink'):
             ref = {'name': name + '-connection'}
             if scope == 'cluster':
                 ref['namespace'] = args.namespace
@@ -291,6 +292,79 @@ def main():
                 results.append(result)
                 save()
                 print(json.dumps(result), flush=True)
+
+            if 'marketplace-share-links' in scope_cases:
+                import base64
+                def share_connection(lease, key):
+                    secret = json.loads(kube('-n', args.namespace, 'get', 'secret', lease[2] + '-connection', '-o', 'json'))
+                    return base64.b64decode(secret['data']['attribute.' + key]).decode()
+                def share_metadata(identifier):
+                    code, page = api('/api/skill-share-links')
+                    if code != 200:
+                        raise RuntimeError('Unable to read owned share-link metadata')
+                    return next((item for item in page['links'] if item['id'] == identifier), None)
+                def share_access(clone_url):
+                    path = urllib.parse.urlparse(clone_url).path + '/info/refs?service=git-upload-pack'
+                    request = urllib.request.Request(args.api_url.rstrip('/') + path)
+                    try:
+                        with opener.open(request, timeout=30) as response:
+                            response.read()
+                            return response.status
+                    except urllib.error.HTTPError as error:
+                        return error.code
+                    except urllib.error.URLError:
+                        raise RuntimeError('Local clone access transport failed') from None
+                parent, parent_id, _ = create(scope, 'skill', 'Skill', 'skills', {
+                    'name': 'cp-share-skill-' + run + '-' + scope, 'description': 'Synthetic link fixture',
+                    'content': 'Synthetic shared content.', 'files': {}, 'environmentIds': [], 'labels': []}, '-share')
+                package, package_id, _ = create(scope, 'plugin', 'ManualPackage', 'manualpackages', {
+                    'displayName': 'cp-share-plugin-' + run + '-' + scope, 'clientType': 'claude-code', 'supportedPlatforms': ['posix'],
+                    'enabled': True, 'files': {'.claude-plugin/plugin.json': {'content': '{"name":"synthetic-share","version":"1.0.0"}', 'encoding': 'utf8', 'mode': '100644'}}}, '-share')
+                for label, fields in [
+                    ('Skills', {'skillIdsRefs': [{'name': parent[2]}], 'pluginIds': []}),
+                    ('Plugins', {'skillIds': [], 'pluginIdsRefs': [{'name': package[2]}], 'pluginPlatform': 'posix', 'expiresAt': '2040-01-01T00:00:00Z'}),
+                ]:
+                    lease, identifier, obj = create(scope, 'marketplace', 'ShareLink', 'sharelinks', {
+                        'name': 'cp-share-' + label.lower() + '-' + run + '-' + scope, 'rotationNonce': '1', **fields}, '-' + label.lower())
+                    raw = wait('Share-link token publication', lambda: share_connection(lease, 'raw_token'))
+                    clone = wait('Share-link URL publication', lambda: share_connection(lease, 'clone_url'))
+                    if not raw.startswith('archestra_skl_') or raw not in clone or raw in json.dumps(obj.get('status', {})):
+                        raise RuntimeError('Share-link secret publication or status redaction failed')
+                    expected = parent_id if label == 'Skills' else package_id
+                    member_key = 'skills' if label == 'Skills' else 'plugins'
+                    if [item['id'] for item in share_metadata(identifier)[member_key]] != [expected] or share_access(clone) != 200:
+                        raise RuntimeError('Share-link references or anonymous read-only access failed')
+                    time.sleep(4)
+                    if share_connection(lease, 'raw_token') != raw:
+                        raise RuntimeError('Share-link refresh erased the creation-only secret')
+                    immutable_update(lease, {'rotationNonce': '2'}, {'rotationNonce': '1'})
+                    if api('/api/skill-share-links/' + identifier, method='DELETE')[0] != 200:
+                        raise RuntimeError('Unable to inject owned share-link revocation drift')
+                    replacement_id = wait('Share-link revoked identity recreated', lambda: (value if (value := observation(lease)['metadata']['annotations']['crossplane.io/external-name']) != identifier else None))
+                    replacement_raw = wait('Share-link replacement token publication', lambda: (value if (value := share_connection(lease, 'raw_token')) != raw else None))
+                    replacement_clone = wait('Share-link replacement URL publication', lambda: (value if (value := share_connection(lease, 'clone_url')) != clone else None))
+                    if share_access(clone) != 404 or share_access(replacement_clone) != 200 or not replacement_raw:
+                        raise RuntimeError('Revocation drift did not replace and revoke the token safely')
+                    delete(lease)
+                    if share_metadata(replacement_id)['status'] != 'revoked' or share_access(replacement_clone) != 404:
+                        raise RuntimeError('Managed share-link deletion failed to revoke public access')
+                    record('ShareLink' + label, scope, create='passed', membership_references='passed', secret_once_publication='passed',
+                           refresh_preserves_secret='passed', anonymous_read_only_access='passed', explicit_rotation_replacement_refused='passed',
+                           revoked_identity_drift_repair='passed', old_token_rejected='passed', delete='passed', backend_after_delete='revoked')
+                expired, expired_id, _ = create(scope, 'marketplace', 'ShareLink', 'sharelinks', {
+                    'name': 'cp-expired-share-' + run + '-' + scope, 'skillIds': [], 'pluginIdsRefs': [{'name': package[2]}],
+                    'pluginPlatform': 'posix', 'expiresAt': '2001-01-01T00:00:00Z'}, '-expired')
+                expired_clone = wait('Expired-link secret publication', lambda: share_connection(expired, 'clone_url'))
+                time.sleep(7)
+                if share_metadata(expired_id)['status'] != 'expired' or share_access(expired_clone) != 404 or observation(expired)['metadata']['annotations']['crossplane.io/external-name'] != expired_id:
+                    raise RuntimeError('Expired share link was recreated or remained publicly readable')
+                delete(expired)
+                if share_metadata(expired_id)['status'] != 'revoked':
+                    raise RuntimeError('Expired link did not revoke normally on deletion')
+                delete(package)
+                delete(parent)
+                record('ShareLinkExpiry', scope, create='passed', expired_observation='passed', anonymous_access_rejected='passed',
+                       identity_retained_across_reconciliation='passed', delete='passed', backend_after_delete='revoked')
 
             if 'repository-plugins' in scope_cases:
                 package, package_id, _ = create(scope, 'plugin', 'RepositoryPackage', 'repositorypackages', {

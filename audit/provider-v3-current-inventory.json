@@ -1,5 +1,5 @@
 {
-  "crossplane_configured_count": 45,
+  "crossplane_configured_count": 46,
   "evidence_level": "static inventory; no runtime coverage implied",
   "format_version": 1,
   "resources": [
@@ -5753,6 +5753,239 @@
       "schema_version": 1,
       "source": "internal/provider/resource_mcp_gateway.go",
       "terraform_resource": "archestra_llm_proxy_profile"
+    },
+    {
+      "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 3,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "CreateSkillShareLink",
+          "declared_request_field_mappings": {
+            "expiresAt": "expires_at",
+            "name": "name",
+            "pluginIds": "plugin_ids",
+            "pluginPlatform": "plugin_platform",
+            "skillIds": "skill_ids"
+          },
+          "method": "POST",
+          "path": "/api/skill-share-links",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "expiresAt",
+            "name",
+            "pluginIds",
+            "pluginPlatform",
+            "skillIds"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetSkillShareLinks",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/skill-share-links",
+          "present_in_upstream": true,
+          "query_parameters": [
+            "skillId"
+          ],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "RevokeSkillShareLink",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/skill-share-links/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": true,
+          "optional": false,
+          "path": "clone_url",
+          "required": false,
+          "sensitive": true,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_user_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "expires_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "last_used_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "marketplace_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "organization_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "plugin_client_type",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "plugin_ids",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "plugin_platform",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "plugins",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "raw_token",
+          "required": false,
+          "sensitive": true,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "revoked_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "rotation_nonce",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "skill_ids",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "skills",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "status",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "token_start",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "updated_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_marketplace_share_link.go",
+      "terraform_resource": "archestra_marketplace_share_link"
     },
     {
       "acceptance_execution": "unverified",
@@ -12873,7 +13106,7 @@
       "terraform_resource": "archestra_virtual_api_key"
     }
   ],
-  "terraform_count": 45,
+  "terraform_count": 46,
   "unreferenced_mutating_operations": [
     {
       "method": "DELETE",
@@ -13199,11 +13432,6 @@
       "method": "DELETE",
       "operation_id": "deleteSkillSandboxArtifact",
       "path": "/api/skill-sandbox/artifacts/{}"
-    },
-    {
-      "method": "DELETE",
-      "operation_id": "revokeSkillShareLink",
-      "path": "/api/skill-share-links/{}"
     },
     {
       "method": "DELETE",
@@ -14054,11 +14282,6 @@
       "method": "POST",
       "operation_id": "createSiteNotification",
       "path": "/api/site-notification"
-    },
-    {
-      "method": "POST",
-      "operation_id": "createSkillShareLink",
-      "path": "/api/skill-share-links"
     },
     {
       "method": "POST",

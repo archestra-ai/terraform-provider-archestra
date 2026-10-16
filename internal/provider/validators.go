@@ -15,6 +15,9 @@ import (
 // validator should be lenient about the case it accepts.
 var uuidRegexp = regexp.MustCompile(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)
 
+// Canonical IDs avoid planned-input drift when the API emits lowercase UUIDs.
+var canonicalUUIDRegexp = regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$`)
+
 // jsonObject is a validator.String that fails plan when the configured value,
 // parsed as JSON, is not a JSON object. Null/unknown values are ignored so it
 // composes with Optional attributes.

@@ -119,6 +119,7 @@ The walker handles three response shapes:
 - `JSON200 *struct{...}` (single record).
 - `JSON200 *[]struct{...}` (list endpoint).
 - `JSON200 *struct{Data []struct{...}, Pagination ...}` (paginated envelope).
+- `JSON200 *struct{Links []struct{...}}` (share-link list envelope).
 
 ## Convention: schema attr vs. skip-list
 

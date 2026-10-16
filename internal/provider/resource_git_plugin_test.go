@@ -166,6 +166,7 @@ func TestAccGitPluginRejectsInvalidInputs(t *testing.T) {
 		{"commit", strings.Replace(gitPluginFixtureConfig("invalid-source", "", false, "", true), gitPluginFixtureSHA, "main", 1), "approved lowercase"},
 		{"subdir", strings.Replace(gitPluginFixtureConfig("invalid-source", "", false, "", true), gitPluginFixtureSubdir, "../outside", 1), "Invalid source subtree"},
 		{"repo", strings.Replace(gitPluginFixtureConfig("invalid-source", "", false, "", true), `source_repo="archestra-ai/terraform-provider-archestra"`, `source_repo="archestra-ai/terraform-provider-archestra.git"`, 1), "Noncanonical repository"},
+		{"credential case", gitPluginFixtureConfig("invalid-source", "", false, `github_pat_id="11111111-ABCD-4111-8111-111111111111"`, true), "lowercase canonical stored credential UUID"},
 		{"credentials", gitPluginFixtureConfig("invalid-source", "", false, `github_pat_id="11111111-1111-4111-8111-111111111111"
  github_app_config_id="22222222-2222-4222-8222-222222222222"`, true), "Invalid Attribute Combination"},
 	} {

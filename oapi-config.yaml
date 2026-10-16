@@ -163,6 +163,9 @@ output-options:
     - getGithubAppConfig
     - updateGithubAppConfig
     - deleteGithubAppConfig
+    - createSkillShareLink
+    - getSkillShareLinks
+    - revokeSkillShareLink
     - importGithubPlugin
     - createPlugin
     - getPlugin
