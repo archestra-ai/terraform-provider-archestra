@@ -1,6 +1,6 @@
 # Provider resource scope and API review
 
-The current registry contains 41 families, all configured for both Crossplane
+The current registry contains 43 families, all configured for both Crossplane
 scopes. The historical 29-family proof remains in `crossplane-rc48-candidate.json`;
 the six-family expansion and two existing-resource control probes pass in both
 scopes in `crossplane-persistent-extensions.json`. Those evidence sets have distinct
@@ -16,7 +16,7 @@ implementation queue. They classify all 15 additional API review areas, includin
 consolidated OAuth client facades and the platform-owned LLM proxy singleton.
 The original 90 raw unmapped request-field occurrences are fully classified in
 `request-field-review.md`; they were not 90 confirmed missing capabilities. The
-current 41-family inventory has 127 raw occurrences, all classified in
+current 43-family inventory has 127 raw occurrences, all classified in
 `current-request-field-review.json`. Additional routes and shared profile schemas
 increase that raw count. Gateway subagent controls and installation personal-user
 selection/hibernation now have native and both-scope runtime regressions.
@@ -40,13 +40,16 @@ management. Creation-time grants are configurable on thirteen families. The hist
 29-family rc.48 Terraform suite passed 118 acceptance tests with zero skips, and
 the 35-family expansion passed 126; the 39-family suite passed 131
 with zero failures or skips (`a2a-environment-native-acceptance.json`). The current
-41-family suite passes all 137 (`credential-routing-full-native-acceptance.json`);
+41-family suite passed all 137 (`credential-routing-full-native-acceptance.json`);
+the current 43-family suite passes all 140 (`github-registrations-full-native-acceptance.json`);
 all 16 retained v2.4.1 resource families preserve identity with no-op migration
 plans. The full 35-family Crossplane sweep passes 102 records, including 26 grant cases;
 the four-family A2A/environment binding wave adds ten passing records with normal
 cleanup, including the eleventh grant-bearing family in both scopes. Credential routing
 adds twelve records including both mode variants and the twelfth/thirteenth
-grant-bearing families. Registered-family lifecycle coverage is complete; full platform API extensions and final candidate repetition remain release gates.
+grant-bearing families. Stored GitHub registrations and version-constraint rejection/recovery
+add six verified records (`crossplane-github-registrations-compatibility.json`).
+Registered-family lifecycle coverage is complete; full platform API extensions and final candidate repetition remain release gates.
 
 ## Additional persistent API lifecycles
 

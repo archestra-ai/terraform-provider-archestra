@@ -2,7 +2,7 @@
 
 static inventory; no runtime coverage implied
 
-Terraform: 41; Crossplane configured: 41.
+Terraform: 43; Crossplane configured: 43.
 
 Mapping counts are configuration coverage, not successful CRUD or reconciliation coverage.
 
@@ -22,6 +22,8 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_default_user_limit` | True | True | none detected | none detected | 0 |
 | `archestra_environment` | True | True | none detected | none detected | 2 |
 | `archestra_environment_default` | True | True | none detected | UpdateEnvironmentResourceDefaults: agent, app, knowledgeSource, mcpGateway, mcpRegistry | 0 |
+| `archestra_github_app_config` | True | True | none detected | none detected | 0 |
+| `archestra_github_pat` | True | True | none detected | none detected | 0 |
 | `archestra_identity_provider` | True | True | none detected | none detected | 7 |
 | `archestra_knowledge_base` | True | True | none detected | none detected | 4 |
 | `archestra_knowledge_directory` | True | True | none detected | none detected | 0 |

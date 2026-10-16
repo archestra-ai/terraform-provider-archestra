@@ -2880,6 +2880,44 @@ type UpdateEnvironmentJSONBodyNetworkPolicyDomainPreset string
 // UpdateEnvironmentJSONBodyNetworkPolicyEgressMode defines parameters for UpdateEnvironment.
 type UpdateEnvironmentJSONBodyNetworkPolicyEgressMode string
 
+// CreateGithubAppConfigJSONBody defines parameters for CreateGithubAppConfig.
+type CreateGithubAppConfigJSONBody struct {
+	AppId          string  `json:"appId"`
+	GithubUrl      *string `json:"githubUrl,omitempty"`
+	InstallationId string  `json:"installationId"`
+	Name           string  `json:"name"`
+
+	// PrivateKey GitHub App private key PEM
+	PrivateKey string `json:"privateKey"`
+}
+
+// UpdateGithubAppConfigJSONBody defines parameters for UpdateGithubAppConfig.
+type UpdateGithubAppConfigJSONBody struct {
+	AppId          *string `json:"appId,omitempty"`
+	GithubUrl      *string `json:"githubUrl,omitempty"`
+	InstallationId *string `json:"installationId,omitempty"`
+	Name           *string `json:"name,omitempty"`
+
+	// PrivateKey GitHub App private key PEM
+	PrivateKey *string `json:"privateKey,omitempty"`
+}
+
+// CreateGithubPatJSONBody defines parameters for CreateGithubPat.
+type CreateGithubPatJSONBody struct {
+	Name string `json:"name"`
+
+	// Token GitHub personal access token
+	Token string `json:"token"`
+}
+
+// UpdateGithubPatJSONBody defines parameters for UpdateGithubPat.
+type UpdateGithubPatJSONBody struct {
+	Name *string `json:"name,omitempty"`
+
+	// Token Provide only to rotate the stored token.
+	Token *string `json:"token,omitempty"`
+}
+
 // GetHooksParams defines parameters for GetHooks.
 type GetHooksParams struct {
 	AgentId openapi_types.UUID `form:"agentId" json:"agentId"`
@@ -5053,6 +5091,18 @@ type UpdateEnvironmentResourceDefaultsJSONRequestBody UpdateEnvironmentResourceD
 // UpdateEnvironmentJSONRequestBody defines body for UpdateEnvironment for application/json ContentType.
 type UpdateEnvironmentJSONRequestBody UpdateEnvironmentJSONBody
 
+// CreateGithubAppConfigJSONRequestBody defines body for CreateGithubAppConfig for application/json ContentType.
+type CreateGithubAppConfigJSONRequestBody CreateGithubAppConfigJSONBody
+
+// UpdateGithubAppConfigJSONRequestBody defines body for UpdateGithubAppConfig for application/json ContentType.
+type UpdateGithubAppConfigJSONRequestBody UpdateGithubAppConfigJSONBody
+
+// CreateGithubPatJSONRequestBody defines body for CreateGithubPat for application/json ContentType.
+type CreateGithubPatJSONRequestBody CreateGithubPatJSONBody
+
+// UpdateGithubPatJSONRequestBody defines body for UpdateGithubPat for application/json ContentType.
+type UpdateGithubPatJSONRequestBody UpdateGithubPatJSONBody
+
 // CreateHookJSONRequestBody defines body for CreateHook for application/json ContentType.
 type CreateHookJSONRequestBody CreateHookJSONBody
 
@@ -5479,6 +5529,38 @@ type ClientInterface interface {
 	UpdateEnvironmentWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateEnvironment(ctx context.Context, id openapi_types.UUID, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateGithubAppConfigWithBody request with any body
+	CreateGithubAppConfigWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateGithubAppConfig(ctx context.Context, body CreateGithubAppConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteGithubAppConfig request
+	DeleteGithubAppConfig(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetGithubAppConfig request
+	GetGithubAppConfig(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateGithubAppConfigWithBody request with any body
+	UpdateGithubAppConfigWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateGithubAppConfig(ctx context.Context, id openapi_types.UUID, body UpdateGithubAppConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListGithubPats request
+	ListGithubPats(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateGithubPatWithBody request with any body
+	CreateGithubPatWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateGithubPat(ctx context.Context, body CreateGithubPatJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteGithubPat request
+	DeleteGithubPat(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateGithubPatWithBody request with any body
+	UpdateGithubPatWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateGithubPat(ctx context.Context, id openapi_types.UUID, body UpdateGithubPatJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetHooks request
 	GetHooks(ctx context.Context, params *GetHooksParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -6763,6 +6845,150 @@ func (c *Client) UpdateEnvironmentWithBody(ctx context.Context, id openapi_types
 
 func (c *Client) UpdateEnvironment(ctx context.Context, id openapi_types.UUID, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateEnvironmentRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateGithubAppConfigWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateGithubAppConfigRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateGithubAppConfig(ctx context.Context, body CreateGithubAppConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateGithubAppConfigRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteGithubAppConfig(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteGithubAppConfigRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetGithubAppConfig(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetGithubAppConfigRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateGithubAppConfigWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateGithubAppConfigRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateGithubAppConfig(ctx context.Context, id openapi_types.UUID, body UpdateGithubAppConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateGithubAppConfigRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListGithubPats(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListGithubPatsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateGithubPatWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateGithubPatRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateGithubPat(ctx context.Context, body CreateGithubPatJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateGithubPatRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteGithubPat(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteGithubPatRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateGithubPatWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateGithubPatRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateGithubPat(ctx context.Context, id openapi_types.UUID, body UpdateGithubPatJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateGithubPatRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -10786,6 +11012,309 @@ func NewUpdateEnvironmentRequestWithBody(server string, id openapi_types.UUID, c
 	}
 
 	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCreateGithubAppConfigRequest calls the generic CreateGithubAppConfig builder with application/json body
+func NewCreateGithubAppConfigRequest(server string, body CreateGithubAppConfigJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateGithubAppConfigRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateGithubAppConfigRequestWithBody generates requests for CreateGithubAppConfig with any type of body
+func NewCreateGithubAppConfigRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/github-app-configs")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteGithubAppConfigRequest generates requests for DeleteGithubAppConfig
+func NewDeleteGithubAppConfigRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/github-app-configs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetGithubAppConfigRequest generates requests for GetGithubAppConfig
+func NewGetGithubAppConfigRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/github-app-configs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateGithubAppConfigRequest calls the generic UpdateGithubAppConfig builder with application/json body
+func NewUpdateGithubAppConfigRequest(server string, id openapi_types.UUID, body UpdateGithubAppConfigJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateGithubAppConfigRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateGithubAppConfigRequestWithBody generates requests for UpdateGithubAppConfig with any type of body
+func NewUpdateGithubAppConfigRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/github-app-configs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewListGithubPatsRequest generates requests for ListGithubPats
+func NewListGithubPatsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/github-pats")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateGithubPatRequest calls the generic CreateGithubPat builder with application/json body
+func NewCreateGithubPatRequest(server string, body CreateGithubPatJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateGithubPatRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateGithubPatRequestWithBody generates requests for CreateGithubPat with any type of body
+func NewCreateGithubPatRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/github-pats")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteGithubPatRequest generates requests for DeleteGithubPat
+func NewDeleteGithubPatRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/github-pats/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateGithubPatRequest calls the generic UpdateGithubPat builder with application/json body
+func NewUpdateGithubPatRequest(server string, id openapi_types.UUID, body UpdateGithubPatJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateGithubPatRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateGithubPatRequestWithBody generates requests for UpdateGithubPat with any type of body
+func NewUpdateGithubPatRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/github-pats/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -15428,6 +15957,38 @@ type ClientWithResponsesInterface interface {
 	UpdateEnvironmentWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
 
 	UpdateEnvironmentWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResponse, error)
+
+	// CreateGithubAppConfigWithBodyWithResponse request with any body
+	CreateGithubAppConfigWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateGithubAppConfigResponse, error)
+
+	CreateGithubAppConfigWithResponse(ctx context.Context, body CreateGithubAppConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateGithubAppConfigResponse, error)
+
+	// DeleteGithubAppConfigWithResponse request
+	DeleteGithubAppConfigWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteGithubAppConfigResponse, error)
+
+	// GetGithubAppConfigWithResponse request
+	GetGithubAppConfigWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetGithubAppConfigResponse, error)
+
+	// UpdateGithubAppConfigWithBodyWithResponse request with any body
+	UpdateGithubAppConfigWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateGithubAppConfigResponse, error)
+
+	UpdateGithubAppConfigWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateGithubAppConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateGithubAppConfigResponse, error)
+
+	// ListGithubPatsWithResponse request
+	ListGithubPatsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGithubPatsResponse, error)
+
+	// CreateGithubPatWithBodyWithResponse request with any body
+	CreateGithubPatWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateGithubPatResponse, error)
+
+	CreateGithubPatWithResponse(ctx context.Context, body CreateGithubPatJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateGithubPatResponse, error)
+
+	// DeleteGithubPatWithResponse request
+	DeleteGithubPatWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteGithubPatResponse, error)
+
+	// UpdateGithubPatWithBodyWithResponse request with any body
+	UpdateGithubPatWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateGithubPatResponse, error)
+
+	UpdateGithubPatWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateGithubPatJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateGithubPatResponse, error)
 
 	// GetHooksWithResponse request
 	GetHooksWithResponse(ctx context.Context, params *GetHooksParams, reqEditors ...RequestEditorFn) (*GetHooksResponse, error)
@@ -20751,6 +21312,623 @@ func (r UpdateEnvironmentResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateEnvironmentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateGithubAppConfigResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AppId          string             `json:"appId"`
+		CreatedAt      time.Time          `json:"createdAt"`
+		GithubUrl      string             `json:"githubUrl"`
+		Id             openapi_types.UUID `json:"id"`
+		InstallationId string             `json:"installationId"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateGithubAppConfig400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateGithubAppConfig401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}           `json:"details,omitempty"`
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateGithubAppConfig403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateGithubAppConfig404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateGithubAppConfig409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         CreateGithubAppConfig500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateGithubAppConfig400ErrorType string
+type CreateGithubAppConfig401ErrorType string
+type CreateGithubAppConfig403ErrorType string
+type CreateGithubAppConfig404ErrorType string
+type CreateGithubAppConfig409ErrorType string
+type CreateGithubAppConfig500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateGithubAppConfigResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateGithubAppConfigResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteGithubAppConfigResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteGithubAppConfig400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteGithubAppConfig401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}           `json:"details,omitempty"`
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteGithubAppConfig403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteGithubAppConfig404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteGithubAppConfig409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteGithubAppConfig500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteGithubAppConfig400ErrorType string
+type DeleteGithubAppConfig401ErrorType string
+type DeleteGithubAppConfig403ErrorType string
+type DeleteGithubAppConfig404ErrorType string
+type DeleteGithubAppConfig409ErrorType string
+type DeleteGithubAppConfig500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteGithubAppConfigResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteGithubAppConfigResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetGithubAppConfigResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AppId          string             `json:"appId"`
+		CreatedAt      time.Time          `json:"createdAt"`
+		GithubUrl      string             `json:"githubUrl"`
+		Id             openapi_types.UUID `json:"id"`
+		InstallationId string             `json:"installationId"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetGithubAppConfig400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetGithubAppConfig401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}        `json:"details,omitempty"`
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetGithubAppConfig403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetGithubAppConfig404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetGithubAppConfig409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetGithubAppConfig500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetGithubAppConfig400ErrorType string
+type GetGithubAppConfig401ErrorType string
+type GetGithubAppConfig403ErrorType string
+type GetGithubAppConfig404ErrorType string
+type GetGithubAppConfig409ErrorType string
+type GetGithubAppConfig500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetGithubAppConfigResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetGithubAppConfigResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateGithubAppConfigResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AppId          string             `json:"appId"`
+		CreatedAt      time.Time          `json:"createdAt"`
+		GithubUrl      string             `json:"githubUrl"`
+		Id             openapi_types.UUID `json:"id"`
+		InstallationId string             `json:"installationId"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateGithubAppConfig400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateGithubAppConfig401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}           `json:"details,omitempty"`
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateGithubAppConfig403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateGithubAppConfig404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateGithubAppConfig409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         UpdateGithubAppConfig500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateGithubAppConfig400ErrorType string
+type UpdateGithubAppConfig401ErrorType string
+type UpdateGithubAppConfig403ErrorType string
+type UpdateGithubAppConfig404ErrorType string
+type UpdateGithubAppConfig409ErrorType string
+type UpdateGithubAppConfig500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateGithubAppConfigResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateGithubAppConfigResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListGithubPatsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		CreatedAt      time.Time          `json:"createdAt"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         ListGithubPats400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         ListGithubPats401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}    `json:"details,omitempty"`
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         ListGithubPats403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         ListGithubPats404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         ListGithubPats409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         ListGithubPats500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type ListGithubPats400ErrorType string
+type ListGithubPats401ErrorType string
+type ListGithubPats403ErrorType string
+type ListGithubPats404ErrorType string
+type ListGithubPats409ErrorType string
+type ListGithubPats500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r ListGithubPatsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListGithubPatsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateGithubPatResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time          `json:"createdAt"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         CreateGithubPat400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         CreateGithubPat401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}     `json:"details,omitempty"`
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         CreateGithubPat403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         CreateGithubPat404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         CreateGithubPat409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         CreateGithubPat500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateGithubPat400ErrorType string
+type CreateGithubPat401ErrorType string
+type CreateGithubPat403ErrorType string
+type CreateGithubPat404ErrorType string
+type CreateGithubPat409ErrorType string
+type CreateGithubPat500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateGithubPatResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateGithubPatResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteGithubPatResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         DeleteGithubPat400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         DeleteGithubPat401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}     `json:"details,omitempty"`
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         DeleteGithubPat403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         DeleteGithubPat404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         DeleteGithubPat409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         DeleteGithubPat500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteGithubPat400ErrorType string
+type DeleteGithubPat401ErrorType string
+type DeleteGithubPat403ErrorType string
+type DeleteGithubPat404ErrorType string
+type DeleteGithubPat409ErrorType string
+type DeleteGithubPat500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteGithubPatResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteGithubPatResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateGithubPatResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt      time.Time          `json:"createdAt"`
+		Id             openapi_types.UUID `json:"id"`
+		Name           string             `json:"name"`
+		OrganizationId string             `json:"organizationId"`
+		UpdatedAt      time.Time          `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         UpdateGithubPat400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         UpdateGithubPat401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}     `json:"details,omitempty"`
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         UpdateGithubPat403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         UpdateGithubPat404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         UpdateGithubPat409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         UpdateGithubPat500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateGithubPat400ErrorType string
+type UpdateGithubPat401ErrorType string
+type UpdateGithubPat403ErrorType string
+type UpdateGithubPat404ErrorType string
+type UpdateGithubPat409ErrorType string
+type UpdateGithubPat500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateGithubPatResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateGithubPatResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -32841,6 +34019,110 @@ func (c *ClientWithResponses) UpdateEnvironmentWithResponse(ctx context.Context,
 	return ParseUpdateEnvironmentResponse(rsp)
 }
 
+// CreateGithubAppConfigWithBodyWithResponse request with arbitrary body returning *CreateGithubAppConfigResponse
+func (c *ClientWithResponses) CreateGithubAppConfigWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateGithubAppConfigResponse, error) {
+	rsp, err := c.CreateGithubAppConfigWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateGithubAppConfigResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateGithubAppConfigWithResponse(ctx context.Context, body CreateGithubAppConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateGithubAppConfigResponse, error) {
+	rsp, err := c.CreateGithubAppConfig(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateGithubAppConfigResponse(rsp)
+}
+
+// DeleteGithubAppConfigWithResponse request returning *DeleteGithubAppConfigResponse
+func (c *ClientWithResponses) DeleteGithubAppConfigWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteGithubAppConfigResponse, error) {
+	rsp, err := c.DeleteGithubAppConfig(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteGithubAppConfigResponse(rsp)
+}
+
+// GetGithubAppConfigWithResponse request returning *GetGithubAppConfigResponse
+func (c *ClientWithResponses) GetGithubAppConfigWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetGithubAppConfigResponse, error) {
+	rsp, err := c.GetGithubAppConfig(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetGithubAppConfigResponse(rsp)
+}
+
+// UpdateGithubAppConfigWithBodyWithResponse request with arbitrary body returning *UpdateGithubAppConfigResponse
+func (c *ClientWithResponses) UpdateGithubAppConfigWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateGithubAppConfigResponse, error) {
+	rsp, err := c.UpdateGithubAppConfigWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateGithubAppConfigResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateGithubAppConfigWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateGithubAppConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateGithubAppConfigResponse, error) {
+	rsp, err := c.UpdateGithubAppConfig(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateGithubAppConfigResponse(rsp)
+}
+
+// ListGithubPatsWithResponse request returning *ListGithubPatsResponse
+func (c *ClientWithResponses) ListGithubPatsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListGithubPatsResponse, error) {
+	rsp, err := c.ListGithubPats(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListGithubPatsResponse(rsp)
+}
+
+// CreateGithubPatWithBodyWithResponse request with arbitrary body returning *CreateGithubPatResponse
+func (c *ClientWithResponses) CreateGithubPatWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateGithubPatResponse, error) {
+	rsp, err := c.CreateGithubPatWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateGithubPatResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateGithubPatWithResponse(ctx context.Context, body CreateGithubPatJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateGithubPatResponse, error) {
+	rsp, err := c.CreateGithubPat(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateGithubPatResponse(rsp)
+}
+
+// DeleteGithubPatWithResponse request returning *DeleteGithubPatResponse
+func (c *ClientWithResponses) DeleteGithubPatWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteGithubPatResponse, error) {
+	rsp, err := c.DeleteGithubPat(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteGithubPatResponse(rsp)
+}
+
+// UpdateGithubPatWithBodyWithResponse request with arbitrary body returning *UpdateGithubPatResponse
+func (c *ClientWithResponses) UpdateGithubPatWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateGithubPatResponse, error) {
+	rsp, err := c.UpdateGithubPatWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateGithubPatResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateGithubPatWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateGithubPatJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateGithubPatResponse, error) {
+	rsp, err := c.UpdateGithubPat(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateGithubPatResponse(rsp)
+}
+
 // GetHooksWithResponse request returning *GetHooksResponse
 func (c *ClientWithResponses) GetHooksWithResponse(ctx context.Context, params *GetHooksParams, reqEditors ...RequestEditorFn) (*GetHooksResponse, error) {
 	rsp, err := c.GetHooks(ctx, params, reqEditors...)
@@ -40368,6 +41650,895 @@ func ParseUpdateEnvironmentResponse(rsp *http.Response) (*UpdateEnvironmentRespo
 				InternalCode *string                       `json:"internal_code,omitempty"`
 				Message      string                        `json:"message"`
 				Type         UpdateEnvironment500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateGithubAppConfigResponse parses an HTTP response from a CreateGithubAppConfigWithResponse call
+func ParseCreateGithubAppConfigResponse(rsp *http.Response) (*CreateGithubAppConfigResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateGithubAppConfigResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AppId          string             `json:"appId"`
+			CreatedAt      time.Time          `json:"createdAt"`
+			GithubUrl      string             `json:"githubUrl"`
+			Id             openapi_types.UUID `json:"id"`
+			InstallationId string             `json:"installationId"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateGithubAppConfig400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateGithubAppConfig401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}           `json:"details,omitempty"`
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateGithubAppConfig403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateGithubAppConfig404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateGithubAppConfig409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         CreateGithubAppConfig500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteGithubAppConfigResponse parses an HTTP response from a DeleteGithubAppConfigWithResponse call
+func ParseDeleteGithubAppConfigResponse(rsp *http.Response) (*DeleteGithubAppConfigResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteGithubAppConfigResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteGithubAppConfig400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteGithubAppConfig401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}           `json:"details,omitempty"`
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteGithubAppConfig403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteGithubAppConfig404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteGithubAppConfig409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteGithubAppConfig500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetGithubAppConfigResponse parses an HTTP response from a GetGithubAppConfigWithResponse call
+func ParseGetGithubAppConfigResponse(rsp *http.Response) (*GetGithubAppConfigResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetGithubAppConfigResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AppId          string             `json:"appId"`
+			CreatedAt      time.Time          `json:"createdAt"`
+			GithubUrl      string             `json:"githubUrl"`
+			Id             openapi_types.UUID `json:"id"`
+			InstallationId string             `json:"installationId"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetGithubAppConfig400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetGithubAppConfig401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}        `json:"details,omitempty"`
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetGithubAppConfig403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetGithubAppConfig404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetGithubAppConfig409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetGithubAppConfig500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateGithubAppConfigResponse parses an HTTP response from a UpdateGithubAppConfigWithResponse call
+func ParseUpdateGithubAppConfigResponse(rsp *http.Response) (*UpdateGithubAppConfigResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateGithubAppConfigResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AppId          string             `json:"appId"`
+			CreatedAt      time.Time          `json:"createdAt"`
+			GithubUrl      string             `json:"githubUrl"`
+			Id             openapi_types.UUID `json:"id"`
+			InstallationId string             `json:"installationId"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateGithubAppConfig400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateGithubAppConfig401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}           `json:"details,omitempty"`
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateGithubAppConfig403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateGithubAppConfig404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateGithubAppConfig409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         UpdateGithubAppConfig500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListGithubPatsResponse parses an HTTP response from a ListGithubPatsWithResponse call
+func ParseListGithubPatsResponse(rsp *http.Response) (*ListGithubPatsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListGithubPatsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			CreatedAt      time.Time          `json:"createdAt"`
+			Id             openapi_types.UUID `json:"id"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         ListGithubPats400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         ListGithubPats401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}    `json:"details,omitempty"`
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         ListGithubPats403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         ListGithubPats404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         ListGithubPats409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         ListGithubPats500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateGithubPatResponse parses an HTTP response from a CreateGithubPatWithResponse call
+func ParseCreateGithubPatResponse(rsp *http.Response) (*CreateGithubPatResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateGithubPatResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time          `json:"createdAt"`
+			Id             openapi_types.UUID `json:"id"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         CreateGithubPat400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         CreateGithubPat401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}     `json:"details,omitempty"`
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         CreateGithubPat403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         CreateGithubPat404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         CreateGithubPat409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         CreateGithubPat500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteGithubPatResponse parses an HTTP response from a DeleteGithubPatWithResponse call
+func ParseDeleteGithubPatResponse(rsp *http.Response) (*DeleteGithubPatResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteGithubPatResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         DeleteGithubPat400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         DeleteGithubPat401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}     `json:"details,omitempty"`
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         DeleteGithubPat403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         DeleteGithubPat404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         DeleteGithubPat409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         DeleteGithubPat500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateGithubPatResponse parses an HTTP response from a UpdateGithubPatWithResponse call
+func ParseUpdateGithubPatResponse(rsp *http.Response) (*UpdateGithubPatResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateGithubPatResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt      time.Time          `json:"createdAt"`
+			Id             openapi_types.UUID `json:"id"`
+			Name           string             `json:"name"`
+			OrganizationId string             `json:"organizationId"`
+			UpdatedAt      time.Time          `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         UpdateGithubPat400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         UpdateGithubPat401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}     `json:"details,omitempty"`
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         UpdateGithubPat403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         UpdateGithubPat404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         UpdateGithubPat409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         UpdateGithubPat500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

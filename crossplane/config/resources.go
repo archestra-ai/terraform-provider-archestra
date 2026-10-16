@@ -7,6 +7,8 @@ const mcpGroup = "mcp"
 
 // ConfigureResources applies the same API names and references in both scopes.
 func ConfigureResources(p *ujconfig.Provider) {
+	p.AddResourceConfigurator("archestra_github_pat", func(r *ujconfig.Resource) { r.ShortGroup = "credential"; r.Kind = "GitHubPAT" })
+	p.AddResourceConfigurator("archestra_github_app_config", func(r *ujconfig.Resource) { r.ShortGroup = "credential"; r.Kind = "GitHubAppConfig" })
 	p.AddResourceConfigurator("archestra_virtual_api_key", func(r *ujconfig.Resource) {
 		r.ShortGroup = "llm"
 		r.Kind = "VirtualKey"

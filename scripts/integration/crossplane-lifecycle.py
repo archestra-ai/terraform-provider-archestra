@@ -19,6 +19,8 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'github-registrations': {'GitHubPAT','GitHubAppConfig'},
+    'api-compatibility': {'APICompatibilityConstraint'},
     'routing-credentials': {'VirtualKey','OAuthClient'},
     'remote-agents': {'RemoteAgent','RemoteDelegations'},
     'environment-bindings': {'ResourceDefault','VaultFolder'},
@@ -71,7 +73,7 @@ def main():
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
     parser.add_argument('--scopes', nargs='+', choices=('cluster', 'namespaced'), default=['cluster', 'namespaced'])
     parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
@@ -279,6 +281,115 @@ def main():
                 results.append(result)
                 save()
                 print(json.dumps(result), flush=True)
+
+            if 'github-registrations' in scope_cases:
+                for kind, plural, endpoint, secret_field, wire_secret, extra in [
+                    ('GitHubPAT', 'githubpats', '/api/github-pats', 'tokenSecretRef', 'token', {}),
+                    ('GitHubAppConfig', 'githubappconfigs', '/api/github-app-configs', 'privateKeySecretRef', 'privateKey',
+                     {'githubUrl': 'http://127.0.0.1:19997', 'appId': '100', 'installationId': '200'}),
+                ]:
+                    secret_name = 'cp-github-input-' + kind.lower() + '-' + run + '-' + scope
+                    def write_github_input(value):
+                        kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
+                            'metadata': {'name': secret_name, 'namespace': args.namespace, 'labels': {'provider-test-run': run}},
+                            'stringData': {'input': value}})
+                    input_value = 'secret/data/test/ollama#api_key' if args.readonly_vault else 'synthetic-local-only'
+                    write_github_input(input_value)
+                    secret_lease = (['-n', args.namespace], 'secrets', secret_name)
+                    leases.append(secret_lease)
+                    ref = {'name': secret_name, 'key': 'input'}
+                    if scope == 'cluster':
+                        ref['namespace'] = args.namespace
+                    lease, identifier, obj = create(scope, 'credential', kind, plural,
+                        {'name': 'cp-github-' + kind.lower() + '-' + run + '-' + scope, secret_field: ref, **extra})
+                    def github_value():
+                        if kind == 'GitHubAppConfig':
+                            code, value = api(endpoint + '/' + identifier)
+                            return value if code == 200 else None
+                        code, rows = api(endpoint)
+                        if code != 200:
+                            raise RuntimeError('Unable to list stored GitHub registrations')
+                        return next((item for item in rows if item['id'] == identifier), None)
+                    value = github_value()
+                    if value is None or any(key in value for key in ('token', 'privateKey', 'secretId')) or input_value in json.dumps(obj.get('status', {})):
+                        raise RuntimeError('Stored GitHub registration leaked a credential or failed creation')
+                    updated_name = 'Updated GitHub ' + kind + ' ' + run
+                    patch(lease, {'name': updated_name})
+                    wait('GitHub registration metadata update', lambda: github_value()['name'] == updated_name)
+                    if api(endpoint + '/' + identifier, {'name': 'Out of band GitHub registration'}, 'PUT')[0] != 200:
+                        raise RuntimeError('Unable to inject owned GitHub registration drift')
+                    wait('GitHub registration drift repair', lambda: github_value()['name'] == updated_name)
+                    write_github_input('secret/data/test/openai#api_key' if args.readonly_vault else 'synthetic-local-replacement')
+                    patch(lease, {'name': updated_name + ' credential changed'})
+                    wait('GitHub credential input update', lambda: condition(lease, 'True') and github_value()['name'] == updated_name + ' credential changed')
+                    if observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != identifier:
+                        raise RuntimeError('Stored credential update replaced its registration identity')
+                    if kind == 'GitHubAppConfig':
+                        patch(lease, {'installationId': '201'})
+                        wait('Existing GitHub installation binding update', lambda: github_value()['installationId'] == '201')
+                    delete(lease)
+                    if github_value() is not None:
+                        raise RuntimeError('Stored GitHub registration survived deletion')
+                    delete(secret_lease)
+                    record(kind, scope, create='passed', update='passed', drift_repair='passed', sensitive_input_update='passed',
+                           identity_preserved=True, credential_absent_from_api_and_status=True, delete='passed', external_github_requests='not_invoked')
+
+            if 'api-compatibility' in scope_cases:
+                config_name = 'cp-api-constraint-' + run + '-' + scope
+                secret_name = config_name + '-credentials'
+                def write_constraint(constraint):
+                    credentials = json.dumps({'api_key': token, 'base_url': args.api_url, 'api_version_constraint': constraint})
+                    kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
+                        'metadata': {'name': secret_name, 'namespace': args.namespace, 'labels': {'provider-test-run': run}},
+                        'stringData': {'credentials': credentials}})
+                write_constraint('= 9.9.9')
+                secret_lease = (['-n', args.namespace], 'secrets', secret_name)
+                leases.append(secret_lease)
+                config_group = 'archestra.crossplane.io' if scope == 'cluster' else 'archestra.m.crossplane.io'
+                config_ns = [] if scope == 'cluster' else ['-n', args.namespace]
+                config_metadata = {'name': config_name, 'labels': {'provider-test-run': run}}
+                if scope == 'namespaced':
+                    config_metadata['namespace'] = args.namespace
+                kube('apply', '-f', '-', payload={'apiVersion': config_group + '/v1beta1', 'kind': 'ProviderConfig',
+                    'metadata': config_metadata, 'spec': {'credentials': {'source': 'Secret',
+                    'secretRef': {'name': secret_name, 'namespace': args.namespace, 'key': 'credentials'}}}})
+                config_lease = (config_ns, 'providerconfigs.' + config_group, config_name)
+                leases.append(config_lease)
+                env_name = 'cp-constraint-environment-' + run + '-' + scope
+                env_group = 'environment.archestra' + ('.m' if scope == 'namespaced' else '') + '.crossplane.io'
+                env_metadata = {'name': env_name, 'labels': {'provider-test-run': run}}
+                config_ref = {'name': config_name}
+                if scope == 'namespaced':
+                    env_metadata['namespace'] = args.namespace
+                    config_ref['kind'] = 'ProviderConfig'
+                kube('apply', '-f', '-', payload={'apiVersion': env_group + '/v1alpha1', 'kind': 'Environment',
+                    'metadata': env_metadata, 'spec': {'forProvider': {'name': env_name}, 'providerConfigRef': config_ref}})
+                lease = (config_ns, 'environments.' + env_group, env_name)
+                leases.append(lease)
+                try:
+                    wait('Deployment API constraint rejects configuration', lambda: any(
+                        item.get('type') == 'Synced' and item.get('status') == 'False'
+                        and 'version' in item.get('message', '').lower() and 'constraint' in item.get('message', '').lower()
+                        for item in observation(lease).get('status', {}).get('conditions', [])))
+                    if observation(lease)['metadata'].get('annotations', {}).get('crossplane.io/external-name'):
+                        raise RuntimeError('Mismatched API constraint allowed resource creation')
+                    code, page = api('/api/environments')
+                    if code != 200 or any(item['name'] == env_name for item in page['environments']):
+                        raise RuntimeError('Mismatched API constraint allowed a backend mutation')
+                finally:
+                    # Restore a valid provider configuration before any normal finalizer cleanup.
+                    write_constraint('= ' + evidence['api_version'])
+                wait('API constraint repair reconciles normally', lambda: condition(lease, 'True') and bool(observation(lease)['metadata'].get('annotations', {}).get('crossplane.io/external-name')))
+                identifier = observation(lease)['metadata']['annotations']['crossplane.io/external-name']
+                if api('/api/environments/' + identifier)[0] != 200:
+                    raise RuntimeError('Matching API constraint did not create the desired resource')
+                delete(lease)
+                if api('/api/environments/' + identifier)[0] != 404:
+                    raise RuntimeError('Recovered compatibility probe survived deletion')
+                delete(config_lease)
+                delete(secret_lease)
+                record('APICompatibilityConstraint', scope, mismatch_rejected='passed', mutation_before_match=False,
+                       repair_and_reconciliation='passed', delete='passed', provider_config_kind='ProviderConfig')
 
             if 'routing-credentials' in scope_cases:
                 import base64

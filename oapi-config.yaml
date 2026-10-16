@@ -155,3 +155,11 @@ output-options:
     - updateOauthClient
     - deleteOauthClient
     - rotateOauthClientSecret
+    - createGithubPat
+    - listGithubPats
+    - updateGithubPat
+    - deleteGithubPat
+    - createGithubAppConfig
+    - getGithubAppConfig
+    - updateGithubAppConfig
+    - deleteGithubAppConfig
