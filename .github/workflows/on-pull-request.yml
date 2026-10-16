@@ -186,7 +186,8 @@ jobs:
             -e ARCHESTRA_AUTH_SECRET=acceptance-test-auth-secret-32chars \
             archestra/platform:1.4.0-rc.43@sha256:7129705975e1cb6f840a160a4292772ba9a2118b14480d267640011059b80cb8
           for _attempt in $(seq 1 120); do
-            if curl -fsS http://localhost:9000/health > /dev/null; then exit 0; fi
+            status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/api/health || true)
+            case "$status" in 200|401) exit 0 ;; esac
             sleep 5
           done
           docker logs credential-platform
