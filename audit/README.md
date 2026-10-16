@@ -7,6 +7,10 @@ The sections below retain the initial baseline. Current v3 configuration is
 and remaining lifecycle/migration/release gates are still open.
 
 
+The [API lifecycle scope review](api-resource-scope.md) distinguishes the verified
+23-resource provider denominator from additional persistent API areas. It must
+not be interpreted as 100% coverage of every Archestra API lifecycle.
+
 Audit inputs: Terraform `2e34cde000894e9c96793da0ec1f2c90b9193636` (v2.4.0),
 Archestra `35e36afd3f8a29cd568bc486a9e448bb29028414` (main, platform 1.4.0-rc.43).
 
