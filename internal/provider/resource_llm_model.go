@@ -8,6 +8,7 @@ import (
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/google/uuid"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -30,6 +31,29 @@ type LlmModelResource struct {
 }
 
 type LlmModelResourceModel struct {
+	EffectiveInputModalities        types.List           `tfsdk:"effective_input_modalities"`
+	EffectiveOutputModalities       types.List           `tfsdk:"effective_output_modalities"`
+	CustomPricePerMillionCacheRead  types.String         `tfsdk:"custom_price_per_million_cache_read"`
+	CustomPricePerMillionCacheWrite types.String         `tfsdk:"custom_price_per_million_cache_write"`
+	CachePriceSource                types.String         `tfsdk:"cache_price_source"`
+	CacheReadPricePerToken          types.String         `tfsdk:"cache_read_price_per_token"`
+	CacheWritePricePerToken         types.String         `tfsdk:"cache_write_price_per_token"`
+	PricePerMillionCacheRead        types.String         `tfsdk:"price_per_million_cache_read"`
+	PricePerMillionCacheWrite       types.String         `tfsdk:"price_per_million_cache_write"`
+	CustomContextLength             types.Int64          `tfsdk:"custom_context_length"`
+	CustomOutputLength              types.Int64          `tfsdk:"custom_output_length"`
+	OutputLength                    types.Int64          `tfsdk:"output_length"`
+	EmbeddingClientImageCapable     types.Bool           `tfsdk:"embedding_client_image_capable"`
+	IsFree                          types.Bool           `tfsdk:"is_free"`
+	SupportsReasoningEffort         types.Bool           `tfsdk:"supports_reasoning_effort"`
+	ConfiguredParameters            jsontypes.Normalized `tfsdk:"configured_parameters"`
+	DefaultParameters               jsontypes.Normalized `tfsdk:"default_parameters"`
+	Teams                           jsontypes.Normalized `tfsdk:"teams"`
+	Users                           jsontypes.Normalized `tfsdk:"users"`
+	EffectiveContextLength          types.Float64        `tfsdk:"effective_context_length"`
+	SupportedEndpoints              types.List           `tfsdk:"supported_endpoints"`
+	Labels                          []AgentLabelModel    `tfsdk:"labels"`
+
 	ID                          types.String `tfsdk:"id"`
 	ModelID                     types.String `tfsdk:"model_id"`
 	Provider                    types.String `tfsdk:"llm_provider"`
@@ -70,10 +94,12 @@ func (r *LlmModelResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"llm_provider": schema.StringAttribute{
-				MarkdownDescription: "The LLM provider (e.g., `openai`, `anthropic`)",
+				MarkdownDescription: "LLM provider used to disambiguate model names shared by multiple providers.",
+				Optional:            true,
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
+					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"description": schema.StringAttribute{
@@ -100,20 +126,12 @@ func (r *LlmModelResource) Schema(ctx context.Context, req resource.SchemaReques
 			"input_modalities": schema.ListAttribute{
 				MarkdownDescription: "Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.",
 				Optional:            true,
-				Computed:            true,
 				ElementType:         types.StringType,
-				PlanModifiers: []planmodifier.List{
-					RemoveOnConfigNullList(),
-				},
 			},
 			"output_modalities": schema.ListAttribute{
 				MarkdownDescription: "Output modality overrides. Valid values: `text`, `image`, `audio`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.",
 				Optional:            true,
-				Computed:            true,
 				ElementType:         types.StringType,
-				PlanModifiers: []planmodifier.List{
-					RemoveOnConfigNullList(),
-				},
 			},
 			"price_per_million_input": schema.StringAttribute{
 				MarkdownDescription: "Effective price per million input tokens (computed from custom or provider pricing)",
@@ -133,6 +151,10 @@ func (r *LlmModelResource) Schema(ctx context.Context, req resource.SchemaReques
 			},
 		},
 	}
+	for name, attribute := range currentModelAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
+
 }
 
 func (r *LlmModelResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -176,10 +198,13 @@ func (r *LlmModelResource) Create(ctx context.Context, req resource.CreateReques
 	var foundID *uuid.UUID
 
 	for _, model := range *modelsResp.JSON200 {
-		if model.ModelId == targetModelID {
+		if model.ModelId == targetModelID && (data.Provider.IsNull() || data.Provider.IsUnknown() || data.Provider.ValueString() == string(model.Provider)) {
+			if foundID != nil {
+				resp.Diagnostics.AddError("Ambiguous Model Name", "Multiple providers expose this model_id. Set llm_provider to select the intended provider.")
+				return
+			}
 			id := model.Id
 			foundID = &id
-			break
 		}
 	}
 
@@ -318,21 +343,44 @@ func (r *LlmModelResource) Delete(ctx context.Context, req resource.DeleteReques
 	// Clear custom pricing on destroy so the model reverts to provider defaults
 	id, err := uuid.Parse(data.ID.ValueString())
 	if err != nil {
+		resp.Diagnostics.AddError("Invalid Model ID", err.Error())
 		return
 	}
+	patch := map[string]any{
+		"customPricePerMillionInput": nil, "customPricePerMillionOutput": nil,
+		"customPricePerMillionCacheRead": nil, "customPricePerMillionCacheWrite": nil,
+		"customContextLength": nil, "customOutputLength": nil, "ignored": false,
+	}
+	if !data.ConfiguredParameters.IsNull() {
+		patch["configuredParameters"] = nil
+	}
+	if !data.InputModalities.IsNull() {
+		patch["inputModalities"] = nil
+	}
+	if !data.OutputModalities.IsNull() {
+		patch["outputModalities"] = nil
+	}
+	if data.Labels != nil {
+		patch["labels"] = []any{}
+	}
+	body, err := json.Marshal(patch)
+	if err != nil {
+		resp.Diagnostics.AddError("Model Reset Failed", err.Error())
+		return
+	}
+	result, err := r.client.UpdateModelWithBodyWithResponse(ctx, id, "application/json", bytes.NewReader(body))
+	if err != nil {
+		resp.Diagnostics.AddError("Model Reset Failed", err.Error())
+		return
+	}
+	if result.JSON200 == nil && !IsNotFound(result) {
+		resp.Diagnostics.AddError("Model Reset Failed", fmt.Sprintf("Expected 200 or 404 while clearing model overrides, got %d.", result.StatusCode()))
+	}
 
-	updateBody := client.UpdateModelJSONRequestBody{}
-	// Send null to clear custom pricing
-	updateBody.CustomPricePerMillionInput = nil
-	updateBody.CustomPricePerMillionOutput = nil
-	falseVal := false
-	updateBody.Ignored = &falseVal
-
-	_, _ = r.client.UpdateModelWithResponse(ctx, id, updateBody)
 }
 
 func (r *LlmModelResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	// Import by model_id string (e.g., "gpt-4o"), not UUID
+	// UUID imports are unambiguous; a bare model name is accepted only when unique.
 	modelID := req.ID
 
 	modelsResp, err := r.client.GetModelsWithApiKeysWithResponse(ctx, nil)
@@ -346,12 +394,26 @@ func (r *LlmModelResource) ImportState(ctx context.Context, req resource.ImportS
 		return
 	}
 
+	var matchedID, matchedModelID string
 	for _, model := range *modelsResp.JSON200 {
-		if model.ModelId == modelID || model.Id.String() == modelID {
-			resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), model.Id.String())...)
-			resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("model_id"), model.ModelId)...)
-			return
+		if model.Id.String() == modelID {
+			matchedID = model.Id.String()
+			matchedModelID = model.ModelId
+			break
 		}
+		if model.ModelId == modelID {
+			if matchedID != "" {
+				resp.Diagnostics.AddError("Ambiguous Model Name", "Multiple providers expose this model name. Import using the intended model UUID.")
+				return
+			}
+			matchedID = model.Id.String()
+			matchedModelID = model.ModelId
+		}
+	}
+	if matchedID != "" {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), matchedID)...)
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("model_id"), matchedModelID)...)
+		return
 	}
 
 	resp.Diagnostics.AddError("Model Not Found", fmt.Sprintf("Model '%s' not found", modelID))
@@ -373,6 +435,7 @@ func (r *LlmModelResource) readModelState(ctx context.Context, data *LlmModelRes
 
 	for _, model := range *modelsResp.JSON200 {
 		if model.Id.String() == targetID {
+			flattenCurrentModelFields(ctx, data, model, diags)
 			data.ModelID = types.StringValue(model.ModelId)
 			data.Provider = types.StringValue(string(model.Provider))
 			data.Ignored = types.BoolValue(model.Ignored)
@@ -391,7 +454,7 @@ func (r *LlmModelResource) readModelState(ctx context.Context, data *LlmModelRes
 				data.ContextLength = types.Int64Null()
 			}
 
-			if model.InputModalities != nil {
+			if model.InputModalities != nil && !data.InputModalities.IsNull() {
 				vals := make([]string, len(*model.InputModalities))
 				for i, v := range *model.InputModalities {
 					vals[i] = string(v)
@@ -403,7 +466,7 @@ func (r *LlmModelResource) readModelState(ctx context.Context, data *LlmModelRes
 				data.InputModalities = types.ListNull(types.StringType)
 			}
 
-			if model.OutputModalities != nil {
+			if model.OutputModalities != nil && !data.OutputModalities.IsNull() {
 				vals := make([]string, len(*model.OutputModalities))
 				for i, v := range *model.OutputModalities {
 					vals[i] = string(v)

@@ -336,7 +336,7 @@
     "TestAccCurrentGatewayControls"
   ],
   "remaining_release_gates": [
-    "Full API-field coverage is still failing (54 fields at the latest measurement).",
+    "The GET-field API coverage gate now passes; see current-field-validation.json for Terraform evidence. The broader meaningful-API taxonomy and final runtime proofs remain release gates.",
     "Remaining 13 Crossplane resource lifecycle proofs.",
     "Full meaningful API-domain taxonomy and justified exclusions.",
     "Other state/CRD adoption migrations and release package smoke tests.",

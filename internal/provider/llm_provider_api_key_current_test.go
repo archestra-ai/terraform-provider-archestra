@@ -10,7 +10,7 @@ import (
 
 func TestAccLLMProviderKeyCurrentFields(t *testing.T) {
 	baseURL := os.Getenv("ARCHESTRA_TEST_LLM_BASE_URL")
-	if baseURL == "" {
+	if os.Getenv("TF_ACC") != "" && baseURL == "" {
 		t.Fatal("ARCHESTRA_TEST_LLM_BASE_URL must point to the isolated Ollama mock accessible by the backend")
 	}
 	config := func(extra string) string {

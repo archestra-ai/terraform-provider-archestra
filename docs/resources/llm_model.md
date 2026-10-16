@@ -60,22 +60,52 @@ output "gpt4o_price_source" {
 
 ### Optional
 
+- `configured_parameters` (String) Configured parameters as JSON.
+- `custom_context_length` (Number) Custom context length in tokens.
+- `custom_output_length` (Number) Custom output length in tokens.
+- `custom_price_per_million_cache_read` (String) Custom price per million cache read.
+- `custom_price_per_million_cache_write` (String) Custom price per million cache write.
 - `custom_price_per_million_input` (String) Custom price per million input tokens (overrides provider pricing)
 - `custom_price_per_million_output` (String) Custom price per million output tokens (overrides provider pricing)
 - `ignored` (Boolean) Whether the model is ignored (hidden from model selection)
 - `input_modalities` (List of String) Input modality overrides. Valid values: `text`, `image`, `audio`, `video`, `pdf`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.
+- `labels` (Attributes Set) Labels assigned to the model. (see [below for nested schema](#nestedatt--labels))
+- `llm_provider` (String) LLM provider used to disambiguate model names shared by multiple providers.
 - `output_modalities` (List of String) Output modality overrides. Valid values: `text`, `image`, `audio`. Removing from configuration sets the column to null on the next apply; subsequent provider sync may repopulate it from `models.dev` capabilities.
 
 ### Read-Only
 
+- `cache_price_source` (String) Cache price source.
+- `cache_read_price_per_token` (String) Cache read price per token.
+- `cache_write_price_per_token` (String) Cache write price per token.
 - `context_length` (Number) Maximum context length in tokens
+- `default_parameters` (String) Default parameters as JSON.
 - `description` (String) Model description
+- `effective_context_length` (Number) Context window after applying configured limits.
+- `effective_input_modalities` (List of String) Current model input modalities, including provider-discovered values.
+- `effective_output_modalities` (List of String) Current model output modalities, including provider-discovered values.
+- `embedding_client_image_capable` (Boolean) Embedding client image capable.
 - `id` (String) Model UUID (internal identifier)
 - `is_custom_price` (Boolean) Whether custom pricing is active
-- `llm_provider` (String) The LLM provider (e.g., `openai`, `anthropic`)
+- `is_free` (Boolean) Is free.
+- `output_length` (Number) Output length in tokens.
+- `price_per_million_cache_read` (String) Price per million cache read.
+- `price_per_million_cache_write` (String) Price per million cache write.
 - `price_per_million_input` (String) Effective price per million input tokens (computed from custom or provider pricing)
 - `price_per_million_output` (String) Effective price per million output tokens (computed from custom or provider pricing)
 - `price_source` (String) Source of the current pricing: `custom`, `models_dev`, or `default`
+- `supported_endpoints` (List of String) Supported inference endpoints.
+- `supports_reasoning_effort` (Boolean) Supports reasoning effort.
+- `teams` (String) Teams as JSON.
+- `users` (String) Users as JSON.
+
+<a id="nestedatt--labels"></a>
+### Nested Schema for `labels`
+
+Required:
+
+- `key` (String)
+- `value` (String)
 
 ## Import
 

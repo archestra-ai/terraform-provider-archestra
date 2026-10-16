@@ -40,6 +40,20 @@ type MCPServerRegistryResource struct {
 }
 
 type MCPServerRegistryResourceModel struct {
+	CatalogItemApprovalReason     types.String `tfsdk:"catalog_item_approval_reason"`
+	CatalogItemApprovalReviewedAt types.String `tfsdk:"catalog_item_approval_reviewed_at"`
+	CatalogItemApprovalReviewedBy types.String `tfsdk:"catalog_item_approval_reviewed_by"`
+	CatalogItemApprovalStatus     types.String `tfsdk:"catalog_item_approval_status"`
+	ClonedFrom                    types.String `tfsdk:"cloned_from"`
+	CreatedBy                     types.String `tfsdk:"created_by"`
+	CreatedByServiceAccountID     types.String `tfsdk:"created_by_service_account_id"`
+	DeletedAt                     types.String `tfsdk:"deleted_at"`
+	DeploymentName                types.String `tfsdk:"deployment_name"`
+	DynamicConnectionMcpServerID  types.String `tfsdk:"dynamic_connection_mcp_server_id"`
+	EnvironmentID                 types.String `tfsdk:"environment_id"`
+	CatalogReinstallRequired      types.Bool   `tfsdk:"catalog_reinstall_required"`
+	Multitenant                   types.Bool   `tfsdk:"multitenant"`
+
 	ID                  types.String `tfsdk:"id"`
 	Name                types.String `tfsdk:"name"`
 	Description         types.String `tfsdk:"description"`
@@ -769,6 +783,10 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 			},
 		},
 	}
+	for name, attribute := range currentCatalogAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
+
 }
 
 func (r *MCPServerRegistryResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -895,6 +913,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 
 func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, data *MCPServerRegistryResourceModel, apiResp *client.GetInternalMcpCatalogItemResponse, diags *diag.Diagnostics) {
 	j := apiResp.JSON200
+	flattenCurrentCatalogFields(data, apiResp, diags)
 
 	data.Name = types.StringValue(j.Name)
 	data.Description = stringValueOrNull(j.Description)

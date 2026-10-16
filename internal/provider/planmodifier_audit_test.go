@@ -21,6 +21,9 @@ import (
 // Every entry needs a reason — the default of RemoveOnConfigNullList is
 // safer; allowlisting asserts the field has no "remove = clear" semantic.
 var useStateForUnknownAllowlist = map[string]map[string]string{
+	"archestra_llm_model": {
+		"llm_provider": "immutable adoption selector; omitting it retains the already adopted model and its provider rather than selecting another provider with the same model name.",
+	},
 	"archestra_agent_tool": {
 		"mcp_server_id": "credential binding chosen at Create time; remove-from-config has no clear semantic — preserve prior state.",
 	},

@@ -176,3 +176,25 @@ Teams support `parent_id` and labels; removing `parent_id` detaches the team fro
 its parent. Limits support `cleanup_interval` and labels. Changing a limit's
 `entity_id` or `entity_type` now requires replacement because the API cannot move
 an existing limit to another entity. Inspect replacement plans before applying.
+
+## Catalog tenancy and model adoption
+
+Catalog `multitenant` is immutable after creation, so changing it now requires
+replacement. `cloned_from` selects the source during creation and also requires
+replacement when changed. `environment_id` changes update the existing catalog;
+inspect effects on installed runtimes before moving a live catalog.
+
+Set a model's `llm_provider` when more than one provider exposes the same
+`model_id`. Ambiguous adoption now fails before writing. Prefer importing the
+model UUID; a bare model name works only when unique. Existing model IDs remain
+stable when `llm_provider` is omitted.
+
+Model resources manage cache prices, custom context/output limits, labels and
+native Ollama generation parameters. Removing an override clears it. The
+`input_modalities` and `output_modalities` inputs describe overrides;
+`effective_input_modalities` and `effective_output_modalities` expose the current
+server values, including discovered defaults. An import cannot infer which
+modality values were explicitly configured, so re-declare intended overrides in
+HCL and inspect the first plan. Destroy clears managed overrides and labels and
+retains the discovered model. Failed resets remain errors instead of silently
+dropping the Terraform binding.

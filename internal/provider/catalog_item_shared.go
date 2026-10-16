@@ -33,6 +33,10 @@ import (
 //   - `localConfig.imagePullSecrets` has mode-dependent fields driven by `source`;
 //     finalizeCatalogItemPatch normalizes each entry to the wire shape.
 var catalogItemAttrSpec = []AttrSpec{
+	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar},
+	{TFName: "multitenant", JSONName: "multitenant", Kind: Scalar, OmitOnNull: true},
+	{TFName: "cloned_from", JSONName: "clonedFrom", Kind: Scalar, OmitOnNull: true},
+	{TFName: "dynamic_connection_mcp_server_id", JSONName: "dynamicConnectionMcpServerId", Kind: Scalar},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
 	{TFName: "docs_url", JSONName: "docsUrl", Kind: Scalar},

@@ -246,10 +246,13 @@ resource "archestra_mcp_registry_catalog_item" "private_registry" {
 - `auth_description` (String) Description of the authentication requirements
 - `auth_fields` (Attributes List) Custom authentication fields required by the MCP server (see [below for nested schema](#nestedatt--auth_fields))
 - `client_secret_id` (String) UUID of a stored secret holding the OAuth client secret. Mutually exclusive with inline `oauth_config.client_secret`. Computed when the backend auto-creates a BYOS vault reference.
+- `cloned_from` (String) Source catalog item copied when this item is created.
 - `deployment_spec_yaml` (String) Custom Kubernetes deployment YAML for the MCP server
 - `description` (String) Description of the MCP server
 - `docs_url` (String) URL to the MCP server documentation
+- `dynamic_connection_mcp_server_id` (String) Default non-personal server connection for dynamic credential resolution.
 - `enterprise_managed_config` (Attributes) Enterprise-managed credential configuration. Binds this catalog item to an identity provider that issues credentials at runtime rather than using static secrets. (see [below for nested schema](#nestedatt--enterprise_managed_config))
+- `environment_id` (String) Deployment environment for this catalog item.
 - `icon` (String) Icon string for the MCP server
 - `installation_command` (String) Installation command for the MCP server (e.g., npm install -g @example/mcp-server)
 - `instructions` (String) Installation instructions text for the MCP server
@@ -258,6 +261,7 @@ resource "archestra_mcp_registry_catalog_item" "private_registry" {
 - `local_config_secret_id` (String) UUID of a stored secret holding local_config environment values. Computed when the backend auto-creates a BYOS vault reference.
 - `local_config_vault_key` (String) BYOS vault key for local_config secrets.
 - `local_config_vault_path` (String) BYOS vault path for local_config secrets.
+- `multitenant` (Boolean) Whether installations share one runtime; immutable after creation.
 - `oauth_client_secret_vault_key` (String) BYOS vault key for the OAuth client secret.
 - `oauth_client_secret_vault_path` (String) BYOS vault path for the OAuth client secret.
 - `remote_config` (Attributes) Configuration for remote/hosted MCP servers accessed via HTTP (see [below for nested schema](#nestedatt--remote_config))
@@ -268,6 +272,15 @@ resource "archestra_mcp_registry_catalog_item" "private_registry" {
 
 ### Read-Only
 
+- `catalog_item_approval_reason` (String) Catalog item approval reason.
+- `catalog_item_approval_reviewed_at` (String) Catalog item approval reviewed at.
+- `catalog_item_approval_reviewed_by` (String) Catalog item approval reviewed by.
+- `catalog_item_approval_status` (String) Catalog item approval status.
+- `catalog_reinstall_required` (Boolean) Whether existing shared installations need reinstallation.
+- `created_by` (String) Creator identity metadata as JSON.
+- `created_by_service_account_id` (String) Created by service account id.
+- `deleted_at` (String) Deleted at.
+- `deployment_name` (String) Deployment name.
 - `id` (String) MCP server catalog identifier
 
 <a id="nestedatt--auth_fields"></a>

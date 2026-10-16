@@ -6,7 +6,12 @@
   "real_terraform_acceptance": {
     "published_api": [
       "TestAccCurrentTeamHierarchy",
-      "TestAccCurrentLimitFields"
+      "TestAccCurrentLimitFields",
+      "TestAccCatalogCurrentEnvironmentAndClone",
+      "TestAccMcpRegistryCatalogItemResource",
+      "TestAccMcpRegistryCatalogItemResourceWithMetadata",
+      "TestAccMcpRegistryCatalogItemResourceRemote",
+      "TestAccCurrentModelOverrides"
     ],
     "patched_source_api": [
       "TestAccLLMProviderKeyCurrentFields",
@@ -36,11 +41,23 @@
     "shared_typecheck": "passed",
     "test_imports": "passed"
   },
-  "remaining_api_field_gaps": 33,
-  "remaining_gap_resources": [
-    "archestra_llm_model",
-    "archestra_mcp_registry_catalog_item"
-  ],
+  "remaining_api_field_gaps": 0,
+  "remaining_gap_resources": [],
   "crossplane_runtime_evidence": "Unchanged: 10/23 resources previously proved against the hashes in v3-runtime-evidence.json; rerun the final binaries before release.",
-  "release_status": "blocked pending remaining coverage, lifecycle, migration, CI, package and deployed sync validation"
+  "release_status": "blocked pending remaining coverage, lifecycle, migration, CI, package and deployed sync validation",
+  "model_runtime_assertions": [
+    "provider-qualified native model adoption",
+    "UUID import",
+    "cache pricing and token window override",
+    "generation-parameter replacement",
+    "out-of-band drift detected and repaired",
+    "modality override/remove cycle",
+    "destroy clears overrides and labels but preserves the discovered model"
+  ],
+  "failure_regressions": [
+    "403/500 model reset errors surface to Terraform",
+    "404 model reset is idempotent",
+    "ambiguous model adoption/import refuses to write"
+  ],
+  "api_coverage_limit": "GET field coverage is a schema guard, not proof that every meaningful API resource, request-only field or controller lifecycle is supported."
 }

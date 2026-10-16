@@ -44,7 +44,7 @@ func testAccGetFirstModelID(t *testing.T) string {
 		t.Fatalf("GetModelsWithApiKeys returned %d: %s", resp.StatusCode(), string(resp.Body))
 	}
 	if resp.JSON200 == nil || len(*resp.JSON200) == 0 {
-		t.Skip("skipping: no LLM models available in the backend — configure an LLM provider with at least one model on the backend to exercise these tests. Backend-state-gated; CI without a seeded provider is the intended default.")
+		t.Fatal("No LLM models available: seed the isolated Ollama mock and a test provider key before running model acceptance tests.")
 		return ""
 	}
 
