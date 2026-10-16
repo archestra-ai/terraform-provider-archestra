@@ -17,7 +17,7 @@ archestra:
         cpu: "250m"
         memory: "512Mi"
       limits:
-        memory: "1Gi"
+        memory: "2Gi"
   # Environment variables for acceptance testing
   env:
     # Point to real LLM APIs (or mock as needed)
