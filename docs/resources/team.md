@@ -36,13 +36,28 @@ resource "archestra_team" "support" {
 ### Optional
 
 - `description` (String) Description of the team
+- `labels` (Attributes Set) Resource labels. (see [below for nested schema](#nestedatt--labels))
 - `members` (Attributes List) List of team members (see [below for nested schema](#nestedatt--members))
+- `parent_id` (String) Parent team identifier in the team hierarchy.
 
 ### Read-Only
 
 - `created_by` (String) User ID of the team creator
+- `created_by_service_account_id` (String) Service account that created the team.
+- `descendant_teams` (Attributes List) Descendant teams in the hierarchy. (see [below for nested schema](#nestedatt--descendant_teams))
 - `id` (String) Team identifier
+- `my_role` (String) Effective role of the current API caller.
 - `organization_id` (String) The organization ID this team belongs to
+- `roles` (Set of String) Roles available for the team.
+
+<a id="nestedatt--labels"></a>
+### Nested Schema for `labels`
+
+Required:
+
+- `key` (String)
+- `value` (String)
+
 
 <a id="nestedatt--members"></a>
 ### Nested Schema for `members`
@@ -54,6 +69,15 @@ Required:
 Optional:
 
 - `role` (String) Role of the team member (default: member)
+
+
+<a id="nestedatt--descendant_teams"></a>
+### Nested Schema for `descendant_teams`
+
+Read-Only:
+
+- `id` (String)
+- `name` (String)
 
 ## Import
 

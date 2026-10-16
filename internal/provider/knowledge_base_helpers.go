@@ -11,6 +11,7 @@ import (
 // `z.string().nullable().optional()`), so MergePatch's "only-changed-
 // fields" output is a valid wire body without finalize hacks.
 var knowledgeBaseAttrSpec = []AttrSpec{
+	{TFName: "labels", JSONName: "labels", Kind: Set, OmitOnNull: true, Children: []AttrSpec{{TFName: "key", JSONName: "key", Kind: Scalar}, {TFName: "value", JSONName: "value", Kind: Scalar}}},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
 }
@@ -27,6 +28,8 @@ func (r *KnowledgeBaseResource) APIShape() any {
 //   - organizationId: ownership metadata. The API key authenticates the
 //     org; surfacing the field would create a phantom diff against the
 //     resource's implicit scoping.
+//   - visibility/teamIds: retired update fields rejected by the API;
+//     archestra_resource_permission_policy owns access grants.
 func (r *KnowledgeBaseResource) KnownIntentionallySkipped() []string {
-	return []string{"organizationId"}
+	return []string{"organizationId", "visibility", "teamIds"}
 }

@@ -35,13 +35,24 @@ type TeamMemberModel struct {
 	Role   types.String `tfsdk:"role"`
 }
 
+type TeamDescendantModel struct {
+	ID   types.String `tfsdk:"id"`
+	Name types.String `tfsdk:"name"`
+}
+
 type TeamResourceModel struct {
-	ID             types.String      `tfsdk:"id"`
-	Name           types.String      `tfsdk:"name"`
-	Description    types.String      `tfsdk:"description"`
-	OrganizationID types.String      `tfsdk:"organization_id"`
-	CreatedBy      types.String      `tfsdk:"created_by"`
-	Members        []TeamMemberModel `tfsdk:"members"`
+	ParentID                  types.String      `tfsdk:"parent_id"`
+	Labels                    []AgentLabelModel `tfsdk:"labels"`
+	CreatedByServiceAccountID types.String      `tfsdk:"created_by_service_account_id"`
+	DescendantTeams           types.List        `tfsdk:"descendant_teams"`
+	MyRole                    types.String      `tfsdk:"my_role"`
+	Roles                     types.Set         `tfsdk:"roles"`
+	ID                        types.String      `tfsdk:"id"`
+	Name                      types.String      `tfsdk:"name"`
+	Description               types.String      `tfsdk:"description"`
+	OrganizationID            types.String      `tfsdk:"organization_id"`
+	CreatedBy                 types.String      `tfsdk:"created_by"`
+	Members                   []TeamMemberModel `tfsdk:"members"`
 }
 
 func (r *TeamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -54,6 +65,12 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 		MarkdownDescription: "Archestra team with member assignments.",
 
 		Attributes: map[string]schema.Attribute{
+			"parent_id":                     schema.StringAttribute{Optional: true, MarkdownDescription: "Parent team identifier in the team hierarchy."},
+			"labels":                        schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Resource labels.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
+			"created_by_service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Service account that created the team."},
+			"my_role":                       schema.StringAttribute{Computed: true, MarkdownDescription: "Effective role of the current API caller."},
+			"roles":                         schema.SetAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Roles available for the team."},
+			"descendant_teams":              schema.ListNestedAttribute{Computed: true, MarkdownDescription: "Descendant teams in the hierarchy.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"id": schema.StringAttribute{Computed: true}, "name": schema.StringAttribute{Computed: true}}}},
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Team identifier",
@@ -198,6 +215,11 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.refreshCurrentTeam(ctx, &data, &resp.Diagnostics)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -270,6 +292,7 @@ func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		}
 	}
 
+	r.flattenCurrentTeam(ctx, &data, apiResp, &resp.Diagnostics)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -411,6 +434,11 @@ func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, r
 
 	}
 
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.refreshCurrentTeam(ctx, &data, &resp.Diagnostics)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 

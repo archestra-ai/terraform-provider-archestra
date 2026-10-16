@@ -108,3 +108,18 @@ resource "archestra_knowledge_base" "test" {
 }
 `, name, descAttr)
 }
+
+func TestAccKnowledgeBaseLabels(t *testing.T) {
+	initial := testAccKnowledgeBaseResourceConfig("Labelled KB", `labels=[{key="stage",value="initial"}]`)
+	updated := testAccKnowledgeBaseResourceConfig("Labelled KB", `labels=[{key="stage",value="updated"}]`)
+	cleared := testAccKnowledgeBaseResourceConfig("Labelled KB", `labels=[]`)
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+		{Config: initial, Check: resource.TestCheckResourceAttr("archestra_knowledge_base.test", "labels.0.value", "initial")},
+		{ResourceName: "archestra_knowledge_base.test", ImportState: true, ImportStateVerify: true},
+		{Config: initial, PlanOnly: true},
+		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_knowledge_base.test", "labels.0.value", "updated")},
+		{Config: updated, PlanOnly: true},
+		{Config: cleared, Check: resource.TestCheckResourceAttr("archestra_knowledge_base.test", "labels.#", "0")},
+		{Config: cleared, PlanOnly: true},
+	}})
+}

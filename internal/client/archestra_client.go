@@ -14559,16 +14559,22 @@ type CreateKnowledgeBaseResponse struct {
 			Name  *string                              `json:"name"`
 			Type  *CreateKnowledgeBase200CreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
-		CreatedByServiceAccountId *openapi_types.UUID              `json:"createdByServiceAccountId"`
-		DeletedAt                 *time.Time                       `json:"deletedAt"`
-		Description               *string                          `json:"description"`
-		Id                        openapi_types.UUID               `json:"id"`
-		Name                      string                           `json:"name"`
-		OrganizationId            string                           `json:"organizationId"`
-		Status                    string                           `json:"status"`
-		TeamIds                   []string                         `json:"teamIds"`
-		UpdatedAt                 time.Time                        `json:"updatedAt"`
-		Visibility                CreateKnowledgeBase200Visibility `json:"visibility"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		Id                        openapi_types.UUID  `json:"id"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		Name           string                           `json:"name"`
+		OrganizationId string                           `json:"organizationId"`
+		Status         string                           `json:"status"`
+		TeamIds        []string                         `json:"teamIds"`
+		UpdatedAt      time.Time                        `json:"updatedAt"`
+		Visibility     CreateKnowledgeBase200Visibility `json:"visibility"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -14723,16 +14729,22 @@ type GetKnowledgeBaseResponse struct {
 			Name  *string                           `json:"name"`
 			Type  *GetKnowledgeBase200CreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
-		CreatedByServiceAccountId *openapi_types.UUID           `json:"createdByServiceAccountId"`
-		DeletedAt                 *time.Time                    `json:"deletedAt"`
-		Description               *string                       `json:"description"`
-		Id                        openapi_types.UUID            `json:"id"`
-		Name                      string                        `json:"name"`
-		OrganizationId            string                        `json:"organizationId"`
-		Status                    string                        `json:"status"`
-		TeamIds                   []string                      `json:"teamIds"`
-		UpdatedAt                 time.Time                     `json:"updatedAt"`
-		Visibility                GetKnowledgeBase200Visibility `json:"visibility"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		Id                        openapi_types.UUID  `json:"id"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		Name           string                        `json:"name"`
+		OrganizationId string                        `json:"organizationId"`
+		Status         string                        `json:"status"`
+		TeamIds        []string                      `json:"teamIds"`
+		UpdatedAt      time.Time                     `json:"updatedAt"`
+		Visibility     GetKnowledgeBase200Visibility `json:"visibility"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -14814,16 +14826,22 @@ type UpdateKnowledgeBaseResponse struct {
 			Name  *string                              `json:"name"`
 			Type  *UpdateKnowledgeBase200CreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
-		CreatedByServiceAccountId *openapi_types.UUID              `json:"createdByServiceAccountId"`
-		DeletedAt                 *time.Time                       `json:"deletedAt"`
-		Description               *string                          `json:"description"`
-		Id                        openapi_types.UUID               `json:"id"`
-		Name                      string                           `json:"name"`
-		OrganizationId            string                           `json:"organizationId"`
-		Status                    string                           `json:"status"`
-		TeamIds                   []string                         `json:"teamIds"`
-		UpdatedAt                 time.Time                        `json:"updatedAt"`
-		Visibility                UpdateKnowledgeBase200Visibility `json:"visibility"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		Id                        openapi_types.UUID  `json:"id"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		Name           string                           `json:"name"`
+		OrganizationId string                           `json:"organizationId"`
+		Status         string                           `json:"status"`
+		TeamIds        []string                         `json:"teamIds"`
+		UpdatedAt      time.Time                        `json:"updatedAt"`
+		Visibility     UpdateKnowledgeBase200Visibility `json:"visibility"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -27649,16 +27667,22 @@ func ParseCreateKnowledgeBaseResponse(rsp *http.Response) (*CreateKnowledgeBaseR
 				Name  *string                              `json:"name"`
 				Type  *CreateKnowledgeBase200CreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId *openapi_types.UUID              `json:"createdByServiceAccountId"`
-			DeletedAt                 *time.Time                       `json:"deletedAt"`
-			Description               *string                          `json:"description"`
-			Id                        openapi_types.UUID               `json:"id"`
-			Name                      string                           `json:"name"`
-			OrganizationId            string                           `json:"organizationId"`
-			Status                    string                           `json:"status"`
-			TeamIds                   []string                         `json:"teamIds"`
-			UpdatedAt                 time.Time                        `json:"updatedAt"`
-			Visibility                CreateKnowledgeBase200Visibility `json:"visibility"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			Id                        openapi_types.UUID  `json:"id"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name           string                           `json:"name"`
+			OrganizationId string                           `json:"organizationId"`
+			Status         string                           `json:"status"`
+			TeamIds        []string                         `json:"teamIds"`
+			UpdatedAt      time.Time                        `json:"updatedAt"`
+			Visibility     CreateKnowledgeBase200Visibility `json:"visibility"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -27879,16 +27903,22 @@ func ParseGetKnowledgeBaseResponse(rsp *http.Response) (*GetKnowledgeBaseRespons
 				Name  *string                           `json:"name"`
 				Type  *GetKnowledgeBase200CreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId *openapi_types.UUID           `json:"createdByServiceAccountId"`
-			DeletedAt                 *time.Time                    `json:"deletedAt"`
-			Description               *string                       `json:"description"`
-			Id                        openapi_types.UUID            `json:"id"`
-			Name                      string                        `json:"name"`
-			OrganizationId            string                        `json:"organizationId"`
-			Status                    string                        `json:"status"`
-			TeamIds                   []string                      `json:"teamIds"`
-			UpdatedAt                 time.Time                     `json:"updatedAt"`
-			Visibility                GetKnowledgeBase200Visibility `json:"visibility"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			Id                        openapi_types.UUID  `json:"id"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name           string                        `json:"name"`
+			OrganizationId string                        `json:"organizationId"`
+			Status         string                        `json:"status"`
+			TeamIds        []string                      `json:"teamIds"`
+			UpdatedAt      time.Time                     `json:"updatedAt"`
+			Visibility     GetKnowledgeBase200Visibility `json:"visibility"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -28002,16 +28032,22 @@ func ParseUpdateKnowledgeBaseResponse(rsp *http.Response) (*UpdateKnowledgeBaseR
 				Name  *string                              `json:"name"`
 				Type  *UpdateKnowledgeBase200CreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId *openapi_types.UUID              `json:"createdByServiceAccountId"`
-			DeletedAt                 *time.Time                       `json:"deletedAt"`
-			Description               *string                          `json:"description"`
-			Id                        openapi_types.UUID               `json:"id"`
-			Name                      string                           `json:"name"`
-			OrganizationId            string                           `json:"organizationId"`
-			Status                    string                           `json:"status"`
-			TeamIds                   []string                         `json:"teamIds"`
-			UpdatedAt                 time.Time                        `json:"updatedAt"`
-			Visibility                UpdateKnowledgeBase200Visibility `json:"visibility"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			Id                        openapi_types.UUID  `json:"id"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name           string                           `json:"name"`
+			OrganizationId string                           `json:"organizationId"`
+			Status         string                           `json:"status"`
+			TeamIds        []string                         `json:"teamIds"`
+			UpdatedAt      time.Time                        `json:"updatedAt"`
+			Visibility     UpdateKnowledgeBase200Visibility `json:"visibility"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err

@@ -1,0 +1,46 @@
+{
+  "api_source_commit": "91b2d0cbb1dfbed399f0ffb8b012d167453eff6e",
+  "api_pr": "https://github.com/archestra-ai/archestra/pull/9032",
+  "published_api_tested": "1.4.0-rc.45",
+  "published_api_image_digest": "sha256:1befaf24bbac977267d7bd480a250969aa6126898ddef89a291a1fadd6477b26",
+  "real_terraform_acceptance": {
+    "published_api": [
+      "TestAccCurrentTeamHierarchy",
+      "TestAccCurrentLimitFields"
+    ],
+    "patched_source_api": [
+      "TestAccLLMProviderKeyCurrentFields",
+      "TestAccKnowledgeBaseResource",
+      "TestAccKnowledgeBaseResource_ClearDescription",
+      "TestAccKnowledgeBaseResource_EmptyNameRejected",
+      "TestAccKnowledgeBaseLabels"
+    ],
+    "operations": [
+      "create",
+      "refresh",
+      "import",
+      "update",
+      "clear nullable scalar and collections",
+      "no-op plan",
+      "destroy"
+    ],
+    "api_pr_required_for": [
+      "LLM key label reads",
+      "knowledge-base label reads and label-only updates"
+    ]
+  },
+  "api_regressions": {
+    "affected_route_tests_passed": 208,
+    "full_codegen": "passed",
+    "backend_typecheck": "passed",
+    "shared_typecheck": "passed",
+    "test_imports": "passed"
+  },
+  "remaining_api_field_gaps": 33,
+  "remaining_gap_resources": [
+    "archestra_llm_model",
+    "archestra_mcp_registry_catalog_item"
+  ],
+  "crossplane_runtime_evidence": "Unchanged: 10/23 resources previously proved against the hashes in v3-runtime-evidence.json; rerun the final binaries before release.",
+  "release_status": "blocked pending remaining coverage, lifecycle, migration, CI, package and deployed sync validation"
+}

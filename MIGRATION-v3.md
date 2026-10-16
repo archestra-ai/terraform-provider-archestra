@@ -163,3 +163,16 @@ retired-field pruning with storage version `v1alpha1`, orphaned the old binding,
 adopted the same ID in namespaced Observe mode, then verified update and explicit
 delete. No CRD version conversion was required for this schema change. Other
 resource migrations still require their own runtime evidence before release.
+
+## Current labels, key endpoints and limit bindings
+
+LLM provider keys now manage sensitive `extra_headers`, `inference_base_url` and
+labels. Headers remain sensitive in Terraform output but are stored in state.
+Imports recover server-visible headers; inline API keys and unreturned vault
+references cannot be reconstructed. The API must include the label-read fixes
+from archestra-ai/archestra#9032 before using key or knowledge-base labels.
+
+Teams support `parent_id` and labels; removing `parent_id` detaches the team from
+its parent. Limits support `cleanup_interval` and labels. Changing a limit's
+`entity_id` or `entity_type` now requires replacement because the API cannot move
+an existing limit to another entity. Inspect replacement plans before applying.

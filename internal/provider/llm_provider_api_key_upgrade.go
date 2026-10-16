@@ -40,6 +40,9 @@ func (r *LLMProviderApiKeyResource) UpgradeState(ctx context.Context) map[int64]
 			return
 		}
 		encoded, err := json.Marshal(values)
+		if err == nil {
+			encoded, err = projectStateJSON(encoded, current.Schema.Type().TerraformType(ctx))
+		}
 		if err != nil {
 			resp.Diagnostics.AddError("Key State Upgrade Failed", "Unable to encode the upgraded state.")
 			return

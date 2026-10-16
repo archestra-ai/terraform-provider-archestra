@@ -47,13 +47,25 @@ resource "archestra_knowledge_base" "internal_wiki" {
 ### Optional
 
 - `description` (String) Free-form description.
+- `labels` (Attributes Set) Knowledge-base labels. (see [below for nested schema](#nestedatt--labels))
 
 ### Read-Only
 
 - `created_at` (String) Creation timestamp (RFC 3339).
+- `created_by` (String) Creator identity metadata as JSON.
+- `created_by_service_account_id` (String) Service account that created the knowledge base.
+- `deleted_at` (String) Soft-deletion timestamp, when applicable.
 - `id` (String) Knowledge base identifier.
 - `status` (String) Lifecycle status managed by the backend.
 - `updated_at` (String) Last-update timestamp (RFC 3339).
+
+<a id="nestedatt--labels"></a>
+### Nested Schema for `labels`
+
+Required:
+
+- `key` (String)
+- `value` (String)
 
 ## Import
 

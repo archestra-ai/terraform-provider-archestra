@@ -75,6 +75,8 @@ resource "archestra_limit" "claude_family_budget" {
 
 ### Optional
 
+- `cleanup_interval` (String) Interval used to reset limit usage.
+- `labels` (Attributes Set) Resource labels. (see [below for nested schema](#nestedatt--labels))
 - `mcp_server_name` (String) Required when limit_type is 'mcp_server_calls' or 'tool_calls'. Name of the MCP server.
 - `model` (List of String) Required when limit_type is 'token_cost'. List of model names this limit applies to.
 - `tool_name` (String) Required when limit_type is 'tool_calls'. Name of the tool this limit applies to.
@@ -82,6 +84,26 @@ resource "archestra_limit" "claude_family_budget" {
 ### Read-Only
 
 - `id` (String) Limit identifier
+- `model_usage` (Attributes List) Current per-model usage counters. (see [below for nested schema](#nestedatt--model_usage))
+
+<a id="nestedatt--labels"></a>
+### Nested Schema for `labels`
+
+Required:
+
+- `key` (String)
+- `value` (String)
+
+
+<a id="nestedatt--model_usage"></a>
+### Nested Schema for `model_usage`
+
+Read-Only:
+
+- `cost` (Number)
+- `model` (String)
+- `tokens_in` (Number)
+- `tokens_out` (Number)
 
 ## Import
 
