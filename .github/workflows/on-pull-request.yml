@@ -177,15 +177,15 @@ jobs:
       - uses: ./.github/actions/setup-go
       - uses: ./.github/actions/setup-terraform
       # Credential APIs are newer than the platform used by the legacy suite.
-      # Pin the first deployed commit containing shared GitHub connections.
+      # Use an immutable, published multi-platform image for reproducible CI.
       - name: Start platform with credential support
         run: |
           docker run -d --name credential-platform -p 9000:9000 -p 3000:3000 \
             -e ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true \
             -e ARCHESTRA_AGENT_RUNTIME_ENABLED=true \
             -e ARCHESTRA_AUTH_SECRET=acceptance-test-auth-secret-32chars \
-            europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/platform:ee762a54c70053222f488bbb0f51c97ad15c6f31
-          for attempt in $(seq 1 120); do
+            archestra/platform:1.4.0-rc.43@sha256:7129705975e1cb6f840a160a4292772ba9a2118b14480d267640011059b80cb8
+          for _attempt in $(seq 1 120); do
             if curl -fsS http://localhost:9000/health > /dev/null; then exit 0; fi
             sleep 5
           done
