@@ -16,11 +16,60 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+// Defines values for ListRuntimeCredentialsParamsAccess.
+const (
+	ListRuntimeCredentialsParamsAccessMine   ListRuntimeCredentialsParamsAccess = "mine"
+	ListRuntimeCredentialsParamsAccessOrg    ListRuntimeCredentialsParamsAccess = "org"
+	ListRuntimeCredentialsParamsAccessOthers ListRuntimeCredentialsParamsAccess = "others"
+	ListRuntimeCredentialsParamsAccessShared ListRuntimeCredentialsParamsAccess = "shared"
+)
+
+// Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsActions.
+const (
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateRuntimeCredentialJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsDelete                  CreateRuntimeCredentialJSONBodyInitialGrantsActions = "delete"
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsManagePermissions       CreateRuntimeCredentialJSONBodyInitialGrantsActions = "manage-permissions"
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsRead                    CreateRuntimeCredentialJSONBodyInitialGrantsActions = "read"
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsUpdate                  CreateRuntimeCredentialJSONBodyInitialGrantsActions = "update"
+	CreateRuntimeCredentialJSONBodyInitialGrantsActionsUse                     CreateRuntimeCredentialJSONBodyInitialGrantsActions = "use"
+)
+
+// Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsSubject0Type.
+const (
+	CreateRuntimeCredentialJSONBodyInitialGrantsSubject0TypeUser CreateRuntimeCredentialJSONBodyInitialGrantsSubject0Type = "user"
+)
+
+// Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsSubject1Type.
+const (
+	CreateRuntimeCredentialJSONBodyInitialGrantsSubject1TypeTeam CreateRuntimeCredentialJSONBodyInitialGrantsSubject1Type = "team"
+)
+
+// Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsSubject2Type.
+const (
+	CreateRuntimeCredentialJSONBodyInitialGrantsSubject2TypeServiceAccount CreateRuntimeCredentialJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+)
+
+// Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsSubject3Type.
+const (
+	CreateRuntimeCredentialJSONBodyInitialGrantsSubject3TypeRole CreateRuntimeCredentialJSONBodyInitialGrantsSubject3Type = "role"
+)
+
+// Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Id.
+const (
+	CreateRuntimeCredentialJSONBodyInitialGrantsSubject4IdAsterisk CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Id = "*"
+)
+
+// Defines values for CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Type.
+const (
+	CreateRuntimeCredentialJSONBodyInitialGrantsSubject4TypeOrganization CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Type = "organization"
+)
+
 // Defines values for CreateRuntimeCredentialJSONBodyKind.
 const (
-	GithubApp     CreateRuntimeCredentialJSONBodyKind = "github_app"
-	GithubAppUser CreateRuntimeCredentialJSONBodyKind = "github_app_user"
-	Secret        CreateRuntimeCredentialJSONBodyKind = "secret"
+	CreateRuntimeCredentialJSONBodyKindGithubApp     CreateRuntimeCredentialJSONBodyKind = "github_app"
+	CreateRuntimeCredentialJSONBodyKindGithubAppUser CreateRuntimeCredentialJSONBodyKind = "github_app_user"
+	CreateRuntimeCredentialJSONBodyKindGitlabToken   CreateRuntimeCredentialJSONBodyKind = "gitlab_token"
+	CreateRuntimeCredentialJSONBodyKindSecret        CreateRuntimeCredentialJSONBodyKind = "secret"
 )
 
 // UpdateAgentToolExclusionsJSONBody defines parameters for UpdateAgentToolExclusions.
@@ -29,20 +78,96 @@ type UpdateAgentToolExclusionsJSONBody struct {
 	ExcludedToolIds []openapi_types.UUID `json:"excludedToolIds"`
 }
 
+// ListRuntimeCredentialsParams defines parameters for ListRuntimeCredentials.
+type ListRuntimeCredentialsParams struct {
+	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
+	Access *[]ListRuntimeCredentialsParamsAccess `form:"access,omitempty" json:"access,omitempty"`
+
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
+
+	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
+	Owner *[]string `form:"owner,omitempty" json:"owner,omitempty"`
+}
+
+// ListRuntimeCredentialsParamsAccess defines parameters for ListRuntimeCredentials.
+type ListRuntimeCredentialsParamsAccess string
+
 // CreateRuntimeCredentialJSONBody defines parameters for CreateRuntimeCredential.
 type CreateRuntimeCredentialJSONBody struct {
-	AllowOrganization      *bool                                `json:"allowOrganization,omitempty"`
-	AllowPersonal          *bool                                `json:"allowPersonal,omitempty"`
-	AppId                  *string                              `json:"appId"`
-	Description            *string                              `json:"description,omitempty"`
-	GithubAppCredentialKey *string                              `json:"githubAppCredentialKey"`
-	GithubClientId         *string                              `json:"githubClientId"`
-	GithubUrl              *string                              `json:"githubUrl"`
-	Icon                   *string                              `json:"icon"`
-	InstallationId         *string                              `json:"installationId"`
-	Key                    string                               `json:"key"`
-	Kind                   *CreateRuntimeCredentialJSONBodyKind `json:"kind,omitempty"`
-	Name                   string                               `json:"name"`
+	AllowOrganization      *bool   `json:"allowOrganization,omitempty"`
+	AllowPersonal          *bool   `json:"allowPersonal,omitempty"`
+	AppId                  *string `json:"appId"`
+	Description            *string `json:"description,omitempty"`
+	GithubAppCredentialKey *string `json:"githubAppCredentialKey"`
+	GithubClientId         *string `json:"githubClientId"`
+	GithubUrl              *string `json:"githubUrl"`
+	GitlabUrl              *string `json:"gitlabUrl"`
+	Icon                   *string `json:"icon"`
+	InitialGrants          *[]struct {
+		Actions []CreateRuntimeCredentialJSONBodyInitialGrantsActions `json:"actions"`
+		Subject CreateRuntimeCredentialJSONBody_InitialGrants_Subject `json:"subject"`
+	} `json:"initialGrants,omitempty"`
+	InstallationId *string                              `json:"installationId"`
+	Key            string                               `json:"key"`
+	Kind           *CreateRuntimeCredentialJSONBodyKind `json:"kind,omitempty"`
+	Name           string                               `json:"name"`
+}
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsActions defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsActions string
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject0 defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject0 struct {
+	Id   string                                                   `json:"id"`
+	Type CreateRuntimeCredentialJSONBodyInitialGrantsSubject0Type `json:"type"`
+}
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject0Type defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject0Type string
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject1 defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject1 struct {
+	Id   string                                                   `json:"id"`
+	Type CreateRuntimeCredentialJSONBodyInitialGrantsSubject1Type `json:"type"`
+}
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject1Type defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject1Type string
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject2 defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject2 struct {
+	Id   openapi_types.UUID                                       `json:"id"`
+	Type CreateRuntimeCredentialJSONBodyInitialGrantsSubject2Type `json:"type"`
+}
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject2Type defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject2Type string
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject3 defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject3 struct {
+	Id   string                                                   `json:"id"`
+	Type CreateRuntimeCredentialJSONBodyInitialGrantsSubject3Type `json:"type"`
+}
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject3Type defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject3Type string
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject4 defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject4 struct {
+	Id   CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Type CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Type `json:"type"`
+}
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Id defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Id string
+
+// CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Type defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBodyInitialGrantsSubject4Type string
+
+// CreateRuntimeCredentialJSONBody_InitialGrants_Subject defines parameters for CreateRuntimeCredential.
+type CreateRuntimeCredentialJSONBody_InitialGrants_Subject struct {
+	union json.RawMessage
 }
 
 // CreateRuntimeCredentialJSONBodyKind defines parameters for CreateRuntimeCredential.
@@ -121,8 +246,8 @@ func (c *Client) UpdateAgentToolExclusions(ctx context.Context, id openapi_types
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListRuntimeCredentials(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListRuntimeCredentialsRequest(c.Server)
+func (c *Client) ListRuntimeCredentials(ctx context.Context, params *ListRuntimeCredentialsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListRuntimeCredentialsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -347,7 +472,7 @@ func NewUpdateAgentToolExclusionsRequestWithBody(server string, id openapi_types
 }
 
 // NewListRuntimeCredentialsRequest generates requests for ListRuntimeCredentials
-func NewListRuntimeCredentialsRequest(server string) (*http.Request, error) {
+func NewListRuntimeCredentialsRequest(server string, params *ListRuntimeCredentialsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -363,6 +488,60 @@ func NewListRuntimeCredentialsRequest(server string) (*http.Request, error) {
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Access != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "access", runtime.ParamLocationQuery, *params.Access); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SharedWith != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sharedWith", runtime.ParamLocationQuery, *params.SharedWith); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Owner != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "owner", runtime.ParamLocationQuery, *params.Owner); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -679,6 +858,7 @@ type GetAgentToolExclusionsResponse struct {
 	}
 	JSON403 *struct {
 		Error struct {
+			Details      *map[string]interface{}            `json:"details,omitempty"`
 			InternalCode *string                            `json:"internal_code,omitempty"`
 			Message      string                             `json:"message"`
 			Type         GetAgentToolExclusions403ErrorType `json:"type"`
@@ -758,6 +938,7 @@ type UpdateAgentToolExclusionsResponse struct {
 	}
 	JSON403 *struct {
 		Error struct {
+			Details      *map[string]interface{}               `json:"details,omitempty"`
 			InternalCode *string                               `json:"internal_code,omitempty"`
 			Message      string                                `json:"message"`
 			Type         UpdateAgentToolExclusions403ErrorType `json:"type"`
@@ -851,6 +1032,7 @@ type ListRuntimeCredentialsResponse struct {
 	}
 	JSON403 *struct {
 		Error struct {
+			Details      *map[string]interface{}            `json:"details,omitempty"`
 			InternalCode *string                            `json:"internal_code,omitempty"`
 			Message      string                             `json:"message"`
 			Type         ListRuntimeCredentials403ErrorType `json:"type"`
@@ -923,6 +1105,7 @@ type CreateRuntimeCredentialResponse struct {
 		GithubAppCredentialKey    *string                        `json:"githubAppCredentialKey"`
 		GithubClientId            *string                        `json:"githubClientId"`
 		GithubUrl                 *string                        `json:"githubUrl"`
+		GitlabUrl                 *string                        `json:"gitlabUrl"`
 		Icon                      *string                        `json:"icon"`
 		Id                        openapi_types.UUID             `json:"id"`
 		InstallationId            *string                        `json:"installationId"`
@@ -948,6 +1131,7 @@ type CreateRuntimeCredentialResponse struct {
 	}
 	JSON403 *struct {
 		Error struct {
+			Details      *map[string]interface{}             `json:"details,omitempty"`
 			InternalCode *string                             `json:"internal_code,omitempty"`
 			Message      string                              `json:"message"`
 			Type         CreateRuntimeCredential403ErrorType `json:"type"`
@@ -1028,6 +1212,7 @@ type DeleteRuntimeCredentialResponse struct {
 	}
 	JSON403 *struct {
 		Error struct {
+			Details      *map[string]interface{}             `json:"details,omitempty"`
 			InternalCode *string                             `json:"internal_code,omitempty"`
 			Message      string                              `json:"message"`
 			Type         DeleteRuntimeCredential403ErrorType `json:"type"`
@@ -1100,6 +1285,7 @@ type UpdateRuntimeCredentialResponse struct {
 		GithubAppCredentialKey    *string                        `json:"githubAppCredentialKey"`
 		GithubClientId            *string                        `json:"githubClientId"`
 		GithubUrl                 *string                        `json:"githubUrl"`
+		GitlabUrl                 *string                        `json:"gitlabUrl"`
 		Icon                      *string                        `json:"icon"`
 		Id                        openapi_types.UUID             `json:"id"`
 		InstallationId            *string                        `json:"installationId"`
@@ -1125,6 +1311,7 @@ type UpdateRuntimeCredentialResponse struct {
 	}
 	JSON403 *struct {
 		Error struct {
+			Details      *map[string]interface{}             `json:"details,omitempty"`
 			InternalCode *string                             `json:"internal_code,omitempty"`
 			Message      string                              `json:"message"`
 			Type         UpdateRuntimeCredential403ErrorType `json:"type"`
@@ -1205,6 +1392,7 @@ type DeleteOrganizationRuntimeCredentialConnectionResponse struct {
 	}
 	JSON403 *struct {
 		Error struct {
+			Details      *map[string]interface{}                                   `json:"details,omitempty"`
 			InternalCode *string                                                   `json:"internal_code,omitempty"`
 			Message      string                                                    `json:"message"`
 			Type         DeleteOrganizationRuntimeCredentialConnection403ErrorType `json:"type"`
@@ -1283,6 +1471,7 @@ type SetOrganizationRuntimeCredentialConnectionResponse struct {
 	}
 	JSON403 *struct {
 		Error struct {
+			Details      *map[string]interface{}                                `json:"details,omitempty"`
 			InternalCode *string                                                `json:"internal_code,omitempty"`
 			Message      string                                                 `json:"message"`
 			Type         SetOrganizationRuntimeCredentialConnection403ErrorType `json:"type"`
@@ -1363,6 +1552,7 @@ type DeletePersonalRuntimeCredentialConnectionResponse struct {
 	}
 	JSON403 *struct {
 		Error struct {
+			Details      *map[string]interface{}                               `json:"details,omitempty"`
 			InternalCode *string                                               `json:"internal_code,omitempty"`
 			Message      string                                                `json:"message"`
 			Type         DeletePersonalRuntimeCredentialConnection403ErrorType `json:"type"`
@@ -1441,6 +1631,7 @@ type SetPersonalRuntimeCredentialConnectionResponse struct {
 	}
 	JSON403 *struct {
 		Error struct {
+			Details      *map[string]interface{}                            `json:"details,omitempty"`
 			InternalCode *string                                            `json:"internal_code,omitempty"`
 			Message      string                                             `json:"message"`
 			Type         SetPersonalRuntimeCredentialConnection403ErrorType `json:"type"`
@@ -1526,8 +1717,8 @@ func (c *ClientWithResponses) UpdateAgentToolExclusionsWithResponse(ctx context.
 }
 
 // ListRuntimeCredentialsWithResponse request returning *ListRuntimeCredentialsResponse
-func (c *ClientWithResponses) ListRuntimeCredentialsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListRuntimeCredentialsResponse, error) {
-	rsp, err := c.ClientInterface.(*Client).ListRuntimeCredentials(ctx, reqEditors...)
+func (c *ClientWithResponses) ListRuntimeCredentialsWithResponse(ctx context.Context, params *ListRuntimeCredentialsParams, reqEditors ...RequestEditorFn) (*ListRuntimeCredentialsResponse, error) {
+	rsp, err := c.ClientInterface.(*Client).ListRuntimeCredentials(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -1682,6 +1873,7 @@ func ParseGetAgentToolExclusionsResponse(rsp *http.Response) (*GetAgentToolExclu
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
 		var dest struct {
 			Error struct {
+				Details      *map[string]interface{}            `json:"details,omitempty"`
 				InternalCode *string                            `json:"internal_code,omitempty"`
 				Message      string                             `json:"message"`
 				Type         GetAgentToolExclusions403ErrorType `json:"type"`
@@ -1789,6 +1981,7 @@ func ParseUpdateAgentToolExclusionsResponse(rsp *http.Response) (*UpdateAgentToo
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
 		var dest struct {
 			Error struct {
+				Details      *map[string]interface{}               `json:"details,omitempty"`
 				InternalCode *string                               `json:"internal_code,omitempty"`
 				Message      string                                `json:"message"`
 				Type         UpdateAgentToolExclusions403ErrorType `json:"type"`
@@ -1910,6 +2103,7 @@ func ParseListRuntimeCredentialsResponse(rsp *http.Response) (*ListRuntimeCreden
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
 		var dest struct {
 			Error struct {
+				Details      *map[string]interface{}            `json:"details,omitempty"`
 				InternalCode *string                            `json:"internal_code,omitempty"`
 				Message      string                             `json:"message"`
 				Type         ListRuntimeCredentials403ErrorType `json:"type"`
@@ -1990,6 +2184,7 @@ func ParseCreateRuntimeCredentialResponse(rsp *http.Response) (*CreateRuntimeCre
 			GithubAppCredentialKey    *string                        `json:"githubAppCredentialKey"`
 			GithubClientId            *string                        `json:"githubClientId"`
 			GithubUrl                 *string                        `json:"githubUrl"`
+			GitlabUrl                 *string                        `json:"gitlabUrl"`
 			Icon                      *string                        `json:"icon"`
 			Id                        openapi_types.UUID             `json:"id"`
 			InstallationId            *string                        `json:"installationId"`
@@ -2033,6 +2228,7 @@ func ParseCreateRuntimeCredentialResponse(rsp *http.Response) (*CreateRuntimeCre
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
 		var dest struct {
 			Error struct {
+				Details      *map[string]interface{}             `json:"details,omitempty"`
 				InternalCode *string                             `json:"internal_code,omitempty"`
 				Message      string                              `json:"message"`
 				Type         CreateRuntimeCredential403ErrorType `json:"type"`
@@ -2139,6 +2335,7 @@ func ParseDeleteRuntimeCredentialResponse(rsp *http.Response) (*DeleteRuntimeCre
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
 		var dest struct {
 			Error struct {
+				Details      *map[string]interface{}             `json:"details,omitempty"`
 				InternalCode *string                             `json:"internal_code,omitempty"`
 				Message      string                              `json:"message"`
 				Type         DeleteRuntimeCredential403ErrorType `json:"type"`
@@ -2219,6 +2416,7 @@ func ParseUpdateRuntimeCredentialResponse(rsp *http.Response) (*UpdateRuntimeCre
 			GithubAppCredentialKey    *string                        `json:"githubAppCredentialKey"`
 			GithubClientId            *string                        `json:"githubClientId"`
 			GithubUrl                 *string                        `json:"githubUrl"`
+			GitlabUrl                 *string                        `json:"gitlabUrl"`
 			Icon                      *string                        `json:"icon"`
 			Id                        openapi_types.UUID             `json:"id"`
 			InstallationId            *string                        `json:"installationId"`
@@ -2262,6 +2460,7 @@ func ParseUpdateRuntimeCredentialResponse(rsp *http.Response) (*UpdateRuntimeCre
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
 		var dest struct {
 			Error struct {
+				Details      *map[string]interface{}             `json:"details,omitempty"`
 				InternalCode *string                             `json:"internal_code,omitempty"`
 				Message      string                              `json:"message"`
 				Type         UpdateRuntimeCredential403ErrorType `json:"type"`
@@ -2368,6 +2567,7 @@ func ParseDeleteOrganizationRuntimeCredentialConnectionResponse(rsp *http.Respon
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
 		var dest struct {
 			Error struct {
+				Details      *map[string]interface{}                                   `json:"details,omitempty"`
 				InternalCode *string                                                   `json:"internal_code,omitempty"`
 				Message      string                                                    `json:"message"`
 				Type         DeleteOrganizationRuntimeCredentialConnection403ErrorType `json:"type"`
@@ -2474,6 +2674,7 @@ func ParseSetOrganizationRuntimeCredentialConnectionResponse(rsp *http.Response)
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
 		var dest struct {
 			Error struct {
+				Details      *map[string]interface{}                                `json:"details,omitempty"`
 				InternalCode *string                                                `json:"internal_code,omitempty"`
 				Message      string                                                 `json:"message"`
 				Type         SetOrganizationRuntimeCredentialConnection403ErrorType `json:"type"`
@@ -2580,6 +2781,7 @@ func ParseDeletePersonalRuntimeCredentialConnectionResponse(rsp *http.Response) 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
 		var dest struct {
 			Error struct {
+				Details      *map[string]interface{}                               `json:"details,omitempty"`
 				InternalCode *string                                               `json:"internal_code,omitempty"`
 				Message      string                                                `json:"message"`
 				Type         DeletePersonalRuntimeCredentialConnection403ErrorType `json:"type"`
@@ -2686,6 +2888,7 @@ func ParseSetPersonalRuntimeCredentialConnectionResponse(rsp *http.Response) (*S
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
 		var dest struct {
 			Error struct {
+				Details      *map[string]interface{}                            `json:"details,omitempty"`
 				InternalCode *string                                            `json:"internal_code,omitempty"`
 				Message      string                                             `json:"message"`
 				Type         SetPersonalRuntimeCredentialConnection403ErrorType `json:"type"`
