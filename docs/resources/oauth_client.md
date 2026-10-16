@@ -19,7 +19,7 @@ resource "archestra_oauth_client" "example" {
   grant_type = "client_credentials"
   provider_api_keys = [{
     provider            = "openai"
-    provider_api_key_id = archestra_llm_provider_api_key.example.id
+    provider_api_key_id = archestra_model_provider.example.id
   }]
   # Changing this value rotates the secret and preserves the client ID.
   rotation_nonce = "1"
@@ -40,8 +40,8 @@ resource "archestra_oauth_client" "example" {
 - `billing_team_id` (String) Team billed for client-credentials usage; removing the value clears billing.
 - `grant_type` (String) Immutable OAuth grant type.
 - `include_future_providers` (Boolean) Use current and future shared primary provider keys with explicit mappings as overrides.
-- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `labels` (Attributes Set) Credential labels; an empty set clears them. (see [below for nested schema](#nestedatt--labels))
+- `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `provider_api_keys` (Attributes Set) Explicit provider-to-key mappings; an empty set clears explicit mappings. (see [below for nested schema](#nestedatt--provider_api_keys))
 - `redirect_uris` (Set of String) Authorization-code redirect URIs; an empty set clears them when the selected mode permits it.
 - `rotation_nonce` (String) Set or change a nonempty value to rotate the secret while preserving client identity.
@@ -62,16 +62,6 @@ resource "archestra_oauth_client" "example" {
 - `organization_id` (String) Organization identifier.
 - `updated_at` (String) Last update timestamp.
 
-<a id="nestedatt--initial_grants"></a>
-### Nested Schema for `initial_grants`
-
-Required:
-
-- `actions` (Set of String) Actions granted to the principal.
-- `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
-
-
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`
 
@@ -79,6 +69,16 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+
+<a id="nestedatt--permissions"></a>
+### Nested Schema for `permissions`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
 
 
 <a id="nestedatt--provider_api_keys"></a>

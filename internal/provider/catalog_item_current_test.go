@@ -18,13 +18,13 @@ func TestAccCatalogCurrentEnvironmentAndClone(t *testing.T) {
  name="tf-catalog-second"
  namespace="default"
  }
- resource "archestra_mcp_registry_catalog_item" "source" {
+ resource "archestra_mcp_registry_entry" "source" {
  name="tf-catalog-clone-source"
  remote_config={url="http://127.0.0.1:19999/mcp"}
  }
- resource "archestra_mcp_registry_catalog_item" "test" {
+ resource "archestra_mcp_registry_entry" "test" {
  name="tf-catalog-current-fields"
- cloned_from=archestra_mcp_registry_catalog_item.source.id
+ cloned_from=archestra_mcp_registry_entry.source.id
  environment_id=archestra_environment.%s.id
  multitenant=false
  remote_config={url="http://127.0.0.1:19999/mcp"}
@@ -34,10 +34,10 @@ func TestAccCatalogCurrentEnvironmentAndClone(t *testing.T) {
 	initial := config("first")
 	updated := config("second")
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: initial, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttrPair("archestra_mcp_registry_catalog_item.test", "cloned_from", "archestra_mcp_registry_catalog_item.source", "id"), resource.TestCheckResourceAttrPair("archestra_mcp_registry_catalog_item.test", "environment_id", "archestra_environment.first", "id"), resource.TestCheckResourceAttr("archestra_mcp_registry_catalog_item.test", "multitenant", "false"))},
-		{ResourceName: "archestra_mcp_registry_catalog_item.test", ImportState: true, ImportStateVerify: true},
+		{Config: initial, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttrPair("archestra_mcp_registry_entry.test", "cloned_from", "archestra_mcp_registry_entry.source", "id"), resource.TestCheckResourceAttrPair("archestra_mcp_registry_entry.test", "environment_id", "archestra_environment.first", "id"), resource.TestCheckResourceAttr("archestra_mcp_registry_entry.test", "multitenant", "false"))},
+		{ResourceName: "archestra_mcp_registry_entry.test", ImportState: true, ImportStateVerify: true},
 		{Config: initial, PlanOnly: true},
-		{Config: updated, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_mcp_registry_catalog_item.test", plancheck.ResourceActionUpdate)}}, Check: resource.TestCheckResourceAttrPair("archestra_mcp_registry_catalog_item.test", "environment_id", "archestra_environment.second", "id")},
+		{Config: updated, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_mcp_registry_entry.test", plancheck.ResourceActionUpdate)}}, Check: resource.TestCheckResourceAttrPair("archestra_mcp_registry_entry.test", "environment_id", "archestra_environment.second", "id")},
 		{Config: updated, PlanOnly: true},
 	}})
 }

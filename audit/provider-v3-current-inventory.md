@@ -2,47 +2,41 @@
 
 static inventory; no runtime coverage implied
 
-Terraform: 35; Crossplane configured: 35.
+Terraform: 29; Crossplane configured: 29.
 
 Mapping counts are configuration coverage, not successful CRUD or reconciliation coverage.
 
 | Terraform resource | Crossplane configured | Import | Missing direct API calls / retired request fields | Request fields needing review | Acceptance tests declared |
 |---|---|---|---|---|---|
-| `archestra_agent` | True | True | none detected | BulkAssignTools: assignments; CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, identityProviderId, isPersonalProxy, organizationId, passthroughHeaders; CreateHook: agentId, content, enabled, event, fileName, requirements; PatchAgentActivationSkillPolicy: discardUnavailable, expectedRevision, mode, operations; SyncAgentA2aDelegations: connectionIds; SyncAgentDelegations: targetAgentIds; UpdateAgent: agentType, builtInAgentConfig, deletedAt, identityProviderId, isPersonalProxy, organizationId, passthroughHeaders; UpdateAgentKnowledgeSourceExclusions: excludedConnectorIds; UpdateAgentSubagentExclusions: excludedSubagentIds; UpdateAgentToolExclusions: excludedToolIds; UpdateHook: content, enabled, event, fileName, requirements | 5 |
+| `archestra_agent` | True | True | none detected | BulkAssignTools: assignments; CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, identityProviderId, isPersonalProxy, organizationId, passthroughHeaders; CreateHook: agentId, content, enabled, event, fileName, requirements; PatchAgentActivationSkillPolicy: discardUnavailable, expectedRevision, mode, operations; SyncAgentA2aDelegations: connectionIds; SyncAgentDelegations: targetAgentIds; UpdateAgent: agentType, builtInAgentConfig, deletedAt, identityProviderId, isPersonalProxy, organizationId, passthroughHeaders; UpdateAgentKnowledgeSourceExclusions: excludedConnectorIds; UpdateAgentSubagentExclusions: excludedSubagentIds; UpdateAgentToolExclusions: excludedToolIds; UpdateHook: content, enabled, event, fileName, requirements; UpdateResourcePermissions: grants, revision | 5 |
 | `archestra_api_key` | True | True | none detected | none detected | 5 |
-| `archestra_default_user_limit` | True | True | none detected | none detected | 0 |
-| `archestra_environment` | True | True | none detected | none detected | 2 |
-| `archestra_environment_default` | True | True | none detected | UpdateEnvironmentResourceDefaults: agent, app, knowledgeSource, mcpGateway, mcpRegistry | 0 |
-| `archestra_git_plugin` | True | True | none detected | CreatePlugin: files; ImportGithubPlugin: githubToken, ref; UpdatePlugin: files, githubSource | 2 |
-| `archestra_github_app_config` | True | True | none detected | none detected | 0 |
+| `archestra_credential` | True | True | none detected | SetOrganizationRuntimeCredentialConnection: value; UpdateResourcePermissions: grants, revision | 3 |
+| `archestra_environment` | True | True | none detected | UpdateResourcePermissions: grants, revision | 2 |
+| `archestra_github_app` | True | True | none detected | none detected | 0 |
 | `archestra_github_pat` | True | True | none detected | none detected | 0 |
 | `archestra_identity_provider` | True | True | none detected | none detected | 7 |
-| `archestra_knowledge_base` | True | True | none detected | none detected | 4 |
+| `archestra_knowledge_base` | True | True | none detected | UpdateResourcePermissions: grants, revision | 4 |
 | `archestra_knowledge_directory` | True | True | none detected | none detected | 0 |
 | `archestra_limit` | True | True | none detected | CreateLimit: lastCleanup; UpdateLimit: lastCleanup | 4 |
-| `archestra_llm_model` | True | True | none detected | none detected | 4 |
-| `archestra_llm_provider_api_key` | True | True | none detected | none detected | 5 |
-| `archestra_marketplace_share_link` | True | True | none detected | none detected | 3 |
-| `archestra_mcp_gateway` | True | True | none detected | BulkAssignTools: assignments; CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; SyncAgentA2aDelegations: connectionIds; SyncAgentDelegations: targetAgentIds; UpdateAgent: agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; UpdateAgentKnowledgeSourceExclusions: excludedConnectorIds; UpdateAgentSkillExclusions: excludedSkillIds; UpdateAgentSkills: accessAllSkills, skillIds; UpdateAgentSubagentExclusions: excludedSubagentIds; UpdateAgentToolExclusions: excludedToolIds | 2 |
-| `archestra_mcp_registry_catalog_item` | True | True | none detected | CreateInternalMcpCatalogItem: catalogReinstallRequired, id, oauthConfig, serverType, serverUrl; UpdateInternalMcpCatalogItem: catalogReinstallRequired, hibernationMode, oauthConfig, serverType, serverUrl | 18 |
-| `archestra_mcp_server_installation` | True | True | none detected | InstallMcpServer: accessToken, agentIds, catalogId, createdByServiceAccountId, environmentValues, isByosVault, localInstallationError, localInstallationStatus, name, ownerId, reinstallRequired, scope, secretId, teamId, userConfigValues, userId; ReinstallMcpServer: environmentValues, hibernationMode, isByosVault, userConfigValues | 3 |
-| `archestra_oauth_client` | True | True | none detected | none detected | 0 |
-| `archestra_organization_settings` | True | True | none detected | none detected | 9 |
-| `archestra_plugin` | True | True | none detected | ImportGithubPlugin: approvedCommitSha, exclude, githubAppConfigId, githubPatId, githubToken, gitlabTokenId, provider, ref, repoUrl, subdir, trackingRef; UpdatePlugin: githubSource | 2 |
-| `archestra_project` | True | True | none detected | SetProjectInstructions: content | 2 |
+| `archestra_mcp_gateway` | True | True | none detected | BulkAssignTools: assignments; CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; SyncAgentA2aDelegations: connectionIds; SyncAgentDelegations: targetAgentIds; UpdateAgent: agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; UpdateAgentKnowledgeSourceExclusions: excludedConnectorIds; UpdateAgentSkillExclusions: excludedSkillIds; UpdateAgentSkills: accessAllSkills, skillIds; UpdateAgentSubagentExclusions: excludedSubagentIds; UpdateAgentToolExclusions: excludedToolIds; UpdateResourcePermissions: grants, revision | 2 |
+| `archestra_mcp_registry_entry` | True | True | none detected | CreateInternalMcpCatalogItem: catalogReinstallRequired, id, oauthConfig, serverType, serverUrl; UpdateInternalMcpCatalogItem: catalogReinstallRequired, hibernationMode, oauthConfig, serverType, serverUrl; UpdateResourcePermissions: grants, revision | 18 |
+| `archestra_mcp_server` | True | True | none detected | InstallMcpServer: accessToken, agentIds, catalogId, createdByServiceAccountId, environmentValues, isByosVault, localInstallationError, localInstallationStatus, name, ownerId, reinstallRequired, scope, secretId, teamId, userConfigValues, userId; ReinstallMcpServer: environmentValues, hibernationMode, isByosVault, userConfigValues | 3 |
+| `archestra_model` | True | True | none detected | UpdateResourcePermissions: grants, revision | 4 |
+| `archestra_model_provider` | True | True | none detected | UpdateResourcePermissions: grants, revision | 5 |
+| `archestra_oauth_client` | True | True | none detected | UpdateResourcePermissions: grants, revision | 0 |
+| `archestra_organization_settings` | True | True | none detected | CreateDefaultUserLimit: cleanupInterval, environmentId, limitValue, model; UpdateDefaultUserLimit: cleanupInterval, limitValue, model; UpdateEnvironmentResourceDefaults: agent, app, knowledgeSource, mcpGateway, mcpRegistry; UpdateResourcePermissions: grants, revision | 9 |
+| `archestra_plugin` | True | True | none detected | ImportGithubPlugin: approvedCommitSha, exclude, githubAppConfigId, githubPatId, githubToken, gitlabTokenId, provider, ref, repoUrl, subdir, trackingRef; UpdateResourcePermissions: grants, revision | 2 |
+| `archestra_project` | True | True | none detected | SetProjectInstructions: content; UpdateResourcePermissions: grants, revision | 2 |
 | `archestra_project_file` | True | True | none detected | UpdateSkillSandboxArtifactContent: content | 4 |
-| `archestra_remote_agent` | True | True | none detected | none detected | 2 |
-| `archestra_resource_permission_policy` | True | True | none detected | UpdateResourcePermissions: grants, revision | 1 |
+| `archestra_remote_agent` | True | True | none detected | UpdateResourcePermissions: grants, revision | 2 |
 | `archestra_role` | True | True | none detected | none detected | 3 |
-| `archestra_runtime_credential` | True | True | none detected | SetOrganizationRuntimeCredentialConnection: value | 3 |
-| `archestra_schedule_trigger` | True | True | none detected | none detected | 4 |
-| `archestra_service_account` | True | True | none detected | none detected | 3 |
-| `archestra_service_account_token` | True | True | none detected | none detected | 0 |
-| `archestra_skill` | True | True | none detected | CreateSkill: allowedTools; UpdateSkill: allowedTools, baseVersion | 1 |
-| `archestra_team` | True | True | none detected | AddTeamMember: role, userId; UpdateTeamMember: role | 2 |
-| `archestra_team_external_group` | True | True | none detected | AddTeamExternalGroup: groupIdentifier | 1 |
-| `archestra_team_vault_folder` | True | True | none detected | none detected | 0 |
-| `archestra_virtual_api_key` | True | True | none detected | none detected | 0 |
+| `archestra_schedule` | True | True | none detected | none detected | 4 |
+| `archestra_service_account` | True | True | none detected | UpdateResourcePermissions: grants, revision | 3 |
+| `archestra_service_account_api_key` | True | True | none detected | none detected | 0 |
+| `archestra_share_link` | True | True | none detected | none detected | 3 |
+| `archestra_skill` | True | True | none detected | CreateSkill: allowedTools; UpdateResourcePermissions: grants, revision; UpdateSkill: allowedTools, baseVersion | 1 |
+| `archestra_team` | True | True | none detected | AddTeamExternalGroup: groupIdentifier; AddTeamMember: role, userId; SetTeamVaultFolder: vaultPath; UpdateTeamMember: role | 2 |
+| `archestra_virtual_key` | True | True | none detected | UpdateResourcePermissions: grants, revision | 0 |
 
 Unreferenced mutations are review candidates, not an automatically inferred resource denominator.
 RPCs, inference, OAuth flows, logs and transient executions must not become managed resources just to increase a percentage.

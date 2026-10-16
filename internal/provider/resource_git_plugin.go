@@ -11,6 +11,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -20,75 +21,48 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-func NewGitPluginResource() resource.Resource { return &PluginResource{gitSource: true} }
-
-func gitPluginAttrSpecs() []AttrSpec {
-	specs := make([]AttrSpec, 0, len(pluginAttrSpec)+9)
-	for _, spec := range pluginAttrSpec {
-		if spec.TFName != "files" {
-			specs = append(specs, spec)
-		}
-	}
-	return append(specs,
-		AttrSpec{TFName: "source_repo", JSONName: "repoUrl", Kind: Scalar},
-		AttrSpec{TFName: "source_sha", JSONName: "approvedCommitSha", Kind: Scalar},
-		AttrSpec{TFName: "source_subdir", JSONName: "subdir", Kind: Scalar},
-		AttrSpec{TFName: "source_exclude", JSONName: "exclude", Kind: List},
-		AttrSpec{TFName: "source_provider", JSONName: "provider", Kind: Scalar},
-		AttrSpec{TFName: "github_sync_ref", JSONName: "trackingRef", Kind: Scalar},
-		AttrSpec{TFName: "github_sync_interval", JSONName: "syncInterval", Kind: Scalar},
-		AttrSpec{TFName: "github_app_config_id", JSONName: "githubAppConfigId", Kind: Scalar},
-		AttrSpec{TFName: "github_pat_id", JSONName: "githubPatId", Kind: Scalar},
-		AttrSpec{TFName: "gitlab_token_id", JSONName: "gitlabTokenId", Kind: Scalar},
-	)
-}
-
-func gitPluginSchema(s *schema.Schema) {
-	s.MarkdownDescription = "Git-sourced plugin package pinned to an explicitly approved immutable commit, with repository tracking and synchronization configuration. Changing approved bytes replaces the package. Periodic checks may stage a candidate; they do not approve new executable content."
-	a := s.Attributes
-	files := a["files"].(schema.MapNestedAttribute) //nolint:forcetypeassert // The shared schema constructs this map immediately before adaptation.
-	files.Required = false
-	files.Computed = true
-	files.Validators = nil
-	for name, attr := range files.NestedObject.Attributes {
-		v := attr.(schema.StringAttribute) //nolint:forcetypeassert // Every file member is constructed as a string by the shared schema.
-		v.Required = false
-		v.Optional = false
-		v.Computed = true
-		v.Default = nil
-		v.Validators = nil
-		files.NestedObject.Attributes[name] = v
-	}
-	files.MarkdownDescription = "Observed files from the approved repository commit."
-	a["files"] = files
+func gitPluginAttributes() map[string]schema.Attribute {
+	a := map[string]schema.Attribute{}
 	replace := []planmodifier.String{stringplanmodifier.RequiresReplace()}
-	a["source_repo"] = schema.StringAttribute{Required: true, PlanModifiers: replace, Validators: []validator.String{stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)+$`), "Use the canonical owner/repository path without URL, ref, or trailing slash."), stringvalidator.LengthAtMost(2048), gitPluginRepositoryValidator{}}, MarkdownDescription: "Canonical repository path on the selected Git host."}
-	a["source_sha"] = schema.StringAttribute{Required: true, PlanModifiers: replace, Validators: []validator.String{stringvalidator.RegexMatches(regexp.MustCompile(`^[a-f0-9]{40}$`), "Use the approved lowercase full 40-character commit SHA.")}, MarkdownDescription: "Explicitly approved immutable commit; changing it replaces the package."}
-	a["source_subdir"] = schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString(""), PlanModifiers: replace, Validators: []validator.String{gitPluginSubdirValidator{}}, MarkdownDescription: "Canonical safe relative subtree, or empty for the repository root."}
-	a["source_exclude"] = schema.ListAttribute{Required: true, ElementType: types.StringType, Validators: []validator.List{listvalidator.SizeAtMost(50), listvalidator.ValueStringsAre(stringvalidator.RegexMatches(regexp.MustCompile(`^\S(?:.*\S)?$`), "Exclusions must be nonempty without surrounding whitespace."))}, PlanModifiers: []planmodifier.List{listplanmodifier.RequiresReplace()}, MarkdownDescription: "Ordered exclusion patterns applied to approved source bytes; changes replace the package."}
-	a["source_provider"] = schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString("github"), PlanModifiers: replace, Validators: []validator.String{stringvalidator.OneOf("github", "gitlab")}, MarkdownDescription: "Source Git provider, matching any selected stored credential."}
-	a["github_sync_ref"] = schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 1024), stringvalidator.RegexMatches(regexp.MustCompile(`^\S(?:.*\S)?$`), "Use a ref without surrounding whitespace.")}, MarkdownDescription: "Branch or tag tracked for candidate updates; omission tracks the default branch."}
-	a["github_sync_interval"] = schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.OneOf("15m", "1h", "1d")}, MarkdownDescription: "Periodic candidate-check interval; omission disables scheduled checks."}
-	for _, name := range []string{"github_app_config_id", "github_pat_id", "gitlab_token_id"} {
+	a["repo"] = schema.StringAttribute{Required: true, PlanModifiers: replace, Validators: []validator.String{stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)+$`), "Use the canonical owner/repository path without URL, ref, or trailing slash."), stringvalidator.LengthAtMost(2048), gitPluginRepositoryValidator{}}, MarkdownDescription: "Canonical repository path on the selected Git host."}
+	a["commit_sha"] = schema.StringAttribute{Required: true, PlanModifiers: replace, Validators: []validator.String{stringvalidator.RegexMatches(regexp.MustCompile(`^[a-f0-9]{40}$`), "Use the approved lowercase full 40-character commit SHA.")}, MarkdownDescription: "Explicitly approved immutable commit; changing it replaces the package."}
+	a["subdir"] = schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString(""), PlanModifiers: replace, Validators: []validator.String{gitPluginSubdirValidator{}}, MarkdownDescription: "Canonical safe relative subtree, or empty for the repository root."}
+	a["exclude"] = schema.ListAttribute{Required: true, ElementType: types.StringType, Validators: []validator.List{listvalidator.SizeAtMost(50), listvalidator.ValueStringsAre(stringvalidator.RegexMatches(regexp.MustCompile(`^\S(?:.*\S)?$`), "Exclusions must be nonempty without surrounding whitespace."))}, PlanModifiers: []planmodifier.List{listplanmodifier.RequiresReplace()}, MarkdownDescription: "Ordered exclusion patterns applied to approved source bytes; changes replace the package."}
+	a["provider"] = schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString("github"), PlanModifiers: replace, Validators: []validator.String{stringvalidator.OneOf("github", "gitlab")}, MarkdownDescription: "Source Git provider, matching any selected stored credential."}
+	a["tracking_ref"] = schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 1024), stringvalidator.RegexMatches(regexp.MustCompile(`^\S(?:.*\S)?$`), "Use a ref without surrounding whitespace.")}, MarkdownDescription: "Branch or tag tracked for candidate updates; omission tracks the default branch."}
+	a["sync_interval"] = schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.OneOf("15m", "1h", "1d")}, MarkdownDescription: "Periodic candidate-check interval; omission disables scheduled checks."}
+	for _, name := range []string{"github_app_id", "github_pat_id", "gitlab_token_id"} {
 		others := []path.Expression{}
-		for _, other := range []string{"github_app_config_id", "github_pat_id", "gitlab_token_id"} {
+		for _, other := range []string{"github_app_id", "github_pat_id", "gitlab_token_id"} {
 			if other != name {
-				others = append(others, path.MatchRoot(other))
+				others = append(others, path.MatchRoot("git_source").AtName(other))
 			}
 		}
 		a[name] = schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.RegexMatches(canonicalUUIDRegexp, "Use a lowercase canonical stored credential UUID."), stringvalidator.ConflictsWith(others...)}, MarkdownDescription: "Existing stored Git credential reference; omission clears this authentication method."}
 	}
+	return a
 }
 
 func (r *PluginResource) createGit(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data PluginResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-	patch := MergePatch(ctx, req.Plan.Raw, tftypes.NewValue(req.Plan.Raw.Type(), nil), r.AttrSpecs(), &resp.Diagnostics)
+	patch := MergePatch(ctx, req.Plan.Raw, tftypes.NewValue(req.Plan.Raw.Type(), nil), pluginAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
+	}
+	source, ok := patch["githubSource"].(map[string]any)
+	if !ok {
+		resp.Diagnostics.AddError("Invalid Git source", "A complete git_source is required to import a plugin.")
+		return
+	}
+	delete(patch, "githubSource")
+	delete(patch, "files")
+	for key, value := range source {
+		patch[key] = value
 	}
 	for _, key := range []string{"enabled", "icon", "labels", "syncInterval"} {
 		delete(patch, key)
@@ -98,7 +72,7 @@ func (r *PluginResource) createGit(ctx context.Context, req resource.CreateReque
 			delete(patch, key)
 		}
 	}
-	LogPatch(ctx, "archestra_git_plugin Create", patch, r.AttrSpecs())
+	LogPatch(ctx, "archestra_plugin Create (Git source)", patch, pluginAttrSpec)
 	body, err := json.Marshal(patch)
 	if err != nil {
 		resp.Diagnostics.AddError("Request Encoding Failed", err.Error())
@@ -121,7 +95,7 @@ func (r *PluginResource) createGit(ctx context.Context, req resource.CreateReque
 		return
 	}
 	// Persist the identity before applying controls absent from the import contract.
-	follow := map[string]any{"githubSource": gitPluginSource(wanted)}
+	follow := map[string]any{"githubSource": gitPluginSource(ctx, wanted, &resp.Diagnostics)}
 	if !wanted.Enabled.IsNull() && !wanted.Enabled.IsUnknown() {
 		follow["enabled"] = wanted.Enabled.ValueBool()
 	}
@@ -143,22 +117,17 @@ func (r *PluginResource) createGit(ctx context.Context, req resource.CreateReque
 func (r *PluginResource) updateGit(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data PluginResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
-	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, r.AttrSpecs(), &resp.Diagnostics)
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, pluginAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	sourceChanged := false
-	for _, key := range []string{"trackingRef", "syncInterval", "githubAppConfigId", "githubPatId", "gitlabTokenId"} {
-		if _, ok := patch[key]; ok {
-			sourceChanged = true
-		}
-		delete(patch, key)
+	if _, changed := patch["githubSource"]; changed {
+		patch["githubSource"] = gitPluginSource(ctx, data, &resp.Diagnostics)
 	}
-	if sourceChanged {
-		patch["githubSource"] = gitPluginSource(data)
-	}
-	for _, key := range []string{"initialGrants", "clientType", "repoUrl", "approvedCommitSha", "subdir", "exclude", "provider"} {
-		delete(patch, key)
+	delete(patch, "initialGrants")
+	delete(patch, "clientType")
+	if resp.Diagnostics.HasError() {
+		return
 	}
 	if len(patch) == 0 {
 		resp.State = req.State
@@ -169,9 +138,60 @@ func (r *PluginResource) updateGit(ctx context.Context, req resource.UpdateReque
 	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
-func gitPluginSource(data PluginResourceModel) map[string]any {
-	return map[string]any{"repoUrl": data.SourceRepo.ValueString(), "ref": gitPluginNullableString(data.GithubSyncRef), "syncInterval": gitPluginNullableString(data.GithubSyncInterval), "authentication": map[string]any{"githubAppConfigId": gitPluginNullableString(data.GithubAppConfigID), "githubPatId": gitPluginNullableString(data.GithubPatID), "gitlabTokenId": gitPluginNullableString(data.GitlabTokenID)}}
+
+type pluginGitSourceModel struct {
+	Repo          types.String `tfsdk:"repo"`
+	CommitSHA     types.String `tfsdk:"commit_sha"`
+	Subdir        types.String `tfsdk:"subdir"`
+	Exclude       types.List   `tfsdk:"exclude"`
+	Provider      types.String `tfsdk:"provider"`
+	TrackingRef   types.String `tfsdk:"tracking_ref"`
+	SyncInterval  types.String `tfsdk:"sync_interval"`
+	GitHubAppID   types.String `tfsdk:"github_app_id"`
+	GitHubPATID   types.String `tfsdk:"github_pat_id"`
+	GitLabTokenID types.String `tfsdk:"gitlab_token_id"`
 }
+
+var pluginGitSourceType = types.ObjectType{AttrTypes: map[string]attr.Type{
+	"repo": types.StringType, "commit_sha": types.StringType, "subdir": types.StringType,
+	"exclude": types.ListType{ElemType: types.StringType}, "provider": types.StringType,
+	"tracking_ref": types.StringType, "sync_interval": types.StringType,
+	"github_app_id": types.StringType, "github_pat_id": types.StringType, "gitlab_token_id": types.StringType,
+}}
+var pluginGitSourceSpecs = []AttrSpec{
+	{TFName: "repo", ReadJSONName: "sourceRepo", JSONName: "repoUrl", Kind: Scalar},
+	{TFName: "commit_sha", ReadJSONName: "sourceSha", JSONName: "approvedCommitSha", Kind: Scalar},
+	{TFName: "subdir", ReadJSONName: "sourceSubdir", JSONName: "subdir", Kind: Scalar},
+	{TFName: "exclude", ReadJSONName: "sourceExclude", JSONName: "exclude", Kind: List},
+	{TFName: "provider", ReadJSONName: "sourceProvider", JSONName: "provider", Kind: Scalar},
+	{TFName: "tracking_ref", ReadJSONName: "githubSyncRef", JSONName: "trackingRef", Kind: Scalar},
+	{TFName: "sync_interval", ReadJSONName: "githubSyncInterval", JSONName: "syncInterval", Kind: Scalar},
+	{TFName: "github_app_id", JSONName: "githubAppConfigId", Kind: Scalar},
+	{TFName: "github_pat_id", JSONName: "githubPatId", Kind: Scalar},
+	{TFName: "gitlab_token_id", JSONName: "gitlabTokenId", Kind: Scalar},
+}
+
+func gitPluginSource(ctx context.Context, data PluginResourceModel, diags *diag.Diagnostics) map[string]any {
+	var source pluginGitSourceModel
+	diags.Append(data.GitSource.As(ctx, &source, basetypes.ObjectAsOptions{})...)
+	return map[string]any{"repoUrl": source.Repo.ValueString(), "ref": gitPluginNullableString(source.TrackingRef), "syncInterval": gitPluginNullableString(source.SyncInterval), "authentication": map[string]any{"githubAppConfigId": gitPluginNullableString(source.GitHubAppID), "githubPatId": gitPluginNullableString(source.GitHubPATID), "gitlabTokenId": gitPluginNullableString(source.GitLabTokenID)}}
+}
+
+type pluginSourceKindPlanModifier struct{}
+
+func (pluginSourceKindPlanModifier) Description(context.Context) string {
+	return "Changing between authored files and a Git source replaces the plugin."
+}
+func (m pluginSourceKindPlanModifier) MarkdownDescription(ctx context.Context) string {
+	return m.Description(ctx)
+}
+func (pluginSourceKindPlanModifier) PlanModifyObject(_ context.Context, req planmodifier.ObjectRequest, resp *planmodifier.ObjectResponse) {
+	if req.State.Raw.IsNull() || req.Plan.Raw.IsNull() || req.PlanValue.IsUnknown() {
+		return
+	}
+	resp.RequiresReplace = req.PlanValue.IsNull() != req.StateValue.IsNull()
+}
+
 func gitPluginNullableString(value types.String) any {
 	if value.IsNull() || value.IsUnknown() {
 		return nil

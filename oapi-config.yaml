@@ -36,6 +36,7 @@ output-options:
     - deleteRuntimeCredential
     - deleteTeam
     - getAgent
+    - getAgents
     - getEnvironment
     - getAgentDelegations
     - getAgentActivationSkillPolicy

@@ -185,16 +185,11 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewAgentResource,
-		NewResourcePermissionPolicyResource,
-		NewDefaultUserLimitResource,
-		NewEnvironmentDefaultResource,
-		NewTeamVaultFolderResource,
 		NewRemoteAgentResource,
 		NewVirtualAPIKeyResource,
 		NewOauthClientResource,
 		NewGithubPatResource,
 		NewPluginResource,
-		NewGitPluginResource,
 		NewMarketplaceShareLinkResource,
 		NewGithubAppConfigResource,
 		NewKnowledgeDirectoryResource,
@@ -214,7 +209,6 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewLlmModelResource,
 		NewLimitResource,
 		NewOrganizationSettingsResource,
-		NewTeamExternalGroupResource,
 		NewLLMProviderApiKeyResource,
 		NewSkillResource,
 		NewRuntimeCredentialResource,
@@ -225,12 +219,9 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewTeamDataSource,
+		NewAgentDataSource,
 		NewToolDataSource,
-		NewAgentToolDataSource,
-		NewAgentToolsDataSource,
-		NewMCPServerToolDataSource,
 		NewMcpToolCallsDataSource,
-		NewTeamExternalGroupsDataSource,
 	}
 }
 

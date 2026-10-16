@@ -183,7 +183,7 @@ func TestAccAgentResource_Runtime(t *testing.T) {
 
 func testAccAgentResourceConfigRuntime(name string, maxCostUsd int) string {
 	return fmt.Sprintf(`
-resource "archestra_runtime_credential" "github" {
+resource "archestra_credential" "github" {
   key  = "%[1]s-github"
   name = "GitHub token"
 }
@@ -212,7 +212,7 @@ resource "archestra_agent" "runtime" {
       {
         key           = "GITHUB_TOKEN"
         scope         = "per_user"
-        credential_id = archestra_runtime_credential.github.key
+        credential_id = archestra_credential.github.key
         label         = "GitHub token"
         description   = "A personal token that can clone the repository."
         required      = true
@@ -227,7 +227,7 @@ resource "archestra_agent" "runtime" {
 
 func testAccAgentResourceConfigNoRuntime(name string) string {
 	return fmt.Sprintf(`
-resource "archestra_runtime_credential" "github" {
+resource "archestra_credential" "github" {
  key = "%[1]s-github"
  name = "GitHub token"
 }

@@ -45,7 +45,7 @@ resource "archestra_mcp_gateway" "authenticated" {
   identity_provider_id = archestra_identity_provider.oidc.id
 }
 
-# Grant team access with archestra_resource_permission_policy. Combined
+# Grant team access through permissions on this gateway. Combined
 # with the gateway tools attribute, this is how teams get their own tool surface.
 resource "archestra_mcp_gateway" "engineering" {
   name        = "engineering-mcp"
@@ -77,12 +77,12 @@ resource "archestra_mcp_gateway" "engineering" {
 - `excluded_tool_ids` (Set of String) Tools excluded from automatic tool access; omit to preserve or set an empty set to clear.
 - `icon` (String) Emoji or base64 image data URL
 - `identity_provider_id` (String) Identity provider used to validate inbound JWTs. Reference an `archestra_identity_provider`. Omit to disable JWT auth.
-- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `is_default` (Boolean) Whether this is the default MCP gateway
 - `knowledge_base_ids` (List of String) Knowledge base IDs the gateway has access to
 - `labels` (Attributes Set) Key/value labels for organizing gateways (see [below for nested schema](#nestedatt--labels))
 - `missing_credential_behavior` (String) Behavior when a caller has no usable tool credential.
 - `passthrough_headers` (List of String) Allowlist of HTTP header names to forward from gateway requests to downstream MCP servers
+- `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `skills` (Attributes) Skills published through this gateway; omit to preserve existing publication settings. (see [below for nested schema](#nestedatt--skills))
 - `subagent_ids` (Set of String) Local agents available as subagents; omit to preserve assignments or set an empty set to clear them.
@@ -99,16 +99,6 @@ resource "archestra_mcp_gateway" "engineering" {
 - `last_used_at` (String) Server-reported last used at.
 - `latest_version` (Number) Server-reported latest version.
 
-<a id="nestedatt--initial_grants"></a>
-### Nested Schema for `initial_grants`
-
-Required:
-
-- `actions` (Set of String) Actions granted to the principal.
-- `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
-
-
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`
 
@@ -116,6 +106,16 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+
+<a id="nestedatt--permissions"></a>
+### Nested Schema for `permissions`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
 
 
 <a id="nestedatt--skills"></a>

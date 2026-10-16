@@ -42,7 +42,7 @@ type OauthClientResourceModel struct {
 	SpendCap               types.Object `tfsdk:"spend_cap"`
 	BillingTeamID          types.String `tfsdk:"billing_team_id"`
 	BillingTeamName        types.String `tfsdk:"billing_team_name"`
-	InitialGrants          types.Set    `tfsdk:"initial_grants"`
+	InitialGrants          types.Set    `tfsdk:"permissions"`
 	RotationNonce          types.String `tfsdk:"rotation_nonce"`
 	Disabled               types.Bool   `tfsdk:"disabled"`
 	AuthorID               types.String `tfsdk:"author_id"`
@@ -90,7 +90,7 @@ func (r *OauthClientResource) Schema(_ context.Context, _ resource.SchemaRequest
 		"service_account_id":       schema.StringAttribute{Optional: true, MarkdownDescription: "Service account this client acts as; removing the value clears the binding."},
 		"billing_team_id":          schema.StringAttribute{Optional: true, MarkdownDescription: "Team billed for client-credentials usage; removing the value clears billing."},
 		"billing_team_name":        schema.StringAttribute{Computed: true, MarkdownDescription: "Billing team display name."},
-		"initial_grants":           initialGrantsAttribute(),
+		"permissions":              initialGrantsAttribute(),
 		"rotation_nonce":           schema.StringAttribute{Optional: true, MarkdownDescription: "Set or change a nonempty value to rotate the secret while preserving client identity."},
 		"disabled":                 schema.BoolAttribute{Computed: true, MarkdownDescription: "Server-reported disabled state."},
 		"author_id":                schema.StringAttribute{Computed: true, MarkdownDescription: "Author identity."},
@@ -113,6 +113,8 @@ func (r *OauthClientResource) Configure(_ context.Context, req resource.Configur
 	r.client = c
 }
 func (r *OauthClientResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	defer finishParentCreate(ctx, r.client, "oauthClient", "id", resp)
+
 	var data OauthClientResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -181,6 +183,10 @@ func (r *OauthClientResource) Read(ctx context.Context, req resource.ReadRequest
 			}
 			if identity.ID == data.ID.ValueString() {
 				r.flatten(ctx, &data, raw, &resp.Diagnostics)
+				readParentPermissions(ctx, r.client, "oauthClient", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+				if resp.Diagnostics.HasError() {
+					return
+				}
 				resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 				return
 			}
@@ -193,6 +199,12 @@ func (r *OauthClientResource) Read(ctx context.Context, req resource.ReadRequest
 	resp.State.RemoveResource(ctx)
 }
 func (r *OauthClientResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "oauthClient", "id", req, resp)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	defer finishPermissions()
+
 	var data, prior OauthClientResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	resp.Diagnostics.Append(req.State.Get(ctx, &prior)...)

@@ -15,6 +15,7 @@ import (
 // `organization_id` and `created_by` are computed-only and excluded by the
 // drift-check helper.
 var teamAttrSpec = []AttrSpec{
+	{TFName: "external_group_ids", Kind: Synthetic}, {TFName: "vault_folder", Kind: Synthetic},
 	{TFName: "roles", JSONName: "roles", Kind: Set, OmitOnNull: true},
 	{TFName: "parent_id", JSONName: "parentId", Kind: Scalar},
 	{TFName: "labels", JSONName: "labels", Kind: Set, OmitOnNull: true, Children: []AttrSpec{{TFName: "key", JSONName: "key", Kind: Scalar}, {TFName: "value", JSONName: "value", Kind: Scalar}}},

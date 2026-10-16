@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 )
@@ -21,36 +22,36 @@ import (
 // Every entry needs a reason — the default of RemoveOnConfigNullList is
 // safer; allowlisting asserts the field has no "remove = clear" semantic.
 var useStateForUnknownAllowlist = map[string]map[string]string{
-	"archestra_git_plugin":         {"enabled": "Omission preserves the observed setting; configure true or false to manage it.", "initial_grants": "Creation-only grants are not echoed; permissions have a separate policy owner."},
-	"archestra_plugin":             {"enabled": "Omission preserves the observed setting; explicitly configure true or false to manage it.", "initial_grants": "Creation-only grants are not echoed; later permissions use the policy resource."},
-	"archestra_github_pat":         {"token": "Omission preserves the write-only stored credential; supply a new value to rotate or destroy to revoke the registration."}, //nolint:gosec // G101 false-positive: token is a schema attribute name.
-	"archestra_github_app_config":  {"private_key": "Omission preserves the write-only stored credential; supply a new value to rotate or destroy to revoke the registration."},
-	"archestra_virtual_api_key":    {"initial_grants": "Creation-only grants are not echoed; later permission updates use the policy resource."},
-	"archestra_oauth_client":       {"initial_grants": "Creation-only grants are not echoed; later permission updates use the policy resource."},
-	"archestra_remote_agent":       {"enabled": "Omission preserves the observed setting; explicitly set true or false to manage it.", "initial_grants": "Creation-only grants are not echoed; later permission changes use the permission-policy resource."},
-	"archestra_service_account":    {"initial_grants": "Creation-only grants are not echoed; permission changes use the permission-policy resource."},
-	"archestra_llm_proxy_profile":  {"initial_grants": "Creation-only grants are not echoed; permission changes use the permission-policy resource."},
-	"archestra_agent":              {"tools": "The full assignment set is unmanaged when omitted; an explicit empty set clears only ordinary tools, preserving subagents.", "excluded_tool_ids": "Tool exclusions are unmanaged when omitted; an explicit empty set clears them.", "subagent_ids": "Agent-owned configuration is unmanaged when omitted; an explicit empty collection clears it, verified by inline relationship acceptance.", "remote_agent_ids": "Agent-owned configuration is unmanaged when omitted; an explicit empty collection clears it, verified by inline relationship acceptance.", "excluded_subagent_ids": "Agent-owned configuration is unmanaged when omitted; an explicit empty collection clears it, verified by inline relationship acceptance.", "excluded_connector_ids": "Agent-owned configuration is unmanaged when omitted; an explicit empty collection clears it, verified by inline relationship acceptance.", "hooks": "Agent-owned configuration is unmanaged when omitted; an explicit empty collection clears it, verified by inline relationship acceptance.", "initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
-	"archestra_mcp_gateway":        {"subagent_ids": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "remote_agent_ids": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "excluded_subagent_ids": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "excluded_connector_ids": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "tools": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "excluded_tool_ids": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
-	"archestra_knowledge_base":     {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
-	"archestra_runtime_credential": {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
-	"archestra_skill":              {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy."},
+	"archestra_environment":       {"permissions": "Omission preserves sharing; explicit empty clears it without changing ownership."},
+	"archestra_plugin":            {"enabled": "Omission preserves the observed setting; explicitly configure true or false to manage it.", "permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
+	"archestra_github_pat":        {"token": "Omission preserves the write-only stored credential; supply a new value to rotate or destroy to revoke the registration."}, //nolint:gosec // G101 false-positive: token is a schema attribute name.
+	"archestra_github_app":        {"private_key": "Omission preserves the write-only stored credential; supply a new value to rotate or destroy to revoke the registration."},
+	"archestra_virtual_key":       {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
+	"archestra_oauth_client":      {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
+	"archestra_remote_agent":      {"enabled": "Omission preserves the observed setting; explicitly set true or false to manage it.", "permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
+	"archestra_service_account":   {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
+	"archestra_llm_proxy_profile": {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
+	"archestra_agent":             {"skills": "Omission preserves skill settings; explicit collections control selection.", "tools": "The full assignment set is unmanaged when omitted; an explicit empty set clears only ordinary tools, preserving subagents.", "excluded_tool_ids": "Tool exclusions are unmanaged when omitted; an explicit empty set clears them.", "subagent_ids": "Agent-owned configuration is unmanaged when omitted; an explicit empty collection clears it, verified by inline relationship acceptance.", "remote_agent_ids": "Agent-owned configuration is unmanaged when omitted; an explicit empty collection clears it, verified by inline relationship acceptance.", "excluded_subagent_ids": "Agent-owned configuration is unmanaged when omitted; an explicit empty collection clears it, verified by inline relationship acceptance.", "excluded_connector_ids": "Agent-owned configuration is unmanaged when omitted; an explicit empty collection clears it, verified by inline relationship acceptance.", "hooks": "Agent-owned configuration is unmanaged when omitted; an explicit empty collection clears it, verified by inline relationship acceptance.", "permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
+	"archestra_mcp_gateway":       {"skills": "Omission preserves gateway skill publication; explicit collections control selection.", "subagent_ids": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "remote_agent_ids": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "excluded_subagent_ids": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "excluded_connector_ids": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "tools": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "excluded_tool_ids": "Gateway-owned configuration is unmanaged when omitted; explicit empty collections clear it.", "permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
+	"archestra_knowledge_base":    {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
+	"archestra_credential":        {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
+	"archestra_skill":             {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
 
-	"archestra_project":              {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy.", "instructions": "The separate instructions file is unmanaged when omitted; only explicit empty content clears it."},
-	"archestra_llm_provider_api_key": {"initial_grants": "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy.", "shared": "Creation-only ownership selector; importing or omitting this field must preserve the existing owner without replacement."},
-	"archestra_llm_model": {
+	"archestra_project":        {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership.", "instructions": "The separate instructions file is unmanaged when omitted; only explicit empty content clears it."},
+	"archestra_model_provider": {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership.", "shared": "Creation-only ownership selector; importing or omitting this field must preserve the existing owner without replacement."},
+	"archestra_model": {"permissions": "Omission preserves additional sharing; explicit empty clears it without changing ownership.",
 		"llm_provider": "immutable adoption selector; omitting it retains the already adopted model and its provider rather than selecting another provider with the same model name.",
 	},
 	"archestra_agent_tool": {
 		"mcp_server_id": "credential binding chosen at Create time; remove-from-config has no clear semantic — preserve prior state.",
 	},
-	"archestra_mcp_registry_catalog_item": { //nolint:gosec // G101 false-positive — nested keys are schema attribute names.
+	"archestra_mcp_registry_entry": { //nolint:gosec // G101 false-positive — nested keys are schema attribute names.
 		"multitenant":            "Immutable creation selector; omission preserves the observed mode so metadata updates do not replace an existing catalog item.",
-		"initial_grants":         "Creation-only input is not echoed; omission preserves prior declarations while subsequent access changes use the permission policy.",
+		"permissions":            "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership.",
 		"client_secret_id":       "computed when the backend auto-creates a BYOS vault reference for an inline `oauth_config.client_secret`; sticky once issued so removing the inline secret doesn't accidentally drop the stored reference.",
 		"local_config_secret_id": "computed when the backend auto-creates a BYOS vault reference for inline `local_config` env values; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
 	},
-	"archestra_mcp_server_installation": { //nolint:gosec // G101 false-positive — schema attribute name.
+	"archestra_mcp_server": { //nolint:gosec // G101 false-positive — schema attribute name.
 		"secret_id":        "computed when the backend auto-creates a secret to hold inline `user_config_values` / `environment_values`; sticky once issued so removing the inline values doesn't accidentally drop the stored reference.",
 		"user_id":          "Immutable personal-install owner selected on creation; omission preserves the observed owner, while another owner requires replacement.",
 		"hibernation_mode": "Omission preserves the observed override; explicitly set inherit to follow the organization default.",
@@ -69,7 +70,7 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 		"oidc_config.token_endpoint_authentication",
 		"oidc_config.skip_discovery",
 	),
-	"archestra_team": {"roles": "Role assignments are unmanaged when omitted; an explicit empty set revokes all direct team role assignments."},
+	"archestra_team": {"external_group_ids": "Omission leaves the SSO mapping set unmanaged; an explicit empty set clears it.", "vault_folder": "Omission leaves the licensed Vault binding unmanaged; an explicit empty string clears it.", "roles": "Role assignments are unmanaged when omitted; an explicit empty set revokes all direct team role assignments."},
 	"archestra_organization_settings": stickyOrgSettings(
 		"kb_bm25_b", "kb_bm25_k1",
 		"online_mcp_catalog_enabled",
@@ -146,6 +147,15 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 func stickyOrgSettings(names ...string) map[string]string {
 	const reason = "documented sticky-from-state field on archestra_organization_settings — omitting from HCL preserves the backend value via the merge-patch (per resource MarkdownDescription)."
 	out := make(map[string]string, len(names))
+	for _, name := range []string{"environment_defaults", "default_user_limits", "default_permissions"} {
+		out[name] = reason
+	}
+	for name := range environmentDefaultSlots {
+		out["environment_defaults."+name] = reason
+	}
+	for name := range defaultPermissionSlots {
+		out["default_permissions."+name] = reason
+	}
 	for _, n := range names {
 		out[n] = reason
 	}
@@ -284,6 +294,8 @@ func hasFrameworkUseStateForUnknown(a rschema.Attribute) bool {
 		return containsModifier(v.PlanModifiers, setplanmodifier.UseStateForUnknown())
 	case rschema.MapNestedAttribute:
 		return containsModifier(v.PlanModifiers, mapplanmodifier.UseStateForUnknown())
+	case rschema.SingleNestedAttribute:
+		return containsModifier(v.PlanModifiers, objectplanmodifier.UseStateForUnknown())
 	}
 	return false
 }

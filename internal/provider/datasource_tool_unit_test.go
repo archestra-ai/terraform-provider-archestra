@@ -99,3 +99,22 @@ func TestFindToolByNameRejectsUnexpectedStatus(t *testing.T) {
 		t.Fatal("expected status error")
 	}
 }
+
+func TestFindToolByNameRejectsDuplicateNamesAcrossPages(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		if r.URL.Query().Get("offset") == "0" {
+			fmt.Fprint(w, `{"data":[{"id":"first","name":"same"}],"pagination":{"hasNext":true}}`)
+		} else {
+			fmt.Fprint(w, `{"data":[{"id":"second","name":"same"}],"pagination":{"hasNext":false}}`)
+		}
+	}))
+	defer server.Close()
+	c, err := client.NewClientWithResponses(server.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, found, err := findToolByName(t.Context(), c, "same"); err == nil || found {
+		t.Fatal("ambiguous global tool name selected an arbitrary object")
+	}
+}

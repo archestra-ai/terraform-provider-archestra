@@ -13,13 +13,13 @@ Internal chat agent — system prompt + LLM, optionally augmented with knowledge
 ## Example Usage
 
 ```terraform
-# Externals (declare elsewhere): archestra_team.engineering, archestra_llm_provider_api_key.vault_backed, archestra_runtime_credential.github.
+# Externals (declare elsewhere): archestra_team.engineering, archestra_model_provider.vault_backed, archestra_credential.github.
 
 # NOTE: `llm_model` is the model_id you'd pass to the upstream LLM API
 # (e.g. "gpt-4o" for OpenAI, "claude-sonnet-4-5" for Anthropic). The
-# platform auto-discovers models from your `archestra_llm_provider_api_key`,
+# platform auto-discovers models from your `archestra_model_provider`,
 # so the corresponding key resource must exist for the chosen provider.
-# Use `archestra_llm_model` only when you need to override pricing or
+# Use `archestra_model` only when you need to override pricing or
 # per-model settings on a discovered model.
 
 # Customer-support agent — the most common shape: a system prompt, an LLM,
@@ -72,7 +72,7 @@ resource "archestra_agent" "support" {
   ]
 }
 
-# Agent access is configured with archestra_resource_permission_policy. The
+# Agent access is configured through permissions on this resource. The
 # `archestra_team` reference enforces ordering so the team exists first.
 resource "archestra_agent" "engineering_qa" {
   name          = "eng-qa"
@@ -82,7 +82,7 @@ resource "archestra_agent" "engineering_qa" {
 
   # Wire a specific provider key (e.g. an Anthropic key from BYOS Vault) instead
   # of relying on the org-wide default.
-  llm_api_key_id = archestra_llm_provider_api_key.vault_backed.id
+  llm_api_key_id = archestra_model_provider.vault_backed.id
 }
 
 # Email-triggered agent — receive new chats via incoming email. The agent
@@ -126,12 +126,12 @@ resource "archestra_agent" "worker" {
     }
 
     # Secrets never go in `environment` — declare them as credentials and
-    # deposit values via `archestra_runtime_credential` (shared) or per user.
+    # deposit values via `archestra_credential` (shared) or per user.
     credentials = [
       {
         key           = "GITHUB_TOKEN" # env var inside the run
         scope         = "per_user"
-        credential_id = archestra_runtime_credential.github.key
+        credential_id = archestra_credential.github.key
         label         = "GitHub token"
         description   = "A personal token that can clone the repository and open pull requests."
         required      = true
@@ -166,7 +166,6 @@ resource "archestra_agent" "worker" {
 - `incoming_email_allowed_domain` (String) Allowed sender domain when `incoming_email_security_mode = "internal"`
 - `incoming_email_enabled` (Boolean) Whether incoming-email invocation is enabled
 - `incoming_email_security_mode` (String) Email-trigger security mode. One of `private` (only the agent owner can email it), `internal` (any sender from `incoming_email_allowed_domain` can), or `public` (any sender). Defaults to `private`.
-- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `is_default` (Boolean) Whether this is the default agent for its type
 - `knowledge_base_ids` (List of String) Knowledge base IDs the agent has access to
 - `labels` (Attributes Set) Key/value labels for organizing agents (see [below for nested schema](#nestedatt--labels))
@@ -174,6 +173,7 @@ resource "archestra_agent" "worker" {
 - `llm_model` (String) Model ID used for LLM calls
 - `missing_credential_behavior` (String) What happens when a caller lacks a connection the agent's tools need: `allow` (fail only at invocation, default), `warn` (surface missing connections up front), or `block` (agent unusable until connected)
 - `model_id` (String) Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`
+- `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `runtime` (Attributes) Dedicated runtime used for interactive, delegated, and long-running work. Requires an Agent Runtime backend on the platform (e.g. the Kubernetes orchestrator). (see [below for nested schema](#nestedatt--runtime))
 - `skills` (Attributes) Skill activation mode and complete allowed/excluded references; omit to preserve the current policy. (see [below for nested schema](#nestedatt--skills))
@@ -216,16 +216,6 @@ Required:
 - `requirements` (List of String) Python dependencies; an empty list removes dependencies.
 
 
-<a id="nestedatt--initial_grants"></a>
-### Nested Schema for `initial_grants`
-
-Required:
-
-- `actions` (Set of String) Actions granted to the principal.
-- `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
-
-
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`
 
@@ -233,6 +223,16 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+
+<a id="nestedatt--permissions"></a>
+### Nested Schema for `permissions`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
 
 
 <a id="nestedatt--runtime"></a>
@@ -249,7 +249,7 @@ Optional:
 - `backend` (String) Runtime backend the run is scheduled on. Only `kubernetes` today (default).
 - `claude_code` (Attributes) Native Claude Code authentication and optional CLI model alias. Account tokens are connected separately and never stored here. (see [below for nested schema](#nestedatt--runtime--claude_code))
 - `command` (List of String) Container command override; omit to use the image's default entrypoint
-- `credentials` (Attributes List) Runtime credentials the run needs, injected as environment variables. Values are supplied through `archestra_runtime_credential` (organization scope) or by each user (personal scope) — never inline here. (see [below for nested schema](#nestedatt--runtime--credentials))
+- `credentials` (Attributes List) Runtime credentials the run needs, injected as environment variables. Values are supplied through `archestra_credential` (organization scope) or by each user (personal scope) — never inline here. (see [below for nested schema](#nestedatt--runtime--credentials))
 - `environment` (Attributes List) Plain (non-secret) environment variables injected into the run (see [below for nested schema](#nestedatt--runtime--environment))
 - `idle_timeout_minutes` (Number) Minutes of inactivity after which the run is paused (1–1440); omit for no idle timeout
 - `max_cost_usd` (Number) Hard LLM spend ceiling in USD for the short-lived virtual key backing one run; omit for no ceiling
@@ -281,7 +281,7 @@ Required:
 
 Optional:
 
-- `credential_id` (String) Stable connection identifier — declarations sharing it (and scope) reuse one stored secret. Pass `archestra_runtime_credential.<n>.key`.
+- `credential_id` (String) Stable connection identifier — declarations sharing it (and scope) reuse one stored secret. Pass `archestra_credential.<n>.key`.
 - `description` (String) How to obtain the credential, e.g. "Run `claude setup-token` and paste the result"
 
 

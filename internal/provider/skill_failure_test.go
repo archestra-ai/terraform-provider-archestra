@@ -93,6 +93,7 @@ func TestSkillReadFailuresAndUpdateConflict(t *testing.T) {
 				t.Fatal(d)
 			}
 			if status == 409 {
+				value.Content = types.StringValue("Changed pending body.")
 				plan := tfsdk.Plan{Schema: schema.Schema}
 				if d := plan.Set(t.Context(), &value); d.HasError() {
 					t.Fatal(d)

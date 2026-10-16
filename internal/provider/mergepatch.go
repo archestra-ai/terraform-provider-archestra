@@ -61,6 +61,8 @@ type AttrSpec struct {
 	TFName string
 	// JSONName is the wire key sent to the backend (camelCase for Archestra).
 	JSONName string
+	// ReadJSONName names a response field whose public attribute is nested or whose write key differs.
+	ReadJSONName string
 	// Kind selects the diff/encoding strategy.
 	Kind AttrKind
 	// Children describes nested attributes:
@@ -84,6 +86,8 @@ type AttrSpec struct {
 	// "explicitly clear", which matches the backend's actual semantics for
 	// non-nullable optional fields.
 	OmitOnNull bool
+	// CreateOnly inputs use a separate lifecycle operation for later updates.
+	CreateOnly bool
 }
 
 // MergePatch returns an RFC 7396 JSON Merge Patch representing the diff
@@ -134,7 +138,7 @@ func MergePatch(
 
 	out := map[string]any{}
 	for _, spec := range attrs {
-		if spec.Kind == Synthetic {
+		if spec.Kind == Synthetic || (spec.CreateOnly && !prior.IsNull()) {
 			continue
 		}
 

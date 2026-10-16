@@ -12,7 +12,7 @@ func TestAccLLMProviderKeySharedOwnership(t *testing.T) {
 	base := os.Getenv("ARCHESTRA_TEST_LLM_BASE_URL")
 	config := func(shared string) string {
 		return fmt.Sprintf(`
-resource "archestra_llm_provider_api_key" "test" {
+resource "archestra_model_provider" "test" {
  name = "tf-shared-key-fixture"
  llm_provider = "ollama"
  base_url = %q
@@ -27,9 +27,9 @@ resource "archestra_llm_provider_api_key" "test" {
 			t.Fatal("ARCHESTRA_TEST_LLM_BASE_URL must point to an isolated model fixture")
 		}
 	}, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: config("shared=true"), Check: resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "scope", "org")},
-		{ResourceName: "archestra_llm_provider_api_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"api_key", "vault_secret_path", "vault_secret_key"}},
+		{Config: config("shared=true"), Check: resource.TestCheckResourceAttr("archestra_model_provider.test", "scope", "org")},
+		{ResourceName: "archestra_model_provider.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"api_key", "vault_secret_path", "vault_secret_key"}},
 		{Config: config(""), PlanOnly: true},
-		{Config: config("shared=false"), Check: resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "scope", "personal"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_llm_provider_api_key.test", plancheck.ResourceActionDestroyBeforeCreate)}}},
+		{Config: config("shared=false"), Check: resource.TestCheckResourceAttr("archestra_model_provider.test", "scope", "personal"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_model_provider.test", plancheck.ResourceActionDestroyBeforeCreate)}}},
 	}})
 }

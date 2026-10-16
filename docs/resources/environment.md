@@ -3,12 +3,12 @@
 page_title: "archestra_environment Resource - archestra"
 subcategory: ""
 description: |-
-  Deployment environment and its network and container registry policies. Destroy deletes the environment; the API rejects deletion while resources remain assigned. Permissions are managed separately with archestra_resource_permission_policy. Requires an Archestra release containing GET /api/environments/{id}.
+  Deployment environment and its network and container registry policies. Destroy deletes the environment; the API rejects deletion while resources remain assigned. Sharing is managed through permissions on this object. Requires an Archestra release containing GET /api/environments/{id}.
 ---
 
 # archestra_environment (Resource)
 
-Deployment environment and its network and container registry policies. Destroy deletes the environment; the API rejects deletion while resources remain assigned. Permissions are managed separately with archestra_resource_permission_policy. Requires an Archestra release containing GET /api/environments/{id}.
+Deployment environment and its network and container registry policies. Destroy deletes the environment; the API rejects deletion while resources remain assigned. Sharing is managed through permissions on this object. Requires an Archestra release containing GET /api/environments/{id}.
 
 ## Example Usage
 
@@ -41,6 +41,7 @@ resource "archestra_environment" "staging" {
 - `labels` (Attributes Set) (see [below for nested schema](#nestedatt--labels))
 - `namespace` (String) Existing Kubernetes namespace; changing it can redeploy assigned servers.
 - `network_policy` (Attributes) Explicit egress policy. Removing it restores inherited policy. Runtime capabilities determine enforcement. (see [below for nested schema](#nestedatt--network_policy))
+- `permissions` (Attributes Set) Additional direct sharing grants. Applied after the parent identity exists, then reconciled in place. Omit to preserve grants; [] clears additional grants while retaining the owner's existing access. (see [below for nested schema](#nestedatt--permissions))
 - `trusted_image_registries` (List of String) Trusted container registry prefixes. Null or an empty list disables the registry restriction.
 - `validation_regex` (String) JavaScript regular expression for validating MCP configuration values.
 
@@ -70,6 +71,16 @@ Required:
 - `allowed_domains` (List of String)
 - `domain_preset` (String)
 - `egress_mode` (String)
+
+
+<a id="nestedatt--permissions"></a>
+### Nested Schema for `permissions`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
 
 ## Import
 

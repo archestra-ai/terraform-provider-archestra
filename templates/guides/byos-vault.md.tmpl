@@ -8,8 +8,8 @@ description: |-
 # Working with Vault-backed Secrets (BYOS mode)
 
 The Archestra backend runs in one of two **secrets-storage modes**, and
-the mode determines which forms of `archestra_llm_provider_api_key` (and
-`archestra_mcp_server_installation` with `is_byos_vault = true`) are
+the mode determines which forms of `archestra_model_provider` (and
+`archestra_mcp_server` with `is_byos_vault = true`) are
 accepted on the wire:
 
 | Mode | `ARCHESTRA_SECRETS_MANAGER` | `api_key` accepted? | `vault_secret_path` accepted? |
@@ -87,7 +87,7 @@ etc. — the resource's `vault_secret_key` must match.
 ## Concrete BYOS example
 
 ```hcl
-resource "archestra_llm_provider_api_key" "anthropic" {
+resource "archestra_model_provider" "anthropic" {
   name              = "Production Anthropic"
   llm_provider      = "anthropic"
   vault_secret_path = "secret/data/your-org/llm"

@@ -3,12 +3,12 @@
 page_title: "archestra_skill Resource - archestra"
 subcategory: ""
 description: |-
-  A versioned skill with declarative manifest metadata, instruction body and complete resource files. Import by UUID. Updates reject stale versions. Destroy soft-deletes the skill; immutable historical versions remain under platform retention. Sharing uses a separate archestra_resource_permission_policy. Git-synchronized content remains owned by its external source and the API rejects conflicting edits.
+  A versioned skill with declarative manifest metadata, instruction body and complete resource files. Import by UUID. Updates reject stale versions. Destroy soft-deletes the skill; immutable historical versions remain under platform retention. Configure sharing through permissions on this skill. Git-synchronized content remains owned by its external source and the API rejects conflicting edits.
 ---
 
 # archestra_skill (Resource)
 
-A versioned skill with declarative manifest metadata, instruction body and complete resource files. Import by UUID. Updates reject stale versions. Destroy soft-deletes the skill; immutable historical versions remain under platform retention. Sharing uses a separate archestra_resource_permission_policy. Git-synchronized content remains owned by its external source and the API rejects conflicting edits.
+A versioned skill with declarative manifest metadata, instruction body and complete resource files. Import by UUID. Updates reject stale versions. Destroy soft-deletes the skill; immutable historical versions remain under platform retention. Configure sharing through permissions on this skill. Git-synchronized content remains owned by its external source and the API rejects conflicting edits.
 
 ## Example Usage
 
@@ -50,9 +50,9 @@ resource "archestra_skill" "procedure" {
 - `allowed_tools` (Set of String) Tools pre-approved by the skill manifest.
 - `compatibility` (String) Manifest compatibility information.
 - `icon` (String) Display emoji or image data URL.
-- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `license` (String) Manifest license.
 - `metadata` (Map of String) Manifest metadata entries.
+- `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `templated` (Boolean) Whether the instruction body uses Handlebars rendering.
 
 ### Read-Only
@@ -102,8 +102,8 @@ Required:
 - `value` (String)
 
 
-<a id="nestedatt--initial_grants"></a>
-### Nested Schema for `initial_grants`
+<a id="nestedatt--permissions"></a>
+### Nested Schema for `permissions`
 
 Required:
 

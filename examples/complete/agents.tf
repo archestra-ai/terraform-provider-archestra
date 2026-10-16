@@ -1,21 +1,21 @@
 # --- Agents ----------------------------------------------------------------
 
 resource "archestra_agent" "support" {
-  tools          = [{ tool_id = archestra_mcp_server_installation.filesystem.tool_id_by_name["${archestra_mcp_registry_catalog_item.filesystem.name}__read_text_file"], mcp_server_id = archestra_mcp_server_installation.filesystem.id }]
+  tools          = [{ tool_id = archestra_mcp_server.filesystem.tool_id_by_name["${archestra_mcp_registry_entry.filesystem.name}__read_text_file"], mcp_server_id = archestra_mcp_server.filesystem.id }]
   name           = "customer-support"
   description    = "Tier-1 customer support agent"
   system_prompt  = "You are a friendly customer-support agent. Be concise."
   llm_model      = "llama3"
-  llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
+  llm_api_key_id = archestra_model_provider.ollama_vault.id
 }
 
 resource "archestra_agent" "support_batch" {
-  tools          = [for tool in archestra_mcp_server_installation.filesystem.tools : { tool_id = tool.id, mcp_server_id = archestra_mcp_server_installation.filesystem.id }]
+  tools          = [for tool in archestra_mcp_server.filesystem.tools : { tool_id = tool.id, mcp_server_id = archestra_mcp_server.filesystem.id }]
   name           = "customer-support-batch"
   description    = "Agent with every tool from a selected MCP server"
   system_prompt  = "Answer support questions using the filesystem tools."
   llm_model      = "llama3"
-  llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
+  llm_api_key_id = archestra_model_provider.ollama_vault.id
 }
 
 resource "archestra_agent" "intake" {
@@ -23,7 +23,7 @@ resource "archestra_agent" "intake" {
   description    = "Email-triggered intake agent — routes incoming customer emails into chats"
   system_prompt  = "Triage incoming customer emails into the right team."
   llm_model      = "llama3"
-  llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
+  llm_api_key_id = archestra_model_provider.ollama_vault.id
 
   consider_context_untrusted    = true
   incoming_email_enabled        = true

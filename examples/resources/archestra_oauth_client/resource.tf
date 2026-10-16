@@ -4,7 +4,7 @@ resource "archestra_oauth_client" "example" {
   grant_type = "client_credentials"
   provider_api_keys = [{
     provider            = "openai"
-    provider_api_key_id = archestra_llm_provider_api_key.example.id
+    provider_api_key_id = archestra_model_provider.example.id
   }]
   # Changing this value rotates the secret and preserves the client ID.
   rotation_nonce = "1"

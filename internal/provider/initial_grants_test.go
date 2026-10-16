@@ -23,25 +23,25 @@ locals { grants=%s }
 resource "archestra_agent" "test" {
  name=%q
  description=%q
- initial_grants=local.grants
+ permissions=local.grants
 }
 resource "archestra_mcp_gateway" "test" {
  name=%q
- initial_grants=local.grants
+ permissions=local.grants
 }
 resource "archestra_project" "test" {
  name=%q
- initial_grants=local.grants
+ permissions=local.grants
 }
 resource "archestra_knowledge_base" "test" {
  name=%q
- initial_grants=local.grants
+ permissions=local.grants
 }
-resource "archestra_mcp_registry_catalog_item" "test" {
+resource "archestra_mcp_registry_entry" "test" {
  name=%q
  description=%q
  remote_config={url="http://127.0.0.1:19999/mcp"}
- initial_grants=local.grants
+ permissions=local.grants
 }
 resource "archestra_skill" "test" {
  name=%q
@@ -50,26 +50,28 @@ resource "archestra_skill" "test" {
  files={}
  environment_ids=[]
  labels=[]
- initial_grants=local.grants
+ permissions=local.grants
 }
-resource "archestra_runtime_credential" "test" {
+resource "archestra_credential" "test" {
  key=%q
  name="Synthetic empty credential definition"
  description=%q
- initial_grants=local.grants
+ permissions=local.grants
 }
-resource "archestra_llm_provider_api_key" "test" {
+resource "archestra_model_provider" "test" {
  name=%q
  llm_provider="ollama"
  %s
  base_url=%q
  shared=true
- initial_grants=local.grants
+ permissions=local.grants
 }
 `, name, grants, name+"-agent", description, name+"-gateway", name+"-project", name+"-knowledge", name+"-catalog", description, name+"-skill", name+"-credential", description, name+"-llm", testAccLLMKeyMaterial(), os.Getenv("ARCHESTRA_TEST_LLM_BASE_URL"))
 	}
 	granted := `[{subject_type="team",subject_id=archestra_team.test.id,actions=["read"]}]`
 	identities := map[string]string{}
+	var skillVersion string
+	expectEmpty := false
 	verify := func(s *terraform.State) error {
 		c, err := client.NewClientWithResponses(os.Getenv("ARCHESTRA_BASE_URL"), client.WithRequestEditorFn(func(_ context.Context, r *http.Request) error {
 			r.Header.Set("Authorization", os.Getenv("ARCHESTRA_API_KEY"))
@@ -79,7 +81,12 @@ resource "archestra_llm_provider_api_key" "test" {
 			return err
 		}
 		team := s.RootModule().Resources["archestra_team.test"].Primary.ID
-		for name, resourceType := range map[string]string{"archestra_agent.test": "agent", "archestra_mcp_gateway.test": "mcpGateway", "archestra_project.test": "project", "archestra_knowledge_base.test": "knowledgeBase", "archestra_mcp_registry_catalog_item.test": "mcpRegistry", "archestra_skill.test": "skill", "archestra_llm_provider_api_key.test": "llmProviderApiKey", "archestra_runtime_credential.test": "credential"} {
+		version := s.RootModule().Resources["archestra_skill.test"].Primary.Attributes["latest_version"]
+		if skillVersion != "" && version != skillVersion {
+			return fmt.Errorf("sharing-only update created a skill version")
+		}
+		skillVersion = version
+		for name, resourceType := range map[string]string{"archestra_agent.test": "agent", "archestra_mcp_gateway.test": "mcpGateway", "archestra_project.test": "project", "archestra_knowledge_base.test": "knowledgeBase", "archestra_mcp_registry_entry.test": "mcpRegistry", "archestra_skill.test": "skill", "archestra_model_provider.test": "llmProviderApiKey", "archestra_credential.test": "credential"} {
 			id := s.RootModule().Resources[name].Primary.ID
 			if resourceType == "credential" {
 				id = s.RootModule().Resources[name].Primary.Attributes["definition_id"]
@@ -101,6 +108,15 @@ resource "archestra_llm_provider_api_key" "test" {
 			if err := json.Unmarshal(response.Body, &policy); err != nil {
 				return err
 			}
+			if expectEmpty {
+				for _, grant := range policy.Grants {
+					if policy.OwnerID == nil || grant.Subject.Type != "user" || grant.Subject.ID != *policy.OwnerID {
+						return fmt.Errorf("permissions did not clear for %s", name)
+					}
+				}
+				continue
+			}
+
 			for _, grant := range policy.Grants {
 				if grant.Subject.Type == "team" && grant.Subject.ID == team && len(grant.Actions) == 1 && grant.Actions[0] == "read" {
 					found = true
@@ -122,6 +138,6 @@ resource "archestra_llm_provider_api_key" "test" {
 		{Config: config(granted, "initial"), PlanOnly: true},
 		{Config: config(granted, "updated metadata"), Check: verify},
 		{Config: config(granted, "updated metadata"), PlanOnly: true},
-		{Config: config(`[]`, "updated metadata"), PlanOnly: true, ExpectNonEmptyPlan: true},
+		{PreConfig: func() { expectEmpty = true }, Config: config(`[]`, "updated metadata"), Check: verify},
 	}})
 }

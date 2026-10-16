@@ -17,7 +17,7 @@ import (
 
 func testCredentialProviderFixture() string {
 	return `
- resource "archestra_llm_provider_api_key" "routing" {
+ resource "archestra_model_provider" "routing" {
   name="tf-routing-fixture"
   llm_provider="ollama"
   vault_secret_path="secret/data/test/ollama"
@@ -79,16 +79,16 @@ func TestAccVirtualAPIKeyResource(t *testing.T) {
 			optional = `labels=[]`
 		}
 		return testCredentialProviderFixture() + fmt.Sprintf(`
- resource "archestra_virtual_api_key" "test" {
+ resource "archestra_virtual_key" "test" {
  name=%q
  rotation_nonce=%q
- provider_api_keys=[{provider="ollama",provider_api_key_id=archestra_llm_provider_api_key.routing.id}]
+ provider_api_keys=[{provider="ollama",provider_api_key_id=archestra_model_provider.routing.id}]
  %s
  }`, name, nonce, optional)
 	}
 	var id, secret string
 	capture := func(s *terraform.State) error {
-		value := s.RootModule().Resources["archestra_virtual_api_key.test"]
+		value := s.RootModule().Resources["archestra_virtual_key.test"]
 		if value.Primary.Attributes["value"] == "" {
 			return fmt.Errorf("creation did not return a sensitive virtual credential")
 		}
@@ -97,14 +97,14 @@ func TestAccVirtualAPIKeyResource(t *testing.T) {
 		return nil
 	}
 	preserve := func(s *terraform.State) error {
-		value := s.RootModule().Resources["archestra_virtual_api_key.test"]
+		value := s.RootModule().Resources["archestra_virtual_key.test"]
 		if value.Primary.ID != id || value.Primary.Attributes["value"] != secret {
 			return fmt.Errorf("metadata update changed virtual credential identity or value")
 		}
 		return nil
 	}
 	rotated := func(s *terraform.State) error {
-		value := s.RootModule().Resources["archestra_virtual_api_key.test"]
+		value := s.RootModule().Resources["archestra_virtual_key.test"]
 		if value.Primary.ID == id || value.Primary.Attributes["value"] == secret {
 			return fmt.Errorf("replacement did not rotate virtual credential")
 		}
@@ -118,31 +118,31 @@ func TestAccVirtualAPIKeyResource(t *testing.T) {
 		return nil
 	}
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: config("tf-virtual-router", "1", false), Check: resource.ComposeTestCheckFunc(capture, resource.TestCheckResourceAttr("archestra_virtual_api_key.test", "spend_cap.limit_value", "100"))},
-		{ResourceName: "archestra_virtual_api_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"value", "rotation_nonce"}},
-		{Config: config("tf-virtual-router-renamed", "1", false), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_virtual_api_key.test", plancheck.ResourceActionUpdate)}}, Check: resource.ComposeTestCheckFunc(preserve, resource.TestCheckResourceAttr("archestra_virtual_api_key.test", "expires_at", "2040-01-01T00:00:00Z"), resource.TestCheckResourceAttrPair("archestra_virtual_api_key.test", "billing_team_id", "archestra_team.routing", "id"), resource.TestCheckResourceAttr("archestra_virtual_api_key.test", "provider_api_keys.#", "1"))},
-		{Config: config("tf-virtual-router-renamed", "1", true), Check: resource.ComposeTestCheckFunc(preserve, resource.TestCheckNoResourceAttr("archestra_virtual_api_key.test", "expires_at"), resource.TestCheckNoResourceAttr("archestra_virtual_api_key.test", "billing_team_id"), resource.TestCheckNoResourceAttr("archestra_virtual_api_key.test", "spend_cap.limit_value"), resource.TestCheckResourceAttr("archestra_virtual_api_key.test", "labels.#", "0"))},
+		{Config: config("tf-virtual-router", "1", false), Check: resource.ComposeTestCheckFunc(capture, resource.TestCheckResourceAttr("archestra_virtual_key.test", "spend_cap.limit_value", "100"))},
+		{ResourceName: "archestra_virtual_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"value", "rotation_nonce"}},
+		{Config: config("tf-virtual-router-renamed", "1", false), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_virtual_key.test", plancheck.ResourceActionUpdate)}}, Check: resource.ComposeTestCheckFunc(preserve, resource.TestCheckResourceAttr("archestra_virtual_key.test", "expires_at", "2040-01-01T00:00:00Z"), resource.TestCheckResourceAttrPair("archestra_virtual_key.test", "billing_team_id", "archestra_team.routing", "id"), resource.TestCheckResourceAttr("archestra_virtual_key.test", "provider_api_keys.#", "1"))},
+		{Config: config("tf-virtual-router-renamed", "1", true), Check: resource.ComposeTestCheckFunc(preserve, resource.TestCheckNoResourceAttr("archestra_virtual_key.test", "expires_at"), resource.TestCheckNoResourceAttr("archestra_virtual_key.test", "billing_team_id"), resource.TestCheckNoResourceAttr("archestra_virtual_key.test", "spend_cap.limit_value"), resource.TestCheckResourceAttr("archestra_virtual_key.test", "labels.#", "0"))},
 		{Config: config("tf-virtual-router-renamed", "1", true), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
-		{Config: config("tf-virtual-router-renamed", "2", true), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_virtual_api_key.test", plancheck.ResourceActionDestroyBeforeCreate)}}, Check: rotated},
+		{Config: config("tf-virtual-router-renamed", "2", true), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_virtual_key.test", plancheck.ResourceActionDestroyBeforeCreate)}}, Check: rotated},
 	}})
 }
 func TestAccVirtualAPIKeyPassthrough(t *testing.T) {
 	config := func(name string) string {
-		return fmt.Sprintf(`resource "archestra_virtual_api_key" "test" {
+		return fmt.Sprintf(`resource "archestra_virtual_key" "test" {
 name=%q
  key_type="passthrough"
 }`, name)
 	}
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: config("tf-passthrough"), Check: resource.TestCheckResourceAttr("archestra_virtual_api_key.test", "provider_api_keys.#", "0")},
-		{ResourceName: "archestra_virtual_api_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"value"}},
-		{Config: config("tf-passthrough-renamed"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_virtual_api_key.test", plancheck.ResourceActionUpdate)}}},
+		{Config: config("tf-passthrough"), Check: resource.TestCheckResourceAttr("archestra_virtual_key.test", "provider_api_keys.#", "0")},
+		{ResourceName: "archestra_virtual_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"value"}},
+		{Config: config("tf-passthrough-renamed"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_virtual_key.test", plancheck.ResourceActionUpdate)}}},
 		{Config: config("tf-passthrough-renamed"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
 	}})
 }
 func TestAccVirtualAPIKeyFutureProviders(t *testing.T) {
 	config := func(name string) string {
-		return fmt.Sprintf(`resource "archestra_virtual_api_key" "test" {
+		return fmt.Sprintf(`resource "archestra_virtual_key" "test" {
 name=%q
  include_future_providers=true
  provider_api_keys=[]
@@ -150,7 +150,7 @@ name=%q
 	}
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireEnterprise(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config("tf-future-router")},
-		{Config: config("tf-future-router-renamed"), Check: resource.TestCheckResourceAttr("archestra_virtual_api_key.test", "include_future_providers", "true")},
+		{Config: config("tf-future-router-renamed"), Check: resource.TestCheckResourceAttr("archestra_virtual_key.test", "include_future_providers", "true")},
 		{Config: config("tf-future-router-renamed"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
 	}})
 }
@@ -175,7 +175,7 @@ name="tf-oauth-identity"
  rotation_nonce=%q
  scopes=["mcp","a2a","llm:proxy"]
  allowed_gateway_ids=[archestra_agent.routing.id,archestra_mcp_gateway.routing.id]
- provider_api_keys=[{provider="ollama",provider_api_key_id=archestra_llm_provider_api_key.routing.id}]
+ provider_api_keys=[{provider="ollama",provider_api_key_id=archestra_model_provider.routing.id}]
  %s
  }`, name, nonce, bindings)
 	}

@@ -8,10 +8,13 @@ import (
 	"go/parser"
 	"go/token"
 	"path/filepath"
+	"strings"
 )
 
 // PreserveReferenceCollectionOmission prevents reference.ToPtrValues(nil) from
-// turning an unmanaged omission into an authoritative empty collection.
+// turning an unmanaged omission into an authoritative empty collection. Singular
+// literal values, including explicit empty reset strings, remain untouched when
+// no reference or selector is configured.
 func PreserveReferenceCollectionOmission(root string) error {
 	files, err := filepath.Glob(filepath.Join(root, "apis", "*", "*", "*", "zz_generated.resolvers.go"))
 	if err != nil {
@@ -78,7 +81,7 @@ func preserveResolverOmission(file string) error {
 	return writeGeneratedCollectionTypes(file, fset, node)
 }
 func (r *referenceOmissionRewriter) visit(n ast.Node) bool {
-	if conditional, ok := n.(*ast.IfStmt); ok && resolverCollectionGuard(conditional.Cond) {
+	if conditional, ok := n.(*ast.IfStmt); ok && (resolverCollectionGuard(conditional.Cond) || resolverSingleGuard(conditional.Cond)) {
 		return false
 	}
 	block, ok := n.(*ast.BlockStmt)
@@ -86,11 +89,11 @@ func (r *referenceOmissionRewriter) visit(n ast.Node) bool {
 		return true
 	}
 	for index := 0; index < len(block.List); index++ {
-		request := multiReferenceRequest(block.List[index])
+		request := referenceResolutionRequest(block.List[index])
 		if request == nil {
 			continue
 		}
-		guard, err := multiReferenceGuard(request)
+		guard, err := referenceResolutionGuard(request)
 		if err != nil {
 			r.err = fmt.Errorf("%s: %w", r.file, err)
 			return false
@@ -107,7 +110,7 @@ func (r *referenceOmissionRewriter) visit(n ast.Node) bool {
 	}
 	return true
 }
-func multiReferenceRequest(statement ast.Stmt) *ast.CompositeLit {
+func referenceResolutionRequest(statement ast.Stmt) *ast.CompositeLit {
 	assignment, ok := statement.(*ast.AssignStmt)
 	if !ok || len(assignment.Rhs) != 1 {
 		return nil
@@ -117,7 +120,7 @@ func multiReferenceRequest(statement ast.Stmt) *ast.CompositeLit {
 		return nil
 	}
 	method, ok := call.Fun.(*ast.SelectorExpr)
-	if !ok || method.Sel.Name != "ResolveMultiple" || len(call.Args) != 2 {
+	if !ok || (method.Sel.Name != "ResolveMultiple" && method.Sel.Name != "Resolve") || len(call.Args) != 2 {
 		return nil
 	}
 	request, _ := call.Args[1].(*ast.CompositeLit)
@@ -162,4 +165,37 @@ func referenceSequenceValid(statements []ast.Stmt) bool {
 		}
 	}
 	return true
+}
+
+// Scalar reference resolution need not rewrite a configured literal. In
+// particular ToPtrValue("") would turn an intentional reset into nil.
+func resolverSingleGuard(value ast.Expr) bool {
+	outer, ok := value.(*ast.BinaryExpr)
+	if !ok || outer.Op != token.LOR {
+		return false
+	}
+	var fields []string
+	for _, expression := range []ast.Expr{outer.X, outer.Y} {
+		comparison, ok := expression.(*ast.BinaryExpr)
+		if !ok || comparison.Op != token.NEQ || resolverExpression(comparison.Y) != "nil" {
+			return false
+		}
+		fields = append(fields, resolverExpression(comparison.X))
+	}
+	return strings.HasSuffix(fields[0], "Ref") && fields[1] == strings.TrimSuffix(fields[0], "Ref")+"Selector"
+}
+
+func referenceResolutionGuard(request *ast.CompositeLit) (ast.Expr, error) {
+	fields := referenceRequestFields(request)
+	if fields["CurrentValues"] != nil {
+		return multiReferenceGuard(request)
+	}
+	if fields["CurrentValue"] == nil || fields["Reference"] == nil || fields["Selector"] == nil {
+		return nil, fmt.Errorf("unexpected generated scalar-reference resolution")
+	}
+	guard := &ast.BinaryExpr{X: resolverNilGuard(fields["Reference"]), Op: token.LOR, Y: resolverNilGuard(fields["Selector"])}
+	if !resolverSingleGuard(guard) {
+		return nil, fmt.Errorf("unexpected generated scalar-reference field names")
+	}
+	return guard, nil
 }

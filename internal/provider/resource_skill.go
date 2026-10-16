@@ -32,7 +32,7 @@ func NewSkillResource() resource.Resource { return &SkillResource{} }
 
 type SkillResource struct{ client *client.ClientWithResponses }
 type SkillResourceModel struct {
-	InitialGrants             types.Set         `tfsdk:"initial_grants"`
+	InitialGrants             types.Set         `tfsdk:"permissions"`
 	ID                        types.String      `tfsdk:"id"`
 	Name                      types.String      `tfsdk:"name"`
 	Description               types.String      `tfsdk:"description"`
@@ -146,18 +146,18 @@ func (r *SkillResource) Metadata(_ context.Context, req resource.MetadataRequest
 }
 func (r *SkillResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	attributes := map[string]schema.Attribute{
-		"initial_grants": initialGrantsAttribute(),
-		"id":             schema.StringAttribute{Computed: true, MarkdownDescription: "Skill UUID.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
-		"name":           schema.StringAttribute{Required: true, MarkdownDescription: "Skill name rendered into manifest frontmatter.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
-		"description":    schema.StringAttribute{Required: true, MarkdownDescription: "Skill description rendered into manifest frontmatter.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
-		"content":        schema.StringAttribute{Required: true, MarkdownDescription: "Markdown instruction body without frontmatter."},
-		"icon":           schema.StringAttribute{Optional: true, MarkdownDescription: "Display emoji or image data URL."},
-		"license":        schema.StringAttribute{Optional: true, MarkdownDescription: "Manifest license."},
-		"compatibility":  schema.StringAttribute{Optional: true, MarkdownDescription: "Manifest compatibility information."},
-		"agent_name":     schema.StringAttribute{Optional: true, MarkdownDescription: "Agent name used when activating this skill delegates execution."},
-		"templated":      schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Whether the instruction body uses Handlebars rendering."},
-		"metadata":       schema.MapAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "Manifest metadata entries."},
-		"allowed_tools":  schema.SetAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "Tools pre-approved by the skill manifest.", Validators: []validator.Set{setvalidator.ValueStringsAre(stringvalidator.RegexMatches(regexp.MustCompile(`^\S+$`), "tool names cannot contain whitespace"))}},
+		"permissions":   initialGrantsAttribute(),
+		"id":            schema.StringAttribute{Computed: true, MarkdownDescription: "Skill UUID.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
+		"name":          schema.StringAttribute{Required: true, MarkdownDescription: "Skill name rendered into manifest frontmatter.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
+		"description":   schema.StringAttribute{Required: true, MarkdownDescription: "Skill description rendered into manifest frontmatter.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
+		"content":       schema.StringAttribute{Required: true, MarkdownDescription: "Markdown instruction body without frontmatter."},
+		"icon":          schema.StringAttribute{Optional: true, MarkdownDescription: "Display emoji or image data URL."},
+		"license":       schema.StringAttribute{Optional: true, MarkdownDescription: "Manifest license."},
+		"compatibility": schema.StringAttribute{Optional: true, MarkdownDescription: "Manifest compatibility information."},
+		"agent_name":    schema.StringAttribute{Optional: true, MarkdownDescription: "Agent name used when activating this skill delegates execution."},
+		"templated":     schema.BoolAttribute{Optional: true, Computed: true, Default: booldefault.StaticBool(false), MarkdownDescription: "Whether the instruction body uses Handlebars rendering."},
+		"metadata":      schema.MapAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "Manifest metadata entries."},
+		"allowed_tools": schema.SetAttribute{Optional: true, ElementType: types.StringType, MarkdownDescription: "Tools pre-approved by the skill manifest.", Validators: []validator.Set{setvalidator.ValueStringsAre(stringvalidator.RegexMatches(regexp.MustCompile(`^\S+$`), "tool names cannot contain whitespace"))}},
 		"files": schema.MapNestedAttribute{Required: true, MarkdownDescription: "Complete resource files keyed by relative path; an empty map clears files.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
 			"content":  schema.StringAttribute{Required: true, MarkdownDescription: "Resource file content in the specified encoding."},
 			"encoding": schema.StringAttribute{Required: true, MarkdownDescription: "Resource file content encoding.", Validators: []validator.String{stringvalidator.OneOf("utf8", "base64")}},
@@ -190,7 +190,7 @@ func (r *SkillResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 	attributes["created_at"] = schema.StringAttribute{Computed: true, MarkdownDescription: "Created at reported by the API."}
 	attributes["updated_at"] = schema.StringAttribute{Computed: true, MarkdownDescription: "Updated at reported by the API."}
 	attributes["deleted_at"] = schema.StringAttribute{Computed: true, MarkdownDescription: "Deleted at reported by the API."}
-	resp.Schema = schema.Schema{MarkdownDescription: "A versioned skill with declarative manifest metadata, instruction body and complete resource files. Import by UUID. Updates reject stale versions. Destroy soft-deletes the skill; immutable historical versions remain under platform retention. Sharing uses a separate archestra_resource_permission_policy. Git-synchronized content remains owned by its external source and the API rejects conflicting edits.", Attributes: attributes}
+	resp.Schema = schema.Schema{MarkdownDescription: "A versioned skill with declarative manifest metadata, instruction body and complete resource files. Import by UUID. Updates reject stale versions. Destroy soft-deletes the skill; immutable historical versions remain under platform retention. Configure sharing through permissions on this skill. Git-synchronized content remains owned by its external source and the API rejects conflicting edits.", Attributes: attributes}
 }
 func (r *SkillResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
@@ -204,6 +204,8 @@ func (r *SkillResource) Configure(_ context.Context, req resource.ConfigureReque
 	r.client = c
 }
 func (r *SkillResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	defer finishParentCreate(ctx, r.client, "skill", "id", resp)
+
 	var plan SkillResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
@@ -260,21 +262,38 @@ func (r *SkillResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	data.populate(ctx, result.Body, &resp.Diagnostics)
 	if !resp.Diagnostics.HasError() {
 		resolveInitialGrants(&data.InitialGrants)
+		readParentPermissions(ctx, r.client, "skill", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+		if resp.Diagnostics.HasError() {
+			return
+		}
 		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	}
 }
 func (r *SkillResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "skill", "id", req, resp)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	defer finishPermissions()
+
 	var plan, prior SkillResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	resp.Diagnostics.Append(req.State.Get(ctx, &prior)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, skillAttrSpec, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	if len(patch) == 0 {
+		resp.State = req.State
+		return
+	}
 	if prior.LatestVersion.IsNull() || prior.LatestVersion.IsUnknown() {
 		resp.Diagnostics.AddError("Missing Skill Version", "Refresh the skill before updating so the API can reject concurrent edits.")
 		return
 	}
-	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, skillAttrSpec, &resp.Diagnostics)
 	patch["baseVersion"] = prior.LatestVersion.ValueInt64()
 	body := plan.request(ctx, patch, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {

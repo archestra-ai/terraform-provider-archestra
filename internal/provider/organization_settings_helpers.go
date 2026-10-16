@@ -71,7 +71,8 @@ func (r *OrganizationSettingsResource) AttrSpecs() []AttrSpec {
 	specs = append(specs, orgSettingsMcpSpec...)
 	specs = append(specs, orgSettingsKnowledgeSpec...)
 	specs = append(specs, orgSettingsOnboardingSpec...)
-	return append(specs, allCurrentOrganizationSpecs()...)
+	specs = append(specs, allCurrentOrganizationSpecs()...)
+	return append(specs, AttrSpec{TFName: "environment_defaults", Kind: Synthetic}, AttrSpec{TFName: "default_user_limits", Kind: Synthetic}, AttrSpec{TFName: "default_permissions", Kind: Synthetic})
 }
 
 // APIShape implements resourceWithAPIShape — activates the API↔schema

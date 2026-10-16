@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-// catalogItemAttrSpec describes the wire shape of archestra_mcp_registry_catalog_item.
+// catalogItemAttrSpec describes the wire shape of archestra_mcp_registry_entry.
 //
 // Wire-naming quirks worth noting:
 //   - Top-level keys are camelCase (`docsUrl`, `requiresAuth`).

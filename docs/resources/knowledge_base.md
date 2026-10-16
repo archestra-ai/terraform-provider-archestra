@@ -47,8 +47,8 @@ resource "archestra_knowledge_base" "internal_wiki" {
 ### Optional
 
 - `description` (String) Free-form description.
-- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `labels` (Attributes Set) Knowledge-base labels. (see [below for nested schema](#nestedatt--labels))
+- `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 
 ### Read-Only
 
@@ -60,16 +60,6 @@ resource "archestra_knowledge_base" "internal_wiki" {
 - `status` (String) Lifecycle status managed by the backend.
 - `updated_at` (String) Last-update timestamp (RFC 3339).
 
-<a id="nestedatt--initial_grants"></a>
-### Nested Schema for `initial_grants`
-
-Required:
-
-- `actions` (Set of String) Actions granted to the principal.
-- `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
-
-
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`
 
@@ -77,6 +67,16 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+
+<a id="nestedatt--permissions"></a>
+### Nested Schema for `permissions`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
 
 ## Import
 

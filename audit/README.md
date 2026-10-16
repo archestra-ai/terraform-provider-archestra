@@ -1,6 +1,14 @@
 # Provider modernization audit
 
-The current clean-major working surface contains **35 registered resources**, generated in both Crossplane scopes. Agent/gateway assignments, exclusions, skills and hooks are fields on their parent; eleven standalone relationship types and the obsolete proxy-profile type are retired. Further team/settings/permissions/source consolidation and naming cleanup remain in progress. The [inline native evidence](inline-ownership-native-acceptance.json) records 11 passing rc.49 cases; [both-scope runtime evidence](crossplane-inline-ownership.json) records four passing parent lifecycles with normal cleanup. Earlier 47-family counts below describe the pre-consolidation frozen checkpoint, not the current public surface.
+
+The v3 review candidate has **29 resources and four data sources**, generated in both Crossplane scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](../MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The [full native acceptance proof](consolidated-native-acceptance.json) records 146 passing cases with zero failures or skips against API 1.4.0-rc.49.
+
+Current request-field review classifies **172 raw occurrences across 29 owners**,
+with zero unclassified rows. These include manually encoded parent fields and
+server-owned values; they are not a count of missing APIs. Native and Crossplane
+results below retain their original binary boundaries.
+
+The [current organization-defaults runtime proof](crossplane-organization-defaults.json) passes in both scopes with normal cleanup.
 
 The pre-consolidation checkpoint covered **47 registered resources in both scopes**.
 The [current inventory](provider-v3-current-inventory.md) records the schema and
@@ -12,7 +20,7 @@ and embedded xpkgs pass [packaging and actual image reconciliation](runtime-pack
 The [API lifecycle decisions](api-lifecycle-decisions.md) track every broader
 persistent API area. [Request-field review](request-field-review.md) classifies all
 90 baseline raw occurrences; `current-request-field-review.json` classifies all
-144 current occurrences. These raw counts include manual encoding, other agent
+172 current occurrences. These raw counts include manual encoding, other agent
 subtypes and server-owned state. They are not counts of missing capabilities.
 The completed 39-family full native suite passes 131 acceptance tests with zero failures or skips (`a2a-environment-native-acceptance.json`). The historical expansion has its own 126-test record (`persistent-extensions-native-acceptance.json`). New profile/service-account creation grants pass in both scopes (`crossplane-persistent-extension-grants.json`). The 41-family full native suite passed all 137 tests (`credential-routing-full-native-acceptance.json`); the 43-family suite passed all 140 with zero failures or skips (`github-registrations-full-native-acceptance.json`). Its six targeted cases are also recorded separately (`credential-routing-native-acceptance.json`). Final full-candidate repetition, remaining justified API implementations, normal
 protected review and publication remain open. The sections below retain the

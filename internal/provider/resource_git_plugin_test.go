@@ -31,29 +31,41 @@ func gitPluginFixtureConfig(name, description string, enabled bool, sourceContro
 	if excluded {
 		exclude = `["excluded.txt"]`
 	}
+	top, source := []string{}, []string{}
+	for _, line := range strings.Split(sourceControls, "\n") {
+		if strings.HasPrefix(strings.TrimSpace(line), "labels=") {
+			top = append(top, line)
+		} else {
+			source = append(source, line)
+		}
+	}
 	return fmt.Sprintf(`resource "archestra_github_pat" "fixture" {
  name="tf-plugin-auth-fixture"
  token="secret/data/test/ollama#api_key"
  }
- resource "archestra_git_plugin" "test" {
+ resource "archestra_plugin" "test" {
  display_name=%q
  description=%q
  enabled=%t
  client_type="claude-code"
  supported_platforms=["posix"]
- source_repo="archestra-ai/terraform-provider-archestra"
- source_sha=%q
- source_subdir=%q
- source_exclude=%s
  %s
- }`, name, description, enabled, gitPluginFixtureSHA, gitPluginFixtureSubdir, exclude, sourceControls)
+ git_source={
+ repo="archestra-ai/terraform-provider-archestra"
+ commit_sha=%q
+ subdir=%q
+ exclude=%s
+ %s
+ }
+ }`, name, description, enabled, strings.Join(top, "\n"), gitPluginFixtureSHA, gitPluginFixtureSubdir, exclude, strings.Join(source, "\n"))
 }
+
 func TestAccGitPluginResource(t *testing.T) {
 	phase, resent := metadataWriteGuard(t, "/api/plugins/", "files")
 	sourcePhase, sourceResent := metadataWriteGuard(t, "/api/plugins/", "githubSource")
 	var id, hash string
 	capture := func(s *terraform.State) error {
-		v := s.RootModule().Resources["archestra_git_plugin.test"]
+		v := s.RootModule().Resources["archestra_plugin.test"]
 		id = v.Primary.ID
 		hash = v.Primary.Attributes["content_hash"]
 		if hash == "" {
@@ -62,31 +74,31 @@ func TestAccGitPluginResource(t *testing.T) {
 		return nil
 	}
 	preserved := func(s *terraform.State) error {
-		v := s.RootModule().Resources["archestra_git_plugin.test"]
+		v := s.RootModule().Resources["archestra_plugin.test"]
 		if v.Primary.ID != id || v.Primary.Attributes["content_hash"] != hash || resent.Load() || sourceResent.Load() {
 			return fmt.Errorf("metadata resent source controls or changed approved content")
 		}
 		return nil
 	}
 	replaced := func(s *terraform.State) error {
-		v := s.RootModule().Resources["archestra_git_plugin.test"]
+		v := s.RootModule().Resources["archestra_plugin.test"]
 		if v.Primary.ID == id || v.Primary.Attributes["content_hash"] == hash {
 			return fmt.Errorf("changed source selection did not replace approved package")
 		}
 		return nil
 	}
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: gitPluginFixtureConfig("tf-pinned-plugin", "Initial", false, `labels=[{key="purpose",value="source"}]`, true), Check: resource.ComposeTestCheckFunc(capture, resource.TestCheckResourceAttr("archestra_git_plugin.test", "enabled", "false"), resource.TestCheckResourceAttr("archestra_git_plugin.test", "source_kind", "github"), resource.TestCheckResourceAttr("archestra_git_plugin.test", "files.%", "2"), resource.TestCheckResourceAttr("archestra_git_plugin.test", "source_sha", gitPluginFixtureSHA))},
-		{ResourceName: "archestra_git_plugin.test", ImportState: true, ImportStateVerify: true},
+		{Config: gitPluginFixtureConfig("tf-pinned-plugin", "Initial", false, `labels=[{key="purpose",value="source"}]`, true), Check: resource.ComposeTestCheckFunc(capture, resource.TestCheckResourceAttr("archestra_plugin.test", "enabled", "false"), resource.TestCheckResourceAttr("archestra_plugin.test", "source_kind", "github"), resource.TestCheckResourceAttr("archestra_plugin.test", "files.%", "2"), resource.TestCheckResourceAttr("archestra_plugin.test", "git_source.commit_sha", gitPluginFixtureSHA))},
+		{ResourceName: "archestra_plugin.test", ImportState: true, ImportStateVerify: true},
 		{PreConfig: func() { phase.Store(true); sourcePhase.Store(true) }, Config: gitPluginFixtureConfig("tf-renamed-source-plugin", "Metadata only", true, `labels=[{key="purpose",value="source"}]`, true), Check: preserved},
 		{PreConfig: func() { phase.Store(false); sourcePhase.Store(false) }, Config: gitPluginFixtureConfig("tf-renamed-source-plugin", "Metadata only", true, `labels=[]
- github_sync_ref="`+gitPluginFixtureSHA+`"
- github_sync_interval="1d"`, true), Check: resource.ComposeTestCheckFunc(preserved, resource.TestCheckResourceAttr("archestra_git_plugin.test", "github_sync_interval", "1d"))},
+ tracking_ref="`+gitPluginFixtureSHA+`"
+ sync_interval="1d"`, true), Check: resource.ComposeTestCheckFunc(preserved, resource.TestCheckResourceAttr("archestra_plugin.test", "git_source.sync_interval", "1d"))},
 		{Config: gitPluginFixtureConfig("tf-renamed-source-plugin", "Metadata only", true, `labels=[]
- github_pat_id=archestra_github_pat.fixture.id`, true), Check: resource.ComposeTestCheckFunc(preserved, resource.TestCheckResourceAttrPair("archestra_git_plugin.test", "github_pat_id", "archestra_github_pat.fixture", "id"), resource.TestCheckNoResourceAttr("archestra_git_plugin.test", "github_sync_interval"))},
-		{Config: gitPluginFixtureConfig("tf-renamed-source-plugin", "Metadata only", true, `labels=[]`, true), Check: resource.ComposeTestCheckFunc(preserved, resource.TestCheckNoResourceAttr("archestra_git_plugin.test", "github_pat_id"), resource.TestCheckNoResourceAttr("archestra_git_plugin.test", "github_sync_ref"), resource.TestCheckResourceAttr("archestra_git_plugin.test", "labels.#", "0"))},
+ github_pat_id=archestra_github_pat.fixture.id`, true), Check: resource.ComposeTestCheckFunc(preserved, resource.TestCheckResourceAttrPair("archestra_plugin.test", "git_source.github_pat_id", "archestra_github_pat.fixture", "id"), resource.TestCheckNoResourceAttr("archestra_plugin.test", "git_source.sync_interval"))},
+		{Config: gitPluginFixtureConfig("tf-renamed-source-plugin", "Metadata only", true, `labels=[]`, true), Check: resource.ComposeTestCheckFunc(preserved, resource.TestCheckNoResourceAttr("archestra_plugin.test", "git_source.github_pat_id"), resource.TestCheckNoResourceAttr("archestra_plugin.test", "git_source.tracking_ref"), resource.TestCheckResourceAttr("archestra_plugin.test", "labels.#", "0"))},
 		{Config: gitPluginFixtureConfig("tf-renamed-source-plugin", "Metadata only", true, `labels=[]`, true), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
-		{Config: gitPluginFixtureConfig("tf-renamed-source-plugin", "Metadata only", true, `labels=[]`, false), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_git_plugin.test", plancheck.ResourceActionDestroyBeforeCreate)}}, Check: resource.ComposeTestCheckFunc(replaced, resource.TestCheckResourceAttr("archestra_git_plugin.test", "files.%", "3"))},
+		{Config: gitPluginFixtureConfig("tf-renamed-source-plugin", "Metadata only", true, `labels=[]`, false), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_plugin.test", plancheck.ResourceActionDestroyBeforeCreate)}}, Check: resource.ComposeTestCheckFunc(replaced, resource.TestCheckResourceAttr("archestra_plugin.test", "files.%", "3"))},
 	}})
 }
 func TestAccGitPluginRecoversFollowupFailure(t *testing.T) {
@@ -133,11 +145,11 @@ func TestAccGitPluginRecoversFollowupFailure(t *testing.T) {
 		t.Cleanup(server.Close)
 		t.Setenv("ARCHESTRA_BASE_URL", server.URL)
 	}
-	config := gitPluginFixtureConfig("tf-retry-source-plugin", "", false, `github_sync_ref="`+gitPluginFixtureSHA+`"`, true)
+	config := gitPluginFixtureConfig("tf-retry-source-plugin", "", false, `tracking_ref="`+gitPluginFixtureSHA+`"`, true)
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config, ExpectError: regexp.MustCompile("Update Failed")},
 		{Config: config, Check: func(s *terraform.State) error {
-			v := s.RootModule().Resources["archestra_git_plugin.test"].Primary
+			v := s.RootModule().Resources["archestra_plugin.test"].Primary
 			first := firstID.Load()
 			if imports.Load() != 2 || first == nil || v.ID == *first || v.Attributes["enabled"] != "false" {
 				return fmt.Errorf("tainted-create recovery did not replace the partial identity and apply its control")
@@ -165,10 +177,10 @@ func TestAccGitPluginRejectsInvalidInputs(t *testing.T) {
 	for _, tc := range []struct{ name, config, match string }{
 		{"commit", strings.Replace(gitPluginFixtureConfig("invalid-source", "", false, "", true), gitPluginFixtureSHA, "main", 1), "approved lowercase"},
 		{"subdir", strings.Replace(gitPluginFixtureConfig("invalid-source", "", false, "", true), gitPluginFixtureSubdir, "../outside", 1), "Invalid source subtree"},
-		{"repo", strings.Replace(gitPluginFixtureConfig("invalid-source", "", false, "", true), `source_repo="archestra-ai/terraform-provider-archestra"`, `source_repo="archestra-ai/terraform-provider-archestra.git"`, 1), "Noncanonical repository"},
-		{"credential case", gitPluginFixtureConfig("invalid-source", "", false, `github_pat_id="11111111-ABCD-4111-8111-111111111111"`, true), "lowercase canonical stored credential UUID"},
+		{"repo", strings.Replace(gitPluginFixtureConfig("invalid-source", "", false, "", true), `repo="archestra-ai/terraform-provider-archestra"`, `repo="archestra-ai/terraform-provider-archestra.git"`, 1), "Noncanonical repository"},
+		{"credential case", gitPluginFixtureConfig("invalid-source", "", false, `github_pat_id="11111111-ABCD-4111-8111-111111111111"`, true), "lowercase canonical stored"},
 		{"credentials", gitPluginFixtureConfig("invalid-source", "", false, `github_pat_id="11111111-1111-4111-8111-111111111111"
- github_app_config_id="22222222-2222-4222-8222-222222222222"`, true), "Invalid Attribute Combination"},
+ github_app_id="22222222-2222-4222-8222-222222222222"`, true), "Invalid Attribute Combination"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{{Config: tc.config, ExpectError: regexp.MustCompile(tc.match)}}})
@@ -176,17 +188,32 @@ func TestAccGitPluginRejectsInvalidInputs(t *testing.T) {
 	}
 }
 func TestPluginSourceAdoptionRejectsOtherKind(t *testing.T) {
-	for _, git := range []bool{false, true} {
-		r := &PluginResource{gitSource: git}
-		body := `{"sourceKind":"github"}`
-		if git {
-			body = `{"sourceKind":"manual"}`
-		}
-		data := PluginResourceModel{ID: types.StringValue("retained-id")}
-		var d diag.Diagnostics
-		r.flatten(context.Background(), &data, []byte(body), &d)
-		if !d.HasError() || data.ID.ValueString() != "retained-id" {
-			t.Fatalf("source mismatch changed state: %v", d)
-		}
+	r := &PluginResource{}
+	data := PluginResourceModel{ID: types.StringValue("retained-id")}
+	var d diag.Diagnostics
+	r.flatten(context.Background(), &data, []byte(`{"sourceKind":"unknown"}`), &d)
+	if !d.HasError() || data.ID.ValueString() != "retained-id" {
+		t.Fatalf("unsupported source changed state: %v", d)
 	}
+}
+
+func TestAccPluginSourceKindReplacement(t *testing.T) {
+	var id string
+	capture := func(s *terraform.State) error {
+		id = s.RootModule().Resources["archestra_plugin.test"].Primary.ID
+		return nil
+	}
+	changed := func(s *terraform.State) error {
+		next := s.RootModule().Resources["archestra_plugin.test"].Primary.ID
+		if next == id {
+			return fmt.Errorf("source-kind transition retained immutable identity")
+		}
+		id = next
+		return nil
+	}
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+		{Config: pluginFixtureConfig("tf-source-mode", "", true, false), Check: capture},
+		{Config: gitPluginFixtureConfig("tf-source-mode", "", true, "", true), Check: changed, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_plugin.test", plancheck.ResourceActionDestroyBeforeCreate)}}},
+		{Config: pluginFixtureConfig("tf-source-mode", "", true, false), Check: changed, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_plugin.test", plancheck.ResourceActionDestroyBeforeCreate)}}},
+	}})
 }

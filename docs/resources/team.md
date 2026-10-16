@@ -14,11 +14,15 @@ Archestra team with member assignments.
 
 ```terraform
 resource "archestra_team" "engineering" {
+  # Enterprise SSO settings belong to the team.
+  external_group_ids = ["engineering"]
+  # With Readonly Vault: vault_folder="secret/data/team/engineering"
+
   name        = "Engineering"
   description = "Engineering team"
 }
 
-# Grant this team access to an object using archestra_resource_permission_policy.
+# Grant this team access through permissions on the target object.
 # Team membership is managed through members and external group mappings.
 resource "archestra_team" "support" {
   name        = "Support"
@@ -36,10 +40,12 @@ resource "archestra_team" "support" {
 ### Optional
 
 - `description` (String) Description of the team
+- `external_group_ids` (Set of String) Complete SSO group selection for enterprise Team Sync; omit to preserve or set an empty set to clear.
 - `labels` (Attributes Set) Resource labels. (see [below for nested schema](#nestedatt--labels))
 - `members` (Attributes List) List of team members (see [below for nested schema](#nestedatt--members))
 - `parent_id` (String) Parent team identifier in the team hierarchy.
 - `roles` (Set of String) Role identifiers assigned to the team; omit to preserve existing assignments, or set an empty set to revoke them.
+- `vault_folder` (String) Team Vault folder path; omit to preserve or set an empty string to remove the binding, requiring Readonly Vault.
 
 ### Read-Only
 

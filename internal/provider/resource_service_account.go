@@ -34,7 +34,7 @@ type ServiceAccountResource struct {
 
 type ServiceAccountResourceModel struct {
 	TeamID           types.String      `tfsdk:"team_id"`
-	InitialGrants    types.Set         `tfsdk:"initial_grants"`
+	InitialGrants    types.Set         `tfsdk:"permissions"`
 	Labels           []AgentLabelModel `tfsdk:"labels"`
 	CreatedBy        types.String      `tfsdk:"created_by"`
 	ID               types.String      `tfsdk:"id"`
@@ -56,12 +56,12 @@ func (r *ServiceAccountResource) Metadata(_ context.Context, req resource.Metada
 
 func (r *ServiceAccountResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Non-human organization identity with a role and explicit permission grants; credentials are managed separately with archestra_service_account_token.",
+		MarkdownDescription: "Non-human organization identity with a role and explicit permission grants; credentials are managed separately with archestra_service_account_api_key.",
 		Attributes: map[string]schema.Attribute{
-			"initial_grants": initialGrantsAttribute(),
-			"team_id":        schema.StringAttribute{Optional: true, MarkdownDescription: "Owning team; remove this field to return to organization ownership.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
-			"labels":         schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Service-account labels.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
-			"created_by":     schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
+			"permissions": initialGrantsAttribute(),
+			"team_id":     schema.StringAttribute{Optional: true, MarkdownDescription: "Owning team; remove this field to return to organization ownership.", Validators: []validator.String{stringvalidator.LengthAtLeast(1)}},
+			"labels":      schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Service-account labels.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
+			"created_by":  schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Service account identifier.",
@@ -114,6 +114,8 @@ func (r *ServiceAccountResource) Configure(_ context.Context, req resource.Confi
 }
 
 func (r *ServiceAccountResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	defer finishParentCreate(ctx, r.client, "serviceAccount", "id", resp)
+
 	var data ServiceAccountResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -212,10 +214,20 @@ func (r *ServiceAccountResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 	resolveInitialGrants(&data.InitialGrants)
+	readParentPermissions(ctx, r.client, "serviceAccount", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *ServiceAccountResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "serviceAccount", "id", req, resp)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	defer finishPermissions()
+
 	var data ServiceAccountResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {

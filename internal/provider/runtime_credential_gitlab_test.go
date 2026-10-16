@@ -17,7 +17,7 @@ func TestAccRuntimeCredentialResource_GitlabHost(t *testing.T) {
 	key := acctest.RandomWithPrefix("tf-gitlab-definition")
 	config := func(kind, host string) string {
 		return fmt.Sprintf(`
-resource "archestra_runtime_credential" "test" {
+resource "archestra_credential" "test" {
  key = %q
  name = "Synthetic GitLab definition"
  kind = %q
@@ -31,10 +31,10 @@ resource "archestra_runtime_credential" "test" {
 	cleared := config("gitlab_token", "")
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireAgentRuntimeEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: secret},
-		{Config: initial, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_runtime_credential.test", plancheck.ResourceActionDestroyBeforeCreate)}}, Check: resource.TestCheckResourceAttr("archestra_runtime_credential.test", "gitlab_url", "https://gitlab.example.invalid")},
-		{ResourceName: "archestra_runtime_credential.test", ImportState: true, ImportStateVerify: true},
+		{Config: initial, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_credential.test", plancheck.ResourceActionDestroyBeforeCreate)}}, Check: resource.TestCheckResourceAttr("archestra_credential.test", "gitlab_url", "https://gitlab.example.invalid")},
+		{ResourceName: "archestra_credential.test", ImportState: true, ImportStateVerify: true},
 		{Config: initial, PlanOnly: true},
-		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_runtime_credential.test", "gitlab_url", "https://updated.gitlab.example.invalid")},
+		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_credential.test", "gitlab_url", "https://updated.gitlab.example.invalid")},
 		{Config: updated, PlanOnly: true, ExpectNonEmptyPlan: true, PreConfig: func() {
 			c, err := client.NewClientWithResponses(os.Getenv("ARCHESTRA_BASE_URL"), client.WithRequestEditorFn(func(_ context.Context, r *http.Request) error {
 				r.Header.Set("Authorization", os.Getenv("ARCHESTRA_API_KEY"))
@@ -48,8 +48,8 @@ resource "archestra_runtime_credential" "test" {
 				t.Fatal("Unable to create isolated credential-host drift", err)
 			}
 		}},
-		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_runtime_credential.test", "gitlab_url", "https://updated.gitlab.example.invalid")},
-		{Config: cleared, Check: resource.TestCheckNoResourceAttr("archestra_runtime_credential.test", "gitlab_url")},
+		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_credential.test", "gitlab_url", "https://updated.gitlab.example.invalid")},
+		{Config: cleared, Check: resource.TestCheckNoResourceAttr("archestra_credential.test", "gitlab_url")},
 		{Config: cleared, PlanOnly: true},
 	}})
 }

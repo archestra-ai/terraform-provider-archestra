@@ -46,7 +46,7 @@ type AgentResourceModel struct {
 	SkillPolicyHiddenAllowedCount  types.Int64  `tfsdk:"skill_policy_hidden_allowed_count"`
 	SkillPolicyHiddenExcludedCount types.Int64  `tfsdk:"skill_policy_hidden_excluded_count"`
 
-	InitialGrants                        types.Set    `tfsdk:"initial_grants"`
+	InitialGrants                        types.Set    `tfsdk:"permissions"`
 	AuthorEmail                          types.String `tfsdk:"author_email"`
 	CreatedBy                            types.String `tfsdk:"created_by"`
 	CreatedByServiceAccountId            types.String `tfsdk:"created_by_service_account_id"`
@@ -98,7 +98,7 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 		Version:             1,
 		MarkdownDescription: "Internal chat agent — system prompt + LLM, optionally augmented with knowledge bases, connectors, and email triggers.",
 		Attributes: map[string]schema.Attribute{
-			"initial_grants": initialGrantsAttribute(),
+			"permissions": initialGrantsAttribute(),
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Agent identifier",
@@ -237,6 +237,8 @@ func (r *AgentResource) Configure(_ context.Context, req resource.ConfigureReque
 }
 
 func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	defer finishParentCreate(ctx, r.client, "agent", "id", resp)
+
 	// Run merge-patch with prior=null Object: every non-null plan attribute
 	// emits, which is exactly Create semantics.
 	priorNull := tftypes.NewValue(req.Plan.Schema.Type().TerraformType(ctx), nil)
@@ -357,10 +359,20 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		return
 	}
 	resolveInitialGrants(&data.InitialGrants)
+	readParentPermissions(ctx, r.client, "agent", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "agent", "id", req, resp)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	defer finishPermissions()
+
 	var stateData AgentResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &stateData)...)
 	if resp.Diagnostics.HasError() {

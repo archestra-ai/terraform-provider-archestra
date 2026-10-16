@@ -13,8 +13,8 @@ import (
 func initialGrantsAttribute() schema.SetNestedAttribute {
 	return schema.SetNestedAttribute{
 		Optional: true, Computed: true,
-		MarkdownDescription: "Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy.",
-		PlanModifiers:       []planmodifier.Set{setplanmodifier.UseStateForUnknown(), setplanmodifier.RequiresReplace()},
+		MarkdownDescription: "Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra.",
+		PlanModifiers:       []planmodifier.Set{setplanmodifier.UseStateForUnknown()},
 		Validators:          []validator.Set{setvalidator.SizeAtMost(200)},
 		NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
 			"subject_type": schema.StringAttribute{Required: true, MarkdownDescription: "Principal type.", Validators: []validator.String{stringvalidator.OneOf("user", "team", "serviceAccount", "role", "organization")}},
@@ -24,7 +24,7 @@ func initialGrantsAttribute() schema.SetNestedAttribute {
 	}
 }
 
-var initialGrantsAttrSpec = AttrSpec{TFName: "initial_grants", JSONName: "initialGrants", Kind: Set, OmitOnNull: true, Children: []AttrSpec{
+var initialGrantsAttrSpec = AttrSpec{TFName: "permissions", JSONName: "initialGrants", Kind: Set, OmitOnNull: true, CreateOnly: true, Children: []AttrSpec{
 	{TFName: "subject_type", JSONName: "subject_type", Kind: Scalar},
 	{TFName: "subject_id", JSONName: "subject_id", Kind: Scalar},
 	{TFName: "actions", JSONName: "actions", Kind: Set},
@@ -51,4 +51,10 @@ func resolveInitialGrants(value *types.Set) {
 	if value.IsUnknown() || value.IsNull() {
 		*value = types.SetNull(permissionGrantObjectType)
 	}
+}
+
+func nonAtomicPermissionsAttribute() schema.SetNestedAttribute {
+	value := initialGrantsAttribute()
+	value.MarkdownDescription = "Additional direct sharing grants. Applied after the parent identity exists, then reconciled in place. Omit to preserve grants; [] clears additional grants while retaining the owner's existing access."
+	return value
 }

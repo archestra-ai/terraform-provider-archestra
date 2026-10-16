@@ -1,1 +1,0 @@
-terraform import archestra_environment_default.apps app

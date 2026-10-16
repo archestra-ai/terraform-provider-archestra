@@ -1,24 +1,23 @@
 {
   "format_version": 1,
   "upstream_version": "1.4.0-rc.49",
-  "registered_resources": 35,
-  "crossplane_configured": 35,
-  "raw_occurrences": 140,
+  "registered_resources": 29,
+  "crossplane_configured": 29,
+  "raw_occurrences": 172,
   "unclassified": 0,
   "classification_counts": {
     "authentication_context": 4,
-    "covered_by_canonical_inputs": 3,
+    "covered_by_canonical_inputs": 2,
     "covered_creation_only": 3,
     "derived": 5,
     "lifecycle_owned": 4,
-    "manual_encoding": 64,
-    "other_source_subtype": 14,
+    "manual_encoding": 101,
+    "other_source_subtype": 11,
     "other_subtype": 23,
     "related_resource": 1,
-    "separate_credential_lifecycle": 1,
     "server_owned": 18
   },
-  "note": "Actual registered owners and transitive typed helper calls. Raw request-field occurrences include manual encoding, source/subtype fields and server-owned lifecycle values; this is not a missing-feature count. Remaining durable API domains and product-aligned consolidation are still in progress.",
+  "note": "Actual 29 registered owners and transitive typed helper calls. All 172 raw top-level request-field occurrences have an explicit disposition; manual encoding, alternate source/subtype fields and server-owned values are not missing-feature counts. Remaining durable API domains are tracked separately.",
   "review": [
     {
       "resource": "archestra_agent",
@@ -309,84 +308,76 @@
       "source": "internal/provider/agent_hooks.go"
     },
     {
-      "resource": "archestra_environment_default",
-      "operation": "UpdateEnvironmentResourceDefaults",
-      "field": "agent",
+      "resource": "archestra_agent",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
       "classification": "manual_encoding",
-      "rationale": "Each resource owns one resource_type slot; environment_id is encoded under that selected wire key. Create/update/delete preserve every other slot; omission resets only the selected kind.",
-      "source": "internal/provider/resource_environment_default.go"
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
     },
     {
-      "resource": "archestra_environment_default",
-      "operation": "UpdateEnvironmentResourceDefaults",
-      "field": "app",
+      "resource": "archestra_agent",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
       "classification": "manual_encoding",
-      "rationale": "Each resource owns one resource_type slot; environment_id is encoded under that selected wire key. Create/update/delete preserve every other slot; omission resets only the selected kind.",
-      "source": "internal/provider/resource_environment_default.go"
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
     },
     {
-      "resource": "archestra_environment_default",
-      "operation": "UpdateEnvironmentResourceDefaults",
-      "field": "knowledgeSource",
+      "resource": "archestra_credential",
+      "operation": "SetOrganizationRuntimeCredentialConnection",
+      "field": "value",
       "classification": "manual_encoding",
-      "rationale": "Each resource owns one resource_type slot; environment_id is encoded under that selected wire key. Create/update/delete preserve every other slot; omission resets only the selected kind.",
-      "source": "internal/provider/resource_environment_default.go"
+      "rationale": "The sensitive organization_value attribute owns the separate connection value endpoint.",
+      "source": "internal/provider/resource_credential.go"
     },
     {
-      "resource": "archestra_environment_default",
-      "operation": "UpdateEnvironmentResourceDefaults",
-      "field": "mcpGateway",
+      "resource": "archestra_credential",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
       "classification": "manual_encoding",
-      "rationale": "Each resource owns one resource_type slot; environment_id is encoded under that selected wire key. Create/update/delete preserve every other slot; omission resets only the selected kind.",
-      "source": "internal/provider/resource_environment_default.go"
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
     },
     {
-      "resource": "archestra_environment_default",
-      "operation": "UpdateEnvironmentResourceDefaults",
-      "field": "mcpRegistry",
+      "resource": "archestra_credential",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
       "classification": "manual_encoding",
-      "rationale": "Each resource owns one resource_type slot; environment_id is encoded under that selected wire key. Create/update/delete preserve every other slot; omission resets only the selected kind.",
-      "source": "internal/provider/resource_environment_default.go"
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
     },
     {
-      "resource": "archestra_git_plugin",
-      "operation": "CreatePlugin",
-      "field": "files",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes manual file creation/update. Git-derived files are read-only and fetched from the approved source commit; manual files have a separate resource and immutable source discriminator.",
-      "source": "internal/provider/resource_git_plugin.go"
-    },
-    {
-      "resource": "archestra_git_plugin",
-      "operation": "ImportGithubPlugin",
-      "field": "githubToken",
-      "classification": "separate_credential_lifecycle",
-      "rationale": "One-time import tokens are transient inputs. Existing credentials are selected through stored GitHub PAT/App or GitLab credential IDs, including private-source creation and subsequent tracking; inline PAT storage is provided by archestra_github_pat.",
-      "source": "internal/provider/resource_git_plugin.go"
-    },
-    {
-      "resource": "archestra_git_plugin",
-      "operation": "ImportGithubPlugin",
-      "field": "ref",
-      "classification": "covered_by_canonical_inputs",
-      "rationale": "approvedCommitSha pins the bytes and github_sync_ref maps to trackingRef. The optional ref alias is omitted to avoid a branch race or competing source selector.",
-      "source": "internal/provider/resource_git_plugin.go"
-    },
-    {
-      "resource": "archestra_git_plugin",
-      "operation": "UpdatePlugin",
-      "field": "files",
-      "classification": "other_source_subtype",
-      "rationale": "Shared Go receiver inventory includes manual file creation/update. Git-derived files are read-only and fetched from the approved source commit; manual files have a separate resource and immutable source discriminator.",
-      "source": "internal/provider/resource_git_plugin.go"
-    },
-    {
-      "resource": "archestra_git_plugin",
-      "operation": "UpdatePlugin",
-      "field": "githubSource",
+      "resource": "archestra_environment",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
       "classification": "manual_encoding",
-      "rationale": "Repository, tracking ref, interval and nullable authentication IDs are encoded as the complete githubSource object only when a managed source control changes. Both-scope drift repair and credential/reference clears pass.",
-      "source": "internal/provider/resource_git_plugin.go"
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_environment",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_knowledge_base",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_knowledge_base",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
     },
     {
       "resource": "archestra_limit",
@@ -709,15 +700,31 @@
       "source": "internal/provider/agent_tools.go"
     },
     {
-      "resource": "archestra_mcp_registry_catalog_item",
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_mcp_registry_entry",
       "operation": "CreateInternalMcpCatalogItem",
       "field": "catalogReinstallRequired",
       "classification": "server_owned",
       "rationale": "Runtime reinstall bookkeeping reports whether installations need a refresh; users manage configuration rather than forcing diagnostic state.",
-      "source": "platform/backend/src/types/internal-mcp-catalog.ts"
+      "source": "platform/backend/src/routes/internal-mcp-catalog.ts"
     },
     {
-      "resource": "archestra_mcp_registry_catalog_item",
+      "resource": "archestra_mcp_registry_entry",
       "operation": "CreateInternalMcpCatalogItem",
       "field": "id",
       "classification": "server_owned",
@@ -725,39 +732,39 @@
       "source": "platform/backend/src/routes/internal-mcp-catalog.ts"
     },
     {
-      "resource": "archestra_mcp_registry_catalog_item",
+      "resource": "archestra_mcp_registry_entry",
       "operation": "CreateInternalMcpCatalogItem",
       "field": "oauthConfig",
       "classification": "manual_encoding",
       "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
-      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+      "source": "internal/provider/resource_mcp_registry_entry.go"
     },
     {
-      "resource": "archestra_mcp_registry_catalog_item",
+      "resource": "archestra_mcp_registry_entry",
       "operation": "CreateInternalMcpCatalogItem",
       "field": "serverType",
       "classification": "manual_encoding",
       "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
-      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+      "source": "internal/provider/resource_mcp_registry_entry.go"
     },
     {
-      "resource": "archestra_mcp_registry_catalog_item",
+      "resource": "archestra_mcp_registry_entry",
       "operation": "CreateInternalMcpCatalogItem",
       "field": "serverUrl",
       "classification": "manual_encoding",
       "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
-      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+      "source": "internal/provider/resource_mcp_registry_entry.go"
     },
     {
-      "resource": "archestra_mcp_registry_catalog_item",
+      "resource": "archestra_mcp_registry_entry",
       "operation": "UpdateInternalMcpCatalogItem",
       "field": "catalogReinstallRequired",
       "classification": "server_owned",
       "rationale": "Runtime reinstall bookkeeping reports whether installations need a refresh; users manage configuration rather than forcing diagnostic state.",
-      "source": "platform/backend/src/types/internal-mcp-catalog.ts"
+      "source": "platform/backend/src/routes/internal-mcp-catalog.ts"
     },
     {
-      "resource": "archestra_mcp_registry_catalog_item",
+      "resource": "archestra_mcp_registry_entry",
       "operation": "UpdateInternalMcpCatalogItem",
       "field": "hibernationMode",
       "classification": "related_resource",
@@ -765,55 +772,71 @@
       "source": "platform/backend/src/routes/internal-mcp-catalog.ts"
     },
     {
-      "resource": "archestra_mcp_registry_catalog_item",
+      "resource": "archestra_mcp_registry_entry",
       "operation": "UpdateInternalMcpCatalogItem",
       "field": "oauthConfig",
       "classification": "manual_encoding",
       "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
-      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+      "source": "internal/provider/resource_mcp_registry_entry.go"
     },
     {
-      "resource": "archestra_mcp_registry_catalog_item",
+      "resource": "archestra_mcp_registry_entry",
       "operation": "UpdateInternalMcpCatalogItem",
       "field": "serverType",
       "classification": "manual_encoding",
       "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
-      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+      "source": "internal/provider/resource_mcp_registry_entry.go"
     },
     {
-      "resource": "archestra_mcp_registry_catalog_item",
+      "resource": "archestra_mcp_registry_entry",
       "operation": "UpdateInternalMcpCatalogItem",
       "field": "serverUrl",
       "classification": "manual_encoding",
       "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
-      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+      "source": "internal/provider/resource_mcp_registry_entry.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_registry_entry",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_mcp_registry_entry",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "accessToken",
       "classification": "manual_encoding",
       "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "agentIds",
       "classification": "manual_encoding",
       "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "catalogId",
       "classification": "manual_encoding",
       "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "createdByServiceAccountId",
       "classification": "server_owned",
@@ -821,23 +844,23 @@
       "source": "platform/backend/src/routes/mcp-server.ts"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "environmentValues",
       "classification": "manual_encoding",
       "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "isByosVault",
       "classification": "manual_encoding",
       "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "localInstallationError",
       "classification": "server_owned",
@@ -845,7 +868,7 @@
       "source": "platform/backend/src/routes/mcp-server.ts"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "localInstallationStatus",
       "classification": "server_owned",
@@ -853,15 +876,15 @@
       "source": "platform/backend/src/routes/mcp-server.ts"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "name",
       "classification": "manual_encoding",
       "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "ownerId",
       "classification": "server_owned",
@@ -869,7 +892,7 @@
       "source": "platform/backend/src/routes/mcp-server.ts"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "reinstallRequired",
       "classification": "server_owned",
@@ -877,76 +900,236 @@
       "source": "platform/backend/src/routes/mcp-server.ts"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "scope",
       "classification": "manual_encoding",
       "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "secretId",
       "classification": "manual_encoding",
       "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "teamId",
       "classification": "manual_encoding",
       "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "userConfigValues",
       "classification": "manual_encoding",
       "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "InstallMcpServer",
       "field": "userId",
       "classification": "covered_by_canonical_inputs",
       "rationale": "Added immutable user_id for administrator-selected personal installation ownership, read from the persisted owner.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "ReinstallMcpServer",
       "field": "environmentValues",
       "classification": "covered_creation_only",
       "rationale": "This secret/configuration input is supported by the installation resource at creation. Changes deliberately replace the connection; the alternate reinstall input is not a separate resource, and redacted credentials do not provide an observable clear/update contract.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "ReinstallMcpServer",
       "field": "hibernationMode",
       "classification": "covered_by_canonical_inputs",
       "rationale": "The hibernation_mode control uses the licensed reinstall endpoint and preserves installation identity and tools; native and both-scope probes cover it.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "ReinstallMcpServer",
       "field": "isByosVault",
       "classification": "covered_creation_only",
       "rationale": "This secret/configuration input is supported by the installation resource at creation. Changes deliberately replace the connection; the alternate reinstall input is not a separate resource, and redacted credentials do not provide an observable clear/update contract.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
     },
     {
-      "resource": "archestra_mcp_server_installation",
+      "resource": "archestra_mcp_server",
       "operation": "ReinstallMcpServer",
       "field": "userConfigValues",
       "classification": "covered_creation_only",
       "rationale": "This secret/configuration input is supported by the installation resource at creation. Changes deliberately replace the connection; the alternate reinstall input is not a separate resource, and redacted credentials do not provide an observable clear/update contract.",
-      "source": "internal/provider/resource_mcp_server_installation.go"
+      "source": "internal/provider/resource_mcp_server.go"
+    },
+    {
+      "resource": "archestra_model",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_model",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_model_provider",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_model_provider",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_oauth_client",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_oauth_client",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "CreateDefaultUserLimit",
+      "field": "cleanupInterval",
+      "classification": "manual_encoding",
+      "rationale": "Organization default_user_limits encodes each environment/default map slot, models, allowance and reset interval; desired additions/updates precede removal of obsolete rows.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "CreateDefaultUserLimit",
+      "field": "environmentId",
+      "classification": "manual_encoding",
+      "rationale": "Organization default_user_limits encodes each environment/default map slot, models, allowance and reset interval; desired additions/updates precede removal of obsolete rows.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "CreateDefaultUserLimit",
+      "field": "limitValue",
+      "classification": "manual_encoding",
+      "rationale": "Organization default_user_limits encodes each environment/default map slot, models, allowance and reset interval; desired additions/updates precede removal of obsolete rows.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "CreateDefaultUserLimit",
+      "field": "model",
+      "classification": "manual_encoding",
+      "rationale": "Organization default_user_limits encodes each environment/default map slot, models, allowance and reset interval; desired additions/updates precede removal of obsolete rows.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "UpdateDefaultUserLimit",
+      "field": "cleanupInterval",
+      "classification": "manual_encoding",
+      "rationale": "Organization default_user_limits encodes each environment/default map slot, models, allowance and reset interval; desired additions/updates precede removal of obsolete rows.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "UpdateDefaultUserLimit",
+      "field": "limitValue",
+      "classification": "manual_encoding",
+      "rationale": "Organization default_user_limits encodes each environment/default map slot, models, allowance and reset interval; desired additions/updates precede removal of obsolete rows.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "UpdateDefaultUserLimit",
+      "field": "model",
+      "classification": "manual_encoding",
+      "rationale": "Organization default_user_limits encodes each environment/default map slot, models, allowance and reset interval; desired additions/updates precede removal of obsolete rows.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "UpdateEnvironmentResourceDefaults",
+      "field": "agent",
+      "classification": "manual_encoding",
+      "rationale": "Organization environment_defaults maps the five product slots to wire keys. Omission preserves a slot; an empty string sends null to restore the implicit Default.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "UpdateEnvironmentResourceDefaults",
+      "field": "app",
+      "classification": "manual_encoding",
+      "rationale": "Organization environment_defaults maps the five product slots to wire keys. Omission preserves a slot; an empty string sends null to restore the implicit Default.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "UpdateEnvironmentResourceDefaults",
+      "field": "knowledgeSource",
+      "classification": "manual_encoding",
+      "rationale": "Organization environment_defaults maps the five product slots to wire keys. Omission preserves a slot; an empty string sends null to restore the implicit Default.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "UpdateEnvironmentResourceDefaults",
+      "field": "mcpGateway",
+      "classification": "manual_encoding",
+      "rationale": "Organization environment_defaults maps the five product slots to wire keys. Omission preserves a slot; an empty string sends null to restore the implicit Default.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "UpdateEnvironmentResourceDefaults",
+      "field": "mcpRegistry",
+      "classification": "manual_encoding",
+      "rationale": "Organization environment_defaults maps the five product slots to wire keys. Omission preserves a slot; an empty string sends null to restore the implicit Default.",
+      "source": "internal/provider/organization_defaults.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/organization_default_permissions.go"
+    },
+    {
+      "resource": "archestra_organization_settings",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/organization_default_permissions.go"
     },
     {
       "resource": "archestra_plugin",
@@ -1038,11 +1221,19 @@
     },
     {
       "resource": "archestra_plugin",
-      "operation": "UpdatePlugin",
-      "field": "githubSource",
-      "classification": "other_source_subtype",
-      "rationale": "The backend rejects Git source settings on a manual plugin with409. Manual files and Git-derived content have different immutable source kinds; repository declarations require their own source resource.",
-      "source": "internal/provider/resource_plugin.go"
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_plugin",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
     },
     {
       "resource": "archestra_project",
@@ -1053,6 +1244,22 @@
       "source": "internal/provider/resource_project.go"
     },
     {
+      "resource": "archestra_project",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_project",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
       "resource": "archestra_project_file",
       "operation": "UpdateSkillSandboxArtifactContent",
       "field": "content",
@@ -1061,28 +1268,36 @@
       "source": "internal/provider/resource_project_file.go"
     },
     {
-      "resource": "archestra_resource_permission_policy",
+      "resource": "archestra_remote_agent",
       "operation": "UpdateResourcePermissions",
       "field": "grants",
       "classification": "manual_encoding",
-      "rationale": "The policy converts principal/action grants and supplies the current optimistic concurrency revision.",
-      "source": "internal/provider/resource_resource_permission_policy.go"
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
     },
     {
-      "resource": "archestra_resource_permission_policy",
+      "resource": "archestra_remote_agent",
       "operation": "UpdateResourcePermissions",
       "field": "revision",
       "classification": "manual_encoding",
-      "rationale": "The policy converts principal/action grants and supplies the current optimistic concurrency revision.",
-      "source": "internal/provider/resource_resource_permission_policy.go"
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
     },
     {
-      "resource": "archestra_runtime_credential",
-      "operation": "SetOrganizationRuntimeCredentialConnection",
-      "field": "value",
+      "resource": "archestra_service_account",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
       "classification": "manual_encoding",
-      "rationale": "The sensitive organization_value attribute owns the separate connection value endpoint.",
-      "source": "internal/provider/resource_runtime_credential.go"
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_service_account",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
     },
     {
       "resource": "archestra_skill",
@@ -1091,6 +1306,22 @@
       "classification": "manual_encoding",
       "rationale": "allowed_tools is rendered into canonical manifest frontmatter and read back from the versioned skill.",
       "source": "internal/provider/resource_skill.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
     },
     {
       "resource": "archestra_skill",
@@ -1110,6 +1341,14 @@
     },
     {
       "resource": "archestra_team",
+      "operation": "AddTeamExternalGroup",
+      "field": "groupIdentifier",
+      "classification": "manual_encoding",
+      "rationale": "Team external_group_ids and vault_folder own these bindings. Omission preserves, explicit empty clears, and additions are confirmed before removing obsolete mappings.",
+      "source": "internal/provider/team_bindings.go"
+    },
+    {
+      "resource": "archestra_team",
       "operation": "AddTeamMember",
       "field": "role",
       "classification": "manual_encoding",
@@ -1126,6 +1365,14 @@
     },
     {
       "resource": "archestra_team",
+      "operation": "SetTeamVaultFolder",
+      "field": "vaultPath",
+      "classification": "manual_encoding",
+      "rationale": "Team external_group_ids and vault_folder own these bindings. Omission preserves, explicit empty clears, and additions are confirmed before removing obsolete mappings.",
+      "source": "internal/provider/team_bindings.go"
+    },
+    {
+      "resource": "archestra_team",
       "operation": "UpdateTeamMember",
       "field": "role",
       "classification": "manual_encoding",
@@ -1133,12 +1380,20 @@
       "source": "internal/provider/resource_team.go"
     },
     {
-      "resource": "archestra_team_external_group",
-      "operation": "AddTeamExternalGroup",
-      "field": "groupIdentifier",
+      "resource": "archestra_virtual_key",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
       "classification": "manual_encoding",
-      "rationale": "group_identifier is explicitly passed in the dedicated external-group request.",
-      "source": "internal/provider/resource_team_external_group.go"
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_virtual_key",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
     }
   ]
 }

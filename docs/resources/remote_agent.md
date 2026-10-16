@@ -51,8 +51,8 @@ resource "archestra_remote_agent" "external" {
 - `auth` (String, Sensitive) Sensitive JSON authentication object: none, bearer with credential, or api_key with headerName and credential; omit to preserve authentication and set type none to clear it.
 - `description` (String) Description, defaulting to the Agent Card description; an empty string clears it.
 - `enabled` (Boolean) Whether the saved remote connection can be used; omission preserves its current setting.
-- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `name` (String) Registration name, defaulting to the Agent Card name on creation.
+- `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 
 ### Read-Only
 
@@ -75,8 +75,8 @@ resource "archestra_remote_agent" "external" {
 - `tool_id` (String) Tool id.
 - `updated_at` (String) Updated at.
 
-<a id="nestedatt--initial_grants"></a>
-### Nested Schema for `initial_grants`
+<a id="nestedatt--permissions"></a>
+### Nested Schema for `permissions`
 
 Required:
 

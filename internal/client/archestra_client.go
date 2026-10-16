@@ -191,6 +191,64 @@ const (
 	UpdateAgentToolJSONBodyCredentialResolutionModeStatic            UpdateAgentToolJSONBodyCredentialResolutionMode = "static"
 )
 
+// Defines values for GetAgentsParamsView.
+const (
+	Chat GetAgentsParamsView = "chat"
+)
+
+// Defines values for GetAgentsParamsAgentType.
+const (
+	GetAgentsParamsAgentTypeAgent      GetAgentsParamsAgentType = "agent"
+	GetAgentsParamsAgentTypeMcpGateway GetAgentsParamsAgentType = "mcp_gateway"
+	GetAgentsParamsAgentTypeProfile    GetAgentsParamsAgentType = "profile"
+)
+
+// Defines values for GetAgentsParamsAgentTypes.
+const (
+	GetAgentsParamsAgentTypesAgent      GetAgentsParamsAgentTypes = "agent"
+	GetAgentsParamsAgentTypesMcpGateway GetAgentsParamsAgentTypes = "mcp_gateway"
+	GetAgentsParamsAgentTypesProfile    GetAgentsParamsAgentTypes = "profile"
+)
+
+// Defines values for GetAgentsParamsScope.
+const (
+	GetAgentsParamsScopeBuiltIn  GetAgentsParamsScope = "built_in"
+	GetAgentsParamsScopeOrg      GetAgentsParamsScope = "org"
+	GetAgentsParamsScopePersonal GetAgentsParamsScope = "personal"
+	GetAgentsParamsScopeTeam     GetAgentsParamsScope = "team"
+)
+
+// Defines values for GetAgentsParamsAccess.
+const (
+	GetAgentsParamsAccessMine   GetAgentsParamsAccess = "mine"
+	GetAgentsParamsAccessOrg    GetAgentsParamsAccess = "org"
+	GetAgentsParamsAccessOthers GetAgentsParamsAccess = "others"
+	GetAgentsParamsAccessShared GetAgentsParamsAccess = "shared"
+)
+
+// Defines values for GetAgentsParamsStatus.
+const (
+	Active  GetAgentsParamsStatus = "active"
+	Deleted GetAgentsParamsStatus = "deleted"
+)
+
+// Defines values for GetAgentsParamsSortBy.
+const (
+	GetAgentsParamsSortByCreatedAt             GetAgentsParamsSortBy = "createdAt"
+	GetAgentsParamsSortByKnowledgeSourcesCount GetAgentsParamsSortBy = "knowledgeSourcesCount"
+	GetAgentsParamsSortByLastUsedAt            GetAgentsParamsSortBy = "lastUsedAt"
+	GetAgentsParamsSortByName                  GetAgentsParamsSortBy = "name"
+	GetAgentsParamsSortBySubagentsCount        GetAgentsParamsSortBy = "subagentsCount"
+	GetAgentsParamsSortByTeam                  GetAgentsParamsSortBy = "team"
+	GetAgentsParamsSortByToolsCount            GetAgentsParamsSortBy = "toolsCount"
+)
+
+// Defines values for GetAgentsParamsSortDirection.
+const (
+	GetAgentsParamsSortDirectionAsc  GetAgentsParamsSortDirection = "asc"
+	GetAgentsParamsSortDirectionDesc GetAgentsParamsSortDirection = "desc"
+)
+
 // Defines values for CreateAgentJSONBodyActivationSkillPolicyAllowedReferences0Source.
 const (
 	CreateAgentJSONBodyActivationSkillPolicyAllowedReferences0SourceNative CreateAgentJSONBodyActivationSkillPolicyAllowedReferences0Source = "native"
@@ -1876,7 +1934,7 @@ const (
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject1Type.
 const (
-	Team CreateSkillJSONBodyInitialGrantsSubject1Type = "team"
+	CreateSkillJSONBodyInitialGrantsSubject1TypeTeam CreateSkillJSONBodyInitialGrantsSubject1Type = "team"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject2Type.
@@ -1927,8 +1985,8 @@ const (
 
 // Defines values for GetToolsWithAssignmentsParamsSortDirection.
 const (
-	GetToolsWithAssignmentsParamsSortDirectionAsc  GetToolsWithAssignmentsParamsSortDirection = "asc"
-	GetToolsWithAssignmentsParamsSortDirectionDesc GetToolsWithAssignmentsParamsSortDirection = "desc"
+	Asc  GetToolsWithAssignmentsParamsSortDirection = "asc"
+	Desc GetToolsWithAssignmentsParamsSortDirection = "desc"
 )
 
 // Defines values for GetToolsWithAssignmentsParamsObservedByClient.
@@ -2244,6 +2302,97 @@ type UpdateAgentToolJSONBody struct {
 
 // UpdateAgentToolJSONBodyCredentialResolutionMode defines parameters for UpdateAgentTool.
 type UpdateAgentToolJSONBodyCredentialResolutionMode string
+
+// GetAgentsParams defines parameters for GetAgents.
+type GetAgentsParams struct {
+	// Name Filter by agent name
+	Name *string `form:"name,omitempty" json:"name,omitempty"`
+
+	// IncludeBuiltIn Include built-in agents, so ids assigned elsewhere still resolve. Only agent admins see them; ignored with `scope`.
+	IncludeBuiltIn *bool `form:"includeBuiltIn,omitempty" json:"includeBuiltIn,omitempty"`
+
+	// View `chat` keeps the system chat assistant in the list for chat selection.
+	View *GetAgentsParamsView `form:"view,omitempty" json:"view,omitempty"`
+
+	// AgentType Filter by agent type. 'profile' = external API gateway profiles, 'mcp_gateway' = MCP gateway, 'agent' = internal agents with prompts.
+	AgentType *GetAgentsParamsAgentType `form:"agentType,omitempty" json:"agentType,omitempty"`
+
+	// AgentTypes Filter by multiple agent types (comma-separated). Takes precedence over agentType if both provided.
+	AgentTypes *[]GetAgentsParamsAgentTypes `form:"agentTypes,omitempty" json:"agentTypes,omitempty"`
+
+	// Scope Filter by scope: personal, team, org, or built_in.
+	Scope *GetAgentsParamsScope `form:"scope,omitempty" json:"scope,omitempty"`
+
+	// TeamIds Filter by specific team IDs (comma-separated). Only used when scope=team.
+	TeamIds *[]string `form:"teamIds,omitempty" json:"teamIds,omitempty"`
+
+	// AuthorIds Filter by author user IDs (comma-separated). Admin-only, only used when scope=personal.
+	AuthorIds *[]string `form:"authorIds,omitempty" json:"authorIds,omitempty"`
+
+	// ExcludeAuthorIds Exclude agents by author user IDs (comma-separated). Admin-only, only used when scope=personal.
+	ExcludeAuthorIds *[]string `form:"excludeAuthorIds,omitempty" json:"excludeAuthorIds,omitempty"`
+
+	// Ids Only these agents (comma-separated IDs), such as the viewer's automatic pins.
+	Ids *[]openapi_types.UUID `form:"ids,omitempty" json:"ids,omitempty"`
+
+	// ExcludeIds Leave these agents out (comma-separated IDs), such as the ones the list already shows as automatic pins.
+	ExcludeIds *[]openapi_types.UUID `form:"excludeIds,omitempty" json:"excludeIds,omitempty"`
+
+	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
+	Access *[]GetAgentsParamsAccess `form:"access,omitempty" json:"access,omitempty"`
+
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
+
+	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
+	Owner *[]string `form:"owner,omitempty" json:"owner,omitempty"`
+
+	// Labels Filter by labels. Format: key1:val1|val2;key2:val3. AND across keys, OR within values.
+	Labels *string `form:"labels,omitempty" json:"labels,omitempty"`
+
+	// ExcludeOtherPersonalAgents Hide personal agents owned by other users. Admin-only; no-op for non-admins.
+	ExcludeOtherPersonalAgents *bool `form:"excludeOtherPersonalAgents,omitempty" json:"excludeOtherPersonalAgents,omitempty"`
+
+	// Status Filter by lifecycle status. Deleted rows require delete permission.
+	Status *GetAgentsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// IncludeActivationSkillsCount Include the caller-relative activation skill count used by internal-agent cards. Omitted when the caller lacks skill:read.
+	IncludeActivationSkillsCount *bool `form:"includeActivationSkillsCount,omitempty" json:"includeActivationSkillsCount,omitempty"`
+
+	// ProviderApiKeyId Filter by a configured provider key, or organization-default for agents with no pinned key or model.
+	ProviderApiKeyId *string `form:"providerApiKeyId,omitempty" json:"providerApiKeyId,omitempty"`
+
+	// Pinned Filter by the current user's pins. Pinned results are ordered by newest pin first; unpinned results keep the requested sort.
+	Pinned        *bool                         `form:"pinned,omitempty" json:"pinned,omitempty"`
+	Limit         *int                          `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset        *int                          `form:"offset,omitempty" json:"offset,omitempty"`
+	SortBy        *GetAgentsParamsSortBy        `form:"sortBy,omitempty" json:"sortBy,omitempty"`
+	SortDirection *GetAgentsParamsSortDirection `form:"sortDirection,omitempty" json:"sortDirection,omitempty"`
+}
+
+// GetAgentsParamsView defines parameters for GetAgents.
+type GetAgentsParamsView string
+
+// GetAgentsParamsAgentType defines parameters for GetAgents.
+type GetAgentsParamsAgentType string
+
+// GetAgentsParamsAgentTypes defines parameters for GetAgents.
+type GetAgentsParamsAgentTypes string
+
+// GetAgentsParamsScope defines parameters for GetAgents.
+type GetAgentsParamsScope string
+
+// GetAgentsParamsAccess defines parameters for GetAgents.
+type GetAgentsParamsAccess string
+
+// GetAgentsParamsStatus defines parameters for GetAgents.
+type GetAgentsParamsStatus string
+
+// GetAgentsParamsSortBy defines parameters for GetAgents.
+type GetAgentsParamsSortBy string
+
+// GetAgentsParamsSortDirection defines parameters for GetAgents.
+type GetAgentsParamsSortDirection string
 
 // CreateAgentJSONBody defines parameters for CreateAgent.
 type CreateAgentJSONBody struct {
@@ -5795,6 +5944,9 @@ type ClientInterface interface {
 
 	UpdateAgentTool(ctx context.Context, id openapi_types.UUID, body UpdateAgentToolJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetAgents request
+	GetAgents(ctx context.Context, params *GetAgentsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CreateAgentWithBody request with any body
 	CreateAgentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -6555,6 +6707,18 @@ func (c *Client) UpdateAgentToolWithBody(ctx context.Context, id openapi_types.U
 
 func (c *Client) UpdateAgentTool(ctx context.Context, id openapi_types.UUID, body UpdateAgentToolJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateAgentToolRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAgents(ctx context.Context, params *GetAgentsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAgentsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -9932,6 +10096,423 @@ func NewUpdateAgentToolRequestWithBody(server string, id openapi_types.UUID, con
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetAgentsRequest generates requests for GetAgents
+func NewGetAgentsRequest(server string, params *GetAgentsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Name != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "name", runtime.ParamLocationQuery, *params.Name); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.IncludeBuiltIn != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "includeBuiltIn", runtime.ParamLocationQuery, *params.IncludeBuiltIn); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.View != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "view", runtime.ParamLocationQuery, *params.View); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.AgentType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "agentType", runtime.ParamLocationQuery, *params.AgentType); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.AgentTypes != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "agentTypes", runtime.ParamLocationQuery, *params.AgentTypes); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Scope != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "scope", runtime.ParamLocationQuery, *params.Scope); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.TeamIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "teamIds", runtime.ParamLocationQuery, *params.TeamIds); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.AuthorIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "authorIds", runtime.ParamLocationQuery, *params.AuthorIds); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ExcludeAuthorIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "excludeAuthorIds", runtime.ParamLocationQuery, *params.ExcludeAuthorIds); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Ids != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "ids", runtime.ParamLocationQuery, *params.Ids); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ExcludeIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "excludeIds", runtime.ParamLocationQuery, *params.ExcludeIds); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Access != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "access", runtime.ParamLocationQuery, *params.Access); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SharedWith != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sharedWith", runtime.ParamLocationQuery, *params.SharedWith); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Owner != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "owner", runtime.ParamLocationQuery, *params.Owner); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Labels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "labels", runtime.ParamLocationQuery, *params.Labels); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ExcludeOtherPersonalAgents != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "excludeOtherPersonalAgents", runtime.ParamLocationQuery, *params.ExcludeOtherPersonalAgents); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "status", runtime.ParamLocationQuery, *params.Status); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.IncludeActivationSkillsCount != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "includeActivationSkillsCount", runtime.ParamLocationQuery, *params.IncludeActivationSkillsCount); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ProviderApiKeyId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "providerApiKeyId", runtime.ParamLocationQuery, *params.ProviderApiKeyId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Pinned != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pinned", runtime.ParamLocationQuery, *params.Pinned); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SortBy != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sortBy", runtime.ParamLocationQuery, *params.SortBy); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SortDirection != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sortDirection", runtime.ParamLocationQuery, *params.SortDirection); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -17016,6 +17597,9 @@ type ClientWithResponsesInterface interface {
 
 	UpdateAgentToolWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateAgentToolJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAgentToolResponse, error)
 
+	// GetAgentsWithResponse request
+	GetAgentsWithResponse(ctx context.Context, params *GetAgentsParams, reqEditors ...RequestEditorFn) (*GetAgentsResponse, error)
+
 	// CreateAgentWithBodyWithResponse request with any body
 	CreateAgentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAgentResponse, error)
 
@@ -18294,6 +18878,239 @@ func (r UpdateAgentToolResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateAgentToolResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAgentsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			AccessAllSkills               bool                                   `json:"accessAllSkills"`
+			AccessAllSubagents            bool                                   `json:"accessAllSubagents"`
+			AccessAllTools                bool                                   `json:"accessAllTools"`
+			ActivationSkillMode           GetAgents200DataActivationSkillMode    `json:"activationSkillMode"`
+			ActivationSkillPolicyRevision int                                    `json:"activationSkillPolicyRevision"`
+			ActivationSkillsCount         *int                                   `json:"activationSkillsCount,omitempty"`
+			AgentType                     GetAgents200DataAgentType              `json:"agentType"`
+			AuthorEmail                   *string                                `json:"authorEmail"`
+			AuthorId                      *string                                `json:"authorId"`
+			AuthorName                    *string                                `json:"authorName"`
+			BuiltIn                       *bool                                  `json:"builtIn"`
+			BuiltInAgentConfig            *GetAgents_200_Data_BuiltInAgentConfig `json:"builtInAgentConfig"`
+			ConnectorIds                  []string                               `json:"connectorIds"`
+			CreatedAt                     time.Time                              `json:"createdAt"`
+			CreatedBy                     *struct {
+				Email *string                        `json:"email"`
+				Id    string                         `json:"id"`
+				Name  *string                        `json:"name"`
+				Type  *GetAgents200DataCreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId  *openapi_types.UUID                       `json:"createdByServiceAccountId"`
+			DeletedAt                  *time.Time                                `json:"deletedAt"`
+			Description                *string                                   `json:"description"`
+			EnvironmentId              *openapi_types.UUID                       `json:"environmentId"`
+			Icon                       *string                                   `json:"icon"`
+			Id                         openapi_types.UUID                        `json:"id"`
+			IdentityProviderId         *string                                   `json:"identityProviderId"`
+			IncomingEmailAllowedDomain *string                                   `json:"incomingEmailAllowedDomain"`
+			IncomingEmailEnabled       bool                                      `json:"incomingEmailEnabled"`
+			IncomingEmailSecurityMode  GetAgents200DataIncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+			IsDefault                  bool                                      `json:"isDefault"`
+			IsPersonalGateway          bool                                      `json:"isPersonalGateway"`
+			IsPersonalProxy            bool                                      `json:"isPersonalProxy"`
+			KnowledgeBaseIds           []string                                  `json:"knowledgeBaseIds"`
+			Labels                     []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastUsedAt                           *time.Time                                `json:"lastUsedAt"`
+			LatestVersion                        int                                       `json:"latestVersion"`
+			LlmApiKeyId                          *openapi_types.UUID                       `json:"llmApiKeyId"`
+			LlmModel                             *string                                   `json:"llmModel"`
+			LlmProviderRequiresPerUserCredential *bool                                     `json:"llmProviderRequiresPerUserCredential,omitempty"`
+			MissingCredentialBehavior            GetAgents200DataMissingCredentialBehavior `json:"missingCredentialBehavior"`
+			ModelId                              *openapi_types.UUID                       `json:"modelId"`
+			Name                                 string                                    `json:"name"`
+			OrganizationId                       string                                    `json:"organizationId"`
+			PassthroughHeaders                   *[]string                                 `json:"passthroughHeaders"`
+			PinnedAt                             *time.Time                                `json:"pinnedAt"`
+			ResolvedLlmModelName                 *string                                   `json:"resolvedLlmModelName"`
+			ResolvedLlmProvider                  *GetAgents200DataResolvedLlmProvider      `json:"resolvedLlmProvider"`
+			ResolvedLlmProviderKeyName           *string                                   `json:"resolvedLlmProviderKeyName"`
+			Runtime                              *struct {
+				AllowAgentSuppliedCredentialValues *bool                          `json:"allowAgentSuppliedCredentialValues,omitempty"`
+				Backend                            GetAgents200DataRuntimeBackend `json:"backend"`
+				ClaudeCode                         *struct {
+					Authentication GetAgents200DataRuntimeClaudeCodeAuthentication `json:"authentication"`
+					Model          *string                                         `json:"model,omitempty"`
+				} `json:"claudeCode,omitempty"`
+				Command     *[]string `json:"command"`
+				Credentials *[]struct {
+					CredentialId *string                                 `json:"credentialId,omitempty"`
+					Description  *string                                 `json:"description,omitempty"`
+					Key          string                                  `json:"key"`
+					Label        string                                  `json:"label"`
+					Required     bool                                    `json:"required"`
+					Scope        GetAgents200DataRuntimeCredentialsScope `json:"scope"`
+				} `json:"credentials"`
+				Environment *[]struct {
+					Key   string `json:"key"`
+					Value string `json:"value"`
+				} `json:"environment"`
+				IdleTimeoutMinutes *int                                     `json:"idleTimeoutMinutes"`
+				Image              string                                   `json:"image"`
+				InferenceProtocol  GetAgents200DataRuntimeInferenceProtocol `json:"inferenceProtocol"`
+				MaxCostUsd         *int                                     `json:"maxCostUsd"`
+				Ports              *[]int                                   `json:"ports,omitempty"`
+				Privileged         bool                                     `json:"privileged"`
+				Resources          *struct {
+					CpuLimit      *string `json:"cpuLimit,omitempty"`
+					CpuRequest    *string `json:"cpuRequest,omitempty"`
+					MemoryLimit   *string `json:"memoryLimit,omitempty"`
+					MemoryRequest *string `json:"memoryRequest,omitempty"`
+				} `json:"resources"`
+				SteerMode GetAgents200DataRuntimeSteerMode `json:"steerMode"`
+				TtlHours  *int                             `json:"ttlHours"`
+			} `json:"runtime"`
+			RuntimeSecretId  *openapi_types.UUID   `json:"runtimeSecretId"`
+			SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
+			Scope            GetAgents200DataScope `json:"scope"`
+			Slug             *string               `json:"slug"`
+			SuggestedPrompts []struct {
+				Prompt       string `json:"prompt"`
+				SummaryTitle string `json:"summaryTitle"`
+			} `json:"suggestedPrompts"`
+			SystemPrompt *string `json:"systemPrompt"`
+			Teams        []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			ToolExposureMode GetAgents200DataToolExposureMode `json:"toolExposureMode"`
+			Tools            []struct {
+				AgentId                   *openapi_types.UUID `json:"agentId"`
+				CatalogId                 *openapi_types.UUID `json:"catalogId"`
+				DelegateToA2aConnectionId *openapi_types.UUID `json:"delegateToA2aConnectionId"`
+				DelegateToAgentId         *openapi_types.UUID `json:"delegateToAgentId"`
+				Description               *string             `json:"description"`
+				Id                        openapi_types.UUID  `json:"id"`
+				Name                      string              `json:"name"`
+				RawName                   *string             `json:"rawName"`
+			} `json:"tools"`
+			UpdatedAt time.Time `json:"updatedAt"`
+			Users     *[]struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users,omitempty"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         GetAgents400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         GetAgents401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         GetAgents403ErrorType   `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         GetAgents404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         GetAgents409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         GetAgents500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAgents200DataActivationSkillMode string
+type GetAgents200DataAgentType string
+type GetAgents200DataBuiltInAgentConfig0 struct {
+	Name GetAgents200DataBuiltInAgentConfig0Name `json:"name"`
+}
+type GetAgents200DataBuiltInAgentConfig0Name string
+type GetAgents200DataBuiltInAgentConfig1 struct {
+	Name GetAgents200DataBuiltInAgentConfig1Name `json:"name"`
+}
+type GetAgents200DataBuiltInAgentConfig1Name string
+type GetAgents200DataBuiltInAgentConfig2 struct {
+	Name GetAgents200DataBuiltInAgentConfig2Name `json:"name"`
+}
+type GetAgents200DataBuiltInAgentConfig2Name string
+type GetAgents200DataBuiltInAgentConfig3 struct {
+	Name GetAgents200DataBuiltInAgentConfig3Name `json:"name"`
+}
+type GetAgents200DataBuiltInAgentConfig3Name string
+type GetAgents_200_Data_BuiltInAgentConfig struct {
+	union json.RawMessage
+}
+type GetAgents200DataCreatedByType string
+type GetAgents200DataIncomingEmailSecurityMode string
+type GetAgents200DataMissingCredentialBehavior string
+type GetAgents200DataResolvedLlmProvider string
+type GetAgents200DataRuntimeBackend string
+type GetAgents200DataRuntimeClaudeCodeAuthentication string
+type GetAgents200DataRuntimeCredentialsScope string
+type GetAgents200DataRuntimeInferenceProtocol string
+type GetAgents200DataRuntimeSteerMode string
+type GetAgents200DataScope string
+type GetAgents200DataToolExposureMode string
+type GetAgents400ErrorType string
+type GetAgents401ErrorType string
+type GetAgents403ErrorType string
+type GetAgents404ErrorType string
+type GetAgents409ErrorType string
+type GetAgents500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAgentsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAgentsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -36031,6 +36848,15 @@ func (c *ClientWithResponses) UpdateAgentToolWithResponse(ctx context.Context, i
 	return ParseUpdateAgentToolResponse(rsp)
 }
 
+// GetAgentsWithResponse request returning *GetAgentsResponse
+func (c *ClientWithResponses) GetAgentsWithResponse(ctx context.Context, params *GetAgentsParams, reqEditors ...RequestEditorFn) (*GetAgentsResponse, error) {
+	rsp, err := c.GetAgents(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAgentsResponse(rsp)
+}
+
 // CreateAgentWithBodyWithResponse request with arbitrary body returning *CreateAgentResponse
 func (c *ClientWithResponses) CreateAgentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAgentResponse, error) {
 	rsp, err := c.CreateAgentWithBody(ctx, contentType, body, reqEditors...)
@@ -38980,6 +39806,241 @@ func ParseUpdateAgentToolResponse(rsp *http.Response) (*UpdateAgentToolResponse,
 				InternalCode *string                     `json:"internal_code,omitempty"`
 				Message      string                      `json:"message"`
 				Type         UpdateAgentTool500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAgentsResponse parses an HTTP response from a GetAgentsWithResponse call
+func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAgentsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				AccessAllSkills               bool                                   `json:"accessAllSkills"`
+				AccessAllSubagents            bool                                   `json:"accessAllSubagents"`
+				AccessAllTools                bool                                   `json:"accessAllTools"`
+				ActivationSkillMode           GetAgents200DataActivationSkillMode    `json:"activationSkillMode"`
+				ActivationSkillPolicyRevision int                                    `json:"activationSkillPolicyRevision"`
+				ActivationSkillsCount         *int                                   `json:"activationSkillsCount,omitempty"`
+				AgentType                     GetAgents200DataAgentType              `json:"agentType"`
+				AuthorEmail                   *string                                `json:"authorEmail"`
+				AuthorId                      *string                                `json:"authorId"`
+				AuthorName                    *string                                `json:"authorName"`
+				BuiltIn                       *bool                                  `json:"builtIn"`
+				BuiltInAgentConfig            *GetAgents_200_Data_BuiltInAgentConfig `json:"builtInAgentConfig"`
+				ConnectorIds                  []string                               `json:"connectorIds"`
+				CreatedAt                     time.Time                              `json:"createdAt"`
+				CreatedBy                     *struct {
+					Email *string                        `json:"email"`
+					Id    string                         `json:"id"`
+					Name  *string                        `json:"name"`
+					Type  *GetAgents200DataCreatedByType `json:"type,omitempty"`
+				} `json:"createdBy"`
+				CreatedByServiceAccountId  *openapi_types.UUID                       `json:"createdByServiceAccountId"`
+				DeletedAt                  *time.Time                                `json:"deletedAt"`
+				Description                *string                                   `json:"description"`
+				EnvironmentId              *openapi_types.UUID                       `json:"environmentId"`
+				Icon                       *string                                   `json:"icon"`
+				Id                         openapi_types.UUID                        `json:"id"`
+				IdentityProviderId         *string                                   `json:"identityProviderId"`
+				IncomingEmailAllowedDomain *string                                   `json:"incomingEmailAllowedDomain"`
+				IncomingEmailEnabled       bool                                      `json:"incomingEmailEnabled"`
+				IncomingEmailSecurityMode  GetAgents200DataIncomingEmailSecurityMode `json:"incomingEmailSecurityMode"`
+				IsDefault                  bool                                      `json:"isDefault"`
+				IsPersonalGateway          bool                                      `json:"isPersonalGateway"`
+				IsPersonalProxy            bool                                      `json:"isPersonalProxy"`
+				KnowledgeBaseIds           []string                                  `json:"knowledgeBaseIds"`
+				Labels                     []struct {
+					Key     string              `json:"key"`
+					KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+					Value   string              `json:"value"`
+					ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+				} `json:"labels"`
+				LastUsedAt                           *time.Time                                `json:"lastUsedAt"`
+				LatestVersion                        int                                       `json:"latestVersion"`
+				LlmApiKeyId                          *openapi_types.UUID                       `json:"llmApiKeyId"`
+				LlmModel                             *string                                   `json:"llmModel"`
+				LlmProviderRequiresPerUserCredential *bool                                     `json:"llmProviderRequiresPerUserCredential,omitempty"`
+				MissingCredentialBehavior            GetAgents200DataMissingCredentialBehavior `json:"missingCredentialBehavior"`
+				ModelId                              *openapi_types.UUID                       `json:"modelId"`
+				Name                                 string                                    `json:"name"`
+				OrganizationId                       string                                    `json:"organizationId"`
+				PassthroughHeaders                   *[]string                                 `json:"passthroughHeaders"`
+				PinnedAt                             *time.Time                                `json:"pinnedAt"`
+				ResolvedLlmModelName                 *string                                   `json:"resolvedLlmModelName"`
+				ResolvedLlmProvider                  *GetAgents200DataResolvedLlmProvider      `json:"resolvedLlmProvider"`
+				ResolvedLlmProviderKeyName           *string                                   `json:"resolvedLlmProviderKeyName"`
+				Runtime                              *struct {
+					AllowAgentSuppliedCredentialValues *bool                          `json:"allowAgentSuppliedCredentialValues,omitempty"`
+					Backend                            GetAgents200DataRuntimeBackend `json:"backend"`
+					ClaudeCode                         *struct {
+						Authentication GetAgents200DataRuntimeClaudeCodeAuthentication `json:"authentication"`
+						Model          *string                                         `json:"model,omitempty"`
+					} `json:"claudeCode,omitempty"`
+					Command     *[]string `json:"command"`
+					Credentials *[]struct {
+						CredentialId *string                                 `json:"credentialId,omitempty"`
+						Description  *string                                 `json:"description,omitempty"`
+						Key          string                                  `json:"key"`
+						Label        string                                  `json:"label"`
+						Required     bool                                    `json:"required"`
+						Scope        GetAgents200DataRuntimeCredentialsScope `json:"scope"`
+					} `json:"credentials"`
+					Environment *[]struct {
+						Key   string `json:"key"`
+						Value string `json:"value"`
+					} `json:"environment"`
+					IdleTimeoutMinutes *int                                     `json:"idleTimeoutMinutes"`
+					Image              string                                   `json:"image"`
+					InferenceProtocol  GetAgents200DataRuntimeInferenceProtocol `json:"inferenceProtocol"`
+					MaxCostUsd         *int                                     `json:"maxCostUsd"`
+					Ports              *[]int                                   `json:"ports,omitempty"`
+					Privileged         bool                                     `json:"privileged"`
+					Resources          *struct {
+						CpuLimit      *string `json:"cpuLimit,omitempty"`
+						CpuRequest    *string `json:"cpuRequest,omitempty"`
+						MemoryLimit   *string `json:"memoryLimit,omitempty"`
+						MemoryRequest *string `json:"memoryRequest,omitempty"`
+					} `json:"resources"`
+					SteerMode GetAgents200DataRuntimeSteerMode `json:"steerMode"`
+					TtlHours  *int                             `json:"ttlHours"`
+				} `json:"runtime"`
+				RuntimeSecretId  *openapi_types.UUID   `json:"runtimeSecretId"`
+				SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
+				Scope            GetAgents200DataScope `json:"scope"`
+				Slug             *string               `json:"slug"`
+				SuggestedPrompts []struct {
+					Prompt       string `json:"prompt"`
+					SummaryTitle string `json:"summaryTitle"`
+				} `json:"suggestedPrompts"`
+				SystemPrompt *string `json:"systemPrompt"`
+				Teams        []struct {
+					Id   string `json:"id"`
+					Name string `json:"name"`
+				} `json:"teams"`
+				ToolExposureMode GetAgents200DataToolExposureMode `json:"toolExposureMode"`
+				Tools            []struct {
+					AgentId                   *openapi_types.UUID `json:"agentId"`
+					CatalogId                 *openapi_types.UUID `json:"catalogId"`
+					DelegateToA2aConnectionId *openapi_types.UUID `json:"delegateToA2aConnectionId"`
+					DelegateToAgentId         *openapi_types.UUID `json:"delegateToAgentId"`
+					Description               *string             `json:"description"`
+					Id                        openapi_types.UUID  `json:"id"`
+					Name                      string              `json:"name"`
+					RawName                   *string             `json:"rawName"`
+				} `json:"tools"`
+				UpdatedAt time.Time `json:"updatedAt"`
+				Users     *[]struct {
+					Email string `json:"email"`
+					Id    string `json:"id"`
+					Name  string `json:"name"`
+				} `json:"users,omitempty"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         GetAgents400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         GetAgents401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         GetAgents403ErrorType   `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         GetAgents404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         GetAgents409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         GetAgents500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

@@ -43,19 +43,19 @@ func TestAccIntegration_FullWorkflow(t *testing.T) {
 					),
 					// MCP Server checks
 					statecheck.ExpectKnownValue(
-						"archestra_mcp_registry_catalog_item.test",
+						"archestra_mcp_registry_entry.test",
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("integration-test-server"),
 					),
 					// MCP Server Installation checks
 					statecheck.ExpectKnownValue(
-						"archestra_mcp_server_installation.test",
+						"archestra_mcp_server.test",
 						tfjsonpath.New("name"),
 						knownvalue.StringExact("integration-test-installation"),
 					),
 					// display_name is the actual name from the API (may have suffix)
 					statecheck.ExpectKnownValue(
-						"archestra_mcp_server_installation.test",
+						"archestra_mcp_server.test",
 						tfjsonpath.New("display_name"),
 						knownvalue.NotNull(),
 					),
@@ -100,11 +100,12 @@ resource "archestra_team" "cross" {
 
 resource "archestra_agent" "team_scoped" {
   name          = "tf-acc-cross-scope-team-agent"
+ permissions=[{subject_type="team",subject_id=archestra_team.cross.id,actions=["read","use"]}]
   system_prompt = "Team-scoped agent."
- tools=[{tool_id=archestra_mcp_server_installation.personal.tools[0].id,mcp_server_id=archestra_mcp_server_installation.personal.id}]
+ tools=[{tool_id=archestra_mcp_server.personal.tools[0].id,mcp_server_id=archestra_mcp_server.personal.id}]
 }
 
-resource "archestra_mcp_registry_catalog_item" "cross" {
+resource "archestra_mcp_registry_entry" "cross" {
   name        = "tf-acc-cross-scope-server"
   description = "Cross-scope binding test catalog"
   docs_url    = "https://example.com/cross"
@@ -115,16 +116,12 @@ resource "archestra_mcp_registry_catalog_item" "cross" {
   }
 }
 
-resource "archestra_resource_permission_policy" "team_access" {
-  resource_type = "agent"
-  resource_id   = archestra_agent.team_scoped.id
-  grants = [{ subject_type = "team", subject_id = archestra_team.cross.id, actions = ["read", "use"] }]
-}
+
 
 # Personal-scoped install: deliberately no team_id.
-resource "archestra_mcp_server_installation" "personal" {
+resource "archestra_mcp_server" "personal" {
   name       = "tf-acc-cross-scope-personal-install"
-  catalog_id = archestra_mcp_registry_catalog_item.cross.id
+  catalog_id = archestra_mcp_registry_entry.cross.id
 }
 
 
@@ -156,7 +153,7 @@ resource "archestra_mcp_gateway" "test" {
 }
 
 # Create an MCP server
-resource "archestra_mcp_registry_catalog_item" "test" {
+resource "archestra_mcp_registry_entry" "test" {
   name        = "integration-test-server"
   description = "MCP server for integration testing"
   docs_url    = "https://github.com/example/integration-test"
@@ -168,9 +165,9 @@ resource "archestra_mcp_registry_catalog_item" "test" {
 }
 
 # Install the MCP server
-resource "archestra_mcp_server_installation" "test" {
+resource "archestra_mcp_server" "test" {
   name          = "integration-test-installation"
-  catalog_id = archestra_mcp_registry_catalog_item.test.id
+  catalog_id = archestra_mcp_registry_entry.test.id
 }
 `
 }
@@ -205,7 +202,7 @@ resource "archestra_mcp_gateway" "test" {
 }
 
 # Create an MCP server
-resource "archestra_mcp_registry_catalog_item" "test" {
+resource "archestra_mcp_registry_entry" "test" {
   name        = "integration-test-server"
   description = "MCP server for integration testing"
   docs_url    = "https://github.com/example/integration-test"
@@ -217,9 +214,9 @@ resource "archestra_mcp_registry_catalog_item" "test" {
 }
 
 # Install the MCP server
-resource "archestra_mcp_server_installation" "test" {
+resource "archestra_mcp_server" "test" {
   name          = "integration-test-installation"
-  catalog_id = archestra_mcp_registry_catalog_item.test.id
+  catalog_id = archestra_mcp_registry_entry.test.id
 }
 `
 }

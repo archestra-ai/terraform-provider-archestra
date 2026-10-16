@@ -27,7 +27,7 @@ resource "archestra_limit" "engineering_filesystem_calls" {
   entity_type     = "team"
   limit_type      = "mcp_server_calls"
   limit_value     = 5000
-  mcp_server_name = archestra_mcp_server_installation.filesystem.name
+  mcp_server_name = archestra_mcp_server.filesystem.name
 }
 
 resource "archestra_limit" "engineering_token_cost" {
@@ -43,7 +43,7 @@ resource "archestra_limit" "support_read_text_calls" {
   entity_type     = "agent"
   limit_type      = "tool_calls"
   limit_value     = 100
-  mcp_server_name = archestra_mcp_server_installation.filesystem.name
+  mcp_server_name = archestra_mcp_server.filesystem.name
   tool_name       = "read_text_file"
 }
 
@@ -56,30 +56,21 @@ data "archestra_team" "engineering_lookup" {
   id = archestra_team.engineering.id
 }
 
-data "archestra_team_external_groups" "engineering_groups" {
-  team_id = archestra_team.engineering.id
-}
 
-data "archestra_mcp_server_tool" "filesystem_write" {
-  mcp_server_id = archestra_mcp_server_installation.filesystem.id
+data "archestra_tool" "filesystem_write" {
+  mcp_server_id = archestra_mcp_server.filesystem.id
   name          = "filesystem__write_file"
 }
 
 data "archestra_tool" "filesystem_write_global" {
   name       = "filesystem__write_file"
-  depends_on = [archestra_mcp_server_installation.filesystem]
+  depends_on = [archestra_mcp_server.filesystem]
 }
 
-data "archestra_agent_tools" "support_lookup" {
-  agent_id = archestra_agent.support.id
+data "archestra_agent" "support_lookup" {
+  id = archestra_agent.support.id
 }
 
-data "archestra_agent_tool" "support_read_text_file" {
-  agent_id  = archestra_agent.support.id
-  tool_name = "${archestra_mcp_registry_catalog_item.filesystem.name}__read_text_file"
-
-  depends_on = [archestra_agent.support]
-}
 
 data "archestra_mcp_tool_calls" "support_recent" {
   agent_id   = archestra_agent.support.id
@@ -96,11 +87,11 @@ output "engineering_team_name_via_data_source" {
 }
 
 output "engineering_external_group_count" {
-  value = length(data.archestra_team_external_groups.engineering_groups.groups)
+  value = length(data.archestra_team.engineering_lookup.external_group_ids)
 }
 
 output "filesystem_write_tool_id" {
-  value = data.archestra_mcp_server_tool.filesystem_write.id
+  value = data.archestra_tool.filesystem_write.id
 }
 
 output "filesystem_write_tool_id_via_global_data_source" {
@@ -108,12 +99,9 @@ output "filesystem_write_tool_id_via_global_data_source" {
 }
 
 output "support_agent_tool_count" {
-  value = length(data.archestra_agent_tools.support_lookup.tools)
+  value = length(data.archestra_agent.support_lookup.tools)
 }
 
-output "support_read_text_assignment_id" {
-  value = data.archestra_agent_tool.support_read_text_file.id
-}
 
 output "support_tool_call_count_24h" {
   value = data.archestra_mcp_tool_calls.support_recent.total

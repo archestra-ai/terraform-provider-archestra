@@ -147,7 +147,7 @@ func attrSpecSensitiveTFNames(specs []AttrSpec) []string {
 // handled by topLevelSensitiveAttrNames.
 //
 // Synthetic AttrSpec subtrees are excluded: synthetic resources like
-// `remote_config` on archestra_mcp_registry_catalog_item handle their
+// `remote_config` on archestra_mcp_registry_entry handle their
 // own wire encoding and live outside the merge-patch system, so the
 // AttrSpec deliberately omits the children.
 func nestedSensitiveSchemaPaths(s rschema.Schema, syntheticTops map[string]struct{}) []string {

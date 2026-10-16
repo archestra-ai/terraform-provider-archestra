@@ -27,7 +27,7 @@ func NewProjectResource() resource.Resource { return &ProjectResource{} }
 
 type ProjectResource struct{ client *client.ClientWithResponses }
 type ProjectResourceModel struct {
-	InitialGrants     types.Set         `tfsdk:"initial_grants"`
+	InitialGrants     types.Set         `tfsdk:"permissions"`
 	ID                types.String      `tfsdk:"id"`
 	Instructions      types.String      `tfsdk:"instructions"`
 	Name              types.String      `tfsdk:"name"`
@@ -63,8 +63,8 @@ func (r *ProjectResource) Metadata(_ context.Context, req resource.MetadataReque
 	resp.TypeName = req.ProviderTypeName + "_project"
 }
 func (r *ProjectResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	resp.Schema = schema.Schema{MarkdownDescription: "A project containing conversations and schedules. Configure sharing with a separate archestra_resource_permission_policy. Destroy uses the project's soft-delete API; retain backups of project content before deleting it.", Attributes: map[string]schema.Attribute{
-		"initial_grants":   initialGrantsAttribute(),
+	resp.Schema = schema.Schema{MarkdownDescription: "A project containing conversations and schedules. Configure sharing through permissions on this project. Destroy uses the project's soft-delete API; retain backups of project content before deleting it.", Attributes: map[string]schema.Attribute{
+		"permissions":      initialGrantsAttribute(),
 		"id":               schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 		"instructions":     schema.StringAttribute{Optional: true, Computed: true, MarkdownDescription: "Project chat instructions; omit to preserve existing content, or set an empty string to clear it.", Validators: []validator.String{stringvalidator.LengthAtMost(100000)}, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 		"name":             schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 64)}},
@@ -87,6 +87,8 @@ func (r *ProjectResource) Configure(_ context.Context, req resource.ConfigureReq
 	r.client = c
 }
 func (r *ProjectResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	defer finishParentCreate(ctx, r.client, "project", "id", resp)
+
 	var data ProjectResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -154,9 +156,19 @@ func (r *ProjectResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 	resolveInitialGrants(&data.InitialGrants)
+	readParentPermissions(ctx, r.client, "project", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 func (r *ProjectResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "project", "id", req, resp)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	defer finishPermissions()
+
 	var data, prior ProjectResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	resp.Diagnostics.Append(req.State.Get(ctx, &prior)...)

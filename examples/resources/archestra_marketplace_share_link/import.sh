@@ -1,1 +1,0 @@
-terraform import archestra_marketplace_share_link.example 00000000-0000-0000-0000-000000000000

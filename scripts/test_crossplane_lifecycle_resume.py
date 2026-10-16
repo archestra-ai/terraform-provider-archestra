@@ -27,19 +27,19 @@ class ResumeEvidenceTests(unittest.TestCase):
                 lifecycle.resume_results(path, proof)
 
     def test_partial_group_does_not_skip_remaining_resource_or_other_scope(self):
-        records = [{'resource': 'ProviderKey', 'scope': 'cluster'}]
+        records = [{'resource': 'ModelProvider', 'scope': 'cluster'}]
         self.assertNotIn('llm', lifecycle.completed_cases(records, 'cluster'))
-        records.append({'resource': 'ModelOverride', 'scope': 'cluster'})
+        records.append({'resource': 'Model', 'scope': 'cluster'})
         self.assertIn('llm', lifecycle.completed_cases(records, 'cluster'))
         self.assertNotIn('llm', lifecycle.completed_cases(records, 'namespaced'))
 
     def test_default_policy_variants_must_all_be_proven(self):
-        records = [{'resource': 'RuntimeCredentialInitialGrantDefaults', 'scope': 'cluster',
+        records = [{'resource': 'CredentialSharingDefaults', 'scope': 'cluster',
                     'parameter_source': source} for source in ('default', 'empty')]
-        self.assertNotIn('initial-grant-defaults', lifecycle.completed_cases(records, 'cluster'))
-        records.append({'resource': 'RuntimeCredentialInitialGrantDefaults', 'scope': 'cluster',
+        self.assertNotIn('sharing-defaults', lifecycle.completed_cases(records, 'cluster'))
+        records.append({'resource': 'CredentialSharingDefaults', 'scope': 'cluster',
                         'parameter_source': 'init-empty'})
-        self.assertIn('initial-grant-defaults', lifecycle.completed_cases(records, 'cluster'))
+        self.assertIn('sharing-defaults', lifecycle.completed_cases(records, 'cluster'))
 
 
 if __name__ == '__main__':

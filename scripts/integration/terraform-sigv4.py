@@ -54,7 +54,7 @@ def main():
                     'aws_secret_access_key = ' + json.dumps(secret) + '\n'
                     + ('aws_session_token = ' + json.dumps(token) + '\n' if token else '')) if credentials else ''
         (workspace / 'main.tf').write_text('terraform {\n required_providers {\n archestra = { source = "archestra-ai/archestra" }\n }\n }\n'
-            'provider "archestra" {}\nresource "archestra_llm_provider_api_key" "test" {\n'
+            'provider "archestra" {}\nresource "archestra_model_provider" "test" {\n'
             'name = ' + json.dumps(name) + '\nllm_provider = "bedrock"\nbase_url = ' + json.dumps(args.model_url)
             + '\n' + material + '}\n')
 
@@ -72,8 +72,8 @@ def main():
         run('rotate-pair-clear-session', 'apply', '-auto-approve', '-input=false', '-no-color')
         run('rotation-noop', 'plan', '-detailed-exitcode', '-input=false', '-no-color')
         evidence['steps'].append('session rotation, paired-secret rotation, session removal and no-op')
-        run('forget-binding', 'state', 'rm', 'archestra_llm_provider_api_key.test')
-        run('import', 'import', 'archestra_llm_provider_api_key.test', identifier)
+        run('forget-binding', 'state', 'rm', 'archestra_model_provider.test')
+        run('import', 'import', 'archestra_model_provider.test', identifier)
         run('adopt-secret-inputs', 'apply', '-auto-approve', '-input=false', '-no-color')
         state = json.loads(run('state-after-import', 'show', '-json'))
         if state['values']['root_module']['resources'][0]['values']['id'] != identifier:

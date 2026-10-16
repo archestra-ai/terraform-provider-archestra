@@ -82,7 +82,7 @@ func preserveResourceCollections(root, scope string, r *ujconfig.Resource, shape
 func optionalOwnedCollections(name string, shape collectionSchemaResource) []string {
 	optional := optionalCredentialCollections(name)
 	for name, attribute := range shape.Block.Attributes {
-		if attribute.Optional && attribute.Computed && isCollection(attribute) && name != "initial_grants" {
+		if attribute.Optional && attribute.Computed && isCollection(attribute) && name != "permissions" {
 			optional = append(optional, name)
 		}
 	}
@@ -103,12 +103,12 @@ func preserveCollectionFile(file, kind string, shape collectionSchemaResource, r
 	if err := rewriteNestedRequiredCollections(file, kind+"Parameters", shape.Block.Attributes); err != nil {
 		return err
 	}
-	if !required["initial_grants"] && len(optional) == 0 {
+	if !required["permissions"] && len(optional) == 0 {
 		return nil
 	}
 	initCollections := map[string]bool{}
-	if required["initial_grants"] {
-		initCollections["initial_grants"] = true
+	if required["permissions"] {
+		initCollections["permissions"] = true
 	}
 	for _, name := range optional {
 		initCollections[name] = false
@@ -138,7 +138,7 @@ func requiredCollectionNames(resource collectionSchemaResource) map[string]bool 
 	result := map[string]bool{}
 	for name, attribute := range resource.Block.Attributes {
 		// Empty creation grants must not fall through to API defaults. Null remains unmanaged.
-		creationGrants := name == "initial_grants" && attribute.Optional && attribute.Computed
+		creationGrants := name == "permissions" && attribute.Optional && attribute.Computed
 		if !attribute.Required && !creationGrants {
 			continue
 		}
@@ -164,7 +164,7 @@ func preserveRequiredFieldTag(field *ast.Field, required map[string]bool) bool {
 	}
 	jsonTag := reflect.StructTag(raw).Get("json")
 	tfReplacement, jsonReplacement := strings.ReplaceAll(tag, ",omitempty", ""), strings.ReplaceAll(jsonTag, ",omitempty", "")
-	if name == "initial_grants" || !required[name] {
+	if name == "permissions" || !required[name] {
 		jsonReplacement = strings.ReplaceAll(jsonTag, ",omitempty", ",omitzero")
 	}
 	if tfReplacement == tag && jsonReplacement == jsonTag {
@@ -195,7 +195,7 @@ func rewriteRequiredCollectionTags(file, parameters string, required map[string]
 			if preserveRequiredFieldTag(field, required) {
 				changed = true
 			}
-			if comment := markOptionalInitialGrants(parameters, field, required); comment != nil {
+			if comment := markOptionalPermissions(parameters, field, required); comment != nil {
 				node.Comments = append(node.Comments, comment)
 				changed = true
 			}
@@ -208,7 +208,7 @@ func rewriteRequiredCollectionTags(file, parameters string, required map[string]
 	sort.Slice(node.Comments, func(i, j int) bool { return node.Comments[i].Pos() < node.Comments[j].Pos() })
 	return writeGeneratedCollectionTypes(file, fset, node)
 }
-func markOptionalInitialGrants(parameters string, field *ast.Field, required map[string]bool) *ast.CommentGroup {
+func markOptionalPermissions(_ string, field *ast.Field, required map[string]bool) *ast.CommentGroup {
 	if field.Tag == nil {
 		return nil
 	}
@@ -218,7 +218,7 @@ func markOptionalInitialGrants(parameters string, field *ast.Field, required map
 	}
 	name, _, _ := strings.Cut(reflect.StructTag(raw).Get("tf"), ",")
 	isRequired, present := required[name]
-	if !present || (isRequired && (name != "initial_grants" || !strings.HasSuffix(parameters, "InitParameters"))) {
+	if !present || (isRequired && name != "permissions") {
 		return nil
 	}
 	if field.Doc != nil && strings.Contains(field.Doc.Text(), "+kubebuilder:validation:Optional") {
@@ -258,7 +258,7 @@ func normalizeCreationGrantParameterMaps(file string, optional ...string) error 
 	if err != nil {
 		return err
 	}
-	keys := append([]string{"initial_grants"}, optional...)
+	keys := append([]string{"permissions"}, optional...)
 	quoted := quotedCollectionKeys(keys)
 	snippet, err := parser.ParseFile(token.NewFileSet(), "normalize.go", `package normalize
 func normalize() {
@@ -306,9 +306,9 @@ func replaceCreationGrantReturn(method *ast.FuncDecl, statements []ast.Stmt) (bo
 // These optional collections distinguish an unmanaged omission from an explicit empty set.
 func optionalCredentialCollections(name string) []string {
 	switch name {
-	case "archestra_plugin", "archestra_git_plugin":
+	case "archestra_plugin":
 		return []string{"labels"}
-	case "archestra_virtual_api_key":
+	case "archestra_virtual_key":
 		return []string{"provider_api_keys", "labels"}
 	case "archestra_oauth_client":
 		return []string{"provider_api_keys", "labels", "allowed_gateway_ids", "redirect_uris"}
@@ -370,6 +370,8 @@ func generatedFieldType(target ast.Expr) string {
 		return generatedFieldType(value.Elt)
 	case *ast.StarExpr:
 		return generatedFieldType(value.X)
+	case *ast.MapType:
+		return generatedFieldType(value.Value)
 	case *ast.Ident:
 		return value.Name
 	}
@@ -378,8 +380,13 @@ func generatedFieldType(target ast.Expr) string {
 func nestedRequiredCollections(attributes map[string]collectionSchemaAttribute) map[string]bool {
 	required := map[string]bool{}
 	for child, definition := range attributes {
-		if definition.Required && isCollection(definition) {
+		if !isCollection(definition) {
+			continue
+		}
+		if definition.Required {
 			required[child] = true
+		} else if definition.Optional && definition.Computed {
+			required[child] = false
 		}
 	}
 	return required

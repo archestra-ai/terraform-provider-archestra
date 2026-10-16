@@ -3,55 +3,14 @@ package provider
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
-func TestAccTeamVaultFolderResource(t *testing.T) {
-	config := func(path string) string {
-		return fmt.Sprintf(`
- resource "archestra_team" "vault_parent" {name="tf-vault-folder-parent"}
- resource "archestra_team_vault_folder" "test" {
- team_id=archestra_team.vault_parent.id
- vault_path=%q
- }`, path)
-	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: config("secret/data/test"), Check: resource.TestCheckResourceAttrPair("archestra_team_vault_folder.test", "id", "archestra_team.vault_parent", "id")},
-		{ResourceName: "archestra_team_vault_folder.test", ImportState: true, ImportStateVerify: true},
-		{Config: config("secret/data/test/other"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_team_vault_folder.test", plancheck.ResourceActionUpdate)}}, Check: resource.TestCheckResourceAttr("archestra_team_vault_folder.test", "vault_path", "secret/data/test/other")},
-		{Config: config("secret/data/test/other"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
-	}})
-}
-func TestAccEnvironmentDefaultResource(t *testing.T) {
-	config := func(selected string) string {
-		return fmt.Sprintf(`
- resource "archestra_environment" "first" {name="tf-resource-default-first"}
- resource "archestra_environment" "second" {name="tf-resource-default-second"}
- resource "archestra_environment_default" "other" {
- resource_type="knowledgeSource"
- environment_id=archestra_environment.second.id
- }
- resource "archestra_environment_default" "test" {
- resource_type="app"
- environment_id=%s
- }`, selected)
-	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: config("archestra_environment.first.id"), Check: resource.TestCheckResourceAttrPair("archestra_environment_default.test", "environment_id", "archestra_environment.first", "id")},
-		{ResourceName: "archestra_environment_default.test", ImportState: true, ImportStateVerify: true},
-		{Config: config("archestra_environment.second.id"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_environment_default.test", plancheck.ResourceActionUpdate)}}, Check: resource.ComposeTestCheckFunc(resource.TestCheckResourceAttrPair("archestra_environment_default.test", "environment_id", "archestra_environment.second", "id"), resource.TestCheckResourceAttrPair("archestra_environment_default.other", "environment_id", "archestra_environment.second", "id"))},
-		{Config: config("null"), Check: resource.ComposeTestCheckFunc(resource.TestCheckNoResourceAttr("archestra_environment_default.test", "environment_id"), resource.TestCheckResourceAttrPair("archestra_environment_default.other", "environment_id", "archestra_environment.second", "id"))},
-		{Config: config("null"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
-	}})
-}
 func TestEnvironmentDefaultChangesOnlySelectedKind(t *testing.T) {
 	defaults := map[string]*string{"app": nil, "agent": nil, "mcpGateway": nil, "mcpRegistry": nil, "knowledgeSource": nil}
 	other := "22222222-2222-4222-8222-222222222222"

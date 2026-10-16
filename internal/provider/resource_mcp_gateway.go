@@ -42,7 +42,7 @@ type McpGatewayResourceModel struct {
 	ExcludedToolIDs      types.Set    `tfsdk:"excluded_tool_ids"`
 	Skills               types.Object `tfsdk:"skills"`
 
-	InitialGrants             types.Set    `tfsdk:"initial_grants"`
+	InitialGrants             types.Set    `tfsdk:"permissions"`
 	AuthorEmail               types.String `tfsdk:"author_email"`
 	CreatedBy                 types.String `tfsdk:"created_by"`
 	CreatedByServiceAccountId types.String `tfsdk:"created_by_service_account_id"`
@@ -77,7 +77,7 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 		Version:             1,
 		MarkdownDescription: "Unified MCP endpoint that aggregates installed tools and (optionally) knowledge sources, with optional inbound JWT auth via `identity_provider_id`.",
 		Attributes: map[string]schema.Attribute{
-			"initial_grants":       initialGrantsAttribute(),
+			"permissions":          initialGrantsAttribute(),
 			"access_all_subagents": schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether callers can delegate to any accessible internal agent, subject to subagent exclusions."},
 			"id": schema.StringAttribute{
 				Computed:            true,
@@ -164,6 +164,8 @@ func (r *McpGatewayResource) Configure(_ context.Context, req resource.Configure
 }
 
 func (r *McpGatewayResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	defer finishParentCreate(ctx, r.client, "mcpGateway", "id", resp)
+
 	priorNull := tftypes.NewValue(req.Plan.Schema.Type().TerraformType(ctx), nil)
 	patch := MergePatch(ctx, req.Plan.Raw, priorNull, mcpGatewayAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
@@ -260,10 +262,20 @@ func (r *McpGatewayResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 	resolveInitialGrants(&data.InitialGrants)
+	readParentPermissions(ctx, r.client, "mcpGateway", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *McpGatewayResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "mcpGateway", "id", req, resp)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	defer finishPermissions()
+
 	var stateData McpGatewayResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &stateData)...)
 	if resp.Diagnostics.HasError() {

@@ -19,28 +19,25 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'team-bindings': {'TeamInlineBindings'},
+    'service-account-team': {'ServiceAccountTeamOwnership'},
     'inline-owners': {'AgentInlineOwnership', 'GatewayInlineOwnership'},
-    'project-files': {'ProjectFileText','ProjectFileBinary'},
-    'marketplace-share-links': {'ShareLinkSkills','ShareLinkPlugins','ShareLinkExpiry'},
-    'repository-plugins': {'RepositoryPackage'},
-    'manual-plugins': {'ManualPackage'},
-    'github-registrations': {'GitHubPAT','GitHubAppConfig'},
+    'project-files': {'ProjectFileText', 'ProjectFileBinary'},
+    'marketplace-share-links': {'ShareLinkSkills', 'ShareLinkPlugins', 'ShareLinkExpiry'},
+    'repository-plugins': {'PluginGitSource'}, 'manual-plugins': {'PluginFiles'},
+    'github-registrations': {'GitHubPAT', 'GitHubApp'},
     'api-compatibility': {'APICompatibilityConstraint'},
-    'routing-credentials': {'VirtualKey','OAuthClient'},
-    'remote-agents': {'RemoteAgent','RemoteDelegations'},
-    'environment-bindings': {'ResourceDefault','VaultFolder'},
-    'extensions': {'ProxyProfile','Directory','DefaultUserLimit','Hook','ServiceAccount','ServiceAccountToken','GatewaySubagentControl','InstallationControls'},
+    'routing-credentials': {'VirtualKey', 'OAuthClient'}, 'remote-agents': {'RemoteAgent'},
+    'extensions': {'Directory', 'ServiceAccount', 'ServiceAccountAPIKey', 'GatewaySubagentControl', 'InstallationControls'},
     'core': {'Agent', 'Environment', 'Team', 'Gateway', 'Project', 'KnowledgeBase', 'Role'},
-    'catalog': {'RegistryCatalogItem'}, 'limit': {'Limit'}, 'llm': {'ModelOverride', 'ProviderKey'},
-    'permissions': {'Policy'}, 'organization': {'Settings'}, 'external-groups': {'ExternalGroup'},
-    'delegation': {'Delegation'}, 'identity': {'Provider'},
-    'tools': {'Tool', 'ToolBatch', 'ToolExclusions', 'ServerInstallation'},
-    'credential': {'RuntimeCredential'}, 'schedule': {'Trigger'}, 'api-key': {'APIKey'},
-    'skill-policy': {'SkillPolicy'}, 'subagent-exclusions': {'SubagentExclusions'},
-    'knowledge-exclusions': {'KnowledgeSourceExclusions'}, 'skill': {'Skill'},
-    'gateway-skills': {'SkillPublication', 'SkillExclusions'}, 'project-instructions': {'ProjectInstructions'},
-    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'RepositoryPackage', 'ManualPackage', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
+    'catalog': {'RegistryEntry'}, 'limit': {'Limit'}, 'llm': {'Model', 'ModelProvider'},
+    'organization': {'Settings'}, 'organization-defaults': {'OrganizationInlineDefaults'},
+    'identity': {'Provider'}, 'tools': {'Server'}, 'credential': {'Credential'},
+    'schedule': {'Schedule'}, 'api-key': {'APIKey'}, 'skill': {'Skill'},
+    'project-instructions': {'ProjectInstructions'},
+    'parent-sharing': {kind + 'Sharing' for kind in ('Environment', 'Agent', 'Gateway', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'Plugin', 'Project', 'KnowledgeBase', 'RegistryEntry', 'Skill', 'Credential', 'ModelProvider')},
 }
+
 
 
 def resume_results(path, evidence):
@@ -56,9 +53,9 @@ def resume_results(path, evidence):
 def completed_cases(results, scope):
     done = {item['resource'] for item in results if item['scope'] == scope}
     completed = {case for case, expected in CASE_RESOURCES.items() if expected.issubset(done)}
-    defaults = {item.get('parameter_source') for item in results if item['scope'] == scope and item['resource'] == 'RuntimeCredentialInitialGrantDefaults'}
+    defaults = {item.get('parameter_source') for item in results if item['scope'] == scope and item['resource'] == 'CredentialSharingDefaults'}
     if {'default', 'empty', 'init-empty'}.issubset(defaults):
-        completed.add('initial-grant-defaults')
+        completed.add('sharing-defaults')
     return completed
 
 
@@ -75,8 +72,8 @@ GIT_PLUGIN_FIXTURE_SHA = '9e6a43f5347f6f3730ffeb75946f6e162791851d'
 
 
 def git_plugin_source_fields():
-    return {'sourceRepo': 'archestra-ai/terraform-provider-archestra', 'sourceSha': GIT_PLUGIN_FIXTURE_SHA,
-            'sourceSubdir': 'scripts/integration/fixtures/plugins/synthetic', 'sourceExclude': ['excluded.txt']}
+    return {'gitSource': {'repo': 'archestra-ai/terraform-provider-archestra', 'commitSha': GIT_PLUGIN_FIXTURE_SHA,
+            'subdir': 'scripts/integration/fixtures/plugins/synthetic', 'exclude': ['excluded.txt']}}
 
 
 def main():
@@ -86,10 +83,10 @@ def main():
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('inline-owners', 'catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials', 'github-registrations', 'api-compatibility', 'manual-plugins', 'repository-plugins', 'marketplace-share-links', 'project-files'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=tuple(CASE_RESOURCES) + ('sharing-defaults',), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
     parser.add_argument('--scopes', nargs='+', choices=('cluster', 'namespaced'), default=['cluster', 'namespaced'])
-    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'RepositoryPackage', 'ManualPackage', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
+    parser.add_argument('--grant-kinds', nargs='+', choices=tuple(kind.removesuffix('Sharing') for kind in sorted(CASE_RESOURCES['parent-sharing'])))
     parser.add_argument('--kubeconfig', type=Path, required=True)
     parser.add_argument('--provider-config', required=True)
     parser.add_argument('--namespace', default='crossplane-system')
@@ -161,11 +158,21 @@ def main():
             time.sleep(1)
         raise RuntimeError('Timed out: ' + description)
 
+    resource_names = {}
+
     def create(scope, group, kind, plural, fields, suffix_name="", init_fields=None, external_name=None):
         if kind == 'Gateway':
             group = 'gateway'
         suffix = '.m' if scope == 'namespaced' else ''
         api_group = group + '.archestra' + suffix + '.crossplane.io'
+        key = (api_group, kind)
+        if key not in resource_names:
+            discovery = json.loads(kube('get', '--raw', '/apis/' + api_group + '/v1alpha1'))
+            matches = [row['name'] for row in discovery['resources'] if row['kind'] == kind and '/' not in row['name']]
+            if len(matches) != 1:
+                raise RuntimeError('Expected one API resource for ' + api_group + '/' + kind)
+            resource_names[key] = matches[0]
+        plural = resource_names[key]
         name = 'cp-proof-' + kind.lower() + suffix_name + '-' + scope + '-' + run
         namespace = ['-n', args.namespace] if scope == 'namespaced' else []
         metadata = {'name': name, 'labels': {'provider-test-run': run}}
@@ -179,7 +186,7 @@ def main():
                     'metadata': metadata, 'spec': {'forProvider': fields, 'providerConfigRef': config}}
         if init_fields is not None:
             manifest['spec']['initProvider'] = init_fields
-        if kind in ('ServiceAccountToken', 'VirtualKey', 'OAuthClient', 'ShareLink'):
+        if kind in ('ServiceAccountAPIKey', 'VirtualKey', 'OAuthClient', 'ShareLink'):
             ref = {'name': name + '-connection'}
             if scope == 'cluster':
                 ref['namespace'] = args.namespace
@@ -258,8 +265,8 @@ def main():
                 child, child_id, _ = create(scope, 'agent', 'Agent', 'agents', {'name': 'cp-inline-child-' + run + '-' + scope}, '-child')
                 remote, remote_id, _ = create(scope, 'a2a', 'RemoteAgent', 'remoteagents', {'source': json.dumps(a2a_source('cp-inline-remote-' + run + '-' + scope))})
                 skill, skill_id, _ = create(scope, 'skill', 'Skill', 'skills', {'name': 'cp-inline-skill-' + run + '-' + scope, 'description': 'Synthetic ownership fixture', 'content': 'Inspect only local synthetic fixtures.', 'files': {}, 'environmentIds': [], 'labels': []})
-                catalog, catalog_id, _ = create(scope, 'mcp', 'RegistryCatalogItem', 'registrycatalogitems', {'name': 'cp-inline-tools-' + run + '-' + scope, 'multitenant': False, 'remoteConfig': {'url': args.mcp_url}})
-                server, server_id, _ = create(scope, 'mcp', 'ServerInstallation', 'serverinstallations', {'name': 'cp-inline-server-' + run + '-' + scope, 'catalogId': catalog_id, 'scope': 'org'})
+                catalog, catalog_id, _ = create(scope, 'mcp', 'RegistryEntry', 'registrycatalogitems', {'name': 'cp-inline-tools-' + run + '-' + scope, 'multitenant': False, 'remoteConfig': {'url': args.mcp_url}})
+                server, server_id, _ = create(scope, 'mcp', 'Server', 'serverinstallations', {'name': 'cp-inline-server-' + run + '-' + scope, 'catalogId': catalog_id, 'scope': 'org'})
                 code, discovered = api('/api/mcp_server/' + server_id + '/tools')
                 if code != 200 or len(discovered) < 2:
                     raise RuntimeError('Inline tool fixture did not advertise two tools')
@@ -372,8 +379,72 @@ def main():
                     delete(fixture)
 
 
+            if 'team-bindings' in scope_cases:
+                team_name = 'cp-team-bindings-' + run + '-' + scope
+                team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': team_name, 'externalGroupIds': ['engineering', 'support'], 'vaultFolder': 'secret/data/test/engineering'})
+                path = '/api/teams/' + team_id
+                def mappings():
+                    code, value = api(path + '/external-groups')
+                    if code != 200:
+                        raise RuntimeError('Team group state read failed: HTTP ' + str(code))
+                    return {row['groupIdentifier']: row['id'] for row in value}
+                def folder():
+                    code, value = api(path + '/vault-folder')
+                    if code != 200:
+                        raise RuntimeError('Team Vault state read failed: HTTP ' + str(code))
+                    return value['vaultPath'] if value else ''
+                if set(mappings()) != {'engineering', 'support'} or folder() != 'secret/data/test/engineering':
+                    raise RuntimeError('Inline team bindings did not persist')
+                patch(team, {'externalGroupIds': ['operations'], 'vaultFolder': 'secret/data/test/operations'})
+                wait('Team binding update', lambda: set(mappings()) == {'operations'} and folder() == 'secret/data/test/operations')
+                mapping_id = mappings()['operations']
+                if api(path + '/external-groups/' + mapping_id, method='DELETE')[0] != 200:
+                    raise RuntimeError('Unable to modify owned team group drift')
+                if api(path + '/vault-folder', {'vaultPath': 'secret/data/test/drift'}, 'POST')[0] != 200:
+                    raise RuntimeError('Unable to modify owned Vault folder drift')
+                wait('Team binding drift repair', lambda: set(mappings()) == {'operations'} and mappings()['operations'] != mapping_id and folder() == 'secret/data/test/operations')
+                patch(team, {'externalGroupIds': None, 'vaultFolder': None, 'name': team_name + '-omitted'})
+                wait('Team omitted-field update', lambda: api(path)[1]['name'] == team_name + '-omitted' and condition(team, 'True'))
+                time.sleep(7)
+                if set(mappings()) != {'operations'} or folder() != 'secret/data/test/operations':
+                    raise RuntimeError('Omitted team fields changed existing bindings')
+                if any(key in observation(team)['spec']['forProvider'] for key in ('externalGroupIds', 'vaultFolder')):
+                    raise RuntimeError('Team bindings were late initialized into managed configuration')
+                patch(team, {'externalGroupIds': [], 'vaultFolder': ''})
+                wait('Team explicit clear', lambda: not mappings() and folder() == '' and condition(team, 'True'))
+                if observation(team)['metadata']['annotations']['crossplane.io/external-name'] != team_id:
+                    raise RuntimeError('Binding changes replaced the team')
+                delete(team)
+                if api(path)[0] != 404:
+                    raise RuntimeError('Team delete retained the parent')
+                record('TeamInlineBindings', scope, create='passed', update='passed', drift_repair='passed', omission_preserves_unmanaged='passed', empty_set_and_string_clear='passed', identity_preserved=True, delete='passed', external_secrets_created=False)
+
+            if 'service-account-team' in scope_cases:
+                first, first_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-account-first-' + run + '-' + scope}, '-first')
+                second, second_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-account-second-' + run + '-' + scope}, '-second')
+                account, account_id, _ = create(scope, 'identity', 'ServiceAccount', 'serviceaccounts', {'name': 'cp-team-account-' + run + '-' + scope, 'role': 'member', 'teamIdRef': {'name': first[2]}})
+                path = '/api/service-accounts/' + account_id
+                if api(path)[1].get('teamId') != first_id:
+                    raise RuntimeError('Service-account team reference did not resolve')
+                if api(path, {'teamId': second_id}, 'PATCH')[0] != 200:
+                    raise RuntimeError('Unable to modify service-account team drift')
+                wait('Service-account team drift repair', lambda: api(path)[1].get('teamId') == first_id)
+                patch(account, {'teamId': None, 'teamIdRef': {'name': second[2]}})
+                wait('Service-account team move', lambda: api(path)[1].get('teamId') == second_id and condition(account, 'True'))
+                patch(account, {'teamId': None, 'teamIdRef': None})
+                wait('Service-account team clear', lambda: api(path)[1].get('teamId') is None and condition(account, 'True'))
+                if observation(account)['metadata']['annotations']['crossplane.io/external-name'] != account_id:
+                    raise RuntimeError('Team ownership replaced the service account')
+                delete(account)
+                if api(path)[0] != 404:
+                    raise RuntimeError('Service-account delete retained the parent')
+                delete(second)
+                delete(first)
+                record('ServiceAccountTeamOwnership', scope, create='passed', reference='passed', drift_repair='passed', update='passed', clear='passed', identity_preserved=True, delete='passed')
+
+
             cases = [
-                ('mcp', 'RegistryCatalogItem', 'registrycatalogitems', '/api/internal_mcp_catalog/',
+                ('mcp', 'RegistryEntry', 'registrycatalogitems', '/api/internal_mcp_catalog/',
                  {'name': 'cp-catalog-' + run + '-' + scope, 'multitenant': False,
                   'remoteConfig': {'url': 'http://127.0.0.1:19999/mcp'}}, 'description', 'description', 'PUT'),
                 ('limit', 'Limit', 'limits', '/api/limits/',
@@ -392,7 +463,7 @@ def main():
             ]:
                 cases.append((group, kind, plural, endpoint, dict(name='cp-' + kind.lower() + '-' + run + '-' + scope, **extra), 'name', 'name', method))
             for group, kind, plural, endpoint, fields, desired_field, wire_field, method in cases:
-                if ('catalog' if kind == 'RegistryCatalogItem' else 'limit' if kind == 'Limit' else 'core') not in scope_cases:
+                if ('catalog' if kind == 'RegistryEntry' else 'limit' if kind == 'Limit' else 'core') not in scope_cases:
                     continue
                 lease, identifier, obj = create(scope, group, kind, plural, fields)
                 path = endpoint + identifier
@@ -515,7 +586,7 @@ def main():
                 parent, parent_id, _ = create(scope, 'skill', 'Skill', 'skills', {
                     'name': 'cp-share-skill-' + run + '-' + scope, 'description': 'Synthetic link fixture',
                     'content': 'Synthetic shared content.', 'files': {}, 'environmentIds': [], 'labels': []}, '-share')
-                package, package_id, _ = create(scope, 'plugin', 'ManualPackage', 'manualpackages', {
+                package, package_id, _ = create(scope, 'plugin', 'Plugin', 'plugins', {
                     'displayName': 'cp-share-plugin-' + run + '-' + scope, 'clientType': 'claude-code', 'supportedPlatforms': ['posix'],
                     'enabled': True, 'files': {'.claude-plugin/plugin.json': {'content': '{"name":"synthetic-share","version":"1.0.0"}', 'encoding': 'utf8', 'mode': '100644'}}}, '-share')
                 for label, fields in [
@@ -565,7 +636,7 @@ def main():
                        identity_retained_across_reconciliation='passed', delete='passed', backend_after_delete='revoked')
 
             if 'repository-plugins' in scope_cases:
-                package, package_id, _ = create(scope, 'plugin', 'RepositoryPackage', 'repositorypackages', {
+                package, package_id, _ = create(scope, 'plugin', 'Plugin', 'plugins', {
                     'displayName': 'cp-source-plugin-' + run + '-' + scope, 'clientType': 'claude-code', 'supportedPlatforms': ['posix'],
                     'enabled': False, 'labels': [{'key': 'purpose', 'value': 'source'}], **git_plugin_source_fields()})
                 path = '/api/plugins/' + package_id
@@ -583,7 +654,7 @@ def main():
                     raise RuntimeError('Unable to inject owned source configuration drift')
                 wait('Repository source and metadata drift repair', lambda: api(path)[1]['description'] == 'Metadata only'
                      and api(path)[1]['enabled'] and api(path)[1]['githubSyncInterval'] is None and api(path)[1]['githubSyncRef'] is None)
-                patch(package, {'githubSyncRef': GIT_PLUGIN_FIXTURE_SHA, 'githubSyncInterval': '1d'})
+                patch(package, {'gitSource': {'trackingRef': GIT_PLUGIN_FIXTURE_SHA, 'syncInterval': '1d'}})
                 wait('Repository candidate-check configuration', lambda: api(path)[1]['githubSyncRef'] == GIT_PLUGIN_FIXTURE_SHA and api(path)[1]['githubSyncInterval'] == '1d')
                 secret_name = 'cp-source-pat-' + run + '-' + scope
                 kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
@@ -595,21 +666,21 @@ def main():
                     ref['namespace'] = args.namespace
                 pat, pat_id, _ = create(scope, 'credential', 'GitHubPAT', 'githubpats', {
                     'name': 'cp-source-auth-' + run + '-' + scope, 'tokenSecretRef': ref})
-                patch(package, {'githubSyncInterval': None, 'githubPatIdRef': {'name': pat[2]}})
+                patch(package, {'gitSource': {'syncInterval': None, 'githubPatIdRef': {'name': pat[2]}}})
                 wait('Repository existing credential reference', lambda: api(path)[1]['githubPatId'] == pat_id and api(path)[1]['githubSyncInterval'] is None)
-                patch(package, {'githubPatIdRef': None, 'githubPatId': None, 'githubSyncRef': None, 'labels': []})
+                patch(package, {'gitSource': {'githubPatIdRef': None, 'githubPatId': None, 'trackingRef': None}, 'labels': []})
                 wait('Repository authentication/tracking clear', lambda: api(path)[1]['githubPatId'] is None
                      and api(path)[1]['githubSyncRef'] is None and api(path)[1]['githubSyncInterval'] is None and not api(path)[1]['labels'])
                 final = api(path)[1]
                 if final['sourceSha'] != GIT_PLUGIN_FIXTURE_SHA or final['contentHash'] != content_hash:
                     raise RuntimeError('Source control changes altered approved package bytes')
-                immutable_update(package, {'sourceSha': '0' * 40}, {'sourceSha': GIT_PLUGIN_FIXTURE_SHA})
-                immutable_update(package, {'sourceExclude': []}, {'sourceExclude': ['excluded.txt']})
+                immutable_update(package, {'gitSource': {'commitSha': '0' * 40}}, {'gitSource': {'commitSha': GIT_PLUGIN_FIXTURE_SHA}})
+                immutable_update(package, {'gitSource': {'exclude': []}}, {'gitSource': {'exclude': ['excluded.txt']}})
                 delete(package)
                 if api(path)[0] != 404:
                     raise RuntimeError('Repository package survived normal deletion')
                 delete(pat)
-                record('RepositoryPackage', scope, create='passed', approved_commit=GIT_PLUGIN_FIXTURE_SHA, derived_files='passed', initially_disabled='passed',
+                record('PluginGitSource', scope, create='passed', approved_commit=GIT_PLUGIN_FIXTURE_SHA, derived_files='passed', initially_disabled='passed',
                        metadata_update_preserves_hash=True, update='passed', drift_repair='passed', scheduled_candidate_configuration='passed',
                        stored_credential_reference_and_clear='passed', empty_labels_clear='passed', source_selection_replacement_refused='passed',
                        delete='passed', hooks_executed=False)
@@ -621,7 +692,7 @@ def main():
                     'scripts/example0.sh': {'content': '#!/bin/sh\nprintf "synthetic\\n"\n', 'encoding': 'utf8', 'mode': '100755'},
                     'assets/icon.bin': {'content': 'AAECAwQ=', 'encoding': 'base64', 'mode': '100644'},
                 }
-                package, package_id, _ = create(scope, 'plugin', 'ManualPackage', 'manualpackages', {
+                package, package_id, _ = create(scope, 'plugin', 'Plugin', 'plugins', {
                     'displayName': 'cp-plugin-' + run + '-' + scope, 'clientType': 'claude-code', 'supportedPlatforms': ['posix'],
                     'enabled': False, 'files': plugin_files, 'labels': [{'key': 'purpose', 'value': 'plugin'}]})
                 path = '/api/plugins/' + package_id
@@ -658,14 +729,14 @@ def main():
                 delete(package)
                 if api(path)[0] != 404:
                     raise RuntimeError('Plugin package survived deletion')
-                record('ManualPackage', scope, create='passed', initially_disabled='passed', utf8_base64_and_executable_mode='passed',
+                record('PluginFiles', scope, create='passed', initially_disabled='passed', utf8_base64_and_executable_mode='passed',
                        metadata_update_preserves_hash=True, update='passed', drift_repair='passed', authoritative_file_removal='passed',
                        empty_labels_clear='passed', client_format_replacement_refused='passed', delete='passed', hooks_executed=False)
 
             if 'github-registrations' in scope_cases:
                 for kind, plural, endpoint, secret_field, wire_secret, extra in [
                     ('GitHubPAT', 'githubpats', '/api/github-pats', 'tokenSecretRef', 'token', {}),
-                    ('GitHubAppConfig', 'githubappconfigs', '/api/github-app-configs', 'privateKeySecretRef', 'privateKey',
+                    ('GitHubApp', 'githubappconfigs', '/api/github-app-configs', 'privateKeySecretRef', 'privateKey',
                      {'githubUrl': 'http://127.0.0.1:19997', 'appId': '100', 'installationId': '200'}),
                 ]:
                     secret_name = 'cp-github-input-' + kind.lower() + '-' + run + '-' + scope
@@ -683,7 +754,7 @@ def main():
                     lease, identifier, obj = create(scope, 'credential', kind, plural,
                         {'name': 'cp-github-' + kind.lower() + '-' + run + '-' + scope, secret_field: ref, **extra})
                     def github_value():
-                        if kind == 'GitHubAppConfig':
+                        if kind == 'GitHubApp':
                             code, value = api(endpoint + '/' + identifier)
                             return value if code == 200 else None
                         code, rows = api(endpoint)
@@ -704,7 +775,7 @@ def main():
                     wait('GitHub credential input update', lambda: condition(lease, 'True') and github_value()['name'] == updated_name + ' credential changed')
                     if observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != identifier:
                         raise RuntimeError('Stored credential update replaced its registration identity')
-                    if kind == 'GitHubAppConfig':
+                    if kind == 'GitHubApp':
                         patch(lease, {'installationId': '201'})
                         wait('Existing GitHub installation binding update', lambda: github_value()['installationId'] == '201')
                     delete(lease)
@@ -774,7 +845,7 @@ def main():
             if 'routing-credentials' in scope_cases:
                 import base64
                 team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-routing-billing-' + run + '-' + scope}, '-routing')
-                provider, provider_id, _ = create(scope, 'llm', 'ProviderKey', 'providerkeys',
+                provider, provider_id, _ = create(scope, 'llm', 'ModelProvider', 'providerkeys',
                     {'name': 'cp-routing-provider-' + run + '-' + scope, 'llmProvider': 'ollama', 'baseUrl': args.llm_base_url, **vault_fixture}, '-routing')
                 provider_fields = [{'provider': 'ollama', 'providerApiKeyIdRef': {'name': provider[2]}}]
                 cap = {'limitValue': 100, 'cleanupInterval': 'calendar_month'}
@@ -921,78 +992,12 @@ def main():
                 if api(path)[1]['connection']['id'] != first_connection:
                     raise RuntimeError('Remote metadata or source update replaced its connection identity')
 
-                second, second_id, _ = create(scope, 'a2a', 'RemoteAgent', 'remoteagents',
-                    {'source': json.dumps(a2a_source('cp-remote-second-' + run + '-' + scope))}, '-second')
-                second_connection = api('/api/a2a/remote-agents/' + second_id)[1]['connection']['id']
-                parent, parent_id, _ = create(scope, 'agent', 'Agent', 'agents', {'name': 'cp-remote-parent-' + run + '-' + scope})
-                delegation, delegation_id, _ = create(scope, 'agent', 'RemoteDelegations', 'remotedelegations',
-                    {'agentId': parent_id, 'connectionIdsRefs': [{'name': first[2]}]})
-                assignment_path = '/api/agents/' + parent_id + '/a2a-delegations'
-                def assigned():
-                    code, values = api(assignment_path)
-                    if code != 200:
-                        raise RuntimeError('External assignment read failed: HTTP ' + str(code))
-                    return {item['connectionId'] for item in values}
-                if delegation_id != parent_id or assigned() != {first_connection}:
-                    raise RuntimeError('Connection reference did not resolve to the remote connection UUID')
-                patch(delegation, {'connectionIds': None, 'connectionIdsRefs': [{'name': second[2]}]})
-                wait('External delegation reference update', lambda: assigned() == {second_connection})
-                api(assignment_path, {'connectionIds': []}, 'POST')
-                wait('External delegation drift repair', lambda: assigned() == {second_connection})
-                patch(delegation, {'connectionIds': [], 'connectionIdsRefs': []})
-                wait('External delegation empty-set clear', lambda: not assigned())
-                delete(delegation)
-                if assigned() or api('/api/agents/' + parent_id)[0] != 200 or api(path)[0] != 200 or api('/api/a2a/remote-agents/' + second_id)[0] != 200:
-                    raise RuntimeError('External assignment deletion affected a separately managed registration or agent')
-                record('RemoteDelegations', scope, create='passed', connection_reference='passed', update='passed', drift_repair='passed', empty_set_clear='passed', delete_clears_assignments='passed', registrations_preserved=True)
-                delete(parent)
-                delete(second)
                 delete(first)
-                if api(path)[0] != 404 or api('/api/a2a/remote-agents/' + second_id)[0] != 404:
+                if api(path)[0] != 404:
                     raise RuntimeError('Remote registration survived deletion')
                 delete(secret)
                 record('RemoteAgent', scope, create='passed', initially_disabled='passed', update='passed', source_update='passed', drift_repair='passed', source_drift_repair='passed', identity_preserved=True, authentication_clear='passed', credential_absent_from_status=True, delete='passed', outbound_agent_runs='not_invoked')
 
-            if 'environment-bindings' in scope_cases:
-                first, first_id, _ = create(scope, 'environment', 'Environment', 'environments', {'name': 'cp-default-first-' + run + '-' + scope})
-                second, second_id, _ = create(scope, 'environment', 'Environment', 'environments', {'name': 'cp-default-second-' + run + '-' + scope})
-                prior = api('/api/environments')[1]['resourceDefaults']
-                default, default_id, _ = create(scope, 'environment', 'ResourceDefault', 'resourcedefaults', {'resourceType': 'app', 'environmentId': first_id})
-                if default_id != 'app':
-                    raise RuntimeError('Environment default external identity is not the selected resource kind')
-                def selected():
-                    return api('/api/environments')[1]['resourceDefaults']
-                if selected()['app'] != first_id:
-                    raise RuntimeError('Initial environment default was not persisted')
-                patch(default, {'environmentId': second_id})
-                wait('Default environment update', lambda: selected()['app'] == second_id)
-                api('/api/environments/defaults', {'app': first_id}, 'PATCH')
-                wait('Default environment drift repair', lambda: selected()['app'] == second_id)
-                if any(selected()[key] != value for key, value in prior.items() if key != 'app'):
-                    raise RuntimeError('Resource default changed an unrelated resource kind')
-                delete(default)
-                if selected()['app'] is not None:
-                    raise RuntimeError('Default deletion did not restore the implicit default')
-                if any(selected()[key] != value for key, value in prior.items() if key != 'app'):
-                    raise RuntimeError('Default deletion changed an unrelated kind')
-                delete(second)
-                delete(first)
-                record('ResourceDefault', scope, create='passed', update='passed', drift_repair='passed', delete='passed', unrelated_defaults_preserved=True)
-
-                team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-vault-team-' + run + '-' + scope})
-                binding, binding_id, _ = create(scope, 'team', 'VaultFolder', 'vaultfolders', {'teamId': team_id, 'vaultPath': 'secret/data/test'})
-                path = '/api/teams/' + team_id + '/vault-folder'
-                if binding_id != team_id:
-                    raise RuntimeError('Vault folder external identity is not the team ID')
-                patch(binding, {'vaultPath': 'secret/data/test/other'})
-                wait('Vault folder binding update', lambda: api(path)[1]['vaultPath'] == 'secret/data/test/other')
-                api(path, {'vaultPath': 'secret/data/test/drift'}, 'POST')
-                wait('Vault folder binding drift repair', lambda: api(path)[1]['vaultPath'] == 'secret/data/test/other')
-                delete(binding)
-                if api(path)[1] is not None:
-                    raise RuntimeError('Vault folder mapping survived deletion')
-                delete(team)
-                record('VaultFolder', scope, create='passed', update='passed', drift_repair='passed', delete='passed', vault_secrets_modified=False)
 
             if 'extensions' in scope_cases:
                 # Each selector reads the authoritative API projection, not Kubernetes status.
@@ -1001,20 +1006,6 @@ def main():
                     if code != 200:
                         raise RuntimeError('Collection read failed: HTTP ' + str(code))
                     return next((item for item in values if item['id'] == identifier), None)
-
-                profile, profile_id, _ = create(scope, 'llm', 'ProxyProfile', 'proxyprofiles',
-                    {'name': 'cp-profile-' + run + '-' + scope, 'accessAllSubagents': False, 'passthroughHeaders': ['x-request-id']})
-                path = '/api/agents/' + profile_id
-                if api(path)[1].get('agentType') != 'profile':
-                    raise RuntimeError('External profile subtype was not persisted')
-                patch(profile, {'name': 'Updated profile ' + run})
-                wait('Profile metadata update', lambda: api(path)[1]['name'] == 'Updated profile ' + run)
-                api(path, {'name': 'Out of band profile'}, 'PUT')
-                wait('Profile drift repair', lambda: api(path)[1]['name'] == 'Updated profile ' + run)
-                delete(profile)
-                if api(path)[0] != 404:
-                    raise RuntimeError('External profile survived deletion')
-                record('ProxyProfile', scope, create='passed', subtype='profile', update='passed', drift_repair='passed', delete='passed')
 
                 directory, directory_id, _ = create(scope, 'knowledge', 'Directory', 'directories', {'name': 'cp-directory-' + run + '-' + scope})
                 path = '/api/knowledge-directories/' + directory_id
@@ -1027,36 +1018,6 @@ def main():
                     raise RuntimeError('Directory survived deletion')
                 record('Directory', scope, create='passed', update='passed', drift_repair='passed', delete='passed')
 
-                environment, environment_id, _ = create(scope, 'environment', 'Environment', 'environments', {'name': 'cp-default-limit-' + run + '-' + scope})
-                limit, limit_id, _ = create(scope, 'limit', 'DefaultUserLimit', 'defaultuserlimits',
-                    {'environmentId': environment_id, 'limitValue': 100, 'cleanupInterval': 'calendar_month', 'model': ['test-model']})
-                path = '/api/default-user-limits/' + limit_id
-                patch(limit, {'limitValue': 250})
-                wait('Default limit update', lambda: collection('/api/default-user-limits', limit_id)['limitValue'] == 250)
-                api(path, {'limitValue': 125}, 'PATCH')
-                wait('Default limit drift repair', lambda: collection('/api/default-user-limits', limit_id)['limitValue'] == 250)
-                delete(limit)
-                if collection('/api/default-user-limits', limit_id) is not None:
-                    raise RuntimeError('Default limit survived deletion')
-                delete(environment)
-                record('DefaultUserLimit', scope, create='passed', update='passed', drift_repair='passed', delete='passed')
-
-                parent, parent_id, _ = create(scope, 'agent', 'Agent', 'agents', {'name': 'cp-hook-parent-' + run + '-' + scope})
-                hook, hook_id, _ = create(scope, 'agent', 'Hook', 'hooks',
-                    {'agentId': parent_id, 'event': 'pre_tool_use', 'fileName': 'validate.py', 'content': 'print("initial")', 'enabled': False, 'requirements': []})
-                hook_id = hook_id.split(':', 1)[0]
-                path = '/api/hooks/' + hook_id
-                listing = '/api/hooks?agentId=' + parent_id
-                patch(hook, {'content': 'print("updated")'})
-                wait('Hook update', lambda: collection(listing, hook_id)['content'] == 'print("updated")')
-                api(path, {'content': 'print("drift")'}, 'PUT')
-                wait('Hook drift repair', lambda: collection(listing, hook_id)['content'] == 'print("updated")')
-                delete(hook)
-                if collection(listing, hook_id) is not None:
-                    raise RuntimeError('Hook survived deletion')
-                delete(parent)
-                record('Hook', scope, create='passed', update='passed', drift_repair='passed', delete='passed', execution='not_invoked')
-
                 account, account_id, _ = create(scope, 'identity', 'ServiceAccount', 'serviceaccounts',
                     {'name': 'cp-account-' + run + '-' + scope, 'role': 'member', 'disabled': False})
                 account_path = '/api/service-accounts/' + account_id
@@ -1064,7 +1025,7 @@ def main():
                 wait('Account update', lambda: api(account_path)[1]['name'] == 'Updated account ' + run)
                 api(account_path, {'disabled': True}, 'PATCH')
                 wait('Account disabled drift repair', lambda: not api(account_path)[1]['disabled'])
-                token_lease, token_id, obj = create(scope, 'credential', 'ServiceAccountToken', 'serviceaccounttokens',
+                token_lease, token_id, obj = create(scope, 'credential', 'ServiceAccountAPIKey', 'serviceaccounttokens',
                     {'serviceAccountId': account_id, 'name': 'cp-token-' + run, 'expiresIn': 3600, 'disabled': False})
                 token_uuid = token_id.split(':')[1]
                 token_path = account_path + '/tokens/' + token_uuid
@@ -1093,7 +1054,7 @@ def main():
                 delete(token_lease)
                 if any(item['id'] == token_uuid for item in api(account_path)[1]['tokens']) or not token_auth(401):
                     raise RuntimeError('Deleted token still exists or authenticates')
-                record('ServiceAccountToken', scope, create='passed', authentication='passed', update='passed', drift_repair='passed', secret_preserved='passed', secret_absent_from_status=True, disable='passed', delete='passed', revoked_authentication=401)
+                record('ServiceAccountAPIKey', scope, create='passed', authentication='passed', update='passed', drift_repair='passed', secret_preserved='passed', secret_absent_from_status=True, disable='passed', delete='passed', revoked_authentication=401)
                 delete(account)
                 if api(account_path)[0] != 404:
                     raise RuntimeError('Service account survived deletion')
@@ -1109,7 +1070,7 @@ def main():
                 delete(gateway)
                 record('GatewaySubagentControl', scope, create='passed', update='passed', drift_repair='passed', delete='passed')
 
-                catalog, catalog_id, _ = create(scope, 'mcp', 'RegistryCatalogItem', 'registrycatalogitems',
+                catalog, catalog_id, _ = create(scope, 'mcp', 'RegistryEntry', 'registrycatalogitems',
                     {'name': 'cp-hibernation-' + run + '-' + scope, 'multitenant': False,
                      'localConfig': {'command': 'npx', 'arguments': ['-y', '@modelcontextprotocol/server-filesystem', '/tmp']}})
                 keys_status, api_keys = api('/api/api-keys')
@@ -1117,7 +1078,7 @@ def main():
                 if len(owners) != 1:
                     raise RuntimeError('Unable to resolve one owner from the authenticated user API-key list')
                 caller = owners.pop()
-                installation, installation_id, _ = create(scope, 'mcp', 'ServerInstallation', 'serverinstallations',
+                installation, installation_id, _ = create(scope, 'mcp', 'Server', 'serverinstallations',
                     {'name': 'cp-hibernation-' + run + '-' + scope, 'catalogId': catalog_id,
                      'scope': 'personal', 'userId': caller, 'hibernationMode': 'disabled'})
                 path = '/api/mcp_server/' + installation_id
@@ -1149,31 +1110,31 @@ def main():
                 if scope == 'cluster':
                     secret_ref['namespace'] = args.namespace
                 key_name = 'cp-key-' + run + '-' + scope
-                key_lease, key_id, key_obj = create(scope, 'llm', 'ProviderKey', 'providerkeys',
+                key_lease, key_id, key_obj = create(scope, 'llm', 'ModelProvider', 'providerkeys',
                         {'name': key_name, 'llmProvider': 'ollama-native',
                          'baseUrl': args.llm_base_url, 'extraHeadersSecretRef': secret_ref,
                          'labels': [{'key': 'provider-test', 'value': run}], **vault_fixture})
                 key_path = '/api/llm-provider-api-keys/' + key_id
                 status, key_wire = api(key_path)
                 if status != 200 or key_wire.get('extraHeaders', {}).get('X-Provider-Test') != header_value:
-                    raise RuntimeError('ProviderKey secret reference was not applied')
+                    raise RuntimeError('ModelProvider secret reference was not applied')
                 if header_value in json.dumps(key_obj.get('status', {})):
-                    raise RuntimeError('ProviderKey exposed a sensitive header in status')
+                    raise RuntimeError('ModelProvider exposed a sensitive header in status')
                 updated_name = key_name + '-updated'
                 patch(key_lease, {'name': updated_name})
-                wait('ProviderKey update', lambda: api(key_path)[1].get('name') == updated_name)
+                wait('ModelProvider update', lambda: api(key_path)[1].get('name') == updated_name)
                 if api(key_path, {'name': 'Out of band ' + run})[0] != 200:
-                    raise RuntimeError('ProviderKey drift mutation failed')
-                wait('ProviderKey drift repair', lambda: api(key_path)[1].get('name') == updated_name)
+                    raise RuntimeError('ModelProvider drift mutation failed')
+                wait('ModelProvider drift repair', lambda: api(key_path)[1].get('name') == updated_name)
                 header_value = 'synthetic-' + run + '-rotated'
                 secret['stringData']['X-Provider-Test'] = header_value
                 kube('apply', '-f', '-', payload=secret)
-                wait('ProviderKey secret rotation', lambda: api(key_path)[1].get('extraHeaders', {}).get('X-Provider-Test') == header_value)
+                wait('ModelProvider secret rotation', lambda: api(key_path)[1].get('extraHeaders', {}).get('X-Provider-Test') == header_value)
                 key_obj = json.loads(kube(*key_lease[0], 'get', key_lease[1], key_lease[2], '-o', 'json'))
                 if header_value in json.dumps(key_obj.get('status', {})):
-                    raise RuntimeError('ProviderKey exposed a rotated sensitive header in status')
+                    raise RuntimeError('ModelProvider exposed a rotated sensitive header in status')
 
-                model_lease, model_id, _ = create(scope, 'llm', 'ModelOverride', 'modeloverrides',
+                model_lease, model_id, _ = create(scope, 'llm', 'Model', 'modeloverrides',
                         {'modelId': 'llama3', 'llmProvider': 'ollama-native',
                          'customContextLength': 2048, 'customOutputLength': 256,
                          'customPricePerMillionCacheRead': '0.10', 'customPricePerMillionCacheWrite': '0.20',
@@ -1187,65 +1148,126 @@ def main():
                     return next((model for model in models if model['id'] == model_id), None)
 
                 if model_wire() is None:
-                    raise RuntimeError('ModelOverride did not adopt a readable model')
+                    raise RuntimeError('Model did not adopt a readable model')
                 patch(model_lease, {'customContextLength': 4096})
-                wait('ModelOverride update', lambda: model_wire().get('customContextLength') == 4096)
+                wait('Model update', lambda: model_wire().get('customContextLength') == 4096)
                 if api('/api/llm-models/' + model_id, {'customContextLength': 3072})[0] != 200:
-                    raise RuntimeError('ModelOverride drift mutation failed')
-                wait('ModelOverride drift repair', lambda: model_wire().get('customContextLength') == 4096)
+                    raise RuntimeError('Model drift mutation failed')
+                wait('Model drift repair', lambda: model_wire().get('customContextLength') == 4096)
                 delete(model_lease)
                 reset = model_wire()
                 if reset is None or any(reset.get(field) is not None for field in
                             ('customContextLength', 'customOutputLength', 'configuredParameters',
                              'customPricePerMillionCacheRead', 'customPricePerMillionCacheWrite')) or reset.get('labels'):
-                    raise RuntimeError('ModelOverride delete failed to retain and reset the model')
-                results.append({'resource': 'ModelOverride', 'scope': scope, 'create': 'passed',
+                    raise RuntimeError('Model delete failed to retain and reset the model')
+                results.append({'resource': 'Model', 'scope': scope, 'create': 'passed',
                                 'update': 'passed', 'drift_repair': 'passed', 'delete_reset': 'passed',
                                 'adopted_model_preserved': True})
                 save()
                 print(json.dumps(results[-1]), flush=True)
                 delete(key_lease)
                 if api(key_path)[0] != 404:
-                    raise RuntimeError('ProviderKey delete did not remove the key')
+                    raise RuntimeError('ModelProvider delete did not remove the key')
                 delete(secret_lease)
-                results.append({'resource': 'ProviderKey', 'scope': scope, 'create': 'passed',
+                results.append({'resource': 'ModelProvider', 'scope': scope, 'create': 'passed',
                                 'update': 'passed', 'drift_repair': 'passed', 'delete': 'passed',
                                 'sensitive_header_secret_rotation': 'passed', 'sensitive_header_absent_from_status': True})
                 save()
                 print(json.dumps(results[-1]), flush=True)
 
 
-            if 'permissions' in scope_cases:
-                parent, environment_id, _ = create(scope, 'environment', 'Environment', 'environments',
-                         {'name': 'cp-policy-environment-' + run + '-' + scope, 'namespace': 'default'})
-                grant = {'subjectType': 'organization', 'subjectId': '*', 'actions': ['read', 'use']}
-                lease, _, _ = create(scope, 'permission', 'Policy', 'policies',
-                         {'resourceType': 'environment', 'resourceId': environment_id, 'grants': [grant]})
-                path = '/api/resource-permissions/environment/' + environment_id
 
-                def granted_actions():
-                    code, policy = api(path)
-                    if code != 200:
-                        raise RuntimeError('Permission policy read failed')
-                    return sorted(next((g['actions'] for g in policy['grants']
-                                 if g['subject'] == {'type': 'organization', 'id': '*'}), []))
-
-                if granted_actions() != ['read', 'use']:
-                    raise RuntimeError('Permission policy create did not apply direct grants')
-                grant['actions'] = ['read']
-                patch(lease, {'grants': [grant]})
-                wait('Permission policy update', lambda: granted_actions() == ['read'])
-                code, policy = api(path)
-                if code != 200 or api(path, {'revision': policy['revision'],
-                          'grants': [{'subject': {'type': 'organization', 'id': '*'}, 'actions': ['read', 'use']}]}, 'PUT')[0] != 200:
-                    raise RuntimeError('Permission policy drift mutation failed')
-                wait('Permission policy drift repair', lambda: granted_actions() == ['read'])
-                delete(lease)
-                if api('/api/environments/' + environment_id)[0] != 200 or api(path)[1]['grants']:
-                    raise RuntimeError('Permission policy deletion did not retain target and revoke direct grants')
-                delete(parent)
-                record('Policy', scope, create='passed', update='passed', drift_repair='passed',
-                       delete_revokes_direct_grants='passed', target_preserved=True)
+            if 'organization-defaults' in scope_cases:
+                # This complete-set probe refuses pre-existing spending rows and restores global policies.
+                baseline_defaults = api('/api/environments')[1]['resourceDefaults']
+                baseline_policy = api('/api/resource-permissions/agent/*')[1]
+                if api('/api/default-user-limits')[1] or any(baseline_defaults.get(k) for k in ('agent', 'mcpGateway')):
+                    raise RuntimeError('Inspect existing isolated spending/environment defaults before this probe')
+                recipient, recipient_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-settings-recipient-' + run + '-' + scope}, '-settings')
+                first, first_id, _ = create(scope, 'environment', 'Environment', 'environments', {'name': 'cp-settings-first-' + run + '-' + scope}, '-first')
+                second, second_id, _ = create(scope, 'environment', 'Environment', 'environments', {'name': 'cp-settings-second-' + run + '-' + scope}, '-second')
+                def projected(grants):
+                    return [{'subjectType': g['subject']['type'], 'subjectId': g['subject']['id'], 'actions': g['actions']} for g in grants]
+                extra_grant = {'subject': {'type': 'team', 'id': recipient_id}, 'actions': ['read']}
+                desired_grants = baseline_policy['grants'] + [extra_grant]
+                settings = None
+                def same_grants(left, right):
+                    def canonical(values):
+                        return sorted((g['subject']['type'], g['subject']['id'], tuple(sorted(g['actions']))) for g in values)
+                    return canonical(left) == canonical(right)
+                def policies():
+                    return api('/api/resource-permissions/agent/*')[1]
+                def defaults():
+                    return api('/api/environments')[1]['resourceDefaults']
+                def rows():
+                    return api('/api/default-user-limits')[1]
+                def limit_for(environment):
+                    return next((r for r in rows() if r.get('environmentId') == environment), None)
+                def cleanup_defaults():
+                    current = policies()
+                    if not (same_grants(current['grants'], baseline_policy['grants']) or same_grants(current['grants'], desired_grants)):
+                        raise RuntimeError('Concurrent organization-policy edit; restore refused')
+                    if not same_grants(current['grants'], baseline_policy['grants']):
+                        if api('/api/resource-permissions/agent/*', {'revision': current['revision'], 'grants': baseline_policy['grants']}, 'PUT')[0] != 200:
+                            raise RuntimeError('Unable to restore isolated organization policy')
+                    current_defaults = defaults()
+                    if any(current_defaults.get(k) not in (None, first_id, second_id) for k in ('agent', 'mcpGateway')):
+                        raise RuntimeError('Concurrent environment-default edit; restore refused')
+                    if api('/api/environments/defaults', {k: baseline_defaults.get(k) for k in ('agent', 'mcpGateway')})[0] != 200:
+                        raise RuntimeError('Unable to restore environment defaults')
+                    for row in rows():
+                        if row.get('environmentId') not in (None, first_id, second_id) or row['limitValue'] not in (5, 7, 10, 20, 37):
+                            raise RuntimeError('Concurrent spending-default edit; cleanup refused')
+                        if api('/api/default-user-limits/' + row['id'], method='DELETE')[0] not in (200, 204, 404):
+                            raise RuntimeError('Unable to delete owned spending default')
+                try:
+                    fields = {'font': org['customFont'], 'colorTheme': org['theme'],
+                              'environmentDefaults': {'agentsRef': {'name': first[2]}, 'mcpGatewaysRef': {'name': second[2]}},
+                              'defaultUserLimits': {'default': {'limitValue': 10, 'models': [], 'cleanupInterval': 'calendar_month'},
+                                                   first_id: {'limitValue': 5, 'models': ['synthetic-model'], 'cleanupInterval': '1h'}},
+                              'defaultPermissions': {'agents': projected(desired_grants)}}
+                    settings, identifier, _ = create(scope, 'organization', 'Settings', 'settings', fields, '-defaults')
+                    wait('Inline organization defaults persist after singleton adoption', lambda: defaults()['agent'] == first_id and defaults()['mcpGateway'] == second_id
+                         and len(rows()) == 2 and same_grants(policies()['grants'], desired_grants))
+                    global_id = limit_for(None)['id']
+                    # Replace nested fields so reference selectors cannot repopulate explicitly cleared values.
+                    replace_fields(settings, {'environmentDefaults': {'agentsRef': {'name': second[2]}, 'mcpGateways': ''},
+                                              'defaultUserLimits': {'default': {'limitValue': 20, 'models': [], 'cleanupInterval': 'calendar_month'},
+                                                                   second_id: {'limitValue': 7, 'models': [], 'cleanupInterval': '24h'}}})
+                    wait('Inline settings update', lambda: defaults()['agent'] == second_id and defaults()['mcpGateway'] is None
+                         and len(rows()) == 2 and limit_for(None)['limitValue'] == 20 and limit_for(second_id) is not None)
+                    if limit_for(None)['id'] != global_id:
+                        raise RuntimeError('Spending-default update replaced its identity')
+                    current = policies()
+                    if api('/api/resource-permissions/agent/*', {'revision': current['revision'], 'grants': baseline_policy['grants']}, 'PUT')[0] != 200:
+                        raise RuntimeError('Unable to inject isolated global sharing drift')
+                    api('/api/environments/defaults', {'agent': first_id})
+                    api('/api/default-user-limits/' + global_id, {'limitValue': 37})
+                    wait('Inline settings drift repair', lambda: defaults()['agent'] == second_id and limit_for(None)['limitValue'] == 20 and same_grants(policies()['grants'], desired_grants))
+                    patch(settings, {'environmentDefaults': None, 'defaultUserLimits': None, 'defaultPermissions': None})
+                    def settings_generation_synced():
+                        obj = observation(settings)
+                        return any(c.get('type') == 'Synced' and c.get('status') == 'True' and c.get('observedGeneration') == obj['metadata']['generation'] for c in obj.get('status', {}).get('conditions', []))
+                    wait('Omitted defaults are unmanaged', settings_generation_synced)
+                    if defaults()['agent'] != second_id or len(rows()) != 2 or not same_grants(policies()['grants'], desired_grants):
+                        raise RuntimeError('Omitting organization defaults changed persisted settings')
+                    patch(settings, {'environmentDefaults': {'agents': '', 'mcpGateways': ''}, 'defaultUserLimits': {}, 'defaultPermissions': {'agents': projected(baseline_policy['grants'])}})
+                    wait('Inline settings clear', lambda: defaults()['agent'] is None and defaults()['mcpGateway'] is None and not rows() and same_grants(policies()['grants'], baseline_policy['grants']))
+                    time.sleep(7)
+                    obj = observation(settings)
+                    if obj['spec']['forProvider']['defaultUserLimits'] != {} or obj['metadata']['annotations']['crossplane.io/external-name'] != identifier or not condition(settings, 'True'):
+                        raise RuntimeError('Empty collections or singleton identity changed across reconciliation')
+                    delete(settings)
+                    record('OrganizationInlineDefaults', scope, create='passed', environment_references='passed', update='passed', drift_repair='passed',
+                           omission_preserves='passed', empty_collections_clear='passed', spending_row_identity_preserved=True,
+                           delete_preserves_singleton=api('/api/organization')[0] == 200)
+                finally:
+                    if settings in leases:
+                        delete(settings)
+                    cleanup_defaults()
+                delete(second)
+                delete(first)
+                delete(recipient)
 
             if 'organization' in scope_cases:
                 original = api('/api/organization')[1].get('appName')
@@ -1297,17 +1319,17 @@ def main():
                 record('ProjectInstructions', scope, create='passed', update='passed', drift_repair='passed',
                        empty_content_clear='passed', parent_delete='passed', backend_after_delete=404)
 
-            if 'initial-grant-defaults' in scope_cases:
+            if 'sharing-defaults' in scope_cases:
                 for label in ('default', 'empty', 'init-empty'):
-                    if any(item['scope'] == scope and item['resource'] == 'RuntimeCredentialInitialGrantDefaults' and item.get('parameter_source') == label for item in results):
+                    if any(item['scope'] == scope and item['resource'] == 'CredentialSharingDefaults' and item.get('parameter_source') == label for item in results):
                         continue
                     explicit_empty = label != 'default'
                     fields = {'name': 'cp-grant-' + label + '-' + run + '-' + scope,
                               'key': 'cp-grant-' + label + '-' + run + '-' + scope}
                     if label == 'empty':
-                        fields['initialGrants'] = []
-                    lease, _, obj = create(scope, 'credential', 'RuntimeCredential', 'runtimecredentials', fields, '-' + label,
-                                           init_fields={'initialGrants': []} if label == 'init-empty' else None)
+                        fields['permissions'] = []
+                    lease, _, obj = create(scope, 'credential', 'Credential', 'runtimecredentials', fields, '-' + label,
+                                           init_fields={'permissions': []} if label == 'init-empty' else None)
                     definition_id = obj.get('status', {}).get('atProvider', {}).get('definitionId')
                     if not definition_id:
                         raise RuntimeError('Credential definition UUID was not observed')
@@ -1324,7 +1346,7 @@ def main():
                         raise RuntimeError('Metadata update changed creation grants')
                     init_update = 'not_applicable'
                     if label == 'init-empty':
-                        kube(*lease[0], 'patch', lease[1], lease[2], '--type=merge', '-p', json.dumps({'spec': {'initProvider': {'initialGrants': [{'subjectType': 'organization', 'subjectId': '*', 'actions': ['read']}]}}}))
+                        kube(*lease[0], 'patch', lease[1], lease[2], '--type=merge', '-p', json.dumps({'spec': {'initProvider': {'permissions': [{'subjectType': 'organization', 'subjectId': '*', 'actions': ['read']}]}}}))
                         def init_change_reconciled():
                             current = observation(lease)
                             return any(item.get('type') == 'Synced' and item.get('status') == 'True' and item.get('observedGeneration') == current['metadata']['generation'] for item in current.get('status', {}).get('conditions', []))
@@ -1333,11 +1355,11 @@ def main():
                             raise RuntimeError('initProvider update changed already-created grants')
                         init_update = 'passed'
                     delete(lease)
-                    record('RuntimeCredentialInitialGrantDefaults', scope, parameter_source=label, explicit_empty=explicit_empty,
+                    record('CredentialSharingDefaults', scope, parameter_source=label, explicit_empty=explicit_empty,
                            metadata_update_preserves_grants='passed', init_provider_update_ignored=init_update,
                            persisted_grants=len(policy['grants']), owner_grant_preserved=True, create='passed', delete='passed')
 
-            if 'initial-grants' in scope_cases:
+            if 'parent-sharing' in scope_cases:
                 team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-grant-team-' + run + '-' + scope}, '-grant')
                 grant = {'subjectType': 'team', 'subjectId': team_id, 'actions': ['read']}
                 secret_name = 'cp-grant-key-' + run + '-' + scope
@@ -1350,31 +1372,30 @@ def main():
                 if scope == 'cluster':
                     secret_ref['namespace'] = args.namespace
                 cases = [
+                    ('environment', 'Environment', 'environments', 'environment', {}),
                     ('agent', 'Agent', 'agents', 'agent', {}),
                     ('mcp', 'Gateway', 'gateways', 'mcpGateway', {}),
-                    ('llm', 'ProxyProfile', 'proxyprofiles', 'agent', {}),
                     ('identity', 'ServiceAccount', 'serviceaccounts', 'serviceAccount', {'role': 'member'}),
                     ('a2a', 'RemoteAgent', 'remoteagents', 'externalAgent', {'source': json.dumps(a2a_source('cp-grant-remote-' + run + '-' + scope))}),
                     ('llm', 'VirtualKey', 'virtualkeys', 'llmVirtualKey', {'includeFutureProviders': True, 'providerApiKeys': []}),
                     ('credential', 'OAuthClient', 'oauthclients', 'oauthClient', {'scopes': ['llm:proxy'], 'includeFutureProviders': True, 'providerApiKeys': []}),
-                    ('plugin', 'RepositoryPackage', 'repositorypackages', 'plugin', {'clientType': 'claude-code', 'supportedPlatforms': ['posix'], **git_plugin_source_fields()}),
-                    ('plugin', 'ManualPackage', 'manualpackages', 'plugin', {'clientType': 'claude-code', 'supportedPlatforms': ['posix'], 'files': {'.claude-plugin/plugin.json': {'content': '{"name":"synthetic-plugin","version":"1.0.0"}', 'encoding': 'utf8', 'mode': '100644'}}}),
+                    ('plugin', 'Plugin', 'plugins', 'plugin', {'clientType': 'claude-code', 'supportedPlatforms': ['posix'], 'files': {'.claude-plugin/plugin.json': {'content': '{"name":"synthetic-plugin","version":"1.0.0"}', 'encoding': 'utf8', 'mode': '100644'}}}),
                     ('project', 'Project', 'projects', 'project', {}),
                     ('knowledge', 'KnowledgeBase', 'knowledgebases', 'knowledgeBase', {}),
-                    ('mcp', 'RegistryCatalogItem', 'registrycatalogitems', 'mcpRegistry', {'remoteConfig': {'url': 'http://127.0.0.1:19999/mcp'}}),
+                    ('mcp', 'RegistryEntry', 'registrycatalogitems', 'mcpRegistry', {'remoteConfig': {'url': 'http://127.0.0.1:19999/mcp'}}),
                     ('skill', 'Skill', 'skills', 'skill', {'description': 'Synthetic initial grants', 'content': 'Synthetic body.', 'files': {}, 'environmentIds': [], 'labels': []}),
-                    ('credential', 'RuntimeCredential', 'runtimecredentials', 'credential', {'key': 'cp-grant-' + run + '-' + scope}),
-                    ('llm', 'ProviderKey', 'providerkeys', 'llmProviderApiKey', {'llmProvider': 'ollama', 'shared': True,
+                    ('credential', 'Credential', 'runtimecredentials', 'credential', {'key': 'cp-grant-' + run + '-' + scope}),
+                    ('llm', 'ModelProvider', 'providerkeys', 'llmProviderApiKey', {'llmProvider': 'ollama', 'shared': True,
                         **(vault_fixture if args.readonly_vault else {'apiKeySecretRef': secret_ref}), 'baseUrl': args.llm_base_url}),
                 ]
                 for group, kind, plural, resource_type, extra in cases:
-                    if any(item['scope'] == scope and item['resource'] == kind + 'InitialGrants' for item in results):
+                    if any(item['scope'] == scope and item['resource'] == kind + 'Sharing' for item in results):
                         continue
                     if args.grant_kinds and kind not in args.grant_kinds:
                         continue
                     fields = {'name': 'cp-grant-' + kind.lower() + '-' + run + '-' + scope,
-                              'initialGrants': [grant], **extra}
-                    if kind in ('ManualPackage', 'RepositoryPackage'):
+                              'permissions': [grant], **extra}
+                    if kind == 'Plugin':
                         fields['displayName'] = fields.pop('name')
                     lease, identifier, obj = create(scope, group, kind, plural, fields, '-grant')
                     policy_id = obj.get('status', {}).get('atProvider', {}).get('definitionId') if resource_type == 'credential' else identifier
@@ -1390,8 +1411,8 @@ def main():
 
                     if not has_initial_grant():
                         raise RuntimeError('Initial grant was not persisted for ' + kind)
-                    updated_name = 'updated-' + (fields['displayName'] if kind in ('ManualPackage', 'RepositoryPackage') else fields['name'])
-                    metadata_field = 'displayName' if kind in ('ManualPackage', 'RepositoryPackage') else 'description' if kind in ('RegistryCatalogItem', 'RuntimeCredential') else 'name'
+                    updated_name = 'updated-' + (fields['displayName'] if kind == 'Plugin' else fields['name'])
+                    metadata_field = 'displayName' if kind == 'Plugin' else 'description' if kind in ('RegistryEntry', 'Credential') else 'name'
                     patch(lease, {metadata_field: updated_name})
 
                     def metadata_updated():
@@ -1403,7 +1424,7 @@ def main():
                             return code == 200 and any(item['id'] == identifier and item[metadata_field] == updated_name for item in page['data'])
                         prefix = {'plugin': '/api/plugins/', 'llmVirtualKey': '/api/llm-virtual-keys/', 'agent': '/api/agents/', 'mcpGateway': '/api/agents/', 'project': '/api/projects/',
                                   'knowledgeBase': '/api/knowledge-bases/', 'mcpRegistry': '/api/internal_mcp_catalog/', 'serviceAccount': '/api/service-accounts/', 'externalAgent': '/api/a2a/remote-agents/',
-                                  'skill': '/api/skills/', 'llmProviderApiKey': '/api/llm-provider-api-keys/'}[resource_type]
+                                  'environment': '/api/environments/', 'skill': '/api/skills/', 'llmProviderApiKey': '/api/llm-provider-api-keys/'}[resource_type]
                         code, current = api(prefix + identifier)
                         return code == 200 and current[metadata_field] == updated_name
 
@@ -1416,75 +1437,27 @@ def main():
                         raise
                     if observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != identifier:
                         raise RuntimeError('Metadata update replaced initial-grant resource ' + kind)
-                    immutable_update(lease, {'initialGrants': []}, {'initialGrants': [grant]})
-                    if not has_initial_grant():
-                        raise RuntimeError('Refused grant replacement changed the policy')
+                    policy_before = api(path)[1]
+                    owner_grants = [g for g in policy_before['grants'] if g['subject'] == {'type': 'user', 'id': policy_before.get('ownerId')}]
+                    def additional_grants():
+                        code, current = api(path)
+                        if code != 200:
+                            raise RuntimeError('Sharing read failed')
+                        return [g for g in current['grants'] if g['subject'] != {'type': 'user', 'id': current.get('ownerId')}]
+                    patch(lease, {'permissions': []})
+                    wait('Sharing cleared in place ' + kind, lambda: condition(lease, 'True') and not additional_grants())
+                    current = api(path)[1]
+                    if api(path, {'revision': current['revision'], 'grants': owner_grants + [{'subject': {'type': 'team', 'id': team_id}, 'actions': ['read']}]}, 'PUT')[0] != 200:
+                        raise RuntimeError('Unable to inject owned sharing drift')
+                    wait('Empty sharing drift repair ' + kind, lambda: not additional_grants())
+                    if observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != identifier:
+                        raise RuntimeError('Sharing update replaced the parent')
                     delete(lease)
-                    record(kind + 'InitialGrants', scope, create_with_policy='passed', metadata_update_preserves_grants='passed',
-                           grant_change_requires_replacement='passed', delete='passed')
+                    record(kind + 'Sharing', scope, create_with_policy='passed', metadata_update_preserves_grants='passed',
+                           sharing_clear_in_place='passed', empty_sharing_drift_repair='passed', identity_preserved=True, delete='passed')
                 delete(secret)
                 delete(team)
 
-            if 'gateway-skills' in scope_cases:
-                gateway, gateway_id, _ = create(scope, 'mcp', 'Gateway', 'gateways',
-                        {'name': 'cp-skill-gateway-' + run + '-' + scope})
-                skill_fields = {'description': 'Synthetic publication fixture', 'content': 'Inspect only synthetic local data.',
-                                'files': {}, 'environmentIds': [], 'labels': []}
-                first, first_id, _ = create(scope, 'skill', 'Skill', 'skills',
-                        dict(skill_fields, name='cp-publish-first-' + run + '-' + scope), '-first')
-                second, second_id, _ = create(scope, 'skill', 'Skill', 'skills',
-                        dict(skill_fields, name='cp-publish-second-' + run + '-' + scope), '-second')
-                published, identifier, _ = create(scope, 'mcp', 'SkillPublication', 'skillpublications',
-                        {'gatewayId': gateway_id, 'accessAllSkills': False, 'skillIds': [first_id]})
-                excluded, excluded_id, _ = create(scope, 'mcp', 'SkillExclusions', 'skillexclusions',
-                        {'gatewayId': gateway_id, 'excludedSkillIds': [second_id]})
-                path = '/api/agents/' + gateway_id
-                def publication():
-                    code, value = api(path + '/skills')
-                    if code != 200:
-                        raise RuntimeError('Gateway publication read failed: HTTP ' + str(code))
-                    return value
-                def skill_exclusions():
-                    code, value = api(path + '/skill-exclusions')
-                    if code != 200:
-                        raise RuntimeError('Gateway exclusion read failed: HTTP ' + str(code))
-                    return value['excludedSkillIds']
-                if identifier != gateway_id or excluded_id != gateway_id or publication()['skillIds'] != [first_id] or skill_exclusions() != [second_id]:
-                    raise RuntimeError('Gateway skill policies did not persist their requested sets')
-                patch(published, {'accessAllSkills': True, 'skillIds': [second_id]})
-                patch(excluded, {'excludedSkillIds': [first_id]})
-                wait('Gateway skill publication update', lambda: publication()['accessAllSkills'] and publication()['skillIds'] == [second_id])
-                wait('Gateway skill exclusion update', lambda: skill_exclusions() == [first_id])
-                patch(published, {'accessAllSkills': False})
-                wait('Gateway mode flip retains assignments', lambda: not publication()['accessAllSkills'] and publication()['skillIds'] == [second_id])
-                if api(path + '/skills', {'accessAllSkills': True, 'skillIds': []}, 'PUT')[0] != 200:
-                    raise RuntimeError('Unable to write isolated publication drift')
-                if api(path + '/skill-exclusions', {'excludedSkillIds': []}, 'PUT')[0] != 200:
-                    raise RuntimeError('Unable to write isolated exclusion drift')
-                wait('Gateway publication drift repair', lambda: not publication()['accessAllSkills'] and publication()['skillIds'] == [second_id])
-                wait('Gateway exclusion drift repair', lambda: skill_exclusions() == [first_id])
-                patch(published, {'skillIds': []})
-                patch(excluded, {'excludedSkillIds': []})
-                wait('Gateway publication clear', lambda: not publication()['skillIds'])
-                wait('Gateway exclusions clear', lambda: not skill_exclusions())
-                patch(published, {'accessAllSkills': True, 'skillIds': [first_id]})
-                patch(excluded, {'excludedSkillIds': [second_id]})
-                wait('Gateway publication restore', lambda: publication()['accessAllSkills'] and publication()['skillIds'] == [first_id])
-                wait('Gateway exclusions restore', lambda: skill_exclusions() == [second_id])
-                delete(published)
-                if publication()['accessAllSkills'] or publication()['skillIds'] or skill_exclusions() != [second_id]:
-                    raise RuntimeError('Publication deletion did not preserve independent exclusions')
-                record('SkillPublication', scope, create='passed', update='passed', drift_repair='passed',
-                       mode_flip_retains_manual_assignments=True, empty_set_clear='passed',
-                       delete_disables_and_clears='passed', exclusions_preserved=True)
-                delete(excluded)
-                if skill_exclusions() or api(path)[0] != 200:
-                    raise RuntimeError('Exclusion deletion did not clear while preserving gateway')
-                record('SkillExclusions', scope, create='passed', update='passed', drift_repair='passed',
-                       empty_set_clear='passed', delete_clears_exclusions='passed', gateway_preserved=True)
-                delete(second)
-                delete(first)
-                delete(gateway)
 
             if 'skill' in scope_cases:
                 skill_name = 'cp-content-' + run + '-' + scope
@@ -1531,193 +1504,15 @@ def main():
                        immutable_first_version_preserved=True, stale_version_refused=409,
                        delete='soft-delete passed', backend_after_delete=404)
 
-            if 'knowledge-exclusions' in scope_cases:
-                fixtures = []
-                for label in ('first', 'second'):
-                    code, connector = api('/api/connectors', {
-                        'name': 'cp-knowledge-' + label + '-' + run + '-' + scope,
-                        'connectorType': 'web_crawler', 'enabled': False,
-                        'config': {'type': 'web_crawler', 'startUrl': 'http://127.0.0.1:19999/',
-                                   'allowPrivateNetwork': True, 'maxPages': 1}}, 'POST')
-                    if code != 200 or connector.get('enabled') is not False:
-                        raise RuntimeError('Unable to create disabled loopback connector fixture')
-                    fixture = ([], 'api-fixture', '/api/connectors/' + connector['id'])
-                    leases.append(fixture)
-                    fixtures.append((fixture, connector['id']))
-                parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
-                    {'name': 'cp-knowledge-agent-' + run + '-' + scope, 'accessAllTools': True}, '-knowledge')
-                path = '/api/agents/' + agent_id + '/knowledge-source-exclusions'
 
-                def excluded_connectors():
-                    code, current = api(path)
-                    if code != 200:
-                        raise RuntimeError('Unable to read knowledge exclusions')
-                    return sorted(current['excludedConnectorIds'])
 
-                lease, _, _ = create(scope, 'agent', 'KnowledgeSourceExclusions', 'knowledgesourceexclusions',
-                    {'agentId': agent_id, 'excludedConnectorIds': [fixtures[0][1]]})
-                if excluded_connectors() != [fixtures[0][1]]:
-                    raise RuntimeError('Knowledge exclusion create did not persist')
-                patch(lease, {'excludedConnectorIds': [fixtures[1][1]]})
-                wait('Knowledge exclusion update', lambda: excluded_connectors() == [fixtures[1][1]])
-                if api(path, {'excludedConnectorIds': []}, 'PUT')[0] != 200:
-                    raise RuntimeError('Knowledge exclusion drift mutation failed')
-                wait('Knowledge exclusion drift repair', lambda: excluded_connectors() == [fixtures[1][1]])
-                patch(lease, {'excludedConnectorIds': []})
-                wait('Knowledge exclusion empty-set clear', lambda: excluded_connectors() == [] and condition(lease, 'True'))
-                patch(lease, {'excludedConnectorIds': [fixtures[0][1]]})
-                wait('Knowledge exclusion re-add', lambda: excluded_connectors() == [fixtures[0][1]])
-                delete(lease)
-                if excluded_connectors() or api('/api/agents/' + agent_id)[0] != 200:
-                    raise RuntimeError('Knowledge exclusion delete failed to clear while preserving agent')
-                delete(parent)
-                for fixture, _ in reversed(fixtures):
-                    delete(fixture)
-                record('KnowledgeSourceExclusions', scope, create='passed', update='passed',
-                       drift_repair='passed', empty_set_clear='passed', delete_clears_exclusions='passed',
-                       agent_preserved=True, external_credentials_created=False)
 
-            if 'subagent-exclusions' in scope_cases:
-                parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
-                        {'name': 'cp-auto-subagents-' + run + '-' + scope, 'accessAllSubagents': True}, '-parent')
-                first, first_id, _ = create(scope, 'agent', 'Agent', 'agents',
-                        {'name': 'cp-subagent-first-' + run + '-' + scope}, '-first')
-                second, second_id, _ = create(scope, 'agent', 'Agent', 'agents',
-                        {'name': 'cp-subagent-second-' + run + '-' + scope}, '-second')
-                lease, identifier, _ = create(scope, 'agent', 'SubagentExclusions', 'subagentexclusions',
-                        {'agentId': agent_id, 'excludedSubagentIds': [first_id]})
-                path = '/api/agents/' + agent_id + '/subagent-exclusions'
-                def excluded_subagents():
-                    code, value = api(path)
-                    if code != 200:
-                        raise RuntimeError('Subagent exclusions read failed: HTTP ' + str(code))
-                    return value['excludedSubagentIds']
-                if identifier != agent_id or excluded_subagents() != [first_id]:
-                    raise RuntimeError('Subagent exclusion create did not persist')
-                patch(lease, {'excludedSubagentIds': [second_id]})
-                wait('Subagent exclusions update', lambda: excluded_subagents() == [second_id])
-                if api(path, {'excludedSubagentIds': []}, 'PUT')[0] != 200:
-                    raise RuntimeError('Unable to write isolated subagent drift')
-                wait('Subagent exclusions drift repair', lambda: excluded_subagents() == [second_id])
-                patch(lease, {'excludedSubagentIds': []})
-                wait('Subagent exclusions clear', lambda: not excluded_subagents())
-                patch(lease, {'excludedSubagentIds': [first_id]})
-                wait('Subagent exclusions restore', lambda: excluded_subagents() == [first_id])
-                delete(lease)
-                if excluded_subagents() or api('/api/agents/' + agent_id)[0] != 200:
-                    raise RuntimeError('Subagent exclusions deletion did not clear while preserving agent')
-                delete(second)
-                delete(first)
-                delete(parent)
-                record('SubagentExclusions', scope, create='passed', update='passed', drift_repair='passed',
-                       empty_set_clear='passed', delete_clears_exclusions='passed', agent_preserved=True)
 
-            if 'skill-policy' in scope_cases:
-                code, skill = api('/api/skills', {'content': '---\nname: cp-skill-' + run + '-' + scope + '\ndescription: Synthetic policy fixture\n---\nInspect only local synthetic fixtures.\n'}, 'POST')
-                if code != 200:
-                    raise RuntimeError('Unable to create local skill fixture: HTTP ' + str(code))
-                fixture = ([], 'api-fixture', '/api/skills/' + skill['id'])
-                leases.append(fixture)
-                parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
-                        {'name': 'cp-skill-policy-' + run + '-' + scope})
-                ref = {'source': 'native', 'skillId': skill['id']}
-                lease, identifier, _ = create(scope, 'agent', 'SkillPolicy', 'skillpolicies',
-                        {'agentId': agent_id, 'mode': 'manual',
-                         'allowedReferences': [ref], 'excludedReferences': []})
-                path = '/api/agents/' + agent_id + '/activation-skill-policy'
-                def policy():
-                    code, value = api(path)
-                    if code != 200:
-                        raise RuntimeError('Policy read failed: HTTP ' + str(code))
-                    return value
-                if identifier != agent_id or policy()['allowedReferences'] != [ref]:
-                    raise RuntimeError('Policy create did not persist its stable reference')
-                patch(lease, {'mode': 'all', 'allowedReferences': [], 'excludedReferences': [ref]})
-                wait('Skill policy update', lambda: policy()['mode'] == 'all' and policy()['excludedReferences'] == [ref] and not policy()['allowedReferences'])
-                current = policy()
-                code, _ = api(path, {'expectedRevision': current['revision'], 'mode': 'manual', 'operations': []})
-                if code != 200:
-                    raise RuntimeError('Unable to write isolated policy drift')
-                wait('Skill policy drift repair', lambda: policy()['mode'] == 'all')
-                delete(lease)
-                reset = policy()
-                if reset['mode'] != 'manual' or reset['allowedReferences'] or reset['excludedReferences']:
-                    raise RuntimeError('Policy deletion did not reset to manual with empty references')
-                if api('/api/agents/' + agent_id)[0] != 200:
-                    raise RuntimeError('Policy deletion removed its agent')
-                delete(parent)
-                delete(fixture)
-                record('SkillPolicy', scope, create='passed', update='passed', drift_repair='passed',
-                       delete_resets_policy='passed', agent_preserved=True)
-
-            if 'external-groups' in scope_cases:
-                parent, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-group-team-' + run + '-' + scope})
-                external = 'cp-group-' + run
-                lease, identifier, _ = create(scope, 'team', 'ExternalGroup', 'externalgroups',
-                          {'teamId': team_id, 'externalGroupId': external})
-                path = '/api/teams/' + team_id + '/external-groups'
-
-                def mapping():
-                    code, mappings = api(path)
-                    if code != 200:
-                        raise RuntimeError('External group list failed')
-                    return next((item for item in mappings if item['groupIdentifier'] == external), None)
-
-                if mapping() is None:
-                    raise RuntimeError('External group create did not persist')
-                immutable_update(lease, {'externalGroupId': external + '-replacement'}, {'externalGroupId': external})
-                if mapping() is None:
-                    raise RuntimeError('Immutable update deleted the existing external group')
-                old_id = mapping()['id']
-                delete_status, _ = api(path + '/' + old_id, method='DELETE')
-                if delete_status != 200:
-                    raise RuntimeError('Unable to delete isolated mapping for drift test: HTTP ' + str(delete_status))
-                wait('External group recreation', lambda: mapping() is not None and mapping()['id'] != old_id)
-                delete(lease)
-                if mapping() is not None:
-                    raise RuntimeError('External group delete did not remove mapping')
-                delete(parent)
-                record('ExternalGroup', scope, create='passed', immutable_update_refused='passed',
-                       deleted_mapping_recreated='passed', delete='passed')
-
-            if 'delegation' in scope_cases:
-                parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
-                        {'name': 'cp-delegator-' + run + '-' + scope}, '-parent')
-                target, target_id, _ = create(scope, 'agent', 'Agent', 'agents',
-                        {'name': 'cp-target-' + run + '-' + scope}, '-target')
-                alternate, alternate_id, _ = create(scope, 'agent', 'Agent', 'agents',
-                        {'name': 'cp-alternate-' + run + '-' + scope}, '-alternate')
-                lease, _, _ = create(scope, 'agent', 'Delegation', 'delegations',
-                        {'agentId': agent_id, 'targetAgentId': target_id})
-                path = '/api/agents/' + agent_id + '/delegations'
-
-                def has_edge():
-                    code, targets = api(path)
-                    if code != 200:
-                        raise RuntimeError('Delegation list failed')
-                    return any(item['id'] == target_id for item in targets)
-
-                if not has_edge():
-                    raise RuntimeError('Delegation create did not persist')
-                immutable_update(lease, {'targetAgentId': alternate_id}, {'targetAgentId': target_id})
-                if not has_edge():
-                    raise RuntimeError('Immutable update removed the original delegation')
-                if api(path + '/' + target_id, method='DELETE')[0] != 200:
-                    raise RuntimeError('Delegation drift deletion failed')
-                wait('Delegation recreation', has_edge)
-                delete(lease)
-                if has_edge():
-                    raise RuntimeError('Delegation delete left an edge')
-                delete(alternate)
-                delete(target)
-                delete(parent)
-                record('Delegation', scope, create='passed', immutable_update_refused='passed',
-                       deleted_edge_recreated='passed', delete='passed')
 
 
             if 'credential' in scope_cases:
                 credential_key = 'cp-credential-' + run + '-' + scope
-                lease, identifier, _ = create(scope, 'credential', 'RuntimeCredential', 'runtimecredentials',
+                lease, identifier, _ = create(scope, 'credential', 'Credential', 'runtimecredentials',
                     {'key': credential_key, 'name': 'Synthetic credential slot', 'description': 'initial'})
 
                 def credential():
@@ -1736,7 +1531,7 @@ def main():
                 delete(lease)
                 if credential() is not None:
                     raise RuntimeError('Credential definition survived deletion')
-                record('RuntimeCredential', scope, create='passed', update='passed', drift_repair='passed', delete='passed',
+                record('Credential', scope, create='passed', update='passed', drift_repair='passed', delete='passed',
                        external_authorization='not_requested; synthetic secret slot only')
 
             if 'schedule' in scope_cases:
@@ -1744,7 +1539,7 @@ def main():
                     {'name': 'cp-scheduled-agent-' + run + '-' + scope}, '-schedule')
                 project, project_id, _ = create(scope, 'project', 'Project', 'projects',
                     {'name': 'cp-scheduled-project-' + run + '-' + scope, 'defaultAgentId': agent_id}, '-schedule')
-                lease, identifier, _ = create(scope, 'schedule', 'Trigger', 'triggers',
+                lease, identifier, _ = create(scope, 'schedule', 'Schedule', 'triggers',
                     {'name': 'cp-schedule-' + run + '-' + scope, 'agentId': agent_id, 'projectId': project_id,
                      'cronExpression': '0 8 * * *', 'timezone': 'Etc/UTC', 'enabled': False,
                      'messageTemplate': 'Synthetic disabled schedule; do not execute.'})
@@ -1761,7 +1556,7 @@ def main():
                     raise RuntimeError('Schedule survived deletion')
                 delete(project)
                 delete(parent)
-                record('Trigger', scope, create_disabled='passed', update='passed', drift_repair='passed', delete='passed',
+                record('Schedule', scope, create_disabled='passed', update='passed', drift_repair='passed', delete='passed',
                        scheduled_runs='not_executed')
 
             if 'api-key' in scope_cases:
@@ -1789,10 +1584,10 @@ def main():
 
 
             if 'tools' in scope_cases:
-                catalog, catalog_id, _ = create(scope, 'mcp', 'RegistryCatalogItem', 'registrycatalogitems',
+                catalog, catalog_id, _ = create(scope, 'mcp', 'RegistryEntry', 'registrycatalogitems',
                     {'name': 'cp-tools-' + run + '-' + scope, 'multitenant': False,
                      'remoteConfig': {'url': args.mcp_url}})
-                server, server_id, _ = create(scope, 'mcp', 'ServerInstallation', 'serverinstallations',
+                server, server_id, _ = create(scope, 'mcp', 'Server', 'serverinstallations',
                     {'name': 'cp-install-' + run + '-' + scope, 'catalogId': catalog_id, 'scope': 'org'})
                 server_path = '/api/mcp_server/' + server_id
                 if api(server_path)[0] != 200:
@@ -1803,89 +1598,10 @@ def main():
                 code, discovered = api(server_path + '/tools')
                 if code != 200 or len(discovered) != 2:
                     raise RuntimeError('Expected both synthetic MCP tools, got ' + str(discovered))
-                tool_ids = sorted(tool['id'] for tool in discovered)
-                team_lease, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-tools-team-' + run + '-' + scope})
-                alternate, alternate_id, _ = create(scope, 'mcp', 'ServerInstallation', 'serverinstallations',
-                    {'name': 'cp-alternate-' + run + '-' + scope, 'catalogId': catalog_id, 'scope': 'team', 'teamId': team_id}, '-alternate')
-                parent, agent_id, _ = create(scope, 'agent', 'Agent', 'agents',
-                    {'name': 'cp-tool-agent-' + run + '-' + scope}, '-tools')
-
-                def assignments(agent):
-                    code, response = api('/api/agent-tools?agentId=' + agent + '&limit=100&offset=0')
-                    if code != 200:
-                        raise RuntimeError('Agent tool list failed')
-                    if response['pagination']['hasNext']:
-                        raise RuntimeError('Unexpected unrelated assignments in isolated fixture')
-                    return response['data']
-
-                def assignment():
-                    return next((item for item in assignments(agent_id) if item['tool']['id'] == tool_ids[0]), None)
-
-                binding, _, _ = create(scope, 'agent', 'Tool', 'tools',
-                    {'agentId': agent_id, 'toolId': tool_ids[0], 'mcpServerId': server_id})
-                if assignment() is None:
-                    raise RuntimeError('Tool assignment did not persist')
-                patch(binding, {'mcpServerId': alternate_id})
-                wait('Tool binding update', lambda: assignment() and assignment().get('mcpServerId') == alternate_id)
-                if api('/api/agent-tools/' + assignment()['id'], {'mcpServerId': server_id})[0] != 200:
-                    raise RuntimeError('Tool binding drift mutation failed')
-                wait('Tool binding drift repair', lambda: assignment() and assignment().get('mcpServerId') == alternate_id)
-                delete(binding)
-                if assignment() is not None:
-                    raise RuntimeError('Tool assignment survived deletion')
-                record('Tool', scope, create='passed', update='passed', drift_repair='passed', delete='passed')
-
-                unrelated_ids = {item['id'] for item in assignments(agent_id) if item.get('mcpServerId') != server_id}
-
-                def batch_assignments():
-                    return [item for item in assignments(agent_id) if item.get('mcpServerId') == server_id]
-
-                batch, _, _ = create(scope, 'agent', 'ToolBatch', 'toolbatches',
-                    {'agentId': agent_id, 'mcpServerId': server_id, 'toolIds': [tool_ids[0]]})
-                patch(batch, {'toolIds': tool_ids})
-                wait('Tool batch update', lambda: sorted(item['tool']['id'] for item in batch_assignments()) == tool_ids)
-                if api('/api/agents/' + agent_id + '/tools/' + tool_ids[0], method='DELETE')[0] != 200:
-                    raise RuntimeError('Tool batch drift mutation failed')
-                wait('Tool batch drift repair', lambda: sorted(item['tool']['id'] for item in batch_assignments()) == tool_ids)
-                delete(batch)
-                if batch_assignments():
-                    raise RuntimeError('Tool batch deletion retained owned assignments')
-                if {item['id'] for item in assignments(agent_id)} != unrelated_ids:
-                    raise RuntimeError('Tool batch deletion changed unrelated assignments')
-                record('ToolBatch', scope, create='passed', update='passed', drift_repair='passed', delete='passed')
-                delete(parent)
-
-                auto, auto_id, _ = create(scope, 'agent', 'Agent', 'agents',
-                    {'name': 'cp-auto-agent-' + run + '-' + scope, 'accessAllTools': True}, '-auto')
-                exclusion_path = '/api/agents/' + auto_id + '/tool-exclusions'
-
-                def exclusions():
-                    code, response = api(exclusion_path)
-                    if code != 200:
-                        raise RuntimeError('Tool exclusions read failed')
-                    return sorted(response['excludedToolIds'])
-
-                exclusions_lease, _, _ = create(scope, 'agent', 'ToolExclusions', 'toolexclusions',
-                    {'agentId': auto_id, 'excludedToolIds': [tool_ids[0]]})
-                if exclusions() != [tool_ids[0]]:
-                    raise RuntimeError('Tool exclusion create did not persist')
-                patch(exclusions_lease, {'excludedToolIds': tool_ids})
-                wait('Tool exclusions update', lambda: exclusions() == tool_ids)
-                if api(exclusion_path, {'excludedToolIds': []}, 'PUT')[0] != 200:
-                    raise RuntimeError('Tool exclusion drift mutation failed')
-                wait('Tool exclusions drift repair', lambda: exclusions() == tool_ids)
-                delete(exclusions_lease)
-                if exclusions() or api('/api/agents/' + auto_id)[0] != 200:
-                    raise RuntimeError('Exclusions deletion failed to clear while preserving agent')
-                delete(auto)
-                record('ToolExclusions', scope, create='passed', update='passed', drift_repair='passed',
-                       delete_clears_exclusions='passed', agent_preserved=True)
-                delete(alternate)
-                delete(team_lease)
                 delete(server)
                 if api(server_path)[0] != 404:
                     raise RuntimeError('Installation delete did not remove the object')
-                record('ServerInstallation', scope, create='passed', immutable_update_refused='passed',
+                record('Server', scope, create='passed', immutable_update_refused='passed',
                        tools_discovered=2, delete='passed', backend_after_delete=404)
                 delete(catalog)
 

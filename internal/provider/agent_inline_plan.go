@@ -15,15 +15,15 @@ func preserveManagedNoopPlan(req resource.ModifyPlanRequest, resp *resource.Modi
 	}
 	var configured, planned, previous map[string]tftypes.Value
 	if err := req.Config.Raw.As(&configured); err != nil {
-		resp.Diagnostics.AddError("Invalid agent configuration", err.Error())
+		resp.Diagnostics.AddError("Invalid resource configuration", err.Error())
 		return
 	}
 	if err := req.Plan.Raw.As(&planned); err != nil {
-		resp.Diagnostics.AddError("Invalid agent plan", err.Error())
+		resp.Diagnostics.AddError("Invalid resource plan", err.Error())
 		return
 	}
 	if err := req.State.Raw.As(&previous); err != nil {
-		resp.Diagnostics.AddError("Invalid agent state", err.Error())
+		resp.Diagnostics.AddError("Invalid resource state", err.Error())
 		return
 	}
 	for name, attribute := range req.Plan.Schema.GetAttributes() {

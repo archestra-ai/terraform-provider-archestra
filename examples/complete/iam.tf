@@ -93,17 +93,13 @@ resource "archestra_identity_provider" "saml" {
 }
 
 resource "archestra_team" "engineering" {
-  name        = "Engineering"
-  description = "Engineering team for production systems"
+  external_group_ids = ["engineering"]
+  name               = "Engineering"
+  description        = "Engineering team for production systems"
 }
 
 resource "archestra_team" "support" {
   name        = "Support"
   description = "Customer support team"
   depends_on  = [archestra_organization_settings.main]
-}
-
-resource "archestra_team_external_group" "engineers_oidc" {
-  team_id           = archestra_team.engineering.id
-  external_group_id = "engineering"
 }

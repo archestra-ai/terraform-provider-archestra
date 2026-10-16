@@ -30,7 +30,7 @@ resource "archestra_mcp_gateway" "authenticated" {
   identity_provider_id = archestra_identity_provider.oidc.id
 }
 
-# Grant team access with archestra_resource_permission_policy. Combined
+# Grant team access through permissions on this gateway. Combined
 # with the gateway tools attribute, this is how teams get their own tool surface.
 resource "archestra_mcp_gateway" "engineering" {
   name        = "engineering-mcp"

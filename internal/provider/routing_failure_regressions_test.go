@@ -126,6 +126,10 @@ func TestOauthReadPaginatesWithoutRecoveringSecret(t *testing.T) {
 	pages := 0
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
+		if req.URL.Path == "/api/resource-permissions/oauthClient/fixture" {
+			fmt.Fprint(w, `{"resource":"oauthClient","scope":"fixture","revision":0,"grants":[],"ownerSubject":null}`)
+			return
+		}
 		if req.Method != http.MethodGet || req.URL.Path != "/api/oauth-clients" {
 			t.Errorf("unexpected credential read %s %s", req.Method, req.URL.Path)
 		}

@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	identity "github.com/archestra-ai/provider-archestra/apis/cluster/identity/v1alpha1"
+	identitynamespaced "github.com/archestra-ai/provider-archestra/apis/namespaced/identity/v1alpha1"
 	"github.com/archestra-ai/provider-archestra/config"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
@@ -99,9 +101,9 @@ func assertEmptyCollection(t *testing.T, parameters map[string]any, name string)
 	}
 }
 
-func TestGeneratedInitialGrantsPreserveExplicitEmptyAndUnmanagedValues(t *testing.T) {
-	cluster := &agent.Agent{Spec: agent.AgentSpec{ForProvider: agent.AgentParameters{InitialGrants: []agent.InitialGrantsParameters{}}}}
-	namespaced := &agentnamespaced.Agent{Spec: agentnamespaced.AgentSpec{ForProvider: agentnamespaced.AgentParameters{InitialGrants: []agentnamespaced.InitialGrantsParameters{}}}}
+func TestGeneratedPermissionsPreserveExplicitEmptyAndUnmanagedValues(t *testing.T) {
+	cluster := &agent.Agent{Spec: agent.AgentSpec{ForProvider: agent.AgentParameters{Permissions: []agent.PermissionsParameters{}}}}
+	namespaced := &agentnamespaced.Agent{Spec: agentnamespaced.AgentSpec{ForProvider: agentnamespaced.AgentParameters{Permissions: []agentnamespaced.PermissionsParameters{}}}}
 	for _, value := range []interface {
 		GetParameters() (map[string]any, error)
 	}{cluster, namespaced} {
@@ -109,9 +111,9 @@ func TestGeneratedInitialGrantsPreserveExplicitEmptyAndUnmanagedValues(t *testin
 		if err != nil {
 			t.Fatal(err)
 		}
-		values, ok := parameters["initial_grants"].([]any)
+		values, ok := parameters["permissions"].([]any)
 		if !ok || len(values) != 0 {
-			t.Fatalf("explicit empty initial grants must reach Terraform: %#v", parameters["initial_grants"])
+			t.Fatalf("explicit empty sharing grants must reach Terraform: %#v", parameters["permissions"])
 		}
 		encoded, err := json.Marshal(value)
 		if err != nil {
@@ -125,8 +127,8 @@ func TestGeneratedInitialGrantsPreserveExplicitEmptyAndUnmanagedValues(t *testin
 		if err = json.Unmarshal(encoded, &wire); err != nil {
 			t.Fatal(err)
 		}
-		if values, ok := wire.Spec.ForProvider["initialGrants"].([]any); !ok || len(values) != 0 {
-			t.Fatalf("explicit empty initial grants must survive Kubernetes JSON: %s", encoded)
+		if values, ok := wire.Spec.ForProvider["permissions"].([]any); !ok || len(values) != 0 {
+			t.Fatalf("explicit empty sharing grants must survive Kubernetes JSON: %s", encoded)
 		}
 	}
 	for _, value := range []interface {
@@ -139,26 +141,26 @@ func TestGeneratedInitialGrantsPreserveExplicitEmptyAndUnmanagedValues(t *testin
 		if err != nil {
 			t.Fatal(err)
 		}
-		if _, present := parameters["initial_grants"]; present {
-			t.Fatalf("omitted creation grants must be absent for Upjet ignore_changes: %#v", parameters["initial_grants"])
+		if _, present := parameters["permissions"]; present {
+			t.Fatalf("omitted sharing grants must be absent for Upjet ignore_changes: %#v", parameters["permissions"])
 		}
-		ignored := ujresource.GetTerraformIgnoreChanges(parameters, map[string]any{"initial_grants": []any{}})
-		if len(ignored) != 1 || ignored[0] != "initial_grants" {
-			t.Fatalf("initProvider creation grants must be ignored after create: %#v", ignored)
+		ignored := ujresource.GetTerraformIgnoreChanges(parameters, map[string]any{"permissions": []any{}})
+		if len(ignored) != 1 || ignored[0] != "permissions" {
+			t.Fatalf("initProvider sharing grants must be ignored after create: %#v", ignored)
 		}
 	}
 	for _, value := range []interface {
 		GetMergedParameters(bool) (map[string]any, error)
 	}{
-		&agent.Agent{Spec: agent.AgentSpec{InitProvider: agent.AgentInitParameters{InitialGrants: []agent.InitialGrantsInitParameters{}}}},
-		&agentnamespaced.Agent{Spec: agentnamespaced.AgentSpec{InitProvider: agentnamespaced.AgentInitParameters{InitialGrants: []agentnamespaced.InitialGrantsInitParameters{}}}},
+		&agent.Agent{Spec: agent.AgentSpec{InitProvider: agent.AgentInitParameters{Permissions: []agent.PermissionsInitParameters{}}}},
+		&agentnamespaced.Agent{Spec: agentnamespaced.AgentSpec{InitProvider: agentnamespaced.AgentInitParameters{Permissions: []agentnamespaced.PermissionsInitParameters{}}}},
 	} {
 		parameters, err := value.GetMergedParameters(true)
 		if err != nil {
 			t.Fatal(err)
 		}
-		if values, ok := parameters["initial_grants"].([]any); !ok || len(values) != 0 {
-			t.Fatalf("explicit empty initProvider grants were dropped: %#v", parameters["initial_grants"])
+		if values, ok := parameters["permissions"].([]any); !ok || len(values) != 0 {
+			t.Fatalf("explicit empty initProvider grants were dropped: %#v", parameters["permissions"])
 		}
 	}
 }
@@ -180,12 +182,12 @@ func TestGeneratedInitialGrantCRDsKeepUnmanagedInputsOptional(t *testing.T) {
 		}
 		for _, version := range crd.Spec.Versions {
 			fields := version.Schema.OpenAPIV3Schema.Properties["spec"].Properties
-			if _, ok := fields["forProvider"].Properties["initialGrants"]; !ok {
+			if _, ok := fields["forProvider"].Properties["permissions"]; !ok {
 				continue
 			}
 			for _, source := range []string{"forProvider", "initProvider"} {
 				for _, required := range fields[source].Required {
-					if required == "initialGrants" {
+					if required == "permissions" {
 						t.Fatalf("%s %s rejects an unmanaged creation policy", crd.Name, source)
 					}
 				}
@@ -195,12 +197,12 @@ func TestGeneratedInitialGrantCRDsKeepUnmanagedInputsOptional(t *testing.T) {
 	}
 	expected := 0
 	for _, r := range config.GetProvider().Resources {
-		if _, ok := r.TerraformResource.Schema["initial_grants"]; ok {
+		if _, ok := r.TerraformResource.Schema["permissions"]; ok {
 			expected += 2
 		}
 	}
 	if checked != expected || expected == 0 {
-		t.Fatalf("expected %d both-scope creation-grant schemas, checked %d", expected, checked)
+		t.Fatalf("expected %d both-scope sharing-grant schemas, checked %d", expected, checked)
 	}
 }
 
@@ -209,15 +211,33 @@ func TestGeneratedCreationGrantsAreNotLateInitialized(t *testing.T) {
 		LateInitialize([]byte) (bool, error)
 		GetParameters() (map[string]any, error)
 	}{&agent.Agent{}, &agentnamespaced.Agent{}} {
-		if _, err := value.LateInitialize([]byte(`{"initial_grants": []}`)); err != nil {
+		if _, err := value.LateInitialize([]byte(`{"permissions": []}`)); err != nil {
 			t.Fatal(err)
 		}
 		parameters, err := value.GetParameters()
 		if err != nil {
 			t.Fatal(err)
 		}
-		if _, ok := parameters["initial_grants"]; ok {
-			t.Fatal("creation grants moved from initProvider to managed forProvider inputs")
+		if _, ok := parameters["permissions"]; ok {
+			t.Fatal("sharing grants moved from initProvider to managed forProvider inputs")
+		}
+	}
+}
+
+func TestServiceAccountTeamCanBeClearedWithoutLateInitialization(t *testing.T) {
+	for _, value := range []interface {
+		LateInitialize([]byte) (bool, error)
+		GetParameters() (map[string]any, error)
+	}{&identity.ServiceAccount{}, &identitynamespaced.ServiceAccount{}} {
+		if _, err := value.LateInitialize([]byte(`{"team_id":"old-team"}`)); err != nil {
+			t.Fatal(err)
+		}
+		parameters, err := value.GetParameters()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, present := parameters["team_id"]; present {
+			t.Fatal("removed team ownership was restored by late initialization")
 		}
 	}
 }

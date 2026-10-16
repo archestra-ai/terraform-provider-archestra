@@ -15,7 +15,7 @@ import (
 
 func TestAccCurrentModelOverrides(t *testing.T) {
 	baseURL := os.Getenv("ARCHESTRA_TEST_LLM_BASE_URL")
-	keyOnly := fmt.Sprintf(`resource "archestra_llm_provider_api_key" "model_fixture" {
+	keyOnly := fmt.Sprintf(`resource "archestra_model_provider" "model_fixture" {
 name="tf-native-model-fixture"
 llm_provider="ollama-native"
 base_url=%q
@@ -34,10 +34,10 @@ base_url=%q
 	}
 	config := func(extra string) string {
 		return keyOnly + fmt.Sprintf(`
- resource "archestra_llm_model" "test" {
+ resource "archestra_model" "test" {
  model_id="llama3"
  llm_provider="ollama-native"
- depends_on=[archestra_llm_provider_api_key.model_fixture]
+ depends_on=[archestra_model_provider.model_fixture]
  %s
  }
  `, extra)
@@ -64,13 +64,13 @@ base_url=%q
 			t.Fatal("ARCHESTRA_TEST_LLM_BASE_URL must point to the isolated Ollama mock")
 		}
 	}, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: initial, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("archestra_llm_model.test", "custom_context_length", "2048"), resource.TestCheckResourceAttr("archestra_llm_model.test", "custom_output_length", "256"), resource.TestCheckResourceAttr("archestra_llm_model.test", "labels.0.value", "initial"), func(state *terraform.State) error {
-			modelUUID = state.RootModule().Resources["archestra_llm_model.test"].Primary.ID
+		{Config: initial, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("archestra_model.test", "custom_context_length", "2048"), resource.TestCheckResourceAttr("archestra_model.test", "custom_output_length", "256"), resource.TestCheckResourceAttr("archestra_model.test", "labels.0.value", "initial"), func(state *terraform.State) error {
+			modelUUID = state.RootModule().Resources["archestra_model.test"].Primary.ID
 			return nil
 		})},
-		{ResourceName: "archestra_llm_model.test", ImportState: true, ImportStateVerify: true, ImportStateIdFunc: testAccModelUUID},
+		{ResourceName: "archestra_model.test", ImportState: true, ImportStateVerify: true, ImportStateIdFunc: testAccModelUUID},
 		{Config: initial, PlanOnly: true},
-		{Config: updated, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("archestra_llm_model.test", "custom_context_length", "4096"), resource.TestCheckResourceAttr("archestra_llm_model.test", "custom_price_per_million_cache_read", "0.30"))},
+		{Config: updated, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("archestra_model.test", "custom_context_length", "4096"), resource.TestCheckResourceAttr("archestra_model.test", "custom_price_per_million_cache_read", "0.30"))},
 		{Config: updated, PlanOnly: true},
 		{Config: updated, PlanOnly: true, ExpectNonEmptyPlan: true, PreConfig: func() {
 			id, err := uuid.Parse(modelUUID)
@@ -82,15 +82,15 @@ base_url=%q
 				t.Fatal("unable to create isolated model drift", err)
 			}
 		}},
-		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_llm_model.test", "custom_context_length", "4096")},
-		{Config: embedding, Check: resource.TestCheckResourceAttr("archestra_llm_model.test", "embedding_dimensions", "768")},
+		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_model.test", "custom_context_length", "4096")},
+		{Config: embedding, Check: resource.TestCheckResourceAttr("archestra_model.test", "embedding_dimensions", "768")},
 		{Config: embedding, PlanOnly: true},
-		{Config: embeddingUpdated, Check: resource.TestCheckResourceAttr("archestra_llm_model.test", "effective_embedding_dimensions", "1024")},
-		{Config: updated, Check: resource.TestCheckNoResourceAttr("archestra_llm_model.test", "embedding_dimensions")},
-		{Config: withModalities, Check: resource.TestCheckResourceAttr("archestra_llm_model.test", "input_modalities.#", "2")},
-		{Config: updated, Check: resource.TestCheckNoResourceAttr("archestra_llm_model.test", "input_modalities")},
+		{Config: embeddingUpdated, Check: resource.TestCheckResourceAttr("archestra_model.test", "effective_embedding_dimensions", "1024")},
+		{Config: updated, Check: resource.TestCheckNoResourceAttr("archestra_model.test", "embedding_dimensions")},
+		{Config: withModalities, Check: resource.TestCheckResourceAttr("archestra_model.test", "input_modalities.#", "2")},
+		{Config: updated, Check: resource.TestCheckNoResourceAttr("archestra_model.test", "input_modalities")},
 		{Config: updated, PlanOnly: true},
-		{Config: cleared, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckNoResourceAttr("archestra_llm_model.test", "custom_context_length"), resource.TestCheckNoResourceAttr("archestra_llm_model.test", "configured_parameters"))},
+		{Config: cleared, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckNoResourceAttr("archestra_model.test", "custom_context_length"), resource.TestCheckNoResourceAttr("archestra_model.test", "configured_parameters"))},
 		{Config: cleared, PlanOnly: true},
 		{Config: embeddingUpdated},
 		{Config: keyOnly, Check: func(_ *terraform.State) error {
@@ -115,5 +115,5 @@ base_url=%q
 }
 
 func testAccModelUUID(state *terraform.State) (string, error) {
-	return state.RootModule().Resources["archestra_llm_model.test"].Primary.ID, nil
+	return state.RootModule().Resources["archestra_model.test"].Primary.ID, nil
 }

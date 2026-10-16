@@ -56,11 +56,11 @@ resource "archestra_mcp_gateway" "test" {
 resource "archestra_team" "test" {
  name = "NAME-team"
 }
-resource "archestra_mcp_registry_catalog_item" "test" {
+resource "archestra_mcp_registry_entry" "test" {
  name = "NAME-catalog"
  remote_config = { url = "http://127.0.0.1:19999/mcp" }
 }
-resource "archestra_llm_provider_api_key" "test" {
+resource "archestra_model_provider" "test" {
  name = "NAME-key"
  llm_provider = "ollama"
  base_url = MODEL
@@ -96,9 +96,9 @@ resource "archestra_identity_provider" "test" {
     elif args.case == 'model':
         with (work / 'main.tf').open('a') as stream:
             stream.write('''
-resource "archestra_llm_model" "test" {
+resource "archestra_model" "test" {
  model_id = "llama3"
- depends_on = [archestra_llm_provider_api_key.test]
+ depends_on = [archestra_model_provider.test]
 }
 ''')
 
@@ -122,13 +122,13 @@ resource "archestra_agent" "tool" {
  access_all_tools=true
 }
 resource "archestra_team" "test" { name="NAME-team" }
-resource "archestra_mcp_registry_catalog_item" "test" {
+resource "archestra_mcp_registry_entry" "test" {
  name="NAME-catalog"
  remote_config={url="http://provider-mcp-mock.default.svc.cluster.local:19006/mcp"}
 }
-resource "archestra_mcp_server_installation" "test" {
+resource "archestra_mcp_server" "test" {
  name="NAME-install"
- catalog_id=archestra_mcp_registry_catalog_item.test.id
+ catalog_id=archestra_mcp_registry_entry.test.id
  scope="org"
 }
 resource "archestra_agent_delegation" "test" {
@@ -137,17 +137,17 @@ resource "archestra_agent_delegation" "test" {
 }
 resource "archestra_agent_tool" "test" {
  agent_id=archestra_agent.tool.id
- tool_id=archestra_mcp_server_installation.test.tools[0].id
- mcp_server_id=archestra_mcp_server_installation.test.id
+ tool_id=archestra_mcp_server.test.tools[0].id
+ mcp_server_id=archestra_mcp_server.test.id
 }
 resource "archestra_agent_tool_batch" "test" {
  agent_id=archestra_agent.batch.id
- mcp_server_id=archestra_mcp_server_installation.test.id
- tool_ids=[archestra_mcp_server_installation.test.tools[1].id]
+ mcp_server_id=archestra_mcp_server.test.id
+ tool_ids=[archestra_mcp_server.test.tools[1].id]
 }
 resource "archestra_agent_tool_exclusions" "test" {
  agent_id=archestra_agent.tool.id
- excluded_tool_ids=[archestra_mcp_server_installation.test.tools[1].id]
+ excluded_tool_ids=[archestra_mcp_server.test.tools[1].id]
 }
 resource "archestra_limit" "test" {
  entity_id="ORG"
@@ -156,7 +156,7 @@ resource "archestra_limit" "test" {
  limit_value=100000
  model=["NAME"]
 }
-resource "archestra_runtime_credential" "test" {
+resource "archestra_credential" "test" {
  key="NAME-credential"
  name="Synthetic retained-schema credential slot"
 }
@@ -187,11 +187,11 @@ resource "archestra_team_external_group" "test" {
         run('create', 'apply', '-auto-approve', '-input=false', '-no-color')
         current = json.loads(run('state-v3', 'state', 'pull'))
         identifiers = {r['type'] + '.' + r['name']: r['instances'][0]['attributes']['id'] for r in current['resources']}
-        installation_imports = {r['type'] + '.' + r['name']: r['instances'][0]['attributes']['id'] + ':' + r['instances'][0]['attributes']['name'] for r in current['resources'] if r['type'] == 'archestra_mcp_server_installation'}
+        installation_imports = {r['type'] + '.' + r['name']: r['instances'][0]['attributes']['id'] + ':' + r['instances'][0]['attributes']['name'] for r in current['resources'] if r['type'] == 'archestra_mcp_server'}
         run('forget-synthetic-bindings', 'state', 'rm', *identifiers)
         select(args.old_provider_directory)
         for address, identifier in identifiers.items():
-            import_id = installation_imports.get(address, 'llama3' if address == 'archestra_llm_model.test' else identifier)
+            import_id = installation_imports.get(address, 'llama3' if address == 'archestra_model.test' else identifier)
             run('v2-import-' + address, 'import', address, import_id)
         old = json.loads(run('state-v2', 'state', 'pull'))
         if args.case == 'identity':
@@ -203,7 +203,7 @@ resource "archestra_team_external_group" "test" {
             evidence['identity_fixture_source'] = 'Actual v2 import; synthetic saved secret restored because v2 cannot read current redacted secrets. This models saved pre-redaction state, not a successful v2 create against the current API.'
         if args.vault_secret_path and args.case != 'identity':
             for resource in old['resources']:
-                if resource['type'] == 'archestra_llm_provider_api_key':
+                if resource['type'] == 'archestra_model_provider':
                     attributes = resource['instances'][0]['attributes']
                     attributes['vault_secret_path'] = args.vault_secret_path
                     attributes['vault_secret_key'] = args.vault_secret_key
@@ -215,7 +215,7 @@ resource "archestra_team_external_group" "test" {
             evidence['vault_fixture_source'] = 'Actual v2 import with the configured synthetic Vault reference restored to saved state; the current API redacts write-only Vault reference inputs.'
         if args.case == 'retained':
             for resource in old['resources']:
-                if resource['type'] == 'archestra_mcp_server_installation':
+                if resource['type'] == 'archestra_mcp_server':
                     resource['instances'][0]['attributes']['service_account'] = True
             old['serial'] += 1
             saved = work / 'saved-legacy-install-input.tfstate'
@@ -265,10 +265,10 @@ resource "archestra_team_external_group" "test" {
                     raise RuntimeError('Redirect refused')
             opener = urllib.request.build_opener(NoRedirect())
             paths = {'archestra_agent': '/api/agents/', 'archestra_mcp_gateway': '/api/agents/',
-                     'archestra_team': '/api/teams/', 'archestra_llm_provider_api_key': '/api/llm-provider-api-keys/',
+                     'archestra_team': '/api/teams/', 'archestra_model_provider': '/api/llm-provider-api-keys/',
                      'archestra_identity_provider': '/api/identity-providers/',
-                     'archestra_mcp_registry_catalog_item': '/api/internal_mcp_catalog/',
-                     'archestra_mcp_server_installation': '/api/mcp_server/', 'archestra_limit': '/api/limits/'}
+                     'archestra_mcp_registry_entry': '/api/internal_mcp_catalog/',
+                     'archestra_mcp_server': '/api/mcp_server/', 'archestra_limit': '/api/limits/'}
             for address, identifier in identifiers.items():
                 kind = address.split('.')[0]
                 endpoint = paths[kind] + identifier if kind in paths else '/api/organization'
@@ -282,7 +282,7 @@ resource "archestra_team_external_group" "test" {
                     status = error.code
                 if status != (404 if kind in paths else 200):
                     raise RuntimeError('Backend cleanup verification failed: ' + kind)
-            credential_keys = [identifier for address, identifier in identifiers.items() if address.startswith('archestra_runtime_credential.')]
+            credential_keys = [identifier for address, identifier in identifiers.items() if address.startswith('archestra_credential.')]
             if credential_keys:
                 request = urllib.request.Request(args.api_url.rstrip('/') + '/api/credentials', headers={'Authorization': env['ARCHESTRA_API_KEY']})
                 with opener.open(request, timeout=15) as response:

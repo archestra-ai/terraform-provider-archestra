@@ -1,6 +1,7 @@
 # Archestra Provider
 
-The current clean-major working surface contains **35 registered resources**, generated in both Crossplane scopes. Agent/gateway assignments, exclusions, skills and hooks are fields on their parent; eleven standalone relationship types and the obsolete proxy-profile type are retired. Further team/settings/permissions/source consolidation and naming cleanup remain in progress. The [inline native evidence](audit/inline-ownership-native-acceptance.json) records 11 passing rc.49 cases; [both-scope runtime evidence](audit/crossplane-inline-ownership.json) records four passing parent lifecycles with normal cleanup. Earlier 47-family counts below describe the pre-consolidation frozen checkpoint, not the current public surface.
+
+The v3 review candidate has **29 resources and four data sources**, generated in both Crossplane scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The [full native acceptance proof](audit/consolidated-native-acceptance.json) records 146 passing cases with zero failures or skips against API 1.4.0-rc.49.
 
 [![Crossplane mappings](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
 
@@ -15,63 +16,54 @@ through extending the provider.
 
 API versions are independent of provider versions. See the [compatibility matrix](COMPATIBILITY.md) for the required API capability floor and exact tested releases.
 
+The [organization-defaults runtime proof](audit/crossplane-organization-defaults.json) verifies reference resolution, updates, drift, omission and explicit clears in both scopes on the current candidate.
+
 ## Resource coverage
 
-This v3 branch has 35 registered resources and seven data sources. Both Crossplane
-scopes are generated from the same Terraform schema. Agent and gateway relationships
-are inline; the legacy combined proxy-profile resource is removed.
-
-The new [ownership runtime matrix](audit/crossplane-inline-ownership.json) verifies
-parent creation, reference resolution, updates, drift repair, omission, explicit
-empty collections, orphan/adoption and normal deletion in both scopes against
-Archestra 1.4.0-rc.49. [Targeted native acceptance](audit/inline-ownership-native-acceptance.json)
-also covers hooks, tool binding, import and service-account team ownership.
-Historical runtime and package proofs retain their original binary boundaries in
-[the audit](audit/README.md). Further product-aligned consolidation, missing APIs,
-final combined-candidate validation, review and publication remain in progress.
+The implemented surface follows product objects and Settings. Configuration and
+sharing live with their owner. See the generated [resource reference](docs/resources)
+and [data sources](docs/data-sources) for exact fields, examples and import formats.
 
 | Terraform | Crossplane group / kind |
 |---|---|
 | `archestra_agent` | `agent` / `Agent` |
 | `archestra_api_key` | `credential` / `APIKey` |
+| `archestra_credential` | `credential` / `Credential` |
 | `archestra_environment` | `environment` / `Environment` |
+| `archestra_github_app` | `credential` / `GitHubApp` |
+| `archestra_github_pat` | `credential` / `GitHubPAT` |
 | `archestra_identity_provider` | `identity` / `Provider` |
 | `archestra_knowledge_base` | `knowledge` / `KnowledgeBase` |
-| `archestra_limit` | `limit` / `Limit` |
-| `archestra_llm_model` | `llm` / `ModelOverride` |
-| `archestra_llm_provider_api_key` | `llm` / `ProviderKey` |
-| `archestra_mcp_gateway` | `gateway` / `Gateway` |
-| `archestra_mcp_registry_catalog_item` | `mcp` / `RegistryCatalogItem` |
-| `archestra_mcp_server_installation` | `mcp` / `ServerInstallation` |
-| `archestra_organization_settings` | `organization` / `Settings` |
-| `archestra_project_file` | `project` / `File` |
-| `archestra_project` | `project` / `Project` |
-| `archestra_resource_permission_policy` | `permission` / `Policy` |
-| `archestra_role` | `identity` / `Role` |
-| `archestra_runtime_credential` | `credential` / `RuntimeCredential` |
-| `archestra_skill` | `skill` / `Skill` |
-| `archestra_schedule_trigger` | `schedule` / `Trigger` |
-| `archestra_team` | `team` / `Team` |
-| `archestra_team_external_group` | `team` / `ExternalGroup` |
-| `archestra_default_user_limit` | `limit` / `DefaultUserLimit` |
 | `archestra_knowledge_directory` | `knowledge` / `Directory` |
-| `archestra_service_account` | `identity` / `ServiceAccount` |
-| `archestra_service_account_token` | `credential` / `ServiceAccountToken` |
-| `archestra_remote_agent` | `a2a` / `RemoteAgent` |
-| `archestra_environment_default` | `environment` / `ResourceDefault` |
-| `archestra_team_vault_folder` | `team` / `VaultFolder` |
-| `archestra_virtual_api_key` | `llm` / `VirtualKey` |
+| `archestra_limit` | `limit` / `Limit` |
+| `archestra_mcp_gateway` | `gateway` / `Gateway` |
+| `archestra_mcp_registry_entry` | `mcp` / `RegistryEntry` |
+| `archestra_mcp_server` | `mcp` / `Server` |
+| `archestra_model` | `llm` / `Model` |
+| `archestra_model_provider` | `llm` / `ModelProvider` |
 | `archestra_oauth_client` | `credential` / `OAuthClient` |
-| `archestra_marketplace_share_link` | `marketplace` / `ShareLink` |
-| `archestra_git_plugin` | `plugin` / `RepositoryPackage` |
-| `archestra_plugin` | `plugin` / `ManualPackage` |
-| `archestra_github_pat` | `credential` / `GitHubPAT` |
-| `archestra_github_app_config` | `credential` / `GitHubAppConfig` |
+| `archestra_organization_settings` | `organization` / `Settings` |
+| `archestra_plugin` | `plugin` / `Plugin` |
+| `archestra_project` | `project` / `Project` |
+| `archestra_project_file` | `project` / `File` |
+| `archestra_remote_agent` | `a2a` / `RemoteAgent` |
+| `archestra_role` | `identity` / `Role` |
+| `archestra_schedule` | `schedule` / `Schedule` |
+| `archestra_service_account` | `identity` / `ServiceAccount` |
+| `archestra_service_account_api_key` | `credential` / `ServiceAccountAPIKey` |
+| `archestra_share_link` | `marketplace` / `ShareLink` |
+| `archestra_skill` | `skill` / `Skill` |
+| `archestra_team` | `team` / `Team` |
+| `archestra_virtual_key` | `llm` / `VirtualKey` |
 
-Seven Terraform data sources remain available for lookups and audit data.
+The four data sources are `archestra_agent`, `archestra_team`, `archestra_tool`
+and `archestra_mcp_tool_calls`. Tool lookup accepts an optional MCP server filter;
+agent lookup includes its relationships. Data sources read existing state.
+
 Crossplane resources use `<group>.archestra.crossplane.io` in cluster scope and
-`<group>.archestra.m.crossplane.io` in namespaced scope. Both currently serve
-`v1alpha1`. See [MIGRATION-v3.md](MIGRATION-v3.md) before upgrading existing state.
+`<group>.archestra.m.crossplane.io` in namespaced scope, serving `v1alpha1`.
+See [the audit](audit/README.md) for executed evidence and each frozen binary's
+boundary. Generated types are schema coverage, not proof of reconciliation.
 
 ## 1. Build it
 

@@ -33,7 +33,7 @@ type KnowledgeBaseResource struct {
 }
 
 type KnowledgeBaseResourceModel struct {
-	InitialGrants             types.Set         `tfsdk:"initial_grants"`
+	InitialGrants             types.Set         `tfsdk:"permissions"`
 	Labels                    []AgentLabelModel `tfsdk:"labels"`
 	CreatedBy                 types.String      `tfsdk:"created_by"`
 	CreatedByServiceAccountID types.String      `tfsdk:"created_by_service_account_id"`
@@ -54,7 +54,7 @@ func (r *KnowledgeBaseResource) Schema(_ context.Context, _ resource.SchemaReque
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "A knowledge base groups documents and connectors that agents can search over.",
 		Attributes: map[string]schema.Attribute{
-			"initial_grants":                initialGrantsAttribute(),
+			"permissions":                   initialGrantsAttribute(),
 			"labels":                        schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Knowledge-base labels.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
 			"created_by":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Creator identity metadata as JSON."},
 			"created_by_service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Service account that created the knowledge base."},
@@ -109,6 +109,8 @@ func (r *KnowledgeBaseResource) Configure(_ context.Context, req resource.Config
 }
 
 func (r *KnowledgeBaseResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	defer finishParentCreate(ctx, r.client, "knowledgeBase", "id", resp)
+
 	var data KnowledgeBaseResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -187,10 +189,20 @@ func (r *KnowledgeBaseResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 	resolveInitialGrants(&data.InitialGrants)
+	readParentPermissions(ctx, r.client, "knowledgeBase", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *KnowledgeBaseResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "knowledgeBase", "id", req, resp)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	defer finishPermissions()
+
 	var data KnowledgeBaseResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {

@@ -42,6 +42,8 @@ type TeamDescendantModel struct {
 }
 
 type TeamResourceModel struct {
+	ExternalGroupIDs          types.Set         `tfsdk:"external_group_ids"`
+	VaultFolder               types.String      `tfsdk:"vault_folder"`
 	ParentID                  types.String      `tfsdk:"parent_id"`
 	Labels                    []AgentLabelModel `tfsdk:"labels"`
 	CreatedByServiceAccountID types.String      `tfsdk:"created_by_service_account_id"`
@@ -121,6 +123,10 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			},
 		},
 	}
+	for name, attribute := range teamBindingAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
+
 }
 
 func (r *TeamResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -184,6 +190,12 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 		data.Description = types.StringValue(*apiResp.JSON200.Description)
 	}
 
+	partial := knownTeamState(data)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &partial)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	// Add team members
 	if len(data.Members) > 0 {
 		for _, member := range data.Members {
@@ -215,11 +227,18 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 		}
 	}
 
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	r.writeBindings(ctx, &data, &TeamResourceModel{}, req.Config, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 	r.refreshCurrentTeam(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.readBindings(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -294,12 +313,22 @@ func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	}
 
 	r.flattenCurrentTeam(ctx, &data, apiResp, &resp.Diagnostics)
+	r.readBindings(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data TeamResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	var prior TeamResourceModel
+	resp.Diagnostics.Append(req.State.Get(ctx, &prior)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -439,7 +468,18 @@ func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	r.writeBindings(ctx, &data, &prior, req.Config, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	r.refreshCurrentTeam(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.readBindings(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 

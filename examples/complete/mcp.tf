@@ -1,6 +1,6 @@
 # --- Catalog items ---------------------------------------------------------
 
-resource "archestra_mcp_registry_catalog_item" "filesystem" {
+resource "archestra_mcp_registry_entry" "filesystem" {
   name        = "filesystem"
   description = "Read-only filesystem MCP server"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem"
@@ -16,7 +16,7 @@ resource "archestra_mcp_registry_catalog_item" "filesystem" {
   }
 }
 
-resource "archestra_mcp_registry_catalog_item" "memory" {
+resource "archestra_mcp_registry_entry" "memory" {
   name        = "memory"
   description = "In-memory key-value store MCP server (no auth, safe for local testing)"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/memory"
@@ -27,7 +27,7 @@ resource "archestra_mcp_registry_catalog_item" "memory" {
   }
 }
 
-resource "archestra_mcp_registry_catalog_item" "everything" {
+resource "archestra_mcp_registry_entry" "everything" {
   name        = "mcp-everything"
   description = "Reference test MCP server — exposes every MCP feature, no auth required"
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/everything"
@@ -38,7 +38,7 @@ resource "archestra_mcp_registry_catalog_item" "everything" {
   }
 }
 
-resource "archestra_mcp_registry_catalog_item" "configurable_fs" {
+resource "archestra_mcp_registry_entry" "configurable_fs" {
   name        = "configurable-fs"
   description = "Filesystem MCP with installer-supplied workspace + tuning"
 
@@ -65,7 +65,7 @@ resource "archestra_mcp_registry_catalog_item" "configurable_fs" {
 
 # Remote MCP — exercises the remote_config (HTTP/SSE) transport instead of
 # local stdio. gitmcp.io is a free, no-auth wrapper around any GitHub repo.
-resource "archestra_mcp_registry_catalog_item" "gitmcp_servers" {
+resource "archestra_mcp_registry_entry" "gitmcp_servers" {
   name        = "gitmcp-mcp-servers"
   description = "gitmcp.io MCP wrapper around the modelcontextprotocol/servers repo — exercises the remote_config transport (HTTP/SSE) instead of local stdio. Free, no auth required."
   docs_url    = "https://gitmcp.io/"
@@ -77,31 +77,31 @@ resource "archestra_mcp_registry_catalog_item" "gitmcp_servers" {
 
 # --- Installations ---------------------------------------------------------
 
-resource "archestra_mcp_server_installation" "filesystem" {
+resource "archestra_mcp_server" "filesystem" {
   name       = "filesystem"
-  catalog_id = archestra_mcp_registry_catalog_item.filesystem.id
+  catalog_id = archestra_mcp_registry_entry.filesystem.id
 }
 
-resource "archestra_mcp_server_installation" "memory" {
+resource "archestra_mcp_server" "memory" {
   name       = "memory"
-  catalog_id = archestra_mcp_registry_catalog_item.memory.id
+  catalog_id = archestra_mcp_registry_entry.memory.id
 }
 
-resource "archestra_mcp_server_installation" "memory_support" {
+resource "archestra_mcp_server" "memory_support" {
   name       = "memory-support"
-  catalog_id = archestra_mcp_registry_catalog_item.memory.id
+  catalog_id = archestra_mcp_registry_entry.memory.id
   team_id    = archestra_team.support.id
   agent_ids  = [archestra_agent.support.id]
 }
 
-resource "archestra_mcp_server_installation" "everything" {
+resource "archestra_mcp_server" "everything" {
   name       = "mcp-everything"
-  catalog_id = archestra_mcp_registry_catalog_item.everything.id
+  catalog_id = archestra_mcp_registry_entry.everything.id
 }
 
-resource "archestra_mcp_server_installation" "configurable_fs_engineering" {
+resource "archestra_mcp_server" "configurable_fs_engineering" {
   name       = "configurable-fs-engineering"
-  catalog_id = archestra_mcp_registry_catalog_item.configurable_fs.id
+  catalog_id = archestra_mcp_registry_entry.configurable_fs.id
   team_id    = archestra_team.engineering.id
 
   user_config_values = {

@@ -3,12 +3,12 @@
 page_title: "archestra_project Resource - archestra"
 subcategory: ""
 description: |-
-  A project containing conversations and schedules. Configure sharing with a separate archestra_resource_permission_policy. Destroy uses the project's soft-delete API; retain backups of project content before deleting it.
+  A project containing conversations and schedules. Configure sharing through permissions on this project. Destroy uses the project's soft-delete API; retain backups of project content before deleting it.
 ---
 
 # archestra_project (Resource)
 
-A project containing conversations and schedules. Configure sharing with a separate archestra_resource_permission_policy. Destroy uses the project's soft-delete API; retain backups of project content before deleting it.
+A project containing conversations and schedules. Configure sharing through permissions on this project. Destroy uses the project's soft-delete API; retain backups of project content before deleting it.
 
 ## Example Usage
 
@@ -32,9 +32,9 @@ resource "archestra_project" "reports" {
 - `default_agent_id` (String)
 - `description` (String)
 - `icon` (String)
-- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `instructions` (String) Project chat instructions; omit to preserve existing content, or set an empty string to clear it.
 - `labels` (Attributes Set) (see [below for nested schema](#nestedatt--labels))
+- `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 
 ### Read-Only
 
@@ -44,16 +44,6 @@ resource "archestra_project" "reports" {
 - `owner_name` (String)
 - `viewer_role` (String)
 
-<a id="nestedatt--initial_grants"></a>
-### Nested Schema for `initial_grants`
-
-Required:
-
-- `actions` (Set of String) Actions granted to the principal.
-- `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
-
-
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`
 
@@ -61,6 +51,16 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+
+<a id="nestedatt--permissions"></a>
+### Nested Schema for `permissions`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
 
 ## Import
 

@@ -14,7 +14,7 @@ func TestAccLLMProviderKeyCurrentFields(t *testing.T) {
 		t.Fatal("ARCHESTRA_TEST_LLM_BASE_URL must point to the isolated Ollama mock accessible by the backend")
 	}
 	config := func(extra string) string {
-		return fmt.Sprintf(`resource "archestra_llm_provider_api_key" "test" {
+		return fmt.Sprintf(`resource "archestra_model_provider" "test" {
  name="tf-current-key-fields"
  llm_provider="ollama"
  %s
@@ -31,12 +31,12 @@ func TestAccLLMProviderKeyCurrentFields(t *testing.T) {
 	cleared := config(`extra_headers={}
  labels=[]`)
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: initial, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "extra_headers.X-Synthetic-Test", "first"), resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "labels.0.value", "initial"), resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "requires_reauthentication", "false"))},
-		{ResourceName: "archestra_llm_provider_api_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"api_key", "vault_secret_path", "vault_secret_key"}},
+		{Config: initial, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("archestra_model_provider.test", "extra_headers.X-Synthetic-Test", "first"), resource.TestCheckResourceAttr("archestra_model_provider.test", "labels.0.value", "initial"), resource.TestCheckResourceAttr("archestra_model_provider.test", "requires_reauthentication", "false"))},
+		{ResourceName: "archestra_model_provider.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"api_key", "vault_secret_path", "vault_secret_key"}},
 		{Config: initial, PlanOnly: true},
-		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "extra_headers.X-Synthetic-Test", "second")},
+		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_model_provider.test", "extra_headers.X-Synthetic-Test", "second")},
 		{Config: updated, PlanOnly: true},
-		{Config: cleared, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("archestra_llm_provider_api_key.test", "extra_headers.%", "0"), resource.TestCheckNoResourceAttr("archestra_llm_provider_api_key.test", "inference_base_url"))},
+		{Config: cleared, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("archestra_model_provider.test", "extra_headers.%", "0"), resource.TestCheckNoResourceAttr("archestra_model_provider.test", "inference_base_url"))},
 		{Config: cleared, PlanOnly: true},
 	}})
 }

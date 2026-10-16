@@ -53,7 +53,7 @@ func TestAccServiceAccountTokenResource(t *testing.T) {
 	}
 	check := func(mode string, want int) resource.TestCheckFunc {
 		return func(state *terraform.State) error {
-			token := state.RootModule().Resources["archestra_service_account_token.test"].Primary.Attributes["token"]
+			token := state.RootModule().Resources["archestra_service_account_api_key.test"].Primary.Attributes["token"]
 			if token == "" {
 				return fmt.Errorf("creation did not persist the secret")
 			}
@@ -86,7 +86,7 @@ func TestAccServiceAccountTokenResource(t *testing.T) {
 name="tf-token-parent"
  role="member"
 }
- resource "archestra_service_account_token" "test" {
+ resource "archestra_service_account_api_key" "test" {
  service_account_id=archestra_service_account.token_parent.id
  name=%q
  expires_in=3600
@@ -106,9 +106,9 @@ name="tf-token-parent"
 		},
 		Steps: []resource.TestStep{
 			{Config: config("tf-token", false, "", "first"), Check: check("first", 200)},
-			{ResourceName: "archestra_service_account_token.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"token", "expires_in", "rotation_nonce", "last_used_at"}},
-			{Config: config("tf-token-renamed", true, "2099-01-01T00:00:00Z", "first"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_service_account_token.test", plancheck.ResourceActionUpdate)}}, Check: resource.ComposeTestCheckFunc(check("same", 401), resource.TestCheckResourceAttr("archestra_service_account_token.test", "effective_expires_at", "2099-01-01T00:00:00Z"))},
-			{Config: config("tf-token-renamed", false, "", "first"), Check: resource.ComposeTestCheckFunc(check("same", 200), resource.TestCheckNoResourceAttr("archestra_service_account_token.test", "effective_expires_at"))},
+			{ResourceName: "archestra_service_account_api_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"token", "expires_in", "rotation_nonce", "last_used_at"}},
+			{Config: config("tf-token-renamed", true, "2099-01-01T00:00:00Z", "first"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_service_account_api_key.test", plancheck.ResourceActionUpdate)}}, Check: resource.ComposeTestCheckFunc(check("same", 401), resource.TestCheckResourceAttr("archestra_service_account_api_key.test", "effective_expires_at", "2099-01-01T00:00:00Z"))},
+			{Config: config("tf-token-renamed", false, "", "first"), Check: resource.ComposeTestCheckFunc(check("same", 200), resource.TestCheckNoResourceAttr("archestra_service_account_api_key.test", "effective_expires_at"))},
 			{Config: config("tf-token-renamed", false, "", "second"), Check: check("rotated", 200)},
 			{Config: config("tf-token-renamed", false, "", "second"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
 		}})

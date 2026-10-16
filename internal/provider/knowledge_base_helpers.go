@@ -30,7 +30,7 @@ func (r *KnowledgeBaseResource) APIShape() any {
 //     org; surfacing the field would create a phantom diff against the
 //     resource's implicit scoping.
 //   - visibility/teamIds: retired update fields rejected by the API;
-//     archestra_resource_permission_policy owns access grants.
+//     The parent permissions field owns access grants.
 func (r *KnowledgeBaseResource) KnownIntentionallySkipped() []string {
 	return []string{"organizationId", "visibility", "teamIds"}
 }

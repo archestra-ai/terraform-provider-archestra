@@ -29,13 +29,13 @@ import (
 func NewPluginResource() resource.Resource { return &PluginResource{} }
 
 type PluginResource struct {
-	client    *client.ClientWithResponses
-	gitSource bool
+	client *client.ClientWithResponses
 }
 
 var _ resource.ResourceWithImportState = &PluginResource{}
 
 type PluginResourceModel struct {
+	GitSource                   types.Object `tfsdk:"git_source"`
 	ID                          types.String `tfsdk:"id"`
 	DisplayName                 types.String `tfsdk:"display_name"`
 	Description                 types.String `tfsdk:"description"`
@@ -46,28 +46,18 @@ type PluginResourceModel struct {
 	FileDigests                 types.Map    `tfsdk:"file_digests"`
 	Labels                      types.Set    `tfsdk:"labels"`
 	Enabled                     types.Bool   `tfsdk:"enabled"`
-	InitialGrants               types.Set    `tfsdk:"initial_grants"`
+	InitialGrants               types.Set    `tfsdk:"permissions"`
 	OrganizationID              types.String `tfsdk:"organization_id"`
 	AuthorID                    types.String `tfsdk:"author_id"`
 	Scope                       types.String `tfsdk:"scope"`
 	PluginSlug                  types.String `tfsdk:"plugin_slug"`
 	ContentHash                 types.String `tfsdk:"content_hash"`
 	SourceKind                  types.String `tfsdk:"source_kind"`
-	SourceRepo                  types.String `tfsdk:"source_repo"`
 	SourceRef                   types.String `tfsdk:"source_ref"`
-	SourceSHA                   types.String `tfsdk:"source_sha"`
-	SourceSubdir                types.String `tfsdk:"source_subdir"`
-	SourceExclude               types.List   `tfsdk:"source_exclude"`
 	SourceMarketplaceRepo       types.String `tfsdk:"source_marketplace_repo"`
 	SourceMarketplacePath       types.String `tfsdk:"source_marketplace_path"`
 	SourceMarketplacePluginName types.String `tfsdk:"source_marketplace_plugin_name"`
-	GithubSyncInterval          types.String `tfsdk:"github_sync_interval"`
-	GithubSyncRef               types.String `tfsdk:"github_sync_ref"`
-	GithubAppConfigID           types.String `tfsdk:"github_app_config_id"`
-	GithubPatID                 types.String `tfsdk:"github_pat_id"`
-	SourceProvider              types.String `tfsdk:"source_provider"`
 	SourceOrigin                types.String `tfsdk:"source_origin"`
-	GitlabTokenID               types.String `tfsdk:"gitlab_token_id"`
 	LastSyncedAt                types.String `tfsdk:"last_synced_at"`
 	LastSyncError               types.String `tfsdk:"last_sync_error"`
 	PendingSourceSHA            types.String `tfsdk:"pending_source_sha"`
@@ -104,31 +94,24 @@ var pluginAttrSpec = []AttrSpec{
 	{TFName: "files", JSONName: "files", Kind: Map, Encoder: encodePluginFiles, Children: []AttrSpec{
 		{TFName: "content", JSONName: "content", Kind: Scalar}, {TFName: "encoding", JSONName: "encoding", Kind: Scalar}, {TFName: "mode", JSONName: "mode", Kind: Scalar},
 	}}, credentialLabelsSpec, initialGrantsAttrSpec,
+	{TFName: "git_source", JSONName: "githubSource", Kind: AtomicObject, Children: pluginGitSourceSpecs},
 }
 
-func (r *PluginResource) AttrSpecs() []AttrSpec {
-	if r.gitSource {
-		return gitPluginAttrSpecs()
-	}
-	return pluginAttrSpec
-}
+func (r *PluginResource) AttrSpecs() []AttrSpec               { return pluginAttrSpec }
 func (r *PluginResource) APIShape() any                       { return client.GetPluginResponse{} }
 func (r *PluginResource) KnownIntentionallySkipped() []string { return nil }
 func (r *PluginResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_plugin"
-	if r.gitSource {
-		resp.TypeName = req.ProviderTypeName + "_git_plugin"
-	}
 }
 func (r *PluginResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	resp.Schema = schema.Schema{MarkdownDescription: "Manually managed plugin package with authoritative UTF-8/base64 file content and executable modes. Applying files stores opaque bytes without executing plugin hooks. Derived plugin skills remain owned by the package. Git-sourced plugin content is managed through its repository declaration rather than this manual-file resource.", Attributes: map[string]schema.Attribute{
+	resp.Schema = schema.Schema{MarkdownDescription: "Plugin package for a supported client. Choose authored `files` or a pinned `git_source`. Files are stored as opaque bytes without executing hooks. Changing Git tracking settings preserves the approved package; changing the approved commit or selection replaces it. Derived skills remain owned by the package.", Attributes: map[string]schema.Attribute{
 		"id":                  schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Plugin UUID."},
 		"display_name":        schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 120), pluginDisplayNameValidator{}}, MarkdownDescription: "Plugin display name."},
 		"description":         schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString(""), MarkdownDescription: "Package description."},
 		"icon":                schema.StringAttribute{Optional: true, MarkdownDescription: "Emoji or base64 image URL; omission clears the override."},
 		"client_type":         schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.OneOf("claude-code", "claude-desktop", "copilot-cli", "codex", "cursor")}, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Immutable target client format."},
 		"supported_platforms": schema.SetAttribute{Required: true, ElementType: types.StringType, Validators: []validator.Set{setvalidator.SizeAtLeast(1), setvalidator.ValueStringsAre(stringvalidator.OneOf("posix", "windows"))}, MarkdownDescription: "Supported operating-system families."},
-		"files": schema.MapNestedAttribute{Required: true, Validators: []validator.Map{mapvalidator.SizeBetween(1, 100), pluginPathsValidator{}}, MarkdownDescription: "Complete plugin file set keyed by safe relative path.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
+		"files": schema.MapNestedAttribute{Optional: true, Computed: true, Validators: []validator.Map{mapvalidator.ExactlyOneOf(path.MatchRoot("git_source")), mapvalidator.SizeBetween(1, 100), pluginPathsValidator{}}, MarkdownDescription: "Complete plugin file set keyed by safe relative path.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
 			"content":  schema.StringAttribute{Required: true, MarkdownDescription: "UTF-8 text or canonical base64 bytes."},
 			"encoding": schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString("utf8"), Validators: []validator.String{stringvalidator.OneOf("utf8", "base64")}, MarkdownDescription: "Content encoding."},
 			"mode":     schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString("100644"), Validators: []validator.String{stringvalidator.OneOf("100644", "100755")}, MarkdownDescription: "Git file mode, including executable 100755."},
@@ -136,28 +119,18 @@ func (r *PluginResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 		"file_digests":                   schema.MapAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Observed per-file digests keyed by path."},
 		"labels":                         credentialLabelsAttribute(),
 		"enabled":                        schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the package is enabled; omission preserves the current setting."},
-		"initial_grants":                 initialGrantsAttribute(),
+		"permissions":                    initialGrantsAttribute(),
 		"organization_id":                schema.StringAttribute{Computed: true, MarkdownDescription: "Observed organization id."},
 		"author_id":                      schema.StringAttribute{Computed: true, MarkdownDescription: "Observed author id."},
 		"scope":                          schema.StringAttribute{Computed: true, MarkdownDescription: "Observed scope."},
 		"plugin_slug":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Observed plugin slug."},
 		"content_hash":                   schema.StringAttribute{Computed: true, MarkdownDescription: "Observed content hash."},
 		"source_kind":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Observed source kind."},
-		"source_repo":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Observed source repo."},
 		"source_ref":                     schema.StringAttribute{Computed: true, MarkdownDescription: "Observed source ref."},
-		"source_sha":                     schema.StringAttribute{Computed: true, MarkdownDescription: "Observed source sha."},
-		"source_subdir":                  schema.StringAttribute{Computed: true, MarkdownDescription: "Observed source subdir."},
-		"source_exclude":                 schema.ListAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "Source exclusion patterns."},
 		"source_marketplace_repo":        schema.StringAttribute{Computed: true, MarkdownDescription: "Observed source marketplace repo."},
 		"source_marketplace_path":        schema.StringAttribute{Computed: true, MarkdownDescription: "Observed source marketplace path."},
 		"source_marketplace_plugin_name": schema.StringAttribute{Computed: true, MarkdownDescription: "Observed source marketplace plugin name."},
-		"github_sync_interval":           schema.StringAttribute{Computed: true, MarkdownDescription: "Observed github sync interval."},
-		"github_sync_ref":                schema.StringAttribute{Computed: true, MarkdownDescription: "Observed github sync ref."},
-		"github_app_config_id":           schema.StringAttribute{Computed: true, MarkdownDescription: "Observed github app config id."},
-		"github_pat_id":                  schema.StringAttribute{Computed: true, MarkdownDescription: "Observed github pat id."},
-		"source_provider":                schema.StringAttribute{Computed: true, MarkdownDescription: "Observed source provider."},
 		"source_origin":                  schema.StringAttribute{Computed: true, MarkdownDescription: "Observed source origin."},
-		"gitlab_token_id":                schema.StringAttribute{Computed: true, MarkdownDescription: "Observed gitlab token id."},
 		"last_synced_at":                 schema.StringAttribute{Computed: true, MarkdownDescription: "Observed last synced at."},
 		"last_sync_error":                schema.StringAttribute{Computed: true, MarkdownDescription: "Observed last sync error."},
 		"pending_source_sha":             schema.StringAttribute{Computed: true, MarkdownDescription: "Observed pending source sha."},
@@ -175,9 +148,7 @@ func (r *PluginResource) Schema(_ context.Context, _ resource.SchemaRequest, res
 		"users":                          schema.StringAttribute{Computed: true, MarkdownDescription: "users metadata as JSON."},
 		"created_by":                     schema.StringAttribute{Computed: true, MarkdownDescription: "createdBy metadata as JSON."},
 	}}
-	if r.gitSource {
-		gitPluginSchema(&resp.Schema)
-	}
+	resp.Schema.Attributes["git_source"] = schema.SingleNestedAttribute{Optional: true, Attributes: gitPluginAttributes(), PlanModifiers: []planmodifier.Object{pluginSourceKindPlanModifier{}}, MarkdownDescription: "Pinned Git content source. Configure this instead of files. Candidate synchronization never approves new executable bytes."}
 }
 func (r *PluginResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
@@ -191,13 +162,15 @@ func (r *PluginResource) Configure(_ context.Context, req resource.ConfigureRequ
 	r.client = c
 }
 func (r *PluginResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	if r.gitSource {
-		r.createGit(ctx, req, resp)
-		return
-	}
+	defer finishParentCreate(ctx, r.client, "plugin", "id", resp)
+
 	var data PluginResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
+		return
+	}
+	if !data.GitSource.IsNull() {
+		r.createGit(ctx, req, resp)
 		return
 	}
 	patch := MergePatch(ctx, req.Plan.Raw, tftypes.NewValue(req.Plan.Raw.Type(), nil), pluginAttrSpec, &resp.Diagnostics)
@@ -263,16 +236,26 @@ func (r *PluginResource) Read(ctx context.Context, req resource.ReadRequest, res
 		return
 	}
 	r.flatten(ctx, &data, result.Body, &resp.Diagnostics)
+	readParentPermissions(ctx, r.client, "plugin", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 func (r *PluginResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	if r.gitSource {
-		r.updateGit(ctx, req, resp)
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "plugin", "id", req, resp)
+	if resp.Diagnostics.HasError() {
 		return
 	}
+	defer finishPermissions()
+
 	var data PluginResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
+		return
+	}
+	if !data.GitSource.IsNull() {
+		r.updateGit(ctx, req, resp)
 		return
 	}
 	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, pluginAttrSpec, &resp.Diagnostics)
@@ -399,12 +382,8 @@ func (r *PluginResource) flatten(ctx context.Context, data *PluginResourceModel,
 		diags.AddError("Invalid API Response", err.Error())
 		return
 	}
-	expectedKind := "manual"
-	if r.gitSource {
-		expectedKind = "github"
-	}
-	if value.SourceKind == nil || *value.SourceKind != expectedKind {
-		diags.AddError("Unexpected plugin source", "The resource cannot adopt a plugin with another immutable source kind.")
+	if value.SourceKind == nil || (*value.SourceKind != "manual" && *value.SourceKind != "github") {
+		diags.AddError("Unexpected plugin source", "Only authored files and Git sources are supported for plugin management.")
 		return
 	}
 	data.ID = types.StringValue(value.ID)
@@ -438,22 +417,19 @@ func (r *PluginResource) flatten(ctx context.Context, data *PluginResourceModel,
 	data.PluginSlug = types.StringPointerValue(value.PluginSlug)
 	data.ContentHash = types.StringPointerValue(value.ContentHash)
 	data.SourceKind = types.StringPointerValue(value.SourceKind)
-	data.SourceRepo = types.StringPointerValue(value.SourceRepo)
+	data.GitSource = types.ObjectNull(pluginGitSourceType.AttrTypes)
+	if *value.SourceKind == "github" {
+		exclude, d := types.ListValueFrom(ctx, types.StringType, value.SourceExclude)
+		diags.Append(d...)
+		source := pluginGitSourceModel{Repo: types.StringPointerValue(value.SourceRepo), CommitSHA: types.StringPointerValue(value.SourceSHA), Subdir: types.StringPointerValue(value.SourceSubdir), Exclude: exclude, Provider: types.StringPointerValue(value.SourceProvider), TrackingRef: types.StringPointerValue(value.GithubSyncRef), SyncInterval: types.StringPointerValue(value.GithubSyncInterval), GitHubAppID: types.StringPointerValue(value.GithubAppConfigID), GitHubPATID: types.StringPointerValue(value.GithubPatID), GitLabTokenID: types.StringPointerValue(value.GitlabTokenID)}
+		data.GitSource, d = types.ObjectValueFrom(ctx, pluginGitSourceType.AttrTypes, source)
+		diags.Append(d...)
+	}
 	data.SourceRef = types.StringPointerValue(value.SourceRef)
-	data.SourceSHA = types.StringPointerValue(value.SourceSHA)
-	data.SourceSubdir = types.StringPointerValue(value.SourceSubdir)
-	data.SourceExclude, d = types.ListValueFrom(ctx, types.StringType, value.SourceExclude)
-	diags.Append(d...)
 	data.SourceMarketplaceRepo = types.StringPointerValue(value.SourceMarketplaceRepo)
 	data.SourceMarketplacePath = types.StringPointerValue(value.SourceMarketplacePath)
 	data.SourceMarketplacePluginName = types.StringPointerValue(value.SourceMarketplacePluginName)
-	data.GithubSyncInterval = types.StringPointerValue(value.GithubSyncInterval)
-	data.GithubSyncRef = types.StringPointerValue(value.GithubSyncRef)
-	data.GithubAppConfigID = types.StringPointerValue(value.GithubAppConfigID)
-	data.GithubPatID = types.StringPointerValue(value.GithubPatID)
-	data.SourceProvider = types.StringPointerValue(value.SourceProvider)
 	data.SourceOrigin = types.StringPointerValue(value.SourceOrigin)
-	data.GitlabTokenID = types.StringPointerValue(value.GitlabTokenID)
 	data.LastSyncedAt = canonicalTokenTime(value.LastSyncedAt)
 	data.LastSyncError = types.StringPointerValue(value.LastSyncError)
 	data.PendingSourceSHA = types.StringPointerValue(value.PendingSourceSHA)
@@ -534,4 +510,8 @@ func (pluginDisplayNameValidator) ValidateString(_ context.Context, req validato
 	if value != strings.TrimSpace(value) {
 		resp.Diagnostics.AddAttributeError(req.Path, "Noncanonical display name", "Use a name without leading or trailing whitespace so the API can return it unchanged.")
 	}
+}
+
+func (r *PluginResource) ModifyPlan(_ context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+	preserveManagedNoopPlan(req, resp)
 }

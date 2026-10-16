@@ -137,7 +137,7 @@ func (r *LimitResource) ValidateConfig(ctx context.Context, req resource.Validat
 
 	// Required-when checks below skip Unknown values: when a field is
 	// referenced from another resource (e.g.,
-	// `mcp_server_name = archestra_mcp_server_installation.foo.name`),
+	// `mcp_server_name = archestra_mcp_server.foo.name`),
 	// the value is Unknown at plan-time until the referenced resource
 	// finalizes. Erroring on Unknown produces a false "X is required"
 	// even though X is set — the framework re-validates after Unknowns

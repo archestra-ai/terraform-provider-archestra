@@ -14,7 +14,7 @@ Usage limit on tokens or call counts, scoped per organization, team, or agent. S
 
 ```terraform
 # Variables (declare in your variables.tf): organization_id (string).
-# Externals (declare elsewhere): archestra_team.engineering, archestra_agent.support, archestra_mcp_server_installation.github.
+# Externals (declare elsewhere): archestra_team.engineering, archestra_agent.support, archestra_mcp_server.github.
 
 # Token-cost limit at the org level — caps cumulative input+output token spend
 # (in micro-USD, so 500_000 = $0.50). `model` is a list because a single limit
@@ -34,7 +34,7 @@ resource "archestra_limit" "engineering_github_calls" {
   entity_type     = "team"
   limit_type      = "mcp_server_calls"
   limit_value     = 5000
-  mcp_server_name = archestra_mcp_server_installation.github.name
+  mcp_server_name = archestra_mcp_server.github.name
 }
 
 # Per-agent tool-call quota — caps how many times the support agent can call
@@ -44,7 +44,7 @@ resource "archestra_limit" "support_list_repos" {
   entity_type     = "agent"
   limit_type      = "tool_calls"
   limit_value     = 200
-  mcp_server_name = archestra_mcp_server_installation.github.name
+  mcp_server_name = archestra_mcp_server.github.name
   tool_name       = "list_repos"
 }
 

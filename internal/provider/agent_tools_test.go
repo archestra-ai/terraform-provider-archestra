@@ -73,14 +73,14 @@ func testAccInlineTools(t *testing.T, kind string) {
 		catalogConfig = fmt.Sprintf(`remote_config={url=%q}`, endpoint)
 	}
 	base := fmt.Sprintf(`
- resource "archestra_mcp_registry_catalog_item" "test" {
+ resource "archestra_mcp_registry_entry" "test" {
  name=%q
  multitenant=false
  %s
  }
- resource "archestra_mcp_server_installation" "test" {
+ resource "archestra_mcp_server" "test" {
  name=%q
- catalog_id=archestra_mcp_registry_catalog_item.test.id
+ catalog_id=archestra_mcp_registry_entry.test.id
  scope="org"
  }
  resource "archestra_agent" "child" {name=%q}
@@ -95,10 +95,10 @@ func testAccInlineTools(t *testing.T, kind string) {
  %s
  }`, kind, name, fields)
 	}
-	initial := config(`tools=[for tool in archestra_mcp_server_installation.test.tools:{tool_id=tool.id,mcp_server_id=archestra_mcp_server_installation.test.id,credential_resolution_mode="static"}]
+	initial := config(`tools=[for tool in archestra_mcp_server.test.tools:{tool_id=tool.id,mcp_server_id=archestra_mcp_server.test.id,credential_resolution_mode="static"}]
  excluded_tool_ids=[]`)
-	updated := config(`tools=[{tool_id=archestra_mcp_server_installation.test.tools[0].id,credential_resolution_mode="dynamic"}]
- excluded_tool_ids=[archestra_mcp_server_installation.test.tools[1].id]`)
+	updated := config(`tools=[{tool_id=archestra_mcp_server.test.tools[0].id,credential_resolution_mode="dynamic"}]
+ excluded_tool_ids=[archestra_mcp_server.test.tools[1].id]`)
 	api := func() *client.ClientWithResponses {
 		c, err := client.NewClientWithResponses(os.Getenv("ARCHESTRA_BASE_URL"), client.WithRequestEditorFn(func(_ context.Context, r *http.Request) error {
 			r.Header.Set("Authorization", os.Getenv("ARCHESTRA_API_KEY"))
@@ -129,10 +129,10 @@ func testAccInlineTools(t *testing.T, kind string) {
 		return nil
 	}
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
-		{Config: initial, Check: resource.ComposeTestCheckFunc(resource.TestCheckResourceAttrPair(address, "tools.#", "archestra_mcp_server_installation.test", "tools.#"), resource.TestCheckResourceAttr(address, "subagent_ids.#", "1"), resource.TestCheckResourceAttr(address, "remote_agent_ids.#", "1"), func(s *terraform.State) error {
+		{Config: initial, Check: resource.ComposeTestCheckFunc(resource.TestCheckResourceAttrPair(address, "tools.#", "archestra_mcp_server.test", "tools.#"), resource.TestCheckResourceAttr(address, "subagent_ids.#", "1"), resource.TestCheckResourceAttr(address, "remote_agent_ids.#", "1"), func(s *terraform.State) error {
 			id = s.RootModule().Resources[address].Primary.ID
-			serverID = s.RootModule().Resources["archestra_mcp_server_installation.test"].Primary.ID
-			toolID = s.RootModule().Resources["archestra_mcp_server_installation.test"].Primary.Attributes["tools.0.id"]
+			serverID = s.RootModule().Resources["archestra_mcp_server.test"].Primary.ID
+			toolID = s.RootModule().Resources["archestra_mcp_server.test"].Primary.Attributes["tools.0.id"]
 			response, err := api().GetAgentWithResponse(t.Context(), uuid.MustParse(id))
 			if err != nil || response.JSON200 == nil {
 				return fmt.Errorf("read reserved tools: %v", err)

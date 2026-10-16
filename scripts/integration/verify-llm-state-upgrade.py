@@ -33,7 +33,7 @@ try:
 
     def config(version):
         flag = 'is_organization_default' if version == 'v2' else 'is_primary'
-        (probe / 'main.tf').write_text(base + 'resource "archestra_llm_provider_api_key" "test" {\nname="v2-v3-state-probe"\nllm_provider="ollama"\n' + flag + '=false\n}\n')
+        (probe / 'main.tf').write_text(base + 'resource "archestra_model_provider" "test" {\nname="v2-v3-state-probe"\nllm_provider="ollama"\n' + flag + '=false\n}\n')
 
     def run(version, *args):
         env = dict(os.environ, ARCHESTRA_API_KEY=key, ARCHESTRA_BASE_URL=options.base_url, TF_CLI_CONFIG_FILE=str(probe / (version + '.terraformrc')))
@@ -43,7 +43,7 @@ try:
             raise RuntimeError(version + ' ' + args[0] + ' failed; inspect local log')
         return p.returncode
     config('v2')
-    run('v2', 'import', 'archestra_llm_provider_api_key.test', identifier)
+    run('v2', 'import', 'archestra_model_provider.test', identifier)
     old = json.loads((probe / 'terraform.tfstate').read_text())
     assert old['resources'][0]['instances'][0]['schema_version'] == 0
     assert old['resources'][0]['instances'][0]['attributes']['is_organization_default'] is False

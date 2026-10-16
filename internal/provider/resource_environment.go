@@ -28,6 +28,7 @@ func NewEnvironmentResource() resource.Resource { return &EnvironmentResource{} 
 
 type EnvironmentResource struct{ client *client.ClientWithResponses }
 type EnvironmentResourceModel struct {
+	InitialGrants          types.Set         `tfsdk:"permissions"`
 	ID                     types.String      `tfsdk:"id"`
 	Name                   types.String      `tfsdk:"name"`
 	Description            types.String      `tfsdk:"description"`
@@ -46,6 +47,7 @@ var environmentNetworkType = types.ObjectType{AttrTypes: map[string]attr.Type{
 	"egress_mode": types.StringType, "domain_preset": types.StringType, "allowed_domains": types.ListType{ElemType: types.StringType}, "allowed_cidrs": types.ListType{ElemType: types.StringType},
 }}
 var environmentAttrSpec = []AttrSpec{
+	{TFName: "permissions", Kind: Synthetic},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
 	{TFName: "namespace", JSONName: "namespace", Kind: Scalar},
@@ -64,7 +66,8 @@ func (r *EnvironmentResource) Metadata(_ context.Context, req resource.MetadataR
 	resp.TypeName = req.ProviderTypeName + "_environment"
 }
 func (r *EnvironmentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	resp.Schema = schema.Schema{MarkdownDescription: "Deployment environment and its network and container registry policies. Destroy deletes the environment; the API rejects deletion while resources remain assigned. Permissions are managed separately with archestra_resource_permission_policy. Requires an Archestra release containing GET /api/environments/{id}.", Attributes: map[string]schema.Attribute{
+	resp.Schema = schema.Schema{MarkdownDescription: "Deployment environment and its network and container registry policies. Destroy deletes the environment; the API rejects deletion while resources remain assigned. Sharing is managed through permissions on this object. Requires an Archestra release containing GET /api/environments/{id}.", Attributes: map[string]schema.Attribute{
+		"permissions":              nonAtomicPermissionsAttribute(),
 		"id":                       schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 		"name":                     schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 50)}},
 		"description":              schema.StringAttribute{Optional: true, Validators: []validator.String{stringvalidator.LengthAtMost(500)}},
@@ -93,6 +96,8 @@ func (r *EnvironmentResource) Configure(_ context.Context, req resource.Configur
 	r.client = c
 }
 func (r *EnvironmentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	defer finishParentCreate(ctx, r.client, "environment", "id", resp)
+
 	var data EnvironmentResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -123,10 +128,12 @@ func (r *EnvironmentResource) Create(ctx context.Context, req resource.CreateReq
 	data.UpdatedAt = types.StringNull()
 	// Persist the remote ID before any follow-up request can fail, so Terraform
 	// can recover and destroy the created object after a partial apply.
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 	if !r.refresh(ctx, &data, &resp.Diagnostics) {
 		return
 	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 func (r *EnvironmentResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -146,9 +153,19 @@ func (r *EnvironmentResource) Read(ctx context.Context, req resource.ReadRequest
 		}
 		return
 	}
+	readParentPermissions(ctx, r.client, "environment", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 func (r *EnvironmentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "environment", "id", req, resp)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	defer finishPermissions()
+
 	var data EnvironmentResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -156,6 +173,10 @@ func (r *EnvironmentResource) Update(ctx context.Context, req resource.UpdateReq
 	}
 	patch := MergePatch(ctx, req.Plan.Raw, req.State.Raw, environmentAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
+		return
+	}
+	if len(patch) == 0 {
+		resp.State = req.State
 		return
 	}
 	body, err := json.Marshal(patch)

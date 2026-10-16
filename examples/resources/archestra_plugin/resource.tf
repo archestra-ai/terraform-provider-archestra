@@ -16,3 +16,11 @@ resource "archestra_plugin" "example" {
     }
   }
 }
+
+# Alternatively, declare a pinned Git source instead of files:
+# git_source = {
+#   repo       = "archestra-ai/terraform-provider-archestra"
+#   commit_sha = "9e6a43f5347f6f3730ffeb75946f6e162791851d"
+#   subdir     = "scripts/integration/fixtures/plugins/synthetic"
+#   exclude    = []
+# }

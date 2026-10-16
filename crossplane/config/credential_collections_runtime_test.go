@@ -25,10 +25,8 @@ func TestCredentialOptionalCollectionsKeepOmissionAndEmptyDistinct(t *testing.T)
 		newResource func() credentialParameters
 		fields      map[string]string
 	}{
-		{"cluster repository plugin", func() credentialParameters { return &clusterplugin.RepositoryPackage{} }, map[string]string{"labels": "labels"}},
-		{"namespaced repository plugin", func() credentialParameters { return &namespacedplugin.RepositoryPackage{} }, map[string]string{"labels": "labels"}},
-		{"cluster plugin", func() credentialParameters { return &clusterplugin.ManualPackage{} }, map[string]string{"labels": "labels"}},
-		{"namespaced plugin", func() credentialParameters { return &namespacedplugin.ManualPackage{} }, map[string]string{"labels": "labels"}},
+		{"cluster plugin", func() credentialParameters { return &clusterplugin.Plugin{} }, map[string]string{"labels": "labels"}},
+		{"namespaced plugin", func() credentialParameters { return &namespacedplugin.Plugin{} }, map[string]string{"labels": "labels"}},
 		{"cluster virtual", func() credentialParameters { return &clusterllm.VirtualKey{} }, map[string]string{"providerApiKeys": "provider_api_keys", "labels": "labels"}},
 		{"namespaced virtual", func() credentialParameters { return &namespacedllm.VirtualKey{} }, map[string]string{"providerApiKeys": "provider_api_keys", "labels": "labels"}},
 		{"cluster OAuth", func() credentialParameters { return &clustercredential.OAuthClient{} }, map[string]string{"providerApiKeys": "provider_api_keys", "labels": "labels", "allowedGatewayIds": "allowed_gateway_ids", "redirectUris": "redirect_uris"}},

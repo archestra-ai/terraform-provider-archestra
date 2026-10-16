@@ -96,7 +96,7 @@ func TestAccGithubAppConfigResource(t *testing.T) {
 		if key != "" {
 			input = fmt.Sprintf("private_key=%q", key)
 		}
-		return fmt.Sprintf(`resource "archestra_github_app_config" "test" {
+		return fmt.Sprintf(`resource "archestra_github_app" "test" {
  name=%q
  github_url="http://127.0.0.1:19997"
  app_id="100"
@@ -106,7 +106,7 @@ func TestAccGithubAppConfigResource(t *testing.T) {
 	}
 	var id string
 	preserve := func(s *terraform.State) error {
-		if s.RootModule().Resources["archestra_github_app_config.test"].Primary.ID != id {
+		if s.RootModule().Resources["archestra_github_app.test"].Primary.ID != id {
 			return fmt.Errorf("GitHub App metadata update replaced its identity")
 		}
 		if resent.Load() {
@@ -116,21 +116,21 @@ func TestAccGithubAppConfigResource(t *testing.T) {
 	}
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config("tf-stored-github-app", "secret/data/test/ollama#api_key", "200"), Check: func(s *terraform.State) error {
-			id = s.RootModule().Resources["archestra_github_app_config.test"].Primary.ID
+			id = s.RootModule().Resources["archestra_github_app.test"].Primary.ID
 			return nil
 		}},
-		{ResourceName: "archestra_github_app_config.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"private_key"}},
-		{PreConfig: func() { phase.Store(true) }, Config: config("tf-renamed-github-app", "secret/data/test/ollama#api_key", "201"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_github_app_config.test", plancheck.ResourceActionUpdate)}}, Check: preserve},
+		{ResourceName: "archestra_github_app.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"private_key"}},
+		{PreConfig: func() { phase.Store(true) }, Config: config("tf-renamed-github-app", "secret/data/test/ollama#api_key", "201"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_github_app.test", plancheck.ResourceActionUpdate)}}, Check: preserve},
 		{Config: config("tf-unmanaged-github-app", "", "201"), Check: preserve},
 		{Config: config("tf-unmanaged-github-app", "", "201"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
-		{PreConfig: func() { phase.Store(false) }, Config: config("tf-unmanaged-github-app", "secret/data/test/openai#api_key", "201"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_github_app_config.test", plancheck.ResourceActionUpdate)}}, Check: preserve},
+		{PreConfig: func() { phase.Store(false) }, Config: config("tf-unmanaged-github-app", "secret/data/test/openai#api_key", "201"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_github_app.test", plancheck.ResourceActionUpdate)}}, Check: preserve},
 	}})
 }
 func TestAccGithubRegistrationsRequireCreationCredential(t *testing.T) {
-	for _, kind := range []string{"github_pat", "github_app_config"} {
+	for _, kind := range []string{"github_pat", "github_app"} {
 		t.Run(kind, func(t *testing.T) {
 			fields := ""
-			if kind == "github_app_config" {
+			if kind == "github_app" {
 				fields = "app_id=\"100\"\ninstallation_id=\"200\""
 			}
 			resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{

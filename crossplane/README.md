@@ -1,13 +1,16 @@
 # crossplane-provider-archestra
 
-The current clean-major working surface contains **35 registered resources**, generated in both Crossplane scopes. Agent/gateway assignments, exclusions, skills and hooks are fields on their parent; eleven standalone relationship types and the obsolete proxy-profile type are retired. Further team/settings/permissions/source consolidation and naming cleanup remain in progress. The [inline native evidence](../audit/inline-ownership-native-acceptance.json) records 11 passing rc.49 cases; [both-scope runtime evidence](../audit/crossplane-inline-ownership.json) records four passing parent lifecycles with normal cleanup. Earlier 47-family counts below describe the pre-consolidation frozen checkpoint, not the current public surface.
+
+The v3 review candidate has **29 resources and four data sources**, generated in both Crossplane scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](../MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The [full native acceptance proof](../audit/consolidated-native-acceptance.json) records 146 passing cases with zero failures or skips against API 1.4.0-rc.49.
 
 Crossplane provider for [Archestra](https://archestra.ai), generated from
 [`terraform-provider-archestra`](https://registry.terraform.io/providers/archestra-ai/archestra/latest/docs)
 using the [`upjet`](https://github.com/crossplane/upjet) code-generation
 toolchain.
 
-The v3 working schema includes 35 Terraform resources in both scopes. The shared
+The [organization-defaults runtime proof](../audit/crossplane-organization-defaults.json) covers current settings behavior in both scopes.
+
+The v3 working schema includes 29 Terraform resources in both scopes. The shared
 configurator in [config/resources.go](config/resources.go) defines each group/kind
 and reference. Gateways use the `gateway` API group so their agent references do
 not form an import cycle with agent references to MCP servers. See the current
@@ -70,7 +73,7 @@ when absent. For namespaced (Crossplane v2) usage see
 
 ```yaml
 apiVersion: mcp.archestra.crossplane.io/v1alpha1
-kind: RegistryCatalogItem
+kind: RegistryEntry
 metadata:
   name: everything
 spec:
@@ -85,22 +88,21 @@ spec:
     name: default
 ---
 apiVersion: mcp.archestra.crossplane.io/v1alpha1
-kind: ServerInstallation
+kind: Server
 metadata:
   name: everything
 spec:
   forProvider:
     name: everything
     catalogIdRef:
-      name: everything       # resolves to the RegistryCatalogItem above
+      name: everything       # resolves to the RegistryEntry above
   providerConfigRef:
     name: default
 ```
 
 `tool_id_by_name` (the per-tool UUID map) lands on
 `status.atProvider.toolIdByName` once the installation reconciles —
-extract from there to populate `ToolBatch.spec.forProvider.toolIds` and
-`ToolInvocationPolicyDefault.spec.forProvider.toolIds`.
+use those IDs in `Agent.spec.forProvider.tools` or `Gateway.spec.forProvider.tools`.
 
 ## Development
 

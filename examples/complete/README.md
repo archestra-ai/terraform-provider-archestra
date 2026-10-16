@@ -21,7 +21,7 @@ without writing your own module first.
   [BYOS Vault guide](../../docs/guides/byos-vault.md)
   for setup. To run against a DB-mode
   backend instead, swap the `vault_secret_*` fields on
-  `archestra_llm_provider_api_key.ollama_vault` for an inline `api_key`.
+  `archestra_model_provider.ollama_vault` for an inline `api_key`.
 
 ## Running it
 
@@ -53,9 +53,9 @@ Keycloak / Okta / Auth0 / etc.
 | 1 | `archestra_organization_settings.main` | App branding + global tool policy |
 | 2 | `archestra_identity_provider.oidc` | OIDC SSO via the configured IdP |
 | 3 | `archestra_team.engineering`, `archestra_team.support` | Two teams |
-| 4 | `archestra_llm_provider_api_key.ollama_vault` | Ollama credentials read from Vault |
-| 5 | `archestra_mcp_registry_catalog_item.filesystem` | Filesystem MCP server in the private catalog |
-| 6 | `archestra_mcp_server_installation.filesystem` | Installed instance — backend discovers ~14 tools |
+| 4 | `archestra_model_provider.ollama_vault` | Ollama credentials read from Vault |
+| 5 | `archestra_mcp_registry_entry.filesystem` | Filesystem MCP server in the private catalog |
+| 6 | `archestra_mcp_server.filesystem` | Installed instance — backend discovers ~14 tools |
 | 7 | `archestra_agent.support` | Customer-support agent backed by Ollama |
 | 8 | `archestra_agent.support.tools` | Wires the discovered `read_text_file` tool to the support agent |
 | 9 | `archestra_tool_invocation_policy_default.filesystem_blocked` + `archestra_trusted_data_policy_default.filesystem_sanitize` | Per-tool default policies |
@@ -77,7 +77,7 @@ backend with whatever values were last applied.
   `terraform.tfvars` with your own issuer, discovery endpoint, and
   client_id. Pass `client_secret` via `TF_VAR_oidc_client_secret`.
 - **DB-mode backend (no Vault)?** Replace
-  `archestra_llm_provider_api_key.ollama_vault`'s `vault_secret_*`
+  `archestra_model_provider.ollama_vault`'s `vault_secret_*`
   fields with an inline `api_key`.
 - **Want a different LLM provider?** Swap `llm_provider`, `llm_model`,
   and the agent's `llm_model` consistently. The `vault_secret_*` path

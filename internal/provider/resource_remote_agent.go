@@ -32,7 +32,7 @@ type RemoteAgentResourceModel struct {
 	Name                      types.String         `tfsdk:"name"`
 	Description               types.String         `tfsdk:"description"`
 	Enabled                   types.Bool           `tfsdk:"enabled"`
-	InitialGrants             types.Set            `tfsdk:"initial_grants"`
+	InitialGrants             types.Set            `tfsdk:"permissions"`
 	AgentCard                 jsontypes.Normalized `tfsdk:"agent_card"`
 	Connection                jsontypes.Normalized `tfsdk:"connection_metadata"`
 	CreatedBy                 jsontypes.Normalized `tfsdk:"created_by"`
@@ -77,7 +77,7 @@ func (r *RemoteAgentResource) Schema(_ context.Context, _ resource.SchemaRequest
 		"name":                schema.StringAttribute{Optional: true, Computed: true, MarkdownDescription: "Registration name, defaulting to the Agent Card name on creation."},
 		"description":         schema.StringAttribute{Optional: true, Computed: true, MarkdownDescription: "Description, defaulting to the Agent Card description; an empty string clears it."},
 		"enabled":             schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the saved remote connection can be used; omission preserves its current setting."},
-		"initial_grants":      initialGrantsAttribute(),
+		"permissions":         initialGrantsAttribute(),
 		"agent_card":          schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Normalized saved Agent Card as JSON."},
 		"connection_metadata": schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Connection metadata as JSON, with credential material omitted by the API."},
 		"created_by":          schema.StringAttribute{Computed: true, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "Creator metadata as JSON."},
@@ -110,6 +110,8 @@ func (r *RemoteAgentResource) Configure(_ context.Context, req resource.Configur
 	r.client = c
 }
 func (r *RemoteAgentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	defer finishParentCreate(ctx, r.client, "externalAgent", "id", resp)
+
 	var data RemoteAgentResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
@@ -178,9 +180,19 @@ func (r *RemoteAgentResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 	r.flatten(&data, result.Body, &resp.Diagnostics)
+	readParentPermissions(ctx, r.client, "externalAgent", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 func (r *RemoteAgentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "externalAgent", "id", req, resp)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	defer finishPermissions()
+
 	var data RemoteAgentResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {

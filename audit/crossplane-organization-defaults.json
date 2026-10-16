@@ -1,0 +1,38 @@
+{
+  "run_id": "a3f120f5",
+  "terraform_sha256": "95b4302c0cd1f244b4353854813638befa418563634053dc6f44e2fd094da2f5",
+  "controller_sha256": "cb2bdd4fd34df0c96738d0b54b50d93b392a1faa865b8aedf0cb8186328ed032",
+  "results": [
+    {
+      "resource": "OrganizationInlineDefaults",
+      "scope": "cluster",
+      "create": "passed",
+      "environment_references": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "omission_preserves": "passed",
+      "empty_collections_clear": "passed",
+      "spending_row_identity_preserved": true,
+      "delete_preserves_singleton": true
+    },
+    {
+      "resource": "OrganizationInlineDefaults",
+      "scope": "namespaced",
+      "create": "passed",
+      "environment_references": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "omission_preserves": "passed",
+      "empty_collections_clear": "passed",
+      "spending_row_identity_preserved": true,
+      "delete_preserves_singleton": true
+    }
+  ],
+  "cleanup": "passed",
+  "api_spec_sha256": "07cdcb4f84a8371029a0a5f65be43af7b515cfb052a16e38520340d8b690d0c9",
+  "api_version": "1.4.0-rc.49",
+  "outcome": "passed",
+  "registered_families_per_scope": 29,
+  "source_evidence_sha256": "fca99ea0f70c599ef048a0f1f4f27b9d2226b3f3aec741e3a3ffef72379446ac",
+  "evidence_scope": "Consolidated organization settings: environment reference resolution, complete-set member spending defaults, global default permissions, in-place updates, drift repair, omitted fields, explicit clears and deletion preserving the singleton. Both scopes passed on the corrected scalar-reference generator; normal cleanup, no force-finalizer removal."
+}

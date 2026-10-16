@@ -1,1 +1,0 @@
-terraform import archestra_default_user_limit.example default_limit_uuid

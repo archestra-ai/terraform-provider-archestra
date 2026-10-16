@@ -40,6 +40,9 @@ type OrganizationSettingsResource struct {
 }
 
 type OrganizationSettingsResourceModel struct {
+	EnvironmentDefaults                      types.Object         `tfsdk:"environment_defaults"`
+	DefaultUserLimits                        types.Map            `tfsdk:"default_user_limits"`
+	DefaultPermissions                       types.Object         `tfsdk:"default_permissions"`
 	OnlineMcpCatalogEnabled                  types.Bool           `tfsdk:"online_mcp_catalog_enabled"`
 	OnlineSkillCatalogEnabled                types.Bool           `tfsdk:"online_skill_catalog_enabled"`
 	SkillMarketplaceAnonymousAccess          types.Bool           `tfsdk:"skill_marketplace_anonymous_access"`
@@ -382,6 +385,10 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			},
 		},
 	}
+	for name, attribute := range organizationDefaultsAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
+	resp.Schema.Attributes["default_permissions"] = defaultPermissionsAttribute()
 	for name, attribute := range currentOrganizationAttributes() {
 		resp.Schema.Attributes[name] = attribute
 	}
@@ -413,12 +420,30 @@ func (r *OrganizationSettingsResource) Create(ctx context.Context, req resource.
 		return
 	}
 
+	// Keep the singleton identity recoverable if a later settings write fails.
+	var observed OrganizationSettingsResourceModel
+	r.readOrganization(ctx, &observed, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resp.Diagnostics.Append(resp.State.Set(ctx, &observed)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
 	r.applySettings(ctx, req.Plan.Raw, prior, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
+	r.applyDefaults(ctx, req.Plan.Raw, prior, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.applyDefaultPermissions(ctx, req.Plan.Raw, prior, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	r.readOrganization(ctx, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
@@ -458,6 +483,14 @@ func (r *OrganizationSettingsResource) Update(ctx context.Context, req resource.
 		return
 	}
 
+	r.applyDefaults(ctx, req.Plan.Raw, req.State.Raw, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.applyDefaultPermissions(ctx, req.Plan.Raw, req.State.Raw, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	r.readOrganization(ctx, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
@@ -633,6 +666,15 @@ func shouldCompleteOnboarding(plan, prior tftypes.Value) bool {
 }
 
 func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, data *OrganizationSettingsResourceModel, diags *diag.Diagnostics) {
+	defer func() {
+		if !diags.HasError() {
+			r.readDefaults(ctx, data, diags)
+			if !diags.HasError() {
+				r.readDefaultPermissions(ctx, data, diags)
+			}
+		}
+	}()
+
 	apiResp, err := r.client.GetOrganizationWithResponse(ctx)
 	if err != nil {
 		diags.AddError("API Error", fmt.Sprintf("Unable to read organization settings, got error: %s", err))
@@ -779,4 +821,8 @@ func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, dat
 	} else {
 		data.Metadata = types.StringNull()
 	}
+}
+
+func (r *OrganizationSettingsResource) ModifyPlan(_ context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+	preserveManagedNoopPlan(req, resp)
 }

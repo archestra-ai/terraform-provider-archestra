@@ -1,75 +1,73 @@
 # Provider v3 migration (release candidate work in progress)
 
+## Public names in the clean v3 surface
+
+The following resource names replace their former names; v3 does not register aliases. Review the new schema and import existing objects under the new resource type. Save state before removing obsolete declarations or addresses.
+
+| Former type | v3 type |
+|---|---|
+| `archestra_marketplace_share_link` | `archestra_share_link` |
+| `archestra_mcp_registry_catalog_item` | `archestra_mcp_registry_entry` |
+| `archestra_mcp_server_installation` | `archestra_mcp_server` |
+| `archestra_llm_provider_api_key` | `archestra_model_provider` |
+| `archestra_llm_model` | `archestra_model` |
+| `archestra_virtual_api_key` | `archestra_virtual_key` |
+| `archestra_schedule_trigger` | `archestra_schedule` |
+| `archestra_service_account_token` | `archestra_service_account_api_key` |
+| `archestra_runtime_credential` | `archestra_credential` |
+| `archestra_github_app_config` | `archestra_github_app` |
+
+Agent/gateway relationships now belong to their parent fields. Import the parent and configure its subagents, remote agents, tools, skills, exclusions and hooks there. The obsolete combined proxy-profile type is not available for new creation. Earlier migration notes below describe prior schemas; they do not add v3 aliases.
+
 Do not upgrade production to this branch. The complete resource matrix, live
 reconciliation suite, and release packaging are still being verified. Pin the
 provider and Crossplane package to the tested release until that work is complete.
 
+## Ownership changes
+
+Agent and gateway declarations now contain their subagents, remote agents,
+tools, skills, exclusions and hooks. Omit an optional relationship field to
+preserve it; an explicit empty collection clears it. Declare each relationship
+in one parent only. `archestra_remote_agent` still owns the external registration
+and authentication, separately from the agents that reference it.
+
+Team `external_group_ids` and `vault_folder` replace the standalone SSO-group and
+Vault-folder binding types. Team lookup exposes the same bindings.
+
+Every shareable object exposes `permissions` for its additional direct grants.
+Omit it to preserve the current grants; `[]` clears additional grants. Updates
+keep the object's identity and existing human-owner access. Inherited access and
+ownership remain managed by Archestra. Revision conflicts stop the write so a
+concurrent edit can be refreshed and reviewed. Passthrough virtual keys remain
+personal; Archestra rejects sharing them with other principals.
+
+`archestra_organization_settings` owns `environment_defaults`,
+`default_user_limits` and `default_permissions`. The corresponding standalone
+resources are retired. Omitted default-policy/environment slots remain unmanaged;
+empty sets clear a policy and an empty environment string restores the implicit
+Default. A declared spending-default map owns its complete set of rows; `{}`
+clears the set. Destroying organization settings leaves the singleton and its
+settings intact.
+
+`archestra_plugin` supports either `files` or a nested `git_source` object.
+The separate Git plugin type is retired. Changes to the approved commit or source
+selection require replacement; metadata, tracking and existing credential
+references update in place. Import adopts either source mode. Git source controls
+do not execute plugin hooks.
+
+The read-only surface is `agent`, `team`, `tool` and `mcp_tool_calls`. Agent tool
+lookups are included in the agent lookup, team group mappings in team lookup,
+and server-specific tool lookup uses `tool.mcp_server_id`.
+
 ## Upgrade order
 
-1. Back up Terraform state securely and export the managed Crossplane manifests,
-   external-name annotations, connection secret references and provider settings.
-   State and connection secrets can contain credentials even when marked sensitive.
-2. While the old API and provider are still compatible, inventory retired rules,
-   verify their replacement enforcement, and review the sharing changes below.
-   Remove obsolete bindings and configuration without running a legacy destroy
-   against the newer API. Do not rely on a resource rename to preserve security.
-3. Upgrade Archestra to the exact release pinned in the final compatibility matrix.
-   The tested prerequisite is 1.4.0-rc.47, including the environment, GitLab credential-host and label-read
-   API fixes. Its published image and the full isolated Terraform acceptance suite
-   are verified in `audit/published-api-full-acceptance.json`. Additional API
-   capabilities in this working branch can raise the final minimum version.
-4. Upgrade Terraform in a non-production copy of the workspace. Run refresh-only
-   planning, then a normal plan. Review every deletion, replacement and grant
-   revocation before applying. A version upgrade does not authorize recreation.
-5. Upgrade Crossplane only after its bundled Terraform release is published and
-   verified. Keep the old ProviderRevision available until adoption and rollback
-   checks complete. Do not uninstall CRDs containing live managed resources.
-
-## Retired API resources
-
-The current Archestra API no longer implements these v2 resources:
-
-- `archestra_optimization_rule`
-- `archestra_tool_invocation_policy`
-- `archestra_tool_invocation_policy_default`
-- `archestra_tool_policy_auto_config`
-- `archestra_trusted_data_policy`
-- `archestra_trusted_data_policy_default`
-
-There is no safe automatic translation of their semantics to current guardrails
-or OpenAPPA policy. Inventory each old rule and design and test its replacement
-against the current policy engine. A resource rename alone does not preserve
-security behavior. Do not run a legacy destroy against an API that has removed
-the route. After recording the old policy and its approved replacement, remove
-only the stale Terraform binding with `terraform state rm ADDRESS`. This forgets
-the binding; it does not recreate policy enforcement or prove an old rule was
-removed server-side.
-
-The removed Crossplane ToolInvocationPolicyDefault CRD cannot be converted mechanically
-to the new permission Policy: invocation decisions and object sharing are different
-controls. Preserve its manifest, set and verify an orphan deletion policy before
-removing the old managed resource, and verify replacement enforcement separately.
-Do not delete the CRD until every instance has been accounted for.
-
-## Sharing and permission policies
-
-`scope` and `teams` are no longer creation/update inputs on agents, gateways and
-catalog items. Current Archestra rejects these legacy inputs. Define direct grants
-with `archestra_resource_permission_policy`, with one resource per target. Import
-an existing policy before taking ownership so the plan shows any revoked grants:
-
-```sh
-terraform import archestra_resource_permission_policy.existing environment/ENVIRONMENT_UUID
-```
-
-Set `grants` to the complete desired direct-grant set. Inherited grants remain
-owned by their source. Destroying a policy revokes **all direct grants**, not the
-target object. Revision conflicts stop the operation so a concurrent change can
-be refreshed and reviewed; the provider never blindly retries the write.
-
-LLM key `scope` and `team_id` are now computed metadata. Remove them from writable
-configuration. Catalog and key grants require the API's resource type and exact
-object ID; resource-type tokens are API values (for example `mcpRegistry`).
+1. Save Terraform state and Crossplane manifests, external names and connection
+   secret references securely.
+2. Install the API capability floor in [COMPATIBILITY.md](COMPATIBILITY.md).
+3. Rewrite declarations to the current names and parent-owned fields. Do not apply
+   the old and new declarations against the same relationships concurrently.
+4. Adopt existing identities under the new resource types using the procedure
+   below, then inspect refresh-only and normal plans before applying changes.
 
 ## State and CRD identity
 
@@ -84,8 +82,8 @@ Keep the remote object throughout. Review a no-op plan before any apply. This
 procedure must be exercised against a disposable workspace for the exact source
 and destination schemas before applying it to an existing workspace.
 
-Keep existing Crossplane group/kind and external names when a resource still
-represents the same object. For a new kind or scope, first orphan the old managed
+Some clean-major names also change Crossplane group/kind. Preserve external
+names and use orphan/adoption when moving an existing binding to a new kind. For a new kind or scope, first orphan the old managed
 resource and verify that deleting its Kubernetes binding preserves the backend
 object. Create the new resource with the recorded `crossplane.io/external-name`
 and the existing provider config. Verify Observe and a no-op reconciliation
@@ -256,18 +254,12 @@ current API, so that probe restores a synthetic saved secret into actual v2
 imported state to model pre-redaction saved state. The v3 upgrade preserves it
 and the remote identity; it does not recover a lost secret from the API.
 
-### New authoritative agent policies
+### Agent policy fields
 
-`archestra_agent_skill_policy` manages mode and stable native, external-MCP or
-plugin skill references with optimistic revisions. Declare one per internal
-agent; import by agent UUID. A caller with hidden or unavailable references must
-restore visibility or remove those references explicitly before management.
-Destroy resets to manual mode and clears references without deleting the agent.
-
-`archestra_agent_subagent_exclusions` owns the complete Auto-delegation exclusion
-set. Import by parent agent UUID. Empty sets clear exclusions; destroy also clears
-them while preserving the agent. Invalid, missing, cross-organization and self
-references are not silently accepted as successful managed state.
+`archestra_agent.skills` owns activation mode and stable native, external-MCP or
+plugin references. Hidden or unavailable references require restored visibility
+or explicit removal before management. `excluded_subagent_ids` owns automatic
+subagent exclusions; an empty set clears them. Both fields preserve the agent.
 
 ### Versioned skill content
 

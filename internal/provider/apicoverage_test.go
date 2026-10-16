@@ -76,12 +76,20 @@ func TestApiCoverage(t *testing.T) {
 			// `theme` ↔ `color_theme`). Honor those declared mappings
 			// as covered.
 			attrSpecJSONSet := make(map[string]struct{})
-			if specs, ok := r.(resourceWithAttrSpec); ok {
-				for _, s := range specs.AttrSpecs() {
+			var collectMappings func([]AttrSpec)
+			collectMappings = func(specs []AttrSpec) {
+				for _, s := range specs {
 					if s.JSONName != "" {
 						attrSpecJSONSet[s.JSONName] = struct{}{}
 					}
+					if s.ReadJSONName != "" {
+						attrSpecJSONSet[s.ReadJSONName] = struct{}{}
+					}
+					collectMappings(s.Children)
 				}
+			}
+			if specs, ok := r.(resourceWithAttrSpec); ok {
+				collectMappings(specs.AttrSpecs())
 			}
 
 			skipSet := make(map[string]struct{})

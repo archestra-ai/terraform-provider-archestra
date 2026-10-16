@@ -21,6 +21,7 @@ type ToolDataSource struct {
 }
 
 type ToolDataSourceModel struct {
+	MCPServerID types.String `tfsdk:"mcp_server_id"`
 	ID          types.String `tfsdk:"id"`
 	Name        types.String `tfsdk:"name"`
 	Description types.String `tfsdk:"description"`
@@ -35,6 +36,7 @@ func (d *ToolDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 		MarkdownDescription: "Looks up a tool by name. This includes built-in tools (e.g., `archestra__whoami`) and MCP server tools.",
 
 		Attributes: map[string]schema.Attribute{
+			"mcp_server_id": schema.StringAttribute{Optional: true, MarkdownDescription: "Optional MCP server UUID to scope the exact-name lookup."},
 			"id": schema.StringAttribute{
 				MarkdownDescription: "Tool identifier",
 				Computed:            true,
@@ -76,14 +78,18 @@ func (d *ToolDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
+	if !data.MCPServerID.IsNull() {
+		d.readServerTool(ctx, req, resp)
+		return
+	}
 	targetName := data.Name.ValueString()
 
 	// Retry to bridge the race between this data source running and a
-	// sibling `archestra_mcp_server_installation` registering its tools
+	// sibling `archestra_mcp_server` registering its tools
 	// in the same plan. Tool names are referenced by string in HCL —
 	// Terraform's dep graph can't infer the edge automatically, so the
 	// data source can otherwise return "not found" before tools are
-	// registered. Mirrors the pattern in datasource_agent_tool.
+	// registered. The optional server selector gives Terraform an explicit dependency.
 	type toolResult struct {
 		ID          string
 		Description *string
@@ -107,7 +113,7 @@ func (d *ToolDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	if !found {
 		resp.Diagnostics.AddError(
 			"Not Found",
-			fmt.Sprintf("Tool '%s' not found after retry. If the tool comes from an `archestra_mcp_server_installation` resource in the same module, add `depends_on = [archestra_mcp_server_installation.<n>]` on this data source — string-name references don't create an implicit dependency.", targetName),
+			fmt.Sprintf("Tool '%s' not found after retry. If the tool comes from an `archestra_mcp_server` resource in the same module, add `depends_on = [archestra_mcp_server.<n>]` on this data source — string-name references don't create an implicit dependency.", targetName),
 		)
 		return
 	}
@@ -129,6 +135,7 @@ type toolLookup struct {
 
 func findToolByName(ctx context.Context, apiClient *client.ClientWithResponses, targetName string) (toolLookup, bool, error) {
 	const pageLimit = 100
+	matches := map[string]toolLookup{}
 
 	limit := pageLimit
 	search := targetName
@@ -147,15 +154,21 @@ func findToolByName(ctx context.Context, apiClient *client.ClientWithResponses, 
 
 		for _, tool := range apiResp.JSON200.Data {
 			if tool.Name == targetName {
-				return toolLookup{
-					ID:          tool.Id,
-					Name:        tool.Name,
-					Description: tool.Description,
-				}, true, nil
+				matches[tool.Id] = toolLookup{ID: tool.Id, Name: tool.Name, Description: tool.Description}
 			}
 		}
 		if !apiResp.JSON200.Pagination.HasNext {
-			return toolLookup{}, false, nil
+			break
+		}
+		if len(apiResp.JSON200.Data) == 0 {
+			return toolLookup{}, false, fmt.Errorf("tool listing returned an empty page with more results")
 		}
 	}
+	if len(matches) > 1 {
+		return toolLookup{}, false, fmt.Errorf("multiple tools have the exact name %q; specify mcp_server_id", targetName)
+	}
+	for _, tool := range matches {
+		return tool, true, nil
+	}
+	return toolLookup{}, false, nil
 }

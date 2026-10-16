@@ -3,12 +3,12 @@
 page_title: "archestra_service_account Resource - archestra"
 subcategory: ""
 description: |-
-  Non-human organization identity with a role and explicit permission grants; credentials are managed separately with archestra_service_account_token.
+  Non-human organization identity with a role and explicit permission grants; credentials are managed separately with archestra_service_account_api_key.
 ---
 
 # archestra_service_account (Resource)
 
-Non-human organization identity with a role and explicit permission grants; credentials are managed separately with archestra_service_account_token.
+Non-human organization identity with a role and explicit permission grants; credentials are managed separately with archestra_service_account_api_key.
 
 ## Example Usage
 
@@ -31,8 +31,8 @@ resource "archestra_service_account" "example" {
 
 - `disabled` (Boolean) Whether the identity is disabled.
 - `icon` (String) Emoji or image icon.
-- `initial_grants` (Attributes Set) Direct grants applied atomically when the object is created; changes require replacement, and later permission changes belong to archestra_resource_permission_policy. (see [below for nested schema](#nestedatt--initial_grants))
 - `labels` (Attributes Set) Service-account labels. (see [below for nested schema](#nestedatt--labels))
+- `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `team_id` (String) Owning team; remove this field to return to organization ownership.
 
 ### Read-Only
@@ -46,16 +46,6 @@ resource "archestra_service_account" "example" {
 - `token_count` (Number) Total issued tokens.
 - `updated_at` (String) Last-update timestamp (RFC 3339).
 
-<a id="nestedatt--initial_grants"></a>
-### Nested Schema for `initial_grants`
-
-Required:
-
-- `actions` (Set of String) Actions granted to the principal.
-- `subject_id` (String) Principal ID; use * for the organization principal.
-- `subject_type` (String) Principal type.
-
-
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`
 
@@ -63,6 +53,16 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+
+<a id="nestedatt--permissions"></a>
+### Nested Schema for `permissions`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
 
 ## Import
 
