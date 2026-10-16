@@ -15,10 +15,11 @@ API versions are independent of provider versions. See the [compatibility matrix
 
 ## Resource coverage
 
-This v3 branch is under development. The schema registers 35 resource families,
+This v3 branch is under development. The schema registers 39 resource families,
 all configured in both Crossplane scopes. The [29-family baseline](audit/crossplane-rc48-candidate.json)
-and [six-family expansion](audit/crossplane-persistent-extensions.json) each have
-real both-scope lifecycle evidence on their recorded binaries. Both Linux runtime
+and [full 35-family sweep](audit/crossplane-35-family-candidate.json) have recorded
+real both-scope lifecycles. The [A2A and environment bindings](audit/crossplane-a2a-environment-bindings.json)
+add four tested families in both scopes, with separate candidate hashes. Both Linux runtime
 images and embedded xpkgs pass [packaging and image reconciliation checks](audit/runtime-package-validation.json).
 [Further persistent API work](audit/api-lifecycle-decisions.md), final candidate
 repetition, normal review and publication remain open. This count does not establish
@@ -52,7 +53,6 @@ complete coverage of the wider Archestra API.
 | `archestra_schedule_trigger` | `schedule` / `Trigger` |
 | `archestra_team` | `team` / `Team` |
 | `archestra_team_external_group` | `team` / `ExternalGroup` |
-
 | `archestra_agent_hook` | `agent` / `Hook` |
 | `archestra_agent_knowledge_source_exclusions` | `agent` / `KnowledgeSourceExclusions` |
 | `archestra_default_user_limit` | `limit` / `DefaultUserLimit` |
@@ -62,6 +62,10 @@ complete coverage of the wider Archestra API.
 | `archestra_mcp_gateway_skill_exclusions` | `mcp` / `SkillExclusions` |
 | `archestra_service_account` | `identity` / `ServiceAccount` |
 | `archestra_service_account_token` | `credential` / `ServiceAccountToken` |
+| `archestra_remote_agent` | `a2a` / `RemoteAgent` |
+| `archestra_agent_remote_delegations` | `agent` / `RemoteDelegations` |
+| `archestra_environment_default` | `environment` / `ResourceDefault` |
+| `archestra_team_vault_folder` | `team` / `VaultFolder` |
 
 Seven Terraform data sources remain available for lookups and audit data.
 Crossplane resources use `<group>.archestra.crossplane.io` in cluster scope and

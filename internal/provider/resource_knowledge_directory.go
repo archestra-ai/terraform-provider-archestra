@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
+	"time"
 )
 
 var _ resource.ResourceWithImportState = &KnowledgeDirectoryResource{}
@@ -195,13 +196,13 @@ func (r *KnowledgeDirectoryResource) ImportState(ctx context.Context, req resour
 }
 func (r *KnowledgeDirectoryResource) flatten(_ context.Context, data *KnowledgeDirectoryResourceModel, body []byte, diags *diag.Diagnostics) {
 	var value struct {
-		ID             *string  `json:"id"`
-		Name           *string  `json:"name"`
-		Visibility     *string  `json:"visibility"`
-		FileCount      *float64 `json:"fileCount"`
-		OrganizationID *string  `json:"organizationId"`
-		CreatedAt      *string  `json:"createdAt"`
-		UpdatedAt      *string  `json:"updatedAt"`
+		ID             *string    `json:"id"`
+		Name           *string    `json:"name"`
+		Visibility     *string    `json:"visibility"`
+		FileCount      *float64   `json:"fileCount"`
+		OrganizationID *string    `json:"organizationId"`
+		CreatedAt      *time.Time `json:"createdAt"`
+		UpdatedAt      *time.Time `json:"updatedAt"`
 	}
 	if err := json.Unmarshal(body, &value); err != nil {
 		diags.AddError("Invalid API Response", err.Error())
@@ -212,6 +213,6 @@ func (r *KnowledgeDirectoryResource) flatten(_ context.Context, data *KnowledgeD
 	data.Visibility = types.StringPointerValue(value.Visibility)
 	data.FileCount = types.Float64PointerValue(value.FileCount)
 	data.OrganizationID = types.StringPointerValue(value.OrganizationID)
-	data.CreatedAt = types.StringPointerValue(value.CreatedAt)
-	data.UpdatedAt = types.StringPointerValue(value.UpdatedAt)
+	data.CreatedAt = canonicalAPITimestamp(value.CreatedAt)
+	data.UpdatedAt = canonicalAPITimestamp(value.UpdatedAt)
 }

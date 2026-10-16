@@ -7,7 +7,24 @@ const mcpGroup = "mcp"
 
 // ConfigureResources applies the same API names and references in both scopes.
 func ConfigureResources(p *ujconfig.Provider) {
-	for _, name := range []string{"archestra_service_account", "archestra_llm_proxy_profile", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_mcp_registry_catalog_item", "archestra_skill", "archestra_runtime_credential", "archestra_llm_provider_api_key"} {
+	p.AddResourceConfigurator("archestra_remote_agent", func(r *ujconfig.Resource) { r.ShortGroup = "a2a"; r.Kind = "RemoteAgent" })
+	p.AddResourceConfigurator("archestra_agent_remote_delegations", func(r *ujconfig.Resource) {
+		r.ShortGroup = "agent"
+		r.Kind = "RemoteDelegations"
+		r.References["agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
+		r.References["connection_ids"] = ujconfig.Reference{TerraformName: "archestra_remote_agent", Extractor: `github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("connection_id", true)`}
+	})
+	p.AddResourceConfigurator("archestra_environment_default", func(r *ujconfig.Resource) {
+		r.ShortGroup = "environment"
+		r.Kind = "ResourceDefault"
+		r.References["environment_id"] = ujconfig.Reference{TerraformName: "archestra_environment"}
+	})
+	p.AddResourceConfigurator("archestra_team_vault_folder", func(r *ujconfig.Resource) {
+		r.ShortGroup = "team"
+		r.Kind = "VaultFolder"
+		r.References["team_id"] = ujconfig.Reference{TerraformName: "archestra_team"}
+	})
+	for _, name := range []string{"archestra_remote_agent", "archestra_service_account", "archestra_llm_proxy_profile", "archestra_agent", "archestra_mcp_gateway", "archestra_project", "archestra_knowledge_base", "archestra_mcp_registry_catalog_item", "archestra_skill", "archestra_runtime_credential", "archestra_llm_provider_api_key"} {
 		p.AddResourceConfigurator(name, func(r *ujconfig.Resource) {
 			// Keep creation inputs in initProvider so later changes stay ignored.
 			r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "initial_grants")

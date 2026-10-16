@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
+	"time"
 )
 
 var _ resource.ResourceWithImportState = &DefaultUserLimitResource{}
@@ -200,14 +201,14 @@ func (r *DefaultUserLimitResource) ImportState(ctx context.Context, req resource
 }
 func (r *DefaultUserLimitResource) flatten(ctx context.Context, data *DefaultUserLimitResourceModel, body []byte, diags *diag.Diagnostics) {
 	var value struct {
-		ID              *string  `json:"id"`
-		EnvironmentID   *string  `json:"environmentId"`
-		LimitValue      *int64   `json:"limitValue"`
-		Model           []string `json:"model"`
-		CleanupInterval *string  `json:"cleanupInterval"`
-		OrganizationID  *string  `json:"organizationId"`
-		CreatedAt       *string  `json:"createdAt"`
-		UpdatedAt       *string  `json:"updatedAt"`
+		ID              *string    `json:"id"`
+		EnvironmentID   *string    `json:"environmentId"`
+		LimitValue      *int64     `json:"limitValue"`
+		Model           []string   `json:"model"`
+		CleanupInterval *string    `json:"cleanupInterval"`
+		OrganizationID  *string    `json:"organizationId"`
+		CreatedAt       *time.Time `json:"createdAt"`
+		UpdatedAt       *time.Time `json:"updatedAt"`
 	}
 	if err := json.Unmarshal(body, &value); err != nil {
 		diags.AddError("Invalid API Response", err.Error())
@@ -221,6 +222,6 @@ func (r *DefaultUserLimitResource) flatten(ctx context.Context, data *DefaultUse
 	diags.Append(d...)
 	data.CleanupInterval = types.StringPointerValue(value.CleanupInterval)
 	data.OrganizationID = types.StringPointerValue(value.OrganizationID)
-	data.CreatedAt = types.StringPointerValue(value.CreatedAt)
-	data.UpdatedAt = types.StringPointerValue(value.UpdatedAt)
+	data.CreatedAt = canonicalAPITimestamp(value.CreatedAt)
+	data.UpdatedAt = canonicalAPITimestamp(value.UpdatedAt)
 }

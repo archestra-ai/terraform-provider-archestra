@@ -1,0 +1,118 @@
+{
+  "run_id": "f3440478",
+  "terraform_sha256": "035aacf8fe405bd15bae8c4d873899f93f8592c2d58488e9dfc48ba5efd432b6",
+  "controller_sha256": "c62317b4aa921cdfaeeb017942f1f6ae5e73d9dc872e985a967cfcac26032f87",
+  "results": [
+    {
+      "resource": "RemoteDelegations",
+      "scope": "cluster",
+      "create": "passed",
+      "connection_reference": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_assignments": "passed",
+      "registrations_preserved": true
+    },
+    {
+      "resource": "RemoteAgent",
+      "scope": "cluster",
+      "create": "passed",
+      "initially_disabled": "passed",
+      "update": "passed",
+      "source_update": "passed",
+      "drift_repair": "passed",
+      "source_drift_repair": "passed",
+      "identity_preserved": true,
+      "authentication_clear": "passed",
+      "credential_absent_from_status": true,
+      "delete": "passed",
+      "outbound_agent_runs": "not_invoked"
+    },
+    {
+      "resource": "ResourceDefault",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "unrelated_defaults_preserved": true
+    },
+    {
+      "resource": "VaultFolder",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "vault_secrets_modified": false
+    },
+    {
+      "resource": "RemoteAgentInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "RemoteDelegations",
+      "scope": "namespaced",
+      "create": "passed",
+      "connection_reference": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_assignments": "passed",
+      "registrations_preserved": true
+    },
+    {
+      "resource": "RemoteAgent",
+      "scope": "namespaced",
+      "create": "passed",
+      "initially_disabled": "passed",
+      "update": "passed",
+      "source_update": "passed",
+      "drift_repair": "passed",
+      "source_drift_repair": "passed",
+      "identity_preserved": true,
+      "authentication_clear": "passed",
+      "credential_absent_from_status": true,
+      "delete": "passed",
+      "outbound_agent_runs": "not_invoked"
+    },
+    {
+      "resource": "ResourceDefault",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "unrelated_defaults_preserved": true
+    },
+    {
+      "resource": "VaultFolder",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "vault_secrets_modified": false
+    },
+    {
+      "resource": "RemoteAgentInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    }
+  ],
+  "cleanup": "passed",
+  "api_spec_sha256": "d88e74f5d3633eaeaf53e01c1c32a32d6e3fe013864d37e636324aac5633f73e",
+  "api_version": "1.4.0-rc.48",
+  "outcome": "passed",
+  "registered_families_per_scope": 39,
+  "source_evidence_sha256": "a2b3aa075aba8692194c924f6edfe2a56373fe6641374d9abb6da90670c12d67",
+  "evidence_scope": "Four additional persistent families and one creation-grant family, in both Crossplane scopes. The full 35-family sweep has separate frozen candidate hashes. A2A registration tests never invoke an outbound agent run; Vault-folder tests never change external Vault secrets."
+}

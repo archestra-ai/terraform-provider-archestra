@@ -19,6 +19,8 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'remote-agents': {'RemoteAgent','RemoteDelegations'},
+    'environment-bindings': {'ResourceDefault','VaultFolder'},
     'extensions': {'ProxyProfile','Directory','DefaultUserLimit','Hook','ServiceAccount','ServiceAccountToken','GatewaySubagentControl','InstallationControls'},
     'core': {'Agent', 'Environment', 'Team', 'Gateway', 'Project', 'KnowledgeBase', 'Role'},
     'catalog': {'RegistryCatalogItem'}, 'limit': {'Limit'}, 'llm': {'ModelOverride', 'ProviderKey'},
@@ -29,7 +31,7 @@ CASE_RESOURCES = {
     'skill-policy': {'SkillPolicy'}, 'subagent-exclusions': {'SubagentExclusions'},
     'knowledge-exclusions': {'KnowledgeSourceExclusions'}, 'skill': {'Skill'},
     'gateway-skills': {'SkillPublication', 'SkillExclusions'}, 'project-instructions': {'ProjectInstructions'},
-    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
+    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
 }
 
 
@@ -52,6 +54,15 @@ def completed_cases(results, scope):
     return completed
 
 
+def a2a_source(name):
+    return {'type': 'inline_card', 'agentCard': {
+        'name': name, 'description': 'Synthetic external registration.', 'version': '1.0.0',
+        'supportedInterfaces': [{'url': 'http://127.0.0.1:19998/a2a/' + name, 'protocolBinding': 'JSONRPC', 'protocolVersion': '1.0'}],
+        'capabilities': {'streaming': False}, 'defaultInputModes': ['text/plain'], 'defaultOutputModes': ['text/plain'], 'skills': [],
+        'securitySchemes': {'apiKeyAuth': {'type': 'apiKey', 'in': 'header', 'name': 'X-API-Key'}},
+        'securityRequirements': [{}, {'apiKeyAuth': []}]}}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--api-url', required=True)
@@ -59,10 +70,10 @@ def main():
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
     parser.add_argument('--scopes', nargs='+', choices=('cluster', 'namespaced'), default=['cluster', 'namespaced'])
-    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
+    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
     parser.add_argument('--kubeconfig', type=Path, required=True)
     parser.add_argument('--provider-config', required=True)
     parser.add_argument('--namespace', default='crossplane-system')
@@ -267,6 +278,120 @@ def main():
                 results.append(result)
                 save()
                 print(json.dumps(result), flush=True)
+
+            if 'remote-agents' in scope_cases:
+                secret_name = 'cp-remote-auth-' + run + '-' + scope
+                credential = 'secret/data/test/ollama#api_key' if args.readonly_vault else 'synthetic-local-only'
+                auth = {'type': 'api_key', 'headerName': 'X-API-Key', 'credential': credential}
+                def write_auth(value):
+                    kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
+                        'metadata': {'name': secret_name, 'namespace': args.namespace, 'labels': {'provider-test-run': run}},
+                        'stringData': {'auth': json.dumps(value)}})
+                write_auth(auth)
+                secret = (['-n', args.namespace], 'secrets', secret_name)
+                leases.append(secret)
+                auth_ref = {'name': secret_name, 'key': 'auth'}
+                if scope == 'cluster':
+                    auth_ref['namespace'] = args.namespace
+                desired_source = a2a_source('cp-remote-first-' + run + '-' + scope)
+                first, first_id, obj = create(scope, 'a2a', 'RemoteAgent', 'remoteagents',
+                    {'source': json.dumps(desired_source), 'name': 'cp-remote-' + run + '-' + scope,
+                     'authSecretRef': auth_ref, 'enabled': False}, '-first')
+                path = '/api/a2a/remote-agents/' + first_id
+                initial = api(path)[1]
+                first_connection = initial['connection']['id']
+                if initial['connection']['enabled'] or not initial['connection']['hasCredential']:
+                    raise RuntimeError('Initial remote connection controls were not persisted')
+                if credential in json.dumps(obj.get('status', {})) or credential in json.dumps(initial):
+                    raise RuntimeError('Remote credential material leaked into observations')
+                patch(first, {'name': 'Updated remote ' + run, 'enabled': True})
+                wait('Remote metadata and enablement update', lambda: api(path)[1]['name'] == 'Updated remote ' + run and api(path)[1]['connection']['enabled'])
+                api(path, {'name': 'Out of band remote'}, 'PUT')
+                wait('Remote metadata drift repair', lambda: api(path)[1]['name'] == 'Updated remote ' + run)
+                write_auth({'type': 'none'})
+                wait('Remote authentication clear', lambda: api(path)[1]['connection']['authType'] == 'none' and not api(path)[1]['connection']['hasCredential'])
+                desired_source['agentCard']['description'] = 'Updated inline card.'
+                patch(first, {'source': json.dumps(desired_source)})
+                wait('Remote card update', lambda: api(path)[1]['agentCard']['description'] == 'Updated inline card.')
+                drift_source = json.loads(json.dumps(desired_source))
+                drift_source['agentCard']['description'] = 'Out of band card.'
+                api(path, {'source': drift_source, 'auth': {'type': 'none'}}, 'PUT')
+                wait('Remote card drift repair', lambda: api(path)[1]['agentCard']['description'] == 'Updated inline card.')
+                if api(path)[1]['connection']['id'] != first_connection:
+                    raise RuntimeError('Remote metadata or source update replaced its connection identity')
+
+                second, second_id, _ = create(scope, 'a2a', 'RemoteAgent', 'remoteagents',
+                    {'source': json.dumps(a2a_source('cp-remote-second-' + run + '-' + scope))}, '-second')
+                second_connection = api('/api/a2a/remote-agents/' + second_id)[1]['connection']['id']
+                parent, parent_id, _ = create(scope, 'agent', 'Agent', 'agents', {'name': 'cp-remote-parent-' + run + '-' + scope})
+                delegation, delegation_id, _ = create(scope, 'agent', 'RemoteDelegations', 'remotedelegations',
+                    {'agentId': parent_id, 'connectionIdsRefs': [{'name': first[2]}]})
+                assignment_path = '/api/agents/' + parent_id + '/a2a-delegations'
+                def assigned():
+                    code, values = api(assignment_path)
+                    if code != 200:
+                        raise RuntimeError('External assignment read failed: HTTP ' + str(code))
+                    return {item['connectionId'] for item in values}
+                if delegation_id != parent_id or assigned() != {first_connection}:
+                    raise RuntimeError('Connection reference did not resolve to the remote connection UUID')
+                patch(delegation, {'connectionIds': None, 'connectionIdsRefs': [{'name': second[2]}]})
+                wait('External delegation reference update', lambda: assigned() == {second_connection})
+                api(assignment_path, {'connectionIds': []}, 'POST')
+                wait('External delegation drift repair', lambda: assigned() == {second_connection})
+                patch(delegation, {'connectionIds': [], 'connectionIdsRefs': []})
+                wait('External delegation empty-set clear', lambda: not assigned())
+                delete(delegation)
+                if assigned() or api('/api/agents/' + parent_id)[0] != 200 or api(path)[0] != 200 or api('/api/a2a/remote-agents/' + second_id)[0] != 200:
+                    raise RuntimeError('External assignment deletion affected a separately managed registration or agent')
+                record('RemoteDelegations', scope, create='passed', connection_reference='passed', update='passed', drift_repair='passed', empty_set_clear='passed', delete_clears_assignments='passed', registrations_preserved=True)
+                delete(parent)
+                delete(second)
+                delete(first)
+                if api(path)[0] != 404 or api('/api/a2a/remote-agents/' + second_id)[0] != 404:
+                    raise RuntimeError('Remote registration survived deletion')
+                delete(secret)
+                record('RemoteAgent', scope, create='passed', initially_disabled='passed', update='passed', source_update='passed', drift_repair='passed', source_drift_repair='passed', identity_preserved=True, authentication_clear='passed', credential_absent_from_status=True, delete='passed', outbound_agent_runs='not_invoked')
+
+            if 'environment-bindings' in scope_cases:
+                first, first_id, _ = create(scope, 'environment', 'Environment', 'environments', {'name': 'cp-default-first-' + run + '-' + scope})
+                second, second_id, _ = create(scope, 'environment', 'Environment', 'environments', {'name': 'cp-default-second-' + run + '-' + scope})
+                prior = api('/api/environments')[1]['resourceDefaults']
+                default, default_id, _ = create(scope, 'environment', 'ResourceDefault', 'resourcedefaults', {'resourceType': 'app', 'environmentId': first_id})
+                if default_id != 'app':
+                    raise RuntimeError('Environment default external identity is not the selected resource kind')
+                def selected():
+                    return api('/api/environments')[1]['resourceDefaults']
+                if selected()['app'] != first_id:
+                    raise RuntimeError('Initial environment default was not persisted')
+                patch(default, {'environmentId': second_id})
+                wait('Default environment update', lambda: selected()['app'] == second_id)
+                api('/api/environments/defaults', {'app': first_id}, 'PATCH')
+                wait('Default environment drift repair', lambda: selected()['app'] == second_id)
+                if any(selected()[key] != value for key, value in prior.items() if key != 'app'):
+                    raise RuntimeError('Resource default changed an unrelated resource kind')
+                delete(default)
+                if selected()['app'] is not None:
+                    raise RuntimeError('Default deletion did not restore the implicit default')
+                if any(selected()[key] != value for key, value in prior.items() if key != 'app'):
+                    raise RuntimeError('Default deletion changed an unrelated kind')
+                delete(second)
+                delete(first)
+                record('ResourceDefault', scope, create='passed', update='passed', drift_repair='passed', delete='passed', unrelated_defaults_preserved=True)
+
+                team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-vault-team-' + run + '-' + scope})
+                binding, binding_id, _ = create(scope, 'team', 'VaultFolder', 'vaultfolders', {'teamId': team_id, 'vaultPath': 'secret/data/test'})
+                path = '/api/teams/' + team_id + '/vault-folder'
+                if binding_id != team_id:
+                    raise RuntimeError('Vault folder external identity is not the team ID')
+                patch(binding, {'vaultPath': 'secret/data/test/other'})
+                wait('Vault folder binding update', lambda: api(path)[1]['vaultPath'] == 'secret/data/test/other')
+                api(path, {'vaultPath': 'secret/data/test/drift'}, 'POST')
+                wait('Vault folder binding drift repair', lambda: api(path)[1]['vaultPath'] == 'secret/data/test/other')
+                delete(binding)
+                if api(path)[1] is not None:
+                    raise RuntimeError('Vault folder mapping survived deletion')
+                delete(team)
+                record('VaultFolder', scope, create='passed', update='passed', drift_repair='passed', delete='passed', vault_secrets_modified=False)
 
             if 'extensions' in scope_cases:
                 # Each selector reads the authoritative API projection, not Kubernetes status.
@@ -628,6 +753,7 @@ def main():
                     ('mcp', 'Gateway', 'gateways', 'mcpGateway', {}),
                     ('llm', 'ProxyProfile', 'proxyprofiles', 'agent', {}),
                     ('identity', 'ServiceAccount', 'serviceaccounts', 'serviceAccount', {'role': 'member'}),
+                    ('a2a', 'RemoteAgent', 'remoteagents', 'externalAgent', {'source': json.dumps(a2a_source('cp-grant-remote-' + run + '-' + scope))}),
                     ('project', 'Project', 'projects', 'project', {}),
                     ('knowledge', 'KnowledgeBase', 'knowledgebases', 'knowledgeBase', {}),
                     ('mcp', 'RegistryCatalogItem', 'registrycatalogitems', 'mcpRegistry', {'remoteConfig': {'url': 'http://127.0.0.1:19999/mcp'}}),
@@ -666,7 +792,7 @@ def main():
                             code, definitions = api('/api/credentials')
                             return code == 200 and any(item['key'] == identifier and item[metadata_field] == updated_name for item in definitions)
                         prefix = {'agent': '/api/agents/', 'mcpGateway': '/api/agents/', 'project': '/api/projects/',
-                                  'knowledgeBase': '/api/knowledge-bases/', 'mcpRegistry': '/api/internal_mcp_catalog/', 'serviceAccount': '/api/service-accounts/',
+                                  'knowledgeBase': '/api/knowledge-bases/', 'mcpRegistry': '/api/internal_mcp_catalog/', 'serviceAccount': '/api/service-accounts/', 'externalAgent': '/api/a2a/remote-agents/',
                                   'skill': '/api/skills/', 'llmProviderApiKey': '/api/llm-provider-api-keys/'}[resource_type]
                         code, current = api(prefix + identifier)
                         return code == 200 and current[metadata_field] == updated_name

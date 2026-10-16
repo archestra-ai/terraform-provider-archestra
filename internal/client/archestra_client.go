@@ -70,6 +70,106 @@ const (
 	UserConfigFieldInputTypeString    UserConfigFieldInputType = "string"
 )
 
+// Defines values for CreateA2aRemoteAgentJSONBodyAuth0Type.
+const (
+	CreateA2aRemoteAgentJSONBodyAuth0TypeNone CreateA2aRemoteAgentJSONBodyAuth0Type = "none"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodyAuth1Type.
+const (
+	CreateA2aRemoteAgentJSONBodyAuth1TypeBearer CreateA2aRemoteAgentJSONBodyAuth1Type = "bearer"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodyAuth2Type.
+const (
+	CreateA2aRemoteAgentJSONBodyAuth2TypeApiKey CreateA2aRemoteAgentJSONBodyAuth2Type = "api_key"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsActions.
+const (
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsDelete                  CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "delete"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsManagePermissions       CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "manage-permissions"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsRead                    CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "read"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsUpdate                  CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "update"
+	CreateA2aRemoteAgentJSONBodyInitialGrantsActionsUse                     CreateA2aRemoteAgentJSONBodyInitialGrantsActions = "use"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsSubject0Type.
+const (
+	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject0TypeUser CreateA2aRemoteAgentJSONBodyInitialGrantsSubject0Type = "user"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsSubject1Type.
+const (
+	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject1TypeTeam CreateA2aRemoteAgentJSONBodyInitialGrantsSubject1Type = "team"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsSubject2Type.
+const (
+	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject2TypeServiceAccount CreateA2aRemoteAgentJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3Type.
+const (
+	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3TypeRole CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3Type = "role"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Id.
+const (
+	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4IdAsterisk CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Id = "*"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Type.
+const (
+	CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4TypeOrganization CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Type = "organization"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodySource0Type.
+const (
+	CreateA2aRemoteAgentJSONBodySource0TypeWellKnown CreateA2aRemoteAgentJSONBodySource0Type = "well_known"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodySource1Type.
+const (
+	CreateA2aRemoteAgentJSONBodySource1TypeCardUrl CreateA2aRemoteAgentJSONBodySource1Type = "card_url"
+)
+
+// Defines values for CreateA2aRemoteAgentJSONBodySource2Type.
+const (
+	CreateA2aRemoteAgentJSONBodySource2TypeInlineCard CreateA2aRemoteAgentJSONBodySource2Type = "inline_card"
+)
+
+// Defines values for UpdateA2aRemoteAgentJSONBodyAuth0Type.
+const (
+	UpdateA2aRemoteAgentJSONBodyAuth0TypeNone UpdateA2aRemoteAgentJSONBodyAuth0Type = "none"
+)
+
+// Defines values for UpdateA2aRemoteAgentJSONBodyAuth1Type.
+const (
+	UpdateA2aRemoteAgentJSONBodyAuth1TypeBearer UpdateA2aRemoteAgentJSONBodyAuth1Type = "bearer"
+)
+
+// Defines values for UpdateA2aRemoteAgentJSONBodyAuth2Type.
+const (
+	UpdateA2aRemoteAgentJSONBodyAuth2TypeApiKey UpdateA2aRemoteAgentJSONBodyAuth2Type = "api_key"
+)
+
+// Defines values for UpdateA2aRemoteAgentJSONBodySource0Type.
+const (
+	UpdateA2aRemoteAgentJSONBodySource0TypeWellKnown UpdateA2aRemoteAgentJSONBodySource0Type = "well_known"
+)
+
+// Defines values for UpdateA2aRemoteAgentJSONBodySource1Type.
+const (
+	UpdateA2aRemoteAgentJSONBodySource1TypeCardUrl UpdateA2aRemoteAgentJSONBodySource1Type = "card_url"
+)
+
+// Defines values for UpdateA2aRemoteAgentJSONBodySource2Type.
+const (
+	UpdateA2aRemoteAgentJSONBodySource2TypeInlineCard UpdateA2aRemoteAgentJSONBodySource2Type = "inline_card"
+)
+
 // Defines values for GetAllAgentToolsParamsSortBy.
 const (
 	GetAllAgentToolsParamsSortByAgent     GetAllAgentToolsParamsSortBy = "agent"
@@ -754,10 +854,10 @@ const (
 
 // Defines values for UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType.
 const (
-	UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypeBoolean   UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "boolean"
-	UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypeNumber    UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "number"
-	UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypePlainText UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "plain_text"
-	UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypeSecret    UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "secret"
+	Boolean   UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "boolean"
+	Number    UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "number"
+	PlainText UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "plain_text"
+	Secret    UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "secret"
 )
 
 // Defines values for UpdateInternalMcpCatalogItemJSONBodyLocalConfigImagePullPolicy.
@@ -1298,22 +1398,22 @@ const (
 
 // Defines values for CreateSkillJSONBodyInitialGrantsActions.
 const (
-	ConfigureDeploymentSpec CreateSkillJSONBodyInitialGrantsActions = "configure-deployment-spec"
-	Delete                  CreateSkillJSONBodyInitialGrantsActions = "delete"
-	ManagePermissions       CreateSkillJSONBodyInitialGrantsActions = "manage-permissions"
-	Read                    CreateSkillJSONBodyInitialGrantsActions = "read"
-	Update                  CreateSkillJSONBodyInitialGrantsActions = "update"
-	Use                     CreateSkillJSONBodyInitialGrantsActions = "use"
+	CreateSkillJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateSkillJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	CreateSkillJSONBodyInitialGrantsActionsDelete                  CreateSkillJSONBodyInitialGrantsActions = "delete"
+	CreateSkillJSONBodyInitialGrantsActionsManagePermissions       CreateSkillJSONBodyInitialGrantsActions = "manage-permissions"
+	CreateSkillJSONBodyInitialGrantsActionsRead                    CreateSkillJSONBodyInitialGrantsActions = "read"
+	CreateSkillJSONBodyInitialGrantsActionsUpdate                  CreateSkillJSONBodyInitialGrantsActions = "update"
+	CreateSkillJSONBodyInitialGrantsActionsUse                     CreateSkillJSONBodyInitialGrantsActions = "use"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject0Type.
 const (
-	User CreateSkillJSONBodyInitialGrantsSubject0Type = "user"
+	CreateSkillJSONBodyInitialGrantsSubject0TypeUser CreateSkillJSONBodyInitialGrantsSubject0Type = "user"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject1Type.
 const (
-	CreateSkillJSONBodyInitialGrantsSubject1TypeTeam CreateSkillJSONBodyInitialGrantsSubject1Type = "team"
+	Team CreateSkillJSONBodyInitialGrantsSubject1Type = "team"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject2Type.
@@ -1323,17 +1423,17 @@ const (
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject3Type.
 const (
-	Role CreateSkillJSONBodyInitialGrantsSubject3Type = "role"
+	CreateSkillJSONBodyInitialGrantsSubject3TypeRole CreateSkillJSONBodyInitialGrantsSubject3Type = "role"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject4Id.
 const (
-	Asterisk CreateSkillJSONBodyInitialGrantsSubject4Id = "*"
+	CreateSkillJSONBodyInitialGrantsSubject4IdAsterisk CreateSkillJSONBodyInitialGrantsSubject4Id = "*"
 )
 
 // Defines values for CreateSkillJSONBodyInitialGrantsSubject4Type.
 const (
-	Organization CreateSkillJSONBodyInitialGrantsSubject4Type = "organization"
+	CreateSkillJSONBodyInitialGrantsSubject4TypeOrganization CreateSkillJSONBodyInitialGrantsSubject4Type = "organization"
 )
 
 // Defines values for UpdateSkillJSONBodyFilesEncoding.
@@ -1441,6 +1541,211 @@ type UserConfigFieldInput struct {
 
 // UserConfigFieldInputType defines model for UserConfigFieldInput.Type.
 type UserConfigFieldInputType string
+
+// CreateA2aRemoteAgentJSONBody defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBody struct {
+	Auth          *CreateA2aRemoteAgentJSONBody_Auth `json:"auth,omitempty"`
+	Description   *string                            `json:"description"`
+	InitialGrants *[]struct {
+		Actions []CreateA2aRemoteAgentJSONBodyInitialGrantsActions `json:"actions"`
+		Subject CreateA2aRemoteAgentJSONBody_InitialGrants_Subject `json:"subject"`
+	} `json:"initialGrants,omitempty"`
+	Name   *string                             `json:"name,omitempty"`
+	Source CreateA2aRemoteAgentJSONBody_Source `json:"source"`
+}
+
+// CreateA2aRemoteAgentJSONBodyAuth0 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyAuth0 struct {
+	Type CreateA2aRemoteAgentJSONBodyAuth0Type `json:"type"`
+}
+
+// CreateA2aRemoteAgentJSONBodyAuth0Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyAuth0Type string
+
+// CreateA2aRemoteAgentJSONBodyAuth1 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyAuth1 struct {
+	Credential string                                `json:"credential"`
+	Type       CreateA2aRemoteAgentJSONBodyAuth1Type `json:"type"`
+}
+
+// CreateA2aRemoteAgentJSONBodyAuth1Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyAuth1Type string
+
+// CreateA2aRemoteAgentJSONBodyAuth2 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyAuth2 struct {
+	Credential string                                `json:"credential"`
+	HeaderName string                                `json:"headerName"`
+	Type       CreateA2aRemoteAgentJSONBodyAuth2Type `json:"type"`
+}
+
+// CreateA2aRemoteAgentJSONBodyAuth2Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyAuth2Type string
+
+// CreateA2aRemoteAgentJSONBody_Auth defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBody_Auth struct {
+	union json.RawMessage
+}
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsActions defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsActions string
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject0 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject0 struct {
+	Id   string                                                `json:"id"`
+	Type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject0Type `json:"type"`
+}
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject0Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject0Type string
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject1 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject1 struct {
+	Id   string                                                `json:"id"`
+	Type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject1Type `json:"type"`
+}
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject1Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject1Type string
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject2 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject2 struct {
+	Id   openapi_types.UUID                                    `json:"id"`
+	Type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject2Type `json:"type"`
+}
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject2Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject2Type string
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3 struct {
+	Id   string                                                `json:"id"`
+	Type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3Type `json:"type"`
+}
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject3Type string
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4 struct {
+	Id   CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Type `json:"type"`
+}
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Id defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Id string
+
+// CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodyInitialGrantsSubject4Type string
+
+// CreateA2aRemoteAgentJSONBody_InitialGrants_Subject defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBody_InitialGrants_Subject struct {
+	union json.RawMessage
+}
+
+// CreateA2aRemoteAgentJSONBodySource0 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodySource0 struct {
+	Type CreateA2aRemoteAgentJSONBodySource0Type `json:"type"`
+	Url  string                                  `json:"url"`
+}
+
+// CreateA2aRemoteAgentJSONBodySource0Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodySource0Type string
+
+// CreateA2aRemoteAgentJSONBodySource1 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodySource1 struct {
+	Type CreateA2aRemoteAgentJSONBodySource1Type `json:"type"`
+	Url  string                                  `json:"url"`
+}
+
+// CreateA2aRemoteAgentJSONBodySource1Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodySource1Type string
+
+// CreateA2aRemoteAgentJSONBodySource2 defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodySource2 struct {
+	AgentCard map[string]interface{}                  `json:"agentCard"`
+	Type      CreateA2aRemoteAgentJSONBodySource2Type `json:"type"`
+}
+
+// CreateA2aRemoteAgentJSONBodySource2Type defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBodySource2Type string
+
+// CreateA2aRemoteAgentJSONBody_Source defines parameters for CreateA2aRemoteAgent.
+type CreateA2aRemoteAgentJSONBody_Source struct {
+	union json.RawMessage
+}
+
+// UpdateA2aRemoteAgentJSONBody defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBody struct {
+	Auth        *UpdateA2aRemoteAgentJSONBody_Auth   `json:"auth,omitempty"`
+	Description *string                              `json:"description"`
+	Enabled     *bool                                `json:"enabled,omitempty"`
+	Name        *string                              `json:"name,omitempty"`
+	Source      *UpdateA2aRemoteAgentJSONBody_Source `json:"source,omitempty"`
+}
+
+// UpdateA2aRemoteAgentJSONBodyAuth0 defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodyAuth0 struct {
+	Type UpdateA2aRemoteAgentJSONBodyAuth0Type `json:"type"`
+}
+
+// UpdateA2aRemoteAgentJSONBodyAuth0Type defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodyAuth0Type string
+
+// UpdateA2aRemoteAgentJSONBodyAuth1 defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodyAuth1 struct {
+	Credential string                                `json:"credential"`
+	Type       UpdateA2aRemoteAgentJSONBodyAuth1Type `json:"type"`
+}
+
+// UpdateA2aRemoteAgentJSONBodyAuth1Type defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodyAuth1Type string
+
+// UpdateA2aRemoteAgentJSONBodyAuth2 defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodyAuth2 struct {
+	Credential string                                `json:"credential"`
+	HeaderName string                                `json:"headerName"`
+	Type       UpdateA2aRemoteAgentJSONBodyAuth2Type `json:"type"`
+}
+
+// UpdateA2aRemoteAgentJSONBodyAuth2Type defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodyAuth2Type string
+
+// UpdateA2aRemoteAgentJSONBody_Auth defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBody_Auth struct {
+	union json.RawMessage
+}
+
+// UpdateA2aRemoteAgentJSONBodySource0 defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodySource0 struct {
+	Type UpdateA2aRemoteAgentJSONBodySource0Type `json:"type"`
+	Url  string                                  `json:"url"`
+}
+
+// UpdateA2aRemoteAgentJSONBodySource0Type defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodySource0Type string
+
+// UpdateA2aRemoteAgentJSONBodySource1 defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodySource1 struct {
+	Type UpdateA2aRemoteAgentJSONBodySource1Type `json:"type"`
+	Url  string                                  `json:"url"`
+}
+
+// UpdateA2aRemoteAgentJSONBodySource1Type defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodySource1Type string
+
+// UpdateA2aRemoteAgentJSONBodySource2 defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodySource2 struct {
+	AgentCard map[string]interface{}                  `json:"agentCard"`
+	Type      UpdateA2aRemoteAgentJSONBodySource2Type `json:"type"`
+}
+
+// UpdateA2aRemoteAgentJSONBodySource2Type defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBodySource2Type string
+
+// UpdateA2aRemoteAgentJSONBody_Source defines parameters for UpdateA2aRemoteAgent.
+type UpdateA2aRemoteAgentJSONBody_Source struct {
+	union json.RawMessage
+}
 
 // GetAllAgentToolsParams defines parameters for GetAllAgentTools.
 type GetAllAgentToolsParams struct {
@@ -1793,6 +2098,11 @@ type BulkAssignToolsJSONBody struct {
 
 // BulkAssignToolsJSONBodyAssignmentsCredentialResolutionMode defines parameters for BulkAssignTools.
 type BulkAssignToolsJSONBodyAssignmentsCredentialResolutionMode string
+
+// SyncAgentA2aDelegationsJSONBody defines parameters for SyncAgentA2aDelegations.
+type SyncAgentA2aDelegationsJSONBody struct {
+	ConnectionIds []openapi_types.UUID `json:"connectionIds"`
+}
 
 // SyncAgentDelegationsJSONBody defines parameters for SyncAgentDelegations.
 type SyncAgentDelegationsJSONBody struct {
@@ -2229,6 +2539,15 @@ type CreateEnvironmentJSONBodyNetworkPolicyDomainPreset string
 
 // CreateEnvironmentJSONBodyNetworkPolicyEgressMode defines parameters for CreateEnvironment.
 type CreateEnvironmentJSONBodyNetworkPolicyEgressMode string
+
+// UpdateEnvironmentResourceDefaultsJSONBody defines parameters for UpdateEnvironmentResourceDefaults.
+type UpdateEnvironmentResourceDefaultsJSONBody struct {
+	Agent           *openapi_types.UUID `json:"agent"`
+	App             *openapi_types.UUID `json:"app"`
+	KnowledgeSource *openapi_types.UUID `json:"knowledgeSource"`
+	McpGateway      *openapi_types.UUID `json:"mcpGateway"`
+	McpRegistry     *openapi_types.UUID `json:"mcpRegistry"`
+}
 
 // UpdateEnvironmentJSONBody defines parameters for UpdateEnvironment.
 type UpdateEnvironmentJSONBody struct {
@@ -4009,6 +4328,11 @@ type UpdateTeamMemberJSONBody struct {
 // UpdateTeamMemberJSONBodyRole defines parameters for UpdateTeamMember.
 type UpdateTeamMemberJSONBodyRole string
 
+// SetTeamVaultFolderJSONBody defines parameters for SetTeamVaultFolder.
+type SetTeamVaultFolderJSONBody struct {
+	VaultPath string `json:"vaultPath"`
+}
+
 // GetToolsWithAssignmentsParams defines parameters for GetToolsWithAssignments.
 type GetToolsWithAssignmentsParams struct {
 	SortBy        *GetToolsWithAssignmentsParamsSortBy        `form:"sortBy,omitempty" json:"sortBy,omitempty"`
@@ -4042,6 +4366,12 @@ type GetToolsWithAssignmentsParamsSortDirection string
 // GetToolsWithAssignmentsParamsObservedByClient defines parameters for GetToolsWithAssignments.
 type GetToolsWithAssignmentsParamsObservedByClient string
 
+// CreateA2aRemoteAgentJSONRequestBody defines body for CreateA2aRemoteAgent for application/json ContentType.
+type CreateA2aRemoteAgentJSONRequestBody CreateA2aRemoteAgentJSONBody
+
+// UpdateA2aRemoteAgentJSONRequestBody defines body for UpdateA2aRemoteAgent for application/json ContentType.
+type UpdateA2aRemoteAgentJSONRequestBody UpdateA2aRemoteAgentJSONBody
+
 // UpdateAgentToolJSONRequestBody defines body for UpdateAgentTool for application/json ContentType.
 type UpdateAgentToolJSONRequestBody UpdateAgentToolJSONBody
 
@@ -4050,6 +4380,9 @@ type CreateAgentJSONRequestBody CreateAgentJSONBody
 
 // BulkAssignToolsJSONRequestBody defines body for BulkAssignTools for application/json ContentType.
 type BulkAssignToolsJSONRequestBody BulkAssignToolsJSONBody
+
+// SyncAgentA2aDelegationsJSONRequestBody defines body for SyncAgentA2aDelegations for application/json ContentType.
+type SyncAgentA2aDelegationsJSONRequestBody SyncAgentA2aDelegationsJSONBody
 
 // SyncAgentDelegationsJSONRequestBody defines body for SyncAgentDelegations for application/json ContentType.
 type SyncAgentDelegationsJSONRequestBody SyncAgentDelegationsJSONBody
@@ -4098,6 +4431,9 @@ type UpdateDefaultUserLimitJSONRequestBody UpdateDefaultUserLimitJSONBody
 
 // CreateEnvironmentJSONRequestBody defines body for CreateEnvironment for application/json ContentType.
 type CreateEnvironmentJSONRequestBody CreateEnvironmentJSONBody
+
+// UpdateEnvironmentResourceDefaultsJSONRequestBody defines body for UpdateEnvironmentResourceDefaults for application/json ContentType.
+type UpdateEnvironmentResourceDefaultsJSONRequestBody UpdateEnvironmentResourceDefaultsJSONBody
 
 // UpdateEnvironmentJSONRequestBody defines body for UpdateEnvironment for application/json ContentType.
 type UpdateEnvironmentJSONRequestBody UpdateEnvironmentJSONBody
@@ -4243,6 +4579,9 @@ type AddTeamMemberJSONRequestBody AddTeamMemberJSONBody
 // UpdateTeamMemberJSONRequestBody defines body for UpdateTeamMember for application/json ContentType.
 type UpdateTeamMemberJSONRequestBody UpdateTeamMemberJSONBody
 
+// SetTeamVaultFolderJSONRequestBody defines body for SetTeamVaultFolder for application/json ContentType.
+type SetTeamVaultFolderJSONRequestBody SetTeamVaultFolderJSONBody
+
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
 
@@ -4316,6 +4655,22 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// CreateA2aRemoteAgentWithBody request with any body
+	CreateA2aRemoteAgentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateA2aRemoteAgent(ctx context.Context, body CreateA2aRemoteAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteA2aRemoteAgent request
+	DeleteA2aRemoteAgent(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetA2aRemoteAgent request
+	GetA2aRemoteAgent(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateA2aRemoteAgentWithBody request with any body
+	UpdateA2aRemoteAgentWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateA2aRemoteAgent(ctx context.Context, id openapi_types.UUID, body UpdateA2aRemoteAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetAllAgentTools request
 	GetAllAgentTools(ctx context.Context, params *GetAllAgentToolsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4333,6 +4688,14 @@ type ClientInterface interface {
 	BulkAssignToolsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	BulkAssignTools(ctx context.Context, body BulkAssignToolsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAgentA2aDelegations request
+	GetAgentA2aDelegations(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SyncAgentA2aDelegationsWithBody request with any body
+	SyncAgentA2aDelegationsWithBody(ctx context.Context, agentId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SyncAgentA2aDelegations(ctx context.Context, agentId openapi_types.UUID, body SyncAgentA2aDelegationsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetAgentDelegations request
 	GetAgentDelegations(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4473,6 +4836,11 @@ type ClientInterface interface {
 	CreateEnvironmentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	CreateEnvironment(ctx context.Context, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateEnvironmentResourceDefaultsWithBody request with any body
+	UpdateEnvironmentResourceDefaultsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateEnvironmentResourceDefaults(ctx context.Context, body UpdateEnvironmentResourceDefaultsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteEnvironment request
 	DeleteEnvironment(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4840,8 +5208,91 @@ type ClientInterface interface {
 
 	UpdateTeamMember(ctx context.Context, id string, userId string, body UpdateTeamMemberJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// DeleteTeamVaultFolder request
+	DeleteTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetTeamVaultFolder request
+	GetTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SetTeamVaultFolderWithBody request with any body
+	SetTeamVaultFolderWithBody(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SetTeamVaultFolder(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetToolsWithAssignments request
 	GetToolsWithAssignments(ctx context.Context, params *GetToolsWithAssignmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) CreateA2aRemoteAgentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateA2aRemoteAgentRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateA2aRemoteAgent(ctx context.Context, body CreateA2aRemoteAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateA2aRemoteAgentRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteA2aRemoteAgent(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteA2aRemoteAgentRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetA2aRemoteAgent(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetA2aRemoteAgentRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateA2aRemoteAgentWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateA2aRemoteAgentRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateA2aRemoteAgent(ctx context.Context, id openapi_types.UUID, body UpdateA2aRemoteAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateA2aRemoteAgentRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 func (c *Client) GetAllAgentTools(ctx context.Context, params *GetAllAgentToolsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -4918,6 +5369,42 @@ func (c *Client) BulkAssignToolsWithBody(ctx context.Context, contentType string
 
 func (c *Client) BulkAssignTools(ctx context.Context, body BulkAssignToolsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewBulkAssignToolsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAgentA2aDelegations(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAgentA2aDelegationsRequest(c.Server, agentId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SyncAgentA2aDelegationsWithBody(ctx context.Context, agentId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSyncAgentA2aDelegationsRequestWithBody(c.Server, agentId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SyncAgentA2aDelegations(ctx context.Context, agentId openapi_types.UUID, body SyncAgentA2aDelegationsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSyncAgentA2aDelegationsRequest(c.Server, agentId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -5542,6 +6029,30 @@ func (c *Client) CreateEnvironmentWithBody(ctx context.Context, contentType stri
 
 func (c *Client) CreateEnvironment(ctx context.Context, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewCreateEnvironmentRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateEnvironmentResourceDefaultsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentResourceDefaultsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateEnvironmentResourceDefaults(ctx context.Context, body UpdateEnvironmentResourceDefaultsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateEnvironmentResourceDefaultsRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -7208,6 +7719,54 @@ func (c *Client) UpdateTeamMember(ctx context.Context, id string, userId string,
 	return c.Client.Do(req)
 }
 
+func (c *Client) DeleteTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteTeamVaultFolderRequest(c.Server, teamId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTeamVaultFolderRequest(c.Server, teamId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetTeamVaultFolderWithBody(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetTeamVaultFolderRequestWithBody(c.Server, teamId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SetTeamVaultFolder(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetTeamVaultFolderRequest(c.Server, teamId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetToolsWithAssignments(ctx context.Context, params *GetToolsWithAssignmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetToolsWithAssignmentsRequest(c.Server, params)
 	if err != nil {
@@ -7218,6 +7777,161 @@ func (c *Client) GetToolsWithAssignments(ctx context.Context, params *GetToolsWi
 		return nil, err
 	}
 	return c.Client.Do(req)
+}
+
+// NewCreateA2aRemoteAgentRequest calls the generic CreateA2aRemoteAgent builder with application/json body
+func NewCreateA2aRemoteAgentRequest(server string, body CreateA2aRemoteAgentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateA2aRemoteAgentRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateA2aRemoteAgentRequestWithBody generates requests for CreateA2aRemoteAgent with any type of body
+func NewCreateA2aRemoteAgentRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/a2a/remote-agents")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteA2aRemoteAgentRequest generates requests for DeleteA2aRemoteAgent
+func NewDeleteA2aRemoteAgentRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/a2a/remote-agents/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetA2aRemoteAgentRequest generates requests for GetA2aRemoteAgent
+func NewGetA2aRemoteAgentRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/a2a/remote-agents/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateA2aRemoteAgentRequest calls the generic UpdateA2aRemoteAgent builder with application/json body
+func NewUpdateA2aRemoteAgentRequest(server string, id openapi_types.UUID, body UpdateA2aRemoteAgentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateA2aRemoteAgentRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateA2aRemoteAgentRequestWithBody generates requests for UpdateA2aRemoteAgent with any type of body
+func NewUpdateA2aRemoteAgentRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/a2a/remote-agents/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
 }
 
 // NewGetAllAgentToolsRequest generates requests for GetAllAgentTools
@@ -7521,6 +8235,87 @@ func NewBulkAssignToolsRequestWithBody(server string, contentType string, body i
 	}
 
 	operationPath := fmt.Sprintf("/api/agents/tools/bulk-assign")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetAgentA2aDelegationsRequest generates requests for GetAgentA2aDelegations
+func NewGetAgentA2aDelegationsRequest(server string, agentId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "agentId", runtime.ParamLocationPath, agentId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/a2a-delegations", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSyncAgentA2aDelegationsRequest calls the generic SyncAgentA2aDelegations builder with application/json body
+func NewSyncAgentA2aDelegationsRequest(server string, agentId openapi_types.UUID, body SyncAgentA2aDelegationsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSyncAgentA2aDelegationsRequestWithBody(server, agentId, "application/json", bodyReader)
+}
+
+// NewSyncAgentA2aDelegationsRequestWithBody generates requests for SyncAgentA2aDelegations with any type of body
+func NewSyncAgentA2aDelegationsRequestWithBody(server string, agentId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "agentId", runtime.ParamLocationPath, agentId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/agents/%s/a2a-delegations", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -9018,6 +9813,46 @@ func NewCreateEnvironmentRequestWithBody(server string, contentType string, body
 	}
 
 	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUpdateEnvironmentResourceDefaultsRequest calls the generic UpdateEnvironmentResourceDefaults builder with application/json body
+func NewUpdateEnvironmentResourceDefaultsRequest(server string, body UpdateEnvironmentResourceDefaultsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateEnvironmentResourceDefaultsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateEnvironmentResourceDefaultsRequestWithBody generates requests for UpdateEnvironmentResourceDefaults with any type of body
+func NewUpdateEnvironmentResourceDefaultsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/environments/defaults")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -12724,6 +13559,121 @@ func NewUpdateTeamMemberRequestWithBody(server string, id string, userId string,
 	return req, nil
 }
 
+// NewDeleteTeamVaultFolderRequest generates requests for DeleteTeamVaultFolder
+func NewDeleteTeamVaultFolderRequest(server string, teamId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetTeamVaultFolderRequest generates requests for GetTeamVaultFolder
+func NewGetTeamVaultFolderRequest(server string, teamId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSetTeamVaultFolderRequest calls the generic SetTeamVaultFolder builder with application/json body
+func NewSetTeamVaultFolderRequest(server string, teamId string, body SetTeamVaultFolderJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSetTeamVaultFolderRequestWithBody(server, teamId, "application/json", bodyReader)
+}
+
+// NewSetTeamVaultFolderRequestWithBody generates requests for SetTeamVaultFolder with any type of body
+func NewSetTeamVaultFolderRequestWithBody(server string, teamId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetToolsWithAssignmentsRequest generates requests for GetToolsWithAssignments
 func NewGetToolsWithAssignmentsRequest(server string, params *GetToolsWithAssignmentsParams) (*http.Request, error) {
 	var err error
@@ -12960,6 +13910,22 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+	// CreateA2aRemoteAgentWithBodyWithResponse request with any body
+	CreateA2aRemoteAgentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateA2aRemoteAgentResponse, error)
+
+	CreateA2aRemoteAgentWithResponse(ctx context.Context, body CreateA2aRemoteAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateA2aRemoteAgentResponse, error)
+
+	// DeleteA2aRemoteAgentWithResponse request
+	DeleteA2aRemoteAgentWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteA2aRemoteAgentResponse, error)
+
+	// GetA2aRemoteAgentWithResponse request
+	GetA2aRemoteAgentWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetA2aRemoteAgentResponse, error)
+
+	// UpdateA2aRemoteAgentWithBodyWithResponse request with any body
+	UpdateA2aRemoteAgentWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateA2aRemoteAgentResponse, error)
+
+	UpdateA2aRemoteAgentWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateA2aRemoteAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateA2aRemoteAgentResponse, error)
+
 	// GetAllAgentToolsWithResponse request
 	GetAllAgentToolsWithResponse(ctx context.Context, params *GetAllAgentToolsParams, reqEditors ...RequestEditorFn) (*GetAllAgentToolsResponse, error)
 
@@ -12977,6 +13943,14 @@ type ClientWithResponsesInterface interface {
 	BulkAssignToolsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*BulkAssignToolsResponse, error)
 
 	BulkAssignToolsWithResponse(ctx context.Context, body BulkAssignToolsJSONRequestBody, reqEditors ...RequestEditorFn) (*BulkAssignToolsResponse, error)
+
+	// GetAgentA2aDelegationsWithResponse request
+	GetAgentA2aDelegationsWithResponse(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentA2aDelegationsResponse, error)
+
+	// SyncAgentA2aDelegationsWithBodyWithResponse request with any body
+	SyncAgentA2aDelegationsWithBodyWithResponse(ctx context.Context, agentId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SyncAgentA2aDelegationsResponse, error)
+
+	SyncAgentA2aDelegationsWithResponse(ctx context.Context, agentId openapi_types.UUID, body SyncAgentA2aDelegationsJSONRequestBody, reqEditors ...RequestEditorFn) (*SyncAgentA2aDelegationsResponse, error)
 
 	// GetAgentDelegationsWithResponse request
 	GetAgentDelegationsWithResponse(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentDelegationsResponse, error)
@@ -13117,6 +14091,11 @@ type ClientWithResponsesInterface interface {
 	CreateEnvironmentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error)
 
 	CreateEnvironmentWithResponse(ctx context.Context, body CreateEnvironmentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateEnvironmentResponse, error)
+
+	// UpdateEnvironmentResourceDefaultsWithBodyWithResponse request with any body
+	UpdateEnvironmentResourceDefaultsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResourceDefaultsResponse, error)
+
+	UpdateEnvironmentResourceDefaultsWithResponse(ctx context.Context, body UpdateEnvironmentResourceDefaultsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResourceDefaultsResponse, error)
 
 	// DeleteEnvironmentWithResponse request
 	DeleteEnvironmentWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteEnvironmentResponse, error)
@@ -13484,8 +14463,449 @@ type ClientWithResponsesInterface interface {
 
 	UpdateTeamMemberWithResponse(ctx context.Context, id string, userId string, body UpdateTeamMemberJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTeamMemberResponse, error)
 
+	// DeleteTeamVaultFolderWithResponse request
+	DeleteTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*DeleteTeamVaultFolderResponse, error)
+
+	// GetTeamVaultFolderWithResponse request
+	GetTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*GetTeamVaultFolderResponse, error)
+
+	// SetTeamVaultFolderWithBodyWithResponse request with any body
+	SetTeamVaultFolderWithBodyWithResponse(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error)
+
+	SetTeamVaultFolderWithResponse(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error)
+
 	// GetToolsWithAssignmentsWithResponse request
 	GetToolsWithAssignmentsWithResponse(ctx context.Context, params *GetToolsWithAssignmentsParams, reqEditors ...RequestEditorFn) (*GetToolsWithAssignmentsResponse, error)
+}
+
+type CreateA2aRemoteAgentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AgentCard       map[string]interface{} `json:"agentCard"`
+		AssignmentCount int                    `json:"assignmentCount"`
+		AuthorId        *string                `json:"authorId"`
+		AuthorName      *string                `json:"authorName"`
+		CardHash        string                 `json:"cardHash"`
+		Connection      struct {
+			AuthConfig struct {
+				HeaderName *string `json:"headerName,omitempty"`
+			} `json:"authConfig"`
+			AuthType            CreateA2aRemoteAgent200ConnectionAuthType `json:"authType"`
+			CreatedAt           time.Time                                 `json:"createdAt"`
+			Enabled             bool                                      `json:"enabled"`
+			HasCredential       bool                                      `json:"hasCredential"`
+			Id                  openapi_types.UUID                        `json:"id"`
+			LastVerifiedAt      *time.Time                                `json:"lastVerifiedAt"`
+			RemoteAgentId       openapi_types.UUID                        `json:"remoteAgentId"`
+			SecurityRequirement *map[string][]string                      `json:"securityRequirement"`
+			SelectedInterface   struct {
+				ProtocolBinding CreateA2aRemoteAgent200ConnectionSelectedInterfaceProtocolBinding `json:"protocolBinding"`
+				ProtocolVersion string                                                            `json:"protocolVersion"`
+				Tenant          *string                                                           `json:"tenant,omitempty"`
+				Url             string                                                            `json:"url"`
+			} `json:"selectedInterface"`
+			UpdatedAt time.Time `json:"updatedAt"`
+		} `json:"connection"`
+		CreatedAt time.Time `json:"createdAt"`
+		CreatedBy *struct {
+			Email *string                               `json:"email"`
+			Id    string                                `json:"id"`
+			Name  *string                               `json:"name"`
+			Type  *CreateA2aRemoteAgent200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID                  `json:"createdByServiceAccountId"`
+		Description               *string                              `json:"description"`
+		DiscoveryMode             CreateA2aRemoteAgent200DiscoveryMode `json:"discoveryMode"`
+		DiscoveryUrl              *string                              `json:"discoveryUrl"`
+		Id                        openapi_types.UUID                   `json:"id"`
+		LastDiscoveredAt          time.Time                            `json:"lastDiscoveredAt"`
+		LastUsedAt                *time.Time                           `json:"lastUsedAt"`
+		Name                      string                               `json:"name"`
+		OrganizationId            string                               `json:"organizationId"`
+		ToolId                    openapi_types.UUID                   `json:"toolId"`
+		UpdatedAt                 time.Time                            `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateA2aRemoteAgent400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateA2aRemoteAgent401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}          `json:"details,omitempty"`
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateA2aRemoteAgent403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateA2aRemoteAgent404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateA2aRemoteAgent409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         CreateA2aRemoteAgent500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateA2aRemoteAgent200ConnectionAuthType string
+type CreateA2aRemoteAgent200ConnectionSelectedInterfaceProtocolBinding string
+type CreateA2aRemoteAgent200CreatedByType string
+type CreateA2aRemoteAgent200DiscoveryMode string
+type CreateA2aRemoteAgent400ErrorType string
+type CreateA2aRemoteAgent401ErrorType string
+type CreateA2aRemoteAgent403ErrorType string
+type CreateA2aRemoteAgent404ErrorType string
+type CreateA2aRemoteAgent409ErrorType string
+type CreateA2aRemoteAgent500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateA2aRemoteAgentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateA2aRemoteAgentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteA2aRemoteAgentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         DeleteA2aRemoteAgent400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         DeleteA2aRemoteAgent401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}          `json:"details,omitempty"`
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         DeleteA2aRemoteAgent403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         DeleteA2aRemoteAgent404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         DeleteA2aRemoteAgent409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         DeleteA2aRemoteAgent500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteA2aRemoteAgent400ErrorType string
+type DeleteA2aRemoteAgent401ErrorType string
+type DeleteA2aRemoteAgent403ErrorType string
+type DeleteA2aRemoteAgent404ErrorType string
+type DeleteA2aRemoteAgent409ErrorType string
+type DeleteA2aRemoteAgent500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteA2aRemoteAgentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteA2aRemoteAgentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetA2aRemoteAgentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AgentCard       map[string]interface{} `json:"agentCard"`
+		AssignmentCount int                    `json:"assignmentCount"`
+		AuthorId        *string                `json:"authorId"`
+		AuthorName      *string                `json:"authorName"`
+		CardHash        string                 `json:"cardHash"`
+		Connection      struct {
+			AuthConfig struct {
+				HeaderName *string `json:"headerName,omitempty"`
+			} `json:"authConfig"`
+			AuthType            GetA2aRemoteAgent200ConnectionAuthType `json:"authType"`
+			CreatedAt           time.Time                              `json:"createdAt"`
+			Enabled             bool                                   `json:"enabled"`
+			HasCredential       bool                                   `json:"hasCredential"`
+			Id                  openapi_types.UUID                     `json:"id"`
+			LastVerifiedAt      *time.Time                             `json:"lastVerifiedAt"`
+			RemoteAgentId       openapi_types.UUID                     `json:"remoteAgentId"`
+			SecurityRequirement *map[string][]string                   `json:"securityRequirement"`
+			SelectedInterface   struct {
+				ProtocolBinding GetA2aRemoteAgent200ConnectionSelectedInterfaceProtocolBinding `json:"protocolBinding"`
+				ProtocolVersion string                                                         `json:"protocolVersion"`
+				Tenant          *string                                                        `json:"tenant,omitempty"`
+				Url             string                                                         `json:"url"`
+			} `json:"selectedInterface"`
+			UpdatedAt time.Time `json:"updatedAt"`
+		} `json:"connection"`
+		CreatedAt time.Time `json:"createdAt"`
+		CreatedBy *struct {
+			Email *string                            `json:"email"`
+			Id    string                             `json:"id"`
+			Name  *string                            `json:"name"`
+			Type  *GetA2aRemoteAgent200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID               `json:"createdByServiceAccountId"`
+		Description               *string                           `json:"description"`
+		DiscoveryMode             GetA2aRemoteAgent200DiscoveryMode `json:"discoveryMode"`
+		DiscoveryUrl              *string                           `json:"discoveryUrl"`
+		Id                        openapi_types.UUID                `json:"id"`
+		LastDiscoveredAt          time.Time                         `json:"lastDiscoveredAt"`
+		LastUsedAt                *time.Time                        `json:"lastUsedAt"`
+		Name                      string                            `json:"name"`
+		OrganizationId            string                            `json:"organizationId"`
+		ToolId                    openapi_types.UUID                `json:"toolId"`
+		UpdatedAt                 time.Time                         `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetA2aRemoteAgent400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetA2aRemoteAgent401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}       `json:"details,omitempty"`
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetA2aRemoteAgent403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetA2aRemoteAgent404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetA2aRemoteAgent409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetA2aRemoteAgent500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetA2aRemoteAgent200ConnectionAuthType string
+type GetA2aRemoteAgent200ConnectionSelectedInterfaceProtocolBinding string
+type GetA2aRemoteAgent200CreatedByType string
+type GetA2aRemoteAgent200DiscoveryMode string
+type GetA2aRemoteAgent400ErrorType string
+type GetA2aRemoteAgent401ErrorType string
+type GetA2aRemoteAgent403ErrorType string
+type GetA2aRemoteAgent404ErrorType string
+type GetA2aRemoteAgent409ErrorType string
+type GetA2aRemoteAgent500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetA2aRemoteAgentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetA2aRemoteAgentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateA2aRemoteAgentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AgentCard       map[string]interface{} `json:"agentCard"`
+		AssignmentCount int                    `json:"assignmentCount"`
+		AuthorId        *string                `json:"authorId"`
+		AuthorName      *string                `json:"authorName"`
+		CardHash        string                 `json:"cardHash"`
+		Connection      struct {
+			AuthConfig struct {
+				HeaderName *string `json:"headerName,omitempty"`
+			} `json:"authConfig"`
+			AuthType            UpdateA2aRemoteAgent200ConnectionAuthType `json:"authType"`
+			CreatedAt           time.Time                                 `json:"createdAt"`
+			Enabled             bool                                      `json:"enabled"`
+			HasCredential       bool                                      `json:"hasCredential"`
+			Id                  openapi_types.UUID                        `json:"id"`
+			LastVerifiedAt      *time.Time                                `json:"lastVerifiedAt"`
+			RemoteAgentId       openapi_types.UUID                        `json:"remoteAgentId"`
+			SecurityRequirement *map[string][]string                      `json:"securityRequirement"`
+			SelectedInterface   struct {
+				ProtocolBinding UpdateA2aRemoteAgent200ConnectionSelectedInterfaceProtocolBinding `json:"protocolBinding"`
+				ProtocolVersion string                                                            `json:"protocolVersion"`
+				Tenant          *string                                                           `json:"tenant,omitempty"`
+				Url             string                                                            `json:"url"`
+			} `json:"selectedInterface"`
+			UpdatedAt time.Time `json:"updatedAt"`
+		} `json:"connection"`
+		CreatedAt time.Time `json:"createdAt"`
+		CreatedBy *struct {
+			Email *string                               `json:"email"`
+			Id    string                                `json:"id"`
+			Name  *string                               `json:"name"`
+			Type  *UpdateA2aRemoteAgent200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID                  `json:"createdByServiceAccountId"`
+		Description               *string                              `json:"description"`
+		DiscoveryMode             UpdateA2aRemoteAgent200DiscoveryMode `json:"discoveryMode"`
+		DiscoveryUrl              *string                              `json:"discoveryUrl"`
+		Id                        openapi_types.UUID                   `json:"id"`
+		LastDiscoveredAt          time.Time                            `json:"lastDiscoveredAt"`
+		LastUsedAt                *time.Time                           `json:"lastUsedAt"`
+		Name                      string                               `json:"name"`
+		OrganizationId            string                               `json:"organizationId"`
+		ToolId                    openapi_types.UUID                   `json:"toolId"`
+		UpdatedAt                 time.Time                            `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateA2aRemoteAgent400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateA2aRemoteAgent401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}          `json:"details,omitempty"`
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateA2aRemoteAgent403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateA2aRemoteAgent404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateA2aRemoteAgent409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                          `json:"internal_code,omitempty"`
+			Message      string                           `json:"message"`
+			Type         UpdateA2aRemoteAgent500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateA2aRemoteAgent200ConnectionAuthType string
+type UpdateA2aRemoteAgent200ConnectionSelectedInterfaceProtocolBinding string
+type UpdateA2aRemoteAgent200CreatedByType string
+type UpdateA2aRemoteAgent200DiscoveryMode string
+type UpdateA2aRemoteAgent400ErrorType string
+type UpdateA2aRemoteAgent401ErrorType string
+type UpdateA2aRemoteAgent403ErrorType string
+type UpdateA2aRemoteAgent404ErrorType string
+type UpdateA2aRemoteAgent409ErrorType string
+type UpdateA2aRemoteAgent500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateA2aRemoteAgentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateA2aRemoteAgentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
 }
 
 type GetAllAgentToolsResponse struct {
@@ -13981,6 +15401,158 @@ func (r BulkAssignToolsResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r BulkAssignToolsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAgentA2aDelegationsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		ConnectionId  openapi_types.UUID `json:"connectionId"`
+		Description   *string            `json:"description"`
+		Enabled       bool               `json:"enabled"`
+		Name          string             `json:"name"`
+		RemoteAgentId openapi_types.UUID `json:"remoteAgentId"`
+		ToolId        openapi_types.UUID `json:"toolId"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetAgentA2aDelegations400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetAgentA2aDelegations401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}            `json:"details,omitempty"`
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetAgentA2aDelegations403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetAgentA2aDelegations404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetAgentA2aDelegations409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                            `json:"internal_code,omitempty"`
+			Message      string                             `json:"message"`
+			Type         GetAgentA2aDelegations500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAgentA2aDelegations400ErrorType string
+type GetAgentA2aDelegations401ErrorType string
+type GetAgentA2aDelegations403ErrorType string
+type GetAgentA2aDelegations404ErrorType string
+type GetAgentA2aDelegations409ErrorType string
+type GetAgentA2aDelegations500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAgentA2aDelegationsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAgentA2aDelegationsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SyncAgentA2aDelegationsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Added   []openapi_types.UUID `json:"added"`
+		Removed []openapi_types.UUID `json:"removed"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         SyncAgentA2aDelegations400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         SyncAgentA2aDelegations401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}             `json:"details,omitempty"`
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         SyncAgentA2aDelegations403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         SyncAgentA2aDelegations404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         SyncAgentA2aDelegations409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         SyncAgentA2aDelegations500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type SyncAgentA2aDelegations400ErrorType string
+type SyncAgentA2aDelegations401ErrorType string
+type SyncAgentA2aDelegations403ErrorType string
+type SyncAgentA2aDelegations404ErrorType string
+type SyncAgentA2aDelegations409ErrorType string
+type SyncAgentA2aDelegations500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r SyncAgentA2aDelegationsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SyncAgentA2aDelegationsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -17487,6 +19059,83 @@ func (r CreateEnvironmentResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CreateEnvironmentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateEnvironmentResourceDefaultsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Agent           *openapi_types.UUID `json:"agent"`
+		App             *openapi_types.UUID `json:"app"`
+		KnowledgeSource *openapi_types.UUID `json:"knowledgeSource"`
+		McpGateway      *openapi_types.UUID `json:"mcpGateway"`
+		McpRegistry     *openapi_types.UUID `json:"mcpRegistry"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateEnvironmentResourceDefaults400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateEnvironmentResourceDefaults401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}                       `json:"details,omitempty"`
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateEnvironmentResourceDefaults403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateEnvironmentResourceDefaults404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateEnvironmentResourceDefaults409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                                       `json:"internal_code,omitempty"`
+			Message      string                                        `json:"message"`
+			Type         UpdateEnvironmentResourceDefaults500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateEnvironmentResourceDefaults400ErrorType string
+type UpdateEnvironmentResourceDefaults401ErrorType string
+type UpdateEnvironmentResourceDefaults403ErrorType string
+type UpdateEnvironmentResourceDefaults404ErrorType string
+type UpdateEnvironmentResourceDefaults409ErrorType string
+type UpdateEnvironmentResourceDefaults500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateEnvironmentResourceDefaultsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateEnvironmentResourceDefaultsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -27842,6 +29491,233 @@ func (r UpdateTeamMemberResponse) StatusCode() int {
 	return 0
 }
 
+type DeleteTeamVaultFolderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteTeamVaultFolder400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteTeamVaultFolder401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}           `json:"details,omitempty"`
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteTeamVaultFolder403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteTeamVaultFolder404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteTeamVaultFolder409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         DeleteTeamVaultFolder500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteTeamVaultFolder400ErrorType string
+type DeleteTeamVaultFolder401ErrorType string
+type DeleteTeamVaultFolder403ErrorType string
+type DeleteTeamVaultFolder404ErrorType string
+type DeleteTeamVaultFolder409ErrorType string
+type DeleteTeamVaultFolder500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteTeamVaultFolderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteTeamVaultFolderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetTeamVaultFolderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt time.Time `json:"createdAt"`
+		Id        string    `json:"id"`
+		TeamId    string    `json:"teamId"`
+		UpdatedAt time.Time `json:"updatedAt"`
+		VaultPath string    `json:"vaultPath"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetTeamVaultFolder400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetTeamVaultFolder401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}        `json:"details,omitempty"`
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetTeamVaultFolder403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetTeamVaultFolder404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetTeamVaultFolder409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         GetTeamVaultFolder500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetTeamVaultFolder400ErrorType string
+type GetTeamVaultFolder401ErrorType string
+type GetTeamVaultFolder403ErrorType string
+type GetTeamVaultFolder404ErrorType string
+type GetTeamVaultFolder409ErrorType string
+type GetTeamVaultFolder500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetTeamVaultFolderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetTeamVaultFolderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SetTeamVaultFolderResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		CreatedAt time.Time `json:"createdAt"`
+		Id        string    `json:"id"`
+		TeamId    string    `json:"teamId"`
+		UpdatedAt time.Time `json:"updatedAt"`
+		VaultPath string    `json:"vaultPath"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         SetTeamVaultFolder400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         SetTeamVaultFolder401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}        `json:"details,omitempty"`
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         SetTeamVaultFolder403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         SetTeamVaultFolder404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         SetTeamVaultFolder409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                        `json:"internal_code,omitempty"`
+			Message      string                         `json:"message"`
+			Type         SetTeamVaultFolder500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type SetTeamVaultFolder400ErrorType string
+type SetTeamVaultFolder401ErrorType string
+type SetTeamVaultFolder403ErrorType string
+type SetTeamVaultFolder404ErrorType string
+type SetTeamVaultFolder409ErrorType string
+type SetTeamVaultFolder500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r SetTeamVaultFolderResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SetTeamVaultFolderResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetToolsWithAssignmentsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -27963,6 +29839,58 @@ func (r GetToolsWithAssignmentsResponse) StatusCode() int {
 	return 0
 }
 
+// CreateA2aRemoteAgentWithBodyWithResponse request with arbitrary body returning *CreateA2aRemoteAgentResponse
+func (c *ClientWithResponses) CreateA2aRemoteAgentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateA2aRemoteAgentResponse, error) {
+	rsp, err := c.CreateA2aRemoteAgentWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateA2aRemoteAgentResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateA2aRemoteAgentWithResponse(ctx context.Context, body CreateA2aRemoteAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateA2aRemoteAgentResponse, error) {
+	rsp, err := c.CreateA2aRemoteAgent(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateA2aRemoteAgentResponse(rsp)
+}
+
+// DeleteA2aRemoteAgentWithResponse request returning *DeleteA2aRemoteAgentResponse
+func (c *ClientWithResponses) DeleteA2aRemoteAgentWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteA2aRemoteAgentResponse, error) {
+	rsp, err := c.DeleteA2aRemoteAgent(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteA2aRemoteAgentResponse(rsp)
+}
+
+// GetA2aRemoteAgentWithResponse request returning *GetA2aRemoteAgentResponse
+func (c *ClientWithResponses) GetA2aRemoteAgentWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetA2aRemoteAgentResponse, error) {
+	rsp, err := c.GetA2aRemoteAgent(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetA2aRemoteAgentResponse(rsp)
+}
+
+// UpdateA2aRemoteAgentWithBodyWithResponse request with arbitrary body returning *UpdateA2aRemoteAgentResponse
+func (c *ClientWithResponses) UpdateA2aRemoteAgentWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateA2aRemoteAgentResponse, error) {
+	rsp, err := c.UpdateA2aRemoteAgentWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateA2aRemoteAgentResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateA2aRemoteAgentWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateA2aRemoteAgentJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateA2aRemoteAgentResponse, error) {
+	rsp, err := c.UpdateA2aRemoteAgent(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateA2aRemoteAgentResponse(rsp)
+}
+
 // GetAllAgentToolsWithResponse request returning *GetAllAgentToolsResponse
 func (c *ClientWithResponses) GetAllAgentToolsWithResponse(ctx context.Context, params *GetAllAgentToolsParams, reqEditors ...RequestEditorFn) (*GetAllAgentToolsResponse, error) {
 	rsp, err := c.GetAllAgentTools(ctx, params, reqEditors...)
@@ -28021,6 +29949,32 @@ func (c *ClientWithResponses) BulkAssignToolsWithResponse(ctx context.Context, b
 		return nil, err
 	}
 	return ParseBulkAssignToolsResponse(rsp)
+}
+
+// GetAgentA2aDelegationsWithResponse request returning *GetAgentA2aDelegationsResponse
+func (c *ClientWithResponses) GetAgentA2aDelegationsWithResponse(ctx context.Context, agentId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAgentA2aDelegationsResponse, error) {
+	rsp, err := c.GetAgentA2aDelegations(ctx, agentId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAgentA2aDelegationsResponse(rsp)
+}
+
+// SyncAgentA2aDelegationsWithBodyWithResponse request with arbitrary body returning *SyncAgentA2aDelegationsResponse
+func (c *ClientWithResponses) SyncAgentA2aDelegationsWithBodyWithResponse(ctx context.Context, agentId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SyncAgentA2aDelegationsResponse, error) {
+	rsp, err := c.SyncAgentA2aDelegationsWithBody(ctx, agentId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSyncAgentA2aDelegationsResponse(rsp)
+}
+
+func (c *ClientWithResponses) SyncAgentA2aDelegationsWithResponse(ctx context.Context, agentId openapi_types.UUID, body SyncAgentA2aDelegationsJSONRequestBody, reqEditors ...RequestEditorFn) (*SyncAgentA2aDelegationsResponse, error) {
+	rsp, err := c.SyncAgentA2aDelegations(ctx, agentId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSyncAgentA2aDelegationsResponse(rsp)
 }
 
 // GetAgentDelegationsWithResponse request returning *GetAgentDelegationsResponse
@@ -28473,6 +30427,23 @@ func (c *ClientWithResponses) CreateEnvironmentWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseCreateEnvironmentResponse(rsp)
+}
+
+// UpdateEnvironmentResourceDefaultsWithBodyWithResponse request with arbitrary body returning *UpdateEnvironmentResourceDefaultsResponse
+func (c *ClientWithResponses) UpdateEnvironmentResourceDefaultsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResourceDefaultsResponse, error) {
+	rsp, err := c.UpdateEnvironmentResourceDefaultsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateEnvironmentResourceDefaultsResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateEnvironmentResourceDefaultsWithResponse(ctx context.Context, body UpdateEnvironmentResourceDefaultsJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateEnvironmentResourceDefaultsResponse, error) {
+	rsp, err := c.UpdateEnvironmentResourceDefaults(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateEnvironmentResourceDefaultsResponse(rsp)
 }
 
 // DeleteEnvironmentWithResponse request returning *DeleteEnvironmentResponse
@@ -29669,6 +31640,41 @@ func (c *ClientWithResponses) UpdateTeamMemberWithResponse(ctx context.Context, 
 	return ParseUpdateTeamMemberResponse(rsp)
 }
 
+// DeleteTeamVaultFolderWithResponse request returning *DeleteTeamVaultFolderResponse
+func (c *ClientWithResponses) DeleteTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*DeleteTeamVaultFolderResponse, error) {
+	rsp, err := c.DeleteTeamVaultFolder(ctx, teamId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteTeamVaultFolderResponse(rsp)
+}
+
+// GetTeamVaultFolderWithResponse request returning *GetTeamVaultFolderResponse
+func (c *ClientWithResponses) GetTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*GetTeamVaultFolderResponse, error) {
+	rsp, err := c.GetTeamVaultFolder(ctx, teamId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetTeamVaultFolderResponse(rsp)
+}
+
+// SetTeamVaultFolderWithBodyWithResponse request with arbitrary body returning *SetTeamVaultFolderResponse
+func (c *ClientWithResponses) SetTeamVaultFolderWithBodyWithResponse(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error) {
+	rsp, err := c.SetTeamVaultFolderWithBody(ctx, teamId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetTeamVaultFolderResponse(rsp)
+}
+
+func (c *ClientWithResponses) SetTeamVaultFolderWithResponse(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error) {
+	rsp, err := c.SetTeamVaultFolder(ctx, teamId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSetTeamVaultFolderResponse(rsp)
+}
+
 // GetToolsWithAssignmentsWithResponse request returning *GetToolsWithAssignmentsResponse
 func (c *ClientWithResponses) GetToolsWithAssignmentsWithResponse(ctx context.Context, params *GetToolsWithAssignmentsParams, reqEditors ...RequestEditorFn) (*GetToolsWithAssignmentsResponse, error) {
 	rsp, err := c.GetToolsWithAssignments(ctx, params, reqEditors...)
@@ -29676,6 +31682,560 @@ func (c *ClientWithResponses) GetToolsWithAssignmentsWithResponse(ctx context.Co
 		return nil, err
 	}
 	return ParseGetToolsWithAssignmentsResponse(rsp)
+}
+
+// ParseCreateA2aRemoteAgentResponse parses an HTTP response from a CreateA2aRemoteAgentWithResponse call
+func ParseCreateA2aRemoteAgentResponse(rsp *http.Response) (*CreateA2aRemoteAgentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateA2aRemoteAgentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AgentCard       map[string]interface{} `json:"agentCard"`
+			AssignmentCount int                    `json:"assignmentCount"`
+			AuthorId        *string                `json:"authorId"`
+			AuthorName      *string                `json:"authorName"`
+			CardHash        string                 `json:"cardHash"`
+			Connection      struct {
+				AuthConfig struct {
+					HeaderName *string `json:"headerName,omitempty"`
+				} `json:"authConfig"`
+				AuthType            CreateA2aRemoteAgent200ConnectionAuthType `json:"authType"`
+				CreatedAt           time.Time                                 `json:"createdAt"`
+				Enabled             bool                                      `json:"enabled"`
+				HasCredential       bool                                      `json:"hasCredential"`
+				Id                  openapi_types.UUID                        `json:"id"`
+				LastVerifiedAt      *time.Time                                `json:"lastVerifiedAt"`
+				RemoteAgentId       openapi_types.UUID                        `json:"remoteAgentId"`
+				SecurityRequirement *map[string][]string                      `json:"securityRequirement"`
+				SelectedInterface   struct {
+					ProtocolBinding CreateA2aRemoteAgent200ConnectionSelectedInterfaceProtocolBinding `json:"protocolBinding"`
+					ProtocolVersion string                                                            `json:"protocolVersion"`
+					Tenant          *string                                                           `json:"tenant,omitempty"`
+					Url             string                                                            `json:"url"`
+				} `json:"selectedInterface"`
+				UpdatedAt time.Time `json:"updatedAt"`
+			} `json:"connection"`
+			CreatedAt time.Time `json:"createdAt"`
+			CreatedBy *struct {
+				Email *string                               `json:"email"`
+				Id    string                                `json:"id"`
+				Name  *string                               `json:"name"`
+				Type  *CreateA2aRemoteAgent200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID                  `json:"createdByServiceAccountId"`
+			Description               *string                              `json:"description"`
+			DiscoveryMode             CreateA2aRemoteAgent200DiscoveryMode `json:"discoveryMode"`
+			DiscoveryUrl              *string                              `json:"discoveryUrl"`
+			Id                        openapi_types.UUID                   `json:"id"`
+			LastDiscoveredAt          time.Time                            `json:"lastDiscoveredAt"`
+			LastUsedAt                *time.Time                           `json:"lastUsedAt"`
+			Name                      string                               `json:"name"`
+			OrganizationId            string                               `json:"organizationId"`
+			ToolId                    openapi_types.UUID                   `json:"toolId"`
+			UpdatedAt                 time.Time                            `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateA2aRemoteAgent400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateA2aRemoteAgent401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}          `json:"details,omitempty"`
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateA2aRemoteAgent403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateA2aRemoteAgent404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateA2aRemoteAgent409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         CreateA2aRemoteAgent500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteA2aRemoteAgentResponse parses an HTTP response from a DeleteA2aRemoteAgentWithResponse call
+func ParseDeleteA2aRemoteAgentResponse(rsp *http.Response) (*DeleteA2aRemoteAgentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteA2aRemoteAgentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         DeleteA2aRemoteAgent400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         DeleteA2aRemoteAgent401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}          `json:"details,omitempty"`
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         DeleteA2aRemoteAgent403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         DeleteA2aRemoteAgent404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         DeleteA2aRemoteAgent409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         DeleteA2aRemoteAgent500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetA2aRemoteAgentResponse parses an HTTP response from a GetA2aRemoteAgentWithResponse call
+func ParseGetA2aRemoteAgentResponse(rsp *http.Response) (*GetA2aRemoteAgentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetA2aRemoteAgentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AgentCard       map[string]interface{} `json:"agentCard"`
+			AssignmentCount int                    `json:"assignmentCount"`
+			AuthorId        *string                `json:"authorId"`
+			AuthorName      *string                `json:"authorName"`
+			CardHash        string                 `json:"cardHash"`
+			Connection      struct {
+				AuthConfig struct {
+					HeaderName *string `json:"headerName,omitempty"`
+				} `json:"authConfig"`
+				AuthType            GetA2aRemoteAgent200ConnectionAuthType `json:"authType"`
+				CreatedAt           time.Time                              `json:"createdAt"`
+				Enabled             bool                                   `json:"enabled"`
+				HasCredential       bool                                   `json:"hasCredential"`
+				Id                  openapi_types.UUID                     `json:"id"`
+				LastVerifiedAt      *time.Time                             `json:"lastVerifiedAt"`
+				RemoteAgentId       openapi_types.UUID                     `json:"remoteAgentId"`
+				SecurityRequirement *map[string][]string                   `json:"securityRequirement"`
+				SelectedInterface   struct {
+					ProtocolBinding GetA2aRemoteAgent200ConnectionSelectedInterfaceProtocolBinding `json:"protocolBinding"`
+					ProtocolVersion string                                                         `json:"protocolVersion"`
+					Tenant          *string                                                        `json:"tenant,omitempty"`
+					Url             string                                                         `json:"url"`
+				} `json:"selectedInterface"`
+				UpdatedAt time.Time `json:"updatedAt"`
+			} `json:"connection"`
+			CreatedAt time.Time `json:"createdAt"`
+			CreatedBy *struct {
+				Email *string                            `json:"email"`
+				Id    string                             `json:"id"`
+				Name  *string                            `json:"name"`
+				Type  *GetA2aRemoteAgent200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID               `json:"createdByServiceAccountId"`
+			Description               *string                           `json:"description"`
+			DiscoveryMode             GetA2aRemoteAgent200DiscoveryMode `json:"discoveryMode"`
+			DiscoveryUrl              *string                           `json:"discoveryUrl"`
+			Id                        openapi_types.UUID                `json:"id"`
+			LastDiscoveredAt          time.Time                         `json:"lastDiscoveredAt"`
+			LastUsedAt                *time.Time                        `json:"lastUsedAt"`
+			Name                      string                            `json:"name"`
+			OrganizationId            string                            `json:"organizationId"`
+			ToolId                    openapi_types.UUID                `json:"toolId"`
+			UpdatedAt                 time.Time                         `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetA2aRemoteAgent400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetA2aRemoteAgent401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}       `json:"details,omitempty"`
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetA2aRemoteAgent403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetA2aRemoteAgent404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetA2aRemoteAgent409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetA2aRemoteAgent500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateA2aRemoteAgentResponse parses an HTTP response from a UpdateA2aRemoteAgentWithResponse call
+func ParseUpdateA2aRemoteAgentResponse(rsp *http.Response) (*UpdateA2aRemoteAgentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateA2aRemoteAgentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AgentCard       map[string]interface{} `json:"agentCard"`
+			AssignmentCount int                    `json:"assignmentCount"`
+			AuthorId        *string                `json:"authorId"`
+			AuthorName      *string                `json:"authorName"`
+			CardHash        string                 `json:"cardHash"`
+			Connection      struct {
+				AuthConfig struct {
+					HeaderName *string `json:"headerName,omitempty"`
+				} `json:"authConfig"`
+				AuthType            UpdateA2aRemoteAgent200ConnectionAuthType `json:"authType"`
+				CreatedAt           time.Time                                 `json:"createdAt"`
+				Enabled             bool                                      `json:"enabled"`
+				HasCredential       bool                                      `json:"hasCredential"`
+				Id                  openapi_types.UUID                        `json:"id"`
+				LastVerifiedAt      *time.Time                                `json:"lastVerifiedAt"`
+				RemoteAgentId       openapi_types.UUID                        `json:"remoteAgentId"`
+				SecurityRequirement *map[string][]string                      `json:"securityRequirement"`
+				SelectedInterface   struct {
+					ProtocolBinding UpdateA2aRemoteAgent200ConnectionSelectedInterfaceProtocolBinding `json:"protocolBinding"`
+					ProtocolVersion string                                                            `json:"protocolVersion"`
+					Tenant          *string                                                           `json:"tenant,omitempty"`
+					Url             string                                                            `json:"url"`
+				} `json:"selectedInterface"`
+				UpdatedAt time.Time `json:"updatedAt"`
+			} `json:"connection"`
+			CreatedAt time.Time `json:"createdAt"`
+			CreatedBy *struct {
+				Email *string                               `json:"email"`
+				Id    string                                `json:"id"`
+				Name  *string                               `json:"name"`
+				Type  *UpdateA2aRemoteAgent200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID                  `json:"createdByServiceAccountId"`
+			Description               *string                              `json:"description"`
+			DiscoveryMode             UpdateA2aRemoteAgent200DiscoveryMode `json:"discoveryMode"`
+			DiscoveryUrl              *string                              `json:"discoveryUrl"`
+			Id                        openapi_types.UUID                   `json:"id"`
+			LastDiscoveredAt          time.Time                            `json:"lastDiscoveredAt"`
+			LastUsedAt                *time.Time                           `json:"lastUsedAt"`
+			Name                      string                               `json:"name"`
+			OrganizationId            string                               `json:"organizationId"`
+			ToolId                    openapi_types.UUID                   `json:"toolId"`
+			UpdatedAt                 time.Time                            `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateA2aRemoteAgent400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateA2aRemoteAgent401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}          `json:"details,omitempty"`
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateA2aRemoteAgent403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateA2aRemoteAgent404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateA2aRemoteAgent409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                          `json:"internal_code,omitempty"`
+				Message      string                           `json:"message"`
+				Type         UpdateA2aRemoteAgent500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
 }
 
 // ParseGetAllAgentToolsResponse parses an HTTP response from a GetAllAgentToolsWithResponse call
@@ -30267,6 +32827,226 @@ func ParseBulkAssignToolsResponse(rsp *http.Response) (*BulkAssignToolsResponse,
 				InternalCode *string                     `json:"internal_code,omitempty"`
 				Message      string                      `json:"message"`
 				Type         BulkAssignTools500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAgentA2aDelegationsResponse parses an HTTP response from a GetAgentA2aDelegationsWithResponse call
+func ParseGetAgentA2aDelegationsResponse(rsp *http.Response) (*GetAgentA2aDelegationsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAgentA2aDelegationsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			ConnectionId  openapi_types.UUID `json:"connectionId"`
+			Description   *string            `json:"description"`
+			Enabled       bool               `json:"enabled"`
+			Name          string             `json:"name"`
+			RemoteAgentId openapi_types.UUID `json:"remoteAgentId"`
+			ToolId        openapi_types.UUID `json:"toolId"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetAgentA2aDelegations400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetAgentA2aDelegations401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}            `json:"details,omitempty"`
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetAgentA2aDelegations403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetAgentA2aDelegations404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetAgentA2aDelegations409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                            `json:"internal_code,omitempty"`
+				Message      string                             `json:"message"`
+				Type         GetAgentA2aDelegations500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSyncAgentA2aDelegationsResponse parses an HTTP response from a SyncAgentA2aDelegationsWithResponse call
+func ParseSyncAgentA2aDelegationsResponse(rsp *http.Response) (*SyncAgentA2aDelegationsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SyncAgentA2aDelegationsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Added   []openapi_types.UUID `json:"added"`
+			Removed []openapi_types.UUID `json:"removed"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         SyncAgentA2aDelegations400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         SyncAgentA2aDelegations401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}             `json:"details,omitempty"`
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         SyncAgentA2aDelegations403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         SyncAgentA2aDelegations404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         SyncAgentA2aDelegations409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         SyncAgentA2aDelegations500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -34647,6 +37427,117 @@ func ParseCreateEnvironmentResponse(rsp *http.Response) (*CreateEnvironmentRespo
 				InternalCode *string                       `json:"internal_code,omitempty"`
 				Message      string                        `json:"message"`
 				Type         CreateEnvironment500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateEnvironmentResourceDefaultsResponse parses an HTTP response from a UpdateEnvironmentResourceDefaultsWithResponse call
+func ParseUpdateEnvironmentResourceDefaultsResponse(rsp *http.Response) (*UpdateEnvironmentResourceDefaultsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateEnvironmentResourceDefaultsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Agent           *openapi_types.UUID `json:"agent"`
+			App             *openapi_types.UUID `json:"app"`
+			KnowledgeSource *openapi_types.UUID `json:"knowledgeSource"`
+			McpGateway      *openapi_types.UUID `json:"mcpGateway"`
+			McpRegistry     *openapi_types.UUID `json:"mcpRegistry"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateEnvironmentResourceDefaults400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateEnvironmentResourceDefaults401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}                       `json:"details,omitempty"`
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateEnvironmentResourceDefaults403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateEnvironmentResourceDefaults404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateEnvironmentResourceDefaults409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                                       `json:"internal_code,omitempty"`
+				Message      string                                        `json:"message"`
+				Type         UpdateEnvironmentResourceDefaults500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -47563,6 +50454,335 @@ func ParseUpdateTeamMemberResponse(rsp *http.Response) (*UpdateTeamMemberRespons
 				InternalCode *string                      `json:"internal_code,omitempty"`
 				Message      string                       `json:"message"`
 				Type         UpdateTeamMember500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteTeamVaultFolderResponse parses an HTTP response from a DeleteTeamVaultFolderWithResponse call
+func ParseDeleteTeamVaultFolderResponse(rsp *http.Response) (*DeleteTeamVaultFolderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteTeamVaultFolderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteTeamVaultFolder400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteTeamVaultFolder401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}           `json:"details,omitempty"`
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteTeamVaultFolder403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteTeamVaultFolder404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteTeamVaultFolder409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         DeleteTeamVaultFolder500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetTeamVaultFolderResponse parses an HTTP response from a GetTeamVaultFolderWithResponse call
+func ParseGetTeamVaultFolderResponse(rsp *http.Response) (*GetTeamVaultFolderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetTeamVaultFolderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt time.Time `json:"createdAt"`
+			Id        string    `json:"id"`
+			TeamId    string    `json:"teamId"`
+			UpdatedAt time.Time `json:"updatedAt"`
+			VaultPath string    `json:"vaultPath"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetTeamVaultFolder400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetTeamVaultFolder401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}        `json:"details,omitempty"`
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetTeamVaultFolder403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetTeamVaultFolder404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetTeamVaultFolder409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         GetTeamVaultFolder500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSetTeamVaultFolderResponse parses an HTTP response from a SetTeamVaultFolderWithResponse call
+func ParseSetTeamVaultFolderResponse(rsp *http.Response) (*SetTeamVaultFolderResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SetTeamVaultFolderResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			CreatedAt time.Time `json:"createdAt"`
+			Id        string    `json:"id"`
+			TeamId    string    `json:"teamId"`
+			UpdatedAt time.Time `json:"updatedAt"`
+			VaultPath string    `json:"vaultPath"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         SetTeamVaultFolder400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         SetTeamVaultFolder401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}        `json:"details,omitempty"`
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         SetTeamVaultFolder403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         SetTeamVaultFolder404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         SetTeamVaultFolder409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                        `json:"internal_code,omitempty"`
+				Message      string                         `json:"message"`
+				Type         SetTeamVaultFolder500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

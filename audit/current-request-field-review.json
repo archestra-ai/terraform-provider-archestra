@@ -1,9 +1,9 @@
 {
   "format_version": 1,
   "upstream_version": "1.4.0-rc.48",
-  "registered_resources": 35,
-  "crossplane_configured": 35,
-  "raw_occurrences": 122,
+  "registered_resources": 39,
+  "crossplane_configured": 39,
+  "raw_occurrences": 127,
   "unclassified": 0,
   "classification_counts": {
     "authentication_context": 6,
@@ -12,12 +12,12 @@
     "implemented_gap": 2,
     "legacy_alias": 1,
     "lifecycle_owned": 6,
-    "manual_encoding": 31,
+    "manual_encoding": 36,
     "other_subtype": 40,
     "related_resource": 4,
     "server_owned": 22
   },
-  "note": "The current 122 raw rows include the newly registered profile subtype and newly referenced reinstall endpoint. They are not directly comparable to the 90-row baseline and are not a missing-capability count.",
+  "note": "The current 127 raw rows include shared profile/reinstall schemas and five dynamic environment-default selector keys. They are not directly comparable to the 90-row baseline and are not a missing-capability count.",
   "review": [
     {
       "resource": "archestra_agent",
@@ -186,6 +186,46 @@
       "classification": "manual_encoding",
       "rationale": "The resource expands installation tools into the assignments request from the configured installation and credential mode.",
       "source": "internal/provider/resource_agent_tool_batch.go"
+    },
+    {
+      "resource": "archestra_environment_default",
+      "operation": "UpdateEnvironmentResourceDefaults",
+      "field": "agent",
+      "classification": "manual_encoding",
+      "rationale": "Each resource owns one resource_type slot; environment_id is encoded under that selected wire key. Create/update/delete preserve every other slot; omission resets only the selected kind.",
+      "source": "internal/provider/resource_environment_default.go"
+    },
+    {
+      "resource": "archestra_environment_default",
+      "operation": "UpdateEnvironmentResourceDefaults",
+      "field": "app",
+      "classification": "manual_encoding",
+      "rationale": "Each resource owns one resource_type slot; environment_id is encoded under that selected wire key. Create/update/delete preserve every other slot; omission resets only the selected kind.",
+      "source": "internal/provider/resource_environment_default.go"
+    },
+    {
+      "resource": "archestra_environment_default",
+      "operation": "UpdateEnvironmentResourceDefaults",
+      "field": "knowledgeSource",
+      "classification": "manual_encoding",
+      "rationale": "Each resource owns one resource_type slot; environment_id is encoded under that selected wire key. Create/update/delete preserve every other slot; omission resets only the selected kind.",
+      "source": "internal/provider/resource_environment_default.go"
+    },
+    {
+      "resource": "archestra_environment_default",
+      "operation": "UpdateEnvironmentResourceDefaults",
+      "field": "mcpGateway",
+      "classification": "manual_encoding",
+      "rationale": "Each resource owns one resource_type slot; environment_id is encoded under that selected wire key. Create/update/delete preserve every other slot; omission resets only the selected kind.",
+      "source": "internal/provider/resource_environment_default.go"
+    },
+    {
+      "resource": "archestra_environment_default",
+      "operation": "UpdateEnvironmentResourceDefaults",
+      "field": "mcpRegistry",
+      "classification": "manual_encoding",
+      "rationale": "Each resource owns one resource_type slot; environment_id is encoded under that selected wire key. Create/update/delete preserve every other slot; omission resets only the selected kind.",
+      "source": "internal/provider/resource_environment_default.go"
     },
     {
       "resource": "archestra_limit",

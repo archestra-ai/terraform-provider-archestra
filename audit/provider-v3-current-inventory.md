@@ -2,7 +2,7 @@
 
 static inventory; no runtime coverage implied
 
-Terraform: 35; Crossplane configured: 35.
+Terraform: 39; Crossplane configured: 39.
 
 Mapping counts are configuration coverage, not successful CRUD or reconciliation coverage.
 
@@ -12,6 +12,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_agent_delegation` | True | True | none detected | none detected | 1 |
 | `archestra_agent_hook` | True | True | none detected | CreateHook: agentId | 0 |
 | `archestra_agent_knowledge_source_exclusions` | True | True | none detected | none detected | 1 |
+| `archestra_agent_remote_delegations` | True | True | none detected | none detected | 0 |
 | `archestra_agent_skill_policy` | True | True | none detected | PatchAgentActivationSkillPolicy: discardUnavailable, expectedRevision, operations | 1 |
 | `archestra_agent_subagent_exclusions` | True | True | none detected | none detected | 1 |
 | `archestra_agent_tool` | True | True | none detected | AssignToolToAgent: resolveAtCallTime | 1 |
@@ -20,6 +21,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_api_key` | True | True | none detected | none detected | 5 |
 | `archestra_default_user_limit` | True | True | none detected | none detected | 0 |
 | `archestra_environment` | True | True | none detected | none detected | 2 |
+| `archestra_environment_default` | True | True | none detected | UpdateEnvironmentResourceDefaults: agent, app, knowledgeSource, mcpGateway, mcpRegistry | 0 |
 | `archestra_identity_provider` | True | True | none detected | none detected | 7 |
 | `archestra_knowledge_base` | True | True | none detected | none detected | 4 |
 | `archestra_knowledge_directory` | True | True | none detected | none detected | 0 |
@@ -34,6 +36,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_mcp_server_installation` | True | True | none detected | InstallMcpServer: accessToken, agentIds, catalogId, createdByServiceAccountId, environmentValues, isByosVault, localInstallationError, localInstallationStatus, name, ownerId, reinstallRequired, scope, secretId, teamId, userConfigValues, userId; ReinstallMcpServer: environmentValues, hibernationMode, isByosVault, userConfigValues | 3 |
 | `archestra_organization_settings` | True | True | none detected | none detected | 9 |
 | `archestra_project` | True | True | none detected | SetProjectInstructions: content | 2 |
+| `archestra_remote_agent` | True | True | none detected | none detected | 3 |
 | `archestra_resource_permission_policy` | True | True | none detected | UpdateResourcePermissions: grants, revision | 1 |
 | `archestra_role` | True | True | none detected | none detected | 3 |
 | `archestra_runtime_credential` | True | True | none detected | SetOrganizationRuntimeCredentialConnection: value | 3 |
@@ -43,6 +46,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_skill` | True | True | none detected | CreateSkill: allowedTools; UpdateSkill: allowedTools, baseVersion | 1 |
 | `archestra_team` | True | True | none detected | AddTeamMember: role, userId; UpdateTeamMember: role | 2 |
 | `archestra_team_external_group` | True | True | none detected | AddTeamExternalGroup: groupIdentifier | 1 |
+| `archestra_team_vault_folder` | True | True | none detected | none detected | 0 |
 
 Unreferenced mutations are review candidates, not an automatically inferred resource denominator.
 RPCs, inference, OAuth flows, logs and transient executions must not become managed resources just to increase a percentage.

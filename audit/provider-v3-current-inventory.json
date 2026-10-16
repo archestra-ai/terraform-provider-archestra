@@ -1,5 +1,5 @@
 {
-  "crossplane_configured_count": 35,
+  "crossplane_configured_count": 39,
   "evidence_level": "static inventory; no runtime coverage implied",
   "format_version": 1,
   "resources": [
@@ -1102,6 +1102,73 @@
     },
     {
       "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 0,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetAgentA2aDelegations",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/agents/{}/a2a-delegations",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "SyncAgentA2aDelegations",
+          "declared_request_field_mappings": {
+            "connectionIds": "connection_ids"
+          },
+          "method": "POST",
+          "path": "/api/agents/{}/a2a-delegations",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "connectionIds"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": false,
+          "optional": false,
+          "path": "agent_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "connection_ids",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_agent_remote_delegations.go",
+      "terraform_resource": "archestra_agent_remote_delegations"
+    },
+    {
+      "acceptance_execution": "unverified",
       "acceptance_tests_declared": 1,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
@@ -2197,6 +2264,83 @@
       "schema_version": 0,
       "source": "internal/provider/resource_environment.go",
       "terraform_resource": "archestra_environment"
+    },
+    {
+      "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 0,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "ListEnvironments",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/environments",
+          "present_in_upstream": true,
+          "query_parameters": [
+            "labels"
+          ],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateEnvironmentResourceDefaults",
+          "declared_request_field_mappings": {},
+          "method": "PATCH",
+          "path": "/api/environments/defaults",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "agent",
+            "app",
+            "knowledgeSource",
+            "mcpGateway",
+            "mcpRegistry"
+          ],
+          "request_fields_without_declared_mapping": [
+            "agent",
+            "app",
+            "knowledgeSource",
+            "mcpGateway",
+            "mcpRegistry"
+          ],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": false,
+          "optional": true,
+          "path": "environment_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "resource_type",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_environment_default.go",
+      "terraform_resource": "archestra_environment_default"
     },
     {
       "acceptance_execution": "unverified",
@@ -8011,6 +8155,309 @@
     },
     {
       "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 3,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "CreateA2aRemoteAgent",
+          "declared_request_field_mappings": {
+            "auth": "auth",
+            "description": "description",
+            "initialGrants": "initial_grants",
+            "name": "name",
+            "source": "source"
+          },
+          "method": "POST",
+          "path": "/api/a2a/remote-agents",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "auth",
+            "description",
+            "initialGrants",
+            "name",
+            "source"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "DeleteA2aRemoteAgent",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/a2a/remote-agents/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetA2aRemoteAgent",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/a2a/remote-agents/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateA2aRemoteAgent",
+          "declared_request_field_mappings": {
+            "auth": "auth",
+            "description": "description",
+            "enabled": "enabled",
+            "name": "name",
+            "source": "source"
+          },
+          "method": "PUT",
+          "path": "/api/a2a/remote-agents/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "auth",
+            "description",
+            "enabled",
+            "name",
+            "source"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": true,
+          "optional": false,
+          "path": "agent_card",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "assignment_count",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "auth",
+          "required": false,
+          "sensitive": true,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "card_hash",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "connection_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "connection_metadata",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "description",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "discovery_mode",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "discovery_url",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "enabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "last_discovered_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "last_used_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "organization_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "source",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "tool_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "updated_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_remote_agent.go",
+      "terraform_resource": "archestra_remote_agent"
+    },
+    {
+      "acceptance_execution": "unverified",
       "acceptance_tests_declared": 1,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
@@ -10025,15 +10472,113 @@
       "schema_version": 0,
       "source": "internal/provider/resource_team_external_group.go",
       "terraform_resource": "archestra_team_external_group"
+    },
+    {
+      "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 0,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "DeleteTeamVaultFolder",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/teams/{}/vault-folder",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetTeamVaultFolder",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/teams/{}/vault-folder",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "SetTeamVaultFolder",
+          "declared_request_field_mappings": {
+            "vaultPath": "vault_path"
+          },
+          "method": "POST",
+          "path": "/api/teams/{}/vault-folder",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "vaultPath"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "folder_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "team_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "updated_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "vault_path",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_team_vault_folder.go",
+      "terraform_resource": "archestra_team_vault_folder"
     }
   ],
-  "terraform_count": 35,
+  "terraform_count": 39,
   "unreferenced_mutating_operations": [
-    {
-      "method": "DELETE",
-      "operation_id": "deleteA2aRemoteAgent",
-      "path": "/api/a2a/remote-agents/{}"
-    },
     {
       "method": "DELETE",
       "operation_id": "deleteAgentRun",
@@ -10400,11 +10945,6 @@
       "path": "/api/teams/bulk"
     },
     {
-      "method": "DELETE",
-      "operation_id": "deleteTeamVaultFolder",
-      "path": "/api/teams/{}/vault-folder"
-    },
-    {
       "method": "PATCH",
       "operation_id": "updateAgentRun",
       "path": "/api/agent-runs/{}"
@@ -10443,11 +10983,6 @@
       "method": "PATCH",
       "operation_id": "bulkUpdateConnectors",
       "path": "/api/connectors/bulk"
-    },
-    {
-      "method": "PATCH",
-      "operation_id": "updateEnvironmentResourceDefaults",
-      "path": "/api/environments/defaults"
     },
     {
       "method": "PATCH",
@@ -10506,11 +11041,6 @@
     },
     {
       "method": "POST",
-      "operation_id": "createA2aRemoteAgent",
-      "path": "/api/a2a/remote-agents"
-    },
-    {
-      "method": "POST",
       "operation_id": "inspectA2aRemoteAgent",
       "path": "/api/a2a/remote-agents/inspect"
     },
@@ -10548,11 +11078,6 @@
       "method": "POST",
       "operation_id": "bulkUpdateAgentTools",
       "path": "/api/agents/tools/bulk-update"
-    },
-    {
-      "method": "POST",
-      "operation_id": "syncAgentA2aDelegations",
-      "path": "/api/agents/{}/a2a-delegations"
     },
     {
       "method": "POST",
@@ -11351,11 +11876,6 @@
     },
     {
       "method": "POST",
-      "operation_id": "setTeamVaultFolder",
-      "path": "/api/teams/{}/vault-folder"
-    },
-    {
-      "method": "POST",
       "operation_id": "checkTeamVaultFolderConnectivity",
       "path": "/api/teams/{}/vault-folder/check-connectivity"
     },
@@ -11883,11 +12403,6 @@
       "method": "POST",
       "operation_id": null,
       "path": "/v2/a2a/{}"
-    },
-    {
-      "method": "PUT",
-      "operation_id": "updateA2aRemoteAgent",
-      "path": "/api/a2a/remote-agents/{}"
     },
     {
       "method": "PUT",

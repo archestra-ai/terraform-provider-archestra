@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"strings"
+	"time"
 )
 
 var _ resource.ResourceWithImportState = &HookResource{}
@@ -223,16 +224,16 @@ func (r *HookResource) ImportState(ctx context.Context, req resource.ImportState
 }
 func (r *HookResource) flatten(ctx context.Context, data *HookResourceModel, body []byte, diags *diag.Diagnostics) {
 	var value struct {
-		ID             *string  `json:"id"`
-		AgentID        *string  `json:"agentId"`
-		Event          *string  `json:"event"`
-		FileName       *string  `json:"fileName"`
-		Content        *string  `json:"content"`
-		Requirements   []string `json:"requirements"`
-		Enabled        *bool    `json:"enabled"`
-		OrganizationID *string  `json:"organizationId"`
-		CreatedAt      *string  `json:"createdAt"`
-		UpdatedAt      *string  `json:"updatedAt"`
+		ID             *string    `json:"id"`
+		AgentID        *string    `json:"agentId"`
+		Event          *string    `json:"event"`
+		FileName       *string    `json:"fileName"`
+		Content        *string    `json:"content"`
+		Requirements   []string   `json:"requirements"`
+		Enabled        *bool      `json:"enabled"`
+		OrganizationID *string    `json:"organizationId"`
+		CreatedAt      *time.Time `json:"createdAt"`
+		UpdatedAt      *time.Time `json:"updatedAt"`
 	}
 	if err := json.Unmarshal(body, &value); err != nil {
 		diags.AddError("Invalid API Response", err.Error())
@@ -248,6 +249,6 @@ func (r *HookResource) flatten(ctx context.Context, data *HookResourceModel, bod
 	diags.Append(d...)
 	data.Enabled = types.BoolPointerValue(value.Enabled)
 	data.OrganizationID = types.StringPointerValue(value.OrganizationID)
-	data.CreatedAt = types.StringPointerValue(value.CreatedAt)
-	data.UpdatedAt = types.StringPointerValue(value.UpdatedAt)
+	data.CreatedAt = canonicalAPITimestamp(value.CreatedAt)
+	data.UpdatedAt = canonicalAPITimestamp(value.UpdatedAt)
 }
