@@ -1,10 +1,10 @@
 # Provider modernization audit
 
-Current v3 configuration covers **39 registered resources in both scopes**.
+Current v3 configuration covers **41 registered resources in both scopes**.
 The [current inventory](provider-v3-current-inventory.md) records the schema and
 API call coverage. The [29-family baseline](crossplane-rc48-candidate.json) and
 [six-family expansion](crossplane-persistent-extensions.json) have separate recorded
-binary hashes and real both-scope lifecycle evidence. The [full 35-family sweep](crossplane-35-family-candidate.json) passes 102 records with normal cleanup. [Four additional families](crossplane-a2a-environment-bindings.json) and remote-agent creation grants pass in both scopes on separate recorded binaries. Both Linux runtime images
+binary hashes and real both-scope lifecycle evidence. The [full 35-family sweep](crossplane-35-family-candidate.json) passes 102 records with normal cleanup. [Four additional families](crossplane-a2a-environment-bindings.json) and remote-agent creation grants pass in both scopes on separate recorded binaries. [Two credential-routing families](crossplane-credential-routing.json), their mode variants and creation grants add twelve passing both-scope records, including in-place OAuth rotation and nullable/empty clears. Both Linux runtime images
 and embedded xpkgs pass [packaging and actual image reconciliation](runtime-package-validation.json).
 
 The [API lifecycle decisions](api-lifecycle-decisions.md) track every broader
@@ -12,7 +12,7 @@ persistent API area. [Request-field review](request-field-review.md) classifies 
 90 baseline raw occurrences; `current-request-field-review.json` classifies all
 127 current occurrences. These raw counts include manual encoding, other agent
 subtypes and server-owned state. They are not counts of missing capabilities.
-The current 39-family full native suite passes 131 acceptance tests with zero failures or skips (`a2a-environment-native-acceptance.json`). The historical expansion has its own 126-test record (`persistent-extensions-native-acceptance.json`). New profile/service-account creation grants pass in both scopes (`crossplane-persistent-extension-grants.json`). Final full-candidate repetition, remaining justified API implementations, normal
+The completed 39-family full native suite passes 131 acceptance tests with zero failures or skips (`a2a-environment-native-acceptance.json`). The historical expansion has its own 126-test record (`persistent-extensions-native-acceptance.json`). New profile/service-account creation grants pass in both scopes (`crossplane-persistent-extension-grants.json`). The current 41-family full native suite passes all 137 tests with zero failures or skips (`credential-routing-full-native-acceptance.json`). Its six targeted cases are also recorded separately (`credential-routing-native-acceptance.json`). Final full-candidate repetition, remaining justified API implementations, normal
 protected review and publication remain open. The sections below retain the
 original audit baseline for traceability.
 

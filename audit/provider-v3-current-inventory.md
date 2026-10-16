@@ -2,7 +2,7 @@
 
 static inventory; no runtime coverage implied
 
-Terraform: 39; Crossplane configured: 39.
+Terraform: 41; Crossplane configured: 41.
 
 Mapping counts are configuration coverage, not successful CRUD or reconciliation coverage.
 
@@ -34,6 +34,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_mcp_gateway_skill_publication` | True | True | none detected | none detected | 1 |
 | `archestra_mcp_registry_catalog_item` | True | True | none detected | CreateInternalMcpCatalogItem: catalogReinstallRequired, id, oauthConfig, serverType, serverUrl; UpdateInternalMcpCatalogItem: catalogReinstallRequired, hibernationMode, oauthConfig, serverType, serverUrl | 18 |
 | `archestra_mcp_server_installation` | True | True | none detected | InstallMcpServer: accessToken, agentIds, catalogId, createdByServiceAccountId, environmentValues, isByosVault, localInstallationError, localInstallationStatus, name, ownerId, reinstallRequired, scope, secretId, teamId, userConfigValues, userId; ReinstallMcpServer: environmentValues, hibernationMode, isByosVault, userConfigValues | 3 |
+| `archestra_oauth_client` | True | True | none detected | none detected | 0 |
 | `archestra_organization_settings` | True | True | none detected | none detected | 9 |
 | `archestra_project` | True | True | none detected | SetProjectInstructions: content | 2 |
 | `archestra_remote_agent` | True | True | none detected | none detected | 3 |
@@ -47,6 +48,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_team` | True | True | none detected | AddTeamMember: role, userId; UpdateTeamMember: role | 2 |
 | `archestra_team_external_group` | True | True | none detected | AddTeamExternalGroup: groupIdentifier | 1 |
 | `archestra_team_vault_folder` | True | True | none detected | none detected | 0 |
+| `archestra_virtual_api_key` | True | True | none detected | none detected | 0 |
 
 Unreferenced mutations are review candidates, not an automatically inferred resource denominator.
 RPCs, inference, OAuth flows, logs and transient executions must not become managed resources just to increase a percentage.

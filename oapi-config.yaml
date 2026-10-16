@@ -146,3 +146,12 @@ output-options:
     - deleteA2aRemoteAgent
     - getAgentA2aDelegations
     - syncAgentA2aDelegations
+    - createVirtualApiKey
+    - getVirtualApiKey
+    - updateVirtualApiKey
+    - deleteVirtualApiKey
+    - createOauthClient
+    - getOauthClients
+    - updateOauthClient
+    - deleteOauthClient
+    - rotateOauthClientSecret

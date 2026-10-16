@@ -15,11 +15,13 @@ API versions are independent of provider versions. See the [compatibility matrix
 
 ## Resource coverage
 
-This v3 branch is under development. The schema registers 39 resource families,
+This v3 branch is under development. The schema registers 41 resource families,
 all configured in both Crossplane scopes. The [29-family baseline](audit/crossplane-rc48-candidate.json)
 and [full 35-family sweep](audit/crossplane-35-family-candidate.json) have recorded
 real both-scope lifecycles. The [A2A and environment bindings](audit/crossplane-a2a-environment-bindings.json)
-add four tested families in both scopes, with separate candidate hashes. Both Linux runtime
+add four tested families in both scopes, with separate candidate hashes.
+[Credential routing](audit/crossplane-credential-routing.json) adds virtual LLM keys
+and unified OAuth clients, including both grant modes and credential rotation. Both Linux runtime
 images and embedded xpkgs pass [packaging and image reconciliation checks](audit/runtime-package-validation.json).
 [Further persistent API work](audit/api-lifecycle-decisions.md), final candidate
 repetition, normal review and publication remain open. This count does not establish
@@ -66,6 +68,8 @@ complete coverage of the wider Archestra API.
 | `archestra_agent_remote_delegations` | `agent` / `RemoteDelegations` |
 | `archestra_environment_default` | `environment` / `ResourceDefault` |
 | `archestra_team_vault_folder` | `team` / `VaultFolder` |
+| `archestra_virtual_api_key` | `llm` / `VirtualKey` |
+| `archestra_oauth_client` | `credential` / `OAuthClient` |
 
 Seven Terraform data sources remain available for lookups and audit data.
 Crossplane resources use `<group>.archestra.crossplane.io` in cluster scope and

@@ -21,6 +21,8 @@ import (
 // Every entry needs a reason — the default of RemoveOnConfigNullList is
 // safer; allowlisting asserts the field has no "remove = clear" semantic.
 var useStateForUnknownAllowlist = map[string]map[string]string{
+	"archestra_virtual_api_key":    {"initial_grants": "Creation-only grants are not echoed; later permission updates use the policy resource."},
+	"archestra_oauth_client":       {"initial_grants": "Creation-only grants are not echoed; later permission updates use the policy resource."},
 	"archestra_remote_agent":       {"enabled": "Omission preserves the observed setting; explicitly set true or false to manage it.", "initial_grants": "Creation-only grants are not echoed; later permission changes use the permission-policy resource."},
 	"archestra_service_account":    {"initial_grants": "Creation-only grants are not echoed; permission changes use the permission-policy resource."},
 	"archestra_llm_proxy_profile":  {"initial_grants": "Creation-only grants are not echoed; permission changes use the permission-policy resource."},

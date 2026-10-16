@@ -58,6 +58,10 @@ func PreserveRequiredCollections(root string, providers ...*ujconfig.Provider) e
 	return nil
 }
 func preserveResourceCollections(root, scope string, r *ujconfig.Resource, required map[string]bool) error {
+	optional := optionalCredentialCollections(r.Name)
+	for _, name := range optional {
+		required[name] = false
+	}
 	if len(required) == 0 {
 		return nil
 	}
@@ -72,11 +76,18 @@ func preserveResourceCollections(root, scope string, r *ujconfig.Resource, requi
 		if err := rewriteRequiredCollectionTags(file, r.Kind+"Parameters", required); err != nil {
 			return err
 		}
-		if required["initial_grants"] {
-			if err := rewriteRequiredCollectionTags(file, r.Kind+"InitParameters", map[string]bool{"initial_grants": true}); err != nil {
+		if required["initial_grants"] || len(optional) > 0 {
+			initCollections := map[string]bool{}
+			if required["initial_grants"] {
+				initCollections["initial_grants"] = true
+			}
+			for _, name := range optional {
+				initCollections[name] = false
+			}
+			if err := rewriteRequiredCollectionTags(file, r.Kind+"InitParameters", initCollections); err != nil {
 				return err
 			}
-			if err := normalizeCreationGrantParameterMaps(strings.Replace(file, "_types.go", "_terraformed.go", 1)); err != nil {
+			if err := normalizeCreationGrantParameterMaps(strings.Replace(file, "_types.go", "_terraformed.go", 1), optional...); err != nil {
 				return err
 			}
 		}
@@ -121,12 +132,12 @@ func preserveRequiredFieldTag(field *ast.Field, required map[string]bool) bool {
 	}
 	tag := reflect.StructTag(raw).Get("tf")
 	name, _, _ := strings.Cut(tag, ",")
-	if !required[name] {
+	if _, present := required[name]; !present {
 		return false
 	}
 	jsonTag := reflect.StructTag(raw).Get("json")
 	tfReplacement, jsonReplacement := strings.ReplaceAll(tag, ",omitempty", ""), strings.ReplaceAll(jsonTag, ",omitempty", "")
-	if name == "initial_grants" {
+	if name == "initial_grants" || !required[name] {
 		jsonReplacement = strings.ReplaceAll(jsonTag, ",omitempty", ",omitzero")
 	}
 	if tfReplacement == tag && jsonReplacement == jsonTag {
@@ -171,10 +182,27 @@ func rewriteRequiredCollectionTags(file, parameters string, required map[string]
 	return writeGeneratedCollectionTypes(file, fset, node)
 }
 func markOptionalInitialGrants(parameters string, field *ast.Field, required map[string]bool) *ast.CommentGroup {
-	if !strings.HasSuffix(parameters, "InitParameters") || len(field.Names) == 0 || field.Names[0].Name != "InitialGrants" || !required["initial_grants"] || field.Doc != nil {
+	if field.Tag == nil {
 		return nil
 	}
-	field.Doc = &ast.CommentGroup{List: []*ast.Comment{{Slash: field.Pos() - 1, Text: "// +kubebuilder:validation:Optional"}}}
+	raw, err := strconv.Unquote(field.Tag.Value)
+	if err != nil {
+		return nil
+	}
+	name, _, _ := strings.Cut(reflect.StructTag(raw).Get("tf"), ",")
+	isRequired, present := required[name]
+	if !present || (isRequired && (name != "initial_grants" || !strings.HasSuffix(parameters, "InitParameters"))) {
+		return nil
+	}
+	if field.Doc != nil && strings.Contains(field.Doc.Text(), "+kubebuilder:validation:Optional") {
+		return nil
+	}
+	comment := &ast.Comment{Slash: field.Pos() - 1, Text: "// +kubebuilder:validation:Optional"}
+	if field.Doc != nil {
+		field.Doc.List = append(field.Doc.List, comment)
+		return nil
+	}
+	field.Doc = &ast.CommentGroup{List: []*ast.Comment{comment}}
 	return field.Doc
 }
 
@@ -197,16 +225,23 @@ func writeGeneratedCollectionTypes(file string, fset *token.FileSet, node *ast.F
 
 // Omitted creation grants must be absent from parameter maps. Upjet compares
 // initProvider collection types before merging, so a present nil value panics.
-func normalizeCreationGrantParameterMaps(file string) error {
+func normalizeCreationGrantParameterMaps(file string, optional ...string) error {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, file, nil, parser.ParseComments)
 	if err != nil {
 		return err
 	}
+	keys := append([]string{"initial_grants"}, optional...)
+	quoted := make([]string, len(keys))
+	for i, key := range keys {
+		quoted[i] = strconv.Quote(key)
+	}
 	snippet, err := parser.ParseFile(token.NewFileSet(), "normalize.go", `package normalize
 func normalize() {
  err = json.TFParser.Unmarshal(p, &base)
- if base["initial_grants"] == nil { delete(base, "initial_grants") }
+ for _, key := range []string{`+strings.Join(quoted, ",")+`} {
+  if base[key] == nil { delete(base, key) }
+ }
  return base, err
 }`, 0)
 	if err != nil {
@@ -242,4 +277,16 @@ func replaceCreationGrantReturn(method *ast.FuncDecl, statements []ast.Stmt) (bo
 	}
 	method.Body.List = append(method.Body.List[:last], statements...)
 	return true, nil
+}
+
+// These optional collections distinguish an unmanaged omission from an explicit empty set.
+func optionalCredentialCollections(name string) []string {
+	switch name {
+	case "archestra_virtual_api_key":
+		return []string{"provider_api_keys", "labels"}
+	case "archestra_oauth_client":
+		return []string{"provider_api_keys", "labels", "allowed_gateway_ids", "redirect_uris"}
+	default:
+		return nil
+	}
 }

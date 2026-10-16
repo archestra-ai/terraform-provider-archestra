@@ -19,6 +19,7 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'routing-credentials': {'VirtualKey','OAuthClient'},
     'remote-agents': {'RemoteAgent','RemoteDelegations'},
     'environment-bindings': {'ResourceDefault','VaultFolder'},
     'extensions': {'ProxyProfile','Directory','DefaultUserLimit','Hook','ServiceAccount','ServiceAccountToken','GatewaySubagentControl','InstallationControls'},
@@ -31,7 +32,7 @@ CASE_RESOURCES = {
     'skill-policy': {'SkillPolicy'}, 'subagent-exclusions': {'SubagentExclusions'},
     'knowledge-exclusions': {'KnowledgeSourceExclusions'}, 'skill': {'Skill'},
     'gateway-skills': {'SkillPublication', 'SkillExclusions'}, 'project-instructions': {'ProjectInstructions'},
-    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
+    'initial-grants': {kind + 'InitialGrants' for kind in ('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey')},
 }
 
 
@@ -70,10 +71,10 @@ def main():
     parser.add_argument('--llm-base-url', required=True)
     parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
-    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents'), default=['catalog', 'limit', 'llm'])
+    parser.add_argument('--cases', nargs='+', choices=('catalog', 'limit', 'llm', 'permissions', 'organization', 'external-groups', 'delegation', 'identity', 'tools', 'core', 'credential', 'schedule', 'api-key', 'skill-policy', 'subagent-exclusions', 'knowledge-exclusions', 'initial-grants', 'initial-grant-defaults', 'skill', 'gateway-skills', 'project-instructions', 'extensions', 'environment-bindings', 'remote-agents', 'routing-credentials'), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
     parser.add_argument('--scopes', nargs='+', choices=('cluster', 'namespaced'), default=['cluster', 'namespaced'])
-    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
+    parser.add_argument('--grant-kinds', nargs='+', choices=('Agent', 'Gateway', 'ProxyProfile', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'Project', 'KnowledgeBase', 'RegistryCatalogItem', 'Skill', 'RuntimeCredential', 'ProviderKey'))
     parser.add_argument('--kubeconfig', type=Path, required=True)
     parser.add_argument('--provider-config', required=True)
     parser.add_argument('--namespace', default='crossplane-system')
@@ -159,7 +160,7 @@ def main():
                     'metadata': metadata, 'spec': {'forProvider': fields, 'providerConfigRef': config}}
         if init_fields is not None:
             manifest['spec']['initProvider'] = init_fields
-        if kind == 'ServiceAccountToken':
+        if kind in ('ServiceAccountToken', 'VirtualKey', 'OAuthClient'):
             ref = {'name': name + '-connection'}
             if scope == 'cluster':
                 ref['namespace'] = args.namespace
@@ -278,6 +279,115 @@ def main():
                 results.append(result)
                 save()
                 print(json.dumps(result), flush=True)
+
+            if 'routing-credentials' in scope_cases:
+                import base64
+                team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-routing-billing-' + run + '-' + scope}, '-routing')
+                provider, provider_id, _ = create(scope, 'llm', 'ProviderKey', 'providerkeys',
+                    {'name': 'cp-routing-provider-' + run + '-' + scope, 'llmProvider': 'ollama', 'baseUrl': args.llm_base_url, **vault_fixture}, '-routing')
+                provider_fields = [{'provider': 'ollama', 'providerApiKeyIdRef': {'name': provider[2]}}]
+                cap = {'limitValue': 100, 'cleanupInterval': 'calendar_month'}
+                def connection_value(lease, key):
+                    value = json.loads(kube('-n', args.namespace, 'get', 'secret', lease[2] + '-connection', '-o', 'json'))
+                    return base64.b64decode(value['data']['attribute.' + key]).decode()
+                def oauth_value(identifier):
+                    code, page = api('/api/oauth-clients?limit=100')
+                    if code != 200:
+                        raise RuntimeError('Unable to read managed OAuth client metadata')
+                    return next((item for item in page['data'] if item['id'] == identifier), None)
+                def oauth_auth(identifier, secret):
+                    request = urllib.request.Request(args.api_url.rstrip('/') + '/api/auth/oauth2/token',
+                        data=urllib.parse.urlencode({'grant_type': 'client_credentials', 'client_id': identifier,
+                            'client_secret': secret, 'scope': 'llm:proxy'}).encode(),
+                        headers={'Content-Type': 'application/x-www-form-urlencoded'}, method='POST')
+                    try:
+                        with opener.open(request, timeout=20) as response:
+                            response.read()
+                            return response.status
+                    except urllib.error.HTTPError as error:
+                        return error.code
+
+                virtual, virtual_id, obj = create(scope, 'llm', 'VirtualKey', 'virtualkeys',
+                    {'name': 'cp-virtual-' + run + '-' + scope, 'providerApiKeys': provider_fields,
+                     'expiresAt': '2040-01-01T00:00:00Z', 'billingTeamIdRef': {'name': team[2]},
+                     'spendCap': cap, 'labels': [{'key': 'purpose', 'value': 'routing'}], 'rotationNonce': '1'})
+                virtual_path = '/api/llm-virtual-keys/' + virtual_id
+                secret = wait('Virtual key connection publication', lambda: connection_value(virtual, 'value'))
+                if secret in json.dumps(obj.get('status', {})):
+                    raise RuntimeError('Virtual key leaked into Kubernetes status')
+                patch(virtual, {'name': 'Updated virtual ' + run})
+                wait('Virtual key metadata update', lambda: api(virtual_path)[1]['name'] == 'Updated virtual ' + run)
+                current = api(virtual_path)[1]
+                if current['billingTeamId'] != team_id or current['spendCap']['limitValue'] != 100 or not current['expiresAt'].startswith('2040-01-01T00:00:00') or current['providerApiKeys'][0]['providerApiKeyId'] != provider_id or connection_value(virtual, 'value') != secret:
+                    raise RuntimeError('Metadata update changed routing, expiry, billing or the virtual credential')
+                wire = {'name': 'Out of band virtual', 'keyType': 'standard', 'providerApiKeys': [{'provider': 'ollama', 'providerApiKeyId': provider_id}], 'includeFutureProviders': False, 'expiresAt': '2041-01-01T00:00:00Z'}
+                if api(virtual_path, wire, 'PATCH')[0] != 200:
+                    raise RuntimeError('Unable to inject owned virtual-key drift')
+                wait('Virtual key name and expiry drift repair', lambda: api(virtual_path)[1]['name'] == 'Updated virtual ' + run and api(virtual_path)[1]['expiresAt'].startswith('2040-01-01T00:00:00'))
+                patch(virtual, {'expiresAt': None, 'billingTeamId': None, 'billingTeamIdRef': None, 'spendCap': None, 'labels': []})
+                wait('Virtual nullable fields and labels clear', lambda: api(virtual_path)[1]['expiresAt'] is None and api(virtual_path)[1]['billingTeamId'] is None and api(virtual_path)[1]['spendCap'] is None and not api(virtual_path)[1]['labels'])
+                patch(virtual, {'includeFutureProviders': True, 'providerApiKeys': []})
+                wait('Virtual explicit mappings clear', lambda: api(virtual_path)[1]['includeFutureProviders'] and not api(virtual_path)[1]['providerApiKeys'])
+                immutable_update(virtual, {'rotationNonce': '2'}, {'rotationNonce': '1'})
+                if connection_value(virtual, 'value') != secret:
+                    raise RuntimeError('Refused virtual-key replacement changed its credential')
+                delete(virtual)
+                if api(virtual_path)[0] != 404:
+                    raise RuntimeError('Virtual key survived deletion')
+                record('VirtualKey', scope, create='passed', nested_provider_reference='passed', update='passed', drift_repair='passed', metadata_preserves_routing_expiry_billing_secret=True, nullable_and_empty_clears='passed', credential_absent_from_status=True, replacement_refused='passed', delete='passed')
+
+                passthrough, passthrough_id, _ = create(scope, 'llm', 'VirtualKey', 'virtualkeys',
+                    {'name': 'cp-passthrough-' + run + '-' + scope, 'keyType': 'passthrough'}, '-passthrough')
+                patch(passthrough, {'name': 'Updated passthrough ' + run})
+                passthrough_path = '/api/llm-virtual-keys/' + passthrough_id
+                wait('Passthrough metadata update preserves type', lambda: api(passthrough_path)[1]['name'] == 'Updated passthrough ' + run and api(passthrough_path)[1]['keyType'] == 'passthrough')
+                delete(passthrough)
+                if api(passthrough_path)[0] != 404:
+                    raise RuntimeError('Passthrough virtual key survived deletion')
+                record('VirtualKeyPassthrough', scope, create='passed', metadata_preserves_type='passed', delete='passed')
+
+                account, account_id, _ = create(scope, 'identity', 'ServiceAccount', 'serviceaccounts',
+                    {'name': 'cp-oauth-identity-' + run + '-' + scope, 'role': 'admin'}, '-routing')
+                oauth, oauth_id, obj = create(scope, 'credential', 'OAuthClient', 'oauthclients',
+                    {'name': 'cp-oauth-' + run + '-' + scope, 'scopes': ['llm:proxy'], 'providerApiKeys': provider_fields,
+                     'serviceAccountIdRef': {'name': account[2]}, 'billingTeamIdRef': {'name': team[2]},
+                     'spendCap': cap, 'labels': [{'key': 'purpose', 'value': 'oauth'}], 'rotationNonce': '1'})
+                secret = wait('OAuth connection publication', lambda: connection_value(oauth, 'client_secret'))
+                public_id = oauth_value(oauth_id)['clientId']
+                if secret in json.dumps(obj.get('status', {})) or oauth_auth(public_id, secret) != 200 or oauth_auth(public_id, 'deliberately-invalid-secret') not in (400, 401):
+                    raise RuntimeError('OAuth credential failed authentication isolation or leaked into status')
+                patch(oauth, {'name': 'Updated OAuth ' + run})
+                wait('OAuth metadata update', lambda: oauth_value(oauth_id)['name'] == 'Updated OAuth ' + run)
+                current = oauth_value(oauth_id)
+                if current['serviceAccountId'] != account_id or current['billingTeam']['id'] != team_id or current['spendCap']['limitValue'] != 100 or connection_value(oauth, 'client_secret') != secret:
+                    raise RuntimeError('Metadata update changed OAuth bindings or secret')
+                if api('/api/oauth-clients/' + oauth_id, {'name': 'Out of band OAuth', 'grantType': 'client_credentials', 'scopes': ['llm:proxy']}, 'PUT')[0] != 200:
+                    raise RuntimeError('Unable to inject owned OAuth metadata drift')
+                wait('OAuth drift repair', lambda: oauth_value(oauth_id)['name'] == 'Updated OAuth ' + run)
+                patch(oauth, {'rotationNonce': '2'})
+                replacement = wait('OAuth in-place rotation publication', lambda: (value if (value := connection_value(oauth, 'client_secret')) != secret else None))
+                if observation(oauth)['metadata']['annotations']['crossplane.io/external-name'] != oauth_id or oauth_value(oauth_id)['clientId'] != public_id or oauth_auth(public_id, secret) not in (400, 401) or oauth_auth(public_id, replacement) != 200:
+                    raise RuntimeError('OAuth rotation did not preserve identity and revoke its old secret')
+                patch(oauth, {'serviceAccountId': None, 'serviceAccountIdRef': None, 'billingTeamId': None, 'billingTeamIdRef': None, 'spendCap': None, 'labels': []})
+                wait('OAuth bindings clear', lambda: oauth_value(oauth_id)['serviceAccountId'] is None and oauth_value(oauth_id)['billingTeam'] is None and oauth_value(oauth_id)['spendCap'] is None and not oauth_value(oauth_id)['labels'])
+                patch(oauth, {'includeFutureProviders': True, 'providerApiKeys': []})
+                wait('OAuth explicit mappings clear', lambda: oauth_value(oauth_id)['includeFutureProviders'] and not oauth_value(oauth_id)['providerApiKeys'])
+                delete(oauth)
+                if oauth_value(oauth_id) is not None or oauth_auth(public_id, replacement) not in (400, 401):
+                    raise RuntimeError('Deleted OAuth client still exists or issues tokens')
+                delete(account)
+                record('OAuthClient', scope, create='passed', nested_provider_and_identity_references='passed', authentication='passed', update='passed', drift_repair='passed', metadata_preserves_bindings_and_secret=True, in_place_rotation='passed', old_secret_rejected=True, nullable_and_empty_clears='passed', credential_absent_from_status=True, delete='passed')
+
+                code_client, code_id, _ = create(scope, 'credential', 'OAuthClient', 'oauthclients',
+                    {'name': 'cp-user-oauth-' + run + '-' + scope, 'scopes': ['llm:proxy'], 'grantType': 'authorization_code', 'redirectUris': ['https://example.test/callback']}, '-code')
+                patch(code_client, {'name': 'Updated user OAuth ' + run, 'redirectUris': ['https://example.test/updated']})
+                wait('Authorization-code client update', lambda: oauth_value(code_id)['name'] == 'Updated user OAuth ' + run and oauth_value(code_id)['redirectUris'] == ['https://example.test/updated'] and oauth_value(code_id)['grantType'] == 'authorization_code')
+                delete(code_client)
+                if oauth_value(code_id) is not None:
+                    raise RuntimeError('Authorization-code client survived deletion')
+                record('OAuthClientAuthorizationCode', scope, create='passed', metadata_preserves_grant_type='passed', redirect_update='passed', delete='passed', interactive_consent='not_invoked')
+                delete(provider)
+                delete(team)
 
             if 'remote-agents' in scope_cases:
                 secret_name = 'cp-remote-auth-' + run + '-' + scope
@@ -754,6 +864,8 @@ def main():
                     ('llm', 'ProxyProfile', 'proxyprofiles', 'agent', {}),
                     ('identity', 'ServiceAccount', 'serviceaccounts', 'serviceAccount', {'role': 'member'}),
                     ('a2a', 'RemoteAgent', 'remoteagents', 'externalAgent', {'source': json.dumps(a2a_source('cp-grant-remote-' + run + '-' + scope))}),
+                    ('llm', 'VirtualKey', 'virtualkeys', 'llmVirtualKey', {'includeFutureProviders': True, 'providerApiKeys': []}),
+                    ('credential', 'OAuthClient', 'oauthclients', 'oauthClient', {'scopes': ['llm:proxy'], 'includeFutureProviders': True, 'providerApiKeys': []}),
                     ('project', 'Project', 'projects', 'project', {}),
                     ('knowledge', 'KnowledgeBase', 'knowledgebases', 'knowledgeBase', {}),
                     ('mcp', 'RegistryCatalogItem', 'registrycatalogitems', 'mcpRegistry', {'remoteConfig': {'url': 'http://127.0.0.1:19999/mcp'}}),
@@ -791,7 +903,10 @@ def main():
                         if resource_type == 'credential':
                             code, definitions = api('/api/credentials')
                             return code == 200 and any(item['key'] == identifier and item[metadata_field] == updated_name for item in definitions)
-                        prefix = {'agent': '/api/agents/', 'mcpGateway': '/api/agents/', 'project': '/api/projects/',
+                        if resource_type == 'oauthClient':
+                            code, page = api('/api/oauth-clients?limit=100')
+                            return code == 200 and any(item['id'] == identifier and item[metadata_field] == updated_name for item in page['data'])
+                        prefix = {'llmVirtualKey': '/api/llm-virtual-keys/', 'agent': '/api/agents/', 'mcpGateway': '/api/agents/', 'project': '/api/projects/',
                                   'knowledgeBase': '/api/knowledge-bases/', 'mcpRegistry': '/api/internal_mcp_catalog/', 'serviceAccount': '/api/service-accounts/', 'externalAgent': '/api/a2a/remote-agents/',
                                   'skill': '/api/skills/', 'llmProviderApiKey': '/api/llm-provider-api-keys/'}[resource_type]
                         code, current = api(prefix + identifier)

@@ -1088,6 +1088,140 @@ const (
 	CreateLlmProviderApiKeyJSONBodyProviderZhipuai             CreateLlmProviderApiKeyJSONBodyProvider = "zhipuai"
 )
 
+// Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsActions.
+const (
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateVirtualApiKeyJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsDelete                  CreateVirtualApiKeyJSONBodyInitialGrantsActions = "delete"
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsManagePermissions       CreateVirtualApiKeyJSONBodyInitialGrantsActions = "manage-permissions"
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsRead                    CreateVirtualApiKeyJSONBodyInitialGrantsActions = "read"
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsUpdate                  CreateVirtualApiKeyJSONBodyInitialGrantsActions = "update"
+	CreateVirtualApiKeyJSONBodyInitialGrantsActionsUse                     CreateVirtualApiKeyJSONBodyInitialGrantsActions = "use"
+)
+
+// Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsSubject0Type.
+const (
+	CreateVirtualApiKeyJSONBodyInitialGrantsSubject0TypeUser CreateVirtualApiKeyJSONBodyInitialGrantsSubject0Type = "user"
+)
+
+// Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsSubject1Type.
+const (
+	CreateVirtualApiKeyJSONBodyInitialGrantsSubject1TypeTeam CreateVirtualApiKeyJSONBodyInitialGrantsSubject1Type = "team"
+)
+
+// Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsSubject2Type.
+const (
+	CreateVirtualApiKeyJSONBodyInitialGrantsSubject2TypeServiceAccount CreateVirtualApiKeyJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+)
+
+// Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsSubject3Type.
+const (
+	CreateVirtualApiKeyJSONBodyInitialGrantsSubject3TypeRole CreateVirtualApiKeyJSONBodyInitialGrantsSubject3Type = "role"
+)
+
+// Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Id.
+const (
+	CreateVirtualApiKeyJSONBodyInitialGrantsSubject4IdAsterisk CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Id = "*"
+)
+
+// Defines values for CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Type.
+const (
+	CreateVirtualApiKeyJSONBodyInitialGrantsSubject4TypeOrganization CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Type = "organization"
+)
+
+// Defines values for CreateVirtualApiKeyJSONBodyKeyType.
+const (
+	CreateVirtualApiKeyJSONBodyKeyTypePassthrough CreateVirtualApiKeyJSONBodyKeyType = "passthrough"
+	CreateVirtualApiKeyJSONBodyKeyTypeStandard    CreateVirtualApiKeyJSONBodyKeyType = "standard"
+)
+
+// Defines values for CreateVirtualApiKeyJSONBodyProviderApiKeysProvider.
+const (
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderAnthropic           CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "anthropic"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderArchestra           CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "archestra"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderAzure               CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "azure"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderBedrock             CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "bedrock"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderCerebras            CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "cerebras"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderCohere              CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "cohere"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderDeepseek            CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "deepseek"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderGemini              CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "gemini"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderGithubCopilot       CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "github-copilot"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderGroq                CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "groq"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderJev                 CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "jev"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderKimi                CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "kimi"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderMicrosoft365Copilot CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "microsoft-365-copilot"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderMinimax             CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "minimax"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderMistral             CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "mistral"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderOllama              CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "ollama"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderOllamaNative        CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "ollama-native"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderOpenai              CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "openai"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderOpenrouter          CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "openrouter"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderPerplexity          CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "perplexity"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderVllm                CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "vllm"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderVoyage              CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "voyage"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderXai                 CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "xai"
+	CreateVirtualApiKeyJSONBodyProviderApiKeysProviderZhipuai             CreateVirtualApiKeyJSONBodyProviderApiKeysProvider = "zhipuai"
+)
+
+// Defines values for CreateVirtualApiKeyJSONBodySpendCapCleanupInterval.
+const (
+	CreateVirtualApiKeyJSONBodySpendCapCleanupIntervalCalendarDay        CreateVirtualApiKeyJSONBodySpendCapCleanupInterval = "calendar_day"
+	CreateVirtualApiKeyJSONBodySpendCapCleanupIntervalCalendarMonth      CreateVirtualApiKeyJSONBodySpendCapCleanupInterval = "calendar_month"
+	CreateVirtualApiKeyJSONBodySpendCapCleanupIntervalCalendarWeekMonday CreateVirtualApiKeyJSONBodySpendCapCleanupInterval = "calendar_week_monday"
+	CreateVirtualApiKeyJSONBodySpendCapCleanupIntervalCalendarWeekSunday CreateVirtualApiKeyJSONBodySpendCapCleanupInterval = "calendar_week_sunday"
+	CreateVirtualApiKeyJSONBodySpendCapCleanupIntervalN12h               CreateVirtualApiKeyJSONBodySpendCapCleanupInterval = "12h"
+	CreateVirtualApiKeyJSONBodySpendCapCleanupIntervalN1h                CreateVirtualApiKeyJSONBodySpendCapCleanupInterval = "1h"
+	CreateVirtualApiKeyJSONBodySpendCapCleanupIntervalN1m                CreateVirtualApiKeyJSONBodySpendCapCleanupInterval = "1m"
+	CreateVirtualApiKeyJSONBodySpendCapCleanupIntervalN1w                CreateVirtualApiKeyJSONBodySpendCapCleanupInterval = "1w"
+	CreateVirtualApiKeyJSONBodySpendCapCleanupIntervalN24h               CreateVirtualApiKeyJSONBodySpendCapCleanupInterval = "24h"
+)
+
+// Defines values for UpdateVirtualApiKeyJSONBodyKeyType.
+const (
+	UpdateVirtualApiKeyJSONBodyKeyTypePassthrough UpdateVirtualApiKeyJSONBodyKeyType = "passthrough"
+	UpdateVirtualApiKeyJSONBodyKeyTypeStandard    UpdateVirtualApiKeyJSONBodyKeyType = "standard"
+)
+
+// Defines values for UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider.
+const (
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderAnthropic           UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "anthropic"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderArchestra           UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "archestra"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderAzure               UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "azure"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderBedrock             UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "bedrock"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderCerebras            UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "cerebras"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderCohere              UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "cohere"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderDeepseek            UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "deepseek"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderGemini              UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "gemini"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderGithubCopilot       UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "github-copilot"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderGroq                UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "groq"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderJev                 UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "jev"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderKimi                UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "kimi"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderMicrosoft365Copilot UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "microsoft-365-copilot"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderMinimax             UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "minimax"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderMistral             UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "mistral"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderOllama              UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "ollama"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderOllamaNative        UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "ollama-native"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderOpenai              UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "openai"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderOpenrouter          UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "openrouter"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderPerplexity          UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "perplexity"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderVllm                UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "vllm"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderVoyage              UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "voyage"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderXai                 UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "xai"
+	UpdateVirtualApiKeyJSONBodyProviderApiKeysProviderZhipuai             UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider = "zhipuai"
+)
+
+// Defines values for UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval.
+const (
+	UpdateVirtualApiKeyJSONBodySpendCapCleanupIntervalCalendarDay        UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval = "calendar_day"
+	UpdateVirtualApiKeyJSONBodySpendCapCleanupIntervalCalendarMonth      UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval = "calendar_month"
+	UpdateVirtualApiKeyJSONBodySpendCapCleanupIntervalCalendarWeekMonday UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval = "calendar_week_monday"
+	UpdateVirtualApiKeyJSONBodySpendCapCleanupIntervalCalendarWeekSunday UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval = "calendar_week_sunday"
+	UpdateVirtualApiKeyJSONBodySpendCapCleanupIntervalN12h               UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval = "12h"
+	UpdateVirtualApiKeyJSONBodySpendCapCleanupIntervalN1h                UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval = "1h"
+	UpdateVirtualApiKeyJSONBodySpendCapCleanupIntervalN1m                UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval = "1m"
+	UpdateVirtualApiKeyJSONBodySpendCapCleanupIntervalN1w                UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval = "1w"
+	UpdateVirtualApiKeyJSONBodySpendCapCleanupIntervalN24h               UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval = "24h"
+)
+
 // Defines values for InstallMcpServerJSONBodyLocalInstallationStatus.
 const (
 	DiscoveringTools InstallMcpServerJSONBodyLocalInstallationStatus = "discovering-tools"
@@ -1109,6 +1243,175 @@ const (
 	ReinstallMcpServerJSONBodyHibernationModeDisabled ReinstallMcpServerJSONBodyHibernationMode = "disabled"
 	ReinstallMcpServerJSONBodyHibernationModeEnabled  ReinstallMcpServerJSONBodyHibernationMode = "enabled"
 	ReinstallMcpServerJSONBodyHibernationModeInherit  ReinstallMcpServerJSONBodyHibernationMode = "inherit"
+)
+
+// Defines values for GetOauthClientsParamsCapability.
+const (
+	GetOauthClientsParamsCapabilityA2a      GetOauthClientsParamsCapability = "a2a"
+	GetOauthClientsParamsCapabilityLlmProxy GetOauthClientsParamsCapability = "llm:proxy"
+	GetOauthClientsParamsCapabilityMcp      GetOauthClientsParamsCapability = "mcp"
+)
+
+// Defines values for GetOauthClientsParamsGrantType.
+const (
+	GetOauthClientsParamsGrantTypeAuthorizationCode GetOauthClientsParamsGrantType = "authorization_code"
+	GetOauthClientsParamsGrantTypeClientCredentials GetOauthClientsParamsGrantType = "client_credentials"
+)
+
+// Defines values for GetOauthClientsParamsAccess.
+const (
+	Mine   GetOauthClientsParamsAccess = "mine"
+	Org    GetOauthClientsParamsAccess = "org"
+	Others GetOauthClientsParamsAccess = "others"
+	Shared GetOauthClientsParamsAccess = "shared"
+)
+
+// Defines values for CreateOauthClientJSONBodyGrantType.
+const (
+	CreateOauthClientJSONBodyGrantTypeAuthorizationCode CreateOauthClientJSONBodyGrantType = "authorization_code"
+	CreateOauthClientJSONBodyGrantTypeClientCredentials CreateOauthClientJSONBodyGrantType = "client_credentials"
+)
+
+// Defines values for CreateOauthClientJSONBodyInitialGrantsActions.
+const (
+	CreateOauthClientJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateOauthClientJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	CreateOauthClientJSONBodyInitialGrantsActionsDelete                  CreateOauthClientJSONBodyInitialGrantsActions = "delete"
+	CreateOauthClientJSONBodyInitialGrantsActionsManagePermissions       CreateOauthClientJSONBodyInitialGrantsActions = "manage-permissions"
+	CreateOauthClientJSONBodyInitialGrantsActionsRead                    CreateOauthClientJSONBodyInitialGrantsActions = "read"
+	CreateOauthClientJSONBodyInitialGrantsActionsUpdate                  CreateOauthClientJSONBodyInitialGrantsActions = "update"
+	CreateOauthClientJSONBodyInitialGrantsActionsUse                     CreateOauthClientJSONBodyInitialGrantsActions = "use"
+)
+
+// Defines values for CreateOauthClientJSONBodyInitialGrantsSubject0Type.
+const (
+	CreateOauthClientJSONBodyInitialGrantsSubject0TypeUser CreateOauthClientJSONBodyInitialGrantsSubject0Type = "user"
+)
+
+// Defines values for CreateOauthClientJSONBodyInitialGrantsSubject1Type.
+const (
+	CreateOauthClientJSONBodyInitialGrantsSubject1TypeTeam CreateOauthClientJSONBodyInitialGrantsSubject1Type = "team"
+)
+
+// Defines values for CreateOauthClientJSONBodyInitialGrantsSubject2Type.
+const (
+	CreateOauthClientJSONBodyInitialGrantsSubject2TypeServiceAccount CreateOauthClientJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+)
+
+// Defines values for CreateOauthClientJSONBodyInitialGrantsSubject3Type.
+const (
+	CreateOauthClientJSONBodyInitialGrantsSubject3TypeRole CreateOauthClientJSONBodyInitialGrantsSubject3Type = "role"
+)
+
+// Defines values for CreateOauthClientJSONBodyInitialGrantsSubject4Id.
+const (
+	CreateOauthClientJSONBodyInitialGrantsSubject4IdAsterisk CreateOauthClientJSONBodyInitialGrantsSubject4Id = "*"
+)
+
+// Defines values for CreateOauthClientJSONBodyInitialGrantsSubject4Type.
+const (
+	CreateOauthClientJSONBodyInitialGrantsSubject4TypeOrganization CreateOauthClientJSONBodyInitialGrantsSubject4Type = "organization"
+)
+
+// Defines values for CreateOauthClientJSONBodyProviderApiKeysProvider.
+const (
+	CreateOauthClientJSONBodyProviderApiKeysProviderAnthropic           CreateOauthClientJSONBodyProviderApiKeysProvider = "anthropic"
+	CreateOauthClientJSONBodyProviderApiKeysProviderArchestra           CreateOauthClientJSONBodyProviderApiKeysProvider = "archestra"
+	CreateOauthClientJSONBodyProviderApiKeysProviderAzure               CreateOauthClientJSONBodyProviderApiKeysProvider = "azure"
+	CreateOauthClientJSONBodyProviderApiKeysProviderBedrock             CreateOauthClientJSONBodyProviderApiKeysProvider = "bedrock"
+	CreateOauthClientJSONBodyProviderApiKeysProviderCerebras            CreateOauthClientJSONBodyProviderApiKeysProvider = "cerebras"
+	CreateOauthClientJSONBodyProviderApiKeysProviderCohere              CreateOauthClientJSONBodyProviderApiKeysProvider = "cohere"
+	CreateOauthClientJSONBodyProviderApiKeysProviderDeepseek            CreateOauthClientJSONBodyProviderApiKeysProvider = "deepseek"
+	CreateOauthClientJSONBodyProviderApiKeysProviderGemini              CreateOauthClientJSONBodyProviderApiKeysProvider = "gemini"
+	CreateOauthClientJSONBodyProviderApiKeysProviderGithubCopilot       CreateOauthClientJSONBodyProviderApiKeysProvider = "github-copilot"
+	CreateOauthClientJSONBodyProviderApiKeysProviderGroq                CreateOauthClientJSONBodyProviderApiKeysProvider = "groq"
+	CreateOauthClientJSONBodyProviderApiKeysProviderJev                 CreateOauthClientJSONBodyProviderApiKeysProvider = "jev"
+	CreateOauthClientJSONBodyProviderApiKeysProviderKimi                CreateOauthClientJSONBodyProviderApiKeysProvider = "kimi"
+	CreateOauthClientJSONBodyProviderApiKeysProviderMicrosoft365Copilot CreateOauthClientJSONBodyProviderApiKeysProvider = "microsoft-365-copilot"
+	CreateOauthClientJSONBodyProviderApiKeysProviderMinimax             CreateOauthClientJSONBodyProviderApiKeysProvider = "minimax"
+	CreateOauthClientJSONBodyProviderApiKeysProviderMistral             CreateOauthClientJSONBodyProviderApiKeysProvider = "mistral"
+	CreateOauthClientJSONBodyProviderApiKeysProviderOllama              CreateOauthClientJSONBodyProviderApiKeysProvider = "ollama"
+	CreateOauthClientJSONBodyProviderApiKeysProviderOllamaNative        CreateOauthClientJSONBodyProviderApiKeysProvider = "ollama-native"
+	CreateOauthClientJSONBodyProviderApiKeysProviderOpenai              CreateOauthClientJSONBodyProviderApiKeysProvider = "openai"
+	CreateOauthClientJSONBodyProviderApiKeysProviderOpenrouter          CreateOauthClientJSONBodyProviderApiKeysProvider = "openrouter"
+	CreateOauthClientJSONBodyProviderApiKeysProviderPerplexity          CreateOauthClientJSONBodyProviderApiKeysProvider = "perplexity"
+	CreateOauthClientJSONBodyProviderApiKeysProviderVllm                CreateOauthClientJSONBodyProviderApiKeysProvider = "vllm"
+	CreateOauthClientJSONBodyProviderApiKeysProviderVoyage              CreateOauthClientJSONBodyProviderApiKeysProvider = "voyage"
+	CreateOauthClientJSONBodyProviderApiKeysProviderXai                 CreateOauthClientJSONBodyProviderApiKeysProvider = "xai"
+	CreateOauthClientJSONBodyProviderApiKeysProviderZhipuai             CreateOauthClientJSONBodyProviderApiKeysProvider = "zhipuai"
+)
+
+// Defines values for CreateOauthClientJSONBodyScopes.
+const (
+	CreateOauthClientJSONBodyScopesA2a      CreateOauthClientJSONBodyScopes = "a2a"
+	CreateOauthClientJSONBodyScopesLlmProxy CreateOauthClientJSONBodyScopes = "llm:proxy"
+	CreateOauthClientJSONBodyScopesMcp      CreateOauthClientJSONBodyScopes = "mcp"
+)
+
+// Defines values for CreateOauthClientJSONBodySpendCapCleanupInterval.
+const (
+	CreateOauthClientJSONBodySpendCapCleanupIntervalCalendarDay        CreateOauthClientJSONBodySpendCapCleanupInterval = "calendar_day"
+	CreateOauthClientJSONBodySpendCapCleanupIntervalCalendarMonth      CreateOauthClientJSONBodySpendCapCleanupInterval = "calendar_month"
+	CreateOauthClientJSONBodySpendCapCleanupIntervalCalendarWeekMonday CreateOauthClientJSONBodySpendCapCleanupInterval = "calendar_week_monday"
+	CreateOauthClientJSONBodySpendCapCleanupIntervalCalendarWeekSunday CreateOauthClientJSONBodySpendCapCleanupInterval = "calendar_week_sunday"
+	CreateOauthClientJSONBodySpendCapCleanupIntervalN12h               CreateOauthClientJSONBodySpendCapCleanupInterval = "12h"
+	CreateOauthClientJSONBodySpendCapCleanupIntervalN1h                CreateOauthClientJSONBodySpendCapCleanupInterval = "1h"
+	CreateOauthClientJSONBodySpendCapCleanupIntervalN1m                CreateOauthClientJSONBodySpendCapCleanupInterval = "1m"
+	CreateOauthClientJSONBodySpendCapCleanupIntervalN1w                CreateOauthClientJSONBodySpendCapCleanupInterval = "1w"
+	CreateOauthClientJSONBodySpendCapCleanupIntervalN24h               CreateOauthClientJSONBodySpendCapCleanupInterval = "24h"
+)
+
+// Defines values for UpdateOauthClientJSONBodyGrantType.
+const (
+	AuthorizationCode UpdateOauthClientJSONBodyGrantType = "authorization_code"
+	ClientCredentials UpdateOauthClientJSONBodyGrantType = "client_credentials"
+)
+
+// Defines values for UpdateOauthClientJSONBodyProviderApiKeysProvider.
+const (
+	UpdateOauthClientJSONBodyProviderApiKeysProviderAnthropic           UpdateOauthClientJSONBodyProviderApiKeysProvider = "anthropic"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderArchestra           UpdateOauthClientJSONBodyProviderApiKeysProvider = "archestra"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderAzure               UpdateOauthClientJSONBodyProviderApiKeysProvider = "azure"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderBedrock             UpdateOauthClientJSONBodyProviderApiKeysProvider = "bedrock"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderCerebras            UpdateOauthClientJSONBodyProviderApiKeysProvider = "cerebras"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderCohere              UpdateOauthClientJSONBodyProviderApiKeysProvider = "cohere"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderDeepseek            UpdateOauthClientJSONBodyProviderApiKeysProvider = "deepseek"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderGemini              UpdateOauthClientJSONBodyProviderApiKeysProvider = "gemini"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderGithubCopilot       UpdateOauthClientJSONBodyProviderApiKeysProvider = "github-copilot"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderGroq                UpdateOauthClientJSONBodyProviderApiKeysProvider = "groq"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderJev                 UpdateOauthClientJSONBodyProviderApiKeysProvider = "jev"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderKimi                UpdateOauthClientJSONBodyProviderApiKeysProvider = "kimi"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderMicrosoft365Copilot UpdateOauthClientJSONBodyProviderApiKeysProvider = "microsoft-365-copilot"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderMinimax             UpdateOauthClientJSONBodyProviderApiKeysProvider = "minimax"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderMistral             UpdateOauthClientJSONBodyProviderApiKeysProvider = "mistral"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderOllama              UpdateOauthClientJSONBodyProviderApiKeysProvider = "ollama"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderOllamaNative        UpdateOauthClientJSONBodyProviderApiKeysProvider = "ollama-native"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderOpenai              UpdateOauthClientJSONBodyProviderApiKeysProvider = "openai"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderOpenrouter          UpdateOauthClientJSONBodyProviderApiKeysProvider = "openrouter"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderPerplexity          UpdateOauthClientJSONBodyProviderApiKeysProvider = "perplexity"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderVllm                UpdateOauthClientJSONBodyProviderApiKeysProvider = "vllm"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderVoyage              UpdateOauthClientJSONBodyProviderApiKeysProvider = "voyage"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderXai                 UpdateOauthClientJSONBodyProviderApiKeysProvider = "xai"
+	UpdateOauthClientJSONBodyProviderApiKeysProviderZhipuai             UpdateOauthClientJSONBodyProviderApiKeysProvider = "zhipuai"
+)
+
+// Defines values for UpdateOauthClientJSONBodyScopes.
+const (
+	A2a      UpdateOauthClientJSONBodyScopes = "a2a"
+	LlmProxy UpdateOauthClientJSONBodyScopes = "llm:proxy"
+	Mcp      UpdateOauthClientJSONBodyScopes = "mcp"
+)
+
+// Defines values for UpdateOauthClientJSONBodySpendCapCleanupInterval.
+const (
+	UpdateOauthClientJSONBodySpendCapCleanupIntervalCalendarDay        UpdateOauthClientJSONBodySpendCapCleanupInterval = "calendar_day"
+	UpdateOauthClientJSONBodySpendCapCleanupIntervalCalendarMonth      UpdateOauthClientJSONBodySpendCapCleanupInterval = "calendar_month"
+	UpdateOauthClientJSONBodySpendCapCleanupIntervalCalendarWeekMonday UpdateOauthClientJSONBodySpendCapCleanupInterval = "calendar_week_monday"
+	UpdateOauthClientJSONBodySpendCapCleanupIntervalCalendarWeekSunday UpdateOauthClientJSONBodySpendCapCleanupInterval = "calendar_week_sunday"
+	UpdateOauthClientJSONBodySpendCapCleanupIntervalN12h               UpdateOauthClientJSONBodySpendCapCleanupInterval = "12h"
+	UpdateOauthClientJSONBodySpendCapCleanupIntervalN1h                UpdateOauthClientJSONBodySpendCapCleanupInterval = "1h"
+	UpdateOauthClientJSONBodySpendCapCleanupIntervalN1m                UpdateOauthClientJSONBodySpendCapCleanupInterval = "1m"
+	UpdateOauthClientJSONBodySpendCapCleanupIntervalN1w                UpdateOauthClientJSONBodySpendCapCleanupInterval = "1w"
+	UpdateOauthClientJSONBodySpendCapCleanupIntervalN24h               UpdateOauthClientJSONBodySpendCapCleanupInterval = "24h"
 )
 
 // Defines values for UpdateAppearanceSettingsJSONBodyCustomFont.
@@ -3603,6 +3906,131 @@ type UpdateLlmProviderApiKeyJSONBody struct {
 	VaultSecretPath *string `json:"vaultSecretPath,omitempty"`
 }
 
+// CreateVirtualApiKeyJSONBody defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBody struct {
+	BillingTeamId          *string     `json:"billingTeamId"`
+	ExpiresAt              interface{} `json:"expiresAt"`
+	IncludeFutureProviders *bool       `json:"includeFutureProviders,omitempty"`
+	InitialGrants          *[]struct {
+		Actions []CreateVirtualApiKeyJSONBodyInitialGrantsActions `json:"actions"`
+		Subject CreateVirtualApiKeyJSONBody_InitialGrants_Subject `json:"subject"`
+	} `json:"initialGrants,omitempty"`
+	KeyType *CreateVirtualApiKeyJSONBodyKeyType `json:"keyType,omitempty"`
+	Labels  *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+	Name            string  `json:"name"`
+	OwnerId         *string `json:"ownerId,omitempty"`
+	ProviderApiKeys *[]struct {
+		Provider         CreateVirtualApiKeyJSONBodyProviderApiKeysProvider `json:"provider"`
+		ProviderApiKeyId openapi_types.UUID                                 `json:"providerApiKeyId"`
+	} `json:"providerApiKeys,omitempty"`
+	SpendCap *struct {
+		CleanupInterval CreateVirtualApiKeyJSONBodySpendCapCleanupInterval `json:"cleanupInterval"`
+		LimitValue      int                                                `json:"limitValue"`
+	} `json:"spendCap"`
+}
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsActions defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsActions string
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject0 defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject0 struct {
+	Id   string                                               `json:"id"`
+	Type CreateVirtualApiKeyJSONBodyInitialGrantsSubject0Type `json:"type"`
+}
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject0Type defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject0Type string
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject1 defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject1 struct {
+	Id   string                                               `json:"id"`
+	Type CreateVirtualApiKeyJSONBodyInitialGrantsSubject1Type `json:"type"`
+}
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject1Type defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject1Type string
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject2 defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject2 struct {
+	Id   openapi_types.UUID                                   `json:"id"`
+	Type CreateVirtualApiKeyJSONBodyInitialGrantsSubject2Type `json:"type"`
+}
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject2Type defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject2Type string
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject3 defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject3 struct {
+	Id   string                                               `json:"id"`
+	Type CreateVirtualApiKeyJSONBodyInitialGrantsSubject3Type `json:"type"`
+}
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject3Type defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject3Type string
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject4 defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject4 struct {
+	Id   CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Type CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Type `json:"type"`
+}
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Id defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Id string
+
+// CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Type defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyInitialGrantsSubject4Type string
+
+// CreateVirtualApiKeyJSONBody_InitialGrants_Subject defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBody_InitialGrants_Subject struct {
+	union json.RawMessage
+}
+
+// CreateVirtualApiKeyJSONBodyKeyType defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyKeyType string
+
+// CreateVirtualApiKeyJSONBodyProviderApiKeysProvider defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodyProviderApiKeysProvider string
+
+// CreateVirtualApiKeyJSONBodySpendCapCleanupInterval defines parameters for CreateVirtualApiKey.
+type CreateVirtualApiKeyJSONBodySpendCapCleanupInterval string
+
+// UpdateVirtualApiKeyJSONBody defines parameters for UpdateVirtualApiKey.
+type UpdateVirtualApiKeyJSONBody struct {
+	BillingTeamId          *string                             `json:"billingTeamId"`
+	ExpiresAt              interface{}                         `json:"expiresAt"`
+	IncludeFutureProviders *bool                               `json:"includeFutureProviders,omitempty"`
+	KeyType                *UpdateVirtualApiKeyJSONBodyKeyType `json:"keyType,omitempty"`
+	Labels                 *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+	Name            string `json:"name"`
+	ProviderApiKeys *[]struct {
+		Provider         UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider `json:"provider"`
+		ProviderApiKeyId openapi_types.UUID                                 `json:"providerApiKeyId"`
+	} `json:"providerApiKeys,omitempty"`
+	SpendCap *struct {
+		CleanupInterval UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval `json:"cleanupInterval"`
+		LimitValue      int                                                `json:"limitValue"`
+	} `json:"spendCap"`
+}
+
+// UpdateVirtualApiKeyJSONBodyKeyType defines parameters for UpdateVirtualApiKey.
+type UpdateVirtualApiKeyJSONBodyKeyType string
+
+// UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider defines parameters for UpdateVirtualApiKey.
+type UpdateVirtualApiKeyJSONBodyProviderApiKeysProvider string
+
+// UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval defines parameters for UpdateVirtualApiKey.
+type UpdateVirtualApiKeyJSONBodySpendCapCleanupInterval string
+
 // GetMcpToolCallsParams defines parameters for GetMcpToolCalls.
 type GetMcpToolCallsParams struct {
 	// AgentId Filter by agent ID
@@ -3659,6 +4087,193 @@ type ReinstallMcpServerJSONBody struct {
 
 // ReinstallMcpServerJSONBodyHibernationMode defines parameters for ReinstallMcpServer.
 type ReinstallMcpServerJSONBodyHibernationMode string
+
+// GetOauthClientsParams defines parameters for GetOauthClients.
+type GetOauthClientsParams struct {
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int    `form:"offset,omitempty" json:"offset,omitempty"`
+	Search *string `form:"search,omitempty" json:"search,omitempty"`
+
+	// Capability Include clients that grant this API capability, including clients with other capabilities.
+	Capability       *GetOauthClientsParamsCapability `form:"capability,omitempty" json:"capability,omitempty"`
+	ProviderApiKeyId *openapi_types.UUID              `form:"providerApiKeyId,omitempty" json:"providerApiKeyId,omitempty"`
+	GrantType        *GetOauthClientsParamsGrantType  `form:"grantType,omitempty" json:"grantType,omitempty"`
+
+	// Labels Filter by labels. Format: key1:val1|val2;key2:val3. AND across keys, OR within values.
+	Labels *string `form:"labels,omitempty" json:"labels,omitempty"`
+
+	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
+	Access *[]GetOauthClientsParamsAccess `form:"access,omitempty" json:"access,omitempty"`
+
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
+
+	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
+	Owner *[]string `form:"owner,omitempty" json:"owner,omitempty"`
+}
+
+// GetOauthClientsParamsCapability defines parameters for GetOauthClients.
+type GetOauthClientsParamsCapability string
+
+// GetOauthClientsParamsGrantType defines parameters for GetOauthClients.
+type GetOauthClientsParamsGrantType string
+
+// GetOauthClientsParamsAccess defines parameters for GetOauthClients.
+type GetOauthClientsParamsAccess string
+
+// CreateOauthClientJSONBody defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBody struct {
+	AllowedGatewayIds *[]openapi_types.UUID `json:"allowedGatewayIds,omitempty"`
+
+	// BillingTeamId Team a client_credentials client's spend is charged to. Omit to keep it; null stops billing a team. Signed-in users of an authorization_code client pay for themselves.
+	BillingTeamId *string                             `json:"billingTeamId"`
+	GrantType     *CreateOauthClientJSONBodyGrantType `json:"grantType,omitempty"`
+
+	// IncludeFutureProviders Use current and future shared primary provider keys, with selected keys as overrides. Defaults to false on creation; omit on update to preserve the mode. Only valid for client_credentials with LLM Proxy access.
+	IncludeFutureProviders *bool `json:"includeFutureProviders,omitempty"`
+
+	// InitialGrants Who else starts with access, beside the creator who always gets full access.
+	InitialGrants *[]struct {
+		Actions []CreateOauthClientJSONBodyInitialGrantsActions `json:"actions"`
+		Subject CreateOauthClientJSONBody_InitialGrants_Subject `json:"subject"`
+	} `json:"initialGrants,omitempty"`
+
+	// Labels Key/value labels. Omit to leave existing labels untouched; pass [] to clear them.
+	Labels *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+	Name            string `json:"name"`
+	ProviderApiKeys *[]struct {
+		Provider         CreateOauthClientJSONBodyProviderApiKeysProvider `json:"provider"`
+		ProviderApiKeyId openapi_types.UUID                               `json:"providerApiKeyId"`
+	} `json:"providerApiKeys,omitempty"`
+	RedirectUris     *[]string                         `json:"redirectUris,omitempty"`
+	Scopes           []CreateOauthClientJSONBodyScopes `json:"scopes"`
+	ServiceAccountId *openapi_types.UUID               `json:"serviceAccountId"`
+
+	// SpendCap Spend cap for the whole client, stored as a token_cost limit on it. Omit to keep it; null removes it.
+	SpendCap *struct {
+		CleanupInterval CreateOauthClientJSONBodySpendCapCleanupInterval `json:"cleanupInterval"`
+		LimitValue      int                                              `json:"limitValue"`
+	} `json:"spendCap"`
+}
+
+// CreateOauthClientJSONBodyGrantType defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyGrantType string
+
+// CreateOauthClientJSONBodyInitialGrantsActions defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsActions string
+
+// CreateOauthClientJSONBodyInitialGrantsSubject0 defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject0 struct {
+	Id   string                                             `json:"id"`
+	Type CreateOauthClientJSONBodyInitialGrantsSubject0Type `json:"type"`
+}
+
+// CreateOauthClientJSONBodyInitialGrantsSubject0Type defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject0Type string
+
+// CreateOauthClientJSONBodyInitialGrantsSubject1 defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject1 struct {
+	Id   string                                             `json:"id"`
+	Type CreateOauthClientJSONBodyInitialGrantsSubject1Type `json:"type"`
+}
+
+// CreateOauthClientJSONBodyInitialGrantsSubject1Type defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject1Type string
+
+// CreateOauthClientJSONBodyInitialGrantsSubject2 defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject2 struct {
+	Id   openapi_types.UUID                                 `json:"id"`
+	Type CreateOauthClientJSONBodyInitialGrantsSubject2Type `json:"type"`
+}
+
+// CreateOauthClientJSONBodyInitialGrantsSubject2Type defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject2Type string
+
+// CreateOauthClientJSONBodyInitialGrantsSubject3 defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject3 struct {
+	Id   string                                             `json:"id"`
+	Type CreateOauthClientJSONBodyInitialGrantsSubject3Type `json:"type"`
+}
+
+// CreateOauthClientJSONBodyInitialGrantsSubject3Type defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject3Type string
+
+// CreateOauthClientJSONBodyInitialGrantsSubject4 defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject4 struct {
+	Id   CreateOauthClientJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Type CreateOauthClientJSONBodyInitialGrantsSubject4Type `json:"type"`
+}
+
+// CreateOauthClientJSONBodyInitialGrantsSubject4Id defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject4Id string
+
+// CreateOauthClientJSONBodyInitialGrantsSubject4Type defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyInitialGrantsSubject4Type string
+
+// CreateOauthClientJSONBody_InitialGrants_Subject defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBody_InitialGrants_Subject struct {
+	union json.RawMessage
+}
+
+// CreateOauthClientJSONBodyProviderApiKeysProvider defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyProviderApiKeysProvider string
+
+// CreateOauthClientJSONBodyScopes defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodyScopes string
+
+// CreateOauthClientJSONBodySpendCapCleanupInterval defines parameters for CreateOauthClient.
+type CreateOauthClientJSONBodySpendCapCleanupInterval string
+
+// UpdateOauthClientJSONBody defines parameters for UpdateOauthClient.
+type UpdateOauthClientJSONBody struct {
+	AllowedGatewayIds *[]openapi_types.UUID `json:"allowedGatewayIds,omitempty"`
+
+	// BillingTeamId Team a client_credentials client's spend is charged to. Omit to keep it; null stops billing a team. Signed-in users of an authorization_code client pay for themselves.
+	BillingTeamId *string                             `json:"billingTeamId"`
+	GrantType     *UpdateOauthClientJSONBodyGrantType `json:"grantType,omitempty"`
+
+	// IncludeFutureProviders Use current and future shared primary provider keys, with selected keys as overrides. Defaults to false on creation; omit on update to preserve the mode. Only valid for client_credentials with LLM Proxy access.
+	IncludeFutureProviders *bool `json:"includeFutureProviders,omitempty"`
+
+	// Labels Key/value labels. Omit to leave existing labels untouched; pass [] to clear them.
+	Labels *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+	Name            string `json:"name"`
+	ProviderApiKeys *[]struct {
+		Provider         UpdateOauthClientJSONBodyProviderApiKeysProvider `json:"provider"`
+		ProviderApiKeyId openapi_types.UUID                               `json:"providerApiKeyId"`
+	} `json:"providerApiKeys,omitempty"`
+	RedirectUris     *[]string                         `json:"redirectUris,omitempty"`
+	Scopes           []UpdateOauthClientJSONBodyScopes `json:"scopes"`
+	ServiceAccountId *openapi_types.UUID               `json:"serviceAccountId"`
+
+	// SpendCap Spend cap for the whole client, stored as a token_cost limit on it. Omit to keep it; null removes it.
+	SpendCap *struct {
+		CleanupInterval UpdateOauthClientJSONBodySpendCapCleanupInterval `json:"cleanupInterval"`
+		LimitValue      int                                              `json:"limitValue"`
+	} `json:"spendCap"`
+}
+
+// UpdateOauthClientJSONBodyGrantType defines parameters for UpdateOauthClient.
+type UpdateOauthClientJSONBodyGrantType string
+
+// UpdateOauthClientJSONBodyProviderApiKeysProvider defines parameters for UpdateOauthClient.
+type UpdateOauthClientJSONBodyProviderApiKeysProvider string
+
+// UpdateOauthClientJSONBodyScopes defines parameters for UpdateOauthClient.
+type UpdateOauthClientJSONBodyScopes string
+
+// UpdateOauthClientJSONBodySpendCapCleanupInterval defines parameters for UpdateOauthClient.
+type UpdateOauthClientJSONBodySpendCapCleanupInterval string
 
 // UpdateAgentSettingsJSONBody defines parameters for UpdateAgentSettings.
 type UpdateAgentSettingsJSONBody struct {
@@ -4483,11 +5098,23 @@ type CreateLlmProviderApiKeyJSONRequestBody CreateLlmProviderApiKeyJSONBody
 // UpdateLlmProviderApiKeyJSONRequestBody defines body for UpdateLlmProviderApiKey for application/json ContentType.
 type UpdateLlmProviderApiKeyJSONRequestBody UpdateLlmProviderApiKeyJSONBody
 
+// CreateVirtualApiKeyJSONRequestBody defines body for CreateVirtualApiKey for application/json ContentType.
+type CreateVirtualApiKeyJSONRequestBody CreateVirtualApiKeyJSONBody
+
+// UpdateVirtualApiKeyJSONRequestBody defines body for UpdateVirtualApiKey for application/json ContentType.
+type UpdateVirtualApiKeyJSONRequestBody UpdateVirtualApiKeyJSONBody
+
 // InstallMcpServerJSONRequestBody defines body for InstallMcpServer for application/json ContentType.
 type InstallMcpServerJSONRequestBody InstallMcpServerJSONBody
 
 // ReinstallMcpServerJSONRequestBody defines body for ReinstallMcpServer for application/json ContentType.
 type ReinstallMcpServerJSONRequestBody ReinstallMcpServerJSONBody
+
+// CreateOauthClientJSONRequestBody defines body for CreateOauthClient for application/json ContentType.
+type CreateOauthClientJSONRequestBody CreateOauthClientJSONBody
+
+// UpdateOauthClientJSONRequestBody defines body for UpdateOauthClient for application/json ContentType.
+type UpdateOauthClientJSONRequestBody UpdateOauthClientJSONBody
 
 // UpdateAgentSettingsJSONRequestBody defines body for UpdateAgentSettings for application/json ContentType.
 type UpdateAgentSettingsJSONRequestBody UpdateAgentSettingsJSONBody
@@ -4973,6 +5600,22 @@ type ClientInterface interface {
 
 	UpdateLlmProviderApiKey(ctx context.Context, id openapi_types.UUID, body UpdateLlmProviderApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// CreateVirtualApiKeyWithBody request with any body
+	CreateVirtualApiKeyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateVirtualApiKey(ctx context.Context, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteVirtualApiKey request
+	DeleteVirtualApiKey(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetVirtualApiKey request
+	GetVirtualApiKey(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateVirtualApiKeyWithBody request with any body
+	UpdateVirtualApiKeyWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateVirtualApiKey(ctx context.Context, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetMcpToolCalls request
 	GetMcpToolCalls(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -4997,6 +5640,25 @@ type ClientInterface interface {
 
 	// GetMcpServerTools request
 	GetMcpServerTools(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetOauthClients request
+	GetOauthClients(ctx context.Context, params *GetOauthClientsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateOauthClientWithBody request with any body
+	CreateOauthClientWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateOauthClient(ctx context.Context, body CreateOauthClientJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteOauthClient request
+	DeleteOauthClient(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateOauthClientWithBody request with any body
+	UpdateOauthClientWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateOauthClient(ctx context.Context, id string, body UpdateOauthClientJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RotateOauthClientSecret request
+	RotateOauthClientSecret(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetOrganization request
 	GetOrganization(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -6651,6 +7313,78 @@ func (c *Client) UpdateLlmProviderApiKey(ctx context.Context, id openapi_types.U
 	return c.Client.Do(req)
 }
 
+func (c *Client) CreateVirtualApiKeyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualApiKeyRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateVirtualApiKey(ctx context.Context, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateVirtualApiKeyRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteVirtualApiKey(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteVirtualApiKeyRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetVirtualApiKey(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVirtualApiKeyRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateVirtualApiKeyWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateVirtualApiKeyRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateVirtualApiKey(ctx context.Context, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateVirtualApiKeyRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetMcpToolCalls(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetMcpToolCallsRequest(c.Server, params)
 	if err != nil {
@@ -6749,6 +7483,90 @@ func (c *Client) ReinstallMcpServer(ctx context.Context, id openapi_types.UUID, 
 
 func (c *Client) GetMcpServerTools(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetMcpServerToolsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetOauthClients(ctx context.Context, params *GetOauthClientsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetOauthClientsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOauthClientWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOauthClientRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateOauthClient(ctx context.Context, body CreateOauthClientJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateOauthClientRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteOauthClient(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteOauthClientRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOauthClientWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOauthClientRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateOauthClient(ctx context.Context, id string, body UpdateOauthClientJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateOauthClientRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RotateOauthClientSecret(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRotateOauthClientSecretRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -11178,6 +11996,161 @@ func NewUpdateLlmProviderApiKeyRequestWithBody(server string, id openapi_types.U
 	return req, nil
 }
 
+// NewCreateVirtualApiKeyRequest calls the generic CreateVirtualApiKey builder with application/json body
+func NewCreateVirtualApiKeyRequest(server string, body CreateVirtualApiKeyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateVirtualApiKeyRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateVirtualApiKeyRequestWithBody generates requests for CreateVirtualApiKey with any type of body
+func NewCreateVirtualApiKeyRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-virtual-keys")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteVirtualApiKeyRequest generates requests for DeleteVirtualApiKey
+func NewDeleteVirtualApiKeyRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-virtual-keys/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetVirtualApiKeyRequest generates requests for GetVirtualApiKey
+func NewGetVirtualApiKeyRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-virtual-keys/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateVirtualApiKeyRequest calls the generic UpdateVirtualApiKey builder with application/json body
+func NewUpdateVirtualApiKeyRequest(server string, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateVirtualApiKeyRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateVirtualApiKeyRequestWithBody generates requests for UpdateVirtualApiKey with any type of body
+func NewUpdateVirtualApiKeyRequestWithBody(server string, id openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-virtual-keys/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetMcpToolCallsRequest generates requests for GetMcpToolCalls
 func NewGetMcpToolCallsRequest(server string, params *GetMcpToolCallsParams) (*http.Request, error) {
 	var err error
@@ -11539,6 +12512,354 @@ func NewGetMcpServerToolsRequest(server string, id openapi_types.UUID) (*http.Re
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetOauthClientsRequest generates requests for GetOauthClients
+func NewGetOauthClientsRequest(server string, params *GetOauthClientsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/oauth-clients")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Capability != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "capability", runtime.ParamLocationQuery, *params.Capability); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ProviderApiKeyId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "providerApiKeyId", runtime.ParamLocationQuery, *params.ProviderApiKeyId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.GrantType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "grantType", runtime.ParamLocationQuery, *params.GrantType); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Labels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "labels", runtime.ParamLocationQuery, *params.Labels); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Access != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "access", runtime.ParamLocationQuery, *params.Access); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SharedWith != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sharedWith", runtime.ParamLocationQuery, *params.SharedWith); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Owner != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "owner", runtime.ParamLocationQuery, *params.Owner); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateOauthClientRequest calls the generic CreateOauthClient builder with application/json body
+func NewCreateOauthClientRequest(server string, body CreateOauthClientJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateOauthClientRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateOauthClientRequestWithBody generates requests for CreateOauthClient with any type of body
+func NewCreateOauthClientRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/oauth-clients")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteOauthClientRequest generates requests for DeleteOauthClient
+func NewDeleteOauthClientRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/oauth-clients/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateOauthClientRequest calls the generic UpdateOauthClient builder with application/json body
+func NewUpdateOauthClientRequest(server string, id string, body UpdateOauthClientJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateOauthClientRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateOauthClientRequestWithBody generates requests for UpdateOauthClient with any type of body
+func NewUpdateOauthClientRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/oauth-clients/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRotateOauthClientSecretRequest generates requests for RotateOauthClientSecret
+func NewRotateOauthClientSecretRequest(server string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/oauth-clients/%s/rotate-secret", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -14228,6 +15549,22 @@ type ClientWithResponsesInterface interface {
 
 	UpdateLlmProviderApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateLlmProviderApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateLlmProviderApiKeyResponse, error)
 
+	// CreateVirtualApiKeyWithBodyWithResponse request with any body
+	CreateVirtualApiKeyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error)
+
+	CreateVirtualApiKeyWithResponse(ctx context.Context, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error)
+
+	// DeleteVirtualApiKeyWithResponse request
+	DeleteVirtualApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteVirtualApiKeyResponse, error)
+
+	// GetVirtualApiKeyWithResponse request
+	GetVirtualApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetVirtualApiKeyResponse, error)
+
+	// UpdateVirtualApiKeyWithBodyWithResponse request with any body
+	UpdateVirtualApiKeyWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error)
+
+	UpdateVirtualApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error)
+
 	// GetMcpToolCallsWithResponse request
 	GetMcpToolCallsWithResponse(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*GetMcpToolCallsResponse, error)
 
@@ -14252,6 +15589,25 @@ type ClientWithResponsesInterface interface {
 
 	// GetMcpServerToolsWithResponse request
 	GetMcpServerToolsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetMcpServerToolsResponse, error)
+
+	// GetOauthClientsWithResponse request
+	GetOauthClientsWithResponse(ctx context.Context, params *GetOauthClientsParams, reqEditors ...RequestEditorFn) (*GetOauthClientsResponse, error)
+
+	// CreateOauthClientWithBodyWithResponse request with any body
+	CreateOauthClientWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOauthClientResponse, error)
+
+	CreateOauthClientWithResponse(ctx context.Context, body CreateOauthClientJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOauthClientResponse, error)
+
+	// DeleteOauthClientWithResponse request
+	DeleteOauthClientWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteOauthClientResponse, error)
+
+	// UpdateOauthClientWithBodyWithResponse request with any body
+	UpdateOauthClientWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOauthClientResponse, error)
+
+	UpdateOauthClientWithResponse(ctx context.Context, id string, body UpdateOauthClientJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOauthClientResponse, error)
+
+	// RotateOauthClientSecretWithResponse request
+	RotateOauthClientSecretWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*RotateOauthClientSecretResponse, error)
 
 	// GetOrganizationWithResponse request
 	GetOrganizationWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetOrganizationResponse, error)
@@ -22888,6 +24244,449 @@ func (r UpdateLlmProviderApiKeyResponse) StatusCode() int {
 	return 0
 }
 
+type CreateVirtualApiKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId    *string `json:"authorId"`
+		AuthorName  *string `json:"authorName"`
+		BillingTeam *struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"billingTeam"`
+		BillingTeamId *string   `json:"billingTeamId"`
+		CreatedAt     time.Time `json:"createdAt"`
+		CreatedBy     *struct {
+			Email *string                              `json:"email"`
+			Id    string                               `json:"id"`
+			Name  *string                              `json:"name"`
+			Type  *CreateVirtualApiKey200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID           `json:"createdByServiceAccountId"`
+		ExpiresAt                 *time.Time                    `json:"expiresAt"`
+		Id                        openapi_types.UUID            `json:"id"`
+		IncludeFutureProviders    bool                          `json:"includeFutureProviders"`
+		KeyType                   CreateVirtualApiKey200KeyType `json:"keyType"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastUsedAt      *time.Time `json:"lastUsedAt"`
+		Name            string     `json:"name"`
+		OrganizationId  string     `json:"organizationId"`
+		ProviderApiKeys []struct {
+			Provider           CreateVirtualApiKey200ProviderApiKeysProvider `json:"provider"`
+			ProviderApiKeyId   openapi_types.UUID                            `json:"providerApiKeyId"`
+			ProviderApiKeyName string                                        `json:"providerApiKeyName"`
+		} `json:"providerApiKeys"`
+		Scope    CreateVirtualApiKey200Scope `json:"scope"`
+		SecretId openapi_types.UUID          `json:"secretId"`
+		SpendCap *struct {
+			CleanupInterval CreateVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
+			CurrentUsage    float32                                       `json:"currentUsage"`
+			LimitId         string                                        `json:"limitId"`
+			LimitValue      int                                           `json:"limitValue"`
+		} `json:"spendCap"`
+		Teams []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TokenStart string `json:"tokenStart"`
+		Value      string `json:"value"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         CreateVirtualApiKey400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         CreateVirtualApiKey401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}         `json:"details,omitempty"`
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         CreateVirtualApiKey403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         CreateVirtualApiKey404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         CreateVirtualApiKey409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         CreateVirtualApiKey500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateVirtualApiKey200CreatedByType string
+type CreateVirtualApiKey200KeyType string
+type CreateVirtualApiKey200ProviderApiKeysProvider string
+type CreateVirtualApiKey200Scope string
+type CreateVirtualApiKey200SpendCapCleanupInterval string
+type CreateVirtualApiKey400ErrorType string
+type CreateVirtualApiKey401ErrorType string
+type CreateVirtualApiKey403ErrorType string
+type CreateVirtualApiKey404ErrorType string
+type CreateVirtualApiKey409ErrorType string
+type CreateVirtualApiKey500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateVirtualApiKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateVirtualApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteVirtualApiKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteVirtualApiKey400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteVirtualApiKey401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}         `json:"details,omitempty"`
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteVirtualApiKey403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteVirtualApiKey404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteVirtualApiKey409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteVirtualApiKey500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteVirtualApiKey400ErrorType string
+type DeleteVirtualApiKey401ErrorType string
+type DeleteVirtualApiKey403ErrorType string
+type DeleteVirtualApiKey404ErrorType string
+type DeleteVirtualApiKey409ErrorType string
+type DeleteVirtualApiKey500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteVirtualApiKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteVirtualApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetVirtualApiKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId    *string `json:"authorId"`
+		AuthorName  *string `json:"authorName"`
+		BillingTeam *struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"billingTeam"`
+		BillingTeamId *string   `json:"billingTeamId"`
+		CreatedAt     time.Time `json:"createdAt"`
+		CreatedBy     *struct {
+			Email *string                           `json:"email"`
+			Id    string                            `json:"id"`
+			Name  *string                           `json:"name"`
+			Type  *GetVirtualApiKey200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID        `json:"createdByServiceAccountId"`
+		ExpiresAt                 *time.Time                 `json:"expiresAt"`
+		Id                        openapi_types.UUID         `json:"id"`
+		IncludeFutureProviders    bool                       `json:"includeFutureProviders"`
+		KeyType                   GetVirtualApiKey200KeyType `json:"keyType"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastUsedAt      *time.Time `json:"lastUsedAt"`
+		Name            string     `json:"name"`
+		OrganizationId  string     `json:"organizationId"`
+		ProviderApiKeys []struct {
+			Provider           GetVirtualApiKey200ProviderApiKeysProvider `json:"provider"`
+			ProviderApiKeyId   openapi_types.UUID                         `json:"providerApiKeyId"`
+			ProviderApiKeyName string                                     `json:"providerApiKeyName"`
+		} `json:"providerApiKeys"`
+		Scope    GetVirtualApiKey200Scope `json:"scope"`
+		SecretId openapi_types.UUID       `json:"secretId"`
+		SpendCap *struct {
+			CleanupInterval GetVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
+			CurrentUsage    float32                                    `json:"currentUsage"`
+			LimitId         string                                     `json:"limitId"`
+			LimitValue      int                                        `json:"limitValue"`
+		} `json:"spendCap"`
+		Teams []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TokenStart string `json:"tokenStart"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         GetVirtualApiKey400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         GetVirtualApiKey401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}      `json:"details,omitempty"`
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         GetVirtualApiKey403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         GetVirtualApiKey404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         GetVirtualApiKey409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         GetVirtualApiKey500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetVirtualApiKey200CreatedByType string
+type GetVirtualApiKey200KeyType string
+type GetVirtualApiKey200ProviderApiKeysProvider string
+type GetVirtualApiKey200Scope string
+type GetVirtualApiKey200SpendCapCleanupInterval string
+type GetVirtualApiKey400ErrorType string
+type GetVirtualApiKey401ErrorType string
+type GetVirtualApiKey403ErrorType string
+type GetVirtualApiKey404ErrorType string
+type GetVirtualApiKey409ErrorType string
+type GetVirtualApiKey500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetVirtualApiKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetVirtualApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateVirtualApiKeyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId    *string `json:"authorId"`
+		AuthorName  *string `json:"authorName"`
+		BillingTeam *struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"billingTeam"`
+		BillingTeamId *string   `json:"billingTeamId"`
+		CreatedAt     time.Time `json:"createdAt"`
+		CreatedBy     *struct {
+			Email *string                              `json:"email"`
+			Id    string                               `json:"id"`
+			Name  *string                              `json:"name"`
+			Type  *UpdateVirtualApiKey200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID           `json:"createdByServiceAccountId"`
+		ExpiresAt                 *time.Time                    `json:"expiresAt"`
+		Id                        openapi_types.UUID            `json:"id"`
+		IncludeFutureProviders    bool                          `json:"includeFutureProviders"`
+		KeyType                   UpdateVirtualApiKey200KeyType `json:"keyType"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LastUsedAt      *time.Time `json:"lastUsedAt"`
+		Name            string     `json:"name"`
+		OrganizationId  string     `json:"organizationId"`
+		ProviderApiKeys []struct {
+			Provider           UpdateVirtualApiKey200ProviderApiKeysProvider `json:"provider"`
+			ProviderApiKeyId   openapi_types.UUID                            `json:"providerApiKeyId"`
+			ProviderApiKeyName string                                        `json:"providerApiKeyName"`
+		} `json:"providerApiKeys"`
+		Scope    UpdateVirtualApiKey200Scope `json:"scope"`
+		SecretId openapi_types.UUID          `json:"secretId"`
+		SpendCap *struct {
+			CleanupInterval UpdateVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
+			CurrentUsage    float32                                       `json:"currentUsage"`
+			LimitId         string                                        `json:"limitId"`
+			LimitValue      int                                           `json:"limitValue"`
+		} `json:"spendCap"`
+		Teams []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TokenStart string `json:"tokenStart"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateVirtualApiKey400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateVirtualApiKey401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}         `json:"details,omitempty"`
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateVirtualApiKey403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateVirtualApiKey404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateVirtualApiKey409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateVirtualApiKey500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateVirtualApiKey200CreatedByType string
+type UpdateVirtualApiKey200KeyType string
+type UpdateVirtualApiKey200ProviderApiKeysProvider string
+type UpdateVirtualApiKey200Scope string
+type UpdateVirtualApiKey200SpendCapCleanupInterval string
+type UpdateVirtualApiKey400ErrorType string
+type UpdateVirtualApiKey401ErrorType string
+type UpdateVirtualApiKey403ErrorType string
+type UpdateVirtualApiKey404ErrorType string
+type UpdateVirtualApiKey409ErrorType string
+type UpdateVirtualApiKey500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateVirtualApiKeyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateVirtualApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetMcpToolCallsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -23600,6 +25399,567 @@ func (r GetMcpServerToolsResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetMcpServerToolsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetOauthClientsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			AllowedGatewayIds []openapi_types.UUID `json:"allowedGatewayIds"`
+			AuthorId          *string              `json:"authorId"`
+			AuthorName        *string              `json:"authorName"`
+			BillingTeam       *struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"billingTeam"`
+			ClientId  string    `json:"clientId"`
+			CreatedAt time.Time `json:"createdAt"`
+			CreatedBy *struct {
+				Email *string                              `json:"email"`
+				Id    string                               `json:"id"`
+				Name  *string                              `json:"name"`
+				Type  *GetOauthClients200DataCreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			Disabled               bool                            `json:"disabled"`
+			GrantType              GetOauthClients200DataGrantType `json:"grantType"`
+			Id                     string                          `json:"id"`
+			IncludeFutureProviders bool                            `json:"includeFutureProviders"`
+			Labels                 []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name            string `json:"name"`
+			OrganizationId  string `json:"organizationId"`
+			ProviderApiKeys []struct {
+				Provider           GetOauthClients200DataProviderApiKeysProvider `json:"provider"`
+				ProviderApiKeyId   openapi_types.UUID                            `json:"providerApiKeyId"`
+				ProviderApiKeyName string                                        `json:"providerApiKeyName"`
+			} `json:"providerApiKeys"`
+			RedirectUris     []string                       `json:"redirectUris"`
+			Scopes           []GetOauthClients200DataScopes `json:"scopes"`
+			ServiceAccountId *string                        `json:"serviceAccountId"`
+			SpendCap         *struct {
+				CleanupInterval GetOauthClients200DataSpendCapCleanupInterval `json:"cleanupInterval"`
+				CurrentUsage    float32                                       `json:"currentUsage"`
+				LimitId         string                                        `json:"limitId"`
+				LimitValue      int                                           `json:"limitValue"`
+			} `json:"spendCap"`
+			UpdatedAt time.Time `json:"updatedAt"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetOauthClients400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetOauthClients401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}     `json:"details,omitempty"`
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetOauthClients403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetOauthClients404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetOauthClients409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         GetOauthClients500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetOauthClients200DataCreatedByType string
+type GetOauthClients200DataGrantType string
+type GetOauthClients200DataProviderApiKeysProvider string
+type GetOauthClients200DataScopes string
+type GetOauthClients200DataSpendCapCleanupInterval string
+type GetOauthClients400ErrorType string
+type GetOauthClients401ErrorType string
+type GetOauthClients403ErrorType string
+type GetOauthClients404ErrorType string
+type GetOauthClients409ErrorType string
+type GetOauthClients500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetOauthClientsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetOauthClientsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateOauthClientResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AllowedGatewayIds []openapi_types.UUID `json:"allowedGatewayIds"`
+		AuthorId          *string              `json:"authorId"`
+		AuthorName        *string              `json:"authorName"`
+		BillingTeam       *struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"billingTeam"`
+		ClientId     string    `json:"clientId"`
+		ClientSecret string    `json:"clientSecret"`
+		CreatedAt    time.Time `json:"createdAt"`
+		CreatedBy    *struct {
+			Email *string                            `json:"email"`
+			Id    string                             `json:"id"`
+			Name  *string                            `json:"name"`
+			Type  *CreateOauthClient200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		Disabled               bool                          `json:"disabled"`
+		GrantType              CreateOauthClient200GrantType `json:"grantType"`
+		Id                     string                        `json:"id"`
+		IncludeFutureProviders bool                          `json:"includeFutureProviders"`
+		Labels                 []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		Name            string `json:"name"`
+		OrganizationId  string `json:"organizationId"`
+		ProviderApiKeys []struct {
+			Provider           CreateOauthClient200ProviderApiKeysProvider `json:"provider"`
+			ProviderApiKeyId   openapi_types.UUID                          `json:"providerApiKeyId"`
+			ProviderApiKeyName string                                      `json:"providerApiKeyName"`
+		} `json:"providerApiKeys"`
+		RedirectUris     []string                     `json:"redirectUris"`
+		Scopes           []CreateOauthClient200Scopes `json:"scopes"`
+		ServiceAccountId *string                      `json:"serviceAccountId"`
+		SpendCap         *struct {
+			CleanupInterval CreateOauthClient200SpendCapCleanupInterval `json:"cleanupInterval"`
+			CurrentUsage    float32                                     `json:"currentUsage"`
+			LimitId         string                                      `json:"limitId"`
+			LimitValue      int                                         `json:"limitValue"`
+		} `json:"spendCap"`
+		UpdatedAt time.Time `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         CreateOauthClient400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         CreateOauthClient401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}       `json:"details,omitempty"`
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         CreateOauthClient403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         CreateOauthClient404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         CreateOauthClient409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         CreateOauthClient500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateOauthClient200CreatedByType string
+type CreateOauthClient200GrantType string
+type CreateOauthClient200ProviderApiKeysProvider string
+type CreateOauthClient200Scopes string
+type CreateOauthClient200SpendCapCleanupInterval string
+type CreateOauthClient400ErrorType string
+type CreateOauthClient401ErrorType string
+type CreateOauthClient403ErrorType string
+type CreateOauthClient404ErrorType string
+type CreateOauthClient409ErrorType string
+type CreateOauthClient500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateOauthClientResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateOauthClientResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteOauthClientResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         DeleteOauthClient400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         DeleteOauthClient401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}       `json:"details,omitempty"`
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         DeleteOauthClient403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         DeleteOauthClient404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         DeleteOauthClient409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         DeleteOauthClient500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteOauthClient400ErrorType string
+type DeleteOauthClient401ErrorType string
+type DeleteOauthClient403ErrorType string
+type DeleteOauthClient404ErrorType string
+type DeleteOauthClient409ErrorType string
+type DeleteOauthClient500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteOauthClientResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteOauthClientResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateOauthClientResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AllowedGatewayIds []openapi_types.UUID `json:"allowedGatewayIds"`
+		AuthorId          *string              `json:"authorId"`
+		AuthorName        *string              `json:"authorName"`
+		BillingTeam       *struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"billingTeam"`
+		ClientId  string    `json:"clientId"`
+		CreatedAt time.Time `json:"createdAt"`
+		CreatedBy *struct {
+			Email *string                            `json:"email"`
+			Id    string                             `json:"id"`
+			Name  *string                            `json:"name"`
+			Type  *UpdateOauthClient200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		Disabled               bool                          `json:"disabled"`
+		GrantType              UpdateOauthClient200GrantType `json:"grantType"`
+		Id                     string                        `json:"id"`
+		IncludeFutureProviders bool                          `json:"includeFutureProviders"`
+		Labels                 []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		Name            string `json:"name"`
+		OrganizationId  string `json:"organizationId"`
+		ProviderApiKeys []struct {
+			Provider           UpdateOauthClient200ProviderApiKeysProvider `json:"provider"`
+			ProviderApiKeyId   openapi_types.UUID                          `json:"providerApiKeyId"`
+			ProviderApiKeyName string                                      `json:"providerApiKeyName"`
+		} `json:"providerApiKeys"`
+		RedirectUris     []string                     `json:"redirectUris"`
+		Scopes           []UpdateOauthClient200Scopes `json:"scopes"`
+		ServiceAccountId *string                      `json:"serviceAccountId"`
+		SpendCap         *struct {
+			CleanupInterval UpdateOauthClient200SpendCapCleanupInterval `json:"cleanupInterval"`
+			CurrentUsage    float32                                     `json:"currentUsage"`
+			LimitId         string                                      `json:"limitId"`
+			LimitValue      int                                         `json:"limitValue"`
+		} `json:"spendCap"`
+		UpdatedAt time.Time `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateOauthClient400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateOauthClient401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}       `json:"details,omitempty"`
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateOauthClient403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateOauthClient404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateOauthClient409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         UpdateOauthClient500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateOauthClient200CreatedByType string
+type UpdateOauthClient200GrantType string
+type UpdateOauthClient200ProviderApiKeysProvider string
+type UpdateOauthClient200Scopes string
+type UpdateOauthClient200SpendCapCleanupInterval string
+type UpdateOauthClient400ErrorType string
+type UpdateOauthClient401ErrorType string
+type UpdateOauthClient403ErrorType string
+type UpdateOauthClient404ErrorType string
+type UpdateOauthClient409ErrorType string
+type UpdateOauthClient500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateOauthClientResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateOauthClientResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RotateOauthClientSecretResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AllowedGatewayIds []openapi_types.UUID `json:"allowedGatewayIds"`
+		AuthorId          *string              `json:"authorId"`
+		AuthorName        *string              `json:"authorName"`
+		BillingTeam       *struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"billingTeam"`
+		ClientId     string    `json:"clientId"`
+		ClientSecret string    `json:"clientSecret"`
+		CreatedAt    time.Time `json:"createdAt"`
+		CreatedBy    *struct {
+			Email *string                                  `json:"email"`
+			Id    string                                   `json:"id"`
+			Name  *string                                  `json:"name"`
+			Type  *RotateOauthClientSecret200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		Disabled               bool                                `json:"disabled"`
+		GrantType              RotateOauthClientSecret200GrantType `json:"grantType"`
+		Id                     string                              `json:"id"`
+		IncludeFutureProviders bool                                `json:"includeFutureProviders"`
+		Labels                 []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		Name            string `json:"name"`
+		OrganizationId  string `json:"organizationId"`
+		ProviderApiKeys []struct {
+			Provider           RotateOauthClientSecret200ProviderApiKeysProvider `json:"provider"`
+			ProviderApiKeyId   openapi_types.UUID                                `json:"providerApiKeyId"`
+			ProviderApiKeyName string                                            `json:"providerApiKeyName"`
+		} `json:"providerApiKeys"`
+		RedirectUris     []string                           `json:"redirectUris"`
+		Scopes           []RotateOauthClientSecret200Scopes `json:"scopes"`
+		ServiceAccountId *string                            `json:"serviceAccountId"`
+		SpendCap         *struct {
+			CleanupInterval RotateOauthClientSecret200SpendCapCleanupInterval `json:"cleanupInterval"`
+			CurrentUsage    float32                                           `json:"currentUsage"`
+			LimitId         string                                            `json:"limitId"`
+			LimitValue      int                                               `json:"limitValue"`
+		} `json:"spendCap"`
+		UpdatedAt time.Time `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         RotateOauthClientSecret400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         RotateOauthClientSecret401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}             `json:"details,omitempty"`
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         RotateOauthClientSecret403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         RotateOauthClientSecret404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         RotateOauthClientSecret409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                             `json:"internal_code,omitempty"`
+			Message      string                              `json:"message"`
+			Type         RotateOauthClientSecret500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type RotateOauthClientSecret200CreatedByType string
+type RotateOauthClientSecret200GrantType string
+type RotateOauthClientSecret200ProviderApiKeysProvider string
+type RotateOauthClientSecret200Scopes string
+type RotateOauthClientSecret200SpendCapCleanupInterval string
+type RotateOauthClientSecret400ErrorType string
+type RotateOauthClientSecret401ErrorType string
+type RotateOauthClientSecret403ErrorType string
+type RotateOauthClientSecret404ErrorType string
+type RotateOauthClientSecret409ErrorType string
+type RotateOauthClientSecret500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r RotateOauthClientSecretResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RotateOauthClientSecretResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -30871,6 +33231,58 @@ func (c *ClientWithResponses) UpdateLlmProviderApiKeyWithResponse(ctx context.Co
 	return ParseUpdateLlmProviderApiKeyResponse(rsp)
 }
 
+// CreateVirtualApiKeyWithBodyWithResponse request with arbitrary body returning *CreateVirtualApiKeyResponse
+func (c *ClientWithResponses) CreateVirtualApiKeyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error) {
+	rsp, err := c.CreateVirtualApiKeyWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualApiKeyResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateVirtualApiKeyWithResponse(ctx context.Context, body CreateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateVirtualApiKeyResponse, error) {
+	rsp, err := c.CreateVirtualApiKey(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateVirtualApiKeyResponse(rsp)
+}
+
+// DeleteVirtualApiKeyWithResponse request returning *DeleteVirtualApiKeyResponse
+func (c *ClientWithResponses) DeleteVirtualApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteVirtualApiKeyResponse, error) {
+	rsp, err := c.DeleteVirtualApiKey(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteVirtualApiKeyResponse(rsp)
+}
+
+// GetVirtualApiKeyWithResponse request returning *GetVirtualApiKeyResponse
+func (c *ClientWithResponses) GetVirtualApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetVirtualApiKeyResponse, error) {
+	rsp, err := c.GetVirtualApiKey(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetVirtualApiKeyResponse(rsp)
+}
+
+// UpdateVirtualApiKeyWithBodyWithResponse request with arbitrary body returning *UpdateVirtualApiKeyResponse
+func (c *ClientWithResponses) UpdateVirtualApiKeyWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error) {
+	rsp, err := c.UpdateVirtualApiKeyWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateVirtualApiKeyResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateVirtualApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error) {
+	rsp, err := c.UpdateVirtualApiKey(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateVirtualApiKeyResponse(rsp)
+}
+
 // GetMcpToolCallsWithResponse request returning *GetMcpToolCallsResponse
 func (c *ClientWithResponses) GetMcpToolCallsWithResponse(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*GetMcpToolCallsResponse, error) {
 	rsp, err := c.GetMcpToolCalls(ctx, params, reqEditors...)
@@ -30948,6 +33360,67 @@ func (c *ClientWithResponses) GetMcpServerToolsWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseGetMcpServerToolsResponse(rsp)
+}
+
+// GetOauthClientsWithResponse request returning *GetOauthClientsResponse
+func (c *ClientWithResponses) GetOauthClientsWithResponse(ctx context.Context, params *GetOauthClientsParams, reqEditors ...RequestEditorFn) (*GetOauthClientsResponse, error) {
+	rsp, err := c.GetOauthClients(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetOauthClientsResponse(rsp)
+}
+
+// CreateOauthClientWithBodyWithResponse request with arbitrary body returning *CreateOauthClientResponse
+func (c *ClientWithResponses) CreateOauthClientWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateOauthClientResponse, error) {
+	rsp, err := c.CreateOauthClientWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOauthClientResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateOauthClientWithResponse(ctx context.Context, body CreateOauthClientJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateOauthClientResponse, error) {
+	rsp, err := c.CreateOauthClient(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateOauthClientResponse(rsp)
+}
+
+// DeleteOauthClientWithResponse request returning *DeleteOauthClientResponse
+func (c *ClientWithResponses) DeleteOauthClientWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteOauthClientResponse, error) {
+	rsp, err := c.DeleteOauthClient(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteOauthClientResponse(rsp)
+}
+
+// UpdateOauthClientWithBodyWithResponse request with arbitrary body returning *UpdateOauthClientResponse
+func (c *ClientWithResponses) UpdateOauthClientWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateOauthClientResponse, error) {
+	rsp, err := c.UpdateOauthClientWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOauthClientResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateOauthClientWithResponse(ctx context.Context, id string, body UpdateOauthClientJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateOauthClientResponse, error) {
+	rsp, err := c.UpdateOauthClient(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateOauthClientResponse(rsp)
+}
+
+// RotateOauthClientSecretWithResponse request returning *RotateOauthClientSecretResponse
+func (c *ClientWithResponses) RotateOauthClientSecretWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*RotateOauthClientSecretResponse, error) {
+	rsp, err := c.RotateOauthClientSecret(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRotateOauthClientSecretResponse(rsp)
 }
 
 // GetOrganizationWithResponse request returning *GetOrganizationResponse
@@ -42260,6 +44733,570 @@ func ParseUpdateLlmProviderApiKeyResponse(rsp *http.Response) (*UpdateLlmProvide
 	return response, nil
 }
 
+// ParseCreateVirtualApiKeyResponse parses an HTTP response from a CreateVirtualApiKeyWithResponse call
+func ParseCreateVirtualApiKeyResponse(rsp *http.Response) (*CreateVirtualApiKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateVirtualApiKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId    *string `json:"authorId"`
+			AuthorName  *string `json:"authorName"`
+			BillingTeam *struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"billingTeam"`
+			BillingTeamId *string   `json:"billingTeamId"`
+			CreatedAt     time.Time `json:"createdAt"`
+			CreatedBy     *struct {
+				Email *string                              `json:"email"`
+				Id    string                               `json:"id"`
+				Name  *string                              `json:"name"`
+				Type  *CreateVirtualApiKey200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID           `json:"createdByServiceAccountId"`
+			ExpiresAt                 *time.Time                    `json:"expiresAt"`
+			Id                        openapi_types.UUID            `json:"id"`
+			IncludeFutureProviders    bool                          `json:"includeFutureProviders"`
+			KeyType                   CreateVirtualApiKey200KeyType `json:"keyType"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastUsedAt      *time.Time `json:"lastUsedAt"`
+			Name            string     `json:"name"`
+			OrganizationId  string     `json:"organizationId"`
+			ProviderApiKeys []struct {
+				Provider           CreateVirtualApiKey200ProviderApiKeysProvider `json:"provider"`
+				ProviderApiKeyId   openapi_types.UUID                            `json:"providerApiKeyId"`
+				ProviderApiKeyName string                                        `json:"providerApiKeyName"`
+			} `json:"providerApiKeys"`
+			Scope    CreateVirtualApiKey200Scope `json:"scope"`
+			SecretId openapi_types.UUID          `json:"secretId"`
+			SpendCap *struct {
+				CleanupInterval CreateVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
+				CurrentUsage    float32                                       `json:"currentUsage"`
+				LimitId         string                                        `json:"limitId"`
+				LimitValue      int                                           `json:"limitValue"`
+			} `json:"spendCap"`
+			Teams []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TokenStart string `json:"tokenStart"`
+			Value      string `json:"value"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         CreateVirtualApiKey400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         CreateVirtualApiKey401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}         `json:"details,omitempty"`
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         CreateVirtualApiKey403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         CreateVirtualApiKey404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         CreateVirtualApiKey409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         CreateVirtualApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteVirtualApiKeyResponse parses an HTTP response from a DeleteVirtualApiKeyWithResponse call
+func ParseDeleteVirtualApiKeyResponse(rsp *http.Response) (*DeleteVirtualApiKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteVirtualApiKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteVirtualApiKey400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteVirtualApiKey401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}         `json:"details,omitempty"`
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteVirtualApiKey403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteVirtualApiKey404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteVirtualApiKey409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteVirtualApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetVirtualApiKeyResponse parses an HTTP response from a GetVirtualApiKeyWithResponse call
+func ParseGetVirtualApiKeyResponse(rsp *http.Response) (*GetVirtualApiKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetVirtualApiKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId    *string `json:"authorId"`
+			AuthorName  *string `json:"authorName"`
+			BillingTeam *struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"billingTeam"`
+			BillingTeamId *string   `json:"billingTeamId"`
+			CreatedAt     time.Time `json:"createdAt"`
+			CreatedBy     *struct {
+				Email *string                           `json:"email"`
+				Id    string                            `json:"id"`
+				Name  *string                           `json:"name"`
+				Type  *GetVirtualApiKey200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID        `json:"createdByServiceAccountId"`
+			ExpiresAt                 *time.Time                 `json:"expiresAt"`
+			Id                        openapi_types.UUID         `json:"id"`
+			IncludeFutureProviders    bool                       `json:"includeFutureProviders"`
+			KeyType                   GetVirtualApiKey200KeyType `json:"keyType"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastUsedAt      *time.Time `json:"lastUsedAt"`
+			Name            string     `json:"name"`
+			OrganizationId  string     `json:"organizationId"`
+			ProviderApiKeys []struct {
+				Provider           GetVirtualApiKey200ProviderApiKeysProvider `json:"provider"`
+				ProviderApiKeyId   openapi_types.UUID                         `json:"providerApiKeyId"`
+				ProviderApiKeyName string                                     `json:"providerApiKeyName"`
+			} `json:"providerApiKeys"`
+			Scope    GetVirtualApiKey200Scope `json:"scope"`
+			SecretId openapi_types.UUID       `json:"secretId"`
+			SpendCap *struct {
+				CleanupInterval GetVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
+				CurrentUsage    float32                                    `json:"currentUsage"`
+				LimitId         string                                     `json:"limitId"`
+				LimitValue      int                                        `json:"limitValue"`
+			} `json:"spendCap"`
+			Teams []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TokenStart string `json:"tokenStart"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         GetVirtualApiKey400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         GetVirtualApiKey401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}      `json:"details,omitempty"`
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         GetVirtualApiKey403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         GetVirtualApiKey404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         GetVirtualApiKey409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         GetVirtualApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateVirtualApiKeyResponse parses an HTTP response from a UpdateVirtualApiKeyWithResponse call
+func ParseUpdateVirtualApiKeyResponse(rsp *http.Response) (*UpdateVirtualApiKeyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateVirtualApiKeyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId    *string `json:"authorId"`
+			AuthorName  *string `json:"authorName"`
+			BillingTeam *struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"billingTeam"`
+			BillingTeamId *string   `json:"billingTeamId"`
+			CreatedAt     time.Time `json:"createdAt"`
+			CreatedBy     *struct {
+				Email *string                              `json:"email"`
+				Id    string                               `json:"id"`
+				Name  *string                              `json:"name"`
+				Type  *UpdateVirtualApiKey200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID           `json:"createdByServiceAccountId"`
+			ExpiresAt                 *time.Time                    `json:"expiresAt"`
+			Id                        openapi_types.UUID            `json:"id"`
+			IncludeFutureProviders    bool                          `json:"includeFutureProviders"`
+			KeyType                   UpdateVirtualApiKey200KeyType `json:"keyType"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LastUsedAt      *time.Time `json:"lastUsedAt"`
+			Name            string     `json:"name"`
+			OrganizationId  string     `json:"organizationId"`
+			ProviderApiKeys []struct {
+				Provider           UpdateVirtualApiKey200ProviderApiKeysProvider `json:"provider"`
+				ProviderApiKeyId   openapi_types.UUID                            `json:"providerApiKeyId"`
+				ProviderApiKeyName string                                        `json:"providerApiKeyName"`
+			} `json:"providerApiKeys"`
+			Scope    UpdateVirtualApiKey200Scope `json:"scope"`
+			SecretId openapi_types.UUID          `json:"secretId"`
+			SpendCap *struct {
+				CleanupInterval UpdateVirtualApiKey200SpendCapCleanupInterval `json:"cleanupInterval"`
+				CurrentUsage    float32                                       `json:"currentUsage"`
+				LimitId         string                                        `json:"limitId"`
+				LimitValue      int                                           `json:"limitValue"`
+			} `json:"spendCap"`
+			Teams []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TokenStart string `json:"tokenStart"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateVirtualApiKey400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateVirtualApiKey401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}         `json:"details,omitempty"`
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateVirtualApiKey403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateVirtualApiKey404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateVirtualApiKey409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateVirtualApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetMcpToolCallsResponse parses an HTTP response from a GetMcpToolCallsWithResponse call
 func ParseGetMcpToolCallsResponse(rsp *http.Response) (*GetMcpToolCallsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -43174,6 +46211,717 @@ func ParseGetMcpServerToolsResponse(rsp *http.Response) (*GetMcpServerToolsRespo
 				InternalCode *string                       `json:"internal_code,omitempty"`
 				Message      string                        `json:"message"`
 				Type         GetMcpServerTools500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetOauthClientsResponse parses an HTTP response from a GetOauthClientsWithResponse call
+func ParseGetOauthClientsResponse(rsp *http.Response) (*GetOauthClientsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetOauthClientsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				AllowedGatewayIds []openapi_types.UUID `json:"allowedGatewayIds"`
+				AuthorId          *string              `json:"authorId"`
+				AuthorName        *string              `json:"authorName"`
+				BillingTeam       *struct {
+					Id   string `json:"id"`
+					Name string `json:"name"`
+				} `json:"billingTeam"`
+				ClientId  string    `json:"clientId"`
+				CreatedAt time.Time `json:"createdAt"`
+				CreatedBy *struct {
+					Email *string                              `json:"email"`
+					Id    string                               `json:"id"`
+					Name  *string                              `json:"name"`
+					Type  *GetOauthClients200DataCreatedByType `json:"type,omitempty"`
+				} `json:"createdBy"`
+				Disabled               bool                            `json:"disabled"`
+				GrantType              GetOauthClients200DataGrantType `json:"grantType"`
+				Id                     string                          `json:"id"`
+				IncludeFutureProviders bool                            `json:"includeFutureProviders"`
+				Labels                 []struct {
+					Key     string              `json:"key"`
+					KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+					Value   string              `json:"value"`
+					ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+				} `json:"labels"`
+				Name            string `json:"name"`
+				OrganizationId  string `json:"organizationId"`
+				ProviderApiKeys []struct {
+					Provider           GetOauthClients200DataProviderApiKeysProvider `json:"provider"`
+					ProviderApiKeyId   openapi_types.UUID                            `json:"providerApiKeyId"`
+					ProviderApiKeyName string                                        `json:"providerApiKeyName"`
+				} `json:"providerApiKeys"`
+				RedirectUris     []string                       `json:"redirectUris"`
+				Scopes           []GetOauthClients200DataScopes `json:"scopes"`
+				ServiceAccountId *string                        `json:"serviceAccountId"`
+				SpendCap         *struct {
+					CleanupInterval GetOauthClients200DataSpendCapCleanupInterval `json:"cleanupInterval"`
+					CurrentUsage    float32                                       `json:"currentUsage"`
+					LimitId         string                                        `json:"limitId"`
+					LimitValue      int                                           `json:"limitValue"`
+				} `json:"spendCap"`
+				UpdatedAt time.Time `json:"updatedAt"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetOauthClients400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetOauthClients401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}     `json:"details,omitempty"`
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetOauthClients403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetOauthClients404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetOauthClients409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         GetOauthClients500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateOauthClientResponse parses an HTTP response from a CreateOauthClientWithResponse call
+func ParseCreateOauthClientResponse(rsp *http.Response) (*CreateOauthClientResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateOauthClientResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AllowedGatewayIds []openapi_types.UUID `json:"allowedGatewayIds"`
+			AuthorId          *string              `json:"authorId"`
+			AuthorName        *string              `json:"authorName"`
+			BillingTeam       *struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"billingTeam"`
+			ClientId     string    `json:"clientId"`
+			ClientSecret string    `json:"clientSecret"`
+			CreatedAt    time.Time `json:"createdAt"`
+			CreatedBy    *struct {
+				Email *string                            `json:"email"`
+				Id    string                             `json:"id"`
+				Name  *string                            `json:"name"`
+				Type  *CreateOauthClient200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			Disabled               bool                          `json:"disabled"`
+			GrantType              CreateOauthClient200GrantType `json:"grantType"`
+			Id                     string                        `json:"id"`
+			IncludeFutureProviders bool                          `json:"includeFutureProviders"`
+			Labels                 []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name            string `json:"name"`
+			OrganizationId  string `json:"organizationId"`
+			ProviderApiKeys []struct {
+				Provider           CreateOauthClient200ProviderApiKeysProvider `json:"provider"`
+				ProviderApiKeyId   openapi_types.UUID                          `json:"providerApiKeyId"`
+				ProviderApiKeyName string                                      `json:"providerApiKeyName"`
+			} `json:"providerApiKeys"`
+			RedirectUris     []string                     `json:"redirectUris"`
+			Scopes           []CreateOauthClient200Scopes `json:"scopes"`
+			ServiceAccountId *string                      `json:"serviceAccountId"`
+			SpendCap         *struct {
+				CleanupInterval CreateOauthClient200SpendCapCleanupInterval `json:"cleanupInterval"`
+				CurrentUsage    float32                                     `json:"currentUsage"`
+				LimitId         string                                      `json:"limitId"`
+				LimitValue      int                                         `json:"limitValue"`
+			} `json:"spendCap"`
+			UpdatedAt time.Time `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         CreateOauthClient400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         CreateOauthClient401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}       `json:"details,omitempty"`
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         CreateOauthClient403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         CreateOauthClient404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         CreateOauthClient409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         CreateOauthClient500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteOauthClientResponse parses an HTTP response from a DeleteOauthClientWithResponse call
+func ParseDeleteOauthClientResponse(rsp *http.Response) (*DeleteOauthClientResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteOauthClientResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         DeleteOauthClient400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         DeleteOauthClient401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}       `json:"details,omitempty"`
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         DeleteOauthClient403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         DeleteOauthClient404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         DeleteOauthClient409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         DeleteOauthClient500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateOauthClientResponse parses an HTTP response from a UpdateOauthClientWithResponse call
+func ParseUpdateOauthClientResponse(rsp *http.Response) (*UpdateOauthClientResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateOauthClientResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AllowedGatewayIds []openapi_types.UUID `json:"allowedGatewayIds"`
+			AuthorId          *string              `json:"authorId"`
+			AuthorName        *string              `json:"authorName"`
+			BillingTeam       *struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"billingTeam"`
+			ClientId  string    `json:"clientId"`
+			CreatedAt time.Time `json:"createdAt"`
+			CreatedBy *struct {
+				Email *string                            `json:"email"`
+				Id    string                             `json:"id"`
+				Name  *string                            `json:"name"`
+				Type  *UpdateOauthClient200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			Disabled               bool                          `json:"disabled"`
+			GrantType              UpdateOauthClient200GrantType `json:"grantType"`
+			Id                     string                        `json:"id"`
+			IncludeFutureProviders bool                          `json:"includeFutureProviders"`
+			Labels                 []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name            string `json:"name"`
+			OrganizationId  string `json:"organizationId"`
+			ProviderApiKeys []struct {
+				Provider           UpdateOauthClient200ProviderApiKeysProvider `json:"provider"`
+				ProviderApiKeyId   openapi_types.UUID                          `json:"providerApiKeyId"`
+				ProviderApiKeyName string                                      `json:"providerApiKeyName"`
+			} `json:"providerApiKeys"`
+			RedirectUris     []string                     `json:"redirectUris"`
+			Scopes           []UpdateOauthClient200Scopes `json:"scopes"`
+			ServiceAccountId *string                      `json:"serviceAccountId"`
+			SpendCap         *struct {
+				CleanupInterval UpdateOauthClient200SpendCapCleanupInterval `json:"cleanupInterval"`
+				CurrentUsage    float32                                     `json:"currentUsage"`
+				LimitId         string                                      `json:"limitId"`
+				LimitValue      int                                         `json:"limitValue"`
+			} `json:"spendCap"`
+			UpdatedAt time.Time `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateOauthClient400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateOauthClient401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}       `json:"details,omitempty"`
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateOauthClient403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateOauthClient404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateOauthClient409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         UpdateOauthClient500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRotateOauthClientSecretResponse parses an HTTP response from a RotateOauthClientSecretWithResponse call
+func ParseRotateOauthClientSecretResponse(rsp *http.Response) (*RotateOauthClientSecretResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RotateOauthClientSecretResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AllowedGatewayIds []openapi_types.UUID `json:"allowedGatewayIds"`
+			AuthorId          *string              `json:"authorId"`
+			AuthorName        *string              `json:"authorName"`
+			BillingTeam       *struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"billingTeam"`
+			ClientId     string    `json:"clientId"`
+			ClientSecret string    `json:"clientSecret"`
+			CreatedAt    time.Time `json:"createdAt"`
+			CreatedBy    *struct {
+				Email *string                                  `json:"email"`
+				Id    string                                   `json:"id"`
+				Name  *string                                  `json:"name"`
+				Type  *RotateOauthClientSecret200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			Disabled               bool                                `json:"disabled"`
+			GrantType              RotateOauthClientSecret200GrantType `json:"grantType"`
+			Id                     string                              `json:"id"`
+			IncludeFutureProviders bool                                `json:"includeFutureProviders"`
+			Labels                 []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			Name            string `json:"name"`
+			OrganizationId  string `json:"organizationId"`
+			ProviderApiKeys []struct {
+				Provider           RotateOauthClientSecret200ProviderApiKeysProvider `json:"provider"`
+				ProviderApiKeyId   openapi_types.UUID                                `json:"providerApiKeyId"`
+				ProviderApiKeyName string                                            `json:"providerApiKeyName"`
+			} `json:"providerApiKeys"`
+			RedirectUris     []string                           `json:"redirectUris"`
+			Scopes           []RotateOauthClientSecret200Scopes `json:"scopes"`
+			ServiceAccountId *string                            `json:"serviceAccountId"`
+			SpendCap         *struct {
+				CleanupInterval RotateOauthClientSecret200SpendCapCleanupInterval `json:"cleanupInterval"`
+				CurrentUsage    float32                                           `json:"currentUsage"`
+				LimitId         string                                            `json:"limitId"`
+				LimitValue      int                                               `json:"limitValue"`
+			} `json:"spendCap"`
+			UpdatedAt time.Time `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         RotateOauthClientSecret400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         RotateOauthClientSecret401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}             `json:"details,omitempty"`
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         RotateOauthClientSecret403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         RotateOauthClientSecret404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         RotateOauthClientSecret409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                             `json:"internal_code,omitempty"`
+				Message      string                              `json:"message"`
+				Type         RotateOauthClientSecret500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

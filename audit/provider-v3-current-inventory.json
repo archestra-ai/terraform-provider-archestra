@@ -1,5 +1,5 @@
 {
-  "crossplane_configured_count": 39,
+  "crossplane_configured_count": 41,
   "evidence_level": "static inventory; no runtime coverage implied",
   "format_version": 1,
   "resources": [
@@ -6979,6 +6979,430 @@
     },
     {
       "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 0,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "CreateOauthClient",
+          "declared_request_field_mappings": {
+            "allowedGatewayIds": "allowed_gateway_ids",
+            "billingTeamId": "billing_team_id",
+            "grantType": "grant_type",
+            "includeFutureProviders": "include_future_providers",
+            "initialGrants": "initial_grants",
+            "labels": "labels",
+            "name": "name",
+            "providerApiKeys": "provider_api_keys",
+            "redirectUris": "redirect_uris",
+            "scopes": "scopes",
+            "serviceAccountId": "service_account_id",
+            "spendCap": "spend_cap"
+          },
+          "method": "POST",
+          "path": "/api/oauth-clients",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "allowedGatewayIds",
+            "billingTeamId",
+            "grantType",
+            "includeFutureProviders",
+            "initialGrants",
+            "labels",
+            "name",
+            "providerApiKeys",
+            "redirectUris",
+            "scopes",
+            "serviceAccountId",
+            "spendCap"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "DeleteOauthClient",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/oauth-clients/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetOauthClients",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/oauth-clients",
+          "present_in_upstream": true,
+          "query_parameters": [
+            "access",
+            "capability",
+            "grantType",
+            "labels",
+            "limit",
+            "offset",
+            "owner",
+            "providerApiKeyId",
+            "search",
+            "sharedWith"
+          ],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "RotateOauthClientSecret",
+          "declared_request_field_mappings": {},
+          "method": "POST",
+          "path": "/api/oauth-clients/{}/rotate-secret",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateOauthClient",
+          "declared_request_field_mappings": {
+            "allowedGatewayIds": "allowed_gateway_ids",
+            "billingTeamId": "billing_team_id",
+            "grantType": "grant_type",
+            "includeFutureProviders": "include_future_providers",
+            "labels": "labels",
+            "name": "name",
+            "providerApiKeys": "provider_api_keys",
+            "redirectUris": "redirect_uris",
+            "scopes": "scopes",
+            "serviceAccountId": "service_account_id",
+            "spendCap": "spend_cap"
+          },
+          "method": "PUT",
+          "path": "/api/oauth-clients/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "allowedGatewayIds",
+            "billingTeamId",
+            "grantType",
+            "includeFutureProviders",
+            "labels",
+            "name",
+            "providerApiKeys",
+            "redirectUris",
+            "scopes",
+            "serviceAccountId",
+            "spendCap"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": true,
+          "optional": true,
+          "path": "allowed_gateway_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "billing_team_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "billing_team_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "client_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "client_secret",
+          "required": false,
+          "sensitive": true,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "disabled",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "grant_type",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "include_future_providers",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "labels",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.value",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "name",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "organization_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "provider_api_keys",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "provider_api_keys.provider",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "provider_api_keys.provider_api_key_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "provider_api_keys.provider_api_key_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "redirect_uris",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "rotation_nonce",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "scopes",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "spend_cap",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "spend_cap.cleanup_interval",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "spend_cap.current_usage",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "spend_cap.limit_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "spend_cap.limit_value",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "updated_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_oauth_client.go",
+      "terraform_resource": "archestra_oauth_client"
+    },
+    {
+      "acceptance_execution": "unverified",
       "acceptance_tests_declared": 9,
       "crossplane_configured": true,
       "crossplane_reconciliation": "unverified",
@@ -10575,9 +10999,408 @@
       "schema_version": 0,
       "source": "internal/provider/resource_team_vault_folder.go",
       "terraform_resource": "archestra_team_vault_folder"
+    },
+    {
+      "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 0,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "CreateVirtualApiKey",
+          "declared_request_field_mappings": {
+            "billingTeamId": "billing_team_id",
+            "expiresAt": "expires_at",
+            "includeFutureProviders": "include_future_providers",
+            "initialGrants": "initial_grants",
+            "keyType": "key_type",
+            "labels": "labels",
+            "name": "name",
+            "ownerId": "owner_id",
+            "providerApiKeys": "provider_api_keys",
+            "spendCap": "spend_cap"
+          },
+          "method": "POST",
+          "path": "/api/llm-virtual-keys",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "billingTeamId",
+            "expiresAt",
+            "includeFutureProviders",
+            "initialGrants",
+            "keyType",
+            "labels",
+            "name",
+            "ownerId",
+            "providerApiKeys",
+            "spendCap"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "DeleteVirtualApiKey",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/llm-virtual-keys/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetVirtualApiKey",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/llm-virtual-keys/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateVirtualApiKey",
+          "declared_request_field_mappings": {
+            "billingTeamId": "billing_team_id",
+            "expiresAt": "expires_at",
+            "includeFutureProviders": "include_future_providers",
+            "keyType": "key_type",
+            "labels": "labels",
+            "name": "name",
+            "providerApiKeys": "provider_api_keys",
+            "spendCap": "spend_cap"
+          },
+          "method": "PATCH",
+          "path": "/api/llm-virtual-keys/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "billingTeamId",
+            "expiresAt",
+            "includeFutureProviders",
+            "keyType",
+            "labels",
+            "name",
+            "providerApiKeys",
+            "spendCap"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "author_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "billing_team_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "billing_team_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_by_service_account_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "expires_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "include_future_providers",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "initial_grants",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "initial_grants.subject_type",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "key_type",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "labels",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.value",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "last_used_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "name",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "organization_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "owner_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "provider_api_keys",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "provider_api_keys.provider",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "provider_api_keys.provider_api_key_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "provider_api_keys.provider_api_key_name",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "rotation_nonce",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "scope",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "secret_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "spend_cap",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "spend_cap.cleanup_interval",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "spend_cap.current_usage",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "spend_cap.limit_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "spend_cap.limit_value",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "teams",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "token_start",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "value",
+          "required": false,
+          "sensitive": true,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_virtual_api_key.go",
+      "terraform_resource": "archestra_virtual_api_key"
     }
   ],
-  "terraform_count": 39,
+  "terraform_count": 41,
   "unreferenced_mutating_operations": [
     {
       "method": "DELETE",
@@ -10821,11 +11644,6 @@
     },
     {
       "method": "DELETE",
-      "operation_id": "deleteVirtualApiKey",
-      "path": "/api/llm-virtual-keys/{}"
-    },
-    {
-      "method": "DELETE",
       "operation_id": "deleteMcpOauthClient",
       "path": "/api/mcp-oauth-clients/{}"
     },
@@ -10848,11 +11666,6 @@
       "method": "DELETE",
       "operation_id": "bulkDeleteOauthClients",
       "path": "/api/oauth-clients/bulk"
-    },
-    {
-      "method": "DELETE",
-      "operation_id": "deleteOauthClient",
-      "path": "/api/oauth-clients/{}"
     },
     {
       "method": "DELETE",
@@ -10998,11 +11811,6 @@
       "method": "PATCH",
       "operation_id": "updateLlmProxy",
       "path": "/api/llm-proxy"
-    },
-    {
-      "method": "PATCH",
-      "operation_id": "updateVirtualApiKey",
-      "path": "/api/llm-virtual-keys/{}"
     },
     {
       "method": "PATCH",
@@ -11551,11 +12359,6 @@
     },
     {
       "method": "POST",
-      "operation_id": "createVirtualApiKey",
-      "path": "/api/llm-virtual-keys"
-    },
-    {
-      "method": "POST",
       "operation_id": "createMcpOauthClient",
       "path": "/api/mcp-oauth-clients"
     },
@@ -11608,16 +12411,6 @@
       "method": "POST",
       "operation_id": "microsoft365CopilotDeviceAuthStart",
       "path": "/api/microsoft-365-copilot-auth/device/start"
-    },
-    {
-      "method": "POST",
-      "operation_id": "createOauthClient",
-      "path": "/api/oauth-clients"
-    },
-    {
-      "method": "POST",
-      "operation_id": "rotateOauthClientSecret",
-      "path": "/api/oauth-clients/{}/rotate-secret"
     },
     {
       "method": "POST",
@@ -12538,11 +13331,6 @@
       "method": "PUT",
       "operation_id": "updateMemberDefaultModel",
       "path": "/api/members/default-model"
-    },
-    {
-      "method": "PUT",
-      "operation_id": "updateOauthClient",
-      "path": "/api/oauth-clients/{}"
     },
     {
       "method": "PUT",

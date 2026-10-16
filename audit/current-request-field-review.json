@@ -1,8 +1,8 @@
 {
   "format_version": 1,
   "upstream_version": "1.4.0-rc.48",
-  "registered_resources": 39,
-  "crossplane_configured": 39,
+  "registered_resources": 41,
+  "crossplane_configured": 41,
   "raw_occurrences": 127,
   "unclassified": 0,
   "classification_counts": {
