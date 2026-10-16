@@ -98,7 +98,7 @@ jobs:
   publish-crossplane:
     name: Publish Crossplane Provider
     runs-on: ubuntu-latest
-    needs: release-please
+    needs: [release-please, publish-terraform-provider]
     if: needs.release-please.outputs.release_created == 'true'
     permissions:
       contents: read
@@ -152,8 +152,10 @@ jobs:
           # `make build` only builds for the host arch via BUILD_PLATFORMS;
           # `build.all` honors PLATFORMS so both linux_amd64 and linux_arm64
           # xpkgs are produced — `crank xpkg push` needs both.
-          make -C crossplane generate
+          provider_version="${VERSION#v}"
+          make -C crossplane generate TERRAFORM_PROVIDER_VERSION="$provider_version"
           make -C crossplane build.all publish \
             PLATFORMS="linux_amd64 linux_arm64" \
             XPKG_REG_ORGS="xpkg.upbound.io/archestra" \
+            TERRAFORM_PROVIDER_VERSION="$provider_version" \
             VERSION="$VERSION"
