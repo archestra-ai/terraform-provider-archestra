@@ -18,6 +18,12 @@ API versions are independent of provider versions. See the [compatibility matrix
 
 The [organization-defaults runtime proof](audit/crossplane-organization-defaults.json) verifies reference resolution, updates, drift, omission and explicit clears in both scopes on the current candidate.
 
+The [current consolidated runtime proof](audit/consolidated-crossplane-runtime.json)
+verifies all **29 resource families in both scopes** (58 family/scope pairs,
+124 runtime records), with normal cleanup and restored global test settings.
+Variants are additional checks, not extra resource families. Remaining product
+APIs, final package validation, protected review and publication are still open.
+
 ## Resource coverage
 
 The implemented surface follows product objects and Settings. Configuration and

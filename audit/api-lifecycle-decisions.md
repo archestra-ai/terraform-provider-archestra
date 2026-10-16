@@ -1,5 +1,53 @@
 # Declarative API lifecycle decisions
 
+The current clean-major candidate has **29 resources and four Terraform data sources**.
+All 29 resources generate in both Crossplane scopes. The [resource matrix](../README.md#resource-coverage)
+and [migration guide](../MIGRATION-v3.md) define the current names and ownership;
+the historical table below does not register retired resource types.
+
+Reviewed against published API **1.4.0-rc.49**. All **147 native acceptance cases**
+pass. All 29 current resource families also pass in both scopes with
+[frozen-binary lifecycle evidence](consolidated-crossplane-runtime.json), normal
+cleanup and restored global test settings. Missing product APIs, final packages,
+protected review and release remain open.
+
+| Product area | Current resource model | Remaining work or boundary |
+|---|---|---|
+| Agents and MCP gateways | `agent` and `mcp_gateway` own their assignments, tools, skills, exclusions, hooks where supported, and additional sharing. | The legacy combined proxy-profile type is retired. The platform-owned LLM proxy is not created as a resource. |
+| Remote agents | `remote_agent` owns a reusable external registration and stored connection configuration; agent/gateway `remote_agent_ids` own its assignments. | Card inspection and outbound agent runs remain observations/executions. |
+| Teams and identity | `team` owns members and their team roles, organization roles, SSO group mappings and its Vault folder. Roles, identity-provider configuration and service accounts have independent identities. | Organization-user lookup is a possible data source. The published user routes expose reads, deletion and signup administration rather than a complete declarative account-creation contract; invitations, login and personal preferences remain outside resource creation. |
+| Sharing | Fifteen shareable parent types expose `permissions`. Organization-wide policies are `organization_settings.default_permissions`. | Direct grants, human ownership and inherited access are distinct. Revision conflicts fail without a blind retry. No standalone permission-policy alias is registered. |
+| Organization defaults | `organization_settings` owns default environments, member spending defaults and global access policies. | Omitted slots preserve; explicit empties clear/reset. Singleton deletion leaves configuration intact. |
+| MCP | `mcp_registry_entry` owns a catalog definition; `mcp_server` owns a deployed connection/installation. Agent/gateway tool bindings are parent fields. | Inspection, test calls and runtime tool invocation are operations, not resource families. |
+| Models and credentials | `model_provider`, `model`, `virtual_key`, `oauth_client`, `limit`, `credential`, API keys and stored GitHub registrations keep independent credential, adoption or revocation lifecycles. | Model deletion resets managed overrides and retains discovery. Interactive consent and external credential/app setup are separate authorization steps. |
+| Skills and plugins | One `plugin` supports files or `git_source`. Native skill content/files use `skill`; activation policies and gateway publication are parent fields. | Git-backed skill configuration remains pending on the Skill rather than a separate Git-skill resource. Plugin/external-MCP activation references are not duplicate native skill identities. |
+| Projects and files | `project` owns instructions; `project_file` owns explicit text or binary content with an independent file identity. Schedules remain independently enabled/disabled objects. | App associations belong on their owning parent; implementation remains pending. |
+| Apps | Intended independent versioned app source/configuration with tool bindings on the App. | Implementation pending. Rendering diagnostics, screenshots, pinning and execution are commands/preferences. |
+| Knowledge | `knowledge_base` and `knowledge_directory` exist. Connectors and files are reusable identities; associations belong on an owner. | Connector/file implementation pending, including existing authorized connections, redacted secrets, content/hash and indexing observation. Sync runs are not separate resources. |
+| Guardrails/OpenAPPA | Persistent packages, policies, deployments and owner bindings require explicit lifecycle design. | Implementation pending. Tests, diagnostic runs and sync commands are not automatically new resource types. |
+| Messaging | Organization channel configuration belongs in Settings; agent channel assignments belong on the Agent. | Implementation pending. Applying configuration must not join channels, send messages or complete external OAuth setup implicitly. |
+| Site notifications | Persistent privileged notification configuration requires a scope and ownership decision. | Implementation pending. Preserve inactive creation; notification delivery is not an automatic test/setup action. |
+| Share links and operational reads | `share_link` has an independently revocable, secret-once lifecycle. Data sources are `agent`, `team`, `tool`, `mcp_tool_calls`. | Alert dismissals, personal preferences, inference, messages, telemetry, run cancellation and bulk facades are not additional managed-object identities. |
+
+The 172 raw request-field occurrences have explicit dispositions in
+[current-request-field-review.json](current-request-field-review.json). This count
+includes manual encoders and server-owned fields; it is not a missing-feature count.
+Further entity lookups and Crossplane reference ergonomics require review against
+the actual API identity and list/read contracts.
+
+Daily upstream sync remains disabled. Future sync PRs require manual review;
+this work does not authorize automatic merge or publication of breaking changes.
+
+## Historical pre-consolidation decisions
+
+The following rc.48-era review and its exact-hash evidence are retained for
+traceability. Its profile, relationship, split-plugin and standalone default/policy
+types describe an earlier candidate. Even the historical 29-family baseline is a
+different resource set from the current 29-resource surface. Use the current model
+above for implementation decisions; historical runtime/package results do not
+validate a new candidate merely because resource counts happen to match.
+
+
 Reviewed against published Archestra 1.4.0-rc.48 and its backend route/model contracts. These decisions distinguish persistent configuration from alternate endpoints, observations and commands. They are a design and implementation queue; a row marked desired is not claimed as tested support.
 
 The baseline at b180fee contains 29 fully exercised families in both scopes. The expansion adds six native-tested families: hook, default-user-limit, directory, external gateway profile, service account and service-account token. All six pass real create/update/drift-repair/delete reconciliation in both scopes; runtime evidence is recorded separately in `crossplane-persistent-extensions.json`. Both Linux runtime images and embedded packages pass `runtime-package-validation.json`.

@@ -149,7 +149,15 @@ Clear an agent's runtime credential references and apply that change while keepi
 the credential definition. Remove the credential in a subsequent apply. Deleting
 a referenced credential is rejected; the provider does not detach consumers.
 
-## Migration validation completed
+## Historical migration validation
+
+These probes were executed before the clean-major name and ownership
+consolidation. Their recorded binaries remain the evidence boundary. Their CLI
+fixtures need actual v2 type names and explicit v3 orphan/adoption for renamed
+types before they can be reused; the old retained-relationship fixture also
+predates parent-field ownership. They are historical evidence, not a promise of
+automatic compatibility or current-candidate migration proof. Do not edit raw state resource types to manufacture an upgrade.
+
 
 The local Terraform CLI probe imports through the v2 schema, upgrades an LLM key
 from schema 0 to 1, preserves its ID and false primary flag, produces two no-change

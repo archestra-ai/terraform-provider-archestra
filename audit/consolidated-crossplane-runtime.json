@@ -1,0 +1,1503 @@
+{
+  "format_version": 1,
+  "outcome": "passed",
+  "registered_resources": 29,
+  "both_scope_families_verified": 29,
+  "verified_resource_scope_pairs": 58,
+  "runtime_records": 124,
+  "runtime_source_sha256": "2b4fc5f2c7b44a10f0638109cbdc85121896fb8b8490518de1f0b1e63f7b34bb",
+  "runtime_code_commit": "453ee6fb4cb0ad3564f588114dbdaf891a10a488",
+  "cleanup": "passed",
+  "api_cleanup": "passed",
+  "terraform_sha256": "e48c18e82664849d9a01e7636455cb19eac44e827ca69ea265154161c349a6a6",
+  "controller_sha256": "cb2bdd4fd34df0c96738d0b54b50d93b392a1faa865b8aedf0cb8186328ed032",
+  "api_spec_sha256": "07cdcb4f84a8371029a0a5f65be43af7b515cfb052a16e38520340d8b690d0c9",
+  "api_version": "1.4.0-rc.49",
+  "scope": "Actual API lifecycle records and generated CRDs in a private Kind. Variants are not extra resource families. Models adopt/reset; settings preserve their singleton; skills and several objects soft-delete according to API semantics. No inference, hook execution, OAuth consent or external setup is requested.",
+  "inputs": [
+    {
+      "file": "crossplane-owned7-ownership.json",
+      "sha256": "2c19531a633e71315d37386cef63987e9b8a7fb413963096faa4ca1f9690de94"
+    },
+    {
+      "file": "crossplane-owned7-families.json",
+      "sha256": "a330c9b282a366b10d5b9ae993b6ef1cb81acc869f5bd625c2a7846e136063dc"
+    }
+  ],
+  "coverage": {
+    "archestra_agent": {
+      "cluster": [
+        {
+          "resource": "AgentInlineOwnership",
+          "scope": "cluster",
+          "create": "passed",
+          "native_references": "passed",
+          "update": "passed",
+          "tool_unpin": "passed",
+          "ordinary_tool_clear_preserves_subagents": "passed",
+          "recovery_tools_preserved": "passed",
+          "drift_repair": "passed",
+          "omission_preserves_unmanaged": "passed",
+          "empty_collections_clear": "passed",
+          "orphan_adoption": "passed",
+          "identity_preserved": true,
+          "delete": "passed",
+          "execution": "not_invoked"
+        },
+        {
+          "resource": "AgentSharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Agent",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "AgentInlineOwnership",
+          "scope": "namespaced",
+          "create": "passed",
+          "native_references": "passed",
+          "update": "passed",
+          "tool_unpin": "passed",
+          "ordinary_tool_clear_preserves_subagents": "passed",
+          "recovery_tools_preserved": "passed",
+          "drift_repair": "passed",
+          "omission_preserves_unmanaged": "passed",
+          "empty_collections_clear": "passed",
+          "orphan_adoption": "passed",
+          "identity_preserved": true,
+          "delete": "passed",
+          "execution": "not_invoked"
+        },
+        {
+          "resource": "AgentSharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Agent",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ]
+    },
+    "archestra_mcp_gateway": {
+      "cluster": [
+        {
+          "resource": "GatewayInlineOwnership",
+          "scope": "cluster",
+          "create": "passed",
+          "native_references": "passed",
+          "update": "passed",
+          "tool_unpin": "passed",
+          "ordinary_tool_clear_preserves_subagents": "passed",
+          "recovery_tools_preserved": "passed",
+          "drift_repair": "passed",
+          "omission_preserves_unmanaged": "passed",
+          "empty_collections_clear": "passed",
+          "orphan_adoption": "passed",
+          "identity_preserved": true,
+          "delete": "passed",
+          "execution": "not_invoked"
+        },
+        {
+          "resource": "GatewaySharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Gateway",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        },
+        {
+          "resource": "GatewaySubagentControl",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "GatewayInlineOwnership",
+          "scope": "namespaced",
+          "create": "passed",
+          "native_references": "passed",
+          "update": "passed",
+          "tool_unpin": "passed",
+          "ordinary_tool_clear_preserves_subagents": "passed",
+          "recovery_tools_preserved": "passed",
+          "drift_repair": "passed",
+          "omission_preserves_unmanaged": "passed",
+          "empty_collections_clear": "passed",
+          "orphan_adoption": "passed",
+          "identity_preserved": true,
+          "delete": "passed",
+          "execution": "not_invoked"
+        },
+        {
+          "resource": "GatewaySharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Gateway",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        },
+        {
+          "resource": "GatewaySubagentControl",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed"
+        }
+      ]
+    },
+    "archestra_api_key": {
+      "cluster": [
+        {
+          "resource": "APIKey",
+          "scope": "cluster",
+          "create": "passed",
+          "immutable_update_refused": "passed",
+          "deleted_key_recreated": "passed",
+          "delete": "passed",
+          "key_absent_from_status": true
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "APIKey",
+          "scope": "namespaced",
+          "create": "passed",
+          "immutable_update_refused": "passed",
+          "deleted_key_recreated": "passed",
+          "delete": "passed",
+          "key_absent_from_status": true
+        }
+      ]
+    },
+    "archestra_environment": {
+      "cluster": [
+        {
+          "resource": "EnvironmentSharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Environment",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "EnvironmentSharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Environment",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ]
+    },
+    "archestra_identity_provider": {
+      "cluster": [
+        {
+          "resource": "Provider",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "secret_absent_from_status": true,
+          "live_oauth_consent": "not_exercised; synthetic configuration only"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "Provider",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "secret_absent_from_status": true,
+          "live_oauth_consent": "not_exercised; synthetic configuration only"
+        }
+      ]
+    },
+    "archestra_knowledge_base": {
+      "cluster": [
+        {
+          "resource": "KnowledgeBaseSharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "KnowledgeBase",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "KnowledgeBaseSharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "KnowledgeBase",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ]
+    },
+    "archestra_knowledge_directory": {
+      "cluster": [
+        {
+          "resource": "Directory",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "Directory",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed"
+        }
+      ]
+    },
+    "archestra_limit": {
+      "cluster": [
+        {
+          "resource": "Limit",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "Limit",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ]
+    },
+    "archestra_model": {
+      "cluster": [
+        {
+          "resource": "Model",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete_reset": "passed",
+          "adopted_model_preserved": true
+        },
+        {
+          "resource": "ModelSharing",
+          "scope": "cluster",
+          "adoption": "passed",
+          "explicit_empty_clear": "passed",
+          "sharing_only_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete_retains_discovered_model": true
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "Model",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete_reset": "passed",
+          "adopted_model_preserved": true
+        },
+        {
+          "resource": "ModelSharing",
+          "scope": "namespaced",
+          "adoption": "passed",
+          "explicit_empty_clear": "passed",
+          "sharing_only_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete_retains_discovered_model": true
+        }
+      ]
+    },
+    "archestra_model_provider": {
+      "cluster": [
+        {
+          "resource": "ModelProviderSharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "ModelProvider",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "sensitive_header_secret_rotation": "passed",
+          "sensitive_header_absent_from_status": true
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "ModelProviderSharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "ModelProvider",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "sensitive_header_secret_rotation": "passed",
+          "sensitive_header_absent_from_status": true
+        }
+      ]
+    },
+    "archestra_mcp_registry_entry": {
+      "cluster": [
+        {
+          "resource": "RegistryEntrySharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "RegistryEntry",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "RegistryEntrySharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "RegistryEntry",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ]
+    },
+    "archestra_mcp_server": {
+      "cluster": [
+        {
+          "resource": "InstallationControls",
+          "scope": "cluster",
+          "create": "passed",
+          "personal_user": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Server",
+          "scope": "cluster",
+          "create": "passed",
+          "immutable_update_refused": "passed",
+          "tools_discovered": 2,
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "InstallationControls",
+          "scope": "namespaced",
+          "create": "passed",
+          "personal_user": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Server",
+          "scope": "namespaced",
+          "create": "passed",
+          "immutable_update_refused": "passed",
+          "tools_discovered": 2,
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ]
+    },
+    "archestra_organization_settings": {
+      "cluster": [
+        {
+          "resource": "OrganizationInlineDefaults",
+          "scope": "cluster",
+          "create": "passed",
+          "environment_references": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "omission_preserves": "passed",
+          "empty_collections_clear": "passed",
+          "spending_row_identity_preserved": true,
+          "delete_preserves_singleton": true
+        },
+        {
+          "resource": "Settings",
+          "scope": "cluster",
+          "adopt": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete_preserves_singleton": "passed"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "OrganizationInlineDefaults",
+          "scope": "namespaced",
+          "create": "passed",
+          "environment_references": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "omission_preserves": "passed",
+          "empty_collections_clear": "passed",
+          "spending_row_identity_preserved": true,
+          "delete_preserves_singleton": true
+        },
+        {
+          "resource": "Settings",
+          "scope": "namespaced",
+          "adopt": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete_preserves_singleton": "passed"
+        }
+      ]
+    },
+    "archestra_project": {
+      "cluster": [
+        {
+          "resource": "ProjectSharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Project",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        },
+        {
+          "resource": "ProjectInstructions",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "empty_content_clear": "passed",
+          "parent_delete": "passed",
+          "backend_after_delete": 404
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "ProjectSharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Project",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        },
+        {
+          "resource": "ProjectInstructions",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "empty_content_clear": "passed",
+          "parent_delete": "passed",
+          "backend_after_delete": 404
+        }
+      ]
+    },
+    "archestra_project_file": {
+      "cluster": [
+        {
+          "resource": "ProjectFileText",
+          "scope": "cluster",
+          "create": "passed",
+          "project_reference": "passed",
+          "sensitive_input_reference": "passed",
+          "update_same_identity": "passed",
+          "drift_repair": "passed",
+          "byte_hash_observed": "passed",
+          "empty_content_clear": "passed",
+          "filename_replacement_refused": "passed",
+          "sensitive_content_absent_from_status": true,
+          "delete": "passed",
+          "backend_after_delete": 404
+        },
+        {
+          "resource": "ProjectFileBinary",
+          "scope": "cluster",
+          "create": "passed",
+          "exact_bytes": "passed",
+          "replacement_refused": "passed",
+          "identity_and_bytes_preserved": true,
+          "recovery": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "ProjectFileText",
+          "scope": "namespaced",
+          "create": "passed",
+          "project_reference": "passed",
+          "sensitive_input_reference": "passed",
+          "update_same_identity": "passed",
+          "drift_repair": "passed",
+          "byte_hash_observed": "passed",
+          "empty_content_clear": "passed",
+          "filename_replacement_refused": "passed",
+          "sensitive_content_absent_from_status": true,
+          "delete": "passed",
+          "backend_after_delete": 404
+        },
+        {
+          "resource": "ProjectFileBinary",
+          "scope": "namespaced",
+          "create": "passed",
+          "exact_bytes": "passed",
+          "replacement_refused": "passed",
+          "identity_and_bytes_preserved": true,
+          "recovery": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ]
+    },
+    "archestra_role": {
+      "cluster": [
+        {
+          "resource": "Role",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "Role",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ]
+    },
+    "archestra_credential": {
+      "cluster": [
+        {
+          "resource": "CredentialSharingDefaults",
+          "scope": "cluster",
+          "parameter_source": "default",
+          "explicit_empty": false,
+          "metadata_update_preserves_grants": "passed",
+          "init_provider_update_ignored": "not_applicable",
+          "persisted_grants": 2,
+          "owner_grant_preserved": true,
+          "create": "passed",
+          "delete": "passed"
+        },
+        {
+          "resource": "CredentialSharingDefaults",
+          "scope": "cluster",
+          "parameter_source": "empty",
+          "explicit_empty": true,
+          "metadata_update_preserves_grants": "passed",
+          "init_provider_update_ignored": "not_applicable",
+          "persisted_grants": 1,
+          "owner_grant_preserved": true,
+          "create": "passed",
+          "delete": "passed"
+        },
+        {
+          "resource": "CredentialSharingDefaults",
+          "scope": "cluster",
+          "parameter_source": "init-empty",
+          "explicit_empty": true,
+          "metadata_update_preserves_grants": "passed",
+          "init_provider_update_ignored": "passed",
+          "persisted_grants": 1,
+          "owner_grant_preserved": true,
+          "create": "passed",
+          "delete": "passed"
+        },
+        {
+          "resource": "CredentialSharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Credential",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "external_authorization": "not_requested; synthetic secret slot only"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "CredentialSharingDefaults",
+          "scope": "namespaced",
+          "parameter_source": "default",
+          "explicit_empty": false,
+          "metadata_update_preserves_grants": "passed",
+          "init_provider_update_ignored": "not_applicable",
+          "persisted_grants": 2,
+          "owner_grant_preserved": true,
+          "create": "passed",
+          "delete": "passed"
+        },
+        {
+          "resource": "CredentialSharingDefaults",
+          "scope": "namespaced",
+          "parameter_source": "empty",
+          "explicit_empty": true,
+          "metadata_update_preserves_grants": "passed",
+          "init_provider_update_ignored": "not_applicable",
+          "persisted_grants": 1,
+          "owner_grant_preserved": true,
+          "create": "passed",
+          "delete": "passed"
+        },
+        {
+          "resource": "CredentialSharingDefaults",
+          "scope": "namespaced",
+          "parameter_source": "init-empty",
+          "explicit_empty": true,
+          "metadata_update_preserves_grants": "passed",
+          "init_provider_update_ignored": "passed",
+          "persisted_grants": 1,
+          "owner_grant_preserved": true,
+          "create": "passed",
+          "delete": "passed"
+        },
+        {
+          "resource": "CredentialSharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Credential",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "external_authorization": "not_requested; synthetic secret slot only"
+        }
+      ]
+    },
+    "archestra_skill": {
+      "cluster": [
+        {
+          "resource": "SkillSharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Skill",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "terraform_import": "separate CLI test",
+          "empty_files_clear": "passed",
+          "immutable_first_version_preserved": true,
+          "stale_version_refused": 409,
+          "delete": "soft-delete passed",
+          "backend_after_delete": 404
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "SkillSharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "Skill",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "terraform_import": "separate CLI test",
+          "empty_files_clear": "passed",
+          "immutable_first_version_preserved": true,
+          "stale_version_refused": 409,
+          "delete": "soft-delete passed",
+          "backend_after_delete": 404
+        }
+      ]
+    },
+    "archestra_schedule": {
+      "cluster": [
+        {
+          "resource": "Schedule",
+          "scope": "cluster",
+          "create_disabled": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "scheduled_runs": "not_executed"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "Schedule",
+          "scope": "namespaced",
+          "create_disabled": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "scheduled_runs": "not_executed"
+        }
+      ]
+    },
+    "archestra_team": {
+      "cluster": [
+        {
+          "resource": "TeamInlineBindings",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "omission_preserves_unmanaged": "passed",
+          "empty_set_and_string_clear": "passed",
+          "identity_preserved": true,
+          "delete": "passed",
+          "external_secrets_created": false
+        },
+        {
+          "resource": "Team",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "TeamInlineBindings",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "omission_preserves_unmanaged": "passed",
+          "empty_set_and_string_clear": "passed",
+          "identity_preserved": true,
+          "delete": "passed",
+          "external_secrets_created": false
+        },
+        {
+          "resource": "Team",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed",
+          "backend_after_delete": 404
+        }
+      ]
+    },
+    "archestra_service_account": {
+      "cluster": [
+        {
+          "resource": "ServiceAccountTeamOwnership",
+          "scope": "cluster",
+          "create": "passed",
+          "reference": "passed",
+          "drift_repair": "passed",
+          "update": "passed",
+          "clear": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "ServiceAccountSharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "ServiceAccount",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "ServiceAccountTeamOwnership",
+          "scope": "namespaced",
+          "create": "passed",
+          "reference": "passed",
+          "drift_repair": "passed",
+          "update": "passed",
+          "clear": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "ServiceAccountSharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "ServiceAccount",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "delete": "passed"
+        }
+      ]
+    },
+    "archestra_service_account_api_key": {
+      "cluster": [
+        {
+          "resource": "ServiceAccountAPIKey",
+          "scope": "cluster",
+          "create": "passed",
+          "authentication": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "secret_preserved": "passed",
+          "secret_absent_from_status": true,
+          "disable": "passed",
+          "delete": "passed",
+          "revoked_authentication": 401
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "ServiceAccountAPIKey",
+          "scope": "namespaced",
+          "create": "passed",
+          "authentication": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "secret_preserved": "passed",
+          "secret_absent_from_status": true,
+          "disable": "passed",
+          "delete": "passed",
+          "revoked_authentication": 401
+        }
+      ]
+    },
+    "archestra_remote_agent": {
+      "cluster": [
+        {
+          "resource": "RemoteAgentSharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "RemoteAgent",
+          "scope": "cluster",
+          "create": "passed",
+          "initially_disabled": "passed",
+          "update": "passed",
+          "source_update": "passed",
+          "drift_repair": "passed",
+          "source_drift_repair": "passed",
+          "identity_preserved": true,
+          "authentication_clear": "passed",
+          "credential_absent_from_status": true,
+          "delete": "passed",
+          "outbound_agent_runs": "not_invoked"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "RemoteAgentSharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "RemoteAgent",
+          "scope": "namespaced",
+          "create": "passed",
+          "initially_disabled": "passed",
+          "update": "passed",
+          "source_update": "passed",
+          "drift_repair": "passed",
+          "source_drift_repair": "passed",
+          "identity_preserved": true,
+          "authentication_clear": "passed",
+          "credential_absent_from_status": true,
+          "delete": "passed",
+          "outbound_agent_runs": "not_invoked"
+        }
+      ]
+    },
+    "archestra_virtual_key": {
+      "cluster": [
+        {
+          "resource": "VirtualKeySharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "VirtualKey",
+          "scope": "cluster",
+          "create": "passed",
+          "nested_provider_reference": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "metadata_preserves_routing_expiry_billing_secret": true,
+          "nullable_and_empty_clears": "passed",
+          "credential_absent_from_status": true,
+          "replacement_refused": "passed",
+          "delete": "passed"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "VirtualKeySharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "VirtualKey",
+          "scope": "namespaced",
+          "create": "passed",
+          "nested_provider_reference": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "metadata_preserves_routing_expiry_billing_secret": true,
+          "nullable_and_empty_clears": "passed",
+          "credential_absent_from_status": true,
+          "replacement_refused": "passed",
+          "delete": "passed"
+        }
+      ]
+    },
+    "archestra_oauth_client": {
+      "cluster": [
+        {
+          "resource": "OAuthClientSharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "OAuthClient",
+          "scope": "cluster",
+          "create": "passed",
+          "nested_provider_and_identity_references": "passed",
+          "authentication": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "metadata_preserves_bindings_and_secret": true,
+          "in_place_rotation": "passed",
+          "old_secret_rejected": true,
+          "nullable_and_empty_clears": "passed",
+          "credential_absent_from_status": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "OAuthClientAuthorizationCode",
+          "scope": "cluster",
+          "create": "passed",
+          "metadata_preserves_grant_type": "passed",
+          "redirect_update": "passed",
+          "delete": "passed",
+          "interactive_consent": "not_invoked"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "OAuthClientSharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "OAuthClient",
+          "scope": "namespaced",
+          "create": "passed",
+          "nested_provider_and_identity_references": "passed",
+          "authentication": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "metadata_preserves_bindings_and_secret": true,
+          "in_place_rotation": "passed",
+          "old_secret_rejected": true,
+          "nullable_and_empty_clears": "passed",
+          "credential_absent_from_status": true,
+          "delete": "passed"
+        },
+        {
+          "resource": "OAuthClientAuthorizationCode",
+          "scope": "namespaced",
+          "create": "passed",
+          "metadata_preserves_grant_type": "passed",
+          "redirect_update": "passed",
+          "delete": "passed",
+          "interactive_consent": "not_invoked"
+        }
+      ]
+    },
+    "archestra_plugin": {
+      "cluster": [
+        {
+          "resource": "PluginGitSource",
+          "scope": "cluster",
+          "create": "passed",
+          "approved_commit": "9e6a43f5347f6f3730ffeb75946f6e162791851d",
+          "derived_files": "passed",
+          "initially_disabled": "passed",
+          "metadata_update_preserves_hash": true,
+          "update": "passed",
+          "drift_repair": "passed",
+          "scheduled_candidate_configuration": "passed",
+          "stored_credential_reference_and_clear": "passed",
+          "empty_labels_clear": "passed",
+          "source_selection_replacement_refused": "passed",
+          "delete": "passed",
+          "hooks_executed": false
+        },
+        {
+          "resource": "PluginFiles",
+          "scope": "cluster",
+          "create": "passed",
+          "initially_disabled": "passed",
+          "utf8_base64_and_executable_mode": "passed",
+          "metadata_update_preserves_hash": true,
+          "update": "passed",
+          "drift_repair": "passed",
+          "authoritative_file_removal": "passed",
+          "empty_labels_clear": "passed",
+          "client_format_replacement_refused": "passed",
+          "delete": "passed",
+          "hooks_executed": false
+        },
+        {
+          "resource": "PluginSharing",
+          "scope": "cluster",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "PluginGitSource",
+          "scope": "namespaced",
+          "create": "passed",
+          "approved_commit": "9e6a43f5347f6f3730ffeb75946f6e162791851d",
+          "derived_files": "passed",
+          "initially_disabled": "passed",
+          "metadata_update_preserves_hash": true,
+          "update": "passed",
+          "drift_repair": "passed",
+          "scheduled_candidate_configuration": "passed",
+          "stored_credential_reference_and_clear": "passed",
+          "empty_labels_clear": "passed",
+          "source_selection_replacement_refused": "passed",
+          "delete": "passed",
+          "hooks_executed": false
+        },
+        {
+          "resource": "PluginFiles",
+          "scope": "namespaced",
+          "create": "passed",
+          "initially_disabled": "passed",
+          "utf8_base64_and_executable_mode": "passed",
+          "metadata_update_preserves_hash": true,
+          "update": "passed",
+          "drift_repair": "passed",
+          "authoritative_file_removal": "passed",
+          "empty_labels_clear": "passed",
+          "client_format_replacement_refused": "passed",
+          "delete": "passed",
+          "hooks_executed": false
+        },
+        {
+          "resource": "PluginSharing",
+          "scope": "namespaced",
+          "create_with_policy": "passed",
+          "metadata_update_preserves_grants": "passed",
+          "sharing_clear_in_place": "passed",
+          "empty_sharing_drift_repair": "passed",
+          "identity_preserved": true,
+          "delete": "passed"
+        }
+      ]
+    },
+    "archestra_github_pat": {
+      "cluster": [
+        {
+          "resource": "GitHubPAT",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "sensitive_input_update": "passed",
+          "identity_preserved": true,
+          "credential_absent_from_api_and_status": true,
+          "delete": "passed",
+          "external_github_requests": "not_invoked"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "GitHubPAT",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "sensitive_input_update": "passed",
+          "identity_preserved": true,
+          "credential_absent_from_api_and_status": true,
+          "delete": "passed",
+          "external_github_requests": "not_invoked"
+        }
+      ]
+    },
+    "archestra_github_app": {
+      "cluster": [
+        {
+          "resource": "GitHubApp",
+          "scope": "cluster",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "sensitive_input_update": "passed",
+          "identity_preserved": true,
+          "credential_absent_from_api_and_status": true,
+          "delete": "passed",
+          "external_github_requests": "not_invoked"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "GitHubApp",
+          "scope": "namespaced",
+          "create": "passed",
+          "update": "passed",
+          "drift_repair": "passed",
+          "sensitive_input_update": "passed",
+          "identity_preserved": true,
+          "credential_absent_from_api_and_status": true,
+          "delete": "passed",
+          "external_github_requests": "not_invoked"
+        }
+      ]
+    },
+    "archestra_share_link": {
+      "cluster": [
+        {
+          "resource": "ShareLinkSkills",
+          "scope": "cluster",
+          "create": "passed",
+          "membership_references": "passed",
+          "secret_once_publication": "passed",
+          "refresh_preserves_secret": "passed",
+          "anonymous_read_only_access": "passed",
+          "explicit_rotation_replacement_refused": "passed",
+          "revoked_identity_drift_repair": "passed",
+          "old_token_rejected": "passed",
+          "delete": "passed",
+          "backend_after_delete": "revoked"
+        },
+        {
+          "resource": "ShareLinkPlugins",
+          "scope": "cluster",
+          "create": "passed",
+          "membership_references": "passed",
+          "secret_once_publication": "passed",
+          "refresh_preserves_secret": "passed",
+          "anonymous_read_only_access": "passed",
+          "explicit_rotation_replacement_refused": "passed",
+          "revoked_identity_drift_repair": "passed",
+          "old_token_rejected": "passed",
+          "delete": "passed",
+          "backend_after_delete": "revoked"
+        },
+        {
+          "resource": "ShareLinkExpiry",
+          "scope": "cluster",
+          "create": "passed",
+          "expired_observation": "passed",
+          "anonymous_access_rejected": "passed",
+          "identity_retained_across_reconciliation": "passed",
+          "delete": "passed",
+          "backend_after_delete": "revoked"
+        }
+      ],
+      "namespaced": [
+        {
+          "resource": "ShareLinkSkills",
+          "scope": "namespaced",
+          "create": "passed",
+          "membership_references": "passed",
+          "secret_once_publication": "passed",
+          "refresh_preserves_secret": "passed",
+          "anonymous_read_only_access": "passed",
+          "explicit_rotation_replacement_refused": "passed",
+          "revoked_identity_drift_repair": "passed",
+          "old_token_rejected": "passed",
+          "delete": "passed",
+          "backend_after_delete": "revoked"
+        },
+        {
+          "resource": "ShareLinkPlugins",
+          "scope": "namespaced",
+          "create": "passed",
+          "membership_references": "passed",
+          "secret_once_publication": "passed",
+          "refresh_preserves_secret": "passed",
+          "anonymous_read_only_access": "passed",
+          "explicit_rotation_replacement_refused": "passed",
+          "revoked_identity_drift_repair": "passed",
+          "old_token_rejected": "passed",
+          "delete": "passed",
+          "backend_after_delete": "revoked"
+        },
+        {
+          "resource": "ShareLinkExpiry",
+          "scope": "namespaced",
+          "create": "passed",
+          "expired_observation": "passed",
+          "anonymous_access_rejected": "passed",
+          "identity_retained_across_reconciliation": "passed",
+          "delete": "passed",
+          "backend_after_delete": "revoked"
+        }
+      ]
+    }
+  }
+}

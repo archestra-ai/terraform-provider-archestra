@@ -1,5 +1,14 @@
 # Provider resource scope and API review
 
+The current review surface is **29 resources and four Terraform data sources**;
+all resources generate in both Crossplane scopes. See the [current lifecycle
+model](api-lifecycle-decisions.md) and [resource matrix](../README.md#resource-coverage).
+The counts and resource tables below are historical pre-consolidation evidence,
+not the current release inventory. The current 29-family runtime sweep passes in both scopes; final package
+verification and the remaining product API implementations are still required
+before release.
+
+
 The current clean-major working surface contains **35 registered resources**, generated in both Crossplane scopes. Agent/gateway assignments, exclusions, skills and hooks are fields on their parent; eleven standalone relationship types and the obsolete proxy-profile type are retired. Further team/settings/permissions/source consolidation and naming cleanup remain in progress. The [inline native evidence](inline-ownership-native-acceptance.json) records 11 passing rc.49 cases; [both-scope runtime evidence](crossplane-inline-ownership.json) records four passing parent lifecycles with normal cleanup. Earlier 47-family counts below describe the pre-consolidation frozen checkpoint, not the current public surface.
 
 The current registry contains 47 families, all configured for both Crossplane
@@ -23,7 +32,7 @@ current 47-family inventory has 144 raw occurrences, all classified in
 increase that raw count. Gateway subagent controls and installation personal-user
 selection/hibernation now have native and both-scope runtime regressions.
 
-## Current release resource families
+## Historical pre-consolidation resource families
 
 | Area | Registered Terraform resource families |
 |---|---|
@@ -51,7 +60,7 @@ cleanup, including the eleventh grant-bearing family in both scopes. Credential 
 adds twelve records including both mode variants and the twelfth/thirteenth
 grant-bearing families. Stored GitHub registrations and version-constraint rejection/recovery
 add six verified records (`crossplane-github-registrations-compatibility.json`).
-Registered-family lifecycle coverage is complete; full platform API extensions and final candidate repetition remain release gates.
+Registered-family lifecycle coverage was complete for that historical frozen checkpoint; it does not establish current consolidated-candidate coverage. Full platform extensions and current candidate repetition remain release gates.
 
 ## Additional persistent API lifecycles
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json, os, pathlib, shutil, subprocess, urllib.request
 import argparse, tempfile, urllib.parse
-parser = argparse.ArgumentParser(description='Verify real v2 import and v3 schema upgrade against a disposable local backend.')
+parser = argparse.ArgumentParser(description='Historical pre-consolidation probe. Update v2 type names and explicit v3 adoption fixtures before reuse; no automatic cross-type migration is promised.')
 parser.add_argument('--v2-provider', type=pathlib.Path, required=True)
 parser.add_argument('--v3-provider', type=pathlib.Path, required=True)
 parser.add_argument('--terraform', type=pathlib.Path, required=True)

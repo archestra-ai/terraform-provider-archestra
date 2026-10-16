@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Import current synthetic resources with v2, then verify native v3 upgrades."""
+"""Historical pre-consolidation fixtures; update old names/relationships before reuse.
+
+The clean major does not promise aliases or automatic cross-type migration.
+"""
 import argparse
 import hashlib
 import json

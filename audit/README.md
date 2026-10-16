@@ -10,6 +10,11 @@ results below retain their original binary boundaries.
 
 The [current organization-defaults runtime proof](crossplane-organization-defaults.json) and [manifest/sharing regression proof](crossplane-skill-manifest-sharing.json) pass in both scopes with normal cleanup.
 
+The [current consolidated runtime proof](consolidated-crossplane-runtime.json)
+verifies 29 families in both scopes: 58 family/scope pairs and 124 runtime
+records. Global test settings are restored and all owned fixtures clean up normally.
+This evidence uses the same native provider bytes as the 147-case native proof.
+
 The pre-consolidation checkpoint covered **47 registered resources in both scopes**.
 The [current inventory](provider-v3-current-inventory.md) records the schema and
 API call coverage. The [29-family baseline](crossplane-rc48-candidate.json) and

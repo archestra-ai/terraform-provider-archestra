@@ -18,6 +18,9 @@ not form an import cycle with agent references to MCP servers. See the current
 Historical lifecycle and packaging evidence applies only to its recorded binaries;
 final combined-candidate repetition remains required.
 
+The [current consolidated runtime proof](../audit/consolidated-crossplane-runtime.json)
+verifies all 29 families in both scopes with normal cleanup.
+
 The v3 package remains unreleased pending full validation. Upgrade existing state
 and manifests using [MIGRATION-v3.md](../MIGRATION-v3.md).
 

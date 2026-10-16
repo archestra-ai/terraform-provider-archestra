@@ -45,6 +45,8 @@ Fields:
 |--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `TFName`     | snake_case Terraform attribute name (matches the schema's `tfsdk` tag).                                                                                                                       |
 | `JSONName`   | camelCase wire field name (matches the backend's zod / OpenAPI spec).                                                                                                                         |
+| `ReadJSONName` | Response-field alias used by API coverage checks when the public attribute is nested or its request key differs. Runtime reads still use the resource mapping helper. |
+| `CreateOnly` | Wire input sent only for creation. This does not itself make the public Terraform attribute immutable: parent `permissions` use `initialGrants` at creation and the revision-aware policy API for later changes. |
 | `Kind`       | See "Kinds" below.                                                                                                                                                                            |
 | `Sensitive`  | Mask in `LogPatch` debug output. Should match the schema's `Sensitive: true`.                                                                                                                 |
 | `OmitOnNull` | When the plan value is null, omit the field instead of emitting `null`. Use when the backend zod is `.optional()` rather than `.nullable()` — sending null gets rejected with a 400.          |
@@ -68,6 +70,11 @@ Fields:
 2. The patch is `json.Marshal`'d.
 3. Resource Update sends the patch via the generated client's `*WithBodyWithResponse` method.
 4. `LogPatch` writes the patch to `tflog.Debug` with sensitive values masked.
+
+A generic empty patch does not always mean an empty resource update. Synthetic
+manifest fields, parent relationships and settings may use separate encoders or
+endpoints. Account for their changes before returning a no-op; sharing-only Skill
+updates skip content writes, while manifest-only edits rebuild versioned content.
 
 ### Receive flow (Read)
 
