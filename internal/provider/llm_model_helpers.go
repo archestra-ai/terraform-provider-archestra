@@ -12,6 +12,16 @@ import (
 // price_per_million_*, is_custom_price, price_source) are excluded by
 // the drift-check helper.
 var llmModelAttrSpec = []AttrSpec{
+	{TFName: "permissions", Kind: Synthetic},
+	{TFName: "embedding_dimensions", JSONName: "embeddingDimensions", Kind: Scalar},
+	{TFName: "llm_provider", Kind: Synthetic},
+	{TFName: "custom_price_per_million_cache_read", JSONName: "customPricePerMillionCacheRead", Kind: Scalar},
+	{TFName: "custom_price_per_million_cache_write", JSONName: "customPricePerMillionCacheWrite", Kind: Scalar},
+	{TFName: "custom_context_length", JSONName: "customContextLength", Kind: Scalar},
+	{TFName: "custom_output_length", JSONName: "customOutputLength", Kind: Scalar},
+	{TFName: "configured_parameters", JSONName: "configuredParameters", Kind: Scalar, Encoder: organizationJSONSetting},
+	{TFName: "labels", JSONName: "labels", Kind: Set, OmitOnNull: true, Children: []AttrSpec{{TFName: "key", JSONName: "key", Kind: Scalar}, {TFName: "value", JSONName: "value", Kind: Scalar}}},
+
 	{TFName: "model_id", Kind: Synthetic},
 	{TFName: "custom_price_per_million_input", JSONName: "customPricePerMillionInput", Kind: Scalar},
 	{TFName: "custom_price_per_million_output", JSONName: "customPricePerMillionOutput", Kind: Scalar},
@@ -24,14 +34,14 @@ func (r *LlmModelResource) AttrSpecs() []AttrSpec { return llmModelAttrSpec }
 
 func (r *LlmModelResource) APIShape() any { return client.GetModelsWithApiKeysResponse{} }
 
-// KnownIntentionallySkipped — wire fields not modeled on archestra_llm_model:
+// KnownIntentionallySkipped — wire fields not modeled on archestra_model:
 //   - provider: wire field renames to schema's `llm_provider` (Computed-only,
 //     surfaced via the snake-case schema lookup once the rename is bridged
 //     here).
 //   - apiKeys: list of associated API keys; managed via the separate
-//     archestra_llm_provider_api_key resource.
+//     archestra_model_provider resource.
 //   - createdAt/updatedAt/lastSyncedAt: audit timestamps.
-//   - bestModelId/isBest/isFastest/discoveredViaLlmProxy/embeddingDimensions/
+//   - bestModelId/isBest/isFastest/discoveredViaLlmProxy/
 //     externalId/supportsToolCalling/promptPricePerToken/
 //     completionPricePerToken: backend-derived metadata exposed in the UI
 //     for sorting/filtering, not part of the manage-this-model surface.
@@ -40,7 +50,7 @@ func (r *LlmModelResource) KnownIntentionallySkipped() []string {
 	return []string{
 		"provider", "apiKeys", "createdAt", "updatedAt", "lastSyncedAt",
 		"bestModelId", "isBest", "isFastest", "discoveredViaLlmProxy",
-		"embeddingDimensions", "externalId", "supportsToolCalling",
+		"externalId", "supportsToolCalling",
 		"promptPricePerToken", "completionPricePerToken",
 	}
 }

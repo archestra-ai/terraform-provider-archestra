@@ -3,6 +3,15 @@
 # Org-wide MCP gateway — clients (Claude Desktop, Cursor, etc.) point at
 # this endpoint and Archestra federates the tools from every install behind it.
 resource "archestra_mcp_gateway" "default" {
+  # Gateway settings and assignments share the gateway's lifecycle.
+  subagent_ids           = []
+  remote_agent_ids       = []
+  tools                  = []
+  excluded_tool_ids      = []
+  excluded_subagent_ids  = []
+  excluded_connector_ids = []
+  skills                 = { mode = "manual", ids = [], excluded_ids = [] }
+
   name        = "production-mcp"
   description = "Default MCP gateway exposed to org clients."
 
@@ -21,13 +30,11 @@ resource "archestra_mcp_gateway" "authenticated" {
   identity_provider_id = archestra_identity_provider.oidc.id
 }
 
-# Team-scoped gateway — only members of the listed teams see it. Combined
-# with `archestra_agent_tool`, this is how teams get their own tool surface.
+# Grant team access through permissions on this gateway. Combined
+# with the gateway tools attribute, this is how teams get their own tool surface.
 resource "archestra_mcp_gateway" "engineering" {
   name        = "engineering-mcp"
   description = "MCP gateway scoped to engineering"
-  scope       = "team"
-  teams       = [archestra_team.engineering.id]
 
   # Knowledge bases / connectors are surfaced as MCP resources on the gateway.
   knowledge_base_ids = []

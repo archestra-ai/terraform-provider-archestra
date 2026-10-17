@@ -1,0 +1,12 @@
+{
+  "outcome": "passed",
+  "cleanup": "passed",
+  "steps": [
+    "create and no-op",
+    "session rotation, paired-secret rotation, session removal and no-op",
+    "import, explicit secret re-adoption, stable ID and no-op",
+    "omission stops managing write-only inputs; does not revoke remote credentials"
+  ],
+  "provider_sha256": "de5f4eadf931aff432065083e9a6f9b4c9c9c4e8a6ca6ffa49a3486dae402303",
+  "environment": "isolated DB-mode API; synthetic AWS values; loopback model fixture"
+}

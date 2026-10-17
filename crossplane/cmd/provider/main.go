@@ -149,13 +149,14 @@ func main() {
 	metrics.Registry.MustRegister(metricRecorder)
 	metrics.Registry.MustRegister(stateMetrics)
 
+	providerFeatures := &feature.Flags{}
 	clusterOpts := tjcontroller.Options{
 		Options: xpcontroller.Options{
 			Logger:                  log,
 			GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
 			PollInterval:            *pollInterval,
 			MaxConcurrentReconciles: *maxReconcileRate,
-			Features:                &feature.Flags{},
+			Features:                providerFeatures,
 			MetricOptions: &xpcontroller.MetricOptions{
 				PollStateMetricInterval: *pollStateMetricInterval,
 				MRMetrics:               metricRecorder,
@@ -165,7 +166,7 @@ func main() {
 		Provider: config.GetProvider(),
 		// use the following WorkspaceStoreOption to enable the shared gRPC mode
 		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
-		WorkspaceStore: terraform.NewWorkspaceStore(log),
+		WorkspaceStore: terraform.NewWorkspaceStore(log, terraform.WithFeatures(providerFeatures)),
 		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
 		StartWebhooks:  *certsDir != "",
 	}
@@ -176,7 +177,7 @@ func main() {
 			GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
 			PollInterval:            *pollInterval,
 			MaxConcurrentReconciles: *maxReconcileRate,
-			Features:                &feature.Flags{},
+			Features:                providerFeatures,
 			MetricOptions: &xpcontroller.MetricOptions{
 				PollStateMetricInterval: *pollStateMetricInterval,
 				MRMetrics:               metricRecorder,
@@ -186,20 +187,18 @@ func main() {
 		Provider: config.GetProviderNamespaced(),
 		// use the following WorkspaceStoreOption to enable the shared gRPC mode
 		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
-		WorkspaceStore: terraform.NewWorkspaceStore(log),
+		WorkspaceStore: terraform.NewWorkspaceStore(log, terraform.WithFeatures(providerFeatures)),
 		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
 		StartWebhooks:  *certsDir != "",
 	}
 
 	if *enableManagementPolicies {
-		clusterOpts.Features.Enable(features.EnableBetaManagementPolicies)
-		namespacedOpts.Features.Enable(features.EnableBetaManagementPolicies)
+		providerFeatures.Enable(features.EnableBetaManagementPolicies)
 		log.Info("Beta feature enabled", "flag", features.EnableBetaManagementPolicies)
 	}
 
 	if *enableChangeLogs {
-		clusterOpts.Features.Enable(feature.EnableAlphaChangeLogs)
-		namespacedOpts.Features.Enable(feature.EnableAlphaChangeLogs)
+		providerFeatures.Enable(feature.EnableAlphaChangeLogs)
 		log.Info("Alpha feature enabled", "flag", feature.EnableAlphaChangeLogs)
 
 		conn, err := grpc.NewClient("unix://"+*changelogsSocketPath, grpc.WithTransportCredentials(insecure.NewCredentials()))

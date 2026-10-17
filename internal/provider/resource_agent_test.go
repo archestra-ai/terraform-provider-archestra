@@ -21,8 +21,6 @@ func TestAccAgentResource(t *testing.T) {
 				Config: testAccAgentResourceConfig("tf-acc-agent"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("name"), knownvalue.StringExact("tf-acc-agent")),
-					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("scope"), knownvalue.StringExact("org")),
-					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("teams"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("archestra_agent.test", tfjsonpath.New("system_prompt"), knownvalue.StringExact("You are a helpful agent.")),
 				},
 			},
@@ -59,42 +57,8 @@ func TestAccAgentResource_WithEmailConfig(t *testing.T) {
 	})
 }
 
-func TestAccAgentResource_WithBuiltInAgentConfig(t *testing.T) {
-	rName := acctest.RandomWithPrefix("tf-acc-agent-builtin")
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccAgentResourceConfigBuiltInDualLlmMain(rName, 5),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_agent.builtin", tfjsonpath.New("built_in_agent_config").AtMapKey("name"), knownvalue.StringExact("dual-llm-main-agent")),
-					statecheck.ExpectKnownValue("archestra_agent.builtin", tfjsonpath.New("built_in_agent_config").AtMapKey("max_rounds"), knownvalue.Int64Exact(5)),
-				},
-			},
-			{
-				Config: testAccAgentResourceConfigBuiltInDualLlmMain(rName, 8),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_agent.builtin", tfjsonpath.New("built_in_agent_config").AtMapKey("max_rounds"), knownvalue.Int64Exact(8)),
-				},
-			},
-			// Clear built_in_agent_config so the destroy phase can delete the
-			// agent. The backend rejects deletion while the agent is marked
-			// built-in, so the resource needs to revert to a regular agent
-			// first.
-			{
-				Config: testAccAgentResourceConfigPlain(rName),
-			},
-		},
-	})
-}
-
-func testAccAgentResourceConfigPlain(name string) string {
-	return fmt.Sprintf(`
-resource "archestra_agent" "builtin" {
-  name = %q
-}
-`, name)
+func TestAccAgentResource_RejectsServerOwnedBuiltInConfig(t *testing.T) {
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{{Config: testAccAgentResourceConfigBuiltInDualLlmMain("tf-server-owned", 5), ExpectError: regexp.MustCompile("Unsupported block type")}}})
 }
 
 func testAccAgentResourceConfig(name string) string {
@@ -149,90 +113,6 @@ resource "archestra_agent" "builtin" {
 `, name, maxRounds)
 }
 
-// TestAccAgentResource_TeamScopeMissingTeams pins the cross-field
-// validator from ValidateConfig: scope = "team" without a teams list
-// must error at plan time, not 400 at apply.
-func TestAccAgentResource_TeamScopeMissingTeams(t *testing.T) {
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: `
-resource "archestra_agent" "test" {
-  name          = "tf-acc-agent-team-scope-missing"
-  system_prompt = "You are a helpful agent."
-  scope         = "team"
-}
-`,
-				ExpectError: regexp.MustCompile(`teams must be set`),
-			},
-		},
-	})
-}
-
-// TestAccAgentResource_TeamsRemoveCycle pins RemoveOnConfigNullList on `teams`.
-// Note the second step also flips scope back to "org" because the cross-field
-// validator requires teams when scope = "team"; the modifier still has to
-// emit null for teams independently of that change.
-func TestAccAgentResource_TeamsRemoveCycle(t *testing.T) {
-	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccAgentResourceConfigTeamScoped("tf-acc-agent-team-cycle"),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_agent.cycle", tfjsonpath.New("scope"), knownvalue.StringExact("team")),
-					statecheck.ExpectKnownValue("archestra_agent.cycle", tfjsonpath.New("teams"), knownvalue.ListSizeExact(1)),
-				},
-			},
-			{
-				Config: testAccAgentResourceConfigOrgScoped("tf-acc-agent-team-cycle"),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_agent.cycle", tfjsonpath.New("scope"), knownvalue.StringExact("org")),
-					// HCL omits `teams`. EmptyListOnConfigNull() turns that
-					// into an explicit empty list on the wire (the backend
-					// rejects null but accepts []). The previous bug left
-					// the prior team in state (size 1), so size 0 catches
-					// the regression.
-					statecheck.ExpectKnownValue("archestra_agent.cycle", tfjsonpath.New("teams"), knownvalue.ListSizeExact(0)),
-				},
-			},
-		},
-	})
-}
-
-func testAccAgentResourceConfigTeamScoped(name string) string {
-	return fmt.Sprintf(`
-resource "archestra_team" "cycle" {
-  name        = %[1]q
-  description = "remove-cycle test team"
-}
-
-resource "archestra_agent" "cycle" {
-  name          = %[1]q
-  system_prompt = "You are a helpful agent."
-  scope         = "team"
-  teams         = [archestra_team.cycle.id]
-}
-`, name)
-}
-
-func testAccAgentResourceConfigOrgScoped(name string) string {
-	return fmt.Sprintf(`
-resource "archestra_team" "cycle" {
-  name        = %[1]q
-  description = "remove-cycle test team"
-}
-
-resource "archestra_agent" "cycle" {
-  name          = %[1]q
-  system_prompt = "You are a helpful agent."
-}
-`, name)
-}
-
 // TestAccAgentResource_InternalEmailMissingDomain pins the other arm
 // of the cross-field validator: incoming_email_security_mode =
 // "internal" without incoming_email_allowed_domain must error at
@@ -273,7 +153,7 @@ func TestAccAgentResource_Runtime(t *testing.T) {
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("missing_credential_behavior"), knownvalue.StringExact("warn")),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("image"), knownvalue.StringExact("registry.example.com/tf-acc/worker:latest")),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("backend"), knownvalue.StringExact("kubernetes")),
-					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("privileged"), knownvalue.Bool(true)),
+					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("privileged"), knownvalue.Bool(false)),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("resources").AtMapKey("memory_limit"), knownvalue.StringExact("20Gi")),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("credentials"), knownvalue.ListSizeExact(1)),
 					statecheck.ExpectKnownValue("archestra_agent.runtime", tfjsonpath.New("runtime").AtMapKey("max_cost_usd"), knownvalue.Int64Exact(25)),
@@ -303,7 +183,7 @@ func TestAccAgentResource_Runtime(t *testing.T) {
 
 func testAccAgentResourceConfigRuntime(name string, maxCostUsd int) string {
 	return fmt.Sprintf(`
-resource "archestra_runtime_credential" "github" {
+resource "archestra_credential" "github" {
   key  = "%[1]s-github"
   name = "GitHub token"
 }
@@ -318,9 +198,9 @@ resource "archestra_agent" "runtime" {
   runtime = {
     image              = "registry.example.com/tf-acc/worker:latest"
     command            = ["run-worker"]
-    inference_protocol = "anthropic"
+    inference_protocol = "openai_chat"
     steer_mode         = "tmux_keys"
-    privileged         = true
+    privileged         = false
 
     resources = {
       cpu_request    = "2"
@@ -332,7 +212,7 @@ resource "archestra_agent" "runtime" {
       {
         key           = "GITHUB_TOKEN"
         scope         = "per_user"
-        credential_id = archestra_runtime_credential.github.key
+        credential_id = archestra_credential.github.key
         label         = "GitHub token"
         description   = "A personal token that can clone the repository."
         required      = true
@@ -347,6 +227,11 @@ resource "archestra_agent" "runtime" {
 
 func testAccAgentResourceConfigNoRuntime(name string) string {
 	return fmt.Sprintf(`
+resource "archestra_credential" "github" {
+ key = "%[1]s-github"
+ name = "GitHub token"
+}
+
 resource "archestra_agent" "runtime" {
   name          = %[1]q
   system_prompt = "You run delegated repository work."

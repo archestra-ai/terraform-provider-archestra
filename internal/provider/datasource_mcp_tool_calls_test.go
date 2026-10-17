@@ -13,7 +13,7 @@ import (
 // an empty backend (the local stack starts with no recorded tool
 // calls). Verifies:
 //
-//   - the data source reads cleanly and returns total=0 / truncated=false
+//   - the data source reads cleanly and returns returned_count=0 / truncated=false
 //     when no calls match;
 //   - the `max_records` cap is honoured even on empty input — i.e. the
 //     paging loop terminates correctly without pulling beyond the cap.
@@ -38,7 +38,7 @@ data "archestra_mcp_tool_calls" "capped" {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
 						"data.archestra_mcp_tool_calls.empty",
-						tfjsonpath.New("total"),
+						tfjsonpath.New("returned_count"),
 						knownvalue.Int64Exact(0),
 					),
 					statecheck.ExpectKnownValue(
@@ -48,7 +48,7 @@ data "archestra_mcp_tool_calls" "capped" {
 					),
 					statecheck.ExpectKnownValue(
 						"data.archestra_mcp_tool_calls.capped",
-						tfjsonpath.New("total"),
+						tfjsonpath.New("returned_count"),
 						knownvalue.Int64Exact(0),
 					),
 					statecheck.ExpectKnownValue(

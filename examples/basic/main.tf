@@ -2,7 +2,7 @@ terraform {
   required_providers {
     archestra = {
       source  = "archestra-ai/archestra"
-      version = "~> 0.6.0"
+      version = "~> 3.0"
     }
   }
 }
@@ -17,15 +17,14 @@ resource "archestra_team" "main" {
   description = "Team created by the basic getting-started demo."
 }
 
-resource "archestra_llm_provider_api_key" "ollama" {
+resource "archestra_model_provider" "ollama" {
   name              = "Basic-Demo Ollama"
   llm_provider      = "ollama"
   vault_secret_path = "secret/data/test/ollama"
   vault_secret_key  = "api_key"
-  scope             = "org"
 }
 
-resource "archestra_mcp_registry_catalog_item" "memory" {
+resource "archestra_mcp_registry_entry" "memory" {
   name        = "basic-demo-memory"
   description = "In-memory key-value store for the getting-started demo."
   docs_url    = "https://github.com/modelcontextprotocol/servers/tree/main/src/memory"
@@ -36,30 +35,25 @@ resource "archestra_mcp_registry_catalog_item" "memory" {
   }
 }
 
-resource "archestra_mcp_server_installation" "memory" {
+resource "archestra_mcp_server" "memory" {
   name       = "basic-demo-memory"
-  catalog_id = archestra_mcp_registry_catalog_item.memory.id
+  catalog_id = archestra_mcp_registry_entry.memory.id
 }
 
 resource "archestra_agent" "main" {
+  tools          = [{ tool_id = archestra_mcp_server.memory.tool_id_by_name["${archestra_mcp_registry_entry.memory.name}__create_entities"], mcp_server_id = archestra_mcp_server.memory.id }]
   name           = "basic-demo-agent"
   description    = "Hello-world agent for the getting-started demo."
   system_prompt  = "You are a friendly assistant. Be concise."
   llm_model      = "llama3"
-  llm_api_key_id = archestra_llm_provider_api_key.ollama.id
-  scope          = "org"
+  llm_api_key_id = archestra_model_provider.ollama.id
 }
 
-resource "archestra_agent_tool" "create_entities" {
-  agent_id      = archestra_agent.main.id
-  mcp_server_id = archestra_mcp_server_installation.memory.id
-  tool_id       = archestra_mcp_server_installation.memory.tool_id_by_name["${archestra_mcp_registry_catalog_item.memory.name}__create_entities"]
-}
 
 output "agent_id" {
   value = archestra_agent.main.id
 }
 
 output "memory_install_id" {
-  value = archestra_mcp_server_installation.memory.id
+  value = archestra_mcp_server.memory.id
 }

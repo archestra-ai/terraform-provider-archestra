@@ -50,16 +50,13 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
-		// Pass api_key (and optional base_url) through to the Terraform
-		// provider block. The Archestra TF provider also reads these from
-		// ARCHESTRA_API_KEY / ARCHESTRA_BASE_URL env vars, so leaving either
-		// out of the secret is fine — terraform will fall back.
+		// Forward supported provider settings; omitted credentials and base URL
+		// use the native provider's environment-variable fallbacks.
 		cfg := map[string]any{}
-		if v, ok := creds["api_key"]; ok && v != "" {
-			cfg["api_key"] = v
-		}
-		if v, ok := creds["base_url"]; ok && v != "" {
-			cfg["base_url"] = v
+		for _, key := range []string{"api_key", "base_url", "api_version_constraint"} {
+			if value := creds[key]; value != "" {
+				cfg[key] = value
+			}
 		}
 		if len(cfg) > 0 {
 			ps.Configuration = cfg
@@ -127,8 +124,11 @@ func resolveModern(ctx context.Context, crClient client.Client, mg resource.Mode
 		return nil, errors.New(" is not an Object")
 	}
 
-	// Namespace will be ignored if the PC is a cluster-scoped type
-	if err := crClient.Get(ctx, types.NamespacedName{Name: configRef.Name, Namespace: mg.GetNamespace()}, pcObj); err != nil {
+	key := types.NamespacedName{Name: configRef.Name}
+	if configRef.Kind == "ProviderConfig" {
+		key.Namespace = mg.GetNamespace()
+	}
+	if err := crClient.Get(ctx, key, pcObj); err != nil {
 		return nil, errors.Wrap(err, errGetProviderConfig)
 	}
 

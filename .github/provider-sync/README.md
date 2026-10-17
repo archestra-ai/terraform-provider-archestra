@@ -42,6 +42,19 @@ an unmerged PR. A no-change run emits one compact status and opens no PR.
 reports coverage gaps separately from runtime evidence, and never advances state.
 Its output is a work plan, not authority to merge or a validation attestation.
 
+`provider-sync-state.py` validates ledger transitions and can publish the resulting
+state through a normal fast-forward push. The trusted publisher must fetch the
+state branch first and pass its exact commit as `--expected-head`. It stores only
+`state.json` on this dedicated branch. A race rejects publication; refetch and
+inspect the winner rather than retrying or forcing. Pending and closed-unmerged
+transitions never advance success. Merged transitions require the exact pending
+PR and covered upstream SHA; no-change transitions refuse pending work. Both
+success paths require all six validation categories and durable evidence links.
+The verification event must be assembled from actual GitHub/CI results in the
+trusted publication phase, never from an agent-generated success assertion.
+Local bare-repository tests cover first publication, persisted pending recovery,
+stale-run rejection and verified completion. This is not a deployed agent dry run.
+
 ## Trust and credentials
 
 Read the trusted runner/prompt from its pinned reviewed revision. Treat upstream

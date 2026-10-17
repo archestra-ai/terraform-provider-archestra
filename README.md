@@ -1,6 +1,9 @@
 # Archestra Provider
 
-[![Crossplane coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
+
+The v3 review candidate has **30 Terraform resources and four Terraform data sources**. All 30 resources have generated Crossplane types in both scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource; authored and Git-backed Skills also share one resource. The [migration guide](MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The reviewed milestone 411935f retains its [147-case native proof](audit/consolidated-native-acceptance.json). The [Git Skill native proof](audit/skill-git-native-acceptance.json) records all 151 cases passing with zero failures or skips against API 1.4.0-rc.49.
+
+[![Crossplane mappings](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
 
 Source for two artifacts, both regenerated from a single Terraform
 schema and shipped together on every `vX.Y.Z` tag:
@@ -11,43 +14,67 @@ schema and shipped together on every `vX.Y.Z` tag:
 End users install from those. This README walks a new contributor
 through extending the provider.
 
+API versions are independent of provider versions. See the [compatibility matrix](COMPATIBILITY.md) for the required API capability floor and exact tested releases.
+
+The [organization-defaults runtime proof](audit/crossplane-organization-defaults.json) verifies reference resolution, updates, drift, omission and explicit clears in both scopes on the reviewed milestone.
+
+The [reviewed milestone runtime proof](audit/consolidated-crossplane-runtime.json)
+verifies all **29 resource families in both scopes** (58 family/scope pairs,
+124 runtime records), with normal cleanup and restored global test settings.
+Variants are additional checks, not extra resource families. Remaining product
+APIs, final package validation, protected review and publication are still open.
+
+The [Git Skill runtime proof](audit/crossplane-skill-git-source.json) adds eight both-scope records for authored content, sharing, Git sources and initProvider. It covers settings without content rewrites, source updates, reconnect, drift repair, orphan/adoption and normal deletion. Switching between authored and Git ownership replaces the Skill; a Git source change retains its UUID. Final expanded-candidate and package validation remain release gates.
+
+Knowledge File adds uploaded document bytes, directory placement, labels and parent-owned sharing. Content/MIME changes replace the file; indexing associations are observed. The [current full native suite](audit/knowledge-files-native-acceptance.json) passes all 156 cases with zero failures or skips. [Six current both-scope records](audit/crossplane-knowledge-files.json) cover Knowledge File and required initProvider Secret inputs for both file families, with normal cleanup. The earlier 29-family runtime checkpoint retains its own frozen candidate; final combined runtime and package validation remain release gates.
+
 ## Resource coverage
 
-| Terraform | Crossplane Kind |
+The implemented surface follows product objects and Settings. Configuration and
+sharing live with their owner. See the generated [resource reference](docs/resources)
+and [data sources](docs/data-sources) for exact fields, examples and import formats.
+
+| Terraform | Crossplane group / kind |
 |---|---|
-| `archestra_agent` | `Agent` |
-| `archestra_agent_tool` | — |
-| `archestra_agent_tool_batch` | `ToolBatch` |
-| `archestra_identity_provider` | — |
-| `archestra_limit` | — |
-| `archestra_llm_model` | — |
-| `archestra_llm_provider_api_key` | — |
-| `archestra_mcp_gateway` | — |
-| `archestra_mcp_registry_catalog_item` | `RegistryCatalogItem` |
-| `archestra_mcp_server_installation` | `ServerInstallation` |
-| `archestra_optimization_rule` | — |
-| `archestra_organization_settings` | — |
-| `archestra_team` | — |
-| `archestra_team_external_group` | — |
-| `archestra_tool_invocation_policy` | — |
-| `archestra_tool_invocation_policy_default` | `ToolInvocationPolicyDefault` |
-| `archestra_tool_policy_auto_config` | — |
-| `archestra_trusted_data_policy` | — |
-| `archestra_trusted_data_policy_default` | — |
-| `data.archestra_agent_tool` | n/a |
-| `data.archestra_agent_tools` | n/a |
-| `data.archestra_mcp_server_tool` | n/a |
-| `data.archestra_mcp_tool_calls` | n/a |
-| `data.archestra_team` | n/a |
-| `data.archestra_team_external_groups` | n/a |
-| `data.archestra_tool` | n/a |
+| `archestra_agent` | `agent` / `Agent` |
+| `archestra_api_key` | `credential` / `APIKey` |
+| `archestra_credential` | `credential` / `Credential` |
+| `archestra_environment` | `environment` / `Environment` |
+| `archestra_github_app` | `credential` / `GitHubApp` |
+| `archestra_github_pat` | `credential` / `GitHubPAT` |
+| `archestra_identity_provider` | `identity` / `Provider` |
+| `archestra_knowledge_base` | `knowledge` / `KnowledgeBase` |
+| `archestra_knowledge_directory` | `knowledge` / `Directory` |
+| `archestra_knowledge_file` | `knowledge` / `File` |
+| `archestra_limit` | `limit` / `Limit` |
+| `archestra_mcp_gateway` | `gateway` / `Gateway` |
+| `archestra_mcp_registry_entry` | `mcp` / `RegistryEntry` |
+| `archestra_mcp_server` | `mcp` / `Server` |
+| `archestra_model` | `llm` / `Model` |
+| `archestra_model_provider` | `llm` / `ModelProvider` |
+| `archestra_oauth_client` | `credential` / `OAuthClient` |
+| `archestra_organization_settings` | `organization` / `Settings` |
+| `archestra_plugin` | `plugin` / `Plugin` |
+| `archestra_project` | `project` / `Project` |
+| `archestra_project_file` | `project` / `File` |
+| `archestra_remote_agent` | `a2a` / `RemoteAgent` |
+| `archestra_role` | `identity` / `Role` |
+| `archestra_schedule` | `schedule` / `Schedule` |
+| `archestra_service_account` | `identity` / `ServiceAccount` |
+| `archestra_service_account_api_key` | `credential` / `ServiceAccountAPIKey` |
+| `archestra_share_link` | `marketplace` / `ShareLink` |
+| `archestra_skill` | `skill` / `Skill` |
+| `archestra_team` | `team` / `Team` |
+| `archestra_virtual_key` | `llm` / `VirtualKey` |
 
-- `—` — TF resource exists, no Crossplane MR yet. See step 5 below.
-- `n/a` — TF data source. Crossplane has no read-only Managed Resource concept, so nothing to map.
+The four data sources are `archestra_agent`, `archestra_team`, `archestra_tool`
+and `archestra_mcp_tool_calls`. Tool lookup accepts an optional MCP server filter;
+agent lookup includes its relationships. Data sources read existing state.
 
-Crossplane Kinds ship in two API groups:
-`<group>.archestra.crossplane.io` (cluster-scoped, v1) and
-`<group>.archestra.m.crossplane.io` (namespaced, v2).
+Crossplane resources use `<group>.archestra.crossplane.io` in cluster scope and
+`<group>.archestra.m.crossplane.io` in namespaced scope, serving `v1alpha1`.
+See [the audit](audit/README.md) for executed evidence and each frozen binary's
+boundary. Generated types are schema coverage, not proof of reconciliation.
 
 ## 1. Build it
 
@@ -177,3 +204,11 @@ tag vX.Y.Z   ──┬──▶  goreleaser    ──▶  Terraform Registry
 
 The two publish jobs run in parallel; one failing won't roll back
 the other.
+
+Manual plugin packages add one family in both scopes, including creation grants, authoritative file replacement and executable-mode preservation (`audit/crossplane-manual-plugins.json` from the repository root). The full 44-family native suite passes all 142 acceptance cases with zero failures or skips (`audit/manual-plugins-full-native-acceptance.json`). Both records retain their exact frozen candidate hashes; current Linux packaging and the final combined sweep remain release gates.
+
+Pinned repository packages add one family in both scopes, including creation grants, scheduled candidate configuration, credential-reference clearing and approved-byte preservation ([runtime proof](audit/crossplane-repository-plugins.json)). The full 45-family native suite passes all 145 acceptance cases ([native proof](audit/repository-plugins-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
+
+Revocable marketplace share links add one family and six both-scope records for skill/plugin membership, secret publication, anonymous read-only access, revocation drift and expiry ([runtime proof](audit/crossplane-marketplace-share-links.json)). The full 46-family native suite passes all 148 acceptance cases ([native proof](audit/marketplace-share-links-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
+
+Project-file content adds one family and four both-scope records for exact text/binary bytes, secret input and project references, drift repair, empty text updates, replacement refusal and normal deletion ([runtime proof](audit/crossplane-project-files.json)). All152 native acceptance cases pass ([native proof](audit/project-files-full-native-acceptance.json)). This is a pre-consolidation checkpoint; the major-version surface is being reviewed against product navigation.

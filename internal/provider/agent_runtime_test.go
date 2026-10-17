@@ -2,8 +2,9 @@ package provider
 
 import (
 	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"testing"
+
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 )

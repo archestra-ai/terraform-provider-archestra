@@ -1,0 +1,746 @@
+{
+  "format_version": 1,
+  "baseline": {
+    "path": "audit/provider-v3-request-fields.json",
+    "sha256": "b192f5faeae925fee21916db35cf6dada5b47a9068b7bf4f307fd9a682e1d2e9",
+    "head": "b180fee6e2e8b843ad4f9426c8b353ed58a2a9db"
+  },
+  "upstream_version": "1.4.0-rc.48",
+  "raw_occurrences": 90,
+  "unique_fields": 61,
+  "classification_counts": {
+    "authentication_context": 4,
+    "derived": 5,
+    "implemented_gap": 3,
+    "legacy_alias": 1,
+    "lifecycle_owned": 4,
+    "manual_encoding": 30,
+    "other_subtype": 22,
+    "related_resource": 3,
+    "server_owned": 18
+  },
+  "unclassified": 0,
+  "review": [
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateAgent",
+      "field": "activationSkillPolicy",
+      "classification": "related_resource",
+      "rationale": "archestra_agent_skill_policy owns activation policy and revision semantics. Gateway/profile rows reject an activation policy.",
+      "source": "internal/provider/resource_agent_skill_policy.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateAgent",
+      "field": "agentType",
+      "classification": "derived",
+      "rationale": "The resource constructor selects the agent-table subtype; changing subtype would change the managed identity.",
+      "source": "internal/provider/resource_agent.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateAgent",
+      "field": "builtInAgentConfig",
+      "classification": "server_owned",
+      "rationale": "The create route strips this trust attribute; ordinary updates ignore it. Existing built-in configuration is reported as computed metadata.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateAgent",
+      "field": "deletedAt",
+      "classification": "lifecycle_owned",
+      "rationale": "Deletion and restoration own soft-delete timestamps; setting a timestamp through a generic update is not a separate declarative capability.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateAgent",
+      "field": "identityProviderId",
+      "classification": "other_subtype",
+      "rationale": "Inbound gateway JWT authentication and forwarded client headers belong to external gateway/profile resources, not internal execution agents.",
+      "source": "internal/provider/resource_agent.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateAgent",
+      "field": "isPersonalProxy",
+      "classification": "server_owned",
+      "rationale": "Legacy platform-owned personal LLM proxy marker; generic proxy CRUD is rejected and the managed profile resource does not create singleton proxies.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateAgent",
+      "field": "organizationId",
+      "classification": "authentication_context",
+      "rationale": "Organization identity comes from the authenticated provider connection; cross-organization writes are not a resource selector.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "CreateAgent",
+      "field": "passthroughHeaders",
+      "classification": "other_subtype",
+      "rationale": "Inbound gateway JWT authentication and forwarded client headers belong to external gateway/profile resources, not internal execution agents.",
+      "source": "internal/provider/resource_agent.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "agentType",
+      "classification": "derived",
+      "rationale": "The resource constructor selects the agent-table subtype; changing subtype would change the managed identity.",
+      "source": "internal/provider/resource_agent.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "builtInAgentConfig",
+      "classification": "server_owned",
+      "rationale": "The create route strips this trust attribute; ordinary updates ignore it. Existing built-in configuration is reported as computed metadata.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "deletedAt",
+      "classification": "lifecycle_owned",
+      "rationale": "Deletion and restoration own soft-delete timestamps; setting a timestamp through a generic update is not a separate declarative capability.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "identityProviderId",
+      "classification": "other_subtype",
+      "rationale": "Inbound gateway JWT authentication and forwarded client headers belong to external gateway/profile resources, not internal execution agents.",
+      "source": "internal/provider/resource_agent.go"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "isPersonalProxy",
+      "classification": "server_owned",
+      "rationale": "Legacy platform-owned personal LLM proxy marker; generic proxy CRUD is rejected and the managed profile resource does not create singleton proxies.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "organizationId",
+      "classification": "authentication_context",
+      "rationale": "Organization identity comes from the authenticated provider connection; cross-organization writes are not a resource selector.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_agent",
+      "operation": "UpdateAgent",
+      "field": "passthroughHeaders",
+      "classification": "other_subtype",
+      "rationale": "Inbound gateway JWT authentication and forwarded client headers belong to external gateway/profile resources, not internal execution agents.",
+      "source": "internal/provider/resource_agent.go"
+    },
+    {
+      "resource": "archestra_agent_skill_policy",
+      "operation": "PatchAgentActivationSkillPolicy",
+      "field": "discardUnavailable",
+      "classification": "manual_encoding",
+      "rationale": "The revision-checked operation builder derives incremental operations and expectedRevision from current state; discardUnavailable is a deliberate repair choice, not persisted policy.",
+      "source": "internal/provider/resource_agent_skill_policy.go"
+    },
+    {
+      "resource": "archestra_agent_skill_policy",
+      "operation": "PatchAgentActivationSkillPolicy",
+      "field": "expectedRevision",
+      "classification": "manual_encoding",
+      "rationale": "The revision-checked operation builder derives incremental operations and expectedRevision from current state; discardUnavailable is a deliberate repair choice, not persisted policy.",
+      "source": "internal/provider/resource_agent_skill_policy.go"
+    },
+    {
+      "resource": "archestra_agent_skill_policy",
+      "operation": "PatchAgentActivationSkillPolicy",
+      "field": "operations",
+      "classification": "manual_encoding",
+      "rationale": "The revision-checked operation builder derives incremental operations and expectedRevision from current state; discardUnavailable is a deliberate repair choice, not persisted policy.",
+      "source": "internal/provider/resource_agent_skill_policy.go"
+    },
+    {
+      "resource": "archestra_agent_tool",
+      "operation": "AssignToolToAgent",
+      "field": "resolveAtCallTime",
+      "classification": "legacy_alias",
+      "rationale": "The backend normalizes this legacy boolean into supported credential_resolution_mode=dynamic/static and never stores or returns the alias.",
+      "source": "internal/provider/resource_agent_tool.go"
+    },
+    {
+      "resource": "archestra_agent_tool_batch",
+      "operation": "BulkAssignTools",
+      "field": "assignments",
+      "classification": "manual_encoding",
+      "rationale": "The resource expands installation tools into the assignments request from the configured installation and credential mode.",
+      "source": "internal/provider/resource_agent_tool_batch.go"
+    },
+    {
+      "resource": "archestra_limit",
+      "operation": "CreateLimit",
+      "field": "lastCleanup",
+      "classification": "server_owned",
+      "rationale": "Cleanup scheduler progress is observed metadata; callers must not reset accounting through configuration.",
+      "source": "platform/backend/src/types/limit.ts"
+    },
+    {
+      "resource": "archestra_limit",
+      "operation": "UpdateLimit",
+      "field": "lastCleanup",
+      "classification": "server_owned",
+      "rationale": "Cleanup scheduler progress is observed metadata; callers must not reset accounting through configuration.",
+      "source": "platform/backend/src/types/limit.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "accessAllSubagents",
+      "classification": "implemented_gap",
+      "rationale": "Gateway callers can delegate dynamically. Added access_all_subagents with drift-honest reads and an in-place acceptance regression.",
+      "source": "internal/provider/resource_mcp_gateway.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "activationSkillPolicy",
+      "classification": "related_resource",
+      "rationale": "archestra_agent_skill_policy owns activation policy and revision semantics. Gateway/profile rows reject an activation policy.",
+      "source": "internal/provider/resource_agent_skill_policy.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "agentType",
+      "classification": "derived",
+      "rationale": "The resource constructor selects the agent-table subtype; changing subtype would change the managed identity.",
+      "source": "internal/provider/resource_mcp_gateway.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "builtInAgentConfig",
+      "classification": "server_owned",
+      "rationale": "The create route strips this trust attribute; ordinary updates ignore it. Existing built-in configuration is reported as computed metadata.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "deletedAt",
+      "classification": "lifecycle_owned",
+      "rationale": "Deletion and restoration own soft-delete timestamps; setting a timestamp through a generic update is not a separate declarative capability.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "incomingEmailAllowedDomain",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "incomingEmailEnabled",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "incomingEmailSecurityMode",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "isPersonalProxy",
+      "classification": "server_owned",
+      "rationale": "Legacy platform-owned personal LLM proxy marker; generic proxy CRUD is rejected and the managed profile resource does not create singleton proxies.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "llmApiKeyId",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "llmModel",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "modelId",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "organizationId",
+      "classification": "authentication_context",
+      "rationale": "Organization identity comes from the authenticated provider connection; cross-organization writes are not a resource selector.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "runtime",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "suggestedPrompts",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "CreateAgent",
+      "field": "systemPrompt",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "accessAllSubagents",
+      "classification": "implemented_gap",
+      "rationale": "Gateway callers can delegate dynamically. Added access_all_subagents with drift-honest reads and an in-place acceptance regression.",
+      "source": "internal/provider/resource_mcp_gateway.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "agentType",
+      "classification": "derived",
+      "rationale": "The resource constructor selects the agent-table subtype; changing subtype would change the managed identity.",
+      "source": "internal/provider/resource_mcp_gateway.go"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "builtInAgentConfig",
+      "classification": "server_owned",
+      "rationale": "The create route strips this trust attribute; ordinary updates ignore it. Existing built-in configuration is reported as computed metadata.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "deletedAt",
+      "classification": "lifecycle_owned",
+      "rationale": "Deletion and restoration own soft-delete timestamps; setting a timestamp through a generic update is not a separate declarative capability.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "incomingEmailAllowedDomain",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "incomingEmailEnabled",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "incomingEmailSecurityMode",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "isPersonalProxy",
+      "classification": "server_owned",
+      "rationale": "Legacy platform-owned personal LLM proxy marker; generic proxy CRUD is rejected and the managed profile resource does not create singleton proxies.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "llmApiKeyId",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "llmModel",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "modelId",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "organizationId",
+      "classification": "authentication_context",
+      "rationale": "Organization identity comes from the authenticated provider connection; cross-organization writes are not a resource selector.",
+      "source": "platform/backend/src/routes/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "runtime",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "suggestedPrompts",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_gateway",
+      "operation": "UpdateAgent",
+      "field": "systemPrompt",
+      "classification": "other_subtype",
+      "rationale": "Internal execution, prompt, model and email-invocation controls belong to archestra_agent; a gateway does not run inference or an agent runtime.",
+      "source": "platform/backend/src/database/schemas/agent.ts"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "operation": "CreateInternalMcpCatalogItem",
+      "field": "catalogReinstallRequired",
+      "classification": "server_owned",
+      "rationale": "Runtime reinstall bookkeeping reports whether installations need a refresh; users manage configuration rather than forcing diagnostic state.",
+      "source": "platform/backend/src/types/internal-mcp-catalog.ts"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "operation": "CreateInternalMcpCatalogItem",
+      "field": "id",
+      "classification": "server_owned",
+      "rationale": "The create route generates catalog identity; import adopts an existing UUID instead of assigning a new one.",
+      "source": "platform/backend/src/routes/internal-mcp-catalog.ts"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "operation": "CreateInternalMcpCatalogItem",
+      "field": "oauthConfig",
+      "classification": "manual_encoding",
+      "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
+      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "operation": "CreateInternalMcpCatalogItem",
+      "field": "serverType",
+      "classification": "manual_encoding",
+      "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
+      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "operation": "CreateInternalMcpCatalogItem",
+      "field": "serverUrl",
+      "classification": "manual_encoding",
+      "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
+      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "operation": "UpdateInternalMcpCatalogItem",
+      "field": "catalogReinstallRequired",
+      "classification": "server_owned",
+      "rationale": "Runtime reinstall bookkeeping reports whether installations need a refresh; users manage configuration rather than forcing diagnostic state.",
+      "source": "platform/backend/src/types/internal-mcp-catalog.ts"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "operation": "UpdateInternalMcpCatalogItem",
+      "field": "hibernationMode",
+      "classification": "related_resource",
+      "rationale": "This catalog command cascades onto every installation and is not a readable catalog property. The new installation hibernation_mode manages the persisted override with explicit ownership.",
+      "source": "platform/backend/src/routes/internal-mcp-catalog.ts"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "operation": "UpdateInternalMcpCatalogItem",
+      "field": "oauthConfig",
+      "classification": "manual_encoding",
+      "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
+      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "operation": "UpdateInternalMcpCatalogItem",
+      "field": "serverType",
+      "classification": "manual_encoding",
+      "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
+      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "operation": "UpdateInternalMcpCatalogItem",
+      "field": "serverUrl",
+      "classification": "manual_encoding",
+      "rationale": "Typed local_config/remote_config blocks encode and read these top-level wire values; server type is inferred from the selected configuration.",
+      "source": "internal/provider/resource_mcp_registry_catalog_item.go"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "accessToken",
+      "classification": "manual_encoding",
+      "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
+      "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "agentIds",
+      "classification": "manual_encoding",
+      "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
+      "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "catalogId",
+      "classification": "manual_encoding",
+      "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
+      "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "createdByServiceAccountId",
+      "classification": "server_owned",
+      "rationale": "The route derives creator and owner from the authenticated identity and validated userId/scope; raw ownership bookkeeping is not independently configurable.",
+      "source": "platform/backend/src/routes/mcp-server.ts"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "environmentValues",
+      "classification": "manual_encoding",
+      "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
+      "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "isByosVault",
+      "classification": "manual_encoding",
+      "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
+      "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "localInstallationError",
+      "classification": "server_owned",
+      "rationale": "Installation workers own progress/error/reinstall status; desired configuration is supplied through the installation and reinstall inputs.",
+      "source": "platform/backend/src/routes/mcp-server.ts"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "localInstallationStatus",
+      "classification": "server_owned",
+      "rationale": "Installation workers own progress/error/reinstall status; desired configuration is supplied through the installation and reinstall inputs.",
+      "source": "platform/backend/src/routes/mcp-server.ts"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "name",
+      "classification": "manual_encoding",
+      "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
+      "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "ownerId",
+      "classification": "server_owned",
+      "rationale": "The route derives creator and owner from the authenticated identity and validated userId/scope; raw ownership bookkeeping is not independently configurable.",
+      "source": "platform/backend/src/routes/mcp-server.ts"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "reinstallRequired",
+      "classification": "server_owned",
+      "rationale": "Installation workers own progress/error/reinstall status; desired configuration is supplied through the installation and reinstall inputs.",
+      "source": "platform/backend/src/routes/mcp-server.ts"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "scope",
+      "classification": "manual_encoding",
+      "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
+      "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "secretId",
+      "classification": "manual_encoding",
+      "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
+      "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "teamId",
+      "classification": "manual_encoding",
+      "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
+      "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "userConfigValues",
+      "classification": "manual_encoding",
+      "rationale": "The generated install request and scope wrapper explicitly encode this existing schema field; secret inputs remain sensitive and write-only.",
+      "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "operation": "InstallMcpServer",
+      "field": "userId",
+      "classification": "implemented_gap",
+      "rationale": "Added immutable user_id for administrator-selected personal installation ownership, read from the persisted owner.",
+      "source": "internal/provider/resource_mcp_server_installation.go"
+    },
+    {
+      "resource": "archestra_project",
+      "operation": "SetProjectInstructions",
+      "field": "content",
+      "classification": "manual_encoding",
+      "rationale": "The instructions attribute writes the separate content endpoint and preserves omitted instructions.",
+      "source": "internal/provider/resource_project.go"
+    },
+    {
+      "resource": "archestra_resource_permission_policy",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "The policy converts principal/action grants and supplies the current optimistic concurrency revision.",
+      "source": "internal/provider/resource_resource_permission_policy.go"
+    },
+    {
+      "resource": "archestra_resource_permission_policy",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "manual_encoding",
+      "rationale": "The policy converts principal/action grants and supplies the current optimistic concurrency revision.",
+      "source": "internal/provider/resource_resource_permission_policy.go"
+    },
+    {
+      "resource": "archestra_runtime_credential",
+      "operation": "SetOrganizationRuntimeCredentialConnection",
+      "field": "value",
+      "classification": "manual_encoding",
+      "rationale": "The sensitive organization_value attribute owns the separate connection value endpoint.",
+      "source": "internal/provider/resource_runtime_credential.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "CreateSkill",
+      "field": "allowedTools",
+      "classification": "manual_encoding",
+      "rationale": "allowed_tools is rendered into canonical manifest frontmatter and read back from the versioned skill.",
+      "source": "internal/provider/resource_skill.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "UpdateSkill",
+      "field": "allowedTools",
+      "classification": "manual_encoding",
+      "rationale": "allowed_tools is rendered into canonical manifest frontmatter and read back from the versioned skill.",
+      "source": "internal/provider/resource_skill.go"
+    },
+    {
+      "resource": "archestra_skill",
+      "operation": "UpdateSkill",
+      "field": "baseVersion",
+      "classification": "derived",
+      "rationale": "Version concurrency is derived from the refreshed latest_version; users cannot select a stale write revision.",
+      "source": "internal/provider/resource_skill.go"
+    },
+    {
+      "resource": "archestra_team",
+      "operation": "AddTeamMember",
+      "field": "role",
+      "classification": "manual_encoding",
+      "rationale": "The team membership map supplies user identity and role to dedicated member mutation endpoints.",
+      "source": "internal/provider/resource_team.go"
+    },
+    {
+      "resource": "archestra_team",
+      "operation": "AddTeamMember",
+      "field": "userId",
+      "classification": "manual_encoding",
+      "rationale": "The team membership map supplies user identity and role to dedicated member mutation endpoints.",
+      "source": "internal/provider/resource_team.go"
+    },
+    {
+      "resource": "archestra_team",
+      "operation": "UpdateTeamMember",
+      "field": "role",
+      "classification": "manual_encoding",
+      "rationale": "The team membership map supplies user identity and role to dedicated member mutation endpoints.",
+      "source": "internal/provider/resource_team.go"
+    },
+    {
+      "resource": "archestra_team_external_group",
+      "operation": "AddTeamExternalGroup",
+      "field": "groupIdentifier",
+      "classification": "manual_encoding",
+      "rationale": "group_identifier is explicitly passed in the dedicated external-group request.",
+      "source": "internal/provider/resource_team_external_group.go"
+    }
+  ],
+  "note": "This classifies the 90-occurrence baseline, not every platform API. New resources and endpoint changes must be reviewed separately. implemented_gap means source implementation exists; runtime evidence is recorded independently."
+}

@@ -1,0 +1,19 @@
+{
+  "outcome": "passed",
+  "cleanup": "passed",
+  "resources": [
+    {
+      "resource": "archestra_identity_provider",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    }
+  ],
+  "old_binary_sha256": "334862a5dc716e12c9b71708dc55208042468fa400c481c785b1b57f7b596e10",
+  "new_binary_sha256": "cbaf30c9d2f53bee1c90c1a96ee05a7c2fbec24025b5ef5f571e825b918a40da",
+  "identity_fixture_source": "Actual v2 import; synthetic saved secret restored because v2 cannot read current redacted secrets. This models saved pre-redaction state, not a successful v2 create against the current API.",
+  "identity_secret_preserved": true,
+  "second_plan": "no changes",
+  "api_version": "1.4.0-rc.48"
+}

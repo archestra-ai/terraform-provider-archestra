@@ -1,0 +1,39 @@
+{
+  "run_id": "9b2c7694",
+  "terraform_sha256": "e48c18e82664849d9a01e7636455cb19eac44e827ca69ea265154161c349a6a6",
+  "controller_sha256": "cb2bdd4fd34df0c96738d0b54b50d93b392a1faa865b8aedf0cb8186328ed032",
+  "results": [
+    {
+      "resource": "OrganizationInlineDefaults",
+      "scope": "cluster",
+      "create": "passed",
+      "environment_references": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "omission_preserves": "passed",
+      "empty_collections_clear": "passed",
+      "spending_row_identity_preserved": true,
+      "delete_preserves_singleton": true
+    },
+    {
+      "resource": "OrganizationInlineDefaults",
+      "scope": "namespaced",
+      "create": "passed",
+      "environment_references": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "omission_preserves": "passed",
+      "empty_collections_clear": "passed",
+      "spending_row_identity_preserved": true,
+      "delete_preserves_singleton": true
+    }
+  ],
+  "cleanup": "passed",
+  "api_spec_sha256": "07cdcb4f84a8371029a0a5f65be43af7b515cfb052a16e38520340d8b690d0c9",
+  "api_version": "1.4.0-rc.49",
+  "api_cleanup": "passed",
+  "outcome": "passed",
+  "registered_families_per_scope": 29,
+  "source_evidence_sha256": "50e114344b591d8069a55ea3b1cbb5326458409b21e748a7720f0a7f9f628e9e",
+  "evidence_scope": "Organization-default references, updates, drift, omission, explicit resets and singleton-preserving deletion; confirmed API restore and normal cleanup."
+}

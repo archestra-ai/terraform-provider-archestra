@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-// catalogItemAttrSpec describes the wire shape of archestra_mcp_registry_catalog_item.
+// catalogItemAttrSpec describes the wire shape of archestra_mcp_registry_entry.
 //
 // Wire-naming quirks worth noting:
 //   - Top-level keys are camelCase (`docsUrl`, `requiresAuth`).
@@ -33,6 +33,11 @@ import (
 //   - `localConfig.imagePullSecrets` has mode-dependent fields driven by `source`;
 //     finalizeCatalogItemPatch normalizes each entry to the wire shape.
 var catalogItemAttrSpec = []AttrSpec{
+	initialGrantsAttrSpec,
+	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar},
+	{TFName: "multitenant", JSONName: "multitenant", Kind: Scalar, OmitOnNull: true},
+	{TFName: "cloned_from", JSONName: "clonedFrom", Kind: Scalar, OmitOnNull: true},
+	{TFName: "dynamic_connection_mcp_server_id", JSONName: "dynamicConnectionMcpServerId", Kind: Scalar},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
 	{TFName: "docs_url", JSONName: "docsUrl", Kind: Scalar},
@@ -44,8 +49,6 @@ var catalogItemAttrSpec = []AttrSpec{
 	{TFName: "icon", JSONName: "icon", Kind: Scalar},
 	{TFName: "requires_auth", JSONName: "requiresAuth", Kind: Scalar},
 	{TFName: "deployment_spec_yaml", JSONName: "deploymentSpecYaml", Kind: Scalar},
-	{TFName: "scope", JSONName: "scope", Kind: Scalar},
-	{TFName: "teams", JSONName: "teams", Kind: List},
 	{TFName: "labels", JSONName: "labels", Kind: List, Children: []AttrSpec{
 		{TFName: "key", JSONName: "key", Kind: Scalar},
 		{TFName: "value", JSONName: "value", Kind: Scalar},

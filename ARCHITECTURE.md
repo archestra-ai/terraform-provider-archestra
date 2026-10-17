@@ -45,6 +45,8 @@ Fields:
 |--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `TFName`     | snake_case Terraform attribute name (matches the schema's `tfsdk` tag).                                                                                                                       |
 | `JSONName`   | camelCase wire field name (matches the backend's zod / OpenAPI spec).                                                                                                                         |
+| `ReadJSONName` | Response-field alias used by API coverage checks when the public attribute is nested or its request key differs. Runtime reads still use the resource mapping helper. |
+| `CreateOnly` | Wire input sent only for creation. This does not itself make the public Terraform attribute immutable: parent `permissions` use `initialGrants` at creation and the revision-aware policy API for later changes. |
 | `Kind`       | See "Kinds" below.                                                                                                                                                                            |
 | `Sensitive`  | Mask in `LogPatch` debug output. Should match the schema's `Sensitive: true`.                                                                                                                 |
 | `OmitOnNull` | When the plan value is null, omit the field instead of emitting `null`. Use when the backend zod is `.optional()` rather than `.nullable()` — sending null gets rejected with a 400.          |
@@ -68,6 +70,11 @@ Fields:
 2. The patch is `json.Marshal`'d.
 3. Resource Update sends the patch via the generated client's `*WithBodyWithResponse` method.
 4. `LogPatch` writes the patch to `tflog.Debug` with sensitive values masked.
+
+A generic empty patch does not always mean an empty resource update. Synthetic
+manifest fields, parent relationships and settings may use separate encoders or
+endpoints. Account for their changes before returning a no-op; sharing-only Skill
+updates skip content writes, while manifest-only edits rebuild versioned content.
 
 ### Receive flow (Read)
 
@@ -119,6 +126,7 @@ The walker handles three response shapes:
 - `JSON200 *struct{...}` (single record).
 - `JSON200 *[]struct{...}` (list endpoint).
 - `JSON200 *struct{Data []struct{...}, Pagination ...}` (paginated envelope).
+- `JSON200 *struct{Links []struct{...}}` (share-link list envelope).
 
 ## Convention: schema attr vs. skip-list
 
@@ -129,10 +137,10 @@ When `TestApiCoverage` flags a wire field, you have two choices:
 **Add to `KnownIntentionallySkipped()`** with a Why-comment — preferred when the field belongs to a different conceptual domain or is duplicated elsewhere. Acceptable categories:
 
 - Audit timestamps you've decided not to surface yet (`createdAt`, `updatedAt`).
-- Discriminators the provider uses internally (e.g. `agentType` to split one backend table into three resources).
+- Discriminators the provider uses internally (e.g. `agentType` to split one backend table into resources).
 - Backend bookkeeping (`limit.lastCleanup` cleanup-scheduler state).
 - Synthetic-wrapper decomposition (e.g. catalog_item's `oauthConfig` is wire top-level but HCL-nested under `remote_config`).
-- m2m-relationship duplicates (e.g. `agent.tools` is managed by `archestra_agent_tool`; surfacing it on the agent would create phantom diffs).
+- m2m-relationship duplicates (e.g. `agent.tools` is managed by `archestra_agent.tools`; surfacing it on the agent would create phantom diffs).
 - TFName↔JSONName renames where the AttrSpec doesn't include it (because the field is Computed-only with no merge-patch involvement).
 
 The skip-list comment matters. A future maintainer reading it should be able to decide whether the original reasoning still holds.

@@ -93,22 +93,13 @@ resource "archestra_identity_provider" "saml" {
 }
 
 resource "archestra_team" "engineering" {
-  name        = "Engineering"
-  description = "Engineering team for production systems"
+  external_group_ids = ["engineering"]
+  name               = "Engineering"
+  description        = "Engineering team for production systems"
 }
 
-# Support team with TOON tool-result compression enabled. Requires
-# `archestra_organization_settings.compression_scope = "team"`; the
-# explicit `depends_on` ensures org_settings applies before this team
-# in the same pass so the backend accepts the team-level flag.
 resource "archestra_team" "support" {
-  name                         = "Support"
-  description                  = "Customer support team"
-  convert_tool_results_to_toon = true
-  depends_on                   = [archestra_organization_settings.main]
-}
-
-resource "archestra_team_external_group" "engineers_oidc" {
-  team_id           = archestra_team.engineering.id
-  external_group_id = "engineering"
+  name        = "Support"
+  description = "Customer support team"
+  depends_on  = [archestra_organization_settings.main]
 }

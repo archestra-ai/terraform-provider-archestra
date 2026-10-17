@@ -1,0 +1,106 @@
+{
+  "result": "passed",
+  "candidate_resource_families": 35,
+  "api_version": "1.4.0-rc.48",
+  "build": "Shipping runtime Dockerfile, Alpine 3.23.4, non-root uid 65532, Terraform 1.5.7, candidate provider 3.0.0. Candidate native release zips served from a temporary isolated build fixture; no published release assets were claimed.",
+  "compilation": [
+    {
+      "kind": "terraform",
+      "architecture": "linux/amd64",
+      "size": 23920824,
+      "sha256": "a8eeae6b5e787e8719b486aef5d90804c6ee32afc026c87d9e11406551a89359"
+    },
+    {
+      "kind": "crossplane",
+      "architecture": "linux/amd64",
+      "size": 59707576,
+      "sha256": "8c8074e5adb7ceb74054e68a177f46c55aab0b9bf4396b27d30c45a4bb95b1c6"
+    },
+    {
+      "kind": "terraform",
+      "architecture": "linux/arm64",
+      "size": 22479032,
+      "sha256": "0267afc959ab9a5aacb8b1c2ee1ccce3b79b8334ec7161446a6d50b66e17449b"
+    },
+    {
+      "kind": "crossplane",
+      "architecture": "linux/arm64",
+      "size": 56033464,
+      "sha256": "e9180301fb1b3e8c2a065d73c6127bc4a3c7d5cede8228bea90d2725740c3469"
+    }
+  ],
+  "packages": [
+    {
+      "architecture": "linux/amd64",
+      "image_id": "sha256:697b85c536a0ebefffa0542c3a2774f6bcd4303729114bfce6359de5c5e38161",
+      "runtime_user": "65532",
+      "native_resource_families": 35,
+      "terraform_version": "1.5.7",
+      "provider_version": "3.0.0",
+      "controller_help": "passed",
+      "in_image_terraform_init_and_schema": "passed",
+      "runtime_image_embedded": true,
+      "crds": 75,
+      "package_layers": 9,
+      "package_sha256": "a661db70f34351204baf18598e76009e82f014fb8a31c7c31227b416bb711585",
+      "package_size": 80792064
+    },
+    {
+      "architecture": "linux/arm64",
+      "image_id": "sha256:0b046f6dd2c9dea77edcb5981c670a1b559b659b9c4b433fc29a24aa160c5899",
+      "runtime_user": "65532",
+      "native_resource_families": 35,
+      "terraform_version": "1.5.7",
+      "provider_version": "3.0.0",
+      "controller_help": "passed",
+      "in_image_terraform_init_and_schema": "passed",
+      "runtime_image_embedded": true,
+      "crds": 75,
+      "package_layers": 9,
+      "package_sha256": "125d805b26a56613e4937de4321ea71ec0084aec3ffbfc371b48dbbce951c246",
+      "package_size": 73854464
+    }
+  ],
+  "runtime_image_reconciliation": [
+    {
+      "architecture": "linux/amd64",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "architecture": "linux/amd64",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "architecture": "linux/arm64",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "architecture": "linux/arm64",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "delete": "passed",
+      "backend_after_delete": 404
+    }
+  ],
+  "reconciliation_scope": "Environment create/update/delete in both scopes using each actual Linux runtime image and its bundled Terraform/native provider. This checks runtime packaging; it is not a full-family test for each architecture.",
+  "publication": "Not published; normal protected review and release remain pending.",
+  "source_evidence_sha256": {
+    "expansion-package/runtime-package-evidence.json": "4d66eb8462dbd1b41fe81011d61886d0ccccd539db38ea730f1949c4f0ee8099",
+    "expansion-package/image-reconciliation-evidence.json": "89207b44fc6b24cd859794259dbd65514d3f3b26fd49f605ba8a115c8c82d83c",
+    "expansion-package/compilation.json": "9d74dc0c8d1d971c01f60b9f44a3e9996dc47311689b5ddbd52d2d2ed6d4ae7b"
+  },
+  "candidate_boundary": "Recorded binary hashes predate compatibility commit ff13bdd. Combined-head unit/lint and exact-head CI are separate; final candidate repetition remains required."
+}

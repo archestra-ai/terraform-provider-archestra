@@ -1,10 +1,10 @@
-# Externals (declare elsewhere): archestra_team.engineering, archestra_llm_provider_api_key.vault_backed, archestra_runtime_credential.github.
+# Externals (declare elsewhere): archestra_team.engineering, archestra_model_provider.vault_backed, archestra_credential.github.
 
 # NOTE: `llm_model` is the model_id you'd pass to the upstream LLM API
 # (e.g. "gpt-4o" for OpenAI, "claude-sonnet-4-5" for Anthropic). The
-# platform auto-discovers models from your `archestra_llm_provider_api_key`,
+# platform auto-discovers models from your `archestra_model_provider`,
 # so the corresponding key resource must exist for the chosen provider.
-# Use `archestra_llm_model` only when you need to override pricing or
+# Use `archestra_model` only when you need to override pricing or
 # per-model settings on a discovered model.
 
 # Customer-support agent — the most common shape: a system prompt, an LLM,
@@ -15,7 +15,30 @@ resource "archestra_agent" "support" {
   icon          = "headphones"
   system_prompt = "You are a friendly customer-support agent. Be concise."
   llm_model     = "gpt-4o"
-  scope         = "org"
+
+  # These settings belong to the agent. Omit a collection to preserve it;
+  # declare an explicit empty collection to clear it.
+  subagent_ids           = [archestra_agent.engineering_qa.id]
+  remote_agent_ids       = []
+  excluded_subagent_ids  = []
+  tools                  = []
+  excluded_tool_ids      = []
+  excluded_connector_ids = []
+
+  skills = {
+    mode     = "manual"
+    allowed  = []
+    excluded = []
+  }
+
+  hooks = [{
+    event        = "pre_tool_use"
+    file_name    = "validate.py"
+    content      = "print('Validate tool input before use')"
+    requirements = []
+    enabled      = true
+  }]
+
 
   suggested_prompts = [
     {
@@ -34,19 +57,17 @@ resource "archestra_agent" "support" {
   ]
 }
 
-# Team-scoped agent — visible only to members of the listed teams. The
+# Agent access is configured through permissions on this resource. The
 # `archestra_team` reference enforces ordering so the team exists first.
 resource "archestra_agent" "engineering_qa" {
   name          = "eng-qa"
   description   = "Engineering QA assistant"
   system_prompt = "You triage bug reports against the eng playbook."
   llm_model     = "claude-sonnet-4-5"
-  scope         = "team"
-  teams         = [archestra_team.engineering.id]
 
   # Wire a specific provider key (e.g. an Anthropic key from BYOS Vault) instead
   # of relying on the org-wide default.
-  llm_api_key_id = archestra_llm_provider_api_key.vault_backed.id
+  llm_api_key_id = archestra_model_provider.vault_backed.id
 }
 
 # Email-triggered agent — receive new chats via incoming email. The agent
@@ -67,7 +88,7 @@ resource "archestra_agent" "intake" {
 # Agent Runtime worker — delegated work runs in its own container via the
 # platform's runtime backend (e.g. the Kubernetes orchestrator).
 # Auto-tool mode gives it every reachable tool; pair with
-# `archestra_agent_tool_exclusions` to carve some out.
+# `excluded_tool_ids` to carve some out.
 resource "archestra_agent" "worker" {
   name          = "repo-worker"
   description   = "Runs delegated repository work in a dedicated runtime"
@@ -90,12 +111,12 @@ resource "archestra_agent" "worker" {
     }
 
     # Secrets never go in `environment` — declare them as credentials and
-    # deposit values via `archestra_runtime_credential` (shared) or per user.
+    # deposit values via `archestra_credential` (shared) or per user.
     credentials = [
       {
         key           = "GITHUB_TOKEN" # env var inside the run
         scope         = "per_user"
-        credential_id = archestra_runtime_credential.github.key
+        credential_id = archestra_credential.github.key
         label         = "GitHub token"
         description   = "A personal token that can clone the repository and open pull requests."
         required      = true

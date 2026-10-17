@@ -1,7 +1,41 @@
 # Provider modernization audit
 
+
+The reviewed milestone 411935f had **29 Terraform resources and four Terraform data sources**. That milestone generated all 29 resources in both Crossplane scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](../MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The [full native acceptance proof](consolidated-native-acceptance.json) records 147 passing cases with zero failures or skips against API 1.4.0-rc.49.
+
+Current request-field review classifies **172 raw occurrences across 29 owners**,
+with zero unclassified rows. These include manually encoded parent fields and
+server-owned values; they are not a count of missing APIs. Native and Crossplane
+results below retain their original binary boundaries.
+
+The [current organization-defaults runtime proof](crossplane-organization-defaults.json) and [manifest/sharing regression proof](crossplane-skill-manifest-sharing.json) pass in both scopes with normal cleanup.
+
+The [current consolidated runtime proof](consolidated-crossplane-runtime.json)
+verifies 29 families in both scopes: 58 family/scope pairs and 124 runtime
+records. Global test settings are restored and all owned fixtures clean up normally.
+This evidence uses the same native provider bytes as the 147-case native proof.
+
+The pre-consolidation checkpoint covered **47 registered resources in both scopes**.
+The [current inventory](provider-v3-current-inventory.md) records the schema and
+API call coverage. The [29-family baseline](crossplane-rc48-candidate.json) and
+[six-family expansion](crossplane-persistent-extensions.json) have separate recorded
+binary hashes and real both-scope lifecycle evidence. The [full 35-family sweep](crossplane-35-family-candidate.json) passes 102 records with normal cleanup. [Four additional families](crossplane-a2a-environment-bindings.json) and remote-agent creation grants pass in both scopes on separate recorded binaries. [Two credential-routing families](crossplane-credential-routing.json), their mode variants and creation grants add twelve passing both-scope records, including in-place OAuth rotation and nullable/empty clears. [Stored GitHub registrations and compatibility constraints](crossplane-github-registrations-compatibility.json) add six verified records in both scopes. Both Linux runtime images
+and embedded xpkgs pass [packaging and actual image reconciliation](runtime-package-validation.json).
+
+The [API lifecycle decisions](api-lifecycle-decisions.md) track every broader
+persistent API area. [Request-field review](request-field-review.md) classifies all
+90 baseline raw occurrences; `current-request-field-review.json` classifies all
+172 current occurrences. These raw counts include manual encoding, other agent
+subtypes and server-owned state. They are not counts of missing capabilities.
+The completed 39-family full native suite passes 131 acceptance tests with zero failures or skips (`a2a-environment-native-acceptance.json`). The historical expansion has its own 126-test record (`persistent-extensions-native-acceptance.json`). New profile/service-account creation grants pass in both scopes (`crossplane-persistent-extension-grants.json`). The 41-family full native suite passed all 137 tests (`credential-routing-full-native-acceptance.json`); the 43-family suite passed all 140 with zero failures or skips (`github-registrations-full-native-acceptance.json`). Its six targeted cases are also recorded separately (`credential-routing-native-acceptance.json`). Final full-candidate repetition, remaining justified API implementations, normal
+protected review and publication remain open. The sections below retain the
+original audit baseline for traceability.
+
+
 Audit inputs: Terraform `2e34cde000894e9c96793da0ec1f2c90b9193636` (v2.4.0),
 Archestra `35e36afd3f8a29cd568bc486a9e448bb29028414` (main, platform 1.4.0-rc.43).
+
+The current candidate exposes **30 resources and four data sources**, including Knowledge File. Its [full native suite](knowledge-files-native-acceptance.json) passes 156 cases with zero failures or skips. [Six current file records](crossplane-knowledge-files.json) pass both scopes and normal cleanup, including initProvider Secret inputs. The 29-family evidence below remains a historical reviewed milestone; the final expanded runtime/package sweep remains open.
 
 ## What is verified
 
@@ -10,7 +44,7 @@ Archestra `35e36afd3f8a29cd568bc486a9e448bb29028414` (main, platform 1.4.0-rc.43
   consumes the executable Terraform schema; generated types, controllers and CRDs
   are ignored and rebuilt for both cluster and namespaced scopes. The build
   submodule is Crossplane's shared build system, not the Archestra provider.
-- The current registry has **22 Terraform resources and seven data sources**.
+- The baseline registry had **22 Terraform resources and seven data sources**.
   Five Terraform resources are configured for Crossplane: **5/22 = 22.7%**.
   This is configuration inclusion only. One included policy kind calls removed APIs.
   Generation/build/module checks pass for those five kinds in both scopes (10 managed-resource CRDs, plus five provider/configuration CRDs). The module has no behavioral tests. No reconciliation or runtime coverage percentage is established.
@@ -34,7 +68,7 @@ source counts. Test declarations are explicitly distinguished from executed test
 Direct calls are inventoried; shared helper calls, every request/response field,
 permissions, import formats and delete behavior still need manual reconciliation.
 
-## Current API domains and meaningful-resource review
+## Historical baseline API-domain review
 
 The API has 683 paths, not 683 managed resources. This is the review queue for a
 complete supported-resource denominator; it is not a claim of completed coverage.
@@ -119,3 +153,11 @@ provider reference and secrets; reconcile an orphan deletion policy before remov
 an old managed resource. Adopt through an observe-only phase, compare desired and
 observed configuration, then enable writes. Test this with the actual prior CRDs;
 recreating a CR with a new Kubernetes name is not a migration test.
+
+Manual plugin packages add one family in both scopes, including creation grants, authoritative file replacement and executable-mode preservation ([runtime proof](crossplane-manual-plugins.json)). The full 44-family native suite passes all 142 acceptance cases with zero failures or skips ([native proof](manual-plugins-full-native-acceptance.json)). Both records retain their exact frozen candidate hashes; current Linux packaging and the final combined sweep remain release gates.
+
+Pinned repository packages add one family in both scopes, including creation grants, scheduled candidate configuration, credential-reference clearing and approved-byte preservation ([runtime proof](crossplane-repository-plugins.json)). The full 45-family native suite passes all 145 acceptance cases ([native proof](repository-plugins-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
+
+Revocable marketplace share links add one family and six both-scope records for skill/plugin membership, secret publication, anonymous read-only access, revocation drift and expiry ([runtime proof](crossplane-marketplace-share-links.json)). The full 46-family native suite passes all 148 acceptance cases ([native proof](marketplace-share-links-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
+
+Project-file content adds one family and four both-scope records for exact text/binary bytes, secret input and project references, drift repair, empty text updates, replacement refusal and normal deletion ([runtime proof](crossplane-project-files.json)). All152 native acceptance cases pass ([native proof](project-files-full-native-acceptance.json)). This is a pre-consolidation checkpoint; the major-version surface is being reviewed against product navigation.

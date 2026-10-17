@@ -21,12 +21,14 @@ type TeamDataSource struct {
 }
 
 type TeamDataSourceModel struct {
-	ID             types.String      `tfsdk:"id"`
-	Name           types.String      `tfsdk:"name"`
-	Description    types.String      `tfsdk:"description"`
-	OrganizationID types.String      `tfsdk:"organization_id"`
-	CreatedBy      types.String      `tfsdk:"created_by"`
-	Members        []TeamMemberModel `tfsdk:"members"`
+	ExternalGroupIDs types.Set         `tfsdk:"external_group_ids"`
+	VaultFolder      types.String      `tfsdk:"vault_folder"`
+	ID               types.String      `tfsdk:"id"`
+	Name             types.String      `tfsdk:"name"`
+	Description      types.String      `tfsdk:"description"`
+	OrganizationID   types.String      `tfsdk:"organization_id"`
+	CreatedBy        types.String      `tfsdk:"created_by"`
+	Members          []TeamMemberModel `tfsdk:"members"`
 }
 
 func (d *TeamDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -38,6 +40,8 @@ func (d *TeamDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 		MarkdownDescription: "Fetches an Archestra team by ID.",
 
 		Attributes: map[string]schema.Attribute{
+			"external_group_ids": schema.SetAttribute{Computed: true, ElementType: types.StringType, MarkdownDescription: "SSO groups mapped to this team, when visible and Team Sync is available."},
+			"vault_folder":       schema.StringAttribute{Computed: true, MarkdownDescription: "Vault folder path, when visible and Readonly Vault is available."},
 			"id": schema.StringAttribute{
 				MarkdownDescription: "Team identifier",
 				Required:            true,
@@ -123,7 +127,7 @@ func (d *TeamDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	team := teamResp.JSON200
 	data.Name = types.StringValue(team.Name)
 	data.OrganizationID = types.StringValue(team.OrganizationId)
-	data.CreatedBy = types.StringValue(team.CreatedBy)
+	data.CreatedBy = types.StringPointerValue(team.CreatedBy)
 	if team.Description != nil {
 		data.Description = types.StringValue(*team.Description)
 	} else {
@@ -150,5 +154,12 @@ func (d *TeamDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		}
 	}
 
+	view := TeamResourceModel{ID: data.ID, ExternalGroupIDs: types.SetNull(types.StringType), VaultFolder: types.StringNull()}
+	(&TeamResource{client: d.client}).readBindings(ctx, &view, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	data.ExternalGroupIDs = view.ExternalGroupIDs
+	data.VaultFolder = view.VaultFolder
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

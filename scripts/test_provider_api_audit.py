@@ -47,6 +47,72 @@ class AuditTests(unittest.TestCase):
             self.assertTrue(endpoint['present_in_upstream'])
             self.assertEqual(endpoint['retired_request_fields'], ['scope'])
             self.assertIn('retired scope', audit.markdown(result))
+            current = {'provider_schemas': {'registry.terraform.io/archestra-ai/archestra': {'resource_schemas': {'archestra_thing': {'version': 1, 'block': {'attributes': {'scope': {'computed': True}}}}}}}}
+            upstream = {'paths': {'/api/things': {'post': {'requestBody': {'content': {'application/json': {'schema': {'properties': {'scope': {'not': {}}}}}}}}}}}
+            endpoint = audit.audit(root, upstream, current)['resources'][0]['endpoints'][0]
+            self.assertEqual(endpoint['api_forbidden_request_fields'], ['scope'])
+            self.assertEqual(endpoint['retired_request_fields'], [])
+            current['provider_schemas']['registry.terraform.io/archestra-ai/archestra']['resource_schemas']['archestra_thing']['block']['attributes']['scope']['optional'] = True
+            self.assertEqual(audit.audit(root, upstream, current)['resources'][0]['endpoints'][0]['retired_request_fields'], ['scope'])
+
+
+
+    def test_wire_contracts_include_helper_calls_and_flag_unmapped_writes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for directory in ['internal/client', 'internal/provider', 'crossplane/config']:
+                (root / directory).mkdir(parents=True)
+            (root / 'internal/client/client.go').write_text('func NewUpdateThingRequestWithBody(server string) {\n operationPath := fmt.Sprintf("/api/things/%s", id)\n req, err := http.NewRequest("PATCH", queryURL.String(), body)\n}')
+            (root / 'internal/provider/resource_thing.go').write_text('resp.TypeName = req.ProviderTypeName + "_thing"')
+            (root / 'crossplane/config/external_name.go').write_text('')
+            upstream = {'paths': {'/api/things/{id}': {'patch': {'requestBody': {'content': {'application/json': {'schema': {'properties': {'name': {'type': 'string'}, 'scope': {'not': {}}, 'newCapability': {'type': 'boolean'}}}}}}}}}}
+            contracts = {'archestra_thing': {'api_methods': ['UpdateThing'], 'wire_fields': {'name': 'display_name'}, 'synthetic_fields': []}}
+            report = audit.audit(root, upstream, wire_contracts=contracts)
+            endpoint = report['resources'][0]['endpoints'][0]
+            self.assertTrue(endpoint['present_in_upstream'])
+            self.assertEqual(endpoint['declared_request_field_mappings'], {'name': 'display_name'})
+            self.assertEqual(endpoint['request_fields_without_declared_mapping'], ['newCapability'])
+            self.assertIn('newCapability', audit.markdown(report))
+
+
+    def test_registered_subtypes_share_source_without_literal_metadata(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for directory in ['internal/client', 'internal/provider', 'crossplane/config']:
+                (root / directory).mkdir(parents=True)
+            (root / 'internal/provider/resource_gateway.go').write_text('resp.TypeName = req.ProviderTypeName + resourceSuffix()')
+            (root / 'crossplane/config/external_name.go').write_text('"archestra_gateway": identifier\n"archestra_profile": identifier')
+            contract = {'resource_source': 'internal/provider/resource_gateway.go', 'import_implemented': True, 'api_methods': [], 'wire_fields': {}}
+            report = audit.audit(root, {'paths': {}}, wire_contracts={'archestra_gateway': contract, 'archestra_profile': contract})
+            self.assertEqual(report['terraform_count'], 2)
+            self.assertEqual(report['crossplane_configured_count'], 2)
+            self.assertTrue(all(item['import_implemented'] for item in report['resources']))
+
+
+    def test_intersection_request_fields_and_references_are_not_silently_missed(self):
+        upstream = {'components': {'schemas': {'Source': {'properties': {
+            'repoUrl': {'type': 'string'}, 'retired': {'type': 'string'},
+        }}}}}
+        schema = {'allOf': [
+            {'$ref': '#/components/schemas/Source'},
+            {'properties': {'approvedCommitSha': {'type': 'string'}, 'retired': {'not': {}}}},
+        ], 'properties': {'displayName': {'type': 'string'}}}
+        fields = audit.request_properties(schema, upstream)
+        self.assertEqual(set(fields), {'repoUrl', 'approvedCommitSha', 'retired', 'displayName'})
+        self.assertEqual(fields['retired'], {'not': {}})
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for directory in ['internal/client', 'internal/provider', 'crossplane/config']:
+                (root / directory).mkdir(parents=True)
+            (root / 'internal/client/client.go').write_text('func NewImportThingRequestWithBody(server string) {\n operationPath := fmt.Sprintf("/api/things/import")\n req, err := http.NewRequest("POST", queryURL.String(), body)\n}')
+            (root / 'internal/provider/resource_thing.go').write_text('resp.TypeName = req.ProviderTypeName + "_thing"')
+            (root / 'crossplane/config/external_name.go').write_text('')
+            upstream['paths'] = {'/api/things/import': {'post': {'requestBody': {'content': {'application/json': {'schema': schema}}}}}}
+            contracts = {'archestra_thing': {'api_methods': ['ImportThing'], 'wire_fields': {'displayName': 'display_name'}}}
+            endpoint = audit.audit(root, upstream, wire_contracts=contracts)['resources'][0]['endpoints'][0]
+            self.assertEqual(endpoint['request_fields_without_declared_mapping'], ['approvedCommitSha', 'repoUrl'])
+            self.assertEqual(endpoint['retired_request_fields'], ['retired'])
+
 
 
 if __name__ == '__main__':

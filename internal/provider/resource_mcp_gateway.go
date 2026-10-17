@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -27,13 +26,34 @@ var _ resource.ResourceWithImportState = &McpGatewayResource{}
 func NewMcpGatewayResource() resource.Resource { return &McpGatewayResource{} }
 
 type McpGatewayResource struct {
-	client *client.ClientWithResponses
+	agentType string
+	client    *client.ClientWithResponses
 }
 
 // McpGatewayResourceModel is the schema for an Archestra MCP gateway. The
 // gateway exposes a unified MCP endpoint backed by tool installations and
 // optional knowledge sources.
 type McpGatewayResourceModel struct {
+	SubagentIDs          types.Set    `tfsdk:"subagent_ids"`
+	RemoteAgentIDs       types.Set    `tfsdk:"remote_agent_ids"`
+	ExcludedSubagentIDs  types.Set    `tfsdk:"excluded_subagent_ids"`
+	ExcludedConnectorIDs types.Set    `tfsdk:"excluded_connector_ids"`
+	Tools                types.Set    `tfsdk:"tools"`
+	ExcludedToolIDs      types.Set    `tfsdk:"excluded_tool_ids"`
+	Skills               types.Object `tfsdk:"skills"`
+
+	InitialGrants             types.Set    `tfsdk:"permissions"`
+	AuthorEmail               types.String `tfsdk:"author_email"`
+	CreatedBy                 types.String `tfsdk:"created_by"`
+	CreatedByServiceAccountId types.String `tfsdk:"created_by_service_account_id"`
+	DeletedAt                 types.String `tfsdk:"deleted_at"`
+	LastUsedAt                types.String `tfsdk:"last_used_at"`
+	LatestVersion             types.Int64  `tfsdk:"latest_version"`
+	AccessAllSubagents        types.Bool   `tfsdk:"access_all_subagents"`
+	AccessAllTools            types.Bool   `tfsdk:"access_all_tools"`
+	MissingCredentialBehavior types.String `tfsdk:"missing_credential_behavior"`
+	EnvironmentId             types.String `tfsdk:"environment_id"`
+
 	ID                       types.String      `tfsdk:"id"`
 	Name                     types.String      `tfsdk:"name"`
 	Description              types.String      `tfsdk:"description"`
@@ -45,19 +65,20 @@ type McpGatewayResourceModel struct {
 	ConsiderContextUntrusted types.Bool        `tfsdk:"consider_context_untrusted"`
 	ToolExposureMode         types.String      `tfsdk:"tool_exposure_mode"`
 	IsDefault                types.Bool        `tfsdk:"is_default"`
-	Scope                    types.String      `tfsdk:"scope"`
-	Teams                    types.List        `tfsdk:"teams"`
 	Labels                   []AgentLabelModel `tfsdk:"labels"`
 }
 
 func (r *McpGatewayResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mcp_gateway"
+	resp.TypeName = req.ProviderTypeName + "_" + r.resourceSuffix()
 }
 
 func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version:             1,
 		MarkdownDescription: "Unified MCP endpoint that aggregates installed tools and (optionally) knowledge sources, with optional inbound JWT auth via `identity_provider_id`.",
 		Attributes: map[string]schema.Attribute{
+			"permissions":          initialGrantsAttribute(),
+			"access_all_subagents": schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether callers can delegate to any accessible internal agent, subject to subagent exclusions."},
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "MCP gateway identifier",
@@ -103,20 +124,6 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				Computed:            true,
 				MarkdownDescription: "Whether this is the default MCP gateway",
 			},
-			"scope": schema.StringAttribute{
-				Optional:            true,
-				Computed:            true,
-				Default:             stringdefault.StaticString("org"),
-				MarkdownDescription: "Ownership scope: `personal`, `team`, or `org` (default: `org`).",
-				Validators:          []validator.String{stringvalidator.OneOf("personal", "team", "org")},
-			},
-			"teams": schema.ListAttribute{
-				Optional:            true,
-				Computed:            true,
-				ElementType:         types.StringType,
-				MarkdownDescription: "Team IDs this gateway is assigned to. Required when `scope = \"team\"`. Removing from configuration clears the assignment on next apply.",
-				PlanModifiers:       []planmodifier.List{EmptyListOnConfigNull()},
-			},
 			"labels": schema.SetNestedAttribute{
 				Optional:            true,
 				MarkdownDescription: "Key/value labels for organizing gateways",
@@ -129,6 +136,16 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 			},
 		},
 	}
+	for name, attribute := range gatewayRelationshipAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
+	for name, attribute := range currentGatewayAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
+	if r.apiAgentType() == "profile" {
+		resp.Schema.MarkdownDescription = "External LLM API gateway profile for tool routing, policy enforcement and inbound identity; the platform-owned LLM Proxy singleton is managed by Archestra."
+	}
+
 }
 
 func (r *McpGatewayResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -147,13 +164,15 @@ func (r *McpGatewayResource) Configure(_ context.Context, req resource.Configure
 }
 
 func (r *McpGatewayResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	defer finishParentCreate(ctx, r.client, "mcpGateway", "id", resp)
+
 	priorNull := tftypes.NewValue(req.Plan.Schema.Type().TerraformType(ctx), nil)
 	patch := MergePatch(ctx, req.Plan.Raw, priorNull, mcpGatewayAttrSpec, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	patch["agentType"] = "mcp_gateway"
-	LogPatch(ctx, "archestra_mcp_gateway Create", patch, mcpGatewayAttrSpec)
+	patch["agentType"] = r.apiAgentType()
+	LogPatch(ctx, "archestra_"+r.resourceSuffix()+" Create", patch, mcpGatewayAttrSpec)
 
 	body, err := json.Marshal(patch)
 	if err != nil {
@@ -180,6 +199,26 @@ func (r *McpGatewayResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	resolveInitialGrants(&data.InitialGrants)
+	partial := data
+	nullUnknownGatewayRelationships(&partial)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &partial)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.writeRelationships(ctx, &data, &McpGatewayResourceModel{}, req.Config, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -187,6 +226,10 @@ func (r *McpGatewayResource) Read(ctx context.Context, req resource.ReadRequest,
 	var data McpGatewayResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
+		return
+	}
+	if data.ID.IsNull() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
 		return
 	}
 
@@ -214,10 +257,25 @@ func (r *McpGatewayResource) Read(ctx context.Context, req resource.ReadRequest,
 	}
 
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resolveInitialGrants(&data.InitialGrants)
+	readParentPermissions(ctx, r.client, "mcpGateway", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *McpGatewayResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "mcpGateway", "id", req, resp)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	defer finishPermissions()
+
 	var stateData McpGatewayResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &stateData)...)
 	if resp.Diagnostics.HasError() {
@@ -234,7 +292,7 @@ func (r *McpGatewayResource) Update(ctx context.Context, req resource.UpdateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	LogPatch(ctx, "archestra_mcp_gateway Update", patch, mcpGatewayAttrSpec)
+	LogPatch(ctx, "archestra_"+r.resourceSuffix()+" Update", patch, mcpGatewayAttrSpec)
 
 	body, err := json.Marshal(patch)
 	if err != nil {
@@ -269,6 +327,19 @@ func (r *McpGatewayResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 	r.flatten(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	r.writeRelationships(ctx, &data, &stateData, req.Config, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -308,6 +379,15 @@ func (r *McpGatewayResource) flatten(ctx context.Context, data *McpGatewayResour
 		return
 	}
 
+	flattenCurrentGatewayFields(data, body, diags)
+	if diags.HasError() {
+		return
+	}
+	if resp.AgentType != "" && resp.AgentType != r.apiAgentType() {
+		diags.AddError("Incorrect Agent Type", "The remote object is not the subtype managed by this resource.")
+		return
+	}
+	data.AccessAllSubagents = types.BoolValue(resp.AccessAllSubagents)
 	data.ID = types.StringValue(resp.Id.String())
 	data.Name = types.StringValue(resp.Name)
 	optionalStringFromAPI(&data.Description, resp.Description)
@@ -328,8 +408,6 @@ func (r *McpGatewayResource) flatten(ctx context.Context, data *McpGatewayResour
 	data.ConsiderContextUntrusted = types.BoolValue(resp.ConsiderContextUntrusted)
 	optionalStringFromAPI(&data.ToolExposureMode, resp.ToolExposureMode)
 	data.IsDefault = types.BoolValue(resp.IsDefault)
-	data.Scope = types.StringValue(resp.Scope)
-	data.Teams = teamsListFromAPI(ctx, data.Teams, resp.Teams, diags)
 
 	data.Labels = flattenAgentLabels(data.Labels, resp.Labels)
 }
@@ -348,13 +426,16 @@ func (r *McpGatewayResource) APIShape() any { return client.GetAgentResponse{} }
 // considerContextUntrusted). slug + tools follow the same convention as
 // the other agent-table resources.
 func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
+	// Legacy visibility/skill projections and secret-storage pointers are not managed.
+	// Gateway records share an agent response, but do not run agent runtimes or inference.
 	return []string{
+		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId", "activationSkillMode", "activationSkillPolicyRevision", "activationSkillsCount", "llmProviderRequiresPerUserCredential", "modelId", "resolvedLlmModelName", "resolvedLlmProvider", "resolvedLlmProviderKeyName", "runtime", "sandboxAvailable",
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "builtInAgentConfig", "suggestedPrompts",
 		"systemPrompt", "llmModel", "llmApiKeyId", "isDefault", "scope",
 		"teams", "considerContextUntrusted", "incomingEmailEnabled",
 		"incomingEmailAllowedDomain", "incomingEmailSecurityMode", "icon",
-		"slug", "tools",
+		"slug", "tools", "users",
 	}
 }
 
@@ -363,7 +444,13 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 // sub-objects — top-level columns only — but several Postgres `text[]`
 // columns (knowledge_base_ids, connector_ids, passthrough_headers) which are
 // atomic on the wire (Kind: List).
-var mcpGatewayAttrSpec = []AttrSpec{
+var mcpGatewayAttrSpec = append(gatewayRelationshipAttrSpecs(), []AttrSpec{
+	initialGrantsAttrSpec,
+	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
+	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},
+	{TFName: "missing_credential_behavior", JSONName: "missingCredentialBehavior", Kind: Scalar, OmitOnNull: true},
+	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar, OmitOnNull: false},
+
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
 	{TFName: "icon", JSONName: "icon", Kind: Scalar},
@@ -374,8 +461,6 @@ var mcpGatewayAttrSpec = []AttrSpec{
 	{TFName: "consider_context_untrusted", JSONName: "considerContextUntrusted", Kind: Scalar},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar},
 	{TFName: "is_default", JSONName: "isDefault", Kind: Scalar},
-	{TFName: "scope", JSONName: "scope", Kind: Scalar},
-	{TFName: "teams", JSONName: "teams", Kind: List},
 	{
 		TFName: "labels", JSONName: "labels", Kind: Set,
 		Children: []AttrSpec{
@@ -383,4 +468,22 @@ var mcpGatewayAttrSpec = []AttrSpec{
 			{TFName: "value", JSONName: "value", Kind: Scalar},
 		},
 	},
+}...)
+
+func (r *McpGatewayResource) refreshMetadataAfterWrite(ctx context.Context, data *McpGatewayResourceModel, diags *diag.Diagnostics) {
+	identifier, err := uuid.Parse(data.ID.ValueString())
+	if err != nil {
+		diags.AddError("Invalid Created Identifier", "The API did not return a valid agent ID.")
+		return
+	}
+	response, err := r.client.GetAgentWithResponse(ctx, identifier)
+	if err != nil {
+		diags.AddError("Agent Refresh Failed", "The object was written but its full metadata could not be read. Refresh state before retrying.")
+		return
+	}
+	if response.JSON200 == nil {
+		diags.AddError("Agent Refresh Failed", fmt.Sprintf("The object was written but metadata read returned %d. Refresh state before retrying.", response.StatusCode()))
+		return
+	}
+	r.flatten(ctx, data, response.Body, diags)
 }

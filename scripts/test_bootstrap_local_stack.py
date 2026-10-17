@@ -40,13 +40,19 @@ esac
                 file = binary_dir / name
                 file.write_text(tool)
                 file.chmod(0o755)
-            for name in ['bootstrap-ollama-mock.sh', 'bootstrap-vault.sh', 'bootstrap-test-idp.sh']:
+            for name in ['bootstrap-ollama-mock.sh', 'bootstrap-vault.sh', 'bootstrap-test-idp.sh', 'bootstrap-agent-sandbox.sh']:
                 file = scripts / name
                 file.write_text('#!/bin/bash\nprintf "child %s %s\\n" "$KUBECONFIG" "$ARCHESTRA_BASE_URL" >> "$CAPTURE/commands"\n')
                 file.chmod(0o755)
             file = scripts / 'bootstrap-api-key.sh'
             file.write_text('#!/bin/bash\necho test-key\n')
             file.chmod(0o755)
+            (scripts / 'bootstrap-test-llm-key.py').write_text(
+                'import os\nfrom pathlib import Path\n'
+                'assert os.environ.get("ARCHESTRA_READONLY_VAULT_ENABLED") == "true", "Readonly Vault stack must seed a Vault-backed model fixture"\n'
+                'with (Path(os.environ["CAPTURE"])/"commands").open("a") as f: '
+                'f.write("child " + os.environ["KUBECONFIG"] + " " + os.environ["ARCHESTRA_BASE_URL"] + "\\n")\n'
+                'print("model-fixture-id")\n')
             original = root / 'user-kubeconfig'
             original.write_text('preserve-current-context')
             env = {**os.environ, 'PATH': f'{binary_dir}:{os.environ["PATH"]}',

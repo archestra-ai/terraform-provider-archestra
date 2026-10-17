@@ -98,6 +98,10 @@ func (r *AgentToolExclusionsResource) Read(ctx context.Context, req resource.Rea
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	if data.ID.IsNull() || data.ID.IsUnknown() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 
 	agentUUID, err := uuid.Parse(data.AgentID.ValueString())
 	if err != nil {
@@ -233,5 +237,14 @@ func (r *AgentToolExclusionsResource) replaceExclusions(ctx context.Context, pla
 		)
 		return false
 	}
+	confirmed := make([]string, 0, len(apiResp.JSON200.ExcludedToolIds))
+	for _, id := range apiResp.JSON200.ExcludedToolIds {
+		confirmed = append(confirmed, id.String())
+	}
+	if !agentSet(ctx, confirmed, diags).Equal(plan.ExcludedToolIds) {
+		diags.AddError("Incomplete exclusion replacement", "The API did not retain the complete requested exclusion set. Refresh and verify access before retrying.")
+		return false
+	}
+
 	return true
 }

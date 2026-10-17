@@ -20,12 +20,10 @@ data "archestra_team" "engineering" {
 }
 
 # Use the team's id to scope an LLM provider key onto it.
-resource "archestra_llm_provider_api_key" "engineering_anthropic" {
+resource "archestra_model_provider" "engineering_anthropic" {
   name         = "Engineering Anthropic Key"
   api_key      = var.anthropic_key
   llm_provider = "anthropic"
-  scope        = "team"
-  team_id      = data.archestra_team.engineering.id
 }
 
 output "team_name" {
@@ -50,9 +48,11 @@ output "team_admins" {
 
 - `created_by` (String) User ID of the team creator
 - `description` (String) Description of the team
+- `external_group_ids` (Set of String) SSO groups mapped to this team, when visible and Team Sync is available.
 - `members` (Attributes List) List of team members (see [below for nested schema](#nestedatt--members))
 - `name` (String) The name of the team
 - `organization_id` (String) The organization ID this team belongs to
+- `vault_folder` (String) Vault folder path, when visible and Readonly Vault is available.
 
 <a id="nestedatt--members"></a>
 ### Nested Schema for `members`

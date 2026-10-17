@@ -14,7 +14,7 @@ terraform {
   required_providers {
     archestra = {
       source  = "archestra-ai/archestra"
-      version = "~> 0.6.0"
+      version = "~> 3.0.0"
     }
   }
 }
@@ -25,9 +25,10 @@ provider "archestra" {
 }
 ```
 
-`~> 0.6.0` pins to the `0.6.x` patch line (Terraform reads it as `>= 0.6.0, < 0.7.0`).
-The provider is pre-1.0; minor bumps may include breaking changes, so widen
-the constraint deliberately after reviewing the [CHANGELOG](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/CHANGELOG.md).
+`~> 3.0.0` allows patch updates within the v3.0 line. Review the
+[migration guide](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/MIGRATION-v3.md)
+before upgrading from v2. The v3 branch remains a draft until its compatibility,
+field coverage, migration and packaging gates pass.
 
 ## 2. Mint an API key
 
@@ -60,12 +61,11 @@ terraform apply
 
 - [`examples/basic/`](https://github.com/archestra-ai/terraform-provider-archestra/tree/main/examples/basic) — the minimum chain that produces
   a working agent (provider, team, vault-backed LLM key, one MCP
-  install, one agent, one tool wire). Apply in <30 seconds. Use this
+  install, one agent, one tool wire).  Use this
   to sanity-check your backend setup or as a copy-paste starting point.
 - [`examples/complete/`](https://github.com/archestra-ai/terraform-provider-archestra/tree/main/examples/complete) — wires the full bring-up
   chain together (org settings, identity provider, teams + external
-  groups, LLM keys, MCP servers, agents, gateways, policies, limits,
-  optimisation rules, data sources). Use this as a realistic
+  groups, LLM keys, MCP servers, agents, gateways, permission policies, limits, and data sources). Use this as a realistic
   configuration reference.
 
 > **Secrets in state.** Inline `api_key = var.openai_api_key` lands in

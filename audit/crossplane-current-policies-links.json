@@ -1,0 +1,76 @@
+{
+  "run_id": "24d22efd",
+  "terraform_sha256": "ff9ae5e3dd6a4a02fa67c0dbe37c7d2757ab7b4884a6615cbf6ceea9da062057",
+  "controller_sha256": "6d3f82de26c47e189fbbf2cb53a062bdd133f3e202fa7ec79032afa57d117351",
+  "results": [
+    {
+      "resource": "Policy",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_revokes_direct_grants": "passed",
+      "target_preserved": true
+    },
+    {
+      "resource": "Settings",
+      "scope": "cluster",
+      "adopt": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_preserves_singleton": "passed"
+    },
+    {
+      "resource": "ExternalGroup",
+      "scope": "cluster",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_mapping_recreated": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Delegation",
+      "scope": "cluster",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_edge_recreated": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Policy",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_revokes_direct_grants": "passed",
+      "target_preserved": true
+    },
+    {
+      "resource": "Settings",
+      "scope": "namespaced",
+      "adopt": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_preserves_singleton": "passed"
+    },
+    {
+      "resource": "ExternalGroup",
+      "scope": "namespaced",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_mapping_recreated": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Delegation",
+      "scope": "namespaced",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_edge_recreated": "passed",
+      "delete": "passed"
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "outcome": "passed"
+}

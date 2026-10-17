@@ -10,17 +10,15 @@ import (
 	"time"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
@@ -42,14 +40,56 @@ type OrganizationSettingsResource struct {
 }
 
 type OrganizationSettingsResourceModel struct {
-	ID                       types.String `tfsdk:"id"`
-	Font                     types.String `tfsdk:"font"`
-	ColorTheme               types.String `tfsdk:"color_theme"`
-	Logo                     types.String `tfsdk:"logo"`
-	LimitCleanupInterval     types.String `tfsdk:"limit_cleanup_interval"`
-	CompressionScope         types.String `tfsdk:"compression_scope"`
-	OnboardingComplete       types.Bool   `tfsdk:"onboarding_complete"`
-	ConvertToolResultsToToon types.Bool   `tfsdk:"convert_tool_results_to_toon"`
+	EnvironmentDefaults                      types.Object         `tfsdk:"environment_defaults"`
+	DefaultUserLimits                        types.Map            `tfsdk:"default_user_limits"`
+	DefaultPermissions                       types.Object         `tfsdk:"default_permissions"`
+	OnlineMcpCatalogEnabled                  types.Bool           `tfsdk:"online_mcp_catalog_enabled"`
+	OnlineSkillCatalogEnabled                types.Bool           `tfsdk:"online_skill_catalog_enabled"`
+	SkillMarketplaceAnonymousAccess          types.Bool           `tfsdk:"skill_marketplace_anonymous_access"`
+	AllowToolAutoAssignment                  types.Bool           `tfsdk:"allow_tool_auto_assignment"`
+	OcrChatApiKeyId                          types.String         `tfsdk:"ocr_chat_api_key_id"`
+	OcrModel                                 types.String         `tfsdk:"ocr_model"`
+	KbBm25K1                                 types.Float64        `tfsdk:"kb_bm25_k1"`
+	KbBm25B                                  types.Float64        `tfsdk:"kb_bm25_b"`
+	KbContextualRetrievalMode                types.String         `tfsdk:"kb_contextual_retrieval_mode"`
+	DefaultModelId                           types.String         `tfsdk:"default_model_id"`
+	DefaultMemberRole                        types.String         `tfsdk:"default_member_role"`
+	OnboardingWizard                         jsontypes.Normalized `tfsdk:"onboarding_wizard"`
+	IconLogoDark                             types.String         `tfsdk:"icon_logo_dark"`
+	RequireTwoFactor                         types.Bool           `tfsdk:"require_two_factor"`
+	SessionMaxAgeSeconds                     types.Int64          `tfsdk:"session_max_age_seconds"`
+	OauthAccessTokenLifetimeSeconds          types.Int64          `tfsdk:"oauth_access_token_lifetime_seconds"`
+	ConnectionDefaultMcpGatewayId            types.String         `tfsdk:"connection_default_mcp_gateway_id"`
+	ConnectionDefaultClientId                types.String         `tfsdk:"connection_default_client_id"`
+	ConnectionShownClientIds                 jsontypes.Normalized `tfsdk:"connection_shown_client_ids"`
+	ConnectionClientOrder                    jsontypes.Normalized `tfsdk:"connection_client_order"`
+	ConnectionBaseUrls                       types.List           `tfsdk:"connection_base_urls"`
+	ConnectionClientFutureProviders          jsontypes.Normalized `tfsdk:"connection_client_future_providers"`
+	ConnectionClientProviderKeys             jsontypes.Normalized `tfsdk:"connection_client_provider_keys"`
+	ConnectionSkillsEnabled                  types.Bool           `tfsdk:"connection_skills_enabled"`
+	ConnectionLlmProxyEnabled                types.Bool           `tfsdk:"connection_llm_proxy_enabled"`
+	ConnectionPluginsEnabled                 types.Bool           `tfsdk:"connection_plugins_enabled"`
+	ConnectionRuntimeHandoffEnabled          types.Bool           `tfsdk:"connection_runtime_handoff_enabled"`
+	ConnectionRuntimeHandoffInstructions     types.String         `tfsdk:"connection_runtime_handoff_instructions"`
+	ModelProviderOverrides                   jsontypes.Normalized `tfsdk:"model_provider_overrides"`
+	MessagingChannelOverrides                jsontypes.Normalized `tfsdk:"messaging_channel_overrides"`
+	KnowledgeConnectorOverrides              jsontypes.Normalized `tfsdk:"knowledge_connector_overrides"`
+	PopularAgentOverrides                    jsontypes.Normalized `tfsdk:"popular_agent_overrides"`
+	DefaultEnvironmentName                   types.String         `tfsdk:"default_environment_name"`
+	DefaultEnvironmentNamespace              types.String         `tfsdk:"default_environment_namespace"`
+	DefaultEnvironmentDescription            types.String         `tfsdk:"default_environment_description"`
+	DefaultNetworkPolicy                     jsontypes.Normalized `tfsdk:"default_network_policy"`
+	DefaultEnvironmentValidationRegex        types.String         `tfsdk:"default_environment_validation_regex"`
+	DefaultEnvironmentTrustedImageRegistries jsontypes.Normalized `tfsdk:"default_environment_trusted_image_registries"`
+	McpIdleHibernationEnabled                types.Bool           `tfsdk:"mcp_idle_hibernation_enabled"`
+	AppsHackathonRecorderEnabled             types.Bool           `tfsdk:"apps_hackathon_recorder_enabled"`
+	NewAppsDisabledByDefault                 types.Bool           `tfsdk:"new_apps_disabled_by_default"`
+	NewAppsLockedByDefault                   types.Bool           `tfsdk:"new_apps_locked_by_default"`
+	ID                                       types.String         `tfsdk:"id"`
+	Font                                     types.String         `tfsdk:"font"`
+	ColorTheme                               types.String         `tfsdk:"color_theme"`
+	Logo                                     types.String         `tfsdk:"logo"`
+	OnboardingComplete                       types.Bool           `tfsdk:"onboarding_complete"`
 
 	// Appearance settings
 	LogoDark                types.String `tfsdk:"logo_dark"`
@@ -62,21 +102,16 @@ type OrganizationSettingsResourceModel struct {
 	ChatPlaceholders        types.List   `tfsdk:"chat_placeholders"`
 	ChatLinks               types.List   `tfsdk:"chat_links"`
 	AnimateChatPlaceholders types.Bool   `tfsdk:"animate_chat_placeholders"`
-	ShowTwoFactor           types.Bool   `tfsdk:"show_two_factor"`
 	SlimChatErrorUI         types.Bool   `tfsdk:"slim_chat_error_ui"`
 
 	// Security settings
-	GlobalToolPolicy     types.String `tfsdk:"global_tool_policy"`
-	AllowChatFileUploads types.Bool   `tfsdk:"allow_chat_file_uploads"`
+	AllowChatFileUploads types.Bool `tfsdk:"allow_chat_file_uploads"`
 
 	// Agent settings
-	DefaultLlmModel    types.String `tfsdk:"default_llm_model"`
-	DefaultLlmProvider types.String `tfsdk:"default_llm_provider"`
 	DefaultLlmApiKeyId types.String `tfsdk:"default_llm_api_key_id"`
 	DefaultAgentId     types.String `tfsdk:"default_agent_id"`
 
 	// MCP settings
-	McpOauthAccessTokenLifetimeSeconds types.Int64 `tfsdk:"mcp_oauth_access_token_lifetime_seconds"`
 
 	// Knowledge settings
 	EmbeddingModel        types.String `tfsdk:"embedding_model"`
@@ -106,9 +141,10 @@ func (r *OrganizationSettingsResource) Metadata(ctx context.Context, req resourc
 
 func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version: 1,
 		MarkdownDescription: "Manages organization settings in Archestra. This is a singleton resource — only one instance can exist per organization.\n\n" +
 			"**Lifecycle semantics depend on whether the field has a `Default:`.**\n\n" +
-			"- Fields with a documented default (`font`, `color_theme`, `compression_scope`, `convert_tool_results_to_toon`): omitting the field from your `.tf` resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.\n" +
+			"- Fields with a documented default (`font`, `color_theme`): omitting the field from your `.tf` resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.\n" +
 			"- Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is *sticky* — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.\n\n" +
 			"`terraform destroy` only removes this resource from Terraform state; backend settings are never deleted. To stop managing the entire resource without touching the backend, run `terraform state rm archestra_organization_settings.<n>`.",
 
@@ -124,15 +160,15 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: "Custom font for the organization UI",
 				Optional:            true,
 				Computed:            true,
-				Default:             stringdefault.StaticString(string(client.Lato)),
+				Default:             stringdefault.StaticString(string("lato")),
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						string(client.Inter),
-						string(client.JetbrainsMono),
-						string(client.Lato),
-						string(client.OpenSans),
-						string(client.Roboto),
-						string(client.SourceSansPro),
+						string("inter"),
+						string("jetbrains-mono"),
+						string("lato"),
+						string("open-sans"),
+						string("roboto"),
+						string("source-sans-pro"),
 					),
 				},
 			},
@@ -140,33 +176,33 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: "Color theme for the organization UI",
 				Optional:            true,
 				Computed:            true,
-				Default:             stringdefault.StaticString(string(client.CosmicNight)),
+				Default:             stringdefault.StaticString(string("cosmic-night")),
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						string(client.AmberMinimal),
-						string(client.BoxyMinimalistic),
-						string(client.Bubblegum),
-						string(client.Caffeine),
-						string(client.Catppuccin),
-						string(client.Claude),
-						string(client.CleanSlate),
-						string(client.CosmicNight),
-						string(client.Doom64),
-						string(client.DraculaDark),
-						string(client.GruvboxDark),
-						string(client.MochaMousse),
-						string(client.ModernMinimal),
-						string(client.Mono),
-						string(client.MonokaiDark),
-						string(client.MoonlightDark),
-						string(client.Nature),
-						string(client.NeoBrutalism),
-						string(client.SolarizedDark),
-						string(client.SunsetHorizon),
-						string(client.Tangerine),
-						string(client.Twitter),
-						string(client.Vercel),
-						string(client.VintagePaper),
+						string("amber-minimal"),
+						string("boxy-minimalistic"),
+						string("bubblegum"),
+						string("caffeine"),
+						string("catppuccin"),
+						string("claude"),
+						string("clean-slate"),
+						string("cosmic-night"),
+						string("doom-64"),
+						string("dracula-dark"),
+						string("gruvbox-dark"),
+						string("mocha-mousse"),
+						string("modern-minimal"),
+						string("mono"),
+						string("monokai-dark"),
+						string("moonlight-dark"),
+						string("nature"),
+						string("neo-brutalism"),
+						string("solarized-dark"),
+						string("sunset-horizon"),
+						string("tangerine"),
+						string("twitter"),
+						string("vercel"),
+						string("vintage-paper"),
 					),
 				},
 			},
@@ -176,44 +212,11 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Computed:            true,
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
-			"limit_cleanup_interval": schema.StringAttribute{
-				MarkdownDescription: "Interval for cleaning up usage limits. Valid values: 1h, 12h, 24h, 1w, 1m. Set to null to disable.",
-				Optional:            true,
-				Computed:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						string(client.N1h),
-						string(client.N12h),
-						string(client.N24h),
-						string(client.N1w),
-						string(client.N1m),
-					),
-				},
-				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
-			},
-			"compression_scope": schema.StringAttribute{
-				MarkdownDescription: "Scope for tool results compression",
-				Optional:            true,
-				Computed:            true,
-				Default:             stringdefault.StaticString(string(client.Organization)),
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						string(client.Organization),
-						string(client.Team),
-					),
-				},
-			},
 			"onboarding_complete": schema.BoolAttribute{
 				MarkdownDescription: "Whether organization onboarding is complete. This is a one-way flag — once set to `true`, it cannot be reverted to `false`.",
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
-			},
-			"convert_tool_results_to_toon": schema.BoolAttribute{
-				MarkdownDescription: "Whether to convert tool results to TOON format for compression",
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
 			},
 
 			// Appearance settings
@@ -290,12 +293,6 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 				Computed:            true,
 				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
 			},
-			"show_two_factor": schema.BoolAttribute{
-				MarkdownDescription: "Whether to show two-factor authentication options",
-				Optional:            true,
-				Computed:            true,
-				PlanModifiers:       []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()},
-			},
 			"slim_chat_error_ui": schema.BoolAttribute{
 				MarkdownDescription: "When enabled, renders a compact error UI in chat views.",
 				Optional:            true,
@@ -304,15 +301,6 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			},
 
 			// Security settings
-			"global_tool_policy": schema.StringAttribute{
-				MarkdownDescription: "Global tool invocation policy. Valid values: permissive, restrictive.",
-				Optional:            true,
-				Computed:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("permissive", "restrictive"),
-				},
-				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
-			},
 			"allow_chat_file_uploads": schema.BoolAttribute{
 				MarkdownDescription: "Whether to allow file uploads in chat",
 				Optional:            true,
@@ -321,39 +309,6 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			},
 
 			// Agent settings
-			"default_llm_model": schema.StringAttribute{
-				MarkdownDescription: "Default LLM model for the organization",
-				Optional:            true,
-				Computed:            true,
-				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
-			},
-			"default_llm_provider": schema.StringAttribute{
-				MarkdownDescription: "Default LLM provider for the organization. One of the providers supported by `archestra_llm_provider_api_key.llm_provider`.",
-				Optional:            true,
-				Computed:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderAnthropic),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderAzure),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderBedrock),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderCerebras),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderCohere),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderDeepseek),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderGemini),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderGroq),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderMinimax),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderMistral),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderOllama),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderOpenai),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderOpenrouter),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderPerplexity),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderVllm),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderXai),
-						string(client.CreateLlmProviderApiKeyJSONBodyProviderZhipuai),
-					),
-				},
-				PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
-			},
 			"default_llm_api_key_id": schema.StringAttribute{
 				MarkdownDescription: "Default LLM API key ID for the organization",
 				Optional:            true,
@@ -368,15 +323,6 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			},
 
 			// MCP settings
-			"mcp_oauth_access_token_lifetime_seconds": schema.Int64Attribute{
-				MarkdownDescription: "Lifetime in seconds for MCP OAuth access tokens. Must be at least 1 second.",
-				Optional:            true,
-				Computed:            true,
-				Validators: []validator.Int64{
-					int64validator.AtLeast(1),
-				},
-				PlanModifiers: []planmodifier.Int64{int64planmodifier.UseStateForUnknown()},
-			},
 
 			// Knowledge settings
 			"embedding_model": schema.StringAttribute{
@@ -439,6 +385,13 @@ func (r *OrganizationSettingsResource) Schema(ctx context.Context, req resource.
 			},
 		},
 	}
+	for name, attribute := range organizationDefaultsAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
+	resp.Schema.Attributes["default_permissions"] = defaultPermissionsAttribute()
+	for name, attribute := range currentOrganizationAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
 }
 
 func (r *OrganizationSettingsResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -467,12 +420,30 @@ func (r *OrganizationSettingsResource) Create(ctx context.Context, req resource.
 		return
 	}
 
+	// Keep the singleton identity recoverable if a later settings write fails.
+	var observed OrganizationSettingsResourceModel
+	r.readOrganization(ctx, &observed, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resp.Diagnostics.Append(resp.State.Set(ctx, &observed)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	prior := tftypes.NewValue(req.Plan.Raw.Type(), nil)
 	r.applySettings(ctx, req.Plan.Raw, prior, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
+	r.applyDefaults(ctx, req.Plan.Raw, prior, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.applyDefaultPermissions(ctx, req.Plan.Raw, prior, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	r.readOrganization(ctx, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
@@ -512,6 +483,14 @@ func (r *OrganizationSettingsResource) Update(ctx context.Context, req resource.
 		return
 	}
 
+	r.applyDefaults(ctx, req.Plan.Raw, req.State.Raw, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.applyDefaultPermissions(ctx, req.Plan.Raw, req.State.Raw, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	r.readOrganization(ctx, &data, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
@@ -543,47 +522,75 @@ func (r *OrganizationSettingsResource) applySettings(ctx context.Context, plan, 
 		spec []AttrSpec
 		send func(io.Reader) (int, []byte, error)
 	}{
-		{"appearance", orgSettingsAppearanceSpec, func(body io.Reader) (int, []byte, error) {
+		{"appearance", append(orgSettingsAppearanceSpec, currentOrganizationSpecs("appearance-settings")...), func(body io.Reader) (int, []byte, error) {
 			resp, err := r.client.UpdateAppearanceSettingsWithBodyWithResponse(ctx, "application/json", body)
 			if err != nil {
 				return 0, nil, err
 			}
 			return resp.StatusCode(), resp.Body, nil
 		}},
-		{"llm", orgSettingsLlmSpec, func(body io.Reader) (int, []byte, error) {
-			resp, err := r.client.UpdateLlmSettingsWithBodyWithResponse(ctx, "application/json", body)
-			if err != nil {
-				return 0, nil, err
-			}
-			return resp.StatusCode(), resp.Body, nil
-		}},
-		{"security", orgSettingsSecuritySpec, func(body io.Reader) (int, []byte, error) {
+		{"security", append(orgSettingsSecuritySpec, currentOrganizationSpecs("security-settings")...), func(body io.Reader) (int, []byte, error) {
 			resp, err := r.client.UpdateSecuritySettingsWithBodyWithResponse(ctx, "application/json", body)
 			if err != nil {
 				return 0, nil, err
 			}
 			return resp.StatusCode(), resp.Body, nil
 		}},
-		{"agent", orgSettingsAgentSpec, func(body io.Reader) (int, []byte, error) {
+		{"agent", append(orgSettingsAgentSpec, currentOrganizationSpecs("agent-settings")...), func(body io.Reader) (int, []byte, error) {
 			resp, err := r.client.UpdateAgentSettingsWithBodyWithResponse(ctx, "application/json", body)
 			if err != nil {
 				return 0, nil, err
 			}
 			return resp.StatusCode(), resp.Body, nil
 		}},
-		{"mcp", orgSettingsMcpSpec, func(body io.Reader) (int, []byte, error) {
+		{"mcp", append(orgSettingsMcpSpec, currentOrganizationSpecs("mcp-settings")...), func(body io.Reader) (int, []byte, error) {
 			resp, err := r.client.UpdateMcpSettingsWithBodyWithResponse(ctx, "application/json", body)
 			if err != nil {
 				return 0, nil, err
 			}
 			return resp.StatusCode(), resp.Body, nil
 		}},
-		{"knowledge", orgSettingsKnowledgeSpec, func(body io.Reader) (int, []byte, error) {
+		{"knowledge", append(orgSettingsKnowledgeSpec, currentOrganizationSpecs("knowledge-settings")...), func(body io.Reader) (int, []byte, error) {
 			resp, err := r.client.UpdateKnowledgeSettingsWithBodyWithResponse(ctx, "application/json", body)
 			if err != nil {
 				return 0, nil, err
 			}
 			return resp.StatusCode(), resp.Body, nil
+		}},
+		{"skills-settings", currentOrganizationSpecs("skills-settings"), func(body io.Reader) (int, []byte, error) {
+			response, err := r.client.UpdateSkillsSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return response.StatusCode(), response.Body, nil
+		}},
+		{"auth-settings", currentOrganizationSpecs("auth-settings"), func(body io.Reader) (int, []byte, error) {
+			response, err := r.client.UpdateAuthSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return response.StatusCode(), response.Body, nil
+		}},
+		{"connection-settings", currentOrganizationSpecs("connection-settings"), func(body io.Reader) (int, []byte, error) {
+			response, err := r.client.UpdateConnectionSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return response.StatusCode(), response.Body, nil
+		}},
+		{"integration-settings", currentOrganizationSpecs("integration-settings"), func(body io.Reader) (int, []byte, error) {
+			response, err := r.client.UpdateIntegrationSettingsWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return response.StatusCode(), response.Body, nil
+		}},
+		{"default-environment", currentOrganizationSpecs("default-environment"), func(body io.Reader) (int, []byte, error) {
+			response, err := r.client.UpdateDefaultEnvironmentWithBodyWithResponse(ctx, "application/json", body)
+			if err != nil {
+				return 0, nil, err
+			}
+			return response.StatusCode(), response.Body, nil
 		}},
 	}
 
@@ -659,6 +666,15 @@ func shouldCompleteOnboarding(plan, prior tftypes.Value) bool {
 }
 
 func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, data *OrganizationSettingsResourceModel, diags *diag.Diagnostics) {
+	defer func() {
+		if !diags.HasError() {
+			r.readDefaults(ctx, data, diags)
+			if !diags.HasError() {
+				r.readDefaultPermissions(ctx, data, diags)
+			}
+		}
+	}()
+
 	apiResp, err := r.client.GetOrganizationWithResponse(ctx)
 	if err != nil {
 		diags.AddError("API Error", fmt.Sprintf("Unable to read organization settings, got error: %s", err))
@@ -670,23 +686,19 @@ func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, dat
 		return
 	}
 
+	flattenCurrentOrganizationSettings(data, apiResp.Body, diags)
+	if diags.HasError() {
+		return
+	}
 	data.ID = types.StringValue(apiResp.JSON200.Id)
 	data.Font = types.StringValue(string(apiResp.JSON200.CustomFont))
 	data.ColorTheme = types.StringValue(string(apiResp.JSON200.Theme))
-	data.CompressionScope = types.StringValue(string(apiResp.JSON200.CompressionScope))
 	data.OnboardingComplete = types.BoolValue(apiResp.JSON200.OnboardingComplete)
-	data.ConvertToolResultsToToon = types.BoolValue(apiResp.JSON200.ConvertToolResultsToToon)
 
 	if apiResp.JSON200.Logo != nil {
 		data.Logo = types.StringValue(*apiResp.JSON200.Logo)
 	} else {
 		data.Logo = types.StringNull()
-	}
-
-	if apiResp.JSON200.LimitCleanupInterval != nil {
-		data.LimitCleanupInterval = types.StringValue(string(*apiResp.JSON200.LimitCleanupInterval))
-	} else {
-		data.LimitCleanupInterval = types.StringNull()
 	}
 
 	// Appearance settings
@@ -754,24 +766,12 @@ func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, dat
 		}})
 	}
 	data.AnimateChatPlaceholders = types.BoolValue(apiResp.JSON200.AnimateChatPlaceholders)
-	data.ShowTwoFactor = types.BoolValue(apiResp.JSON200.ShowTwoFactor)
 	data.SlimChatErrorUI = types.BoolValue(apiResp.JSON200.SlimChatErrorUi)
 
 	// Security settings
-	data.GlobalToolPolicy = types.StringValue(string(apiResp.JSON200.GlobalToolPolicy))
 	data.AllowChatFileUploads = types.BoolValue(apiResp.JSON200.AllowChatFileUploads)
 
 	// Agent settings
-	if apiResp.JSON200.DefaultLlmModel != nil {
-		data.DefaultLlmModel = types.StringValue(*apiResp.JSON200.DefaultLlmModel)
-	} else {
-		data.DefaultLlmModel = types.StringNull()
-	}
-	if apiResp.JSON200.DefaultLlmProvider != nil {
-		data.DefaultLlmProvider = types.StringValue(string(*apiResp.JSON200.DefaultLlmProvider))
-	} else {
-		data.DefaultLlmProvider = types.StringNull()
-	}
 	if apiResp.JSON200.DefaultLlmApiKeyId != nil {
 		data.DefaultLlmApiKeyId = types.StringValue(apiResp.JSON200.DefaultLlmApiKeyId.String())
 	} else {
@@ -784,7 +784,6 @@ func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, dat
 	}
 
 	// MCP settings
-	data.McpOauthAccessTokenLifetimeSeconds = types.Int64Value(int64(apiResp.JSON200.McpOauthAccessTokenLifetimeSeconds))
 
 	// Knowledge settings
 	if apiResp.JSON200.EmbeddingModel != nil {
@@ -822,4 +821,8 @@ func (r *OrganizationSettingsResource) readOrganization(ctx context.Context, dat
 	} else {
 		data.Metadata = types.StringNull()
 	}
+}
+
+func (r *OrganizationSettingsResource) ModifyPlan(_ context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+	preserveManagedNoopPlan(req, resp)
 }

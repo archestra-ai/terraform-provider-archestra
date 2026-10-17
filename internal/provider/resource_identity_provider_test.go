@@ -14,6 +14,19 @@ import (
 
 var (
 	identityProviderSensitiveFields = []string{
+		"oidc_config.client_secret",
+		"oidc_config.enterprise_managed_credentials.client_secret",
+		"oidc_config.enterprise_managed_credentials.private_key_pem",
+		"saml_config.private_key",
+		"saml_config.decryption_pvk",
+		"saml_config.sp_metadata.private_key",
+		"saml_config.sp_metadata.private_key_pass",
+		"saml_config.sp_metadata.enc_private_key",
+		"saml_config.sp_metadata.enc_private_key_pass",
+		"saml_config.idp_metadata.private_key",
+		"saml_config.idp_metadata.private_key_pass",
+		"saml_config.idp_metadata.enc_private_key",
+		"saml_config.idp_metadata.enc_private_key_pass",
 		"oidc_config.0.client_secret",
 		"saml_config.0.cert",
 		"saml_config.0.decryption_pvk",

@@ -1,21 +1,21 @@
 # --- Agents ----------------------------------------------------------------
 
 resource "archestra_agent" "support" {
+  tools          = [{ tool_id = archestra_mcp_server.filesystem.tool_id_by_name["${archestra_mcp_registry_entry.filesystem.name}__read_text_file"], mcp_server_id = archestra_mcp_server.filesystem.id }]
   name           = "customer-support"
   description    = "Tier-1 customer support agent"
   system_prompt  = "You are a friendly customer-support agent. Be concise."
   llm_model      = "llama3"
-  llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
-  scope          = "org"
+  llm_api_key_id = archestra_model_provider.ollama_vault.id
 }
 
 resource "archestra_agent" "support_batch" {
+  tools          = [for tool in archestra_mcp_server.filesystem.tools : { tool_id = tool.id, mcp_server_id = archestra_mcp_server.filesystem.id }]
   name           = "customer-support-batch"
-  description    = "Variant agent for bulk tool-assignment test"
-  system_prompt  = "Same as support agent — separate so we can exercise agent_tool_batch without colliding with read_text_file's per-tool wiring."
+  description    = "Agent with every tool from a selected MCP server"
+  system_prompt  = "Answer support questions using the filesystem tools."
   llm_model      = "llama3"
-  llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
-  scope          = "org"
+  llm_api_key_id = archestra_model_provider.ollama_vault.id
 }
 
 resource "archestra_agent" "intake" {
@@ -23,8 +23,7 @@ resource "archestra_agent" "intake" {
   description    = "Email-triggered intake agent — routes incoming customer emails into chats"
   system_prompt  = "Triage incoming customer emails into the right team."
   llm_model      = "llama3"
-  llm_api_key_id = archestra_llm_provider_api_key.ollama_vault.id
-  scope          = "org"
+  llm_api_key_id = archestra_model_provider.ollama_vault.id
 
   consider_context_untrusted    = true
   incoming_email_enabled        = true
@@ -50,15 +49,3 @@ resource "archestra_agent" "intake" {
 }
 
 # --- Tool wirings ----------------------------------------------------------
-
-resource "archestra_agent_tool" "read_text_file" {
-  agent_id      = archestra_agent.support.id
-  mcp_server_id = archestra_mcp_server_installation.filesystem.id
-  tool_id       = archestra_mcp_server_installation.filesystem.tool_id_by_name["${archestra_mcp_registry_catalog_item.filesystem.name}__read_text_file"]
-}
-
-resource "archestra_agent_tool_batch" "support_batch_filesystem" {
-  agent_id      = archestra_agent.support_batch.id
-  mcp_server_id = archestra_mcp_server_installation.filesystem.id
-  tool_ids      = toset([for t in archestra_mcp_server_installation.filesystem.tools : t.id])
-}

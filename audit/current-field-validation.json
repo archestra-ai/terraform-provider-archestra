@@ -1,0 +1,71 @@
+{
+  "api_source_commit": "91b2d0cbb1dfbed399f0ffb8b012d167453eff6e",
+  "api_pr": "https://github.com/archestra-ai/archestra/pull/9032",
+  "published_api_tested": "1.4.0-rc.46",
+  "published_api_image_digest": "sha256:794147fc093325fbff58259ee9b7f7712126e3fc3e0e380ea10c0199ad3d6834",
+  "real_terraform_acceptance": {
+    "published_api": [
+      "TestAccCurrentTeamHierarchy",
+      "TestAccCurrentLimitFields",
+      "TestAccCatalogCurrentEnvironmentAndClone",
+      "TestAccMcpRegistryCatalogItemResource",
+      "TestAccMcpRegistryCatalogItemResourceWithMetadata",
+      "TestAccMcpRegistryCatalogItemResourceRemote",
+      "TestAccCurrentModelOverrides"
+    ],
+    "patched_source_api": [
+      "TestAccLLMProviderKeyCurrentFields",
+      "TestAccKnowledgeBaseResource",
+      "TestAccKnowledgeBaseResource_ClearDescription",
+      "TestAccKnowledgeBaseResource_EmptyNameRejected",
+      "TestAccKnowledgeBaseLabels"
+    ],
+    "operations": [
+      "create",
+      "refresh",
+      "import",
+      "update",
+      "clear nullable scalar and collections",
+      "no-op plan",
+      "destroy"
+    ],
+    "api_pr_required_for": [
+      "LLM key label reads",
+      "knowledge-base label reads and label-only updates"
+    ]
+  },
+  "api_regressions": {
+    "affected_route_tests_passed": 208,
+    "full_codegen": "passed",
+    "backend_typecheck": "passed",
+    "shared_typecheck": "passed",
+    "test_imports": "passed"
+  },
+  "crossplane_runtime_evidence": "26/26 registered resources have accumulated both-scope lifecycle proofs with candidate hashes; final release-candidate repetition remains required.",
+  "release_status": "blocked pending remaining coverage, lifecycle, migration, CI, package and deployed sync validation",
+  "model_runtime_assertions": [
+    "provider-qualified native model adoption",
+    "UUID import",
+    "cache pricing and token window override",
+    "generation-parameter replacement",
+    "out-of-band drift detected and repaired",
+    "modality override/remove cycle",
+    "destroy clears overrides and labels but preserves the discovered model"
+  ],
+  "failure_regressions": [
+    "403/500 model reset errors surface to Terraform",
+    "404 model reset is idempotent",
+    "ambiguous model adoption/import refuses to write"
+  ],
+  "api_coverage_limit": "GET field coverage is a schema guard, not proof that every meaningful API resource, request-only field or controller lifecycle is supported.",
+  "request_field_audit": "provider-v3-request-fields.json; unmapped writes require explicit implementation or justification before full API coverage can be claimed",
+  "remaining_get_field_guard_gaps": 0,
+  "remaining_get_field_guard_resources": [],
+  "request_field_review_candidates": {
+    "occurrences": 98,
+    "operations": 24,
+    "resource_families": 17,
+    "evidence": "provider-v3-request-fields.json",
+    "note": "Review candidates include derived payloads and backend-owned fields; this is not a count of confirmed missing mutable capabilities."
+  }
+}

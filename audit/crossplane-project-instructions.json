@@ -1,0 +1,30 @@
+{
+  "run_id": "067961cd",
+  "terraform_sha256": "bebca1b997dff5377d6dcaaf457292fd8fd8dfdf7e5143a3e3cb49c01249b284",
+  "controller_sha256": "0b2eec9de426a74c35d7e4ad793f02fc86ce928ced3464165309bc46de3f4ffe",
+  "results": [
+    {
+      "resource": "ProjectInstructions",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_content_clear": "passed",
+      "parent_delete": "passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "ProjectInstructions",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_content_clear": "passed",
+      "parent_delete": "passed",
+      "backend_after_delete": 404
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "outcome": "passed"
+}

@@ -30,31 +30,21 @@ var orgSettingsAppearanceSpec = []AttrSpec{
 		{TFName: "url", JSONName: "url", Kind: Scalar},
 	}},
 	{TFName: "animate_chat_placeholders", JSONName: "animateChatPlaceholders", Kind: Scalar},
-	{TFName: "show_two_factor", JSONName: "showTwoFactor", Kind: Scalar},
 	{TFName: "slim_chat_error_ui", JSONName: "slimChatErrorUi", Kind: Scalar},
 }
 
-var orgSettingsLlmSpec = []AttrSpec{
-	{TFName: "compression_scope", JSONName: "compressionScope", Kind: Scalar},
-	{TFName: "convert_tool_results_to_toon", JSONName: "convertToolResultsToToon", Kind: Scalar},
-	{TFName: "limit_cleanup_interval", JSONName: "limitCleanupInterval", Kind: Scalar},
-}
+var orgSettingsLlmSpec = []AttrSpec{}
 
 var orgSettingsSecuritySpec = []AttrSpec{
-	{TFName: "global_tool_policy", JSONName: "globalToolPolicy", Kind: Scalar},
 	{TFName: "allow_chat_file_uploads", JSONName: "allowChatFileUploads", Kind: Scalar},
 }
 
 var orgSettingsAgentSpec = []AttrSpec{
-	{TFName: "default_llm_model", JSONName: "defaultLlmModel", Kind: Scalar},
-	{TFName: "default_llm_provider", JSONName: "defaultLlmProvider", Kind: Scalar},
 	{TFName: "default_llm_api_key_id", JSONName: "defaultLlmApiKeyId", Kind: Scalar},
 	{TFName: "default_agent_id", JSONName: "defaultAgentId", Kind: Scalar},
 }
 
-var orgSettingsMcpSpec = []AttrSpec{
-	{TFName: "mcp_oauth_access_token_lifetime_seconds", JSONName: "mcpOauthAccessTokenLifetimeSeconds", Kind: Scalar},
-}
+var orgSettingsMcpSpec = []AttrSpec{}
 
 var orgSettingsKnowledgeSpec = []AttrSpec{
 	{TFName: "embedding_model", JSONName: "embeddingModel", Kind: Scalar},
@@ -81,7 +71,8 @@ func (r *OrganizationSettingsResource) AttrSpecs() []AttrSpec {
 	specs = append(specs, orgSettingsMcpSpec...)
 	specs = append(specs, orgSettingsKnowledgeSpec...)
 	specs = append(specs, orgSettingsOnboardingSpec...)
-	return specs
+	specs = append(specs, allCurrentOrganizationSpecs()...)
+	return append(specs, AttrSpec{TFName: "environment_defaults", Kind: Synthetic}, AttrSpec{TFName: "default_user_limits", Kind: Synthetic}, AttrSpec{TFName: "default_permissions", Kind: Synthetic})
 }
 
 // APIShape implements resourceWithAPIShape — activates the API↔schema
@@ -96,6 +87,28 @@ func (r *OrganizationSettingsResource) APIShape() any {
 // every field on the response either has a managed schema attribute or
 // a Computed-only one. Add an entry here only with a justification
 // comment if the backend ever adds a field outside the provider's scope.
+// These legacy projections and telemetry fields are deliberately not managed.
 func (r *OrganizationSettingsResource) KnownIntentionallySkipped() []string {
-	return nil
+	return []string{
+		// Telemetry instance identity is not declarative organization configuration.
+		"analyticsInstanceId",
+		// Retired proxy singleton projection has no corresponding writable setting.
+		"connectionDefaultLlmProxyId",
+		// The API explicitly rejects this retired connection input.
+		"connectionShownProviders",
+		// Display projection of defaultModelId; manage default_model_id.
+		"defaultLlmModel",
+		// Display projection of defaultModelId; manage default_model_id.
+		"defaultLlmProvider",
+		// Legacy projection; current limits are per-environment lifecycle objects.
+		"defaultUserLimitCleanupInterval",
+		// Legacy projection; current limits are per-environment lifecycle objects.
+		"defaultUserLimitModel",
+		// Legacy projection; current limits are per-environment lifecycle objects.
+		"defaultUserLimitValue",
+		// User-interface survey tracking is not managed configuration.
+		"onboardingSurveyCompletedAt",
+		// Retired feature projection has no writable API setting.
+		"skillToolsEnabled",
+	}
 }

@@ -76,12 +76,20 @@ func TestApiCoverage(t *testing.T) {
 			// `theme` ↔ `color_theme`). Honor those declared mappings
 			// as covered.
 			attrSpecJSONSet := make(map[string]struct{})
-			if specs, ok := r.(resourceWithAttrSpec); ok {
-				for _, s := range specs.AttrSpecs() {
+			var collectMappings func([]AttrSpec)
+			collectMappings = func(specs []AttrSpec) {
+				for _, s := range specs {
 					if s.JSONName != "" {
 						attrSpecJSONSet[s.JSONName] = struct{}{}
 					}
+					if s.ReadJSONName != "" {
+						attrSpecJSONSet[s.ReadJSONName] = struct{}{}
+					}
+					collectMappings(s.Children)
 				}
+			}
+			if specs, ok := r.(resourceWithAttrSpec); ok {
+				collectMappings(specs.AttrSpecs())
 			}
 
 			skipSet := make(map[string]struct{})
@@ -146,6 +154,11 @@ func walkAPIShape(shape any) []string {
 			t = t.Elem()
 			continue
 		case reflect.Struct:
+			linksField, hasLinks := t.FieldByName("Links")
+			if hasLinks && t.NumField() == 1 && linksField.Tag.Get("json") == "links" && linksField.Type.Kind() == reflect.Slice {
+				t = linksField.Type.Elem()
+				continue
+			}
 			dataField, hasData := t.FieldByName("Data")
 			_, hasPagination := t.FieldByName("Pagination")
 			if hasData && hasPagination && dataField.Type.Kind() == reflect.Slice {
@@ -252,6 +265,33 @@ func TestWalkAPIShape(t *testing.T) {
 	got = walkAPIShape(paginatedResponse{})
 	if len(got) != 1 || got[0] != "item" {
 		t.Errorf("paginated response: expected [item], got %v", got)
+	}
+
+	type linksResponse struct {
+		JSON200 *struct {
+			Links []struct {
+				ID     string `json:"id"`
+				Status string `json:"status"`
+			} `json:"links"`
+		}
+	}
+	got = walkAPIShape(linksResponse{})
+	sort.Strings(got)
+	if len(got) != 2 || got[0] != "id" || got[1] != "status" {
+		t.Errorf("links envelope: expected record fields, got %v", got)
+	}
+	type recordWithLinks struct {
+		JSON200 *struct {
+			ID    string `json:"id"`
+			Links []struct {
+				URL string `json:"url"`
+			} `json:"links"`
+		}
+	}
+	got = walkAPIShape(recordWithLinks{})
+	sort.Strings(got)
+	if len(got) != 2 || got[0] != "id" || got[1] != "links" {
+		t.Errorf("record-owned links must not be unwrapped, got %v", got)
 	}
 
 	// No JSON200 field → empty result, no panic.
