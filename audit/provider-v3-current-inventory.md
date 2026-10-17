@@ -2,7 +2,7 @@
 
 static inventory; no runtime coverage implied
 
-Terraform: 29; Crossplane configured: 29.
+Terraform: 30; Crossplane configured: 30.
 
 Mapping counts are configuration coverage, not successful CRUD or reconciliation coverage.
 
@@ -17,6 +17,7 @@ Mapping counts are configuration coverage, not successful CRUD or reconciliation
 | `archestra_identity_provider` | True | True | none detected | none detected | 7 |
 | `archestra_knowledge_base` | True | True | none detected | UpdateResourcePermissions: grants, revision | 4 |
 | `archestra_knowledge_directory` | True | True | none detected | none detected | 0 |
+| `archestra_knowledge_file` | True | True | none detected | UpdateResourcePermissions: grants, revision | 3 |
 | `archestra_limit` | True | True | none detected | CreateLimit: lastCleanup; UpdateLimit: lastCleanup | 4 |
 | `archestra_mcp_gateway` | True | True | none detected | BulkAssignTools: assignments; CreateAgent: activationSkillPolicy, agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; SyncAgentA2aDelegations: connectionIds; SyncAgentDelegations: targetAgentIds; UpdateAgent: agentType, builtInAgentConfig, deletedAt, incomingEmailAllowedDomain, incomingEmailEnabled, incomingEmailSecurityMode, isPersonalProxy, llmApiKeyId, llmModel, modelId, organizationId, runtime, suggestedPrompts, systemPrompt; UpdateAgentKnowledgeSourceExclusions: excludedConnectorIds; UpdateAgentSkillExclusions: excludedSkillIds; UpdateAgentSkills: accessAllSkills, skillIds; UpdateAgentSubagentExclusions: excludedSubagentIds; UpdateAgentToolExclusions: excludedToolIds; UpdateResourcePermissions: grants, revision | 2 |
 | `archestra_mcp_registry_entry` | True | True | none detected | CreateInternalMcpCatalogItem: catalogReinstallRequired, id, oauthConfig, serverType, serverUrl; UpdateInternalMcpCatalogItem: catalogReinstallRequired, hibernationMode, oauthConfig, serverType, serverUrl; UpdateResourcePermissions: grants, revision | 18 |

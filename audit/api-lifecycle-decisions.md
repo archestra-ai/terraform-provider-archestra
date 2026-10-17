@@ -25,7 +25,7 @@ The reviewed milestone 411935f passed **147 native cases** and all 29 families i
 | Site notifications | Persistent privileged notification configuration requires a scope and ownership decision. | Implementation pending. Preserve inactive creation; notification delivery is not an automatic test/setup action. |
 | Share links and operational reads | `share_link` has an independently revocable, secret-once lifecycle. Data sources are `agent`, `team`, `tool`, `mcp_tool_calls`. | Alert dismissals, personal preferences, inference, messages, telemetry, run cancellation and bulk facades are not additional managed-object identities. |
 
-The 185 unmapped request-field occurrences have explicit dispositions in
+The 187 unmapped request-field occurrences have explicit dispositions in
 [current-request-field-review.json](current-request-field-review.json). This count
 includes manual encoders and server-owned fields; it is not a missing-feature count.
 Further entity lookups and Crossplane reference ergonomics require review against
@@ -77,3 +77,7 @@ The remaining baseline occurrences are manually encoded existing capabilities, d
 The baseline 29-family runtime proof must remain tied to its recorded native/controller hashes and API snapshot. New native tests, new both-scope tests, final full-suite/migration repetition and full runtime image/xpkg tests need their own candidate hashes. No static classification or generated CRD closes a runtime test. No desired row is excluded merely because its implementation is larger or requires an enterprise fixture.
 
 Daily sync stays disabled until supported setup and a manually reviewed PR dry run pass. This design does not authorize automatic merging of future synchronization PRs.
+
+## Knowledge file addition
+
+`archestra_knowledge_file` owns standalone uploaded bytes, filename, directory placement, labels and direct sharing. Import reads actual bytes into sensitive state and verifies their hash and size. Content and MIME changes replace the file; upload alone does not run indexing. Existing knowledge-base associations are observed. The [current full native suite](knowledge-files-native-acceptance.json) passes all 156 cases with zero failures or skips against API 1.4.0-rc.49. [Six current runtime records](crossplane-knowledge-files.json) pass both scopes and normal cleanup, including required initProvider Secret sources for Knowledge File and Project File. The normal local bootstrap now installs the real pinned Sandbox controller and seeds model keys for its read-only Vault configuration. The earlier interrupted runs are preserved privately and do not count as full-suite passes; final combined runtime/package validation remains open.

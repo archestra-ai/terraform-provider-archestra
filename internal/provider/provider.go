@@ -193,6 +193,7 @@ func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Res
 		NewMarketplaceShareLinkResource,
 		NewGithubAppConfigResource,
 		NewKnowledgeDirectoryResource,
+		NewKnowledgeFileResource,
 		NewServiceAccountResource,
 		NewServiceAccountTokenResource,
 		NewEnvironmentResource,

@@ -1,7 +1,7 @@
 # Archestra Provider
 
 
-The v3 review candidate has **29 Terraform resources and four Terraform data sources**. All 29 resources have generated Crossplane types in both scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource; authored and Git-backed Skills also share one resource. The [migration guide](MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The reviewed milestone 411935f retains its [147-case native proof](audit/consolidated-native-acceptance.json). The [Git Skill native proof](audit/skill-git-native-acceptance.json) records all 151 cases passing with zero failures or skips against API 1.4.0-rc.49.
+The v3 review candidate has **30 Terraform resources and four Terraform data sources**. All 30 resources have generated Crossplane types in both scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource; authored and Git-backed Skills also share one resource. The [migration guide](MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The reviewed milestone 411935f retains its [147-case native proof](audit/consolidated-native-acceptance.json). The [Git Skill native proof](audit/skill-git-native-acceptance.json) records all 151 cases passing with zero failures or skips against API 1.4.0-rc.49.
 
 [![Crossplane mappings](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
 
@@ -26,6 +26,8 @@ APIs, final package validation, protected review and publication are still open.
 
 The [Git Skill runtime proof](audit/crossplane-skill-git-source.json) adds eight both-scope records for authored content, sharing, Git sources and initProvider. It covers settings without content rewrites, source updates, reconnect, drift repair, orphan/adoption and normal deletion. Switching between authored and Git ownership replaces the Skill; a Git source change retains its UUID. Final expanded-candidate and package validation remain release gates.
 
+Knowledge File adds uploaded document bytes, directory placement, labels and parent-owned sharing. Content/MIME changes replace the file; indexing associations are observed. The [current full native suite](audit/knowledge-files-native-acceptance.json) passes all 156 cases with zero failures or skips. [Six current both-scope records](audit/crossplane-knowledge-files.json) cover Knowledge File and required initProvider Secret inputs for both file families, with normal cleanup. The earlier 29-family runtime checkpoint retains its own frozen candidate; final combined runtime and package validation remain release gates.
+
 ## Resource coverage
 
 The implemented surface follows product objects and Settings. Configuration and
@@ -43,6 +45,7 @@ and [data sources](docs/data-sources) for exact fields, examples and import form
 | `archestra_identity_provider` | `identity` / `Provider` |
 | `archestra_knowledge_base` | `knowledge` / `KnowledgeBase` |
 | `archestra_knowledge_directory` | `knowledge` / `Directory` |
+| `archestra_knowledge_file` | `knowledge` / `File` |
 | `archestra_limit` | `limit` / `Limit` |
 | `archestra_mcp_gateway` | `gateway` / `Gateway` |
 | `archestra_mcp_registry_entry` | `mcp` / `RegistryEntry` |

@@ -995,6 +995,54 @@ const (
 	CreateKnowledgeBaseJSONBodyInitialGrantsSubject4TypeOrganization CreateKnowledgeBaseJSONBodyInitialGrantsSubject4Type = "organization"
 )
 
+// Defines values for GetKnowledgeFilesParamsAccess.
+const (
+	GetKnowledgeFilesParamsAccessMine   GetKnowledgeFilesParamsAccess = "mine"
+	GetKnowledgeFilesParamsAccessOrg    GetKnowledgeFilesParamsAccess = "org"
+	GetKnowledgeFilesParamsAccessOthers GetKnowledgeFilesParamsAccess = "others"
+	GetKnowledgeFilesParamsAccessShared GetKnowledgeFilesParamsAccess = "shared"
+)
+
+// Defines values for UploadKnowledgeFileJSONBodyInitialGrantsActions.
+const (
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsConfigureDeploymentSpec UploadKnowledgeFileJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsDelete                  UploadKnowledgeFileJSONBodyInitialGrantsActions = "delete"
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsManagePermissions       UploadKnowledgeFileJSONBodyInitialGrantsActions = "manage-permissions"
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsRead                    UploadKnowledgeFileJSONBodyInitialGrantsActions = "read"
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsUpdate                  UploadKnowledgeFileJSONBodyInitialGrantsActions = "update"
+	UploadKnowledgeFileJSONBodyInitialGrantsActionsUse                     UploadKnowledgeFileJSONBodyInitialGrantsActions = "use"
+)
+
+// Defines values for UploadKnowledgeFileJSONBodyInitialGrantsSubject0Type.
+const (
+	UploadKnowledgeFileJSONBodyInitialGrantsSubject0TypeUser UploadKnowledgeFileJSONBodyInitialGrantsSubject0Type = "user"
+)
+
+// Defines values for UploadKnowledgeFileJSONBodyInitialGrantsSubject1Type.
+const (
+	UploadKnowledgeFileJSONBodyInitialGrantsSubject1TypeTeam UploadKnowledgeFileJSONBodyInitialGrantsSubject1Type = "team"
+)
+
+// Defines values for UploadKnowledgeFileJSONBodyInitialGrantsSubject2Type.
+const (
+	UploadKnowledgeFileJSONBodyInitialGrantsSubject2TypeServiceAccount UploadKnowledgeFileJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+)
+
+// Defines values for UploadKnowledgeFileJSONBodyInitialGrantsSubject3Type.
+const (
+	UploadKnowledgeFileJSONBodyInitialGrantsSubject3TypeRole UploadKnowledgeFileJSONBodyInitialGrantsSubject3Type = "role"
+)
+
+// Defines values for UploadKnowledgeFileJSONBodyInitialGrantsSubject4Id.
+const (
+	UploadKnowledgeFileJSONBodyInitialGrantsSubject4IdAsterisk UploadKnowledgeFileJSONBodyInitialGrantsSubject4Id = "*"
+)
+
+// Defines values for UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type.
+const (
+	UploadKnowledgeFileJSONBodyInitialGrantsSubject4TypeOrganization UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type = "organization"
+)
+
 // Defines values for CreateLimitJSONBodyCleanupInterval.
 const (
 	CreateLimitJSONBodyCleanupIntervalCalendarDay        CreateLimitJSONBodyCleanupInterval = "calendar_day"
@@ -1318,10 +1366,10 @@ const (
 
 // Defines values for GetOauthClientsParamsAccess.
 const (
-	Mine   GetOauthClientsParamsAccess = "mine"
-	Org    GetOauthClientsParamsAccess = "org"
-	Others GetOauthClientsParamsAccess = "others"
-	Shared GetOauthClientsParamsAccess = "shared"
+	GetOauthClientsParamsAccessMine   GetOauthClientsParamsAccess = "mine"
+	GetOauthClientsParamsAccessOrg    GetOauthClientsParamsAccess = "org"
+	GetOauthClientsParamsAccessOthers GetOauthClientsParamsAccess = "others"
+	GetOauthClientsParamsAccessShared GetOauthClientsParamsAccess = "shared"
 )
 
 // Defines values for CreateOauthClientJSONBodyGrantType.
@@ -1959,42 +2007,42 @@ const (
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsActions.
 const (
-	ConfigureDeploymentSpec ImportGithubSkillsJSONBodyInitialGrantsActions = "configure-deployment-spec"
-	Delete                  ImportGithubSkillsJSONBodyInitialGrantsActions = "delete"
-	ManagePermissions       ImportGithubSkillsJSONBodyInitialGrantsActions = "manage-permissions"
-	Read                    ImportGithubSkillsJSONBodyInitialGrantsActions = "read"
-	Update                  ImportGithubSkillsJSONBodyInitialGrantsActions = "update"
-	Use                     ImportGithubSkillsJSONBodyInitialGrantsActions = "use"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsConfigureDeploymentSpec ImportGithubSkillsJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsDelete                  ImportGithubSkillsJSONBodyInitialGrantsActions = "delete"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsManagePermissions       ImportGithubSkillsJSONBodyInitialGrantsActions = "manage-permissions"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsRead                    ImportGithubSkillsJSONBodyInitialGrantsActions = "read"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsUpdate                  ImportGithubSkillsJSONBodyInitialGrantsActions = "update"
+	ImportGithubSkillsJSONBodyInitialGrantsActionsUse                     ImportGithubSkillsJSONBodyInitialGrantsActions = "use"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject0Type.
 const (
-	User ImportGithubSkillsJSONBodyInitialGrantsSubject0Type = "user"
+	ImportGithubSkillsJSONBodyInitialGrantsSubject0TypeUser ImportGithubSkillsJSONBodyInitialGrantsSubject0Type = "user"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject1Type.
 const (
-	Team ImportGithubSkillsJSONBodyInitialGrantsSubject1Type = "team"
+	ImportGithubSkillsJSONBodyInitialGrantsSubject1TypeTeam ImportGithubSkillsJSONBodyInitialGrantsSubject1Type = "team"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject2Type.
 const (
-	ImportGithubSkillsJSONBodyInitialGrantsSubject2TypeServiceAccount ImportGithubSkillsJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+	ServiceAccount ImportGithubSkillsJSONBodyInitialGrantsSubject2Type = "serviceAccount"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject3Type.
 const (
-	Role ImportGithubSkillsJSONBodyInitialGrantsSubject3Type = "role"
+	ImportGithubSkillsJSONBodyInitialGrantsSubject3TypeRole ImportGithubSkillsJSONBodyInitialGrantsSubject3Type = "role"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject4Id.
 const (
-	Asterisk ImportGithubSkillsJSONBodyInitialGrantsSubject4Id = "*"
+	ImportGithubSkillsJSONBodyInitialGrantsSubject4IdAsterisk ImportGithubSkillsJSONBodyInitialGrantsSubject4Id = "*"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject4Type.
 const (
-	Organization ImportGithubSkillsJSONBodyInitialGrantsSubject4Type = "organization"
+	ImportGithubSkillsJSONBodyInitialGrantsSubject4TypeOrganization ImportGithubSkillsJSONBodyInitialGrantsSubject4Type = "organization"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyProvider.
@@ -4112,6 +4160,117 @@ type UpdateKnowledgeDirectoryJSONBody struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// GetKnowledgeFilesParams defines parameters for GetKnowledgeFiles.
+type GetKnowledgeFilesParams struct {
+	Limit       *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset      *int    `form:"offset,omitempty" json:"offset,omitempty"`
+	DirectoryId *string `form:"directoryId,omitempty" json:"directoryId,omitempty"`
+	Search      *string `form:"search,omitempty" json:"search,omitempty"`
+
+	// Labels Filter by labels. Format: key1:val1|val2;key2:val3. AND across keys, OR within values.
+	Labels *string `form:"labels,omitempty" json:"labels,omitempty"`
+
+	// Access Keep only objects the caller reaches in one of these ways (comma-separated): mine (authored by the caller), shared (shared with the caller or one of their teams), org (shared with the organization), others (visible only through organization-wide authority). Omit for every readable object.
+	Access *[]GetKnowledgeFilesParamsAccess `form:"access,omitempty" json:"access,omitempty"`
+
+	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
+	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
+
+	// Owner Keep only objects authored by one of these user IDs (comma-separated). Narrows the rows the caller can already read. Omit for no filtering.
+	Owner *[]string `form:"owner,omitempty" json:"owner,omitempty"`
+}
+
+// GetKnowledgeFilesParamsAccess defines parameters for GetKnowledgeFiles.
+type GetKnowledgeFilesParamsAccess string
+
+// UploadKnowledgeFileJSONBody defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBody struct {
+	Content       string              `json:"content"`
+	DirectoryId   *openapi_types.UUID `json:"directoryId"`
+	Filename      string              `json:"filename"`
+	InitialGrants *[]struct {
+		Actions []UploadKnowledgeFileJSONBodyInitialGrantsActions `json:"actions"`
+		Subject UploadKnowledgeFileJSONBody_InitialGrants_Subject `json:"subject"`
+	} `json:"initialGrants,omitempty"`
+	Labels *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+	MimeType string `json:"mimeType"`
+}
+
+// UploadKnowledgeFileJSONBodyInitialGrantsActions defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsActions string
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject0 defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject0 struct {
+	Id   string                                               `json:"id"`
+	Type UploadKnowledgeFileJSONBodyInitialGrantsSubject0Type `json:"type"`
+}
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject0Type defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject0Type string
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject1 defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject1 struct {
+	Id   string                                               `json:"id"`
+	Type UploadKnowledgeFileJSONBodyInitialGrantsSubject1Type `json:"type"`
+}
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject1Type defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject1Type string
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject2 defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject2 struct {
+	Id   openapi_types.UUID                                   `json:"id"`
+	Type UploadKnowledgeFileJSONBodyInitialGrantsSubject2Type `json:"type"`
+}
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject2Type defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject2Type string
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject3 defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject3 struct {
+	Id   string                                               `json:"id"`
+	Type UploadKnowledgeFileJSONBodyInitialGrantsSubject3Type `json:"type"`
+}
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject3Type defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject3Type string
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject4 defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject4 struct {
+	Id   UploadKnowledgeFileJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Type UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type `json:"type"`
+}
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject4Id defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject4Id string
+
+// UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBodyInitialGrantsSubject4Type string
+
+// UploadKnowledgeFileJSONBody_InitialGrants_Subject defines parameters for UploadKnowledgeFile.
+type UploadKnowledgeFileJSONBody_InitialGrants_Subject struct {
+	union json.RawMessage
+}
+
+// UpdateKnowledgeFileJSONBody defines parameters for UpdateKnowledgeFile.
+type UpdateKnowledgeFileJSONBody struct {
+	DirectoryId *openapi_types.UUID `json:"directoryId"`
+	Filename    *string             `json:"filename,omitempty"`
+
+	// Labels Key/value labels. Omit to leave existing labels untouched; pass [] to clear them.
+	Labels *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+}
+
 // CreateLimitJSONBody defines parameters for CreateLimit.
 type CreateLimitJSONBody struct {
 	CleanupInterval *CreateLimitJSONBodyCleanupInterval `json:"cleanupInterval,omitempty"`
@@ -5904,6 +6063,12 @@ type CreateKnowledgeDirectoryJSONRequestBody CreateKnowledgeDirectoryJSONBody
 // UpdateKnowledgeDirectoryJSONRequestBody defines body for UpdateKnowledgeDirectory for application/json ContentType.
 type UpdateKnowledgeDirectoryJSONRequestBody UpdateKnowledgeDirectoryJSONBody
 
+// UploadKnowledgeFileJSONRequestBody defines body for UploadKnowledgeFile for application/json ContentType.
+type UploadKnowledgeFileJSONRequestBody UploadKnowledgeFileJSONBody
+
+// UpdateKnowledgeFileJSONRequestBody defines body for UpdateKnowledgeFile for application/json ContentType.
+type UpdateKnowledgeFileJSONRequestBody UpdateKnowledgeFileJSONBody
+
 // CreateLimitJSONRequestBody defines body for CreateLimit for application/json ContentType.
 type CreateLimitJSONRequestBody CreateLimitJSONBody
 
@@ -6439,6 +6604,25 @@ type ClientInterface interface {
 	UpdateKnowledgeDirectoryWithBody(ctx context.Context, directoryId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateKnowledgeDirectory(ctx context.Context, directoryId openapi_types.UUID, body UpdateKnowledgeDirectoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKnowledgeFiles request
+	GetKnowledgeFiles(ctx context.Context, params *GetKnowledgeFilesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UploadKnowledgeFileWithBody request with any body
+	UploadKnowledgeFileWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UploadKnowledgeFile(ctx context.Context, body UploadKnowledgeFileJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteKnowledgeFile request
+	DeleteKnowledgeFile(ctx context.Context, fileId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateKnowledgeFileWithBody request with any body
+	UpdateKnowledgeFileWithBody(ctx context.Context, fileId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateKnowledgeFile(ctx context.Context, fileId openapi_types.UUID, body UpdateKnowledgeFileJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetKnowledgeFileContent request
+	GetKnowledgeFileContent(ctx context.Context, fileId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateLimitWithBody request with any body
 	CreateLimitWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -8220,6 +8404,90 @@ func (c *Client) UpdateKnowledgeDirectoryWithBody(ctx context.Context, directory
 
 func (c *Client) UpdateKnowledgeDirectory(ctx context.Context, directoryId openapi_types.UUID, body UpdateKnowledgeDirectoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateKnowledgeDirectoryRequest(c.Server, directoryId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetKnowledgeFiles(ctx context.Context, params *GetKnowledgeFilesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKnowledgeFilesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UploadKnowledgeFileWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUploadKnowledgeFileRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UploadKnowledgeFile(ctx context.Context, body UploadKnowledgeFileJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUploadKnowledgeFileRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteKnowledgeFile(ctx context.Context, fileId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteKnowledgeFileRequest(c.Server, fileId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateKnowledgeFileWithBody(ctx context.Context, fileId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateKnowledgeFileRequestWithBody(c.Server, fileId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateKnowledgeFile(ctx context.Context, fileId openapi_types.UUID, body UpdateKnowledgeFileJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateKnowledgeFileRequest(c.Server, fileId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetKnowledgeFileContent(ctx context.Context, fileId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetKnowledgeFileContentRequest(c.Server, fileId)
 	if err != nil {
 		return nil, err
 	}
@@ -13667,6 +13935,322 @@ func NewUpdateKnowledgeDirectoryRequestWithBody(server string, directoryId opena
 	return req, nil
 }
 
+// NewGetKnowledgeFilesRequest generates requests for GetKnowledgeFiles
+func NewGetKnowledgeFilesRequest(server string, params *GetKnowledgeFilesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-files")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "offset", runtime.ParamLocationQuery, *params.Offset); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.DirectoryId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "directoryId", runtime.ParamLocationQuery, *params.DirectoryId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Search != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "search", runtime.ParamLocationQuery, *params.Search); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Labels != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "labels", runtime.ParamLocationQuery, *params.Labels); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Access != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "access", runtime.ParamLocationQuery, *params.Access); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.SharedWith != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sharedWith", runtime.ParamLocationQuery, *params.SharedWith); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Owner != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "owner", runtime.ParamLocationQuery, *params.Owner); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUploadKnowledgeFileRequest calls the generic UploadKnowledgeFile builder with application/json body
+func NewUploadKnowledgeFileRequest(server string, body UploadKnowledgeFileJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUploadKnowledgeFileRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUploadKnowledgeFileRequestWithBody generates requests for UploadKnowledgeFile with any type of body
+func NewUploadKnowledgeFileRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-files")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteKnowledgeFileRequest generates requests for DeleteKnowledgeFile
+func NewDeleteKnowledgeFileRequest(server string, fileId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "fileId", runtime.ParamLocationPath, fileId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-files/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateKnowledgeFileRequest calls the generic UpdateKnowledgeFile builder with application/json body
+func NewUpdateKnowledgeFileRequest(server string, fileId openapi_types.UUID, body UpdateKnowledgeFileJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateKnowledgeFileRequestWithBody(server, fileId, "application/json", bodyReader)
+}
+
+// NewUpdateKnowledgeFileRequestWithBody generates requests for UpdateKnowledgeFile with any type of body
+func NewUpdateKnowledgeFileRequestWithBody(server string, fileId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "fileId", runtime.ParamLocationPath, fileId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-files/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetKnowledgeFileContentRequest generates requests for GetKnowledgeFileContent
+func NewGetKnowledgeFileContentRequest(server string, fileId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "fileId", runtime.ParamLocationPath, fileId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/knowledge-files/%s/content", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCreateLimitRequest calls the generic CreateLimit builder with application/json body
 func NewCreateLimitRequest(server string, body CreateLimitJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -18237,6 +18821,25 @@ type ClientWithResponsesInterface interface {
 	UpdateKnowledgeDirectoryWithBodyWithResponse(ctx context.Context, directoryId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKnowledgeDirectoryResponse, error)
 
 	UpdateKnowledgeDirectoryWithResponse(ctx context.Context, directoryId openapi_types.UUID, body UpdateKnowledgeDirectoryJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKnowledgeDirectoryResponse, error)
+
+	// GetKnowledgeFilesWithResponse request
+	GetKnowledgeFilesWithResponse(ctx context.Context, params *GetKnowledgeFilesParams, reqEditors ...RequestEditorFn) (*GetKnowledgeFilesResponse, error)
+
+	// UploadKnowledgeFileWithBodyWithResponse request with any body
+	UploadKnowledgeFileWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UploadKnowledgeFileResponse, error)
+
+	UploadKnowledgeFileWithResponse(ctx context.Context, body UploadKnowledgeFileJSONRequestBody, reqEditors ...RequestEditorFn) (*UploadKnowledgeFileResponse, error)
+
+	// DeleteKnowledgeFileWithResponse request
+	DeleteKnowledgeFileWithResponse(ctx context.Context, fileId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteKnowledgeFileResponse, error)
+
+	// UpdateKnowledgeFileWithBodyWithResponse request with any body
+	UpdateKnowledgeFileWithBodyWithResponse(ctx context.Context, fileId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKnowledgeFileResponse, error)
+
+	UpdateKnowledgeFileWithResponse(ctx context.Context, fileId openapi_types.UUID, body UpdateKnowledgeFileJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKnowledgeFileResponse, error)
+
+	// GetKnowledgeFileContentWithResponse request
+	GetKnowledgeFileContentWithResponse(ctx context.Context, fileId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetKnowledgeFileContentResponse, error)
 
 	// CreateLimitWithBodyWithResponse request with any body
 	CreateLimitWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateLimitResponse, error)
@@ -26850,6 +27453,410 @@ func (r UpdateKnowledgeDirectoryResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r UpdateKnowledgeDirectoryResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetKnowledgeFilesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Data []struct {
+			ContentHash string    `json:"contentHash"`
+			CreatedAt   time.Time `json:"createdAt"`
+			CreatedBy   *struct {
+				Email *string                                `json:"email"`
+				Id    string                                 `json:"id"`
+				Name  *string                                `json:"name"`
+				Type  *GetKnowledgeFiles200DataCreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DirectoryId               *openapi_types.UUID `json:"directoryId"`
+			Filename                  string              `json:"filename"`
+			Id                        openapi_types.UUID  `json:"id"`
+			KnowledgeBases            []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"knowledgeBases"`
+			Labels []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			MimeType       string   `json:"mimeType"`
+			OrganizationId string   `json:"organizationId"`
+			SizeBytes      int      `json:"sizeBytes"`
+			TeamIds        []string `json:"teamIds"`
+			Visibility     string   `json:"visibility"`
+		} `json:"data"`
+		Pagination struct {
+			CurrentPage int  `json:"currentPage"`
+			HasNext     bool `json:"hasNext"`
+			HasPrev     bool `json:"hasPrev"`
+			Limit       int  `json:"limit"`
+			Total       int  `json:"total"`
+			TotalPages  int  `json:"totalPages"`
+		} `json:"pagination"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetKnowledgeFiles400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetKnowledgeFiles401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}       `json:"details,omitempty"`
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetKnowledgeFiles403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetKnowledgeFiles404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetKnowledgeFiles409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                       `json:"internal_code,omitempty"`
+			Message      string                        `json:"message"`
+			Type         GetKnowledgeFiles500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetKnowledgeFiles200DataCreatedByType string
+type GetKnowledgeFiles400ErrorType string
+type GetKnowledgeFiles401ErrorType string
+type GetKnowledgeFiles403ErrorType string
+type GetKnowledgeFiles404ErrorType string
+type GetKnowledgeFiles409ErrorType string
+type GetKnowledgeFiles500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetKnowledgeFilesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKnowledgeFilesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UploadKnowledgeFileResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		ContentHash string    `json:"contentHash"`
+		CreatedAt   time.Time `json:"createdAt"`
+		CreatedBy   *struct {
+			Email *string                              `json:"email"`
+			Id    string                               `json:"id"`
+			Name  *string                              `json:"name"`
+			Type  *UploadKnowledgeFile200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DirectoryId               *openapi_types.UUID `json:"directoryId"`
+		Filename                  string              `json:"filename"`
+		Id                        openapi_types.UUID  `json:"id"`
+		KnowledgeBases            []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"knowledgeBases"`
+		Labels []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		MimeType       string   `json:"mimeType"`
+		OrganizationId string   `json:"organizationId"`
+		SizeBytes      int      `json:"sizeBytes"`
+		TeamIds        []string `json:"teamIds"`
+		Visibility     string   `json:"visibility"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UploadKnowledgeFile400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UploadKnowledgeFile401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}         `json:"details,omitempty"`
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UploadKnowledgeFile403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UploadKnowledgeFile404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UploadKnowledgeFile409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UploadKnowledgeFile500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UploadKnowledgeFile200CreatedByType string
+type UploadKnowledgeFile400ErrorType string
+type UploadKnowledgeFile401ErrorType string
+type UploadKnowledgeFile403ErrorType string
+type UploadKnowledgeFile404ErrorType string
+type UploadKnowledgeFile409ErrorType string
+type UploadKnowledgeFile500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UploadKnowledgeFileResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UploadKnowledgeFileResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteKnowledgeFileResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteKnowledgeFile400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteKnowledgeFile401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}         `json:"details,omitempty"`
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteKnowledgeFile403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteKnowledgeFile404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteKnowledgeFile409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         DeleteKnowledgeFile500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteKnowledgeFile400ErrorType string
+type DeleteKnowledgeFile401ErrorType string
+type DeleteKnowledgeFile403ErrorType string
+type DeleteKnowledgeFile404ErrorType string
+type DeleteKnowledgeFile409ErrorType string
+type DeleteKnowledgeFile500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteKnowledgeFileResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteKnowledgeFileResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateKnowledgeFileResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		ContentHash string    `json:"contentHash"`
+		CreatedAt   time.Time `json:"createdAt"`
+		CreatedBy   *struct {
+			Email *string                              `json:"email"`
+			Id    string                               `json:"id"`
+			Name  *string                              `json:"name"`
+			Type  *UpdateKnowledgeFile200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DirectoryId               *openapi_types.UUID `json:"directoryId"`
+		Filename                  string              `json:"filename"`
+		Id                        openapi_types.UUID  `json:"id"`
+		KnowledgeBases            []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"knowledgeBases"`
+		Labels []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		MimeType       string   `json:"mimeType"`
+		OrganizationId string   `json:"organizationId"`
+		SizeBytes      int      `json:"sizeBytes"`
+		TeamIds        []string `json:"teamIds"`
+		Visibility     string   `json:"visibility"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateKnowledgeFile400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateKnowledgeFile401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}         `json:"details,omitempty"`
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateKnowledgeFile403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateKnowledgeFile404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateKnowledgeFile409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UpdateKnowledgeFile500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateKnowledgeFile200CreatedByType string
+type UpdateKnowledgeFile400ErrorType string
+type UpdateKnowledgeFile401ErrorType string
+type UpdateKnowledgeFile403ErrorType string
+type UpdateKnowledgeFile404ErrorType string
+type UpdateKnowledgeFile409ErrorType string
+type UpdateKnowledgeFile500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateKnowledgeFileResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateKnowledgeFileResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetKnowledgeFileContentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r GetKnowledgeFileContentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetKnowledgeFileContentResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -38412,6 +39419,67 @@ func (c *ClientWithResponses) UpdateKnowledgeDirectoryWithResponse(ctx context.C
 		return nil, err
 	}
 	return ParseUpdateKnowledgeDirectoryResponse(rsp)
+}
+
+// GetKnowledgeFilesWithResponse request returning *GetKnowledgeFilesResponse
+func (c *ClientWithResponses) GetKnowledgeFilesWithResponse(ctx context.Context, params *GetKnowledgeFilesParams, reqEditors ...RequestEditorFn) (*GetKnowledgeFilesResponse, error) {
+	rsp, err := c.GetKnowledgeFiles(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKnowledgeFilesResponse(rsp)
+}
+
+// UploadKnowledgeFileWithBodyWithResponse request with arbitrary body returning *UploadKnowledgeFileResponse
+func (c *ClientWithResponses) UploadKnowledgeFileWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UploadKnowledgeFileResponse, error) {
+	rsp, err := c.UploadKnowledgeFileWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUploadKnowledgeFileResponse(rsp)
+}
+
+func (c *ClientWithResponses) UploadKnowledgeFileWithResponse(ctx context.Context, body UploadKnowledgeFileJSONRequestBody, reqEditors ...RequestEditorFn) (*UploadKnowledgeFileResponse, error) {
+	rsp, err := c.UploadKnowledgeFile(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUploadKnowledgeFileResponse(rsp)
+}
+
+// DeleteKnowledgeFileWithResponse request returning *DeleteKnowledgeFileResponse
+func (c *ClientWithResponses) DeleteKnowledgeFileWithResponse(ctx context.Context, fileId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteKnowledgeFileResponse, error) {
+	rsp, err := c.DeleteKnowledgeFile(ctx, fileId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteKnowledgeFileResponse(rsp)
+}
+
+// UpdateKnowledgeFileWithBodyWithResponse request with arbitrary body returning *UpdateKnowledgeFileResponse
+func (c *ClientWithResponses) UpdateKnowledgeFileWithBodyWithResponse(ctx context.Context, fileId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateKnowledgeFileResponse, error) {
+	rsp, err := c.UpdateKnowledgeFileWithBody(ctx, fileId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateKnowledgeFileResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateKnowledgeFileWithResponse(ctx context.Context, fileId openapi_types.UUID, body UpdateKnowledgeFileJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateKnowledgeFileResponse, error) {
+	rsp, err := c.UpdateKnowledgeFile(ctx, fileId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateKnowledgeFileResponse(rsp)
+}
+
+// GetKnowledgeFileContentWithResponse request returning *GetKnowledgeFileContentResponse
+func (c *ClientWithResponses) GetKnowledgeFileContentWithResponse(ctx context.Context, fileId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetKnowledgeFileContentResponse, error) {
+	rsp, err := c.GetKnowledgeFileContent(ctx, fileId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetKnowledgeFileContentResponse(rsp)
 }
 
 // CreateLimitWithBodyWithResponse request with arbitrary body returning *CreateLimitResponse
@@ -50030,6 +51098,538 @@ func ParseUpdateKnowledgeDirectoryResponse(rsp *http.Response) (*UpdateKnowledge
 		}
 		response.JSON500 = &dest
 
+	}
+
+	return response, nil
+}
+
+// ParseGetKnowledgeFilesResponse parses an HTTP response from a GetKnowledgeFilesWithResponse call
+func ParseGetKnowledgeFilesResponse(rsp *http.Response) (*GetKnowledgeFilesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKnowledgeFilesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Data []struct {
+				ContentHash string    `json:"contentHash"`
+				CreatedAt   time.Time `json:"createdAt"`
+				CreatedBy   *struct {
+					Email *string                                `json:"email"`
+					Id    string                                 `json:"id"`
+					Name  *string                                `json:"name"`
+					Type  *GetKnowledgeFiles200DataCreatedByType `json:"type,omitempty"`
+				} `json:"createdBy"`
+				CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+				DirectoryId               *openapi_types.UUID `json:"directoryId"`
+				Filename                  string              `json:"filename"`
+				Id                        openapi_types.UUID  `json:"id"`
+				KnowledgeBases            []struct {
+					Id   string `json:"id"`
+					Name string `json:"name"`
+				} `json:"knowledgeBases"`
+				Labels []struct {
+					Key     string              `json:"key"`
+					KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+					Value   string              `json:"value"`
+					ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+				} `json:"labels"`
+				MimeType       string   `json:"mimeType"`
+				OrganizationId string   `json:"organizationId"`
+				SizeBytes      int      `json:"sizeBytes"`
+				TeamIds        []string `json:"teamIds"`
+				Visibility     string   `json:"visibility"`
+			} `json:"data"`
+			Pagination struct {
+				CurrentPage int  `json:"currentPage"`
+				HasNext     bool `json:"hasNext"`
+				HasPrev     bool `json:"hasPrev"`
+				Limit       int  `json:"limit"`
+				Total       int  `json:"total"`
+				TotalPages  int  `json:"totalPages"`
+			} `json:"pagination"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetKnowledgeFiles400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetKnowledgeFiles401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}       `json:"details,omitempty"`
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetKnowledgeFiles403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetKnowledgeFiles404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetKnowledgeFiles409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                       `json:"internal_code,omitempty"`
+				Message      string                        `json:"message"`
+				Type         GetKnowledgeFiles500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUploadKnowledgeFileResponse parses an HTTP response from a UploadKnowledgeFileWithResponse call
+func ParseUploadKnowledgeFileResponse(rsp *http.Response) (*UploadKnowledgeFileResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UploadKnowledgeFileResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			ContentHash string    `json:"contentHash"`
+			CreatedAt   time.Time `json:"createdAt"`
+			CreatedBy   *struct {
+				Email *string                              `json:"email"`
+				Id    string                               `json:"id"`
+				Name  *string                              `json:"name"`
+				Type  *UploadKnowledgeFile200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DirectoryId               *openapi_types.UUID `json:"directoryId"`
+			Filename                  string              `json:"filename"`
+			Id                        openapi_types.UUID  `json:"id"`
+			KnowledgeBases            []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"knowledgeBases"`
+			Labels []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			MimeType       string   `json:"mimeType"`
+			OrganizationId string   `json:"organizationId"`
+			SizeBytes      int      `json:"sizeBytes"`
+			TeamIds        []string `json:"teamIds"`
+			Visibility     string   `json:"visibility"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UploadKnowledgeFile400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UploadKnowledgeFile401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}         `json:"details,omitempty"`
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UploadKnowledgeFile403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UploadKnowledgeFile404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UploadKnowledgeFile409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UploadKnowledgeFile500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteKnowledgeFileResponse parses an HTTP response from a DeleteKnowledgeFileWithResponse call
+func ParseDeleteKnowledgeFileResponse(rsp *http.Response) (*DeleteKnowledgeFileResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteKnowledgeFileResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteKnowledgeFile400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteKnowledgeFile401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}         `json:"details,omitempty"`
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteKnowledgeFile403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteKnowledgeFile404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteKnowledgeFile409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         DeleteKnowledgeFile500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateKnowledgeFileResponse parses an HTTP response from a UpdateKnowledgeFileWithResponse call
+func ParseUpdateKnowledgeFileResponse(rsp *http.Response) (*UpdateKnowledgeFileResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateKnowledgeFileResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			ContentHash string    `json:"contentHash"`
+			CreatedAt   time.Time `json:"createdAt"`
+			CreatedBy   *struct {
+				Email *string                              `json:"email"`
+				Id    string                               `json:"id"`
+				Name  *string                              `json:"name"`
+				Type  *UpdateKnowledgeFile200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DirectoryId               *openapi_types.UUID `json:"directoryId"`
+			Filename                  string              `json:"filename"`
+			Id                        openapi_types.UUID  `json:"id"`
+			KnowledgeBases            []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"knowledgeBases"`
+			Labels []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			MimeType       string   `json:"mimeType"`
+			OrganizationId string   `json:"organizationId"`
+			SizeBytes      int      `json:"sizeBytes"`
+			TeamIds        []string `json:"teamIds"`
+			Visibility     string   `json:"visibility"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateKnowledgeFile400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateKnowledgeFile401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}         `json:"details,omitempty"`
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateKnowledgeFile403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateKnowledgeFile404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateKnowledgeFile409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UpdateKnowledgeFile500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetKnowledgeFileContentResponse parses an HTTP response from a GetKnowledgeFileContentWithResponse call
+func ParseGetKnowledgeFileContentResponse(rsp *http.Response) (*GetKnowledgeFileContentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetKnowledgeFileContentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
 	}
 
 	return response, nil

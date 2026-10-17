@@ -19,6 +19,8 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'project-file-init': {'ProjectFileInit'},
+    'knowledge-files': {'KnowledgeFile', 'KnowledgeFileInit'},
     'team-bindings': {'TeamInlineBindings'},
     'service-account-team': {'ServiceAccountTeamOwnership'},
     'inline-owners': {'AgentInlineOwnership', 'GatewayInlineOwnership'},
@@ -488,6 +490,128 @@ def main():
                 results.append(result)
                 save()
                 print(json.dumps(result), flush=True)
+
+            if 'project-file-init' in scope_cases:
+                import base64
+                raw = b'Synthetic initProvider project file.'
+                project, project_id, _ = create(scope, 'project', 'Project', 'projects',
+                    {'name': 'cp-project-init-' + run + '-' + scope}, '-file-init')
+                secret_name = 'cp-project-init-' + run + '-' + scope
+                kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
+                    'metadata': {'name': secret_name, 'namespace': args.namespace, 'labels': {'provider-test-run': run}},
+                    'stringData': {'content': base64.b64encode(raw).decode()}})
+                secret = (['-n', args.namespace], 'secrets', secret_name)
+                leases.append(secret)
+                ref = {'name': secret_name, 'key': 'content'}
+                if scope == 'cluster':
+                    ref['namespace'] = args.namespace
+                document, identifier, _ = create(scope, 'project', 'File', 'files',
+                    {'projectIdRef': {'name': project[2]}, 'filename': 'init-notes.md'}, '-init',
+                    init_fields={'contentBase64SecretRef': ref})
+                if identifier.split(':')[0] != project_id:
+                    raise RuntimeError('initProvider project file lost its project reference')
+                request = urllib.request.Request(args.api_url.rstrip('/') + '/api/skill-sandbox/artifacts/' + identifier.split(':')[1],
+                                                 headers={'Authorization': token})
+                with opener.open(request, timeout=30) as response:
+                    if response.read() != raw:
+                        raise RuntimeError('initProvider project file did not persist Secret bytes')
+                delete(document)
+                if api('/api/skill-sandbox/artifacts/' + identifier.split(':')[1])[0] != 404:
+                    raise RuntimeError('Deleted initProvider project file remains readable')
+                record('ProjectFileInit', scope, create='passed', init_provider_secret='passed', project_reference='passed', delete='passed')
+                delete(secret)
+                delete(project)
+
+            if 'knowledge-files' in scope_cases:
+                import base64
+                raw = b'# Synthetic document\nPrivate Knowledge lifecycle fixture.\n'
+                directory, directory_id, _ = create(scope, 'knowledge', 'Directory', 'directories',
+                    {'name': 'cp-knowledge-files-' + run + '-' + scope}, '-files')
+                secret_name = 'cp-knowledge-bytes-' + run + '-' + scope
+                kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
+                    'metadata': {'name': secret_name, 'namespace': args.namespace, 'labels': {'provider-test-run': run}},
+                    'stringData': {'content': base64.b64encode(raw).decode(), 'replacement': base64.b64encode(b'Replacement bytes.').decode()}})
+                secret = (['-n', args.namespace], 'secrets', secret_name)
+                leases.append(secret)
+                ref = {'name': secret_name, 'key': 'content'}
+                if scope == 'cluster':
+                    ref['namespace'] = args.namespace
+
+                def knowledge_bytes(identifier):
+                    request = urllib.request.Request(args.api_url.rstrip('/') + '/api/knowledge-files/' + identifier + '/content', headers={'Authorization': token})
+                    try:
+                        with opener.open(request, timeout=30) as response:
+                            return response.status, response.read()
+                    except urllib.error.HTTPError as error:
+                        return error.code, None
+
+                def knowledge_row(identifier):
+                    offset = 0
+                    while True:
+                        code, page = api('/api/knowledge-files?limit=100&offset=' + str(offset))
+                        if code != 200:
+                            raise RuntimeError('Knowledge repository read failed: HTTP ' + str(code))
+                        row = next((item for item in page['data'] if item['id'] == identifier), None)
+                        if row or not page['pagination']['hasNext']:
+                            return row
+                        if not page['data']:
+                            raise RuntimeError('Knowledge repository returned invalid pagination')
+                        offset += len(page['data'])
+
+                filename = 'cp-document-' + run + '-' + scope + '.md'
+                fields = {'filename': filename, 'mimeType': 'text/markdown', 'contentBase64SecretRef': ref,
+                          'directoryIdRef': {'name': directory[2]}, 'labels': [{'key': 'stage', 'value': 'initial'}],
+                          'permissions': [{'subjectType': 'organization', 'subjectId': '*', 'actions': ['read']}]}
+                document, identifier, obj = create(scope, 'knowledge', 'File', 'files', fields)
+                row = knowledge_row(identifier)
+                if row['directoryId'] != directory_id or knowledge_bytes(identifier) != (200, raw):
+                    raise RuntimeError('Knowledge file bytes or directory reference were not persisted')
+                if base64.b64encode(raw).decode() in json.dumps(obj.get('status', {})):
+                    raise RuntimeError('Knowledge file bytes leaked into managed resource status')
+                policy_path = '/api/resource-permissions/knowledgeFile/' + identifier
+                code, policy = api(policy_path)
+                if code != 200 or not any(g['subject'] == {'type': 'organization', 'id': '*'} and g['actions'] == ['read'] for g in policy['grants']):
+                    raise RuntimeError('Knowledge file creation did not persist sharing')
+                renamed = 'renamed-' + filename
+                patch(document, {'filename': renamed, 'labels': [], 'permissions': [], 'directoryIdRef': None, 'directoryId': None})
+                wait('Knowledge file rename, label and directory clear', lambda: condition(document, 'True')
+                     and knowledge_row(identifier)['filename'] == renamed and not knowledge_row(identifier)['labels']
+                     and knowledge_row(identifier)['directoryId'] is None)
+                code, policy = api(policy_path)
+                if code != 200 or any(g['subject'] == {'type': 'organization', 'id': '*'} for g in policy['grants']):
+                    raise RuntimeError('Knowledge file sharing was not cleared')
+                if api('/api/knowledge-files/' + identifier, {'filename': 'out-of-band.md', 'labels': [{'key': 'stage', 'value': 'drift'}]})[0] != 200:
+                    raise RuntimeError('Unable to inject owned Knowledge metadata drift')
+                wait('Knowledge file metadata drift repair', lambda: knowledge_row(identifier)['filename'] == renamed and not knowledge_row(identifier)['labels'])
+                immutable_update(document, {'contentBase64SecretRef': dict(ref, key='replacement')}, {'contentBase64SecretRef': ref})
+                if knowledge_bytes(identifier) != (200, raw):
+                    raise RuntimeError('Refused content replacement changed the original document')
+                kube(*document[0], 'patch', document[1], document[2], '--type=merge', '-p',
+                     json.dumps({'spec': {'managementPolicies': ['Observe', 'Create', 'Update', 'LateInitialize']}}))
+                delete(document)
+                if knowledge_bytes(identifier) != (200, raw):
+                    raise RuntimeError('Orphaned Knowledge file was deleted')
+                adopted_fields = {'filename': renamed, 'mimeType': 'text/markdown', 'contentBase64SecretRef': ref, 'labels': [], 'permissions': []}
+                adopted, adopted_id, _ = create(scope, 'knowledge', 'File', 'files', adopted_fields, '-adopt', external_name=identifier)
+                if adopted_id != identifier:
+                    raise RuntimeError('Knowledge file adoption changed identity')
+                delete(adopted)
+                if knowledge_bytes(identifier)[0] != 404:
+                    raise RuntimeError('Deleted Knowledge file remains readable')
+                record('KnowledgeFile', scope, create='passed', directory_reference='passed', secret_input='passed',
+                       metadata_update='passed', metadata_drift_repair='passed', sharing_clear='passed', directory_clear='passed',
+                       immutable_content_refusal='passed', orphan='passed', uuid_adoption='passed', delete='passed')
+                initial = {'filename': 'init-' + filename, 'mimeType': 'text/markdown', 'contentBase64SecretRef': ref,
+                           'labels': [], 'permissions': []}
+                initialized, initialized_id, _ = create(scope, 'knowledge', 'File', 'files', {}, '-init', init_fields=initial)
+                if knowledge_bytes(initialized_id) != (200, raw):
+                    raise RuntimeError('Knowledge file initProvider did not persist bytes')
+                delete(initialized)
+                if knowledge_bytes(initialized_id)[0] != 404:
+                    raise RuntimeError('initProvider Knowledge file remains readable after deletion')
+                record('KnowledgeFileInit', scope, create='passed', init_provider='passed', delete='passed')
+                delete(secret)
+                delete(directory)
 
             if 'project-files' in scope_cases:
                 import base64

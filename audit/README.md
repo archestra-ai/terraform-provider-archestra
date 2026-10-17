@@ -1,7 +1,7 @@
 # Provider modernization audit
 
 
-The v3 review candidate has **29 Terraform resources and four Terraform data sources**. All 29 resources have generated Crossplane types in both scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](../MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The [full native acceptance proof](consolidated-native-acceptance.json) records 147 passing cases with zero failures or skips against API 1.4.0-rc.49.
+The reviewed milestone 411935f had **29 Terraform resources and four Terraform data sources**. That milestone generated all 29 resources in both Crossplane scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](../MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The [full native acceptance proof](consolidated-native-acceptance.json) records 147 passing cases with zero failures or skips against API 1.4.0-rc.49.
 
 Current request-field review classifies **172 raw occurrences across 29 owners**,
 with zero unclassified rows. These include manually encoded parent fields and
@@ -34,6 +34,8 @@ original audit baseline for traceability.
 
 Audit inputs: Terraform `2e34cde000894e9c96793da0ec1f2c90b9193636` (v2.4.0),
 Archestra `35e36afd3f8a29cd568bc486a9e448bb29028414` (main, platform 1.4.0-rc.43).
+
+The current candidate exposes **30 resources and four data sources**, including Knowledge File. Its [full native suite](knowledge-files-native-acceptance.json) passes 156 cases with zero failures or skips. [Six current file records](crossplane-knowledge-files.json) pass both scopes and normal cleanup, including initProvider Secret inputs. The 29-family evidence below remains a historical reviewed milestone; the final expanded runtime/package sweep remains open.
 
 ## What is verified
 

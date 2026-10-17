@@ -3,22 +3,23 @@
   "upstream_version": "1.4.0-rc.49",
   "registered_resources": 29,
   "crossplane_configured": 29,
-  "raw_occurrences": 185,
+  "raw_occurrences": 187,
   "unclassified": 0,
   "classification_counts": {
     "authentication_context": 4,
     "covered_by_canonical_inputs": 3,
     "covered_creation_only": 3,
     "derived": 5,
+    "derived_concurrency": 1,
     "execution_command": 1,
     "lifecycle_owned": 5,
-    "manual_encoding": 120,
+    "manual_encoding": 121,
     "other_subtype": 23,
     "related_resource": 1,
     "separate_credential_lifecycle": 2,
     "server_owned": 18
   },
-  "note": "Actual 29 registered owners and transitive typed helper calls. All 185 unmapped top-level request-field occurrences have explicit dispositions. This static classification is not a missing-feature count. Git Skill source-mode replacement and imperative sync boundaries are documented explicitly; other durable domains remain in scope.",
+  "note": "Actual 30 registered owners and transitive typed helper calls. Every unmapped top-level request-field occurrence has an explicit disposition. This is a static classification, not a missing-feature count or runtime coverage proof.",
   "review": [
     {
       "resource": "archestra_agent",
@@ -378,6 +379,22 @@
       "field": "revision",
       "classification": "manual_encoding",
       "rationale": "Parent permissions encode grants and the last observed revision. Sharing updates reconcile in place, preserve human-owner access, and stop on concurrent edits; organization settings applies the same contract to each global policy.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_knowledge_file",
+      "operation": "UpdateResourcePermissions",
+      "field": "grants",
+      "classification": "manual_encoding",
+      "rationale": "Additional sharing is reconciled on the file owner; inherited and owner grants are preserved.",
+      "source": "internal/provider/parent_permissions.go"
+    },
+    {
+      "resource": "archestra_knowledge_file",
+      "operation": "UpdateResourcePermissions",
+      "field": "revision",
+      "classification": "derived_concurrency",
+      "rationale": "The sharing helper verifies the observed policy and sends its revision; a concurrent change requires a fresh plan.",
       "source": "internal/provider/parent_permissions.go"
     },
     {

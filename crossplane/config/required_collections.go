@@ -18,6 +18,7 @@ import (
 )
 
 type collectionSchemaAttribute struct {
+	Sensitive  bool            `json:"sensitive"`
 	Optional   bool            `json:"optional"`
 	Computed   bool            `json:"computed"`
 	Required   bool            `json:"required"`
@@ -52,6 +53,9 @@ func PreserveRequiredCollections(root string, providers ...*ujconfig.Provider) e
 		}
 		for name, r := range pc.Resources {
 			if err := preserveResourceCollections(root, scope, r, resources[name]); err != nil {
+				return err
+			}
+			if err := preserveRequiredSecretSources(root, scope, r, resources[name]); err != nil {
 				return err
 			}
 		}

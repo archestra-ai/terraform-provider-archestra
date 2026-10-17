@@ -179,3 +179,8 @@ output-options:
     - getSkillSandboxArtifact
     - deleteSkillSandboxArtifact
     - updateSkillSandboxArtifactContent
+    - uploadKnowledgeFile
+    - getKnowledgeFiles
+    - updateKnowledgeFile
+    - deleteKnowledgeFile
+    - getKnowledgeFileContent

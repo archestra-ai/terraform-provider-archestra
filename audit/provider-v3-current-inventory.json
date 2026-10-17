@@ -1,5 +1,5 @@
 {
-  "crossplane_configured_count": 29,
+  "crossplane_configured_count": 30,
   "evidence_level": "static inventory; no runtime coverage implied",
   "format_version": 1,
   "resources": [
@@ -3633,6 +3633,270 @@
       "schema_version": 0,
       "source": "internal/provider/resource_knowledge_directory.go",
       "terraform_resource": "archestra_knowledge_directory"
+    },
+    {
+      "acceptance_execution": "unverified",
+      "acceptance_tests_declared": 3,
+      "crossplane_configured": true,
+      "crossplane_reconciliation": "unverified",
+      "endpoints": [
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "DeleteKnowledgeFile",
+          "declared_request_field_mappings": {},
+          "method": "DELETE",
+          "path": "/api/knowledge-files/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetKnowledgeFileContent",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/knowledge-files/{}/content",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetKnowledgeFiles",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/knowledge-files",
+          "present_in_upstream": true,
+          "query_parameters": [
+            "access",
+            "directoryId",
+            "labels",
+            "limit",
+            "offset",
+            "owner",
+            "search",
+            "sharedWith"
+          ],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "GetResourcePermissions",
+          "declared_request_field_mappings": {},
+          "method": "GET",
+          "path": "/api/resource-permissions/{}/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateKnowledgeFile",
+          "declared_request_field_mappings": {
+            "directoryId": "directory_id",
+            "filename": "filename",
+            "labels": "labels"
+          },
+          "method": "PATCH",
+          "path": "/api/knowledge-files/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "directoryId",
+            "filename",
+            "labels"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UpdateResourcePermissions",
+          "declared_request_field_mappings": {},
+          "method": "PUT",
+          "path": "/api/resource-permissions/{}/{}",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "grants",
+            "revision"
+          ],
+          "request_fields_without_declared_mapping": [
+            "grants",
+            "revision"
+          ],
+          "retired_request_fields": []
+        },
+        {
+          "api_forbidden_request_fields": [],
+          "builder": "UploadKnowledgeFile",
+          "declared_request_field_mappings": {
+            "content": "content_base64",
+            "directoryId": "directory_id",
+            "filename": "filename",
+            "initialGrants": "permissions",
+            "labels": "labels",
+            "mimeType": "mime_type"
+          },
+          "method": "POST",
+          "path": "/api/knowledge-files",
+          "present_in_upstream": true,
+          "query_parameters": [],
+          "request_fields": [
+            "content",
+            "directoryId",
+            "filename",
+            "initialGrants",
+            "labels",
+            "mimeType"
+          ],
+          "request_fields_without_declared_mapping": [],
+          "retired_request_fields": []
+        }
+      ],
+      "fields": [
+        {
+          "computed": false,
+          "optional": false,
+          "path": "content_base64",
+          "required": true,
+          "sensitive": true,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "created_at",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": true,
+          "path": "directory_id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "filename",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "id",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "knowledge_base_ids",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "labels",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.key",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "labels.value",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "mime_type",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": true,
+          "path": "permissions",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "permissions.actions",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "permissions.subject_id",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": false,
+          "optional": false,
+          "path": "permissions.subject_type",
+          "required": true,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "sha256",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        },
+        {
+          "computed": true,
+          "optional": false,
+          "path": "size_bytes",
+          "required": false,
+          "sensitive": false,
+          "write_only": false
+        }
+      ],
+      "import_implemented": true,
+      "note": "Method-receiver API inventory including helpers; derived/synthetic request mappings still require review.",
+      "schema_version": 0,
+      "source": "internal/provider/resource_knowledge_file.go",
+      "terraform_resource": "archestra_knowledge_file"
     },
     {
       "acceptance_execution": "unverified",
@@ -13215,7 +13479,7 @@
       "terraform_resource": "archestra_virtual_key"
     }
   ],
-  "terraform_count": 29,
+  "terraform_count": 30,
   "unreferenced_mutating_operations": [
     {
       "method": "DELETE",
@@ -13424,11 +13688,6 @@
     },
     {
       "method": "DELETE",
-      "operation_id": "deleteKnowledgeFile",
-      "path": "/api/knowledge-files/{}"
-    },
-    {
-      "method": "DELETE",
       "operation_id": "bulkDeleteLimits",
       "path": "/api/limits/bulk"
     },
@@ -13596,11 +13855,6 @@
       "method": "PATCH",
       "operation_id": "bulkUpdateConnectors",
       "path": "/api/connectors/bulk"
-    },
-    {
-      "method": "PATCH",
-      "operation_id": "updateKnowledgeFile",
-      "path": "/api/knowledge-files/{}"
     },
     {
       "method": "PATCH",
@@ -14111,11 +14365,6 @@
       "method": "POST",
       "operation_id": "restoreKnowledgeBase",
       "path": "/api/knowledge-bases/{}/restore"
-    },
-    {
-      "method": "POST",
-      "operation_id": "uploadKnowledgeFile",
-      "path": "/api/knowledge-files"
     },
     {
       "method": "POST",
