@@ -15,6 +15,9 @@ archestra:
 
     ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
 
+    # Keep CI instances out of product telemetry.
+    ARCHESTRA_ANALYTICS: "disabled"
+
     # BYOS vault (READONLY_VAULT) so tests that exercise vault-backed catalog
     # fields can run. The Vault server is deployed as a sidecar in the CI
     # workflow (dev mode, root token).
