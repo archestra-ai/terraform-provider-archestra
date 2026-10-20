@@ -20,19 +20,19 @@ func TestAPICompatibility(t *testing.T) {
 		status                 int
 		wantError, wantWarning bool
 	}{
-		{"tested", `{"version":"1.4.0-rc.49"}`, "", 200, false, false},
+		{"previous-certified-release-now-below-floor", `{"version":"1.4.0-rc.49"}`, "", 200, true, false},
 		{"below-floor", `{"version":"1.4.0-rc.48"}`, "", 200, true, false},
 		{"old-stable", `{"version":"1.3.0"}`, "", 200, true, false},
 		{"next-rc", `{"version":"1.4.0-rc.50"}`, "", 200, false, true},
 		{"stable-not-yet-tested", `{"version":"1.4.0"}`, "", 200, false, true},
 		{"major-not-tested", `{"version":"2.0.0"}`, "", 200, false, true},
-		{"build-metadata", `{"version":"1.4.0-rc.49+build.123"}`, "", 200, false, false},
+		{"build-metadata", `{"version":"1.4.0-rc.50+build.123"}`, "", 200, false, true},
 		{"custom", `{"version":"dev"}`, "", 200, false, true},
 		{"missing", `{}`, "", 200, false, true},
 		{"malformed", `not JSON secret-marker`, "", 200, false, true},
 		{"unavailable", `secret-marker`, "", 503, false, true},
 		{"denied", `secret-marker`, "", 403, false, true},
-		{"exact-constraint", `{"version":"1.4.0-rc.49"}`, "= 1.4.0-rc.49", 200, false, false},
+		{"exact-constraint", `{"version":"1.4.0-rc.50"}`, "= 1.4.0-rc.50", 200, false, true},
 		{"constraint-mismatch", `{"version":"1.4.0-rc.50"}`, "= 1.4.0-rc.49", 200, true, false},
 		{"constraint-range", `{"version":"1.4.1"}`, ">= 1.4.0, < 1.5.0", 200, false, true},
 		{"constraint-cannot-lower-floor", `{"version":"1.3.0"}`, ">= 1.0.0", 200, true, false},

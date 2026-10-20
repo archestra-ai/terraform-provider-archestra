@@ -19,6 +19,7 @@ import uuid
 
 
 CASE_RESOURCES = {
+    'apps': {'App', 'AppInit'},
     'project-file-init': {'ProjectFileInit'},
     'knowledge-files': {'KnowledgeFile', 'KnowledgeFileInit'},
     'team-bindings': {'TeamInlineBindings'},
@@ -490,6 +491,130 @@ def main():
                 results.append(result)
                 save()
                 print(json.dumps(result), flush=True)
+
+            if 'apps' in scope_cases:
+                environment, environment_id, _ = create(scope, 'environment', 'Environment', 'environments',
+                    {'name': 'cp-app-env-' + run + '-' + scope, 'namespace': 'default'}, '-app')
+                catalog, catalog_id, _ = create(scope, 'mcp', 'RegistryEntry', 'registrycatalogitems',
+                    {'name': 'cp-app-tools-' + run + '-' + scope, 'multitenant': False,
+                     'remoteConfig': {'url': args.mcp_url}}, '-app')
+                server, server_id, _ = create(scope, 'mcp', 'Server', 'serverinstallations',
+                    {'name': 'cp-app-install-' + run + '-' + scope, 'catalogId': catalog_id, 'scope': 'org'}, '-app')
+                code, discovered = api('/api/mcp_server/' + server_id + '/tools')
+                if code != 200 or len(discovered) < 2:
+                    raise RuntimeError('App fixture did not advertise two upstream tools')
+                tool_ids = sorted(item['id'] for item in discovered)[:2]
+                initial_html = '<html><head></head><body>Initial App fixture.</body></html>'
+                desired_html = '<html><head></head><body>Updated App fixture.</body></html>'
+                secret_name = 'cp-app-html-' + run + '-' + scope
+                kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
+                    'metadata': {'name': secret_name, 'namespace': args.namespace, 'labels': {'provider-test-run': run}},
+                    'stringData': {'initial': initial_html, 'updated': desired_html}})
+                secret = (['-n', args.namespace], 'secrets', secret_name)
+                leases.append(secret)
+                ref = {'name': secret_name, 'key': 'initial'}
+                if scope == 'cluster':
+                    ref['namespace'] = args.namespace
+
+                def app_metadata(identifier):
+                    code, row = api('/api/apps/' + identifier)
+                    if code != 200:
+                        raise RuntimeError('App metadata read failed: HTTP ' + str(code))
+                    return row
+
+                def app_content(identifier):
+                    row = app_metadata(identifier)
+                    code, version = api('/api/apps/' + identifier + '/versions/' + str(row['latestVersion']))
+                    if code != 200 or version['appId'] != identifier or version['version'] != row['latestVersion']:
+                        raise RuntimeError('App immutable content version was not readable')
+                    return version
+
+                def app_tools(identifier):
+                    code, tools = api('/api/apps/' + identifier + '/tools')
+                    if code != 200:
+                        raise RuntimeError('App assignment read failed')
+                    return {tool['id']: (tool.get('mcpServerId'), tool.get('credentialResolutionMode')) for tool in tools}
+
+                name = 'cp-app-' + run + '-' + scope
+                fields = {'name': name, 'htmlSecretRef': ref, 'browserPermissions': ['camera'],
+                    'environmentIdRef': {'name': environment[2]}, 'enabled': True, 'locked': False,
+                    'openInFullscreen': False, 'labels': [{'key': 'stage', 'value': 'initial'}],
+                    'permissions': [{'subjectType': 'organization', 'subjectId': '*', 'actions': ['read']}],
+                    'tools': [{'toolId': tool_id, 'mcpServerIdRef': {'name': server[2]}, 'credentialResolutionMode': 'static'} for tool_id in tool_ids]}
+                app, identifier, obj = create(scope, 'app', 'App', 'apps', fields)
+                path = '/api/apps/' + identifier
+                if app_metadata(identifier)['environmentId'] != environment_id or app_content(identifier)['html'] != initial_html:
+                    raise RuntimeError('App environment reference or Secret HTML was not persisted')
+                if app_tools(identifier) != {tool_id: (server_id, 'static') for tool_id in tool_ids}:
+                    raise RuntimeError('App tool server references or credential modes did not persist')
+                if initial_html in json.dumps(obj.get('status', {})):
+                    raise RuntimeError('Sensitive App HTML leaked into managed resource status')
+                policy_path = '/api/resource-permissions/app/' + identifier
+                code, policy = api(policy_path)
+                if code != 200 or not any(g['subject'] == {'type': 'organization', 'id': '*'} for g in policy['grants']):
+                    raise RuntimeError('App creation sharing was not persisted')
+                renamed = name + '-updated'
+                next_ref = dict(ref, key='updated')
+                dynamic_tools = [{'toolId': tool_ids[0], 'credentialResolutionMode': 'dynamic'}]
+                patch(app, {'name': renamed, 'htmlSecretRef': next_ref, 'browserPermissions': [],
+                    'environmentId': None, 'environmentIdRef': None, 'openInFullscreen': True,
+                    'labels': [], 'permissions': [], 'tools': dynamic_tools})
+                wait('App versioned update, assignments and clears', lambda: condition(app, 'True')
+                    and app_metadata(identifier)['name'] == renamed and app_metadata(identifier)['environmentId'] is None
+                    and app_metadata(identifier)['openInFullscreen'] is True and not app_metadata(identifier)['labels']
+                    and app_content(identifier)['html'] == desired_html and not app_content(identifier)['uiPermissions']
+                    and app_tools(identifier) == {tool_ids[0]: (None, 'dynamic')})
+                code, policy = api(policy_path)
+                if code != 200 or any(g['subject'] == {'type': 'organization', 'id': '*'} for g in policy['grants']):
+                    raise RuntimeError('App sharing clear was not persisted')
+                base_version = app_metadata(identifier)['latestVersion']
+                if api(path, {'name': 'Out of band ' + run, 'html': '<html><head></head><body>External edit</body></html>',
+                             'baseVersion': base_version})[0] != 200:
+                    raise RuntimeError('Unable to inject owned App content drift')
+                if api(path + '/tools/' + tool_ids[1], {'mcpServerId': server_id, 'credentialResolutionMode': 'static'}, 'POST')[0] != 200:
+                    raise RuntimeError('Unable to inject owned App assignment drift')
+                wait('App content and assignment drift repair', lambda: app_metadata(identifier)['name'] == renamed
+                    and app_content(identifier)['html'] == desired_html and app_tools(identifier) == {tool_ids[0]: (None, 'dynamic')})
+                patch(app, {'enabled': False, 'locked': True})
+                wait('App explicit disable and lock', lambda: condition(app, 'True') and app_metadata(identifier)['enabled'] is False and app_metadata(identifier)['locked'] is True)
+                patch(app, {'enabled': True, 'locked': False})
+                wait('App explicit enable and unlock', lambda: condition(app, 'True') and app_metadata(identifier)['enabled'] is True and app_metadata(identifier)['locked'] is False)
+                kube(*app[0], 'patch', app[1], app[2], '--type=merge', '-p',
+                     json.dumps({'spec': {'managementPolicies': ['Observe', 'Create', 'Update', 'LateInitialize']}}))
+                delete(app)
+                if api(path)[0] != 200:
+                    raise RuntimeError('Orphaned App was deleted')
+                adopted_fields = {'name': renamed, 'htmlSecretRef': next_ref, 'browserPermissions': [],
+                    'enabled': True, 'locked': False, 'openInFullscreen': True, 'labels': [], 'permissions': [], 'tools': dynamic_tools}
+                adopted, adopted_id, _ = create(scope, 'app', 'App', 'apps', adopted_fields, '-adopt', external_name=identifier)
+                if adopted_id != identifier:
+                    raise RuntimeError('App UUID adoption changed identity')
+                delete(adopted)
+                if api(path)[0] != 404:
+                    raise RuntimeError('Deleted App remains readable')
+                record('App', scope, create='passed', secret_html='passed', environment_reference='passed',
+                    tool_server_references='passed', browser_permissions_clear='passed', environment_clear='passed',
+                    sharing_clear='passed', content_update='passed', content_and_tool_drift_repair='passed',
+                    credential_mode_and_pin_clear='passed', explicit_lifecycle='passed', orphan='passed', uuid_adoption='passed', delete='passed')
+                initialized, initialized_id, _ = create(scope, 'app', 'App', 'apps', {}, '-init',
+                    init_fields={'name': name + '-init', 'htmlSecretRef': ref, 'browserPermissions': [], 'enabled': True, 'locked': False})
+                if app_content(initialized_id)['html'] != initial_html:
+                    raise RuntimeError('App initProvider Secret HTML was not persisted')
+                external_html = '<html><head></head><body>Externally authored init App.</body></html>'
+                current_version = app_metadata(initialized_id)['latestVersion']
+                if api('/api/apps/' + initialized_id, {'html': external_html, 'baseVersion': current_version})[0] != 200:
+                    raise RuntimeError('Unable to edit initialized App content')
+                time.sleep(8)
+                if app_content(initialized_id)['html'] != external_html or not condition(initialized, 'True'):
+                    raise RuntimeError('App initProvider content was managed again after creation')
+                delete(initialized)
+                if api('/api/apps/' + initialized_id)[0] != 404:
+                    raise RuntimeError('Deleted initProvider App remains readable')
+                record('AppInit', scope, create='passed', init_provider_secret='passed', creation_only_content='passed', delete='passed')
+                delete(secret)
+                delete(server)
+                delete(catalog)
+                delete(environment)
 
             if 'project-file-init' in scope_cases:
                 import base64

@@ -22,6 +22,7 @@ import (
 // Every entry needs a reason — the default of RemoveOnConfigNullList is
 // safer; allowlisting asserts the field has no "remove = clear" semantic.
 var useStateForUnknownAllowlist = map[string]map[string]string{
+	"archestra_app":               {"permissions": "Omission preserves sharing; [] clears additional grants without changing ownership."},
 	"archestra_knowledge_file":    {"permissions": "Omission preserves additional sharing; explicit empty clears it while retaining ownership."},
 	"archestra_environment":       {"permissions": "Omission preserves sharing; explicit empty clears it without changing ownership."},
 	"archestra_plugin":            {"enabled": "Omission preserves the observed setting; explicitly configure true or false to manage it.", "permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},

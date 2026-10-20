@@ -184,3 +184,15 @@ output-options:
     - updateKnowledgeFile
     - deleteKnowledgeFile
     - getKnowledgeFileContent
+    - createApp
+    - getApp
+    - getAppVersion
+    - updateApp
+    - deleteApp
+    - enableApp
+    - disableApp
+    - lockApp
+    - unlockApp
+    - getAppTools
+    - assignToolToApp
+    - unassignToolFromApp

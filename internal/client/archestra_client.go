@@ -412,9 +412,9 @@ const (
 
 // Defines values for AssignToolToAgentJSONBodyCredentialResolutionMode.
 const (
-	Dynamic           AssignToolToAgentJSONBodyCredentialResolutionMode = "dynamic"
-	EnterpriseManaged AssignToolToAgentJSONBodyCredentialResolutionMode = "enterprise_managed"
-	Static            AssignToolToAgentJSONBodyCredentialResolutionMode = "static"
+	AssignToolToAgentJSONBodyCredentialResolutionModeDynamic           AssignToolToAgentJSONBodyCredentialResolutionMode = "dynamic"
+	AssignToolToAgentJSONBodyCredentialResolutionModeEnterpriseManaged AssignToolToAgentJSONBodyCredentialResolutionMode = "enterprise_managed"
+	AssignToolToAgentJSONBodyCredentialResolutionModeStatic            AssignToolToAgentJSONBodyCredentialResolutionMode = "static"
 )
 
 // Defines values for UpdateAgentJSONBodyAgentType.
@@ -532,6 +532,53 @@ const (
 // Defines values for PatchAgentActivationSkillPolicyJSONBodyOperationsReference2Source.
 const (
 	PatchAgentActivationSkillPolicyJSONBodyOperationsReference2SourcePlugin PatchAgentActivationSkillPolicyJSONBodyOperationsReference2Source = "plugin"
+)
+
+// Defines values for CreateAppJSONBodyInitialGrantsActions.
+const (
+	CreateAppJSONBodyInitialGrantsActionsConfigureDeploymentSpec CreateAppJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	CreateAppJSONBodyInitialGrantsActionsDelete                  CreateAppJSONBodyInitialGrantsActions = "delete"
+	CreateAppJSONBodyInitialGrantsActionsManagePermissions       CreateAppJSONBodyInitialGrantsActions = "manage-permissions"
+	CreateAppJSONBodyInitialGrantsActionsRead                    CreateAppJSONBodyInitialGrantsActions = "read"
+	CreateAppJSONBodyInitialGrantsActionsUpdate                  CreateAppJSONBodyInitialGrantsActions = "update"
+	CreateAppJSONBodyInitialGrantsActionsUse                     CreateAppJSONBodyInitialGrantsActions = "use"
+)
+
+// Defines values for CreateAppJSONBodyInitialGrantsSubject0Type.
+const (
+	CreateAppJSONBodyInitialGrantsSubject0TypeUser CreateAppJSONBodyInitialGrantsSubject0Type = "user"
+)
+
+// Defines values for CreateAppJSONBodyInitialGrantsSubject1Type.
+const (
+	CreateAppJSONBodyInitialGrantsSubject1TypeTeam CreateAppJSONBodyInitialGrantsSubject1Type = "team"
+)
+
+// Defines values for CreateAppJSONBodyInitialGrantsSubject2Type.
+const (
+	CreateAppJSONBodyInitialGrantsSubject2TypeServiceAccount CreateAppJSONBodyInitialGrantsSubject2Type = "serviceAccount"
+)
+
+// Defines values for CreateAppJSONBodyInitialGrantsSubject3Type.
+const (
+	CreateAppJSONBodyInitialGrantsSubject3TypeRole CreateAppJSONBodyInitialGrantsSubject3Type = "role"
+)
+
+// Defines values for CreateAppJSONBodyInitialGrantsSubject4Id.
+const (
+	CreateAppJSONBodyInitialGrantsSubject4IdAsterisk CreateAppJSONBodyInitialGrantsSubject4Id = "*"
+)
+
+// Defines values for CreateAppJSONBodyInitialGrantsSubject4Type.
+const (
+	CreateAppJSONBodyInitialGrantsSubject4TypeOrganization CreateAppJSONBodyInitialGrantsSubject4Type = "organization"
+)
+
+// Defines values for AssignToolToAppJSONBodyCredentialResolutionMode.
+const (
+	AssignToolToAppJSONBodyCredentialResolutionModeDynamic           AssignToolToAppJSONBodyCredentialResolutionMode = "dynamic"
+	AssignToolToAppJSONBodyCredentialResolutionModeEnterpriseManaged AssignToolToAppJSONBodyCredentialResolutionMode = "enterprise_managed"
+	AssignToolToAppJSONBodyCredentialResolutionModeStatic            AssignToolToAppJSONBodyCredentialResolutionMode = "static"
 )
 
 // Defines values for ListRuntimeCredentialsParamsAccess.
@@ -912,10 +959,10 @@ const (
 
 // Defines values for UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType.
 const (
-	Boolean   UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "boolean"
-	Number    UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "number"
-	PlainText UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "plain_text"
-	Secret    UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "secret"
+	UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypeBoolean   UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "boolean"
+	UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypeNumber    UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "number"
+	UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypePlainText UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "plain_text"
+	UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentTypeSecret    UpdateInternalMcpCatalogItemJSONBodyLocalConfigEnvironmentType = "secret"
 )
 
 // Defines values for UpdateInternalMcpCatalogItemJSONBodyLocalConfigImagePullPolicy.
@@ -1366,10 +1413,10 @@ const (
 
 // Defines values for GetOauthClientsParamsAccess.
 const (
-	GetOauthClientsParamsAccessMine   GetOauthClientsParamsAccess = "mine"
-	GetOauthClientsParamsAccessOrg    GetOauthClientsParamsAccess = "org"
-	GetOauthClientsParamsAccessOthers GetOauthClientsParamsAccess = "others"
-	GetOauthClientsParamsAccessShared GetOauthClientsParamsAccess = "shared"
+	Mine   GetOauthClientsParamsAccess = "mine"
+	Org    GetOauthClientsParamsAccess = "org"
+	Others GetOauthClientsParamsAccess = "others"
+	Shared GetOauthClientsParamsAccess = "shared"
 )
 
 // Defines values for CreateOauthClientJSONBodyGrantType.
@@ -2007,17 +2054,17 @@ const (
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsActions.
 const (
-	ImportGithubSkillsJSONBodyInitialGrantsActionsConfigureDeploymentSpec ImportGithubSkillsJSONBodyInitialGrantsActions = "configure-deployment-spec"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsDelete                  ImportGithubSkillsJSONBodyInitialGrantsActions = "delete"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsManagePermissions       ImportGithubSkillsJSONBodyInitialGrantsActions = "manage-permissions"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsRead                    ImportGithubSkillsJSONBodyInitialGrantsActions = "read"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsUpdate                  ImportGithubSkillsJSONBodyInitialGrantsActions = "update"
-	ImportGithubSkillsJSONBodyInitialGrantsActionsUse                     ImportGithubSkillsJSONBodyInitialGrantsActions = "use"
+	ConfigureDeploymentSpec ImportGithubSkillsJSONBodyInitialGrantsActions = "configure-deployment-spec"
+	Delete                  ImportGithubSkillsJSONBodyInitialGrantsActions = "delete"
+	ManagePermissions       ImportGithubSkillsJSONBodyInitialGrantsActions = "manage-permissions"
+	Read                    ImportGithubSkillsJSONBodyInitialGrantsActions = "read"
+	Update                  ImportGithubSkillsJSONBodyInitialGrantsActions = "update"
+	Use                     ImportGithubSkillsJSONBodyInitialGrantsActions = "use"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject0Type.
 const (
-	ImportGithubSkillsJSONBodyInitialGrantsSubject0TypeUser ImportGithubSkillsJSONBodyInitialGrantsSubject0Type = "user"
+	User ImportGithubSkillsJSONBodyInitialGrantsSubject0Type = "user"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject1Type.
@@ -2032,17 +2079,17 @@ const (
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject3Type.
 const (
-	ImportGithubSkillsJSONBodyInitialGrantsSubject3TypeRole ImportGithubSkillsJSONBodyInitialGrantsSubject3Type = "role"
+	Role ImportGithubSkillsJSONBodyInitialGrantsSubject3Type = "role"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject4Id.
 const (
-	ImportGithubSkillsJSONBodyInitialGrantsSubject4IdAsterisk ImportGithubSkillsJSONBodyInitialGrantsSubject4Id = "*"
+	Asterisk ImportGithubSkillsJSONBodyInitialGrantsSubject4Id = "*"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyInitialGrantsSubject4Type.
 const (
-	ImportGithubSkillsJSONBodyInitialGrantsSubject4TypeOrganization ImportGithubSkillsJSONBodyInitialGrantsSubject4Type = "organization"
+	Organization ImportGithubSkillsJSONBodyInitialGrantsSubject4Type = "organization"
 )
 
 // Defines values for ImportGithubSkillsJSONBodyProvider.
@@ -2487,7 +2534,10 @@ type GetAgentsParams struct {
 	ProviderApiKeyId *string `form:"providerApiKeyId,omitempty" json:"providerApiKeyId,omitempty"`
 
 	// Pinned Filter by the current user's pins. Pinned results are ordered by newest pin first; unpinned results keep the requested sort.
-	Pinned        *bool                         `form:"pinned,omitempty" json:"pinned,omitempty"`
+	Pinned *bool `form:"pinned,omitempty" json:"pinned,omitempty"`
+
+	// IncludeTools Attach each agent's assigned tools. Defaults to true. Pass false from callers that only need the agents themselves, such as name pickers: the tool refs carry every assigned tool's name and description, which on an organization of any size is most of this response's bytes. Agents come back with an empty `tools` array when it is off, meaning 'not requested' rather than 'none assigned'.
+	IncludeTools  *bool                         `form:"includeTools,omitempty" json:"includeTools,omitempty"`
 	Limit         *int                          `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset        *int                          `form:"offset,omitempty" json:"offset,omitempty"`
 	SortBy        *GetAgentsParamsSortBy        `form:"sortBy,omitempty" json:"sortBy,omitempty"`
@@ -3107,6 +3157,123 @@ type CreateApiKeyJSONBody struct {
 	ExpiresIn *int    `json:"expiresIn"`
 	Name      *string `json:"name"`
 }
+
+// CreateAppJSONBody defines parameters for CreateApp.
+type CreateAppJSONBody struct {
+	Description   *string             `json:"description,omitempty"`
+	EnvironmentId *openapi_types.UUID `json:"environmentId"`
+	Html          *string             `json:"html,omitempty"`
+	Icon          *string             `json:"icon"`
+	InitialGrants *[]struct {
+		Actions []CreateAppJSONBodyInitialGrantsActions `json:"actions"`
+		Subject CreateAppJSONBody_InitialGrants_Subject `json:"subject"`
+	} `json:"initialGrants,omitempty"`
+	Labels *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+	Name          string  `json:"name"`
+	OpenInChat    *bool   `json:"openInChat,omitempty"`
+	Slug          *string `json:"slug,omitempty"`
+	UiPermissions *struct {
+		Camera         *map[string]interface{} `json:"camera,omitempty"`
+		ClipboardWrite *map[string]interface{} `json:"clipboardWrite,omitempty"`
+		Geolocation    *map[string]interface{} `json:"geolocation,omitempty"`
+		Microphone     *map[string]interface{} `json:"microphone,omitempty"`
+	} `json:"uiPermissions,omitempty"`
+}
+
+// CreateAppJSONBodyInitialGrantsActions defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsActions string
+
+// CreateAppJSONBodyInitialGrantsSubject0 defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject0 struct {
+	Id   string                                     `json:"id"`
+	Type CreateAppJSONBodyInitialGrantsSubject0Type `json:"type"`
+}
+
+// CreateAppJSONBodyInitialGrantsSubject0Type defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject0Type string
+
+// CreateAppJSONBodyInitialGrantsSubject1 defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject1 struct {
+	Id   string                                     `json:"id"`
+	Type CreateAppJSONBodyInitialGrantsSubject1Type `json:"type"`
+}
+
+// CreateAppJSONBodyInitialGrantsSubject1Type defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject1Type string
+
+// CreateAppJSONBodyInitialGrantsSubject2 defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject2 struct {
+	Id   openapi_types.UUID                         `json:"id"`
+	Type CreateAppJSONBodyInitialGrantsSubject2Type `json:"type"`
+}
+
+// CreateAppJSONBodyInitialGrantsSubject2Type defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject2Type string
+
+// CreateAppJSONBodyInitialGrantsSubject3 defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject3 struct {
+	Id   string                                     `json:"id"`
+	Type CreateAppJSONBodyInitialGrantsSubject3Type `json:"type"`
+}
+
+// CreateAppJSONBodyInitialGrantsSubject3Type defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject3Type string
+
+// CreateAppJSONBodyInitialGrantsSubject4 defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject4 struct {
+	Id   CreateAppJSONBodyInitialGrantsSubject4Id   `json:"id"`
+	Type CreateAppJSONBodyInitialGrantsSubject4Type `json:"type"`
+}
+
+// CreateAppJSONBodyInitialGrantsSubject4Id defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject4Id string
+
+// CreateAppJSONBodyInitialGrantsSubject4Type defines parameters for CreateApp.
+type CreateAppJSONBodyInitialGrantsSubject4Type string
+
+// CreateAppJSONBody_InitialGrants_Subject defines parameters for CreateApp.
+type CreateAppJSONBody_InitialGrants_Subject struct {
+	union json.RawMessage
+}
+
+// UpdateAppJSONBody defines parameters for UpdateApp.
+type UpdateAppJSONBody struct {
+	// BaseVersion Expected current content version. A stale value rejects the entire update with 409 before any changes persist.
+	BaseVersion   *int                `json:"baseVersion,omitempty"`
+	Description   *string             `json:"description"`
+	EnvironmentId *openapi_types.UUID `json:"environmentId"`
+	Html          *string             `json:"html,omitempty"`
+	Icon          *string             `json:"icon"`
+	Labels        *[]struct {
+		Key     string              `json:"key"`
+		KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+		Value   string              `json:"value"`
+		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+	} `json:"labels,omitempty"`
+	Name             *string `json:"name,omitempty"`
+	OpenInFullscreen *bool   `json:"openInFullscreen,omitempty"`
+	Slug             *string `json:"slug,omitempty"`
+	UiPermissions    *struct {
+		Camera         *map[string]interface{} `json:"camera,omitempty"`
+		ClipboardWrite *map[string]interface{} `json:"clipboardWrite,omitempty"`
+		Geolocation    *map[string]interface{} `json:"geolocation,omitempty"`
+		Microphone     *map[string]interface{} `json:"microphone,omitempty"`
+	} `json:"uiPermissions,omitempty"`
+}
+
+// AssignToolToAppJSONBody defines parameters for AssignToolToApp.
+type AssignToolToAppJSONBody struct {
+	CredentialResolutionMode *AssignToolToAppJSONBodyCredentialResolutionMode `json:"credentialResolutionMode,omitempty"`
+	McpServerId              *openapi_types.UUID                              `json:"mcpServerId"`
+}
+
+// AssignToolToAppJSONBodyCredentialResolutionMode defines parameters for AssignToolToApp.
+type AssignToolToAppJSONBodyCredentialResolutionMode string
 
 // ListRuntimeCredentialsParams defines parameters for ListRuntimeCredentials.
 type ListRuntimeCredentialsParams struct {
@@ -5023,11 +5190,10 @@ type UpdateMcpSettingsJSONBody struct {
 
 // UpdateSecuritySettingsJSONBody defines parameters for UpdateSecuritySettings.
 type UpdateSecuritySettingsJSONBody struct {
-	AllowChatFileUploads         *bool `json:"allowChatFileUploads,omitempty"`
-	AllowToolAutoAssignment      *bool `json:"allowToolAutoAssignment,omitempty"`
-	AppsHackathonRecorderEnabled *bool `json:"appsHackathonRecorderEnabled,omitempty"`
-	NewAppsDisabledByDefault     *bool `json:"newAppsDisabledByDefault,omitempty"`
-	NewAppsLockedByDefault       *bool `json:"newAppsLockedByDefault,omitempty"`
+	AllowChatFileUploads     *bool `json:"allowChatFileUploads,omitempty"`
+	AllowToolAutoAssignment  *bool `json:"allowToolAutoAssignment,omitempty"`
+	NewAppsDisabledByDefault *bool `json:"newAppsDisabledByDefault,omitempty"`
+	NewAppsLockedByDefault   *bool `json:"newAppsLockedByDefault,omitempty"`
 }
 
 // UpdateSkillsSettingsJSONBody defines parameters for UpdateSkillsSettings.
@@ -5997,6 +6163,15 @@ type UpdateAgentToolExclusionsJSONRequestBody UpdateAgentToolExclusionsJSONBody
 // CreateApiKeyJSONRequestBody defines body for CreateApiKey for application/json ContentType.
 type CreateApiKeyJSONRequestBody CreateApiKeyJSONBody
 
+// CreateAppJSONRequestBody defines body for CreateApp for application/json ContentType.
+type CreateAppJSONRequestBody CreateAppJSONBody
+
+// UpdateAppJSONRequestBody defines body for UpdateApp for application/json ContentType.
+type UpdateAppJSONRequestBody UpdateAppJSONBody
+
+// AssignToolToAppJSONRequestBody defines body for AssignToolToApp for application/json ContentType.
+type AssignToolToAppJSONRequestBody AssignToolToAppJSONBody
+
 // CreateRuntimeCredentialJSONRequestBody defines body for CreateRuntimeCredential for application/json ContentType.
 type CreateRuntimeCredentialJSONRequestBody CreateRuntimeCredentialJSONBody
 
@@ -6428,6 +6603,48 @@ type ClientInterface interface {
 
 	// GetApiKey request
 	GetApiKey(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateAppWithBody request with any body
+	CreateAppWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateApp(ctx context.Context, body CreateAppJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApp request
+	DeleteApp(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApp request
+	GetApp(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateAppWithBody request with any body
+	UpdateAppWithBody(ctx context.Context, appId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateApp(ctx context.Context, appId openapi_types.UUID, body UpdateAppJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DisableApp request
+	DisableApp(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// EnableApp request
+	EnableApp(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LockApp request
+	LockApp(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAppTools request
+	GetAppTools(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UnassignToolFromApp request
+	UnassignToolFromApp(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AssignToolToAppWithBody request with any body
+	AssignToolToAppWithBody(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AssignToolToApp(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, body AssignToolToAppJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UnlockApp request
+	UnlockApp(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetAppVersion request
+	GetAppVersion(ctx context.Context, appId openapi_types.UUID, version int, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListRuntimeCredentials request
 	ListRuntimeCredentials(ctx context.Context, params *ListRuntimeCredentialsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -7612,6 +7829,186 @@ func (c *Client) DeleteApiKey(ctx context.Context, id string, reqEditors ...Requ
 
 func (c *Client) GetApiKey(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetApiKeyRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateAppWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAppRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateApp(ctx context.Context, body CreateAppJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAppRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApp(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteAppRequest(c.Server, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApp(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAppRequest(c.Server, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateAppWithBody(ctx context.Context, appId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAppRequestWithBody(c.Server, appId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateApp(ctx context.Context, appId openapi_types.UUID, body UpdateAppJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateAppRequest(c.Server, appId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DisableApp(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDisableAppRequest(c.Server, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) EnableApp(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEnableAppRequest(c.Server, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) LockApp(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLockAppRequest(c.Server, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAppTools(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAppToolsRequest(c.Server, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UnassignToolFromApp(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUnassignToolFromAppRequest(c.Server, appId, toolId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AssignToolToAppWithBody(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssignToolToAppRequestWithBody(c.Server, appId, toolId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AssignToolToApp(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, body AssignToolToAppJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAssignToolToAppRequest(c.Server, appId, toolId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UnlockApp(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUnlockAppRequest(c.Server, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetAppVersion(ctx context.Context, appId openapi_types.UUID, version int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAppVersionRequest(c.Server, appId, version)
 	if err != nil {
 		return nil, err
 	}
@@ -10975,6 +11372,22 @@ func NewGetAgentsRequest(server string, params *GetAgentsParams) (*http.Request,
 
 		}
 
+		if params.IncludeTools != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "includeTools", runtime.ParamLocationQuery, *params.IncludeTools); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
@@ -12161,6 +12574,467 @@ func NewGetApiKeyRequest(server string, id string) (*http.Request, error) {
 	}
 
 	operationPath := fmt.Sprintf("/api/api-keys/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateAppRequest calls the generic CreateApp builder with application/json body
+func NewCreateAppRequest(server string, body CreateAppJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateAppRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateAppRequestWithBody generates requests for CreateApp with any type of body
+func NewCreateAppRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteAppRequest generates requests for DeleteApp
+func NewDeleteAppRequest(server string, appId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetAppRequest generates requests for GetApp
+func NewGetAppRequest(server string, appId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateAppRequest calls the generic UpdateApp builder with application/json body
+func NewUpdateAppRequest(server string, appId openapi_types.UUID, body UpdateAppJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateAppRequestWithBody(server, appId, "application/json", bodyReader)
+}
+
+// NewUpdateAppRequestWithBody generates requests for UpdateApp with any type of body
+func NewUpdateAppRequestWithBody(server string, appId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDisableAppRequest generates requests for DisableApp
+func NewDisableAppRequest(server string, appId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps/%s/disable", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewEnableAppRequest generates requests for EnableApp
+func NewEnableAppRequest(server string, appId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps/%s/enable", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewLockAppRequest generates requests for LockApp
+func NewLockAppRequest(server string, appId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps/%s/lock", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetAppToolsRequest generates requests for GetAppTools
+func NewGetAppToolsRequest(server string, appId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps/%s/tools", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUnassignToolFromAppRequest generates requests for UnassignToolFromApp
+func NewUnassignToolFromAppRequest(server string, appId openapi_types.UUID, toolId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "toolId", runtime.ParamLocationPath, toolId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps/%s/tools/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAssignToolToAppRequest calls the generic AssignToolToApp builder with application/json body
+func NewAssignToolToAppRequest(server string, appId openapi_types.UUID, toolId openapi_types.UUID, body AssignToolToAppJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAssignToolToAppRequestWithBody(server, appId, toolId, "application/json", bodyReader)
+}
+
+// NewAssignToolToAppRequestWithBody generates requests for AssignToolToApp with any type of body
+func NewAssignToolToAppRequestWithBody(server string, appId openapi_types.UUID, toolId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "toolId", runtime.ParamLocationPath, toolId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps/%s/tools/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUnlockAppRequest generates requests for UnlockApp
+func NewUnlockAppRequest(server string, appId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps/%s/unlock", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetAppVersionRequest generates requests for GetAppVersion
+func NewGetAppVersionRequest(server string, appId openapi_types.UUID, version int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "version", runtime.ParamLocationPath, version)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apps/%s/versions/%s", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -18646,6 +19520,48 @@ type ClientWithResponsesInterface interface {
 	// GetApiKeyWithResponse request
 	GetApiKeyWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetApiKeyResponse, error)
 
+	// CreateAppWithBodyWithResponse request with any body
+	CreateAppWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAppResponse, error)
+
+	CreateAppWithResponse(ctx context.Context, body CreateAppJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAppResponse, error)
+
+	// DeleteAppWithResponse request
+	DeleteAppWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteAppResponse, error)
+
+	// GetAppWithResponse request
+	GetAppWithResponse(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*GetAppResponse, error)
+
+	// UpdateAppWithBodyWithResponse request with any body
+	UpdateAppWithBodyWithResponse(ctx context.Context, appId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAppResponse, error)
+
+	UpdateAppWithResponse(ctx context.Context, appId openapi_types.UUID, body UpdateAppJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAppResponse, error)
+
+	// DisableAppWithResponse request
+	DisableAppWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DisableAppResponse, error)
+
+	// EnableAppWithResponse request
+	EnableAppWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*EnableAppResponse, error)
+
+	// LockAppWithResponse request
+	LockAppWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*LockAppResponse, error)
+
+	// GetAppToolsWithResponse request
+	GetAppToolsWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAppToolsResponse, error)
+
+	// UnassignToolFromAppWithResponse request
+	UnassignToolFromAppWithResponse(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, reqEditors ...RequestEditorFn) (*UnassignToolFromAppResponse, error)
+
+	// AssignToolToAppWithBodyWithResponse request with any body
+	AssignToolToAppWithBodyWithResponse(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignToolToAppResponse, error)
+
+	AssignToolToAppWithResponse(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, body AssignToolToAppJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignToolToAppResponse, error)
+
+	// UnlockAppWithResponse request
+	UnlockAppWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*UnlockAppResponse, error)
+
+	// GetAppVersionWithResponse request
+	GetAppVersionWithResponse(ctx context.Context, appId openapi_types.UUID, version int, reqEditors ...RequestEditorFn) (*GetAppVersionResponse, error)
+
 	// ListRuntimeCredentialsWithResponse request
 	ListRuntimeCredentialsWithResponse(ctx context.Context, params *ListRuntimeCredentialsParams, reqEditors ...RequestEditorFn) (*ListRuntimeCredentialsResponse, error)
 
@@ -23032,6 +23948,1335 @@ func (r GetApiKeyResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetApiKeyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId       *string             `json:"authorId"`
+		ConversationId *openapi_types.UUID `json:"conversationId,omitempty"`
+		CreatedAt      time.Time           `json:"createdAt"`
+		CreatedBy      *struct {
+			Email *string                    `json:"email"`
+			Id    string                     `json:"id"`
+			Name  *string                    `json:"name"`
+			Type  *CreateApp200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		Enabled                   bool                `json:"enabled"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		Icon                      *string             `json:"icon"`
+		Id                        openapi_types.UUID  `json:"id"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LatestVersion    int                 `json:"latestVersion"`
+		Locked           bool                `json:"locked"`
+		McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+		Name             string              `json:"name"`
+		OpenInFullscreen bool                `json:"openInFullscreen"`
+		OrganizationId   string              `json:"organizationId"`
+		Scope            CreateApp200Scope   `json:"scope"`
+		Slug             *string             `json:"slug"`
+		Spec             *struct {
+			// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+			Data *string `json:"data"`
+
+			// Features Concrete capabilities the app should provide.
+			Features []string `json:"features"`
+
+			// Summary One-line summary of what the app is for.
+			Summary string `json:"summary"`
+
+			// Tools Full names of the MCP tools the app calls through window.archestra.
+			Tools []string `json:"tools"`
+
+			// Ui UI / style direction as a free-form prose string, not a structured object.
+			Ui *string `json:"ui"`
+		} `json:"spec"`
+		TemplateId *string   `json:"templateId"`
+		UpdatedAt  time.Time `json:"updatedAt"`
+		Warnings   *[]string `json:"warnings,omitempty"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         CreateApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         CreateApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         CreateApp403ErrorType   `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         CreateApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         CreateApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         CreateApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type CreateApp200CreatedByType string
+type CreateApp200Scope string
+type CreateApp400ErrorType string
+type CreateApp401ErrorType string
+type CreateApp403ErrorType string
+type CreateApp404ErrorType string
+type CreateApp409ErrorType string
+type CreateApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r CreateAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         DeleteApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         DeleteApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         DeleteApp403ErrorType   `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         DeleteApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         DeleteApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         DeleteApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DeleteApp400ErrorType string
+type DeleteApp401ErrorType string
+type DeleteApp403ErrorType string
+type DeleteApp404ErrorType string
+type DeleteApp409ErrorType string
+type DeleteApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DeleteAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId   *string   `json:"authorId"`
+		AuthorName *string   `json:"authorName"`
+		CreatedAt  time.Time `json:"createdAt"`
+		CreatedBy  *struct {
+			Email *string                 `json:"email"`
+			Id    string                  `json:"id"`
+			Name  *string                 `json:"name"`
+			Type  *GetApp200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		Enabled                   bool                `json:"enabled"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		Icon                      *string             `json:"icon"`
+		Id                        openapi_types.UUID  `json:"id"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LatestVersion    int                 `json:"latestVersion"`
+		Locked           bool                `json:"locked"`
+		McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+		Name             string              `json:"name"`
+		OpenInFullscreen bool                `json:"openInFullscreen"`
+		OrganizationId   string              `json:"organizationId"`
+		Scope            GetApp200Scope      `json:"scope"`
+		Slug             *string             `json:"slug"`
+		Spec             *struct {
+			// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+			Data *string `json:"data"`
+
+			// Features Concrete capabilities the app should provide.
+			Features []string `json:"features"`
+
+			// Summary One-line summary of what the app is for.
+			Summary string `json:"summary"`
+
+			// Tools Full names of the MCP tools the app calls through window.archestra.
+			Tools []string `json:"tools"`
+
+			// Ui UI / style direction as a free-form prose string, not a structured object.
+			Ui *string `json:"ui"`
+		} `json:"spec"`
+		Teams []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TemplateId *string   `json:"templateId"`
+		UpdatedAt  time.Time `json:"updatedAt"`
+		Users      []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+		ViewerRole GetApp200ViewerRole `json:"viewerRole"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string            `json:"internal_code,omitempty"`
+			Message      string             `json:"message"`
+			Type         GetApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string            `json:"internal_code,omitempty"`
+			Message      string             `json:"message"`
+			Type         GetApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         GetApp403ErrorType      `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string            `json:"internal_code,omitempty"`
+			Message      string             `json:"message"`
+			Type         GetApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string            `json:"internal_code,omitempty"`
+			Message      string             `json:"message"`
+			Type         GetApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string            `json:"internal_code,omitempty"`
+			Message      string             `json:"message"`
+			Type         GetApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetApp200CreatedByType string
+type GetApp200Scope string
+type GetApp200ViewerRole string
+type GetApp400ErrorType string
+type GetApp401ErrorType string
+type GetApp403ErrorType string
+type GetApp404ErrorType string
+type GetApp409ErrorType string
+type GetApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId  *string   `json:"authorId"`
+		CreatedAt time.Time `json:"createdAt"`
+		CreatedBy *struct {
+			Email *string                    `json:"email"`
+			Id    string                     `json:"id"`
+			Name  *string                    `json:"name"`
+			Type  *UpdateApp200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		Enabled                   bool                `json:"enabled"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		Icon                      *string             `json:"icon"`
+		Id                        openapi_types.UUID  `json:"id"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LatestVersion    int                 `json:"latestVersion"`
+		Locked           bool                `json:"locked"`
+		McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+		Name             string              `json:"name"`
+		OpenInFullscreen bool                `json:"openInFullscreen"`
+		OrganizationId   string              `json:"organizationId"`
+		Scope            UpdateApp200Scope   `json:"scope"`
+		Slug             *string             `json:"slug"`
+		Spec             *struct {
+			// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+			Data *string `json:"data"`
+
+			// Features Concrete capabilities the app should provide.
+			Features []string `json:"features"`
+
+			// Summary One-line summary of what the app is for.
+			Summary string `json:"summary"`
+
+			// Tools Full names of the MCP tools the app calls through window.archestra.
+			Tools []string `json:"tools"`
+
+			// Ui UI / style direction as a free-form prose string, not a structured object.
+			Ui *string `json:"ui"`
+		} `json:"spec"`
+		TemplateId *string   `json:"templateId"`
+		UpdatedAt  time.Time `json:"updatedAt"`
+		Warnings   *[]string `json:"warnings,omitempty"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         UpdateApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         UpdateApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         UpdateApp403ErrorType   `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         UpdateApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         UpdateApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         UpdateApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UpdateApp200CreatedByType string
+type UpdateApp200Scope string
+type UpdateApp400ErrorType string
+type UpdateApp401ErrorType string
+type UpdateApp403ErrorType string
+type UpdateApp404ErrorType string
+type UpdateApp409ErrorType string
+type UpdateApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UpdateAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DisableAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId   *string   `json:"authorId"`
+		AuthorName *string   `json:"authorName"`
+		CreatedAt  time.Time `json:"createdAt"`
+		CreatedBy  *struct {
+			Email *string                     `json:"email"`
+			Id    string                      `json:"id"`
+			Name  *string                     `json:"name"`
+			Type  *DisableApp200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		Enabled                   bool                `json:"enabled"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		Icon                      *string             `json:"icon"`
+		Id                        openapi_types.UUID  `json:"id"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LatestVersion    int                 `json:"latestVersion"`
+		Locked           bool                `json:"locked"`
+		McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+		Name             string              `json:"name"`
+		OpenInFullscreen bool                `json:"openInFullscreen"`
+		OrganizationId   string              `json:"organizationId"`
+		Scope            DisableApp200Scope  `json:"scope"`
+		Slug             *string             `json:"slug"`
+		Spec             *struct {
+			// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+			Data *string `json:"data"`
+
+			// Features Concrete capabilities the app should provide.
+			Features []string `json:"features"`
+
+			// Summary One-line summary of what the app is for.
+			Summary string `json:"summary"`
+
+			// Tools Full names of the MCP tools the app calls through window.archestra.
+			Tools []string `json:"tools"`
+
+			// Ui UI / style direction as a free-form prose string, not a structured object.
+			Ui *string `json:"ui"`
+		} `json:"spec"`
+		Teams []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TemplateId *string   `json:"templateId"`
+		UpdatedAt  time.Time `json:"updatedAt"`
+		Users      []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+		ViewerRole DisableApp200ViewerRole `json:"viewerRole"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                `json:"internal_code,omitempty"`
+			Message      string                 `json:"message"`
+			Type         DisableApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                `json:"internal_code,omitempty"`
+			Message      string                 `json:"message"`
+			Type         DisableApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         DisableApp403ErrorType  `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                `json:"internal_code,omitempty"`
+			Message      string                 `json:"message"`
+			Type         DisableApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                `json:"internal_code,omitempty"`
+			Message      string                 `json:"message"`
+			Type         DisableApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                `json:"internal_code,omitempty"`
+			Message      string                 `json:"message"`
+			Type         DisableApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type DisableApp200CreatedByType string
+type DisableApp200Scope string
+type DisableApp200ViewerRole string
+type DisableApp400ErrorType string
+type DisableApp401ErrorType string
+type DisableApp403ErrorType string
+type DisableApp404ErrorType string
+type DisableApp409ErrorType string
+type DisableApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r DisableAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DisableAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type EnableAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId   *string   `json:"authorId"`
+		AuthorName *string   `json:"authorName"`
+		CreatedAt  time.Time `json:"createdAt"`
+		CreatedBy  *struct {
+			Email *string                    `json:"email"`
+			Id    string                     `json:"id"`
+			Name  *string                    `json:"name"`
+			Type  *EnableApp200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		Enabled                   bool                `json:"enabled"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		Icon                      *string             `json:"icon"`
+		Id                        openapi_types.UUID  `json:"id"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LatestVersion    int                 `json:"latestVersion"`
+		Locked           bool                `json:"locked"`
+		McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+		Name             string              `json:"name"`
+		OpenInFullscreen bool                `json:"openInFullscreen"`
+		OrganizationId   string              `json:"organizationId"`
+		Scope            EnableApp200Scope   `json:"scope"`
+		Slug             *string             `json:"slug"`
+		Spec             *struct {
+			// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+			Data *string `json:"data"`
+
+			// Features Concrete capabilities the app should provide.
+			Features []string `json:"features"`
+
+			// Summary One-line summary of what the app is for.
+			Summary string `json:"summary"`
+
+			// Tools Full names of the MCP tools the app calls through window.archestra.
+			Tools []string `json:"tools"`
+
+			// Ui UI / style direction as a free-form prose string, not a structured object.
+			Ui *string `json:"ui"`
+		} `json:"spec"`
+		Teams []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TemplateId *string   `json:"templateId"`
+		UpdatedAt  time.Time `json:"updatedAt"`
+		Users      []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+		ViewerRole EnableApp200ViewerRole `json:"viewerRole"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         EnableApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         EnableApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         EnableApp403ErrorType   `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         EnableApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         EnableApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         EnableApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type EnableApp200CreatedByType string
+type EnableApp200Scope string
+type EnableApp200ViewerRole string
+type EnableApp400ErrorType string
+type EnableApp401ErrorType string
+type EnableApp403ErrorType string
+type EnableApp404ErrorType string
+type EnableApp409ErrorType string
+type EnableApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r EnableAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r EnableAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type LockAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId   *string   `json:"authorId"`
+		AuthorName *string   `json:"authorName"`
+		CreatedAt  time.Time `json:"createdAt"`
+		CreatedBy  *struct {
+			Email *string                  `json:"email"`
+			Id    string                   `json:"id"`
+			Name  *string                  `json:"name"`
+			Type  *LockApp200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		Enabled                   bool                `json:"enabled"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		Icon                      *string             `json:"icon"`
+		Id                        openapi_types.UUID  `json:"id"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LatestVersion    int                 `json:"latestVersion"`
+		Locked           bool                `json:"locked"`
+		McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+		Name             string              `json:"name"`
+		OpenInFullscreen bool                `json:"openInFullscreen"`
+		OrganizationId   string              `json:"organizationId"`
+		Scope            LockApp200Scope     `json:"scope"`
+		Slug             *string             `json:"slug"`
+		Spec             *struct {
+			// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+			Data *string `json:"data"`
+
+			// Features Concrete capabilities the app should provide.
+			Features []string `json:"features"`
+
+			// Summary One-line summary of what the app is for.
+			Summary string `json:"summary"`
+
+			// Tools Full names of the MCP tools the app calls through window.archestra.
+			Tools []string `json:"tools"`
+
+			// Ui UI / style direction as a free-form prose string, not a structured object.
+			Ui *string `json:"ui"`
+		} `json:"spec"`
+		Teams []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TemplateId *string   `json:"templateId"`
+		UpdatedAt  time.Time `json:"updatedAt"`
+		Users      []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+		ViewerRole LockApp200ViewerRole `json:"viewerRole"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string             `json:"internal_code,omitempty"`
+			Message      string              `json:"message"`
+			Type         LockApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string             `json:"internal_code,omitempty"`
+			Message      string              `json:"message"`
+			Type         LockApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         LockApp403ErrorType     `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string             `json:"internal_code,omitempty"`
+			Message      string              `json:"message"`
+			Type         LockApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string             `json:"internal_code,omitempty"`
+			Message      string              `json:"message"`
+			Type         LockApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string             `json:"internal_code,omitempty"`
+			Message      string              `json:"message"`
+			Type         LockApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type LockApp200CreatedByType string
+type LockApp200Scope string
+type LockApp200ViewerRole string
+type LockApp400ErrorType string
+type LockApp401ErrorType string
+type LockApp403ErrorType string
+type LockApp404ErrorType string
+type LockApp409ErrorType string
+type LockApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r LockAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LockAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAppToolsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		AgentId                   *openapi_types.UUID                    `json:"agentId"`
+		CatalogId                 *openapi_types.UUID                    `json:"catalogId"`
+		ClonedPendingDiscovery    bool                                   `json:"clonedPendingDiscovery"`
+		CreatedAt                 time.Time                              `json:"createdAt"`
+		CredentialResolutionMode  GetAppTools200CredentialResolutionMode `json:"credentialResolutionMode"`
+		DelegateToA2aConnectionId *openapi_types.UUID                    `json:"delegateToA2aConnectionId"`
+		DelegateToAgentId         *openapi_types.UUID                    `json:"delegateToAgentId"`
+		DeletedAt                 *time.Time                             `json:"deletedAt"`
+		Description               *string                                `json:"description"`
+		Id                        openapi_types.UUID                     `json:"id"`
+		McpServerId               *openapi_types.UUID                    `json:"mcpServerId"`
+		Meta                      interface{}                            `json:"meta"`
+		Name                      string                                 `json:"name"`
+
+		// Parameters
+		//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+		//
+		//     The parameters the functions accepts, described as a JSON Schema object. See the
+		//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+		//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+		//     documentation about the format.
+		//
+		//     Omitting parameters defines a function with an empty parameter list.
+		//
+		Parameters *map[string]interface{} `json:"parameters,omitempty"`
+		RawName    *string                 `json:"rawName"`
+		UpdatedAt  time.Time               `json:"updatedAt"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         GetAppTools400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         GetAppTools401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         GetAppTools403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         GetAppTools404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         GetAppTools409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         GetAppTools500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAppTools200CredentialResolutionMode string
+type GetAppTools400ErrorType string
+type GetAppTools401ErrorType string
+type GetAppTools403ErrorType string
+type GetAppTools404ErrorType string
+type GetAppTools409ErrorType string
+type GetAppTools500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAppToolsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAppToolsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UnassignToolFromAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UnassignToolFromApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UnassignToolFromApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}         `json:"details,omitempty"`
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UnassignToolFromApp403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UnassignToolFromApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UnassignToolFromApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                         `json:"internal_code,omitempty"`
+			Message      string                          `json:"message"`
+			Type         UnassignToolFromApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UnassignToolFromApp400ErrorType string
+type UnassignToolFromApp401ErrorType string
+type UnassignToolFromApp403ErrorType string
+type UnassignToolFromApp404ErrorType string
+type UnassignToolFromApp409ErrorType string
+type UnassignToolFromApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UnassignToolFromAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UnassignToolFromAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type AssignToolToAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success bool `json:"success"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         AssignToolToApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         AssignToolToApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}     `json:"details,omitempty"`
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         AssignToolToApp403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         AssignToolToApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         AssignToolToApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                     `json:"internal_code,omitempty"`
+			Message      string                      `json:"message"`
+			Type         AssignToolToApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type AssignToolToApp400ErrorType string
+type AssignToolToApp401ErrorType string
+type AssignToolToApp403ErrorType string
+type AssignToolToApp404ErrorType string
+type AssignToolToApp409ErrorType string
+type AssignToolToApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r AssignToolToAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AssignToolToAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UnlockAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AuthorId   *string   `json:"authorId"`
+		AuthorName *string   `json:"authorName"`
+		CreatedAt  time.Time `json:"createdAt"`
+		CreatedBy  *struct {
+			Email *string                    `json:"email"`
+			Id    string                     `json:"id"`
+			Name  *string                    `json:"name"`
+			Type  *UnlockApp200CreatedByType `json:"type,omitempty"`
+		} `json:"createdBy"`
+		CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+		DeletedAt                 *time.Time          `json:"deletedAt"`
+		Description               *string             `json:"description"`
+		Enabled                   bool                `json:"enabled"`
+		EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+		Icon                      *string             `json:"icon"`
+		Id                        openapi_types.UUID  `json:"id"`
+		Labels                    []struct {
+			Key     string              `json:"key"`
+			KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+			Value   string              `json:"value"`
+			ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+		} `json:"labels"`
+		LatestVersion    int                 `json:"latestVersion"`
+		Locked           bool                `json:"locked"`
+		McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+		Name             string              `json:"name"`
+		OpenInFullscreen bool                `json:"openInFullscreen"`
+		OrganizationId   string              `json:"organizationId"`
+		Scope            UnlockApp200Scope   `json:"scope"`
+		Slug             *string             `json:"slug"`
+		Spec             *struct {
+			// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+			Data *string `json:"data"`
+
+			// Features Concrete capabilities the app should provide.
+			Features []string `json:"features"`
+
+			// Summary One-line summary of what the app is for.
+			Summary string `json:"summary"`
+
+			// Tools Full names of the MCP tools the app calls through window.archestra.
+			Tools []string `json:"tools"`
+
+			// Ui UI / style direction as a free-form prose string, not a structured object.
+			Ui *string `json:"ui"`
+		} `json:"spec"`
+		Teams []struct {
+			Id   string `json:"id"`
+			Name string `json:"name"`
+		} `json:"teams"`
+		TemplateId *string   `json:"templateId"`
+		UpdatedAt  time.Time `json:"updatedAt"`
+		Users      []struct {
+			Email string `json:"email"`
+			Id    string `json:"id"`
+			Name  string `json:"name"`
+		} `json:"users"`
+		ViewerRole UnlockApp200ViewerRole `json:"viewerRole"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         UnlockApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         UnlockApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{} `json:"details,omitempty"`
+			InternalCode *string                 `json:"internal_code,omitempty"`
+			Message      string                  `json:"message"`
+			Type         UnlockApp403ErrorType   `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         UnlockApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         UnlockApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string               `json:"internal_code,omitempty"`
+			Message      string                `json:"message"`
+			Type         UnlockApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UnlockApp200CreatedByType string
+type UnlockApp200Scope string
+type UnlockApp200ViewerRole string
+type UnlockApp400ErrorType string
+type UnlockApp401ErrorType string
+type UnlockApp403ErrorType string
+type UnlockApp404ErrorType string
+type UnlockApp409ErrorType string
+type UnlockApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UnlockAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UnlockAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetAppVersionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		AppId       *openapi_types.UUID `json:"appId"`
+		ContentHash string              `json:"contentHash"`
+		CreatedAt   time.Time           `json:"createdAt"`
+		Html        string              `json:"html"`
+		Id          openapi_types.UUID  `json:"id"`
+		Spec        *struct {
+			// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+			Data *string `json:"data"`
+
+			// Features Concrete capabilities the app should provide.
+			Features []string `json:"features"`
+
+			// Summary One-line summary of what the app is for.
+			Summary string `json:"summary"`
+
+			// Tools Full names of the MCP tools the app calls through window.archestra.
+			Tools []string `json:"tools"`
+
+			// Ui UI / style direction as a free-form prose string, not a structured object.
+			Ui *string `json:"ui"`
+		} `json:"spec"`
+		UiPermissions *struct {
+			Camera         *map[string]interface{} `json:"camera,omitempty"`
+			ClipboardWrite *map[string]interface{} `json:"clipboardWrite,omitempty"`
+			Geolocation    *map[string]interface{} `json:"geolocation,omitempty"`
+			Microphone     *map[string]interface{} `json:"microphone,omitempty"`
+		} `json:"uiPermissions"`
+		Version int `json:"version"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                   `json:"internal_code,omitempty"`
+			Message      string                    `json:"message"`
+			Type         GetAppVersion400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                   `json:"internal_code,omitempty"`
+			Message      string                    `json:"message"`
+			Type         GetAppVersion401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}   `json:"details,omitempty"`
+			InternalCode *string                   `json:"internal_code,omitempty"`
+			Message      string                    `json:"message"`
+			Type         GetAppVersion403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                   `json:"internal_code,omitempty"`
+			Message      string                    `json:"message"`
+			Type         GetAppVersion404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                   `json:"internal_code,omitempty"`
+			Message      string                    `json:"message"`
+			Type         GetAppVersion409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                   `json:"internal_code,omitempty"`
+			Message      string                    `json:"message"`
+			Type         GetAppVersion500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetAppVersion400ErrorType string
+type GetAppVersion401ErrorType string
+type GetAppVersion403ErrorType string
+type GetAppVersion404ErrorType string
+type GetAppVersion409ErrorType string
+type GetAppVersion500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetAppVersionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetAppVersionResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -29344,6 +31589,7 @@ type GetMcpToolCallsResponse struct {
 			AppName       *string                           `json:"appName"`
 			AuthMethod    *GetMcpToolCalls200DataAuthMethod `json:"authMethod"`
 			CreatedAt     time.Time                         `json:"createdAt"`
+			DurationMs    *int                              `json:"durationMs"`
 			Id            openapi_types.UUID                `json:"id"`
 			McpServerName string                            `json:"mcpServerName"`
 			Method        string                            `json:"method"`
@@ -30617,14 +32863,13 @@ type GetOrganizationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -30808,14 +33053,13 @@ type UpdateAgentSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -30999,14 +33243,13 @@ type UpdateAppearanceSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -31190,14 +33433,13 @@ type UpdateAuthSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -31381,14 +33623,13 @@ type CompleteOnboardingResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -31572,14 +33813,13 @@ type UpdateConnectionSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -31763,14 +34003,13 @@ type UpdateDefaultEnvironmentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -31954,14 +34193,13 @@ type UpdateIntegrationSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -32145,14 +34383,13 @@ type UpdateKnowledgeSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -32336,14 +34573,13 @@ type UpdateMcpSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -32527,14 +34763,13 @@ type UpdateSecuritySettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -32718,14 +34953,13 @@ type UpdateSkillsSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-		AppName                      *string            `json:"appName"`
-		AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-		ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-		ChatLinks                    *[]struct {
+		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+		AppName                 *string            `json:"appName"`
+		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+		ChatLinks               *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -38847,6 +41081,138 @@ func (c *ClientWithResponses) GetApiKeyWithResponse(ctx context.Context, id stri
 		return nil, err
 	}
 	return ParseGetApiKeyResponse(rsp)
+}
+
+// CreateAppWithBodyWithResponse request with arbitrary body returning *CreateAppResponse
+func (c *ClientWithResponses) CreateAppWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAppResponse, error) {
+	rsp, err := c.CreateAppWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateAppResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateAppWithResponse(ctx context.Context, body CreateAppJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAppResponse, error) {
+	rsp, err := c.CreateApp(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateAppResponse(rsp)
+}
+
+// DeleteAppWithResponse request returning *DeleteAppResponse
+func (c *ClientWithResponses) DeleteAppWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteAppResponse, error) {
+	rsp, err := c.DeleteApp(ctx, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteAppResponse(rsp)
+}
+
+// GetAppWithResponse request returning *GetAppResponse
+func (c *ClientWithResponses) GetAppWithResponse(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*GetAppResponse, error) {
+	rsp, err := c.GetApp(ctx, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAppResponse(rsp)
+}
+
+// UpdateAppWithBodyWithResponse request with arbitrary body returning *UpdateAppResponse
+func (c *ClientWithResponses) UpdateAppWithBodyWithResponse(ctx context.Context, appId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAppResponse, error) {
+	rsp, err := c.UpdateAppWithBody(ctx, appId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAppResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateAppWithResponse(ctx context.Context, appId openapi_types.UUID, body UpdateAppJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAppResponse, error) {
+	rsp, err := c.UpdateApp(ctx, appId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateAppResponse(rsp)
+}
+
+// DisableAppWithResponse request returning *DisableAppResponse
+func (c *ClientWithResponses) DisableAppWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*DisableAppResponse, error) {
+	rsp, err := c.DisableApp(ctx, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDisableAppResponse(rsp)
+}
+
+// EnableAppWithResponse request returning *EnableAppResponse
+func (c *ClientWithResponses) EnableAppWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*EnableAppResponse, error) {
+	rsp, err := c.EnableApp(ctx, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseEnableAppResponse(rsp)
+}
+
+// LockAppWithResponse request returning *LockAppResponse
+func (c *ClientWithResponses) LockAppWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*LockAppResponse, error) {
+	rsp, err := c.LockApp(ctx, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLockAppResponse(rsp)
+}
+
+// GetAppToolsWithResponse request returning *GetAppToolsResponse
+func (c *ClientWithResponses) GetAppToolsWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetAppToolsResponse, error) {
+	rsp, err := c.GetAppTools(ctx, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAppToolsResponse(rsp)
+}
+
+// UnassignToolFromAppWithResponse request returning *UnassignToolFromAppResponse
+func (c *ClientWithResponses) UnassignToolFromAppWithResponse(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, reqEditors ...RequestEditorFn) (*UnassignToolFromAppResponse, error) {
+	rsp, err := c.UnassignToolFromApp(ctx, appId, toolId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUnassignToolFromAppResponse(rsp)
+}
+
+// AssignToolToAppWithBodyWithResponse request with arbitrary body returning *AssignToolToAppResponse
+func (c *ClientWithResponses) AssignToolToAppWithBodyWithResponse(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AssignToolToAppResponse, error) {
+	rsp, err := c.AssignToolToAppWithBody(ctx, appId, toolId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAssignToolToAppResponse(rsp)
+}
+
+func (c *ClientWithResponses) AssignToolToAppWithResponse(ctx context.Context, appId openapi_types.UUID, toolId openapi_types.UUID, body AssignToolToAppJSONRequestBody, reqEditors ...RequestEditorFn) (*AssignToolToAppResponse, error) {
+	rsp, err := c.AssignToolToApp(ctx, appId, toolId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAssignToolToAppResponse(rsp)
+}
+
+// UnlockAppWithResponse request returning *UnlockAppResponse
+func (c *ClientWithResponses) UnlockAppWithResponse(ctx context.Context, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*UnlockAppResponse, error) {
+	rsp, err := c.UnlockApp(ctx, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUnlockAppResponse(rsp)
+}
+
+// GetAppVersionWithResponse request returning *GetAppVersionResponse
+func (c *ClientWithResponses) GetAppVersionWithResponse(ctx context.Context, appId openapi_types.UUID, version int, reqEditors ...RequestEditorFn) (*GetAppVersionResponse, error) {
+	rsp, err := c.GetAppVersion(ctx, appId, version, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetAppVersionResponse(rsp)
 }
 
 // ListRuntimeCredentialsWithResponse request returning *ListRuntimeCredentialsResponse
@@ -45310,6 +47676,1723 @@ func ParseGetApiKeyResponse(rsp *http.Response) (*GetApiKeyResponse, error) {
 				InternalCode *string               `json:"internal_code,omitempty"`
 				Message      string                `json:"message"`
 				Type         GetApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateAppResponse parses an HTTP response from a CreateAppWithResponse call
+func ParseCreateAppResponse(rsp *http.Response) (*CreateAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId       *string             `json:"authorId"`
+			ConversationId *openapi_types.UUID `json:"conversationId,omitempty"`
+			CreatedAt      time.Time           `json:"createdAt"`
+			CreatedBy      *struct {
+				Email *string                    `json:"email"`
+				Id    string                     `json:"id"`
+				Name  *string                    `json:"name"`
+				Type  *CreateApp200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			Enabled                   bool                `json:"enabled"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			Icon                      *string             `json:"icon"`
+			Id                        openapi_types.UUID  `json:"id"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LatestVersion    int                 `json:"latestVersion"`
+			Locked           bool                `json:"locked"`
+			McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+			Name             string              `json:"name"`
+			OpenInFullscreen bool                `json:"openInFullscreen"`
+			OrganizationId   string              `json:"organizationId"`
+			Scope            CreateApp200Scope   `json:"scope"`
+			Slug             *string             `json:"slug"`
+			Spec             *struct {
+				// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+				Data *string `json:"data"`
+
+				// Features Concrete capabilities the app should provide.
+				Features []string `json:"features"`
+
+				// Summary One-line summary of what the app is for.
+				Summary string `json:"summary"`
+
+				// Tools Full names of the MCP tools the app calls through window.archestra.
+				Tools []string `json:"tools"`
+
+				// Ui UI / style direction as a free-form prose string, not a structured object.
+				Ui *string `json:"ui"`
+			} `json:"spec"`
+			TemplateId *string   `json:"templateId"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			Warnings   *[]string `json:"warnings,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         CreateApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         CreateApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         CreateApp403ErrorType   `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         CreateApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         CreateApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         CreateApp500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteAppResponse parses an HTTP response from a DeleteAppWithResponse call
+func ParseDeleteAppResponse(rsp *http.Response) (*DeleteAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         DeleteApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         DeleteApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         DeleteApp403ErrorType   `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         DeleteApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         DeleteApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         DeleteApp500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAppResponse parses an HTTP response from a GetAppWithResponse call
+func ParseGetAppResponse(rsp *http.Response) (*GetAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId   *string   `json:"authorId"`
+			AuthorName *string   `json:"authorName"`
+			CreatedAt  time.Time `json:"createdAt"`
+			CreatedBy  *struct {
+				Email *string                 `json:"email"`
+				Id    string                  `json:"id"`
+				Name  *string                 `json:"name"`
+				Type  *GetApp200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			Enabled                   bool                `json:"enabled"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			Icon                      *string             `json:"icon"`
+			Id                        openapi_types.UUID  `json:"id"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LatestVersion    int                 `json:"latestVersion"`
+			Locked           bool                `json:"locked"`
+			McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+			Name             string              `json:"name"`
+			OpenInFullscreen bool                `json:"openInFullscreen"`
+			OrganizationId   string              `json:"organizationId"`
+			Scope            GetApp200Scope      `json:"scope"`
+			Slug             *string             `json:"slug"`
+			Spec             *struct {
+				// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+				Data *string `json:"data"`
+
+				// Features Concrete capabilities the app should provide.
+				Features []string `json:"features"`
+
+				// Summary One-line summary of what the app is for.
+				Summary string `json:"summary"`
+
+				// Tools Full names of the MCP tools the app calls through window.archestra.
+				Tools []string `json:"tools"`
+
+				// Ui UI / style direction as a free-form prose string, not a structured object.
+				Ui *string `json:"ui"`
+			} `json:"spec"`
+			Teams []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TemplateId *string   `json:"templateId"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			Users      []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+			ViewerRole GetApp200ViewerRole `json:"viewerRole"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string            `json:"internal_code,omitempty"`
+				Message      string             `json:"message"`
+				Type         GetApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string            `json:"internal_code,omitempty"`
+				Message      string             `json:"message"`
+				Type         GetApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         GetApp403ErrorType      `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string            `json:"internal_code,omitempty"`
+				Message      string             `json:"message"`
+				Type         GetApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string            `json:"internal_code,omitempty"`
+				Message      string             `json:"message"`
+				Type         GetApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string            `json:"internal_code,omitempty"`
+				Message      string             `json:"message"`
+				Type         GetApp500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateAppResponse parses an HTTP response from a UpdateAppWithResponse call
+func ParseUpdateAppResponse(rsp *http.Response) (*UpdateAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId  *string   `json:"authorId"`
+			CreatedAt time.Time `json:"createdAt"`
+			CreatedBy *struct {
+				Email *string                    `json:"email"`
+				Id    string                     `json:"id"`
+				Name  *string                    `json:"name"`
+				Type  *UpdateApp200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			Enabled                   bool                `json:"enabled"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			Icon                      *string             `json:"icon"`
+			Id                        openapi_types.UUID  `json:"id"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LatestVersion    int                 `json:"latestVersion"`
+			Locked           bool                `json:"locked"`
+			McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+			Name             string              `json:"name"`
+			OpenInFullscreen bool                `json:"openInFullscreen"`
+			OrganizationId   string              `json:"organizationId"`
+			Scope            UpdateApp200Scope   `json:"scope"`
+			Slug             *string             `json:"slug"`
+			Spec             *struct {
+				// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+				Data *string `json:"data"`
+
+				// Features Concrete capabilities the app should provide.
+				Features []string `json:"features"`
+
+				// Summary One-line summary of what the app is for.
+				Summary string `json:"summary"`
+
+				// Tools Full names of the MCP tools the app calls through window.archestra.
+				Tools []string `json:"tools"`
+
+				// Ui UI / style direction as a free-form prose string, not a structured object.
+				Ui *string `json:"ui"`
+			} `json:"spec"`
+			TemplateId *string   `json:"templateId"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			Warnings   *[]string `json:"warnings,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         UpdateApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         UpdateApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         UpdateApp403ErrorType   `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         UpdateApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         UpdateApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         UpdateApp500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDisableAppResponse parses an HTTP response from a DisableAppWithResponse call
+func ParseDisableAppResponse(rsp *http.Response) (*DisableAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DisableAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId   *string   `json:"authorId"`
+			AuthorName *string   `json:"authorName"`
+			CreatedAt  time.Time `json:"createdAt"`
+			CreatedBy  *struct {
+				Email *string                     `json:"email"`
+				Id    string                      `json:"id"`
+				Name  *string                     `json:"name"`
+				Type  *DisableApp200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			Enabled                   bool                `json:"enabled"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			Icon                      *string             `json:"icon"`
+			Id                        openapi_types.UUID  `json:"id"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LatestVersion    int                 `json:"latestVersion"`
+			Locked           bool                `json:"locked"`
+			McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+			Name             string              `json:"name"`
+			OpenInFullscreen bool                `json:"openInFullscreen"`
+			OrganizationId   string              `json:"organizationId"`
+			Scope            DisableApp200Scope  `json:"scope"`
+			Slug             *string             `json:"slug"`
+			Spec             *struct {
+				// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+				Data *string `json:"data"`
+
+				// Features Concrete capabilities the app should provide.
+				Features []string `json:"features"`
+
+				// Summary One-line summary of what the app is for.
+				Summary string `json:"summary"`
+
+				// Tools Full names of the MCP tools the app calls through window.archestra.
+				Tools []string `json:"tools"`
+
+				// Ui UI / style direction as a free-form prose string, not a structured object.
+				Ui *string `json:"ui"`
+			} `json:"spec"`
+			Teams []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TemplateId *string   `json:"templateId"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			Users      []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+			ViewerRole DisableApp200ViewerRole `json:"viewerRole"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                `json:"internal_code,omitempty"`
+				Message      string                 `json:"message"`
+				Type         DisableApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                `json:"internal_code,omitempty"`
+				Message      string                 `json:"message"`
+				Type         DisableApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         DisableApp403ErrorType  `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                `json:"internal_code,omitempty"`
+				Message      string                 `json:"message"`
+				Type         DisableApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                `json:"internal_code,omitempty"`
+				Message      string                 `json:"message"`
+				Type         DisableApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                `json:"internal_code,omitempty"`
+				Message      string                 `json:"message"`
+				Type         DisableApp500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseEnableAppResponse parses an HTTP response from a EnableAppWithResponse call
+func ParseEnableAppResponse(rsp *http.Response) (*EnableAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &EnableAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId   *string   `json:"authorId"`
+			AuthorName *string   `json:"authorName"`
+			CreatedAt  time.Time `json:"createdAt"`
+			CreatedBy  *struct {
+				Email *string                    `json:"email"`
+				Id    string                     `json:"id"`
+				Name  *string                    `json:"name"`
+				Type  *EnableApp200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			Enabled                   bool                `json:"enabled"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			Icon                      *string             `json:"icon"`
+			Id                        openapi_types.UUID  `json:"id"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LatestVersion    int                 `json:"latestVersion"`
+			Locked           bool                `json:"locked"`
+			McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+			Name             string              `json:"name"`
+			OpenInFullscreen bool                `json:"openInFullscreen"`
+			OrganizationId   string              `json:"organizationId"`
+			Scope            EnableApp200Scope   `json:"scope"`
+			Slug             *string             `json:"slug"`
+			Spec             *struct {
+				// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+				Data *string `json:"data"`
+
+				// Features Concrete capabilities the app should provide.
+				Features []string `json:"features"`
+
+				// Summary One-line summary of what the app is for.
+				Summary string `json:"summary"`
+
+				// Tools Full names of the MCP tools the app calls through window.archestra.
+				Tools []string `json:"tools"`
+
+				// Ui UI / style direction as a free-form prose string, not a structured object.
+				Ui *string `json:"ui"`
+			} `json:"spec"`
+			Teams []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TemplateId *string   `json:"templateId"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			Users      []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+			ViewerRole EnableApp200ViewerRole `json:"viewerRole"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         EnableApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         EnableApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         EnableApp403ErrorType   `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         EnableApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         EnableApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         EnableApp500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLockAppResponse parses an HTTP response from a LockAppWithResponse call
+func ParseLockAppResponse(rsp *http.Response) (*LockAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LockAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId   *string   `json:"authorId"`
+			AuthorName *string   `json:"authorName"`
+			CreatedAt  time.Time `json:"createdAt"`
+			CreatedBy  *struct {
+				Email *string                  `json:"email"`
+				Id    string                   `json:"id"`
+				Name  *string                  `json:"name"`
+				Type  *LockApp200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			Enabled                   bool                `json:"enabled"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			Icon                      *string             `json:"icon"`
+			Id                        openapi_types.UUID  `json:"id"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LatestVersion    int                 `json:"latestVersion"`
+			Locked           bool                `json:"locked"`
+			McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+			Name             string              `json:"name"`
+			OpenInFullscreen bool                `json:"openInFullscreen"`
+			OrganizationId   string              `json:"organizationId"`
+			Scope            LockApp200Scope     `json:"scope"`
+			Slug             *string             `json:"slug"`
+			Spec             *struct {
+				// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+				Data *string `json:"data"`
+
+				// Features Concrete capabilities the app should provide.
+				Features []string `json:"features"`
+
+				// Summary One-line summary of what the app is for.
+				Summary string `json:"summary"`
+
+				// Tools Full names of the MCP tools the app calls through window.archestra.
+				Tools []string `json:"tools"`
+
+				// Ui UI / style direction as a free-form prose string, not a structured object.
+				Ui *string `json:"ui"`
+			} `json:"spec"`
+			Teams []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TemplateId *string   `json:"templateId"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			Users      []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+			ViewerRole LockApp200ViewerRole `json:"viewerRole"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string             `json:"internal_code,omitempty"`
+				Message      string              `json:"message"`
+				Type         LockApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string             `json:"internal_code,omitempty"`
+				Message      string              `json:"message"`
+				Type         LockApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         LockApp403ErrorType     `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string             `json:"internal_code,omitempty"`
+				Message      string              `json:"message"`
+				Type         LockApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string             `json:"internal_code,omitempty"`
+				Message      string              `json:"message"`
+				Type         LockApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string             `json:"internal_code,omitempty"`
+				Message      string              `json:"message"`
+				Type         LockApp500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAppToolsResponse parses an HTTP response from a GetAppToolsWithResponse call
+func ParseGetAppToolsResponse(rsp *http.Response) (*GetAppToolsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAppToolsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			AgentId                   *openapi_types.UUID                    `json:"agentId"`
+			CatalogId                 *openapi_types.UUID                    `json:"catalogId"`
+			ClonedPendingDiscovery    bool                                   `json:"clonedPendingDiscovery"`
+			CreatedAt                 time.Time                              `json:"createdAt"`
+			CredentialResolutionMode  GetAppTools200CredentialResolutionMode `json:"credentialResolutionMode"`
+			DelegateToA2aConnectionId *openapi_types.UUID                    `json:"delegateToA2aConnectionId"`
+			DelegateToAgentId         *openapi_types.UUID                    `json:"delegateToAgentId"`
+			DeletedAt                 *time.Time                             `json:"deletedAt"`
+			Description               *string                                `json:"description"`
+			Id                        openapi_types.UUID                     `json:"id"`
+			McpServerId               *openapi_types.UUID                    `json:"mcpServerId"`
+			Meta                      interface{}                            `json:"meta"`
+			Name                      string                                 `json:"name"`
+
+			// Parameters
+			//     https://github.com/openai/openai-node/blob/master/src/resources/shared.ts#L217
+			//
+			//     The parameters the functions accepts, described as a JSON Schema object. See the
+			//     [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
+			//     and the [JSON Schema reference](https://json-schema.org/understanding-json-schema/) for
+			//     documentation about the format.
+			//
+			//     Omitting parameters defines a function with an empty parameter list.
+			//
+			Parameters *map[string]interface{} `json:"parameters,omitempty"`
+			RawName    *string                 `json:"rawName"`
+			UpdatedAt  time.Time               `json:"updatedAt"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         GetAppTools400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         GetAppTools401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         GetAppTools403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         GetAppTools404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         GetAppTools409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         GetAppTools500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUnassignToolFromAppResponse parses an HTTP response from a UnassignToolFromAppWithResponse call
+func ParseUnassignToolFromAppResponse(rsp *http.Response) (*UnassignToolFromAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UnassignToolFromAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UnassignToolFromApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UnassignToolFromApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}         `json:"details,omitempty"`
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UnassignToolFromApp403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UnassignToolFromApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UnassignToolFromApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                         `json:"internal_code,omitempty"`
+				Message      string                          `json:"message"`
+				Type         UnassignToolFromApp500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAssignToolToAppResponse parses an HTTP response from a AssignToolToAppWithResponse call
+func ParseAssignToolToAppResponse(rsp *http.Response) (*AssignToolToAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AssignToolToAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         AssignToolToApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         AssignToolToApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}     `json:"details,omitempty"`
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         AssignToolToApp403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         AssignToolToApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         AssignToolToApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                     `json:"internal_code,omitempty"`
+				Message      string                      `json:"message"`
+				Type         AssignToolToApp500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUnlockAppResponse parses an HTTP response from a UnlockAppWithResponse call
+func ParseUnlockAppResponse(rsp *http.Response) (*UnlockAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UnlockAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AuthorId   *string   `json:"authorId"`
+			AuthorName *string   `json:"authorName"`
+			CreatedAt  time.Time `json:"createdAt"`
+			CreatedBy  *struct {
+				Email *string                    `json:"email"`
+				Id    string                     `json:"id"`
+				Name  *string                    `json:"name"`
+				Type  *UnlockApp200CreatedByType `json:"type,omitempty"`
+			} `json:"createdBy"`
+			CreatedByServiceAccountId *openapi_types.UUID `json:"createdByServiceAccountId"`
+			DeletedAt                 *time.Time          `json:"deletedAt"`
+			Description               *string             `json:"description"`
+			Enabled                   bool                `json:"enabled"`
+			EnvironmentId             *openapi_types.UUID `json:"environmentId"`
+			Icon                      *string             `json:"icon"`
+			Id                        openapi_types.UUID  `json:"id"`
+			Labels                    []struct {
+				Key     string              `json:"key"`
+				KeyId   *openapi_types.UUID `json:"keyId,omitempty"`
+				Value   string              `json:"value"`
+				ValueId *openapi_types.UUID `json:"valueId,omitempty"`
+			} `json:"labels"`
+			LatestVersion    int                 `json:"latestVersion"`
+			Locked           bool                `json:"locked"`
+			McpServerId      *openapi_types.UUID `json:"mcpServerId"`
+			Name             string              `json:"name"`
+			OpenInFullscreen bool                `json:"openInFullscreen"`
+			OrganizationId   string              `json:"organizationId"`
+			Scope            UnlockApp200Scope   `json:"scope"`
+			Slug             *string             `json:"slug"`
+			Spec             *struct {
+				// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+				Data *string `json:"data"`
+
+				// Features Concrete capabilities the app should provide.
+				Features []string `json:"features"`
+
+				// Summary One-line summary of what the app is for.
+				Summary string `json:"summary"`
+
+				// Tools Full names of the MCP tools the app calls through window.archestra.
+				Tools []string `json:"tools"`
+
+				// Ui UI / style direction as a free-form prose string, not a structured object.
+				Ui *string `json:"ui"`
+			} `json:"spec"`
+			Teams []struct {
+				Id   string `json:"id"`
+				Name string `json:"name"`
+			} `json:"teams"`
+			TemplateId *string   `json:"templateId"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			Users      []struct {
+				Email string `json:"email"`
+				Id    string `json:"id"`
+				Name  string `json:"name"`
+			} `json:"users"`
+			ViewerRole UnlockApp200ViewerRole `json:"viewerRole"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         UnlockApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         UnlockApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{} `json:"details,omitempty"`
+				InternalCode *string                 `json:"internal_code,omitempty"`
+				Message      string                  `json:"message"`
+				Type         UnlockApp403ErrorType   `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         UnlockApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         UnlockApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string               `json:"internal_code,omitempty"`
+				Message      string                `json:"message"`
+				Type         UnlockApp500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetAppVersionResponse parses an HTTP response from a GetAppVersionWithResponse call
+func ParseGetAppVersionResponse(rsp *http.Response) (*GetAppVersionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetAppVersionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			AppId       *openapi_types.UUID `json:"appId"`
+			ContentHash string              `json:"contentHash"`
+			CreatedAt   time.Time           `json:"createdAt"`
+			Html        string              `json:"html"`
+			Id          openapi_types.UUID  `json:"id"`
+			Spec        *struct {
+				// Data What the app reads/persists via the App Data Store — a free-form prose string, not a structured object.
+				Data *string `json:"data"`
+
+				// Features Concrete capabilities the app should provide.
+				Features []string `json:"features"`
+
+				// Summary One-line summary of what the app is for.
+				Summary string `json:"summary"`
+
+				// Tools Full names of the MCP tools the app calls through window.archestra.
+				Tools []string `json:"tools"`
+
+				// Ui UI / style direction as a free-form prose string, not a structured object.
+				Ui *string `json:"ui"`
+			} `json:"spec"`
+			UiPermissions *struct {
+				Camera         *map[string]interface{} `json:"camera,omitempty"`
+				ClipboardWrite *map[string]interface{} `json:"clipboardWrite,omitempty"`
+				Geolocation    *map[string]interface{} `json:"geolocation,omitempty"`
+				Microphone     *map[string]interface{} `json:"microphone,omitempty"`
+			} `json:"uiPermissions"`
+			Version int `json:"version"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                   `json:"internal_code,omitempty"`
+				Message      string                    `json:"message"`
+				Type         GetAppVersion400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                   `json:"internal_code,omitempty"`
+				Message      string                    `json:"message"`
+				Type         GetAppVersion401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}   `json:"details,omitempty"`
+				InternalCode *string                   `json:"internal_code,omitempty"`
+				Message      string                    `json:"message"`
+				Type         GetAppVersion403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                   `json:"internal_code,omitempty"`
+				Message      string                    `json:"message"`
+				Type         GetAppVersion404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                   `json:"internal_code,omitempty"`
+				Message      string                    `json:"message"`
+				Type         GetAppVersion409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                   `json:"internal_code,omitempty"`
+				Message      string                    `json:"message"`
+				Type         GetAppVersion500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -53555,6 +57638,7 @@ func ParseGetMcpToolCallsResponse(rsp *http.Response) (*GetMcpToolCallsResponse,
 				AppName       *string                           `json:"appName"`
 				AuthMethod    *GetMcpToolCalls200DataAuthMethod `json:"authMethod"`
 				CreatedAt     time.Time                         `json:"createdAt"`
+				DurationMs    *int                              `json:"durationMs"`
 				Id            openapi_types.UUID                `json:"id"`
 				McpServerName string                            `json:"mcpServerName"`
 				Method        string                            `json:"method"`
@@ -55186,14 +59270,13 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -55404,14 +59487,13 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -55622,14 +59704,13 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -55840,14 +59921,13 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -56058,14 +60138,13 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -56276,14 +60355,13 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -56494,14 +60572,13 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -56712,14 +60789,13 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -56930,14 +61006,13 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -57148,14 +61223,13 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -57366,14 +61440,13 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -57584,14 +61657,13 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads         bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment      bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId          openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders      bool               `json:"animateChatPlaceholders"`
-			AppName                      *string            `json:"appName"`
-			AppsHackathonRecorderEnabled bool               `json:"appsHackathonRecorderEnabled"`
-			ChatErrorSupportMessage      *string            `json:"chatErrorSupportMessage"`
-			ChatLinks                    *[]struct {
+			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
+			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
+			AppName                 *string            `json:"appName"`
+			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
+			ChatLinks               *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`

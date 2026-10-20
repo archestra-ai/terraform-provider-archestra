@@ -8,6 +8,14 @@ const credentialGroup = "credential"
 
 // ConfigureResources applies the same API names and references in both scopes.
 func ConfigureResources(p *ujconfig.Provider) {
+	p.AddResourceConfigurator("archestra_app", func(r *ujconfig.Resource) {
+		r.ShortGroup = "app"
+		r.Kind = "App"
+		r.References["environment_id"] = ujconfig.Reference{TerraformName: "archestra_environment"}
+		r.References["tools.mcp_server_id"] = ujconfig.Reference{TerraformName: "archestra_mcp_server"}
+		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "html", "slug", "browser_permissions", "enabled", "locked", "open_in_fullscreen", "tools", "permissions", "labels", "environment_id", "description", "icon")
+	})
+
 	p.AddResourceConfigurator("archestra_knowledge_file", func(r *ujconfig.Resource) {
 		r.ShortGroup = "knowledge"
 		r.Kind = "File"
