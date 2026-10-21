@@ -76,14 +76,14 @@ runs:
         ARCHESTRA_NAMESPACE: default
       run: ./scripts/bootstrap-vault.sh
 
-    # The Vault step restarts the backend. Wait until the old pods are gone, so
-    # later requests through the node port do not reach a stopping pod.
+    # The Vault step restarts the backend. Wait until the old pods are gone and
+    # the public /health answers, so later requests do not reach a stopping pod.
     - name: Wait for the restarted platform
       shell: bash
       run: |
         for _attempt in $(seq 1 90); do
           if ! kubectl get pods --namespace default --selector=app.kubernetes.io/name=archestra-platform --no-headers | grep -q Terminating \
-            && curl -fsS -o /dev/null http://localhost:9000/api/health; then
+            && curl -fsS -o /dev/null http://localhost:9000/health; then
             exit 0
           fi
           sleep 2

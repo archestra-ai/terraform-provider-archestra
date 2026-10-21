@@ -136,10 +136,11 @@ For new platform releases, the Update Terraform Provider workflow in
 archestra-ai/archestra does steps 2 and 3 and opens a pull request on the
 `automation/platform-api` branch.
 
-The Nightly Acceptance Tests workflow runs both acceptance suites every night
-against the oldest supported release (`minimumAPIVersion`), the newest stable
-release and the tested release. `scripts/nightly-platform-versions.sh` selects
-them. To run it now, open **Actions → Nightly Acceptance Tests → Run workflow**.
+Pull request CI also runs both acceptance suites against the oldest supported
+release (`minimumAPIVersion`) and the newest stable release, which
+`scripts/supported-platform-versions.sh` selects. When a test uses an API
+feature that those releases do not have, check `testAccAPIVersionAtLeast` and
+leave that part out on older releases.
 
 ## Code style
 

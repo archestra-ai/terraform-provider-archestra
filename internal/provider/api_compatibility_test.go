@@ -156,7 +156,7 @@ func TestAPICompatibilityCITestsPlatformVersion(t *testing.T) {
 	}
 }
 
-func TestNightlyAcceptanceTestsSupportedReleases(t *testing.T) {
+func TestPullRequestCITestsOlderReleases(t *testing.T) {
 	if _, err := exec.LookPath("jq"); err != nil {
 		t.Skip("jq is not installed")
 	}
@@ -166,7 +166,7 @@ func TestNightlyAcceptanceTestsSupportedReleases(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(bin, "gh"), []byte(stub), 0o700); err != nil { //nolint:gosec // G306: the stub gh must be executable.
 		t.Fatal(err)
 	}
-	cmd := exec.CommandContext(t.Context(), "../../scripts/nightly-platform-versions.sh")
+	cmd := exec.CommandContext(t.Context(), "../../scripts/supported-platform-versions.sh")
 	cmd.Env = append(os.Environ(), "PATH="+bin+string(os.PathListSeparator)+os.Getenv("PATH"))
 	out, err := cmd.Output()
 	if err != nil {
@@ -177,22 +177,24 @@ func TestNightlyAcceptanceTestsSupportedReleases(t *testing.T) {
 		t.Fatalf("script printed %q, want a matrix= output", out)
 	}
 	var matrix struct {
-		Include []struct{ Version, Role string }
+		Include []struct{ Role, Version string }
 	}
 	if err := json.Unmarshal([]byte(raw), &matrix); err != nil {
 		t.Fatal(err)
 	}
-	roles := map[string]string{}
-	for _, entry := range matrix.Include {
-		roles[entry.Version] = entry.Role
+	// Both roles always run, even when they name the same release, so the
+	// required checks always report.
+	want := []struct{ Role, Version string }{{"oldest supported", minimumAPIVersion}, {"newest stable", "1.4.10"}}
+	if !reflect.DeepEqual(matrix.Include, want) {
+		t.Fatalf("older releases = %v, want %v", matrix.Include, want)
 	}
-	want := map[string]string{minimumAPIVersion: "oldest supported", "1.4.10": "newest stable"}
-	if role, ok := want[testedAPIVersion]; ok {
-		want[testedAPIVersion] = role + ", tested"
-	} else {
-		want[testedAPIVersion] = "tested"
+	workflow, err := os.ReadFile("../../.github/workflows/on-pull-request.yml")
+	if err != nil {
+		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(roles, want) {
-		t.Fatalf("nightly releases = %v, want %v", roles, want)
+	for _, name := range []string{"name: Acceptance Tests (${{ matrix.role }})", "name: Credential Acceptance Tests (${{ matrix.role }})"} {
+		if !strings.Contains(string(workflow), name) {
+			t.Errorf("pull request CI has no job %q", name)
+		}
 	}
 }

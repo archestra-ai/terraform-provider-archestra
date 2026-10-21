@@ -33,7 +33,7 @@ func testAccPreCheck(t *testing.T) {
 }
 
 // testAccAPIVersionAtLeast reports whether the test server runs minimum or a
-// later release. Nightly CI also runs the suite against older supported releases.
+// later release. Pull request CI also runs the suite against older supported releases.
 func testAccAPIVersionAtLeast(t *testing.T, minimum string) bool {
 	t.Helper()
 	raw, err := readAPIVersion(t.Context(), http.DefaultClient, os.Getenv("ARCHESTRA_BASE_URL"))

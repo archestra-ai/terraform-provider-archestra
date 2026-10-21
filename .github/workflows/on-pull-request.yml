@@ -101,7 +101,7 @@ jobs:
       - name: Read platform version
         run: ./scripts/platform-version.sh >> "$GITHUB_ENV"
 
-      # The nightly workflow runs the same steps against other releases.
+      # The older-release jobs below run the same steps against other releases.
       - name: Run acceptance tests
         uses: ./.github/actions/acceptance-tests
         with:
@@ -120,3 +120,62 @@ jobs:
         uses: ./.github/actions/credential-acceptance-tests
         with:
           archestra-version: ${{ env.ARCHESTRA_VERSION }}
+
+  # Besides the tested release, every pull request runs both acceptance suites
+  # against the oldest supported release and the newest stable release. The job
+  # names carry the role, not the version, so the checks can be required.
+  older-releases:
+    name: Select older Archestra releases
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Select releases
+        id: select
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./scripts/supported-platform-versions.sh | tee -a "$GITHUB_OUTPUT"
+
+  acceptance-tests-older-releases:
+    name: Acceptance Tests (${{ matrix.role }})
+    needs: older-releases
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.older-releases.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      # The generated client matches only the tested release's spec.
+      - name: Run acceptance tests
+        uses: ./.github/actions/acceptance-tests
+        with:
+          archestra-version: ${{ matrix.version }}
+          check-generated-client: "false"
+
+  credential-acceptance-tests-older-releases:
+    name: Credential Acceptance Tests (${{ matrix.role }})
+    needs: older-releases
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.older-releases.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Run credential acceptance tests
+        uses: ./.github/actions/credential-acceptance-tests
+        with:
+          archestra-version: ${{ matrix.version }}
+          check-generated-client: "false"

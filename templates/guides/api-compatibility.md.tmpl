@@ -23,11 +23,10 @@ Acceptance CI runs the native suite against that release and records the image
 digest it used in the job summary. The provider embeds the same file for the
 runtime check below.
 
-Every night, the Nightly Acceptance Tests workflow runs the native and
-credential acceptance suites against three releases: the oldest supported
-release (`1.4.0-rc.51`), the newest stable Archestra release and the tested
-release. A failed run opens an issue in this repository, and a later passing
-run closes it. Pull request CI tests only the tested release.
+Pull request CI also runs the native and credential acceptance suites against
+the oldest supported release (`1.4.0-rc.51`) and the newest stable Archestra
+release. These checks are required, so a change that breaks a supported older
+release cannot merge.
 
 Crossplane reconciliation is not part of CI. The recorded evidence for
 1.4.0-rc.55 (image
