@@ -29,9 +29,12 @@ func defaultPermissionsAttribute() schema.SingleNestedAttribute {
 	for name := range defaultPermissionSlots {
 		value := initialGrantsAttribute()
 		value.MarkdownDescription = "Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object."
+		actions, _ := value.NestedObject.Attributes["actions"].(schema.SetAttribute)
+		actions.MarkdownDescription = "Actions granted to the principal; keep manage-permissions on at least one grant in each policy."
+		value.NestedObject.Attributes["actions"] = actions
 		attributes[name] = value
 	}
-	return schema.SingleNestedAttribute{Optional: true, Computed: true, Attributes: attributes, PlanModifiers: []planmodifier.Object{objectplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Default access policies from organization Settings. Manage each object type independently: omit a field to leave its policy unmanaged, or set [] to clear that type's direct organization-wide grants. Changing these policies affects existing and future objects. Organization-settings deletion leaves them intact."}
+	return schema.SingleNestedAttribute{Optional: true, Computed: true, Attributes: attributes, PlanModifiers: []planmodifier.Object{objectplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Default access policies from organization Settings. Manage each object type independently: omit a field to leave its policy unmanaged, or set [] to clear that type's direct organization-wide grants. Changing these policies affects existing and future objects. Organization-settings deletion leaves them intact. The API rejects any change, including [], that leaves a policy without a grant that includes manage-permissions."}
 }
 
 func (r *OrganizationSettingsResource) readDefaultPermissions(ctx context.Context, data *OrganizationSettingsResourceModel, diags *diag.Diagnostics) {

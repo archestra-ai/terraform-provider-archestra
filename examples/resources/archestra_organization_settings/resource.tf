@@ -62,11 +62,24 @@ resource "archestra_organization_settings" "main" {
     }
   }
   default_permissions = {
-    agents = [{
-      subject_type = "team"
-      subject_id   = archestra_team.engineering.id
-      actions      = ["read"]
-    }]
+    # The API requires a recipient with manage-permissions in every default policy.
+    agents = [
+      {
+        subject_type = "role"
+        subject_id   = "admin"
+        actions      = ["delete", "manage-permissions", "read", "update", "use"]
+      },
+      {
+        subject_type = "role"
+        subject_id   = "platform_admin"
+        actions      = ["delete", "manage-permissions", "read", "update", "use"]
+      },
+      {
+        subject_type = "team"
+        subject_id   = archestra_team.engineering.id
+        actions      = ["read"]
+      },
+    ]
   }
 
   # One-way flag — once set to true on the backend, attempts to flip back

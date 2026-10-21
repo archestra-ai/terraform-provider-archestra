@@ -87,11 +87,24 @@ resource "archestra_organization_settings" "main" {
     }
   }
   default_permissions = {
-    agents = [{
-      subject_type = "team"
-      subject_id   = archestra_team.engineering.id
-      actions      = ["read"]
-    }]
+    # The API requires a recipient with manage-permissions in every default policy.
+    agents = [
+      {
+        subject_type = "role"
+        subject_id   = "admin"
+        actions      = ["delete", "manage-permissions", "read", "update", "use"]
+      },
+      {
+        subject_type = "role"
+        subject_id   = "platform_admin"
+        actions      = ["delete", "manage-permissions", "read", "update", "use"]
+      },
+      {
+        subject_type = "team"
+        subject_id   = archestra_team.engineering.id
+        actions      = ["read"]
+      },
+    ]
   }
 
   # One-way flag — once set to true on the backend, attempts to flip back
@@ -137,7 +150,7 @@ resource "archestra_organization_settings" "main" {
 - `default_member_role` (String) Role assigned to new organization members.
 - `default_model_id` (String) Database ID of the default discovered LLM model.
 - `default_network_policy` (String) JSON configuration for default network policy.
-- `default_permissions` (Attributes) Default access policies from organization Settings. Manage each object type independently: omit a field to leave its policy unmanaged, or set [] to clear that type's direct organization-wide grants. Changing these policies affects existing and future objects. Organization-settings deletion leaves them intact. (see [below for nested schema](#nestedatt--default_permissions))
+- `default_permissions` (Attributes) Default access policies from organization Settings. Manage each object type independently: omit a field to leave its policy unmanaged, or set [] to clear that type's direct organization-wide grants. Changing these policies affects existing and future objects. Organization-settings deletion leaves them intact. The API rejects any change, including [], that leaves a policy without a grant that includes manage-permissions. (see [below for nested schema](#nestedatt--default_permissions))
 - `default_user_limits` (Attributes Map) Default member spending limits from LLM Settings, keyed by `default` for the organization or an environment UUID for an override. Omit this map to preserve all defaults; an explicit map owns the complete set, and {} removes them all. Organization-settings deletion leaves these settings intact. (see [below for nested schema](#nestedatt--default_user_limits))
 - `embedding_chat_api_key_id` (String) API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `embedding_model` (String) Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
@@ -237,7 +250,7 @@ Optional:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -247,7 +260,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -257,7 +270,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -267,7 +280,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -277,7 +290,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -287,7 +300,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -297,7 +310,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -307,7 +320,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -317,7 +330,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -327,7 +340,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -337,7 +350,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -347,7 +360,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -357,7 +370,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -367,7 +380,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -377,7 +390,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -387,7 +400,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -397,7 +410,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -407,7 +420,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -417,7 +430,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 
@@ -427,7 +440,7 @@ Required:
 
 Required:
 
-- `actions` (Set of String) Actions granted to the principal.
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
 - `subject_id` (String) Principal ID; use * for the organization principal.
 - `subject_type` (String) Principal type.
 

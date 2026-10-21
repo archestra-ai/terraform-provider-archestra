@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -190,4 +191,43 @@ default_permissions={agents=%s}`, encode(original.Grants)))
 		{Config: cleared, Check: resource.ComposeTestCheckFunc(check, resource.TestCheckResourceAttr("archestra_organization_settings.test", "default_user_limits.%", "0"), resource.TestCheckResourceAttr("archestra_organization_settings.test", "environment_defaults.agents", ""))},
 		{Config: cleared, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
 	}})
+}
+
+// A default policy must keep a recipient that can manage permissions; a lone
+// team read grant is refused by the API and must surface as an error.
+func TestAccOrganizationDefaultPermissionsRequireManageRecipient(t *testing.T) {
+	api, err := client.NewClientWithResponses(os.Getenv("ARCHESTRA_BASE_URL"), client.WithRequestEditorFn(func(_ context.Context, r *http.Request) error {
+		r.Header.Set("Authorization", os.Getenv("ARCHESTRA_API_KEY"))
+		return nil
+	}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	unchanged := func(*terraform.State) error {
+		var d diag.Diagnostics
+		state := parentPermissionState("agent", "*")
+		policy, status := (&ResourcePermissionPolicyResource{client: api}).readPolicy(context.Background(), &state, &d)
+		if policy == nil || status != 200 {
+			return fmt.Errorf("read agents default policy: status %d %v", status, d)
+		}
+		for _, grant := range policy.Grants {
+			for _, action := range grant.Actions {
+				if action == "manage-permissions" {
+					return nil
+				}
+			}
+		}
+		return fmt.Errorf("agents default policy lost its manage-permissions recipient")
+	}
+	config := fmt.Sprintf(`resource "archestra_team" "readers" {name=%q}
+resource "archestra_organization_settings" "test" {
+ default_permissions={agents=[{subject_type="team",subject_id=archestra_team.readers.id,actions=["read"]}]}
+}`, acctest.RandomWithPrefix("tf-default-readers"))
+	resource.Test(t, resource.TestCase{
+		PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		CheckDestroy: unchanged,
+		Steps: []resource.TestStep{
+			{Config: config, ExpectError: regexp.MustCompile(`At least one recipient must keep Manage access`)},
+		},
+	})
 }
