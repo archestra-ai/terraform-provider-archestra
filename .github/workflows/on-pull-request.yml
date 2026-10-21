@@ -205,6 +205,7 @@ jobs:
             -e ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true \
             -e ARCHESTRA_AGENT_RUNTIME_ENABLED=true \
             -e ARCHESTRA_AUTH_SECRET=acceptance-test-auth-secret-32chars \
+            -e ARCHESTRA_ANALYTICS=disabled \
             archestra/platform:1.4.0-rc.49@sha256:c9177010ed05666f76cb12bf165f5a4c5d7d8175f5ce8e90259fc16173eb7679
           for _attempt in $(seq 1 120); do
             status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/api/health || true)
