@@ -1,0 +1,216 @@
+{
+  "api_version": "1.4.0-rc.48",
+  "api_spec_sha256": "d88e74f5d3633eaeaf53e01c1c32a32d6e3fe013864d37e636324aac5633f73e",
+  "terraform_sha256": "cbaf30c9d2f53bee1c90c1a96ee05a7c2fbec24025b5ef5f571e825b918a40da",
+  "controller_sha256": "cbee56b28d800444c9bcc92b48cf85c1ebc3804b51490fab9708623f252c423d",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "results": [
+    {
+      "resource": "RuntimeCredentialInitialGrantDefaults",
+      "scope": "cluster",
+      "parameter_source": "default",
+      "explicit_empty": false,
+      "metadata_update_preserves_grants": "passed",
+      "init_provider_update_ignored": "not_applicable",
+      "persisted_grants": 2,
+      "owner_grant_preserved": true,
+      "create": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "RuntimeCredentialInitialGrantDefaults",
+      "scope": "cluster",
+      "parameter_source": "empty",
+      "explicit_empty": true,
+      "metadata_update_preserves_grants": "passed",
+      "init_provider_update_ignored": "not_applicable",
+      "persisted_grants": 1,
+      "owner_grant_preserved": true,
+      "create": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "RuntimeCredentialInitialGrantDefaults",
+      "scope": "cluster",
+      "parameter_source": "init-empty",
+      "explicit_empty": true,
+      "metadata_update_preserves_grants": "passed",
+      "init_provider_update_ignored": "passed",
+      "persisted_grants": 1,
+      "owner_grant_preserved": true,
+      "create": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "AgentInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "GatewayInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ProjectInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "KnowledgeBaseInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "RegistryCatalogItemInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "SkillInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "RuntimeCredentialInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ProviderKeyInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "RuntimeCredentialInitialGrantDefaults",
+      "scope": "namespaced",
+      "parameter_source": "default",
+      "explicit_empty": false,
+      "metadata_update_preserves_grants": "passed",
+      "init_provider_update_ignored": "not_applicable",
+      "persisted_grants": 2,
+      "owner_grant_preserved": true,
+      "create": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "RuntimeCredentialInitialGrantDefaults",
+      "scope": "namespaced",
+      "parameter_source": "empty",
+      "explicit_empty": true,
+      "metadata_update_preserves_grants": "passed",
+      "init_provider_update_ignored": "not_applicable",
+      "persisted_grants": 1,
+      "owner_grant_preserved": true,
+      "create": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "RuntimeCredentialInitialGrantDefaults",
+      "scope": "namespaced",
+      "parameter_source": "init-empty",
+      "explicit_empty": true,
+      "metadata_update_preserves_grants": "passed",
+      "init_provider_update_ignored": "passed",
+      "persisted_grants": 1,
+      "owner_grant_preserved": true,
+      "create": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "AgentInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "GatewayInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ProjectInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "KnowledgeBaseInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "RegistryCatalogItemInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "SkillInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "RuntimeCredentialInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ProviderKeyInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    }
+  ],
+  "cleanup": "passed",
+  "outcome": "passed",
+  "execution": "Real controller and Terraform CLI; guarded resumption after volatile fixture recovery. Same API snapshot, endpoint, context and binary hashes; no finalizers removed.",
+  "source_evidence_sha256": {
+    "rc48-crossplane-creation-grants-r2.json": "ed46a1be0c141eb76067f6c3cb3677f42c991fa7725239293aa2e17eff3e0eac",
+    "rc48-crossplane-creation-grants-r3.json": "da63e32a2118ea761ecbd2d9af8247f8052e08c83054877e6f8a481894eeca66"
+  }
+}

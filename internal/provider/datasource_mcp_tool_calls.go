@@ -29,14 +29,14 @@ type McpToolCallsDataSource struct {
 }
 
 type McpToolCallsDataSourceModel struct {
-	AgentID    types.String `tfsdk:"agent_id"`
-	StartDate  types.String `tfsdk:"start_date"`
-	EndDate    types.String `tfsdk:"end_date"`
-	Search     types.String `tfsdk:"search"`
-	MaxRecords types.Int64  `tfsdk:"max_records"`
-	Calls      types.List   `tfsdk:"calls"`
-	Total      types.Int64  `tfsdk:"total"`
-	Truncated  types.Bool   `tfsdk:"truncated"`
+	AgentID       types.String `tfsdk:"agent_id"`
+	StartDate     types.String `tfsdk:"start_date"`
+	EndDate       types.String `tfsdk:"end_date"`
+	ServerName    types.String `tfsdk:"mcp_server_name"`
+	MaxRecords    types.Int64  `tfsdk:"max_records"`
+	Calls         types.List   `tfsdk:"calls"`
+	ReturnedCount types.Int64  `tfsdk:"returned_count"`
+	Truncated     types.Bool   `tfsdk:"truncated"`
 }
 
 // defaultMcpToolCallsMaxRecords caps how many records the data source
@@ -52,6 +52,13 @@ const defaultMcpToolCallsMaxRecords int64 = 1000
 // wire as closely as is HCL-friendly: arguments and result come back as
 // JSON strings (use `jsondecode` to introspect), the rest are flat.
 var mcpToolCallObjectType = types.ObjectType{AttrTypes: map[string]attr.Type{
+	"app_id":          types.StringType,
+	"app_name":        types.StringType,
+	"oauth_client_id": types.StringType,
+	"owner_type":      types.StringType,
+	"run_id":          types.StringType,
+	"source":          types.StringType,
+	"tool_call_json":  types.StringType,
 	"id":              types.StringType,
 	"agent_id":        types.StringType,
 	"mcp_server_name": types.StringType,
@@ -72,20 +79,7 @@ func (d *McpToolCallsDataSource) Metadata(_ context.Context, req datasource.Meta
 
 func (d *McpToolCallsDataSource) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Queries the MCP tool-call audit log. Useful for compliance attestations, " +
-			"alarm thresholds keyed off `length(...calls) > N`, or driving downstream resources off recent activity " +
-			"(e.g. only assigning a tool to an agent that called it in the last 24h).\n\n" +
-			"```hcl\n" +
-			"data \"archestra_mcp_tool_calls\" \"recent_failures\" {\n" +
-			"  agent_id   = archestra_agent.support.id\n" +
-			"  start_date = timeadd(timestamp(), \"-24h\")\n" +
-			"  search     = \"error\"\n" +
-			"}\n\n" +
-			"output \"failure_count_24h\" {\n" +
-			"  value = data.archestra_mcp_tool_calls.recent_failures.total\n" +
-			"}\n" +
-			"```\n\n" +
-			"~> **Pagination is exhaustive.** This data source iterates the backend's paginated `/api/mcp-tool-calls` endpoint until exhausted (`limit=100` per page) and surfaces every match. Filter narrowly with `start_date` / `end_date` / `search` to keep state size manageable.",
+		MarkdownDescription: "Queries the MCP tool-call audit log using cursor pagination, bounded by `max_records`.",
 
 		Attributes: map[string]schema.Attribute{
 			"agent_id": schema.StringAttribute{
@@ -103,16 +97,16 @@ func (d *McpToolCallsDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				MarkdownDescription: "Optional. RFC 3339 / ISO 8601 timestamp; only return calls created at or before this instant.",
 				Optional:            true,
 			},
-			"search": schema.StringAttribute{
-				MarkdownDescription: "Optional. Free-text, case-insensitive substring matched against MCP server name, tool name, and arguments JSON.",
+			"mcp_server_name": schema.StringAttribute{
+				MarkdownDescription: "Filter by exact MCP server name.",
 				Optional:            true,
 			},
 			"max_records": schema.Int64Attribute{
-				MarkdownDescription: fmt.Sprintf("Optional. Hard cap on records pulled into Terraform state, regardless of how many the backend's filter matches. Defaults to %d. Set higher only if you know the filter is narrow enough — `total` will tell you the unfiltered backend count, `truncated` flips to `true` when the cap kicked in.", defaultMcpToolCallsMaxRecords),
+				MarkdownDescription: fmt.Sprintf("Optional. Hard cap on records pulled into Terraform state, regardless of how many the backend's filter matches. Defaults to %d. `truncated` reports whether more matching records remain.", defaultMcpToolCallsMaxRecords),
 				Optional:            true,
 			},
-			"total": schema.Int64Attribute{
-				MarkdownDescription: "Total number of calls matching the filter on the backend, ignoring `max_records`. Compare against `length(calls)` to detect that you've truncated.",
+			"returned_count": schema.Int64Attribute{
+				MarkdownDescription: "Number of records returned in calls.",
 				Computed:            true,
 			},
 			"truncated": schema.BoolAttribute{
@@ -120,18 +114,25 @@ func (d *McpToolCallsDataSource) Schema(_ context.Context, _ datasource.SchemaRe
 				Computed:            true,
 			},
 			"calls": schema.ListNestedAttribute{
-				MarkdownDescription: "Matching tool-call records, oldest-first within each page (server's default sort: `createdAt desc` per page, but pages are aggregated in fetch order).",
+				MarkdownDescription: "Matching tool-call records in the API cursor order (newest first).",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						"app_id":          schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "App UUID when invoked by an app."},
+						"app_name":        schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "App display name."},
+						"oauth_client_id": schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "OAuth client ID."},
+						"owner_type":      schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "Owning principal type."},
+						"run_id":          schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "Agent run ID."},
+						"source":          schema.StringAttribute{Computed: true, Sensitive: false, MarkdownDescription: "Invocation source."},
+						"tool_call_json":  schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Complete tool-call payload as JSON, including extension fields."},
 						"id":              schema.StringAttribute{Computed: true, MarkdownDescription: "Call UUID."},
 						"agent_id":        schema.StringAttribute{Computed: true, MarkdownDescription: "UUID of the agent that initiated the call. Null for calls outside an agent context."},
 						"mcp_server_name": schema.StringAttribute{Computed: true, MarkdownDescription: "Display name of the MCP server that served the call."},
 						"method":          schema.StringAttribute{Computed: true, MarkdownDescription: "MCP method name (e.g. `tools/call`)."},
 						"tool_name":       schema.StringAttribute{Computed: true, MarkdownDescription: "Name of the tool invoked. Null if the call wasn't a tool/call."},
 						"tool_call_id":    schema.StringAttribute{Computed: true, MarkdownDescription: "Provider-generated correlation ID inside `toolCall`. Null if absent."},
-						"arguments":       schema.StringAttribute{Computed: true, MarkdownDescription: "Tool-call arguments encoded as a JSON string. Use `jsondecode(call.arguments)` to introspect. Null if absent."},
-						"result":          schema.StringAttribute{Computed: true, MarkdownDescription: "Tool result encoded as a JSON string (the wire shape is polymorphic — use `jsondecode`). Null if absent."},
+						"arguments":       schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Tool-call arguments encoded as a JSON string. Use `jsondecode(call.arguments)` to introspect. Null if absent."},
+						"result":          schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Tool result encoded as a JSON string (the wire shape is polymorphic — use `jsondecode`). Null if absent."},
 						"auth_method":     schema.StringAttribute{Computed: true, MarkdownDescription: "How the agent authenticated the call (`oauth`, `user_token`, `org_token`, `team_token`, `external_idp`, `session`). Null if absent."},
 						"user_id":         schema.StringAttribute{Computed: true, MarkdownDescription: "UUID of the user the call ran on behalf of. Null for org-wide calls."},
 						"user_name":       schema.StringAttribute{Computed: true, MarkdownDescription: "Display name of the user. Null when `user_id` is null."},
@@ -189,9 +190,9 @@ func (d *McpToolCallsDataSource) Read(ctx context.Context, req datasource.ReadRe
 		}
 		params.EndDate = &t
 	}
-	if !data.Search.IsNull() && !data.Search.IsUnknown() {
-		s := data.Search.ValueString()
-		params.Search = &s
+	if !data.ServerName.IsNull() && !data.ServerName.IsUnknown() {
+		name := data.ServerName.ValueString()
+		params.McpServerName = &name
 	}
 
 	maxRecords := defaultMcpToolCallsMaxRecords
@@ -204,12 +205,10 @@ func (d *McpToolCallsDataSource) Read(ctx context.Context, req datasource.ReadRe
 	}
 
 	limit := 100
-	offset := 0
 	params.Limit = &limit
-	params.Offset = &offset
 
 	var collected []attr.Value
-	var total int64
+	seenCursors := map[string]bool{}
 	truncated := false
 
 	for {
@@ -221,11 +220,10 @@ func (d *McpToolCallsDataSource) Read(ctx context.Context, req datasource.ReadRe
 		if callsResp.JSON200 == nil {
 			resp.Diagnostics.AddError(
 				"Unexpected API Response",
-				fmt.Sprintf("Expected 200 OK, got status %d: %s", callsResp.StatusCode(), string(callsResp.Body)),
+				fmt.Sprintf("Expected 200 OK, got status %d", callsResp.StatusCode()),
 			)
 			return
 		}
-		total = int64(callsResp.JSON200.Pagination.Total)
 
 		for i := range callsResp.JSON200.Data {
 			if int64(len(collected)) >= maxRecords {
@@ -244,13 +242,17 @@ func (d *McpToolCallsDataSource) Read(ctx context.Context, req datasource.ReadRe
 		if truncated || !callsResp.JSON200.Pagination.HasNext {
 			break
 		}
-		offset += limit
-		params.Offset = &offset
-	}
-	if !truncated && total > int64(len(collected)) {
-		// Defensive: backend reported more records than we collected
-		// without `HasNext` being true. Treat as truncated for safety.
-		truncated = true
+		if int64(len(collected)) >= maxRecords {
+			truncated = true
+			break
+		}
+		next := callsResp.JSON200.Pagination.NextCursor
+		if next == nil || *next == "" || seenCursors[*next] {
+			resp.Diagnostics.AddError("Invalid API Pagination", "The backend indicated another page without a new cursor.")
+			return
+		}
+		seenCursors[*next] = true
+		params.Cursor = next
 	}
 
 	listValue, diags := types.ListValue(mcpToolCallObjectType, collected)
@@ -259,29 +261,46 @@ func (d *McpToolCallsDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 	data.Calls = listValue
-	data.Total = types.Int64Value(total)
+	data.ReturnedCount = types.Int64Value(int64(len(collected)))
 	data.Truncated = types.BoolValue(truncated)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 // flattenMcpToolCall projects one wire record onto the data-source schema.
-func flattenMcpToolCall(c *struct {
+type mcpToolCallWire struct {
+	AppID         *string         `json:"appId"`
+	AppName       *string         `json:"appName"`
+	OAuthClientID *string         `json:"oauthClientId"`
+	OwnerType     string          `json:"ownerType"`
+	RunID         *string         `json:"runId"`
+	Source        *string         `json:"source"`
+	ToolCall      json.RawMessage `json:"toolCall"`
+
 	AgentId       *openapi_types.UUID                      `json:"agentId"`
 	AuthMethod    *client.GetMcpToolCalls200DataAuthMethod `json:"authMethod"`
 	CreatedAt     time.Time                                `json:"createdAt"`
 	Id            openapi_types.UUID                       `json:"id"`
 	McpServerName string                                   `json:"mcpServerName"`
 	Method        string                                   `json:"method"`
-	ToolCall      *struct {
-		Arguments map[string]interface{} `json:"arguments"`
-		Id        string                 `json:"id"`
-		Name      string                 `json:"name"`
-	} `json:"toolCall"`
-	ToolResult interface{} `json:"toolResult"`
-	UserId     *string     `json:"userId"`
-	UserName   *string     `json:"userName"`
-}) (attr.Value, diag.Diagnostics) {
+	ToolResult    interface{}                              `json:"toolResult"`
+	UserId        *string                                  `json:"userId"`
+	UserName      *string                                  `json:"userName"`
+}
+
+func flattenMcpToolCall(raw any) (attr.Value, diag.Diagnostics) {
+	var diags diag.Diagnostics
+	encoded, err := json.Marshal(raw)
+	if err != nil {
+		diags.AddError("Invalid Tool Call", err.Error())
+		return nil, diags
+	}
+	var c mcpToolCallWire
+	if err := json.Unmarshal(encoded, &c); err != nil {
+		diags.AddError("Invalid Tool Call", err.Error())
+		return nil, diags
+	}
+
 	// helper closures for nullable fields
 	strPtrOrNull := func(s *string) types.String {
 		if s == nil {
@@ -312,13 +331,29 @@ func flattenMcpToolCall(c *struct {
 	toolName := types.StringNull()
 	toolCallID := types.StringNull()
 	arguments := types.StringNull()
-	if c.ToolCall != nil {
-		toolName = types.StringValue(c.ToolCall.Name)
-		toolCallID = types.StringValue(c.ToolCall.Id)
-		arguments = jsonOrNull(c.ToolCall.Arguments)
+	toolCallJSON := types.StringNull()
+	if len(c.ToolCall) > 0 && string(c.ToolCall) != "null" {
+		toolCallJSON = types.StringValue(string(c.ToolCall))
+		var call struct {
+			Name      *string     `json:"name"`
+			ID        *string     `json:"id"`
+			Arguments interface{} `json:"arguments"`
+		}
+		if json.Unmarshal(c.ToolCall, &call) == nil {
+			toolName = strPtrOrNull(call.Name)
+			toolCallID = strPtrOrNull(call.ID)
+			arguments = jsonOrNull(call.Arguments)
+		}
 	}
 
 	return types.ObjectValue(mcpToolCallObjectType.AttrTypes, map[string]attr.Value{
+		"app_id":          strPtrOrNull(c.AppID),
+		"app_name":        strPtrOrNull(c.AppName),
+		"oauth_client_id": strPtrOrNull(c.OAuthClientID),
+		"owner_type":      types.StringValue(c.OwnerType),
+		"run_id":          strPtrOrNull(c.RunID),
+		"source":          strPtrOrNull(c.Source),
+		"tool_call_json":  toolCallJSON,
 		"id":              types.StringValue(c.Id.String()),
 		"agent_id":        agentID,
 		"mcp_server_name": types.StringValue(c.McpServerName),

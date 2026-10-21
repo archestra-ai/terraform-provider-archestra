@@ -236,6 +236,44 @@ The bootstrap uses a private kubeconfig for its commands and child scripts, leav
 the user's current Kubernetes context unchanged. `ARCHESTRA_NAMESPACE` selects the
 platform's namespace inside this test cluster (default `default`).
 
+## Crossplane lifecycle probes
+
+`scripts/bootstrap-crossplane.sh` adds Crossplane to the stack above for
+both-scope reconciliation tests. Run it with the same `KIND_CLUSTER` and
+`ARCHESTRA_TEST_*_PORT` values as the stack:
+
+```bash
+scripts/bootstrap-local-stack.sh
+scripts/bootstrap-crossplane.sh                       # also needs go, goimports, make, helm
+eval "$(scripts/bootstrap-local-stack.sh --print-env)"
+W=~/.cache/archestra-provider-crossplane/archestra-ci-cluster
+python3 scripts/integration/crossplane-lifecycle.py --cases apps \
+  --api-url "$ARCHESTRA_BASE_URL" --key-file "$W/api-key" --readonly-vault \
+  --llm-base-url "$ARCHESTRA_TEST_LLM_BASE_URL" \
+  --mcp-url http://provider-mcp-mock.default.svc.cluster.local:19006/mcp \
+  --kubeconfig "$W/kubeconfig" --provider-config default \
+  --terraform-binary terraform-provider-archestra \
+  --controller-binary crossplane/_output/bin/linux_amd64/provider \
+  --evidence /tmp/crossplane-apps.json
+scripts/bootstrap-crossplane.sh --down                # remove Crossplane, CRDs and fixtures
+```
+
+The script installs Crossplane 2.2.1 with Helm, builds the provider and both
+generated scopes, applies their CRDs, and creates a credentials Secret from
+`--print-env`. It names the cluster `ProviderConfig` and the namespaced
+`ClusterProviderConfig` and `ProviderConfig` `default`. The controller runs on
+the host with Terraform 1.5.7, the locally built provider in a filesystem
+mirror and a 10-second drift poll; its log and private kubeconfig live in the
+work directory printed at the end. Set `CROSSPLANE_SKIP_BUILD=1` to reuse
+existing binaries.
+
+[`scripts/k8s/provider-mcp-mock.yaml`](scripts/k8s/provider-mcp-mock.yaml)
+runs [`scripts/integration/mcp-mock.py`](scripts/integration/mcp-mock.py) in the
+cluster, so the backend pod can install it as a remote MCP server at
+`http://provider-mcp-mock.default.svc.cluster.local:19006/mcp`. The bootstrap
+creates its script ConfigMap and applies it; App lifecycle cases use it for
+upstream tools.
+
 ## Manual smoke testing with `examples/complete/`
 
 For PR reviewers and contributors who want to *see* a change in action

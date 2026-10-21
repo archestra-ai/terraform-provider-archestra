@@ -1,0 +1,21 @@
+{
+  "outcome": "passed",
+  "cleanup": "passed",
+  "expected": "preserved",
+  "provider_sha256": "cbaf30c9d2f53bee1c90c1a96ee05a7c2fbec24025b5ef5f571e825b918a40da",
+  "environment": "isolated loopback API; two independent native Terraform processes",
+  "native_apply_exit_codes": [
+    0,
+    0
+  ],
+  "requested_edges": 2,
+  "observed_edges": 2,
+  "all_requested_edges_preserved": true,
+  "stale_reads_synchronized": 0,
+  "mutation_methods": {
+    "POST single delegation edge": 2
+  },
+  "api_version": "1.4.0-rc.48",
+  "api_release_commit": "510e3966104f645994fcee1b14404d1bab450d95",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

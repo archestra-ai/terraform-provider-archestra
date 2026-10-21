@@ -1,0 +1,39 @@
+{
+  "result": "passed in one targeted run",
+  "registered_families": 35,
+  "acceptance_tests_passed": 11,
+  "failures": 0,
+  "skips": 0,
+  "api_version": "1.4.0-rc.49",
+  "api_image_digest": "sha256:c9177010ed05666f76cb12bf165f5a4c5d7d8175f5ce8e90259fc16173eb7679",
+  "test_binary_sha256": "97b16b952b64af9c42452831990e2493ef94e8ddc2a2410e58d4e454d3de30fc",
+  "source_log_sha256": "903ab25c4a930d49cb9319d5ecc49d57ba3fd0d724d758939a4579088f91046c",
+  "native_runtime_provider_sha256": "be6869c6fd8c4470693ceb2ac4a9eb76b0f3a93cbe347e6d0e4f2077ccbbba12",
+  "controller_sha256": "a323437a98ef4ab2aefd3b28f509b4580581ce46e83e7dda101d2fd78b78abff",
+  "base_git_commit": "36495945f362e2381c6bf37c104973486e0c2cab",
+  "candidate_boundary": "Consolidated Agent/Gateway surface, published rc.49 client and service-account team ownership. Full native suite is running independently on this frozen test binary; final renamed/consolidated surface and package validation still required.",
+  "terraform_version": "1.13.4",
+  "go_version": "1.25.9",
+  "tests": [
+    "TestAccAgentInlineHooks",
+    "TestAccAgentInlineRelationships",
+    "TestAccAgentInlineTools",
+    "TestAccGatewayInlineTools",
+    "TestAccAgentToolDataSource_NamespacedToolName",
+    "TestAccAgentToolsDataSource",
+    "TestAccGatewayInlineRelationships",
+    "TestAccGatewayInlineSkillsRejectTemplate",
+    "TestAccIntegration_FullWorkflow",
+    "TestAccIntegration_CrossScope_TeamAgentPersonalInstall",
+    "TestAccServiceAccountTeamOwnership"
+  ],
+  "broader_native_run": {
+    "acceptance_cases_passed": 146,
+    "acceptance_failures": 0,
+    "process_exit_code": 1,
+    "unit_failure": "TestAPICompatibilityCIPinsTestedRelease: CI had moved to rc49 while the frozen binary still declared rc48. Compatibility declarations and examples subsequently aligned; all root unit tests passed in a fresh run.",
+    "followup_unit_log_sha256": "922619510026b819720b742dbf2ba13757b7b816fa5c3da6047e5c7c13e5554d",
+    "full_run_log_sha256": "4fbb5fd185e63125c8ce10dd59011063bb43b681c58940b47f2effef5dcfff06",
+    "not_a_clean_full_suite": true
+  }
+}

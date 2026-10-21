@@ -1,0 +1,76 @@
+{
+  "run_id": "0851a803",
+  "terraform_sha256": "171468a0f4c5d658d76ae62fdcb6e33573fc346fdfc0ccc765effca545e8c3c7",
+  "controller_sha256": "2715113d5e1c3e972a97e91ee0e8dab71019ea1ccece42d279e3d14307067bb5",
+  "results": [
+    {
+      "resource": "ProjectFileInit",
+      "scope": "cluster",
+      "create": "passed",
+      "init_provider_secret": "passed",
+      "project_reference": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "KnowledgeFile",
+      "scope": "cluster",
+      "create": "passed",
+      "directory_reference": "passed",
+      "secret_input": "passed",
+      "metadata_update": "passed",
+      "metadata_drift_repair": "passed",
+      "sharing_clear": "passed",
+      "directory_clear": "passed",
+      "immutable_content_refusal": "passed",
+      "orphan": "passed",
+      "uuid_adoption": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "KnowledgeFileInit",
+      "scope": "cluster",
+      "create": "passed",
+      "init_provider": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "ProjectFileInit",
+      "scope": "namespaced",
+      "create": "passed",
+      "init_provider_secret": "passed",
+      "project_reference": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "KnowledgeFile",
+      "scope": "namespaced",
+      "create": "passed",
+      "directory_reference": "passed",
+      "secret_input": "passed",
+      "metadata_update": "passed",
+      "metadata_drift_repair": "passed",
+      "sharing_clear": "passed",
+      "directory_clear": "passed",
+      "immutable_content_refusal": "passed",
+      "orphan": "passed",
+      "uuid_adoption": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "KnowledgeFileInit",
+      "scope": "namespaced",
+      "create": "passed",
+      "init_provider": "passed",
+      "delete": "passed"
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization-recovery",
+  "api_url": "http://127.0.0.1:19000",
+  "api_spec_sha256": "07cdcb4f84a8371029a0a5f65be43af7b515cfb052a16e38520340d8b690d0c9",
+  "api_version": "1.4.0-rc.49",
+  "outcome": "passed",
+  "runtime_source_sha256": "b13dad82db81ed47bcddd26936d65daccf5145d6b8a1e76e97d28f465a624f19",
+  "reviewed_milestone": "411935fb1648ca812dff1f3503c0be77db65bcf3",
+  "scope": "Six current-candidate records: KnowledgeFile, KnowledgeFileInit and ProjectFileInit in both scopes. Includes Secret references, directory references, metadata/drift/clear, replacement refusal, orphan/adoption, required initProvider Secret sources and normal cleanup. No global settings were changed. Other families retain their separately frozen evidence; a final expanded-candidate combined sweep remains a release gate."
+}

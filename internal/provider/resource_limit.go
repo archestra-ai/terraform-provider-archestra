@@ -36,15 +36,25 @@ type LimitResource struct {
 }
 
 // LimitResourceModel describes the resource data model.
+type LimitModelUsageModel struct {
+	Model     types.String  `tfsdk:"model"`
+	Cost      types.Float64 `tfsdk:"cost"`
+	TokensIn  types.Float64 `tfsdk:"tokens_in"`
+	TokensOut types.Float64 `tfsdk:"tokens_out"`
+}
+
 type LimitResourceModel struct {
-	ID            types.String `tfsdk:"id"`
-	EntityID      types.String `tfsdk:"entity_id"`
-	EntityType    types.String `tfsdk:"entity_type"`
-	LimitType     types.String `tfsdk:"limit_type"`
-	LimitValue    types.Int64  `tfsdk:"limit_value"`
-	Model         types.List   `tfsdk:"model"`
-	ToolName      types.String `tfsdk:"tool_name"`
-	MCPServerName types.String `tfsdk:"mcp_server_name"`
+	CleanupInterval types.String      `tfsdk:"cleanup_interval"`
+	Labels          []AgentLabelModel `tfsdk:"labels"`
+	ModelUsage      types.List        `tfsdk:"model_usage"`
+	ID              types.String      `tfsdk:"id"`
+	EntityID        types.String      `tfsdk:"entity_id"`
+	EntityType      types.String      `tfsdk:"entity_type"`
+	LimitType       types.String      `tfsdk:"limit_type"`
+	LimitValue      types.Int64       `tfsdk:"limit_value"`
+	Model           types.List        `tfsdk:"model"`
+	ToolName        types.String      `tfsdk:"tool_name"`
+	MCPServerName   types.String      `tfsdk:"mcp_server_name"`
 }
 
 func (r *LimitResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -56,6 +66,9 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 		MarkdownDescription: "Usage limit on tokens or call counts, scoped per organization, team, or agent. See `limit_type` below for the three modes.",
 
 		Attributes: map[string]schema.Attribute{
+			"cleanup_interval": schema.StringAttribute{Optional: true, Computed: true, Validators: []validator.String{stringvalidator.OneOf("1h", "12h", "24h", "1w", "1m", "calendar_day", "calendar_week_monday", "calendar_week_sunday", "calendar_month")}, MarkdownDescription: "Interval used to reset limit usage."},
+			"labels":           schema.SetNestedAttribute{Optional: true, MarkdownDescription: "Resource labels.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"key": schema.StringAttribute{Required: true}, "value": schema.StringAttribute{Required: true}}}},
+			"model_usage":      schema.ListNestedAttribute{Computed: true, MarkdownDescription: "Current per-model usage counters.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{"model": schema.StringAttribute{Computed: true}, "cost": schema.Float64Attribute{Computed: true}, "tokens_in": schema.Float64Attribute{Computed: true}, "tokens_out": schema.Float64Attribute{Computed: true}}}},
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Limit identifier",
@@ -65,10 +78,12 @@ func (r *LimitResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 			},
 			"entity_id": schema.StringAttribute{
 				MarkdownDescription: "The entity ID this limit applies to",
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.RequiresReplace()},
 				Required:            true,
 			},
 			"entity_type": schema.StringAttribute{
 				MarkdownDescription: "Entity type: organization, team, or agent",
+				PlanModifiers:       []planmodifier.String{stringplanmodifier.RequiresReplace()},
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("organization", "team", "agent"),
@@ -122,7 +137,7 @@ func (r *LimitResource) ValidateConfig(ctx context.Context, req resource.Validat
 
 	// Required-when checks below skip Unknown values: when a field is
 	// referenced from another resource (e.g.,
-	// `mcp_server_name = archestra_mcp_server_installation.foo.name`),
+	// `mcp_server_name = archestra_mcp_server.foo.name`),
 	// the value is Unknown at plan-time until the referenced resource
 	// finalizes. Erroring on Unknown produces a false "X is required"
 	// even though X is set — the framework re-validates after Unknowns
@@ -272,6 +287,11 @@ func (r *LimitResource) Create(ctx context.Context, req resource.CreateRequest, 
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.refreshCurrentLimit(ctx, &data, &resp.Diagnostics)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *LimitResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -280,6 +300,10 @@ func (r *LimitResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
 	if resp.Diagnostics.HasError() {
+		return
+	}
+	if data.ID.IsNull() || data.ID.IsUnknown() || data.ID.ValueString() == "" {
+		resp.State.RemoveResource(ctx)
 		return
 	}
 
@@ -331,6 +355,7 @@ func (r *LimitResource) Read(ctx context.Context, req resource.ReadRequest, resp
 		data.MCPServerName = types.StringNull()
 	}
 
+	r.flattenCurrentLimit(ctx, &data, apiResp, &resp.Diagnostics)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -403,6 +428,11 @@ func (r *LimitResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		data.MCPServerName = types.StringNull()
 	}
 
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.refreshCurrentLimit(ctx, &data, &resp.Diagnostics)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 

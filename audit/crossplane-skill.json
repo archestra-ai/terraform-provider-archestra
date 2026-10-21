@@ -1,0 +1,36 @@
+{
+  "run_id": "ea924a9a",
+  "terraform_sha256": "2f2c99587482cf0a1ef20783f7e0d7e73dbd060373354d9bc2a89dce2760ef72",
+  "controller_sha256": "f1989daf737ba78da953c61bacf7980a8099311e606006e2e956330d0726c115",
+  "results": [
+    {
+      "resource": "Skill",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "terraform_import": "separate CLI test",
+      "empty_files_clear": "passed",
+      "immutable_first_version_preserved": true,
+      "stale_version_refused": 409,
+      "delete": "soft-delete passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "Skill",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "terraform_import": "separate CLI test",
+      "empty_files_clear": "passed",
+      "immutable_first_version_preserved": true,
+      "stale_version_refused": 409,
+      "delete": "soft-delete passed",
+      "backend_after_delete": 404
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "outcome": "passed"
+}

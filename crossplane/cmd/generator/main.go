@@ -11,6 +11,12 @@ import (
 )
 
 func main() {
+	if len(os.Args) == 3 && os.Args[1] == "--references" {
+		if err := config.PreserveReferenceCollectionOmission(os.Args[2]); err != nil {
+			panic(err)
+		}
+		return
+	}
 	if len(os.Args) < 2 || os.Args[1] == "" {
 		panic("root directory is required to be given as argument")
 	}
@@ -19,5 +25,9 @@ func main() {
 	if err != nil {
 		panic(fmt.Sprintf("cannot calculate the absolute path with %s", rootDir))
 	}
-	pipeline.Run(config.GetProvider(), config.GetProviderNamespaced(), absRootDir)
+	cluster, namespaced := config.GetProvider(), config.GetProviderNamespaced()
+	pipeline.Run(cluster, namespaced, absRootDir)
+	if err := config.PreserveRequiredCollections(absRootDir, cluster, namespaced); err != nil {
+		panic(err)
+	}
 }

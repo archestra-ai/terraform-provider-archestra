@@ -1,0 +1,48 @@
+{
+  "run_id": "b4341b23",
+  "terraform_sha256": "059e458a3e32d1344d27500348270654a2a0f334dc0c7fb64856c8cd15a12f3c",
+  "controller_sha256": "6d3f82de26c47e189fbbf2cb53a062bdd133f3e202fa7ec79032afa57d117351",
+  "results": [
+    {
+      "resource": "ModelOverride",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_reset": "passed",
+      "adopted_model_preserved": true
+    },
+    {
+      "resource": "ProviderKey",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "sensitive_header_secret_rotation": "passed",
+      "sensitive_header_absent_from_status": true
+    },
+    {
+      "resource": "ModelOverride",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_reset": "passed",
+      "adopted_model_preserved": true
+    },
+    {
+      "resource": "ProviderKey",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete": "passed",
+      "sensitive_header_secret_rotation": "passed",
+      "sensitive_header_absent_from_status": true
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "outcome": "passed"
+}

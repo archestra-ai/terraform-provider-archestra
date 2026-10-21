@@ -3,7 +3,10 @@ package provider
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
+	"strings"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -21,13 +24,15 @@ const (
 // structs (one per endpoint); a JSON roundtrip through this type lets one
 // mapping function serve all three.
 type identityProviderApiBody struct {
-	Id             string  `json:"id"`
-	ProviderId     string  `json:"providerId"`
-	Domain         string  `json:"domain"`
-	DomainVerified *bool   `json:"domainVerified,omitempty"`
-	Issuer         string  `json:"issuer"`
-	OrganizationId *string `json:"organizationId,omitempty"`
-	UserId         *string `json:"userId,omitempty"`
+	ConfiguredSecretPaths []string `json:"configuredSecretPaths"`
+	SsoLoginEnabled       bool     `json:"ssoLoginEnabled"`
+	Id                    string   `json:"id"`
+	ProviderId            string   `json:"providerId"`
+	Domain                string   `json:"domain"`
+	DomainVerified        *bool    `json:"domainVerified,omitempty"`
+	Issuer                string   `json:"issuer"`
+	OrganizationId        *string  `json:"organizationId,omitempty"`
+	UserId                *string  `json:"userId,omitempty"`
 
 	OidcConfig     *identityProviderApiOidc           `json:"oidcConfig,omitempty"`
 	SamlConfig     *identityProviderApiSaml           `json:"samlConfig,omitempty"`
@@ -39,7 +44,7 @@ type identityProviderApiOidc struct {
 	Issuer                       string                             `json:"issuer"`
 	DiscoveryEndpoint            string                             `json:"discoveryEndpoint"`
 	ClientId                     string                             `json:"clientId"`
-	ClientSecret                 string                             `json:"clientSecret"`
+	ClientSecret                 *string                            `json:"clientSecret"`
 	AuthorizationEndpoint        *string                            `json:"authorizationEndpoint,omitempty"`
 	TokenEndpoint                *string                            `json:"tokenEndpoint,omitempty"`
 	UserInfoEndpoint             *string                            `json:"userInfoEndpoint,omitempty"`
@@ -170,6 +175,13 @@ func mapIdentityProviderResponse(rawBody any, target *IdentityProviderResourceMo
 		return fmt.Errorf("unmarshal identity provider response: %w", err)
 	}
 
+	prior := *target
+	secretPaths := make([]attr.Value, 0, len(api.ConfiguredSecretPaths))
+	for _, path := range api.ConfiguredSecretPaths {
+		secretPaths = append(secretPaths, types.StringValue(path))
+	}
+	target.ConfiguredSecretPaths = types.SetValueMust(types.StringType, secretPaths)
+	target.SsoLoginEnabled = types.BoolValue(api.SsoLoginEnabled)
 	target.ID = types.StringValue(api.Id)
 	target.ProviderID = types.StringValue(api.ProviderId)
 	target.Domain = types.StringValue(api.Domain)
@@ -185,7 +197,13 @@ func mapIdentityProviderResponse(rawBody any, target *IdentityProviderResourceMo
 	}
 
 	if api.SamlConfig != nil {
-		target.SamlConfig = mapIdentityProviderSamlConfig(api.SamlConfig)
+		keepSP := prior.SamlConfig != nil && prior.SamlConfig.SpMetadata != nil
+		for _, path := range api.ConfiguredSecretPaths {
+			if strings.HasPrefix(path, "samlConfig.spMetadata.") {
+				keepSP = true
+			}
+		}
+		target.SamlConfig = mapIdentityProviderSamlConfig(api.SamlConfig, keepSP)
 	} else {
 		target.SamlConfig = nil
 	}
@@ -204,19 +222,29 @@ func mapIdentityProviderResponse(rawBody any, target *IdentityProviderResourceMo
 	}
 	// else: same rationale as RoleMapping above.
 
+	// The API returns secret presence, never secret values. Preserve only a
+	// configured secret's prior value; importing cannot recover its plaintext.
+	for _, path := range api.ConfiguredSecretPaths {
+		fields, ok := identitySecretFields[path]
+		if !ok {
+			continue
+		}
+		old := identitySecretField(&prior, fields)
+		next := identitySecretField(target, fields)
+		if old != nil && next != nil && !old.IsUnknown() {
+			*next = *old
+		}
+	}
+
 	return nil
 }
 
 func mapIdentityProviderOidcConfig(o *identityProviderApiOidc) *OidcConfigModel {
 	out := &OidcConfigModel{
-		Issuer:            types.StringValue(o.Issuer),
-		DiscoveryEndpoint: types.StringValue(o.DiscoveryEndpoint),
-		ClientID:          types.StringValue(o.ClientId),
-		// ClientSecret: backend's GET returns the plaintext value — not redacted.
-		// If that ever changes (truncation, `***`, or omission), this overwrites
-		// the user's secret on every refresh. Switch to PreserveOnNil with the
-		// prior state value at that point.
-		ClientSecret:          types.StringValue(o.ClientSecret),
+		Issuer:                types.StringValue(o.Issuer),
+		DiscoveryEndpoint:     types.StringValue(o.DiscoveryEndpoint),
+		ClientID:              types.StringValue(o.ClientId),
+		ClientSecret:          stringValueOrNull(o.ClientSecret),
 		Pkce:                  types.BoolValue(o.Pkce),
 		AuthorizationEndpoint: stringValueOrNull(o.AuthorizationEndpoint),
 		TokenEndpoint:         stringValueOrNull(o.TokenEndpoint),
@@ -267,7 +295,7 @@ func mapIdentityProviderOidcConfig(o *identityProviderApiOidc) *OidcConfigModel 
 	return out
 }
 
-func mapIdentityProviderSamlConfig(s *identityProviderApiSaml) *SamlConfigModel {
+func mapIdentityProviderSamlConfig(s *identityProviderApiSaml, keepSP bool) *SamlConfigModel {
 	out := &SamlConfigModel{
 		Issuer:               types.StringValue(s.Issuer),
 		EntryPoint:           types.StringValue(s.EntryPoint),
@@ -307,7 +335,7 @@ func mapIdentityProviderSamlConfig(s *identityProviderApiSaml) *SamlConfigModel 
 			out.IdpMetadata.SingleSignOnService = services
 		}
 	}
-	if s.SpMetadata != nil && (s.SpMetadata.Metadata != nil || s.SpMetadata.EntityID != nil) {
+	if s.SpMetadata != nil && (keepSP || s.SpMetadata.Metadata != nil || s.SpMetadata.EntityID != nil) {
 		sp := s.SpMetadata
 		out.SpMetadata = &SamlSpMetadata{
 			Binding:              stringValueOrNull(sp.Binding),
@@ -358,4 +386,45 @@ func mapIdentityProviderTeamSyncConfig(t *identityProviderApiTeamSyncConfig) *Te
 		Enabled:          boolValueOrNull(t.Enabled),
 		GroupsExpression: stringValueOrNull(t.GroupsExpression),
 	}
+}
+
+// Keep this list aligned with Archestra's IDENTITY_PROVIDER_SECRET_PATHS.
+var identitySecretFields = map[string][]string{
+	"oidcConfig.clientSecret":                               {"OidcConfig", "ClientSecret"},
+	"oidcConfig.enterpriseManagedCredentials.clientSecret":  {"OidcConfig", "EnterpriseManagedCredentials", "ClientSecret"},
+	"oidcConfig.enterpriseManagedCredentials.privateKeyPem": {"OidcConfig", "EnterpriseManagedCredentials", "PrivateKeyPem"},
+	"samlConfig.privateKey":                                 {"SamlConfig", "PrivateKey"},
+	"samlConfig.decryptionPvk":                              {"SamlConfig", "DecryptionPvk"},
+	"samlConfig.spMetadata.privateKey":                      {"SamlConfig", "SpMetadata", "PrivateKey"},
+	"samlConfig.spMetadata.privateKeyPass":                  {"SamlConfig", "SpMetadata", "PrivateKeyPass"},
+	"samlConfig.spMetadata.encPrivateKey":                   {"SamlConfig", "SpMetadata", "EncPrivateKey"},
+	"samlConfig.spMetadata.encPrivateKeyPass":               {"SamlConfig", "SpMetadata", "EncPrivateKeyPass"},
+	"samlConfig.idpMetadata.privateKey":                     {"SamlConfig", "IdpMetadata", "PrivateKey"},
+	"samlConfig.idpMetadata.privateKeyPass":                 {"SamlConfig", "IdpMetadata", "PrivateKeyPass"},
+	"samlConfig.idpMetadata.encPrivateKey":                  {"SamlConfig", "IdpMetadata", "EncPrivateKey"},
+	"samlConfig.idpMetadata.encPrivateKeyPass":              {"SamlConfig", "IdpMetadata", "EncPrivateKeyPass"},
+}
+
+func identitySecretField(model *IdentityProviderResourceModel, path []string) *types.String {
+	value := reflect.ValueOf(model)
+	for _, name := range path {
+		if value.Kind() == reflect.Pointer {
+			if value.IsNil() {
+				return nil
+			}
+			value = value.Elem()
+		}
+		if value.Kind() != reflect.Struct {
+			return nil
+		}
+		value = value.FieldByName(name)
+		if !value.IsValid() {
+			return nil
+		}
+	}
+	if !value.CanAddr() {
+		return nil
+	}
+	field, _ := value.Addr().Interface().(*types.String)
+	return field
 }

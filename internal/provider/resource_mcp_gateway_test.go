@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -19,7 +20,6 @@ func TestAccMcpGatewayResource(t *testing.T) {
 				Config: testAccMcpGatewayResourceConfig("tf-acc-mcp-gw"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("archestra_mcp_gateway.test", tfjsonpath.New("name"), knownvalue.StringExact("tf-acc-mcp-gw")),
-					statecheck.ExpectKnownValue("archestra_mcp_gateway.test", tfjsonpath.New("scope"), knownvalue.StringExact("org")),
 				},
 			},
 			{
@@ -38,27 +38,11 @@ func TestAccMcpGatewayResource(t *testing.T) {
 	})
 }
 
-// TestAccMcpGatewayResource_TeamsRemoveCycle pins RemoveOnConfigNullList on `teams`.
-func TestAccMcpGatewayResource_TeamsRemoveCycle(t *testing.T) {
+// Retired sharing inputs must fail before any remote object is created.
+func TestAccMcpGatewayResource_RejectsRetiredSharing(t *testing.T) {
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccMcpGatewayResourceConfigTeamScoped("tf-acc-mcp-gw-cycle"),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_mcp_gateway.cycle", tfjsonpath.New("scope"), knownvalue.StringExact("team")),
-					statecheck.ExpectKnownValue("archestra_mcp_gateway.cycle", tfjsonpath.New("teams"), knownvalue.ListSizeExact(1)),
-				},
-			},
-			{
-				Config: testAccMcpGatewayResourceConfigOrgScoped("tf-acc-mcp-gw-cycle"),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("archestra_mcp_gateway.cycle", tfjsonpath.New("scope"), knownvalue.StringExact("org")),
-					statecheck.ExpectKnownValue("archestra_mcp_gateway.cycle", tfjsonpath.New("teams"), knownvalue.ListSizeExact(0)),
-				},
-			},
-		},
+		PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{{Config: testAccMcpGatewayResourceConfigTeamScoped("tf-retired-sharing"), ExpectError: regexp.MustCompile("Unsupported argument")}},
 	})
 }
 
@@ -71,21 +55,8 @@ resource "archestra_team" "cycle" {
 
 resource "archestra_mcp_gateway" "cycle" {
   name  = %[1]q
-  scope = "team"
+
   teams = [archestra_team.cycle.id]
-}
-`, name)
-}
-
-func testAccMcpGatewayResourceConfigOrgScoped(name string) string {
-	return fmt.Sprintf(`
-resource "archestra_team" "cycle" {
-  name        = %[1]q
-  description = "remove-cycle test team"
-}
-
-resource "archestra_mcp_gateway" "cycle" {
-  name = %[1]q
 }
 `, name)
 }

@@ -1,0 +1,30 @@
+{
+  "run_id": "beb1fa59",
+  "terraform_sha256": "8091225492a4d84efdb850dc48ca9d43eecd4c15c03911f35462b7ea8f6ec223",
+  "controller_sha256": "1682870ccbc90324a7fdb6fb6b7d4889b2603283739a96cdd2e6648d41e07b31",
+  "results": [
+    {
+      "resource": "SubagentExclusions",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_exclusions": "passed",
+      "agent_preserved": true
+    },
+    {
+      "resource": "SubagentExclusions",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "empty_set_clear": "passed",
+      "delete_clears_exclusions": "passed",
+      "agent_preserved": true
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "outcome": "passed"
+}

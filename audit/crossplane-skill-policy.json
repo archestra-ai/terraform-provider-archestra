@@ -1,0 +1,28 @@
+{
+  "run_id": "9f3ffb65",
+  "terraform_sha256": "8091225492a4d84efdb850dc48ca9d43eecd4c15c03911f35462b7ea8f6ec223",
+  "controller_sha256": "7c482a1636cb339c08697f325cc5a32e8dd64522a0e34a24ae5ec1b1b1908971",
+  "results": [
+    {
+      "resource": "SkillPolicy",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_resets_policy": "passed",
+      "agent_preserved": true
+    },
+    {
+      "resource": "SkillPolicy",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "delete_resets_policy": "passed",
+      "agent_preserved": true
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "outcome": "passed"
+}

@@ -5,7 +5,7 @@ subcategory: ""
 description: |-
   Manages organization settings in Archestra. This is a singleton resource — only one instance can exist per organization.
   Lifecycle semantics depend on whether the field has a Default:.
-  Fields with a documented default (font, color_theme, compression_scope, convert_tool_results_to_toon): omitting the field from your .tf resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is sticky — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.
+  Fields with a documented default (font, color_theme): omitting the field from your .tf resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is sticky — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.
   terraform destroy only removes this resource from Terraform state; backend settings are never deleted. To stop managing the entire resource without touching the backend, run terraform state rm archestra_organization_settings.<n>.
 ---
 
@@ -15,7 +15,7 @@ Manages organization settings in Archestra. This is a singleton resource — onl
 
 **Lifecycle semantics depend on whether the field has a `Default:`.**
 
-- Fields with a documented default (`font`, `color_theme`, `compression_scope`, `convert_tool_results_to_toon`): omitting the field from your `.tf` resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.
+- Fields with a documented default (`font`, `color_theme`): omitting the field from your `.tf` resets it to the default on the next apply. To preserve the current backend value, set the field explicitly.
 - Fields without a default (most settings — appearance, security, agent, MCP, knowledge): omitting the field is *sticky* — the merge-patch sends nothing for that field and the backend value is preserved. Once a value is set on the backend, you cannot clear it by removing the attribute from HCL; use the platform UI/API directly if you need to wipe a setting.
 
 `terraform destroy` only removes this resource from Terraform state; backend settings are never deleted. To stop managing the entire resource without touching the backend, run `terraform state rm archestra_organization_settings.<n>`.
@@ -25,11 +25,13 @@ Manages organization settings in Archestra. This is a singleton resource — onl
 ```terraform
 # --- External references this example assumes exist in your module ---
 #
-#   archestra_llm_provider_api_key.inline   (used by default_llm_api_key_id, embedding_chat_api_key_id)
-#   archestra_llm_provider_api_key.cohere   (used by reranker_chat_api_key_id)
+#   archestra_model_provider.inline   (used by default_llm_api_key_id, embedding_chat_api_key_id)
+#   archestra_model_provider.cohere   (used by reranker_chat_api_key_id)
 #   archestra_agent.support                 (used by default_agent_id)
+#   archestra_environment.production        (default environment)
+#   archestra_team.engineering              (default agent access)
 #
-# See examples/resources/archestra_llm_provider_api_key/ and
+# See examples/resources/archestra_model_provider/ and
 # examples/resources/archestra_agent/ for matching declarations.
 
 # Singleton resource — exactly one row exists per organization. `terraform
@@ -60,35 +62,50 @@ resource "archestra_organization_settings" "main" {
   slim_chat_error_ui         = false
   allow_chat_file_uploads    = true
 
-  # --- LLM defaults ---
-  default_llm_provider   = "openai"
-  default_llm_model      = "gpt-4o"
-  default_llm_api_key_id = archestra_llm_provider_api_key.inline.id
+  default_llm_api_key_id = archestra_model_provider.inline.id
   default_agent_id       = archestra_agent.support.id
 
   # --- Knowledge / RAG ---
   # WARNING: embedding_* fields are write-once. Pick carefully — changing them
   # later requires dropping the embedding config server-side first.
   embedding_model           = "text-embedding-3-small"
-  embedding_chat_api_key_id = archestra_llm_provider_api_key.inline.id
+  embedding_chat_api_key_id = archestra_model_provider.inline.id
   reranker_model            = "rerank-english-v3.0"
-  reranker_chat_api_key_id  = archestra_llm_provider_api_key.cohere.id
+  reranker_chat_api_key_id  = archestra_model_provider.cohere.id
 
-  # --- Tool / context security ---
-  global_tool_policy = "restrictive" # or "permissive"
 
-  # --- Compression / TOON ---
-  compression_scope            = "organization" # one of: organization, team
-  convert_tool_results_to_toon = true
-
-  # --- Cost / limit cleanup ---
-  limit_cleanup_interval = "24h" # 1h | 12h | 24h | 1w | 1m
-
-  # --- MCP OAuth tuning ---
-  mcp_oauth_access_token_lifetime_seconds = 3600
-
-  # --- Auth UX ---
-  show_two_factor = true
+  # Settings owned by this organization, rather than separate binding resources.
+  environment_defaults = {
+    agents       = archestra_environment.production.id
+    mcp_gateways = archestra_environment.production.id
+  }
+  default_user_limits = {
+    default = {
+      limit_value      = 10
+      models           = [] # All models
+      cleanup_interval = "calendar_month"
+    }
+  }
+  default_permissions = {
+    # The API requires a recipient with manage-permissions in every default policy.
+    agents = [
+      {
+        subject_type = "role"
+        subject_id   = "admin"
+        actions      = ["delete", "manage-permissions", "read", "update", "use"]
+      },
+      {
+        subject_type = "role"
+        subject_id   = "platform_admin"
+        actions      = ["delete", "manage-permissions", "read", "update", "use"]
+      },
+      {
+        subject_type = "team"
+        subject_id   = archestra_team.engineering.id
+        actions      = ["read"]
+      },
+    ]
+  }
 
   # One-way flag — once set to true on the backend, attempts to flip back
   # to false are rejected. Leave commented until you've verified the org.
@@ -102,34 +119,72 @@ resource "archestra_organization_settings" "main" {
 ### Optional
 
 - `allow_chat_file_uploads` (Boolean) Whether to allow file uploads in chat
+- `allow_tool_auto_assignment` (Boolean) Whether new tools can be assigned automatically.
+- `allow_unauthenticated_llm_proxy_requests` (Boolean) Whether the LLM proxy accepts requests without an Archestra credential.
 - `animate_chat_placeholders` (Boolean) Whether to animate chat placeholders in the UI
 - `app_name` (String) Custom application name displayed in the UI
+- `apps_hackathon_recorder_enabled` (Boolean) Whether the app recorder is enabled.
 - `chat_error_support_message` (String) Custom error support message displayed in the chat UI
 - `chat_links` (Attributes List) Chat links displayed in the chat UI (see [below for nested schema](#nestedatt--chat_links))
 - `chat_placeholders` (List of String) Chat placeholder texts displayed in the chat input
 - `color_theme` (String) Color theme for the organization UI
-- `compression_scope` (String) Scope for tool results compression
-- `convert_tool_results_to_toon` (Boolean) Whether to convert tool results to TOON format for compression
+- `connection_base_urls` (Attributes List) Connection endpoints shown to clients. (see [below for nested schema](#nestedatt--connection_base_urls))
+- `connection_client_future_providers` (String) JSON configuration for connection client future providers.
+- `connection_client_order` (String) JSON configuration for connection client order.
+- `connection_client_provider_keys` (String) JSON configuration for connection client provider keys.
+- `connection_default_client_id` (String) Default client shown by connection setup.
+- `connection_default_mcp_gateway_id` (String) Default gateway offered to connecting clients.
+- `connection_llm_proxy_enabled` (Boolean) Whether connection setup offers the LLM proxy.
+- `connection_plugins_enabled` (Boolean) Whether connection setup offers plugins.
+- `connection_runtime_handoff_enabled` (Boolean) Whether clients can hand work to an agent runtime.
+- `connection_runtime_handoff_instructions` (String) Instructions shown during runtime handoff.
+- `connection_shown_client_ids` (String) JSON configuration for connection shown client ids.
+- `connection_skills_enabled` (Boolean) Whether connection setup offers skills.
 - `default_agent_id` (String) Default agent (profile) ID for the organization
+- `default_environment_description` (String) Description of the default deployment environment.
+- `default_environment_name` (String) Name of the default deployment environment.
+- `default_environment_namespace` (String) Kubernetes namespace of the default deployment environment.
+- `default_environment_trusted_image_registries` (String) JSON configuration for default environment trusted image registries.
+- `default_environment_validation_regex` (String) Validation expression for default-environment deployment names.
 - `default_llm_api_key_id` (String) Default LLM API key ID for the organization
-- `default_llm_model` (String) Default LLM model for the organization
-- `default_llm_provider` (String) Default LLM provider for the organization. One of the providers supported by `archestra_llm_provider_api_key.llm_provider`.
+- `default_member_role` (String) Role assigned to new organization members.
+- `default_model_id` (String) Database ID of the default discovered LLM model.
+- `default_network_policy` (String) JSON configuration for default network policy.
+- `default_permissions` (Attributes) Default access policies from organization Settings. Manage each object type independently: omit a field to leave its policy unmanaged, or set [] to clear that type's direct organization-wide grants. Changing these policies affects existing and future objects. Organization-settings deletion leaves them intact. The API rejects any change, including [], that leaves a policy without a grant that includes manage-permissions. (see [below for nested schema](#nestedatt--default_permissions))
+- `default_user_limits` (Attributes Map) Default member spending limits from LLM Settings, keyed by `default` for the organization or an environment UUID for an override. Omit this map to preserve all defaults; an explicit map owns the complete set, and {} removes them all. Organization-settings deletion leaves these settings intact. (see [below for nested schema](#nestedatt--default_user_limits))
 - `embedding_chat_api_key_id` (String) API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `embedding_model` (String) Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
+- `environment_defaults` (Attributes) Default deployment environments by product object. Each entry is an environment UUID, not the ID of an agent or app. Omit entries to preserve them; use an empty string to reset an entry. (see [below for nested schema](#nestedatt--environment_defaults))
 - `favicon` (String) Base64 encoded favicon image for the organization
 - `font` (String) Custom font for the organization UI
 - `footer_text` (String) Custom footer text displayed in the UI
-- `global_tool_policy` (String) Global tool invocation policy. Valid values: permissive, restrictive.
 - `icon_logo` (String) Base64 encoded icon logo image for the organization
-- `limit_cleanup_interval` (String) Interval for cleaning up usage limits. Valid values: 1h, 12h, 24h, 1w, 1m. Set to null to disable.
+- `icon_logo_dark` (String) Icon logo displayed in dark mode.
+- `kb_bm25_b` (Number) BM25 document-length normalization coefficient.
+- `kb_bm25_k1` (Number) BM25 term-frequency saturation coefficient.
+- `kb_contextual_retrieval_mode` (String) Contextual retrieval mode for knowledge chunks.
+- `knowledge_connector_overrides` (String) JSON configuration for knowledge connector overrides.
 - `logo` (String) Base64 encoded logo image for the organization
 - `logo_dark` (String) Base64 encoded dark mode logo image for the organization
-- `mcp_oauth_access_token_lifetime_seconds` (Number) Lifetime in seconds for MCP OAuth access tokens. Must be at least 1 second.
+- `mcp_idle_hibernation_enabled` (Boolean) Whether idle MCP deployments can hibernate.
+- `messaging_channel_overrides` (String) JSON configuration for messaging channel overrides.
+- `model_provider_overrides` (String) JSON configuration for model provider overrides.
+- `new_apps_disabled_by_default` (Boolean) Whether new apps start disabled.
+- `new_apps_locked_by_default` (Boolean) Whether new apps start locked.
+- `oauth_access_token_lifetime_seconds` (Number) Lifetime of issued OAuth access tokens in seconds.
+- `ocr_chat_api_key_id` (String) Provider key used for OCR requests.
+- `ocr_model` (String) Model used for OCR requests.
 - `og_description` (String) OG meta description for the organization, max 500 characters
 - `onboarding_complete` (Boolean) Whether organization onboarding is complete. This is a one-way flag — once set to `true`, it cannot be reverted to `false`.
+- `onboarding_wizard` (String) JSON configuration for onboarding wizard.
+- `online_mcp_catalog_enabled` (Boolean) Whether the online MCP catalog is available.
+- `online_skill_catalog_enabled` (Boolean) Whether the online skill catalog is available.
+- `popular_agent_overrides` (String) JSON configuration for popular agent overrides.
+- `require_two_factor` (Boolean) Whether organization members must use two-factor authentication.
 - `reranker_chat_api_key_id` (String) API key ID for the reranker model
 - `reranker_model` (String) Reranker model for knowledge base
-- `show_two_factor` (Boolean) Whether to show two-factor authentication options
+- `session_max_age_seconds` (Number) Maximum authentication session age in seconds.
+- `skill_marketplace_anonymous_access` (Boolean) Whether anonymous users can access the skill marketplace.
 - `slim_chat_error_ui` (Boolean) When enabled, renders a compact error UI in chat views.
 
 ### Read-Only
@@ -148,6 +203,269 @@ Required:
 
 - `label` (String) Display label for the chat link
 - `url` (String) URL for the chat link
+
+
+<a id="nestedatt--connection_base_urls"></a>
+### Nested Schema for `connection_base_urls`
+
+Required:
+
+- `url` (String) Endpoint URL.
+
+Optional:
+
+- `description` (String) Endpoint description.
+- `is_default` (Boolean) Whether this is the default endpoint.
+- `visible` (Boolean) Whether clients display this endpoint.
+
+
+<a id="nestedatt--default_permissions"></a>
+### Nested Schema for `default_permissions`
+
+Optional:
+
+- `agent_runs` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--agent_runs))
+- `agents` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--agents))
+- `apps` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--apps))
+- `conversations` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--conversations))
+- `credentials` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--credentials))
+- `environments` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--environments))
+- `knowledge_bases` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--knowledge_bases))
+- `knowledge_connectors` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--knowledge_connectors))
+- `knowledge_files` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--knowledge_files))
+- `mcp_gateways` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--mcp_gateways))
+- `mcp_registry` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--mcp_registry))
+- `model_providers` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--model_providers))
+- `models` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--models))
+- `oauth_clients` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--oauth_clients))
+- `plugins` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--plugins))
+- `projects` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--projects))
+- `remote_agents` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--remote_agents))
+- `service_accounts` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--service_accounts))
+- `skills` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--skills))
+- `virtual_keys` (Attributes Set) Organization-wide grants for every object of this type. Omit to preserve the current policy; [] clears its direct grants. Per-object sharing remains on the object. (see [below for nested schema](#nestedatt--default_permissions--virtual_keys))
+
+<a id="nestedatt--default_permissions--agent_runs"></a>
+### Nested Schema for `default_permissions.agent_runs`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--agents"></a>
+### Nested Schema for `default_permissions.agents`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--apps"></a>
+### Nested Schema for `default_permissions.apps`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--conversations"></a>
+### Nested Schema for `default_permissions.conversations`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--credentials"></a>
+### Nested Schema for `default_permissions.credentials`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--environments"></a>
+### Nested Schema for `default_permissions.environments`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--knowledge_bases"></a>
+### Nested Schema for `default_permissions.knowledge_bases`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--knowledge_connectors"></a>
+### Nested Schema for `default_permissions.knowledge_connectors`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--knowledge_files"></a>
+### Nested Schema for `default_permissions.knowledge_files`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--mcp_gateways"></a>
+### Nested Schema for `default_permissions.mcp_gateways`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--mcp_registry"></a>
+### Nested Schema for `default_permissions.mcp_registry`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--model_providers"></a>
+### Nested Schema for `default_permissions.model_providers`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--models"></a>
+### Nested Schema for `default_permissions.models`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--oauth_clients"></a>
+### Nested Schema for `default_permissions.oauth_clients`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--plugins"></a>
+### Nested Schema for `default_permissions.plugins`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--projects"></a>
+### Nested Schema for `default_permissions.projects`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--remote_agents"></a>
+### Nested Schema for `default_permissions.remote_agents`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--service_accounts"></a>
+### Nested Schema for `default_permissions.service_accounts`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--skills"></a>
+### Nested Schema for `default_permissions.skills`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+<a id="nestedatt--default_permissions--virtual_keys"></a>
+### Nested Schema for `default_permissions.virtual_keys`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal; keep manage-permissions on at least one grant in each policy.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
+
+
+
+<a id="nestedatt--default_user_limits"></a>
+### Nested Schema for `default_user_limits`
+
+Required:
+
+- `cleanup_interval` (String) Reset interval; for example calendar_month.
+- `limit_value` (Number) Whole USD spending allowance for the reset interval.
+- `models` (List of String) Model names covered by this default; [] covers all models.
+
+
+<a id="nestedatt--environment_defaults"></a>
+### Nested Schema for `environment_defaults`
+
+Optional:
+
+- `agents` (String) Default deployment environment UUID for this resource kind. Set an empty string to use the implicit Default environment; omit to preserve.
+- `apps` (String) Default deployment environment UUID for this resource kind. Set an empty string to use the implicit Default environment; omit to preserve.
+- `knowledge_connectors` (String) Default deployment environment UUID for this resource kind. Set an empty string to use the implicit Default environment; omit to preserve.
+- `mcp_gateways` (String) Default deployment environment UUID for this resource kind. Set an empty string to use the implicit Default environment; omit to preserve.
+- `mcp_registry` (String) Default deployment environment UUID for this resource kind. Set an empty string to use the implicit Default environment; omit to preserve.
 
 ## Import
 

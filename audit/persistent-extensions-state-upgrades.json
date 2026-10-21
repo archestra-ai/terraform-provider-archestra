@@ -1,0 +1,271 @@
+{
+  "api_version": "1.4.0-rc.48",
+  "previous_provider": "Published v2.4.1 darwin_arm64 release asset",
+  "new_provider_resource_families": 35,
+  "retained_families_verified": 16,
+  "result": "passed",
+  "cleanup": "passed",
+  "cases": {
+    "base": {
+      "outcome": "passed",
+      "cleanup": "passed",
+      "resources": [
+        {
+          "resource": "archestra_agent",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_llm_provider_api_key",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_mcp_gateway",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_mcp_registry_catalog_item",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_organization_settings",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_team",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        }
+      ],
+      "old_binary_sha256": "334862a5dc716e12c9b71708dc55208042468fa400c481c785b1b57f7b596e10",
+      "new_binary_sha256": "6d48ee066822af7e4dca7c5030a3e9956996a4d5af43fdf10381543bfc1f5209",
+      "vault_fixture_source": "Actual v2 import with the configured synthetic Vault reference restored to saved state; the current API redacts write-only Vault reference inputs.",
+      "second_plan": "no changes",
+      "source_evidence_sha256": "e9e9cbdcf9e2d844fa50aed2b0a0d95bd87e00c244eda6494241b208600bd6c6"
+    },
+    "identity": {
+      "outcome": "passed",
+      "cleanup": "passed",
+      "resources": [
+        {
+          "resource": "archestra_identity_provider",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        }
+      ],
+      "old_binary_sha256": "334862a5dc716e12c9b71708dc55208042468fa400c481c785b1b57f7b596e10",
+      "new_binary_sha256": "6d48ee066822af7e4dca7c5030a3e9956996a4d5af43fdf10381543bfc1f5209",
+      "identity_fixture_source": "Actual v2 import; synthetic saved secret restored because v2 cannot read current redacted secrets. This models saved pre-redaction state, not a successful v2 create against the current API.",
+      "identity_secret_preserved": true,
+      "second_plan": "no changes",
+      "source_evidence_sha256": "33ecd47e7329c5a3515f7eb620cd066e9717587fcbfab180ee9e3689f60bb86f"
+    },
+    "model": {
+      "outcome": "passed",
+      "cleanup": "passed",
+      "resources": [
+        {
+          "resource": "archestra_agent",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_llm_model",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_llm_provider_api_key",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_mcp_gateway",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_mcp_registry_catalog_item",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_organization_settings",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_team",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        }
+      ],
+      "old_binary_sha256": "334862a5dc716e12c9b71708dc55208042468fa400c481c785b1b57f7b596e10",
+      "new_binary_sha256": "6d48ee066822af7e4dca7c5030a3e9956996a4d5af43fdf10381543bfc1f5209",
+      "vault_fixture_source": "Actual v2 import with the configured synthetic Vault reference restored to saved state; the current API redacts write-only Vault reference inputs.",
+      "second_plan": "no changes",
+      "source_evidence_sha256": "3907bf760186e2c7cf852703224991e45169b50624362e308e14f38152aad573"
+    },
+    "retained": {
+      "outcome": "passed",
+      "cleanup": "passed",
+      "resources": [
+        {
+          "resource": "archestra_agent",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_agent",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_agent",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_agent",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_agent_delegation",
+          "old_schema": 0,
+          "new_schema": 0,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_agent_tool",
+          "old_schema": 0,
+          "new_schema": 0,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_agent_tool_batch",
+          "old_schema": 0,
+          "new_schema": 0,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_agent_tool_exclusions",
+          "old_schema": 0,
+          "new_schema": 0,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_limit",
+          "old_schema": 0,
+          "new_schema": 0,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_mcp_registry_catalog_item",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_mcp_server_installation",
+          "old_schema": 0,
+          "new_schema": 0,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_runtime_credential",
+          "old_schema": 0,
+          "new_schema": 0,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_team",
+          "old_schema": 0,
+          "new_schema": 1,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        },
+        {
+          "resource": "archestra_team_external_group",
+          "old_schema": 0,
+          "new_schema": 0,
+          "id_preserved": true,
+          "upgrade_plan": "no changes"
+        }
+      ],
+      "old_binary_sha256": "334862a5dc716e12c9b71708dc55208042468fa400c481c785b1b57f7b596e10",
+      "new_binary_sha256": "6d48ee066822af7e4dca7c5030a3e9956996a4d5af43fdf10381543bfc1f5209",
+      "vault_fixture_source": "Actual v2 import with the configured synthetic Vault reference restored to saved state; the current API redacts write-only Vault reference inputs.",
+      "installation_fixture_source": "Actual v2 import of an org-scoped installation with the legacy service_account=true saved input restored. No service account or external credential was created.",
+      "second_plan": "no changes",
+      "source_evidence_sha256": "f2fe8096d508947ac5d818673a77363681be414469f3f894bd2d56da9a8fa6b8"
+    }
+  },
+  "families": [
+    "archestra_agent",
+    "archestra_agent_delegation",
+    "archestra_agent_tool",
+    "archestra_agent_tool_batch",
+    "archestra_agent_tool_exclusions",
+    "archestra_identity_provider",
+    "archestra_limit",
+    "archestra_llm_model",
+    "archestra_llm_provider_api_key",
+    "archestra_mcp_gateway",
+    "archestra_mcp_registry_catalog_item",
+    "archestra_mcp_server_installation",
+    "archestra_organization_settings",
+    "archestra_runtime_credential",
+    "archestra_team",
+    "archestra_team_external_group"
+  ],
+  "candidate_boundary": "Recorded binary hashes predate compatibility commit ff13bdd. Combined-head unit/lint and exact-head CI are separate; final candidate repetition remains required."
+}

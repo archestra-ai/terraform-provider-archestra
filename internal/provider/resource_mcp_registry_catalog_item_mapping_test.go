@@ -147,30 +147,6 @@ func TestMapCatalogEnterpriseManagedConfig(t *testing.T) {
 	})
 }
 
-func TestMapCatalogTeams(t *testing.T) {
-	t.Parallel()
-
-	t.Run("empty list", func(t *testing.T) {
-		got := mapCatalogTeams(parseCatalogResp(t, `{}`))
-		if !got.IsNull() {
-			t.Errorf("expected null list, got %v", got)
-		}
-	})
-
-	t.Run("two teams", func(t *testing.T) {
-		body := `{"teams":[{"id":"t1","name":"Team 1"},{"id":"t2","name":"Team 2"}]}`
-		got := mapCatalogTeams(parseCatalogResp(t, body))
-		if got.IsNull() || len(got.Elements()) != 2 {
-			t.Fatalf("expected 2 elements, got %v", got)
-		}
-		// list values are types.String — only the id is mapped, name dropped.
-		first := asString(t, got.Elements()[0]).ValueString()
-		if first != "t1" {
-			t.Errorf("first team = %q, want t1", first)
-		}
-	})
-}
-
 func TestMapCatalogLabels(t *testing.T) {
 	t.Parallel()
 

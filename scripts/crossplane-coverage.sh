@@ -3,8 +3,7 @@
 # equivalent.
 #
 # Sources of truth:
-#   - Terraform: `resp.TypeName = req.ProviderTypeName + "_<n>"` lines in
-#     internal/provider/resource_*.go
+#   - Terraform: the actual provider registration exported by cmd/provider-contracts
 #   - Crossplane: the `ExternalNameConfigs` map in
 #     crossplane/config/external_name.go (also functions as the upjet IncludeList)
 #
@@ -18,9 +17,7 @@ set -euo pipefail
 repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
-tf="$(grep -h 'TypeName = req.ProviderTypeName + "_' internal/provider/resource_*.go \
-  | sed -E 's/.*"_([a-z_]+)".*/archestra_\1/' \
-  | sort -u)"
+tf="$(go run ./cmd/provider-contracts | python3 -c 'import json,sys; print("\n".join(sorted(json.load(sys.stdin))))')"
 cp="$(grep -oE '"archestra_[a-z_]+"' crossplane/config/external_name.go \
   | tr -d '"' \
   | sort -u)"
@@ -48,7 +45,7 @@ missing="$(comm -23 <(echo "$tf") <(echo "$cp"))"
 orphans="$(comm -13 <(echo "$tf") <(echo "$cp"))"
 
 {
-  echo "# Crossplane coverage report"
+  echo "# Crossplane mappings report"
   echo
   echo "**${cp_total} / ${tf_total} Terraform resources are included in the Crossplane configuration (${pct}%).**"
   echo

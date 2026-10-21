@@ -7,6 +7,8 @@ on:
       - 'scripts/provider-sync-plan.py'
       - 'scripts/bootstrap-local-stack.sh'
       - 'scripts/bootstrap-api-key.sh'
+      - 'scripts/bootstrap-test-llm-key.py'
+      - 'scripts/bootstrap-crossplane.sh'
       - 'scripts/test_*.py'
       - '.github/provider-sync/**'
       - '.github/workflows/provider-audit.yml'
@@ -32,4 +34,6 @@ jobs:
       - name: Test read-only planning and local stack isolation
         run: python3 -m unittest discover -s scripts -p 'test_*.py'
       - name: Check bootstrap shell syntax
-        run: bash -n scripts/bootstrap-local-stack.sh
+        run: |
+          bash -n scripts/bootstrap-local-stack.sh
+          bash -n scripts/bootstrap-crossplane.sh

@@ -95,7 +95,7 @@ func runtimeSchema() schema.SingleNestedAttribute {
 			},
 			"credentials": schema.ListNestedAttribute{
 				Optional:            true,
-				MarkdownDescription: "Runtime credentials the run needs, injected as environment variables. Values are supplied through `archestra_runtime_credential` (organization scope) or by each user (personal scope) — never inline here.",
+				MarkdownDescription: "Runtime credentials the run needs, injected as environment variables. Values are supplied through `archestra_credential` (organization scope) or by each user (personal scope) — never inline here.",
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"key": schema.StringAttribute{
@@ -109,7 +109,7 @@ func runtimeSchema() schema.SingleNestedAttribute {
 						},
 						"credential_id": schema.StringAttribute{
 							Optional:            true,
-							MarkdownDescription: "Stable connection identifier — declarations sharing it (and scope) reuse one stored secret. Pass `archestra_runtime_credential.<n>.key`.",
+							MarkdownDescription: "Stable connection identifier — declarations sharing it (and scope) reuse one stored secret. Pass `archestra_credential.<n>.key`.",
 						},
 						"label": schema.StringAttribute{
 							Required:            true,

@@ -20,14 +20,11 @@ codegen-api-client:
 	@# platform-side zod schemas to emit named/annotated unions and drop
 	@# this step.
 	@mkdir -p .codegen
-	curl -fsS http://localhost:9000/openapi.json -o .codegen/openapi.raw.json
+	if [ -n "$${OPENAPI_SPEC:-}" ]; then cp "$${OPENAPI_SPEC}" .codegen/openapi.raw.json; else curl --retry 3 --retry-all-errors --connect-timeout 10 --max-time 120 -fsS "$${ARCHESTRA_BASE_URL:-http://localhost:9000}/openapi.json" -o .codegen/openapi.raw.json; fi
 	cd tools && go run ./oapi-patch \
 	  -in ../.codegen/openapi.raw.json \
 	  -out ../.codegen/openapi.patched.json
 	go tool oapi-codegen -config oapi-config.yaml .codegen/openapi.patched.json
-
-codegen-credential-client:
-	./scripts/codegen-credential-client.sh
 
 fmt:
 	gofmt -s -w -e .

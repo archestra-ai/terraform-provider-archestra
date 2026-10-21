@@ -17,6 +17,8 @@ The Archestra provider lets you manage Archestra resources (agents, MCP servers,
 
 ## Guides
 
+- [API Compatibility](guides/api-compatibility) — supported API floor, tested versions, and deployment constraints.
+
 - [Getting Started](guides/getting-started) — declare the provider and apply your first resource.
 - [Authentication](guides/authentication) — credential precedence, key format, rotation procedure.
 - [Resource Bring-up Order](guides/bring-up-order) — natural dependency order when standing up a new org.
@@ -30,15 +32,16 @@ terraform {
   required_providers {
     archestra = {
       source = "archestra-ai/archestra"
-      # `~> 0.6.0` reads as `>= 0.6.0, < 0.7.0` — pins to the 0.6.x patch line.
-      # The provider is pre-1.0; minor bumps may include breaking changes, so
-      # widen the constraint deliberately after reviewing the changelog.
-      version = "~> 0.6.0"
+      # Proposed v3 release; review MIGRATION-v3.md before upgrading.
+      # v3 is not published yet. Use a local development override to preview it.
+      version = "~> 3.0.0"
     }
   }
 }
 
 provider "archestra" {
+  api_version_constraint = "= 1.4.0-rc.55"
+
   # base_url and api_key are read from the environment by default —
   # don't commit secrets to source.
   #   export ARCHESTRA_BASE_URL="https://archestra.your-company.example"
@@ -52,4 +55,5 @@ provider "archestra" {
 ### Optional
 
 - `api_key` (String, Sensitive) **Required for any operation that talks to the Archestra API.** Marked Optional in the schema only so the value can be supplied via the `ARCHESTRA_API_KEY` environment variable instead of inline HCL — prefer the env var to keep secrets out of source control. Mint a key in the Archestra UI under Settings → API Keys (the value starts with `arch_`).
+- `api_version_constraint` (String) Optional constraint on the remote Archestra server version, for example `= 1.4.0-rc.55`. Checked using GET /health before resource operations. A constraint requires readable semantic version metadata. The provider always rejects versions below its required API floor and warns about versions outside its tested interval. This does not select the Terraform provider version. See the API compatibility guide.
 - `base_url` (String) Base URL of the Archestra API (for example, `https://archestra.your-company.example`). Defaults to `http://localhost:9000` if neither this attribute nor `ARCHESTRA_BASE_URL` is set. Also reads from the `ARCHESTRA_BASE_URL` environment variable.

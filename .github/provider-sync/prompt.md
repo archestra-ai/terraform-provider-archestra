@@ -51,3 +51,10 @@ reviewed, merged and verified. If a complete audit proves no changes are needed,
 advance the ledger with evidence and open no PR. Report no-change runs concisely.
 Do not send Slack messages until an exact existing alert destination and authorized
 sender have been configured and validated by the operator.
+
+Review COMPATIBILITY.md and the runtime API floor/tested interval on every run.
+Never infer compatibility from a newer application version alone. Test every
+released API candidate before widening the tested interval; a multi-version
+interval requires real lifecycle evidence at both ends and regression checks for
+intermediate contract changes. Keep deployment constraints and the published
+compatibility guide aligned. Never silently downgrade the required API floor.

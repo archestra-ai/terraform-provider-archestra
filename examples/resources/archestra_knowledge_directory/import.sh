@@ -1,0 +1,1 @@
+terraform import archestra_knowledge_directory.example directory_uuid

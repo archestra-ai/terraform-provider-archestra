@@ -14,7 +14,7 @@ Usage limit on tokens or call counts, scoped per organization, team, or agent. S
 
 ```terraform
 # Variables (declare in your variables.tf): organization_id (string).
-# Externals (declare elsewhere): archestra_team.engineering, archestra_agent.support, archestra_mcp_server_installation.github.
+# Externals (declare elsewhere): archestra_team.engineering, archestra_agent.support, archestra_mcp_server.github.
 
 # Token-cost limit at the org level — caps cumulative input+output token spend
 # (in micro-USD, so 500_000 = $0.50). `model` is a list because a single limit
@@ -34,7 +34,7 @@ resource "archestra_limit" "engineering_github_calls" {
   entity_type     = "team"
   limit_type      = "mcp_server_calls"
   limit_value     = 5000
-  mcp_server_name = archestra_mcp_server_installation.github.name
+  mcp_server_name = archestra_mcp_server.github.name
 }
 
 # Per-agent tool-call quota — caps how many times the support agent can call
@@ -44,7 +44,7 @@ resource "archestra_limit" "support_list_repos" {
   entity_type     = "agent"
   limit_type      = "tool_calls"
   limit_value     = 200
-  mcp_server_name = archestra_mcp_server_installation.github.name
+  mcp_server_name = archestra_mcp_server.github.name
   tool_name       = "list_repos"
 }
 
@@ -75,6 +75,8 @@ resource "archestra_limit" "claude_family_budget" {
 
 ### Optional
 
+- `cleanup_interval` (String) Interval used to reset limit usage.
+- `labels` (Attributes Set) Resource labels. (see [below for nested schema](#nestedatt--labels))
 - `mcp_server_name` (String) Required when limit_type is 'mcp_server_calls' or 'tool_calls'. Name of the MCP server.
 - `model` (List of String) Required when limit_type is 'token_cost'. List of model names this limit applies to.
 - `tool_name` (String) Required when limit_type is 'tool_calls'. Name of the tool this limit applies to.
@@ -82,6 +84,26 @@ resource "archestra_limit" "claude_family_budget" {
 ### Read-Only
 
 - `id` (String) Limit identifier
+- `model_usage` (Attributes List) Current per-model usage counters. (see [below for nested schema](#nestedatt--model_usage))
+
+<a id="nestedatt--labels"></a>
+### Nested Schema for `labels`
+
+Required:
+
+- `key` (String)
+- `value` (String)
+
+
+<a id="nestedatt--model_usage"></a>
+### Nested Schema for `model_usage`
+
+Read-Only:
+
+- `cost` (Number)
+- `model` (String)
+- `tokens_in` (Number)
+- `tokens_out` (Number)
 
 ## Import
 

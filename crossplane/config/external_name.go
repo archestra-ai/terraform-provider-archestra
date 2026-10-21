@@ -13,15 +13,41 @@ package config
 import ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
 // ExternalNameConfigs maps Terraform resource → ExternalName scheme.
-// Archestra resources all use server-generated UUIDs, so IdentifierFromProvider
-// is the right choice for every resource here. This map also functions as the
+// IDs include server-generated UUIDs, credential keys, and composite IDs.
+// IdentifierFromProvider preserves the exact ID returned by each Terraform resource. This map also functions as the
 // upjet IncludeList — only resources listed here become Crossplane MRs.
 var ExternalNameConfigs = map[string]ujconfig.ExternalName{
-	"archestra_mcp_registry_catalog_item":      ujconfig.IdentifierFromProvider,
-	"archestra_mcp_server_installation":        ujconfig.IdentifierFromProvider,
-	"archestra_agent":                          ujconfig.IdentifierFromProvider,
-	"archestra_agent_tool_batch":               ujconfig.IdentifierFromProvider,
-	"archestra_tool_invocation_policy_default": ujconfig.IdentifierFromProvider,
+	"archestra_app":                     ujconfig.IdentifierFromProvider,
+	"archestra_knowledge_file":          ujconfig.IdentifierFromProvider,
+	"archestra_project_file":            ujconfig.IdentifierFromProvider,
+	"archestra_share_link":              ujconfig.IdentifierFromProvider,
+	"archestra_plugin":                  ujconfig.IdentifierFromProvider,
+	"archestra_github_pat":              ujconfig.IdentifierFromProvider,
+	"archestra_github_app":              ujconfig.IdentifierFromProvider,
+	"archestra_virtual_key":             ujconfig.IdentifierFromProvider,
+	"archestra_oauth_client":            ujconfig.IdentifierFromProvider,
+	"archestra_remote_agent":            ujconfig.IdentifierFromProvider,
+	"archestra_service_account_api_key": ujconfig.IdentifierFromProvider,
+	"archestra_service_account":         ujconfig.IdentifierFromProvider,
+	"archestra_knowledge_directory":     ujconfig.IdentifierFromProvider,
+	"archestra_project":                 ujconfig.IdentifierFromProvider,
+	"archestra_knowledge_base":          ujconfig.IdentifierFromProvider,
+	"archestra_role":                    ujconfig.IdentifierFromProvider,
+	"archestra_api_key":                 ujconfig.IdentifierFromProvider,
+	"archestra_schedule":                ujconfig.IdentifierFromProvider,
+	"archestra_environment":             ujconfig.IdentifierFromProvider,
+	"archestra_agent":                   ujconfig.IdentifierFromProvider,
+	"archestra_skill":                   ujconfig.IdentifierFromProvider,
+	"archestra_identity_provider":       ujconfig.IdentifierFromProvider,
+	"archestra_limit":                   ujconfig.IdentifierFromProvider,
+	"archestra_model":                   ujconfig.IdentifierFromProvider,
+	"archestra_model_provider":          ujconfig.IdentifierFromProvider,
+	"archestra_mcp_gateway":             ujconfig.IdentifierFromProvider,
+	"archestra_mcp_registry_entry":      ujconfig.IdentifierFromProvider,
+	"archestra_mcp_server":              ujconfig.IdentifierFromProvider,
+	"archestra_organization_settings":   ujconfig.IdentifierFromProvider,
+	"archestra_credential":              ujconfig.IdentifierFromProvider,
+	"archestra_team":                    ujconfig.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies external-name configs as a default

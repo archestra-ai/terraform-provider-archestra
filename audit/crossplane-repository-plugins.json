@@ -1,0 +1,64 @@
+{
+  "run_id": "dad1295d",
+  "terraform_sha256": "34ee2c2f9a96856fb6e04ed92ddad6eaa965a0e0df702eebf101f2fbeb076c00",
+  "controller_sha256": "0a1b6a7d8e8f95873653d7ee86f44a13f2982944e18f36020c9d60971f14d1da",
+  "results": [
+    {
+      "resource": "RepositoryPackage",
+      "scope": "cluster",
+      "create": "passed",
+      "approved_commit": "9e6a43f5347f6f3730ffeb75946f6e162791851d",
+      "derived_files": "passed",
+      "initially_disabled": "passed",
+      "metadata_update_preserves_hash": true,
+      "update": "passed",
+      "drift_repair": "passed",
+      "scheduled_candidate_configuration": "passed",
+      "stored_credential_reference_and_clear": "passed",
+      "empty_labels_clear": "passed",
+      "source_selection_replacement_refused": "passed",
+      "delete": "passed",
+      "hooks_executed": false
+    },
+    {
+      "resource": "RepositoryPackageInitialGrants",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "RepositoryPackage",
+      "scope": "namespaced",
+      "create": "passed",
+      "approved_commit": "9e6a43f5347f6f3730ffeb75946f6e162791851d",
+      "derived_files": "passed",
+      "initially_disabled": "passed",
+      "metadata_update_preserves_hash": true,
+      "update": "passed",
+      "drift_repair": "passed",
+      "scheduled_candidate_configuration": "passed",
+      "stored_credential_reference_and_clear": "passed",
+      "empty_labels_clear": "passed",
+      "source_selection_replacement_refused": "passed",
+      "delete": "passed",
+      "hooks_executed": false
+    },
+    {
+      "resource": "RepositoryPackageInitialGrants",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "grant_change_requires_replacement": "passed",
+      "delete": "passed"
+    }
+  ],
+  "cleanup": "passed",
+  "api_spec_sha256": "d88e74f5d3633eaeaf53e01c1c32a32d6e3fe013864d37e636324aac5633f73e",
+  "api_version": "1.4.0-rc.48",
+  "outcome": "passed",
+  "registered_families_per_scope": 45,
+  "source_evidence_sha256": "809689e6c4b1ea058e54cb1d539b8761805403f2f38a449e1bba4de7605ac642",
+  "evidence_scope": "Pinned immutable source import and derived bytes, metadata/hash preservation, source/metadata drift repair, scheduled candidate configuration, existing credential references and explicit clears, immutable selection refusal and creation grants, in both scopes. Repository bytes and hooks are not executed. Historical sweeps retain separate candidate hashes."
+}

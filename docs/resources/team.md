@@ -13,33 +13,20 @@ Archestra team with member assignments.
 ## Example Usage
 
 ```terraform
-# Engineering team — the simplest case: name + description.
 resource "archestra_team" "engineering" {
+  # Enterprise SSO settings belong to the team.
+  external_group_ids = ["engineering"]
+  # With Readonly Vault: vault_folder="secret/data/team/engineering"
+
   name        = "Engineering"
-  description = "Engineering team for production systems"
+  description = "Engineering team"
 }
 
-# Support team. To enable per-team TOON tool-result compression, also set
-# `archestra_organization_settings.compression_scope = "team"` and add a
-# `depends_on` on this team so org_settings applies before the team in
-# the same pass — backend silently ignores team-level writes otherwise.
-#
-# TODO(backend): drop the `depends_on` requirement once the platform's
-# `CreateTeamBodySchema` accepts `convertToolResultsToToon` and the team
-# endpoint honors the flag regardless of org scope.
+# Grant this team access through permissions on the target object.
+# Team membership is managed through members and external group mappings.
 resource "archestra_team" "support" {
   name        = "Support"
-  description = "Customer support team"
-  # convert_tool_results_to_toon = true
-  # depends_on                   = [archestra_organization_settings.main]
-}
-
-# Once a team exists, downstream resources can scope to it:
-#   - archestra_agent.scope = "team", teams = [archestra_team.engineering.id]
-#   - archestra_llm_provider_api_key.scope = "team", team_id = ...
-#   - archestra_team_external_group.team_id = archestra_team.engineering.id
-output "engineering_team_id" {
-  value = archestra_team.engineering.id
+  description = "Support team"
 }
 ```
 
@@ -52,15 +39,31 @@ output "engineering_team_id" {
 
 ### Optional
 
-- `convert_tool_results_to_toon` (Boolean) Per-team TOON tool-result compression. **Requires `archestra_organization_settings.compression_scope = "team"`** — backend silently ignores team-level writes otherwise. When applying both in the same pass, also set `depends_on = [archestra_organization_settings.<n>]` on this team so org_settings applies first. Provider checks the precondition at apply time and surfaces a clear error if violated.
 - `description` (String) Description of the team
+- `external_group_ids` (Set of String) Complete SSO group selection for enterprise Team Sync; omit to preserve or set an empty set to clear.
+- `labels` (Attributes Set) Resource labels. (see [below for nested schema](#nestedatt--labels))
 - `members` (Attributes List) List of team members (see [below for nested schema](#nestedatt--members))
+- `parent_id` (String) Parent team identifier in the team hierarchy.
+- `roles` (Set of String) Role identifiers assigned to the team; omit to preserve existing assignments, or set an empty set to revoke them.
+- `vault_folder` (String) Team Vault folder path; omit to preserve or set an empty string to remove the binding, requiring Readonly Vault.
 
 ### Read-Only
 
 - `created_by` (String) User ID of the team creator
+- `created_by_service_account_id` (String) Service account that created the team.
+- `descendant_teams` (Attributes List) Descendant teams in the hierarchy. (see [below for nested schema](#nestedatt--descendant_teams))
 - `id` (String) Team identifier
+- `my_role` (String) Effective role of the current API caller.
 - `organization_id` (String) The organization ID this team belongs to
+
+<a id="nestedatt--labels"></a>
+### Nested Schema for `labels`
+
+Required:
+
+- `key` (String)
+- `value` (String)
+
 
 <a id="nestedatt--members"></a>
 ### Nested Schema for `members`
@@ -72,6 +75,15 @@ Required:
 Optional:
 
 - `role` (String) Role of the team member (default: member)
+
+
+<a id="nestedatt--descendant_teams"></a>
+### Nested Schema for `descendant_teams`
+
+Read-Only:
+
+- `id` (String)
+- `name` (String)
 
 ## Import
 

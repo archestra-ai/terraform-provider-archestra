@@ -42,7 +42,7 @@ func testAccRequireByosEnabled(t *testing.T) {
 // API and a configured runtime backend.
 func testAccRequireAgentRuntimeEnabled(t *testing.T) {
 	if os.Getenv("ARCHESTRA_AGENT_RUNTIME_ENABLED") != "true" {
-		t.Skip("requires ARCHESTRA_AGENT_RUNTIME_ENABLED=true and a configured Agent Runtime backend")
+		t.Fatal("requires ARCHESTRA_AGENT_RUNTIME_ENABLED=true and a configured Agent Runtime backend")
 	}
 }
 
@@ -136,5 +136,28 @@ func TestBuildHTTPClient_WiredEndToEnd(t *testing.T) {
 	}
 	if elapsed > 300*time.Millisecond {
 		t.Errorf("request took %v; expected ~50ms timeout to fire", elapsed)
+	}
+}
+
+func TestProviderProtocolSchemaIsValid(t *testing.T) {
+	server, err := testAccProtoV6ProviderFactories["archestra"]()
+	if err != nil {
+		t.Fatal(err)
+	}
+	response, err := server.GetProviderSchema(t.Context(), &tfprotov6.GetProviderSchemaRequest{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, diagnostic := range response.Diagnostics {
+		if diagnostic.Severity == tfprotov6.DiagnosticSeverityError {
+			t.Errorf("%s: %s", diagnostic.Summary, diagnostic.Detail)
+		}
+	}
+}
+
+func testAccRequireEnterprise(t *testing.T) {
+	t.Helper()
+	if os.Getenv("ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED") != "true" {
+		t.Fatal("requires an isolated Enterprise-enabled backend and ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true")
 	}
 }

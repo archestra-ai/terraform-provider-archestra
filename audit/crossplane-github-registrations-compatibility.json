@@ -1,0 +1,80 @@
+{
+  "run_id": "22e87468",
+  "terraform_sha256": "6118064399269c2717372410a98b359810156544f7af53c326f70acc9faf002c",
+  "controller_sha256": "541fb81b17bcd2b2863eb2f07b7a5a197241dcf38883239b4f053988636a539b",
+  "results": [
+    {
+      "resource": "GitHubPAT",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "sensitive_input_update": "passed",
+      "identity_preserved": true,
+      "credential_absent_from_api_and_status": true,
+      "delete": "passed",
+      "external_github_requests": "not_invoked"
+    },
+    {
+      "resource": "GitHubAppConfig",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "sensitive_input_update": "passed",
+      "identity_preserved": true,
+      "credential_absent_from_api_and_status": true,
+      "delete": "passed",
+      "external_github_requests": "not_invoked"
+    },
+    {
+      "resource": "APICompatibilityConstraint",
+      "scope": "cluster",
+      "mismatch_rejected": "passed",
+      "mutation_before_match": false,
+      "repair_and_reconciliation": "passed",
+      "delete": "passed",
+      "provider_config_kind": "ProviderConfig"
+    },
+    {
+      "resource": "GitHubPAT",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "sensitive_input_update": "passed",
+      "identity_preserved": true,
+      "credential_absent_from_api_and_status": true,
+      "delete": "passed",
+      "external_github_requests": "not_invoked"
+    },
+    {
+      "resource": "GitHubAppConfig",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "sensitive_input_update": "passed",
+      "identity_preserved": true,
+      "credential_absent_from_api_and_status": true,
+      "delete": "passed",
+      "external_github_requests": "not_invoked"
+    },
+    {
+      "resource": "APICompatibilityConstraint",
+      "scope": "namespaced",
+      "mismatch_rejected": "passed",
+      "mutation_before_match": false,
+      "repair_and_reconciliation": "passed",
+      "delete": "passed",
+      "provider_config_kind": "ProviderConfig"
+    }
+  ],
+  "cleanup": "passed",
+  "api_spec_sha256": "d88e74f5d3633eaeaf53e01c1c32a32d6e3fe013864d37e636324aac5633f73e",
+  "api_version": "1.4.0-rc.48",
+  "outcome": "passed",
+  "registered_families_per_scope": 43,
+  "source_evidence_sha256": "7db684f708205bb435e633bce0e58b18cbd536c334f1370bd55327cc03c82654",
+  "evidence_scope": "Two stored-credential registration families plus explicit API-constraint rejection, mutation prevention and recovery, in both scopes. Uses only synthetic existing Vault references; external GitHub authentication/provisioning is not invoked. These frozen binaries include token timestamp canonicalization and Crossplane constraint forwarding. Historical family sweeps preserve separate candidate hashes."
+}

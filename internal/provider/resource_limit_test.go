@@ -1,22 +1,28 @@
 package provider
 
 import (
+	"context"
 	"fmt"
+	"net/http"
+	"os"
 	"testing"
+
+	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccLimitResource(t *testing.T) {
+	orgID := testAccOrganizationID(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccLimitResourceConfigTokenCost("test-org", "organization", "100000", `["gpt-4o"]`),
+				Config: testAccLimitResourceConfigTokenCost(orgID, "organization", "100000", `["gpt-4o"]`),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_limit.test", "entity_id", "test-org"),
+					resource.TestCheckResourceAttr("archestra_limit.test", "entity_id", orgID),
 					resource.TestCheckResourceAttr("archestra_limit.test", "entity_type", "organization"),
 					resource.TestCheckResourceAttr("archestra_limit.test", "limit_type", "token_cost"),
 					resource.TestCheckResourceAttr("archestra_limit.test", "limit_value", "100000"),
@@ -32,7 +38,7 @@ func TestAccLimitResource(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccLimitResourceConfigTokenCost("test-org", "organization", "200000", `["gpt-4o", "claude-3-opus-20240229"]`),
+				Config: testAccLimitResourceConfigTokenCost(orgID, "organization", "200000", `["gpt-4o", "claude-3-opus-20240229"]`),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_limit.test", "limit_value", "200000"),
 					resource.TestCheckResourceAttr("archestra_limit.test", "model.#", "2"),
@@ -44,15 +50,16 @@ func TestAccLimitResource(t *testing.T) {
 }
 
 func TestAccLimitResourceMCPServerCalls(t *testing.T) {
+	orgID := testAccOrganizationID(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccLimitResourceConfigMCPServerCalls("test-org", "organization", "1000", "my-mcp-server"),
+				Config: testAccLimitResourceConfigMCPServerCalls(orgID, "organization", "1000", "my-mcp-server"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_limit.test", "entity_id", "test-org"),
+					resource.TestCheckResourceAttr("archestra_limit.test", "entity_id", orgID),
 					resource.TestCheckResourceAttr("archestra_limit.test", "entity_type", "organization"),
 					resource.TestCheckResourceAttr("archestra_limit.test", "limit_type", "mcp_server_calls"),
 					resource.TestCheckResourceAttr("archestra_limit.test", "limit_value", "1000"),
@@ -68,7 +75,7 @@ func TestAccLimitResourceMCPServerCalls(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccLimitResourceConfigMCPServerCalls("test-org", "organization", "2000", "my-mcp-server"),
+				Config: testAccLimitResourceConfigMCPServerCalls(orgID, "organization", "2000", "my-mcp-server"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_limit.test", "limit_value", "2000"),
 				),
@@ -79,15 +86,16 @@ func TestAccLimitResourceMCPServerCalls(t *testing.T) {
 }
 
 func TestAccLimitResourceToolCalls(t *testing.T) {
+	orgID := testAccOrganizationID(t)
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccLimitResourceConfigToolCalls("test-org", "organization", "500", "my-mcp-server", "my-tool"),
+				Config: testAccLimitResourceConfigToolCalls(orgID, "organization", "500", "my-mcp-server", "my-tool"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("archestra_limit.test", "entity_id", "test-org"),
+					resource.TestCheckResourceAttr("archestra_limit.test", "entity_id", orgID),
 					resource.TestCheckResourceAttr("archestra_limit.test", "entity_type", "organization"),
 					resource.TestCheckResourceAttr("archestra_limit.test", "limit_type", "tool_calls"),
 					resource.TestCheckResourceAttr("archestra_limit.test", "limit_value", "500"),
@@ -104,7 +112,7 @@ func TestAccLimitResourceToolCalls(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccLimitResourceConfigToolCalls("test-org", "organization", "750", "my-mcp-server", "my-tool"),
+				Config: testAccLimitResourceConfigToolCalls(orgID, "organization", "750", "my-mcp-server", "my-tool"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("archestra_limit.test", "limit_value", "750"),
 				),
@@ -153,7 +161,7 @@ resource "archestra_limit" "test" {
 
 // TestAccLimitResource_McpServerNameReference pins the ValidateConfig
 // IsUnknown handling. When a user wires `mcp_server_name` from another
-// resource (e.g., `archestra_mcp_server_installation.foo.name`), the
+// resource (e.g., `archestra_mcp_server.foo.name`), the
 // value is Unknown at plan-time until that resource is created. The
 // validator must defer (skip the required-when check) rather than
 // erroring "mcp_server_name is required when limit_type is
@@ -165,7 +173,7 @@ func TestAccLimitResource_McpServerNameReference(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `
-resource "archestra_mcp_registry_catalog_item" "test" {
+resource "archestra_mcp_registry_entry" "test" {
   name        = "tf-acc-limit-ref"
   description = "Limit IsUnknown reference test"
   local_config = {
@@ -174,17 +182,17 @@ resource "archestra_mcp_registry_catalog_item" "test" {
   }
 }
 
-resource "archestra_mcp_server_installation" "test" {
+resource "archestra_mcp_server" "test" {
   name       = "tf-acc-limit-ref"
-  catalog_id = archestra_mcp_registry_catalog_item.test.id
+  catalog_id = archestra_mcp_registry_entry.test.id
 }
 
 resource "archestra_limit" "test" {
-  entity_id       = "tf-acc-limit-ref-org"
+  entity_id       = "` + testAccOrganizationID(t) + `"
   entity_type     = "organization"
   limit_type      = "mcp_server_calls"
   limit_value     = "1000"
-  mcp_server_name = archestra_mcp_server_installation.test.name
+  mcp_server_name = archestra_mcp_server.test.name
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
@@ -194,4 +202,27 @@ resource "archestra_limit" "test" {
 			},
 		},
 	})
+}
+
+func testAccOrganizationID(t *testing.T) string {
+	t.Helper()
+	if os.Getenv("TF_ACC") == "" {
+		t.Skip("acceptance tests disabled")
+	}
+	testAccPreCheck(t)
+	c, err := client.NewClientWithResponses(os.Getenv("ARCHESTRA_BASE_URL"), client.WithRequestEditorFn(func(_ context.Context, r *http.Request) error {
+		r.Header.Set("Authorization", os.Getenv("ARCHESTRA_API_KEY"))
+		return nil
+	}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	response, err := c.GetOrganizationWithResponse(t.Context())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if response.JSON200 == nil {
+		t.Fatalf("read fixture organization status %d", response.StatusCode())
+	}
+	return response.JSON200.Id
 }

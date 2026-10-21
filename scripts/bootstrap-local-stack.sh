@@ -47,6 +47,8 @@ done
 export ARCHESTRA_BASE_URL="http://localhost:${BACKEND_PORT}"
 export ARCHESTRA_FRONTEND_URL="http://localhost:${FRONTEND_PORT}"
 export ARCHESTRA_NAMESPACE="${ARCHESTRA_NAMESPACE:-default}"
+# One model URL for the seeded fixture and --print-env; CI seeds the same /v1 URL.
+LLM_BASE_URL="http://ollama-mock.${ARCHESTRA_NAMESPACE}.svc.cluster.local:11434/v1"
 
 log() { printf '%s\n' "$*" >&2; }
 
@@ -85,7 +87,10 @@ export ARCHESTRA_BASE_URL=${ARCHESTRA_BASE_URL}
 export ARCHESTRA_FRONTEND_URL=${ARCHESTRA_FRONTEND_URL}
 export ARCHESTRA_API_KEY=\$(${SCRIPT_DIR}/bootstrap-api-key.sh)
 export ARCHESTRA_READONLY_VAULT_ENABLED=true
+export ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true
+export ARCHESTRA_AGENT_RUNTIME_ENABLED=true
 export ARCHESTRA_TEST_IDP_ID=\$(ARCHESTRA_API_KEY=\$ARCHESTRA_API_KEY ${SCRIPT_DIR}/bootstrap-test-idp.sh)
+export ARCHESTRA_TEST_LLM_BASE_URL=${LLM_BASE_URL}
 export TF_ACC=1
 EOF
 }
@@ -177,17 +182,13 @@ while :; do
   sleep 2
 done
 
+# Agent Runtime acceptance requires the same real controller CI installs.
+"${SCRIPT_DIR}/bootstrap-agent-sandbox.sh"
+
 # 7. Seed an Ollama provider key so the LLM model tests find at least one model.
 api_key=$("${SCRIPT_DIR}/bootstrap-api-key.sh")
-existing=$(curl -sS --connect-timeout 5 --max-time 10 -H "Authorization: $api_key" \
-  "${ARCHESTRA_BASE_URL}/api/llm-provider-api-keys" \
-  | jq -r 'map(select(.name=="local-stack-ollama")) | (.[0].id // empty)')
-if [ -z "$existing" ]; then
-  curl -sS --connect-timeout 5 --max-time 10 -X POST \
-    "${ARCHESTRA_BASE_URL}/api/llm-provider-api-keys" \
-    -H "Authorization: $api_key" -H "Content-Type: application/json" \
-    -d '{"name":"local-stack-ollama","provider":"ollama","vaultSecretPath":"secret/data/test/ollama","vaultSecretKey":"api_key","scope":"org"}' >/dev/null
-fi
+ARCHESTRA_API_KEY="$api_key" ARCHESTRA_READONLY_VAULT_ENABLED=true \
+  ARCHESTRA_TEST_LLM_BASE_URL="$LLM_BASE_URL" python3 "${SCRIPT_DIR}/bootstrap-test-llm-key.py" >/dev/null
 
 # 8. Provision the EMC test IdP.
 ARCHESTRA_API_KEY="$api_key" "${SCRIPT_DIR}/bootstrap-test-idp.sh" >/dev/null

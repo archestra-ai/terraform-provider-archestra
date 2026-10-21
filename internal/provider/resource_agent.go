@@ -13,9 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -37,25 +35,52 @@ type AgentResource struct {
 // AgentResourceModel is the schema for an internal Archestra agent (chat agent
 // with prompts, knowledge sources, optional email triggers, etc.).
 type AgentResourceModel struct {
-	ID                         types.String             `tfsdk:"id"`
-	Name                       types.String             `tfsdk:"name"`
-	Description                types.String             `tfsdk:"description"`
-	Icon                       types.String             `tfsdk:"icon"`
-	SystemPrompt               types.String             `tfsdk:"system_prompt"`
-	LlmModel                   types.String             `tfsdk:"llm_model"`
-	LlmApiKeyId                types.String             `tfsdk:"llm_api_key_id"`
-	KnowledgeBaseIds           types.List               `tfsdk:"knowledge_base_ids"`
-	ConnectorIds               types.List               `tfsdk:"connector_ids"`
-	IncomingEmailEnabled       types.Bool               `tfsdk:"incoming_email_enabled"`
-	IncomingEmailAllowedDomain types.String             `tfsdk:"incoming_email_allowed_domain"`
-	IncomingEmailSecurityMode  types.String             `tfsdk:"incoming_email_security_mode"`
-	ConsiderContextUntrusted   types.Bool               `tfsdk:"consider_context_untrusted"`
-	IsDefault                  types.Bool               `tfsdk:"is_default"`
-	SuggestedPrompts           []SuggestedPromptModel   `tfsdk:"suggested_prompts"`
-	Labels                     []AgentLabelModel        `tfsdk:"labels"`
-	BuiltInAgentConfig         *BuiltInAgentConfigModel `tfsdk:"built_in_agent_config"`
-	Scope                      types.String             `tfsdk:"scope"`
-	Teams                      types.List               `tfsdk:"teams"`
+	Tools                          types.Set    `tfsdk:"tools"`
+	ExcludedToolIDs                types.Set    `tfsdk:"excluded_tool_ids"`
+	Hooks                          types.Set    `tfsdk:"hooks"`
+	SubagentIDs                    types.Set    `tfsdk:"subagent_ids"`
+	RemoteAgentIDs                 types.Set    `tfsdk:"remote_agent_ids"`
+	ExcludedSubagentIDs            types.Set    `tfsdk:"excluded_subagent_ids"`
+	ExcludedConnectorIDs           types.Set    `tfsdk:"excluded_connector_ids"`
+	SkillPolicy                    types.Object `tfsdk:"skills"`
+	SkillPolicyHiddenAllowedCount  types.Int64  `tfsdk:"skill_policy_hidden_allowed_count"`
+	SkillPolicyHiddenExcludedCount types.Int64  `tfsdk:"skill_policy_hidden_excluded_count"`
+
+	InitialGrants                        types.Set    `tfsdk:"permissions"`
+	AuthorEmail                          types.String `tfsdk:"author_email"`
+	CreatedBy                            types.String `tfsdk:"created_by"`
+	CreatedByServiceAccountId            types.String `tfsdk:"created_by_service_account_id"`
+	DeletedAt                            types.String `tfsdk:"deleted_at"`
+	LastUsedAt                           types.String `tfsdk:"last_used_at"`
+	LatestVersion                        types.Int64  `tfsdk:"latest_version"`
+	ActivationSkillMode                  types.String `tfsdk:"activation_skill_mode"`
+	ActivationSkillPolicyRevision        types.Int64  `tfsdk:"activation_skill_policy_revision"`
+	ActivationSkillsCount                types.Int64  `tfsdk:"activation_skills_count"`
+	LlmProviderRequiresPerUserCredential types.Bool   `tfsdk:"llm_provider_requires_per_user_credential"`
+	ResolvedLlmModelName                 types.String `tfsdk:"resolved_llm_model_name"`
+	ResolvedLlmProvider                  types.String `tfsdk:"resolved_llm_provider"`
+	ResolvedLlmProviderKeyName           types.String `tfsdk:"resolved_llm_provider_key_name"`
+	SandboxAvailable                     types.Bool   `tfsdk:"sandbox_available"`
+	AccessAllSubagents                   types.Bool   `tfsdk:"access_all_subagents"`
+	ToolExposureMode                     types.String `tfsdk:"tool_exposure_mode"`
+
+	ID                         types.String           `tfsdk:"id"`
+	Name                       types.String           `tfsdk:"name"`
+	Description                types.String           `tfsdk:"description"`
+	Icon                       types.String           `tfsdk:"icon"`
+	SystemPrompt               types.String           `tfsdk:"system_prompt"`
+	LlmModel                   types.String           `tfsdk:"llm_model"`
+	LlmApiKeyId                types.String           `tfsdk:"llm_api_key_id"`
+	KnowledgeBaseIds           types.List             `tfsdk:"knowledge_base_ids"`
+	ConnectorIds               types.List             `tfsdk:"connector_ids"`
+	IncomingEmailEnabled       types.Bool             `tfsdk:"incoming_email_enabled"`
+	IncomingEmailAllowedDomain types.String           `tfsdk:"incoming_email_allowed_domain"`
+	IncomingEmailSecurityMode  types.String           `tfsdk:"incoming_email_security_mode"`
+	ConsiderContextUntrusted   types.Bool             `tfsdk:"consider_context_untrusted"`
+	IsDefault                  types.Bool             `tfsdk:"is_default"`
+	SuggestedPrompts           []SuggestedPromptModel `tfsdk:"suggested_prompts"`
+	Labels                     []AgentLabelModel      `tfsdk:"labels"`
+	BuiltInAgentConfig         types.String           `tfsdk:"built_in_agent_config"`
 
 	AccessAllTools            types.Bool         `tfsdk:"access_all_tools"`
 	MissingCredentialBehavior types.String       `tfsdk:"missing_credential_behavior"`
@@ -70,8 +95,10 @@ func (r *AgentResource) Metadata(_ context.Context, req resource.MetadataRequest
 
 func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version:             1,
 		MarkdownDescription: "Internal chat agent — system prompt + LLM, optionally augmented with knowledge bases, connectors, and email triggers.",
 		Attributes: map[string]schema.Attribute{
+			"permissions": initialGrantsAttribute(),
 			"id": schema.StringAttribute{
 				Computed:            true,
 				MarkdownDescription: "Agent identifier",
@@ -138,20 +165,6 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				Computed:            true,
 				MarkdownDescription: "Whether this is the default agent for its type",
 			},
-			"scope": schema.StringAttribute{
-				Optional:            true,
-				Computed:            true,
-				Default:             stringdefault.StaticString("org"),
-				MarkdownDescription: "Ownership scope: `personal`, `team`, or `org` (default: `org`).",
-				Validators:          []validator.String{stringvalidator.OneOf("personal", "team", "org")},
-			},
-			"teams": schema.ListAttribute{
-				Optional:            true,
-				Computed:            true,
-				ElementType:         types.StringType,
-				MarkdownDescription: "Team IDs this agent is assigned to. Required when `scope = \"team\"`. Removing from configuration clears the assignment on next apply.",
-				PlanModifiers:       []planmodifier.List{EmptyListOnConfigNull()},
-			},
 			"suggested_prompts": schema.ListNestedAttribute{
 				Optional:            true,
 				MarkdownDescription: "Suggested prompts surfaced to users in the chat UI",
@@ -175,7 +188,7 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"access_all_tools": schema.BoolAttribute{
 				Optional:            true,
 				Computed:            true,
-				MarkdownDescription: "Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Pair with `archestra_agent_tool_exclusions` to carve tools out. Defaults to `false`.",
+				MarkdownDescription: "Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Use excluded_tool_ids to exclude tools. Defaults to `false`.",
 			},
 			"missing_credential_behavior": schema.StringAttribute{
 				Optional:            true,
@@ -193,29 +206,18 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				Optional:            true,
 				MarkdownDescription: "Environment UUID scoping which MCP servers and connections the agent resolves against; omit for the default environment",
 			},
-			"runtime": runtimeSchema(),
+			"runtime":               runtimeSchema(),
+			"built_in_agent_config": schema.StringAttribute{Computed: true, MarkdownDescription: "Server-owned built-in agent metadata as JSON."},
 		},
-		Blocks: map[string]schema.Block{
-			"built_in_agent_config": schema.SingleNestedBlock{
-				MarkdownDescription: "Built-in agent configuration. Discriminated by `name`.",
-				Attributes: map[string]schema.Attribute{
-					"name": schema.StringAttribute{
-						Optional:            true,
-						MarkdownDescription: "Built-in agent identifier: `policy-configuration-subagent`, `dual-llm-main-agent`, `dual-llm-quarantine-agent`",
-					},
-					"auto_configure_on_tool_discovery": schema.BoolAttribute{
-						Optional:            true,
-						MarkdownDescription: "Only applies when `name = \"policy-configuration-subagent\"`",
-					},
-					"max_rounds": schema.Int64Attribute{
-						Optional:            true,
-						Computed:            true,
-						MarkdownDescription: "Only applies when `name = \"dual-llm-main-agent\"` (1–20)",
-						PlanModifiers:       []planmodifier.Int64{int64planmodifier.UseStateForUnknown()},
-					},
-				},
-			},
-		},
+	}
+	resp.Schema.Attributes["hooks"] = agentHooksAttribute()
+	resp.Schema.Attributes["tools"] = agentToolsAttribute()
+	resp.Schema.Attributes["excluded_tool_ids"] = agentIDSetAttribute("Tools excluded from automatic tool access; omit to preserve or set an empty set to clear.", 0)
+	for name, attribute := range agentRelationshipAttributes() {
+		resp.Schema.Attributes[name] = attribute
+	}
+	for name, attribute := range currentAgentAttributes() {
+		resp.Schema.Attributes[name] = attribute
 	}
 }
 
@@ -235,6 +237,8 @@ func (r *AgentResource) Configure(_ context.Context, req resource.ConfigureReque
 }
 
 func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	defer finishParentCreate(ctx, r.client, "agent", "id", resp)
+
 	// Run merge-patch with prior=null Object: every non-null plan attribute
 	// emits, which is exactly Create semantics.
 	priorNull := tftypes.NewValue(req.Plan.Schema.Type().TerraformType(ctx), nil)
@@ -274,6 +278,38 @@ func (r *AgentResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	resolveInitialGrants(&data.InitialGrants)
+	partial := data
+	nullUnknownAgentRelationships(&partial)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &partial)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.writeRelationships(ctx, &data, &AgentResourceModel{}, req.Config, &resp.Diagnostics)
+	if !resp.Diagnostics.HasError() {
+		r.writeHooks(ctx, &data, &AgentResourceModel{}, req.Config, &resp.Diagnostics)
+		if !resp.Diagnostics.HasError() {
+			r.writeTools(ctx, &data, &AgentResourceModel{}, req.Config, &resp.Diagnostics)
+		}
+	}
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
+	if !resp.Diagnostics.HasError() {
+		r.readHooks(ctx, &data, &resp.Diagnostics)
+		if !resp.Diagnostics.HasError() {
+			r.readTools(ctx, &data, &resp.Diagnostics)
+		}
+	}
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -312,10 +348,31 @@ func (r *AgentResource) Read(ctx context.Context, req resource.ReadRequest, resp
 	}
 
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
+	if !resp.Diagnostics.HasError() {
+		r.readHooks(ctx, &data, &resp.Diagnostics)
+		if !resp.Diagnostics.HasError() {
+			r.readTools(ctx, &data, &resp.Diagnostics)
+		}
+	}
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resolveInitialGrants(&data.InitialGrants)
+	readParentPermissions(ctx, r.client, "agent", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	finishPermissions := beginParentPermissionUpdate(ctx, r.client, "agent", "id", req, resp)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	defer finishPermissions()
+
 	var stateData AgentResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &stateData)...)
 	if resp.Diagnostics.HasError() {
@@ -367,6 +424,31 @@ func (r *AgentResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 	r.flattenAgentResponse(ctx, &data, apiResp.Body, &resp.Diagnostics)
+	r.writeRelationships(ctx, &data, &stateData, req.Config, &resp.Diagnostics)
+	if !resp.Diagnostics.HasError() {
+		r.writeHooks(ctx, &data, &stateData, req.Config, &resp.Diagnostics)
+		if !resp.Diagnostics.HasError() {
+			r.writeTools(ctx, &data, &stateData, req.Config, &resp.Diagnostics)
+		}
+	}
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.refreshMetadataAfterWrite(ctx, &data, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	r.readRelationships(ctx, &data, &resp.Diagnostics)
+	if !resp.Diagnostics.HasError() {
+		r.readHooks(ctx, &data, &resp.Diagnostics)
+		if !resp.Diagnostics.HasError() {
+			r.readTools(ctx, &data, &resp.Diagnostics)
+		}
+	}
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resolveInitialGrants(&data.InitialGrants)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -407,37 +489,18 @@ func (r *AgentResource) ImportState(ctx context.Context, req resource.ImportStat
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
 
-// ValidateConfig enforces cross-field constraints the schema can't
-// express on its own — `scope = "team"` must come with a non-empty
-// `teams` list, and `incoming_email_security_mode = "internal"` must
-// come with `incoming_email_allowed_domain`. Both used to fail at
-// apply with a backend 400; this catches them at plan.
+// ValidateConfig checks dependent configuration and skill reference shapes.
 func (r *AgentResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	validateInlineSkillPolicy(ctx, req.Config, &resp.Diagnostics)
+	validateInlineHooks(ctx, req.Config, &resp.Diagnostics)
+	validateInlineTools(ctx, req.Config, &resp.Diagnostics)
 	var data AgentResourceModel
 	// Decode only the fields this validator uses. Runtime objects can be
 	// unknown during validation (for example, a conditional inside for_each).
-	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("scope"), &data.Scope)...)
-	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("teams"), &data.Teams)...)
 	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("incoming_email_security_mode"), &data.IncomingEmailSecurityMode)...)
 	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("incoming_email_allowed_domain"), &data.IncomingEmailAllowedDomain)...)
 	if resp.Diagnostics.HasError() {
 		return
-	}
-
-	if !data.Scope.IsNull() && !data.Scope.IsUnknown() && data.Scope.ValueString() == "team" {
-		if data.Teams.IsNull() || data.Teams.IsUnknown() {
-			resp.Diagnostics.AddAttributeError(
-				path.Root("teams"),
-				"Missing Required Attribute",
-				`teams must be set when scope = "team"`,
-			)
-		} else if len(data.Teams.Elements()) == 0 {
-			resp.Diagnostics.AddAttributeError(
-				path.Root("teams"),
-				"Invalid Attribute Value",
-				`teams must contain at least one team ID when scope = "team"`,
-			)
-		}
 	}
 
 	if !data.IncomingEmailSecurityMode.IsNull() && !data.IncomingEmailSecurityMode.IsUnknown() &&
@@ -461,6 +524,10 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 		return
 	}
 
+	flattenCurrentAgentFields(data, body, diags)
+	if diags.HasError() {
+		return
+	}
 	data.ID = types.StringValue(resp.Id.String())
 	data.Name = types.StringValue(resp.Name)
 	optionalStringFromAPI(&data.Description, resp.Description)
@@ -479,8 +546,6 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 
 	data.ConsiderContextUntrusted = types.BoolValue(resp.ConsiderContextUntrusted)
 	data.IsDefault = types.BoolValue(resp.IsDefault)
-	data.Scope = types.StringValue(resp.Scope)
-	data.Teams = teamsListFromAPI(ctx, data.Teams, resp.Teams, diags)
 
 	data.SuggestedPrompts = suggestedPromptsFromAPI(resp.SuggestedPrompts)
 	stringListFromAPI(ctx, &data.KnowledgeBaseIds, resp.KnowledgeBaseIds, diags)
@@ -488,7 +553,10 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 
 	data.Labels = flattenAgentLabels(data.Labels, resp.Labels)
 
-	data.BuiltInAgentConfig = builtInAgentConfigFromResponse(body)
+	data.BuiltInAgentConfig = types.StringNull()
+	if resp.BuiltInAgentConfig != nil {
+		data.BuiltInAgentConfig = types.StringValue(string(*resp.BuiltInAgentConfig))
+	}
 
 	data.AccessAllTools = types.BoolValue(resp.AccessAllTools)
 	if resp.MissingCredentialBehavior != "" {
@@ -519,14 +587,16 @@ func (r *AgentResource) APIShape() any { return client.GetAgentResponse{} }
 //   - identityProviderId: gateway/proxy-only on the schema side (an agent
 //     never has one); the wire returns null for agent rows.
 //   - slug: auto-generated URL slug, not user-configurable.
-//   - tools: list of tool assignments managed by archestra_agent_tool —
-//     duplicating it here would create a phantom diff against the m2m
-//     relationship.
+//
+// Tool assignments, subagents and skills are managed by inline agent fields.
 func (r *AgentResource) KnownIntentionallySkipped() []string {
+	// Legacy visibility/skill projections and secret-storage pointers are not managed.
+	// Activation policy is represented by its current mode/revision metadata.
 	return []string{
+		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId",
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "suggestedPrompts", "passthroughHeaders",
-		"identityProviderId", "slug", "tools",
+		"identityProviderId", "slug", "scope", "teams", "users",
 	}
 }
 
@@ -544,7 +614,11 @@ func (r *AgentResource) KnownIntentionallySkipped() []string {
 //     `suggested_prompts` are many-to-many sync'd by AgentModel.update via
 //     `if (field !== undefined)` per-field guards. Merge-patch's "omit when
 //     equal, emit when changed" lines up with that exactly.
-var agentAttrSpec = []AttrSpec{
+var agentAttrSpec = append(append(agentRelationshipAttrSpecs(), AttrSpec{TFName: "hooks", Kind: Synthetic}, AttrSpec{TFName: "tools", Kind: Synthetic}, AttrSpec{TFName: "excluded_tool_ids", Kind: Synthetic}), []AttrSpec{
+	initialGrantsAttrSpec,
+	{TFName: "access_all_subagents", JSONName: "accessAllSubagents", Kind: Scalar, OmitOnNull: true},
+	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar, OmitOnNull: true},
+
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},
 	{TFName: "icon", JSONName: "icon", Kind: Scalar},
@@ -558,8 +632,6 @@ var agentAttrSpec = []AttrSpec{
 	{TFName: "incoming_email_security_mode", JSONName: "incomingEmailSecurityMode", Kind: Scalar},
 	{TFName: "consider_context_untrusted", JSONName: "considerContextUntrusted", Kind: Scalar},
 	{TFName: "is_default", JSONName: "isDefault", Kind: Scalar},
-	{TFName: "scope", JSONName: "scope", Kind: Scalar},
-	{TFName: "teams", JSONName: "teams", Kind: List},
 	{
 		TFName: "suggested_prompts", JSONName: "suggestedPrompts", Kind: List,
 		Children: []AttrSpec{
@@ -587,41 +659,22 @@ var agentAttrSpec = []AttrSpec{
 		Children: runtimeAttrSpec,
 		Encoder:  encodeRuntime,
 	},
-	{
-		TFName: "built_in_agent_config", JSONName: "builtInAgentConfig", Kind: AtomicObject,
-		Children: []AttrSpec{
-			{TFName: "name", JSONName: "name", Kind: Scalar},
-			{TFName: "auto_configure_on_tool_discovery", JSONName: "autoConfigureOnToolDiscovery", Kind: Scalar},
-			{TFName: "max_rounds", JSONName: "maxRounds", Kind: Scalar},
-		},
-		Encoder: encodeBuiltInAgentConfig,
-	},
-}
+}...)
 
-// encodeBuiltInAgentConfig narrows the AtomicObject's encoded map to only the
-// sub-fields valid for the discriminator's `name` value. Backend zod is a
-// discriminated union; sending extra sub-fields would reject.
-func encodeBuiltInAgentConfig(v any) any {
-	m, ok := v.(map[string]any)
-	if !ok || m == nil {
-		return v
+func (r *AgentResource) refreshMetadataAfterWrite(ctx context.Context, data *AgentResourceModel, diags *diag.Diagnostics) {
+	identifier, err := uuid.Parse(data.ID.ValueString())
+	if err != nil {
+		diags.AddError("Invalid Created Identifier", "The API did not return a valid agent ID.")
+		return
 	}
-	name, _ := m["name"].(string)
-	switch name {
-	case "policy-configuration-subagent":
-		out := map[string]any{"name": name}
-		if v, ok := m["autoConfigureOnToolDiscovery"]; ok {
-			out["autoConfigureOnToolDiscovery"] = v
-		}
-		return out
-	case "dual-llm-main-agent":
-		out := map[string]any{"name": name}
-		if v, ok := m["maxRounds"]; ok {
-			out["maxRounds"] = v
-		}
-		return out
-	case "dual-llm-quarantine-agent":
-		return map[string]any{"name": name}
+	response, err := r.client.GetAgentWithResponse(ctx, identifier)
+	if err != nil {
+		diags.AddError("Agent Refresh Failed", "The object was written but its full metadata could not be read. Refresh state before retrying.")
+		return
 	}
-	return m
+	if response.JSON200 == nil {
+		diags.AddError("Agent Refresh Failed", fmt.Sprintf("The object was written but metadata read returned %d. Refresh state before retrying.", response.StatusCode()))
+		return
+	}
+	r.flattenAgentResponse(ctx, data, response.Body, diags)
 }

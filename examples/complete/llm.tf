@@ -1,12 +1,11 @@
-resource "archestra_llm_provider_api_key" "ollama_vault" {
+resource "archestra_model_provider" "ollama_vault" {
   name              = "Local Ollama"
   llm_provider      = "ollama"
   vault_secret_path = "secret/data/test/ollama"
   vault_secret_key  = "api_key"
-  scope             = "org"
 }
 
-resource "archestra_llm_model" "llama3" {
+resource "archestra_model" "llama3" {
   model_id                        = "llama3"
   custom_price_per_million_input  = "0.50"
   custom_price_per_million_output = "1.00"

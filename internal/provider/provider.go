@@ -35,8 +35,9 @@ type ArchestraProvider struct {
 
 // ArchestraProviderModel describes the provider data model.
 type ArchestraProviderModel struct {
-	BaseURL types.String `tfsdk:"base_url"`
-	APIKey  types.String `tfsdk:"api_key"`
+	BaseURL              types.String `tfsdk:"base_url"`
+	APIKey               types.String `tfsdk:"api_key"`
+	APIVersionConstraint types.String `tfsdk:"api_version_constraint"`
 }
 
 func (p *ArchestraProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -58,6 +59,10 @@ func (p *ArchestraProvider) Schema(ctx context.Context, req provider.SchemaReque
 					"Also reads from the `ARCHESTRA_BASE_URL` environment variable.",
 				Optional: true,
 			},
+			"api_version_constraint": schema.StringAttribute{
+				MarkdownDescription: "Optional constraint on the remote Archestra server version, for example `= 1.4.0-rc.55`. Checked using GET /health before resource operations. A constraint requires readable semantic version metadata. The provider always rejects versions below its required API floor and warns about versions outside its tested interval. This does not select the Terraform provider version. See the API compatibility guide.",
+				Optional:            true,
+			},
 			"api_key": schema.StringAttribute{
 				MarkdownDescription: "**Required for any operation that talks to the Archestra API.** Marked Optional in the schema only so the value can be supplied via the `ARCHESTRA_API_KEY` environment variable instead of inline HCL — prefer the env var to keep secrets out of source control. " +
 					"Mint a key in the Archestra UI under Settings → API Keys (the value starts with `arch_`).",
@@ -74,6 +79,11 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 
 	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	if config.APIVersionConstraint.IsUnknown() {
+		resp.Diagnostics.AddAttributeError(path.Root("api_version_constraint"), "Unknown Archestra API version constraint", "Set a known version constraint before configuring the provider.")
 		return
 	}
 
@@ -141,6 +151,11 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 		return
 	}
 
+	resp.Diagnostics.Append(checkAPICompatibility(ctx, httpClient, baseURL, p.version, config.APIVersionConstraint.ValueString())...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	// Create a new Archestra client using the configuration values
 	apiClient, err := client.NewClientWithResponses(
 		baseURL,
@@ -170,39 +185,45 @@ func (p *ArchestraProvider) Configure(ctx context.Context, req provider.Configur
 func (p *ArchestraProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewAgentResource,
+		NewRemoteAgentResource,
+		NewVirtualAPIKeyResource,
+		NewOauthClientResource,
+		NewGithubPatResource,
+		NewPluginResource,
+		NewMarketplaceShareLinkResource,
+		NewGithubAppConfigResource,
+		NewKnowledgeDirectoryResource,
+		NewAppResource,
+		NewKnowledgeFileResource,
+		NewServiceAccountResource,
+		NewServiceAccountTokenResource,
+		NewEnvironmentResource,
+		NewProjectResource,
+		NewProjectFileResource,
+		NewKnowledgeBaseResource,
+		NewRoleResource,
+		NewScheduleTriggerResource,
+		NewApiKeyResource,
 		NewMcpGatewayResource,
 		NewMCPServerResource,
 		NewMCPServerRegistryResource,
-		NewTrustedDataPolicyResource,
-		NewToolInvocationPolicyResource,
 		NewTeamResource,
 		NewLlmModelResource,
 		NewLimitResource,
-		NewOptimizationRuleResource,
 		NewOrganizationSettingsResource,
-		NewTeamExternalGroupResource,
 		NewLLMProviderApiKeyResource,
-		NewAgentToolResource,
-		NewAgentDelegationResource,
-		NewAgentToolBatchResource,
-		NewAgentToolExclusionsResource,
+		NewSkillResource,
 		NewRuntimeCredentialResource,
 		NewIdentityProviderResource,
-		NewToolInvocationPolicyDefaultResource,
-		NewTrustedDataPolicyDefaultResource,
-		NewToolPolicyAutoConfigResource,
 	}
 }
 
 func (p *ArchestraProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewTeamDataSource,
+		NewAgentDataSource,
 		NewToolDataSource,
-		NewAgentToolDataSource,
-		NewAgentToolsDataSource,
-		NewMCPServerToolDataSource,
 		NewMcpToolCallsDataSource,
-		NewTeamExternalGroupsDataSource,
 	}
 }
 

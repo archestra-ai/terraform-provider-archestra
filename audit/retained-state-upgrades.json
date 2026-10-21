@@ -1,0 +1,109 @@
+{
+  "outcome": "passed",
+  "cleanup": "passed",
+  "resources": [
+    {
+      "resource": "archestra_agent",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_agent",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_agent",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_agent",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_agent_delegation",
+      "old_schema": 0,
+      "new_schema": 0,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_agent_tool",
+      "old_schema": 0,
+      "new_schema": 0,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_agent_tool_batch",
+      "old_schema": 0,
+      "new_schema": 0,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_agent_tool_exclusions",
+      "old_schema": 0,
+      "new_schema": 0,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_limit",
+      "old_schema": 0,
+      "new_schema": 0,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_mcp_registry_catalog_item",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_mcp_server_installation",
+      "old_schema": 0,
+      "new_schema": 0,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_runtime_credential",
+      "old_schema": 0,
+      "new_schema": 0,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_team",
+      "old_schema": 0,
+      "new_schema": 1,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    },
+    {
+      "resource": "archestra_team_external_group",
+      "old_schema": 0,
+      "new_schema": 0,
+      "id_preserved": true,
+      "upgrade_plan": "no changes"
+    }
+  ],
+  "old_binary_sha256": "334862a5dc716e12c9b71708dc55208042468fa400c481c785b1b57f7b596e10",
+  "new_binary_sha256": "cbaf30c9d2f53bee1c90c1a96ee05a7c2fbec24025b5ef5f571e825b918a40da",
+  "installation_fixture_source": "Actual v2 import of an org-scoped installation with the legacy service_account=true saved input restored. No service account or external credential was created.",
+  "second_plan": "no changes",
+  "api_version": "1.4.0-rc.48"
+}

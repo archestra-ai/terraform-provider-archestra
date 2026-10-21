@@ -5,12 +5,10 @@ data "archestra_team" "engineering" {
 }
 
 # Use the team's id to scope an LLM provider key onto it.
-resource "archestra_llm_provider_api_key" "engineering_anthropic" {
+resource "archestra_model_provider" "engineering_anthropic" {
   name         = "Engineering Anthropic Key"
   api_key      = var.anthropic_key
   llm_provider = "anthropic"
-  scope        = "team"
-  team_id      = data.archestra_team.engineering.id
 }
 
 output "team_name" {

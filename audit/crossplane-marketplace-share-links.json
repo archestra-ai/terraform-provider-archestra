@@ -1,0 +1,90 @@
+{
+  "run_id": "15fa95ea",
+  "terraform_sha256": "03bce97b5b3682a47e83e34e8f247567345c947307a53e43842f1ab1ecf1bc3b",
+  "controller_sha256": "53cbd6cc10a6ffdc7576d9c2e297a49d5d71d3e7126bbd9b0ed42f3fa09f4bf3",
+  "results": [
+    {
+      "resource": "ShareLinkSkills",
+      "scope": "cluster",
+      "create": "passed",
+      "membership_references": "passed",
+      "secret_once_publication": "passed",
+      "refresh_preserves_secret": "passed",
+      "anonymous_read_only_access": "passed",
+      "explicit_rotation_replacement_refused": "passed",
+      "revoked_identity_drift_repair": "passed",
+      "old_token_rejected": "passed",
+      "delete": "passed",
+      "backend_after_delete": "revoked"
+    },
+    {
+      "resource": "ShareLinkPlugins",
+      "scope": "cluster",
+      "create": "passed",
+      "membership_references": "passed",
+      "secret_once_publication": "passed",
+      "refresh_preserves_secret": "passed",
+      "anonymous_read_only_access": "passed",
+      "explicit_rotation_replacement_refused": "passed",
+      "revoked_identity_drift_repair": "passed",
+      "old_token_rejected": "passed",
+      "delete": "passed",
+      "backend_after_delete": "revoked"
+    },
+    {
+      "resource": "ShareLinkExpiry",
+      "scope": "cluster",
+      "create": "passed",
+      "expired_observation": "passed",
+      "anonymous_access_rejected": "passed",
+      "identity_retained_across_reconciliation": "passed",
+      "delete": "passed",
+      "backend_after_delete": "revoked"
+    },
+    {
+      "resource": "ShareLinkSkills",
+      "scope": "namespaced",
+      "create": "passed",
+      "membership_references": "passed",
+      "secret_once_publication": "passed",
+      "refresh_preserves_secret": "passed",
+      "anonymous_read_only_access": "passed",
+      "explicit_rotation_replacement_refused": "passed",
+      "revoked_identity_drift_repair": "passed",
+      "old_token_rejected": "passed",
+      "delete": "passed",
+      "backend_after_delete": "revoked"
+    },
+    {
+      "resource": "ShareLinkPlugins",
+      "scope": "namespaced",
+      "create": "passed",
+      "membership_references": "passed",
+      "secret_once_publication": "passed",
+      "refresh_preserves_secret": "passed",
+      "anonymous_read_only_access": "passed",
+      "explicit_rotation_replacement_refused": "passed",
+      "revoked_identity_drift_repair": "passed",
+      "old_token_rejected": "passed",
+      "delete": "passed",
+      "backend_after_delete": "revoked"
+    },
+    {
+      "resource": "ShareLinkExpiry",
+      "scope": "namespaced",
+      "create": "passed",
+      "expired_observation": "passed",
+      "anonymous_access_rejected": "passed",
+      "identity_retained_across_reconciliation": "passed",
+      "delete": "passed",
+      "backend_after_delete": "revoked"
+    }
+  ],
+  "cleanup": "passed",
+  "api_spec_sha256": "d88e74f5d3633eaeaf53e01c1c32a32d6e3fe013864d37e636324aac5633f73e",
+  "api_version": "1.4.0-rc.48",
+  "outcome": "passed",
+  "registered_families_per_scope": 46,
+  "source_evidence_sha256": "57273565488ea2405d37d04781a75bed8a9c7fd7ba0c497ce24d449c075df2aa",
+  "evidence_scope": "Explicit skill/plugin membership references, sensitive secret-once publication, refresh preservation, anonymous read-only access, immutable replacement refusal, revocation drift repair, expired-state retention and normal revocation on deletion, in both scopes. All shared content is synthetic and local. Historical sweeps retain separate candidate hashes."
+}

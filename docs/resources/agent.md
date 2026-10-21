@@ -13,13 +13,13 @@ Internal chat agent — system prompt + LLM, optionally augmented with knowledge
 ## Example Usage
 
 ```terraform
-# Externals (declare elsewhere): archestra_team.engineering, archestra_llm_provider_api_key.vault_backed, archestra_runtime_credential.github.
+# Externals (declare elsewhere): archestra_team.engineering, archestra_model_provider.vault_backed, archestra_credential.github.
 
 # NOTE: `llm_model` is the model_id you'd pass to the upstream LLM API
 # (e.g. "gpt-4o" for OpenAI, "claude-sonnet-4-5" for Anthropic). The
-# platform auto-discovers models from your `archestra_llm_provider_api_key`,
+# platform auto-discovers models from your `archestra_model_provider`,
 # so the corresponding key resource must exist for the chosen provider.
-# Use `archestra_llm_model` only when you need to override pricing or
+# Use `archestra_model` only when you need to override pricing or
 # per-model settings on a discovered model.
 
 # Customer-support agent — the most common shape: a system prompt, an LLM,
@@ -30,7 +30,30 @@ resource "archestra_agent" "support" {
   icon          = "headphones"
   system_prompt = "You are a friendly customer-support agent. Be concise."
   llm_model     = "gpt-4o"
-  scope         = "org"
+
+  # These settings belong to the agent. Omit a collection to preserve it;
+  # declare an explicit empty collection to clear it.
+  subagent_ids           = [archestra_agent.engineering_qa.id]
+  remote_agent_ids       = []
+  excluded_subagent_ids  = []
+  tools                  = []
+  excluded_tool_ids      = []
+  excluded_connector_ids = []
+
+  skills = {
+    mode     = "manual"
+    allowed  = []
+    excluded = []
+  }
+
+  hooks = [{
+    event        = "pre_tool_use"
+    file_name    = "validate.py"
+    content      = "print('Validate tool input before use')"
+    requirements = []
+    enabled      = true
+  }]
+
 
   suggested_prompts = [
     {
@@ -49,19 +72,17 @@ resource "archestra_agent" "support" {
   ]
 }
 
-# Team-scoped agent — visible only to members of the listed teams. The
+# Agent access is configured through permissions on this resource. The
 # `archestra_team` reference enforces ordering so the team exists first.
 resource "archestra_agent" "engineering_qa" {
   name          = "eng-qa"
   description   = "Engineering QA assistant"
   system_prompt = "You triage bug reports against the eng playbook."
   llm_model     = "claude-sonnet-4-5"
-  scope         = "team"
-  teams         = [archestra_team.engineering.id]
 
   # Wire a specific provider key (e.g. an Anthropic key from BYOS Vault) instead
   # of relying on the org-wide default.
-  llm_api_key_id = archestra_llm_provider_api_key.vault_backed.id
+  llm_api_key_id = archestra_model_provider.vault_backed.id
 }
 
 # Email-triggered agent — receive new chats via incoming email. The agent
@@ -82,7 +103,7 @@ resource "archestra_agent" "intake" {
 # Agent Runtime worker — delegated work runs in its own container via the
 # platform's runtime backend (e.g. the Kubernetes orchestrator).
 # Auto-tool mode gives it every reachable tool; pair with
-# `archestra_agent_tool_exclusions` to carve some out.
+# `excluded_tool_ids` to carve some out.
 resource "archestra_agent" "worker" {
   name          = "repo-worker"
   description   = "Runs delegated repository work in a dedicated runtime"
@@ -105,12 +126,12 @@ resource "archestra_agent" "worker" {
     }
 
     # Secrets never go in `environment` — declare them as credentials and
-    # deposit values via `archestra_runtime_credential` (shared) or per user.
+    # deposit values via `archestra_credential` (shared) or per user.
     credentials = [
       {
         key           = "GITHUB_TOKEN" # env var inside the run
         scope         = "per_user"
-        credential_id = archestra_runtime_credential.github.key
+        credential_id = archestra_credential.github.key
         label         = "GitHub token"
         description   = "A personal token that can clone the repository and open pull requests."
         required      = true
@@ -131,12 +152,16 @@ resource "archestra_agent" "worker" {
 
 ### Optional
 
-- `access_all_tools` (Boolean) Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Pair with `archestra_agent_tool_exclusions` to carve tools out. Defaults to `false`.
-- `built_in_agent_config` (Block, Optional) Built-in agent configuration. Discriminated by `name`. (see [below for nested schema](#nestedblock--built_in_agent_config))
+- `access_all_subagents` (Boolean) Whether all accessible subagents can be delegated to.
+- `access_all_tools` (Boolean) Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Use excluded_tool_ids to exclude tools. Defaults to `false`.
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
 - `consider_context_untrusted` (Boolean) Whether the agent context is treated as untrusted
 - `description` (String) Human-readable description
 - `environment_id` (String) Environment UUID scoping which MCP servers and connections the agent resolves against; omit for the default environment
+- `excluded_connector_ids` (Set of String) Knowledge connectors excluded from automatic knowledge access; omit to preserve or set an empty set to clear.
+- `excluded_subagent_ids` (Set of String) Local agents excluded from automatic subagent access; omit to preserve or set an empty set to clear.
+- `excluded_tool_ids` (Set of String) Tools excluded from automatic tool access; omit to preserve or set an empty set to clear.
+- `hooks` (Attributes Set) Complete event hook configuration; omit to preserve hooks or set an empty set to remove them. (see [below for nested schema](#nestedatt--hooks))
 - `icon` (String) Emoji or base64 image data URL
 - `incoming_email_allowed_domain` (String) Allowed sender domain when `incoming_email_security_mode = "internal"`
 - `incoming_email_enabled` (Boolean) Whether incoming-email invocation is enabled
@@ -148,24 +173,47 @@ resource "archestra_agent" "worker" {
 - `llm_model` (String) Model ID used for LLM calls
 - `missing_credential_behavior` (String) What happens when a caller lacks a connection the agent's tools need: `allow` (fail only at invocation, default), `warn` (surface missing connections up front), or `block` (agent unusable until connected)
 - `model_id` (String) Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`
+- `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
+- `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `runtime` (Attributes) Dedicated runtime used for interactive, delegated, and long-running work. Requires an Agent Runtime backend on the platform (e.g. the Kubernetes orchestrator). (see [below for nested schema](#nestedatt--runtime))
-- `scope` (String) Ownership scope: `personal`, `team`, or `org` (default: `org`).
+- `skills` (Attributes) Skill activation mode and complete allowed/excluded references; omit to preserve the current policy. (see [below for nested schema](#nestedatt--skills))
+- `subagent_ids` (Set of String) Local agents available as subagents; omit to preserve assignments or set an empty set to clear them.
 - `suggested_prompts` (Attributes List) Suggested prompts surfaced to users in the chat UI (see [below for nested schema](#nestedatt--suggested_prompts))
 - `system_prompt` (String) System prompt that frames the agent's behavior
-- `teams` (List of String) Team IDs this agent is assigned to. Required when `scope = "team"`. Removing from configuration clears the assignment on next apply.
+- `tool_exposure_mode` (String) Tool exposure mode: full or search_and_run_only.
+- `tools` (Attributes Set) Complete explicit MCP tool assignments; omit to preserve or set an empty set to clear, preserving local/remote subagents and platform-required recovery tools. (see [below for nested schema](#nestedatt--tools))
 
 ### Read-Only
 
+- `activation_skill_mode` (String) Server-reported activation skill mode.
+- `activation_skill_policy_revision` (Number) Server-reported activation skill policy revision.
+- `activation_skills_count` (Number) Server-reported activation skills count.
+- `author_email` (String) Server-reported author email.
+- `built_in_agent_config` (String) Server-owned built-in agent metadata as JSON.
+- `created_by` (String) Creator identity metadata as JSON.
+- `created_by_service_account_id` (String) Server-reported created by service account id.
+- `deleted_at` (String) Server-reported deleted at.
 - `id` (String) Agent identifier
+- `last_used_at` (String) Server-reported last used at.
+- `latest_version` (Number) Server-reported latest version.
+- `llm_provider_requires_per_user_credential` (Boolean) Server-reported llm provider requires per user credential.
+- `resolved_llm_model_name` (String) Server-reported resolved llm model name.
+- `resolved_llm_provider` (String) Server-reported resolved llm provider.
+- `resolved_llm_provider_key_name` (String) Server-reported resolved llm provider key name.
+- `sandbox_available` (Boolean) Server-reported sandbox available.
+- `skill_policy_hidden_allowed_count` (Number) Allowed skill references hidden or unavailable to the current caller.
+- `skill_policy_hidden_excluded_count` (Number) Excluded skill references hidden or unavailable to the current caller.
 
-<a id="nestedblock--built_in_agent_config"></a>
-### Nested Schema for `built_in_agent_config`
+<a id="nestedatt--hooks"></a>
+### Nested Schema for `hooks`
 
-Optional:
+Required:
 
-- `auto_configure_on_tool_discovery` (Boolean) Only applies when `name = "policy-configuration-subagent"`
-- `max_rounds` (Number) Only applies when `name = "dual-llm-main-agent"` (1–20)
-- `name` (String) Built-in agent identifier: `policy-configuration-subagent`, `dual-llm-main-agent`, `dual-llm-quarantine-agent`
+- `content` (String) Hook file content; applying configuration does not execute it.
+- `enabled` (Boolean) Whether the hook is enabled for future agent events.
+- `event` (String) Event that runs the hook.
+- `file_name` (String) Plain Python or shell filename, unique within this event.
+- `requirements` (List of String) Python dependencies; an empty list removes dependencies.
 
 
 <a id="nestedatt--labels"></a>
@@ -175,6 +223,16 @@ Required:
 
 - `key` (String)
 - `value` (String)
+
+
+<a id="nestedatt--permissions"></a>
+### Nested Schema for `permissions`
+
+Required:
+
+- `actions` (Set of String) Actions granted to the principal.
+- `subject_id` (String) Principal ID; use * for the organization principal.
+- `subject_type` (String) Principal type.
 
 
 <a id="nestedatt--runtime"></a>
@@ -191,7 +249,7 @@ Optional:
 - `backend` (String) Runtime backend the run is scheduled on. Only `kubernetes` today (default).
 - `claude_code` (Attributes) Native Claude Code authentication and optional CLI model alias. Account tokens are connected separately and never stored here. (see [below for nested schema](#nestedatt--runtime--claude_code))
 - `command` (List of String) Container command override; omit to use the image's default entrypoint
-- `credentials` (Attributes List) Runtime credentials the run needs, injected as environment variables. Values are supplied through `archestra_runtime_credential` (organization scope) or by each user (personal scope) — never inline here. (see [below for nested schema](#nestedatt--runtime--credentials))
+- `credentials` (Attributes List) Runtime credentials the run needs, injected as environment variables. Values are supplied through `archestra_credential` (organization scope) or by each user (personal scope) — never inline here. (see [below for nested schema](#nestedatt--runtime--credentials))
 - `environment` (Attributes List) Plain (non-secret) environment variables injected into the run (see [below for nested schema](#nestedatt--runtime--environment))
 - `idle_timeout_minutes` (Number) Minutes of inactivity after which the run is paused (1–1440); omit for no idle timeout
 - `max_cost_usd` (Number) Hard LLM spend ceiling in USD for the short-lived virtual key backing one run; omit for no ceiling
@@ -223,7 +281,7 @@ Required:
 
 Optional:
 
-- `credential_id` (String) Stable connection identifier — declarations sharing it (and scope) reuse one stored secret. Pass `archestra_runtime_credential.<n>.key`.
+- `credential_id` (String) Stable connection identifier — declarations sharing it (and scope) reuse one stored secret. Pass `archestra_credential.<n>.key`.
 - `description` (String) How to obtain the credential, e.g. "Run `claude setup-token` and paste the result"
 
 
@@ -248,6 +306,48 @@ Optional:
 
 
 
+<a id="nestedatt--skills"></a>
+### Nested Schema for `skills`
+
+Required:
+
+- `allowed` (Attributes Set) Explicitly allowed skills; an empty set clears the selection. (see [below for nested schema](#nestedatt--skills--allowed))
+- `excluded` (Attributes Set) Skills excluded from automatic access; an empty set clears exclusions. (see [below for nested schema](#nestedatt--skills--excluded))
+- `mode` (String) Automatic access to all skills, or an explicit manual selection.
+
+<a id="nestedatt--skills--allowed"></a>
+### Nested Schema for `skills.allowed`
+
+Required:
+
+- `source` (String) Skill source kind.
+
+Optional:
+
+- `mcp_server_id` (String) MCP server UUID for an external skill.
+- `plugin_id` (String) Plugin UUID.
+- `skill_id` (String) Native skill UUID.
+- `skill_path` (String) Skill path within the plugin.
+- `uri` (String) External MCP skill URI.
+
+
+<a id="nestedatt--skills--excluded"></a>
+### Nested Schema for `skills.excluded`
+
+Required:
+
+- `source` (String) Skill source kind.
+
+Optional:
+
+- `mcp_server_id` (String) MCP server UUID for an external skill.
+- `plugin_id` (String) Plugin UUID.
+- `skill_id` (String) Native skill UUID.
+- `skill_path` (String) Skill path within the plugin.
+- `uri` (String) External MCP skill URI.
+
+
+
 <a id="nestedatt--suggested_prompts"></a>
 ### Nested Schema for `suggested_prompts`
 
@@ -255,6 +355,19 @@ Required:
 
 - `prompt` (String) Prompt text
 - `summary_title` (String) Title shown above the prompt
+
+
+<a id="nestedatt--tools"></a>
+### Nested Schema for `tools`
+
+Required:
+
+- `tool_id` (String) Tool UUID.
+
+Optional:
+
+- `credential_resolution_mode` (String) Credential mode: static, dynamic, or enterprise_managed.
+- `mcp_server_id` (String) Backing MCP server UUID; omit to leave the assignment unpinned.
 
 ## Import
 

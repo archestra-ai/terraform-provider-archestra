@@ -17,7 +17,7 @@ export TERRAFORM_PROVIDER_SOURCE ?= archestra-ai/archestra
 export TERRAFORM_PROVIDER_VERSION ?= 1.0.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-archestra
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/archestra-ai/terraform-provider-archestra/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-archestra
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-archestra_v$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
 
@@ -127,7 +127,7 @@ $(TERRAFORM): check-terraform-version
 # binary in the parent directory rather than fetching from the public registry.
 TF_PROVIDER_BIN ?= ../terraform-provider-archestra
 
-$(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
+$(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM) $(TF_PROVIDER_BIN)
 	@$(INFO) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 	@TERRAFORM="$(abspath $(TERRAFORM))" ./hack/generate-schema.sh "$(TF_PROVIDER_BIN)" > $(TERRAFORM_PROVIDER_SCHEMA)
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
@@ -138,6 +138,17 @@ pull-docs:
 	@true
 
 generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
+
+# Clean before Go enumerates packages: deleting an obsolete kind from inside
+# go:generate leaves its removed files in the current invocation's package list.
+.PHONY: clean-generated
+clean-generated:
+	@mkdir -p internal/controller
+	@find apis internal/controller -type f -name 'zz_*' -delete
+	@find apis internal/controller -type d -empty -delete
+	@rm -rf package/crds examples-generated
+
+go.generate: clean-generated
 
 .PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version
 # ====================================================================================

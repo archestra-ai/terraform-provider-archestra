@@ -3,38 +3,12 @@
 page_title: "archestra_mcp_tool_calls Data Source - archestra"
 subcategory: ""
 description: |-
-  Queries the MCP tool-call audit log. Useful for compliance attestations, alarm thresholds keyed off length(...calls) > N, or driving downstream resources off recent activity (e.g. only assigning a tool to an agent that called it in the last 24h).
-  
-  data "archestra_mcp_tool_calls" "recent_failures" {
-    agent_id   = archestra_agent.support.id
-    start_date = timeadd(timestamp(), "-24h")
-    search     = "error"
-  }
-  
-  output "failure_count_24h" {
-    value = data.archestra_mcp_tool_calls.recent_failures.total
-  }
-  
-  ~> Pagination is exhaustive. This data source iterates the backend's paginated /api/mcp-tool-calls endpoint until exhausted (limit=100 per page) and surfaces every match. Filter narrowly with start_date / end_date / search to keep state size manageable.
+  Queries the MCP tool-call audit log using cursor pagination, bounded by max_records.
 ---
 
 # archestra_mcp_tool_calls (Data Source)
 
-Queries the MCP tool-call audit log. Useful for compliance attestations, alarm thresholds keyed off `length(...calls) > N`, or driving downstream resources off recent activity (e.g. only assigning a tool to an agent that called it in the last 24h).
-
-```hcl
-data "archestra_mcp_tool_calls" "recent_failures" {
-  agent_id   = archestra_agent.support.id
-  start_date = timeadd(timestamp(), "-24h")
-  search     = "error"
-}
-
-output "failure_count_24h" {
-  value = data.archestra_mcp_tool_calls.recent_failures.total
-}
-```
-
-~> **Pagination is exhaustive.** This data source iterates the backend's paginated `/api/mcp-tool-calls` endpoint until exhausted (`limit=100` per page) and surfaces every match. Filter narrowly with `start_date` / `end_date` / `search` to keep state size manageable.
+Queries the MCP tool-call audit log using cursor pagination, bounded by `max_records`.
 
 ## Example Usage
 
@@ -65,14 +39,14 @@ output "blocked_tool_calls" {
 
 - `agent_id` (String) Optional. Filter to calls made by this agent (UUID).
 - `end_date` (String) Optional. RFC 3339 / ISO 8601 timestamp; only return calls created at or before this instant.
-- `max_records` (Number) Optional. Hard cap on records pulled into Terraform state, regardless of how many the backend's filter matches. Defaults to 1000. Set higher only if you know the filter is narrow enough — `total` will tell you the unfiltered backend count, `truncated` flips to `true` when the cap kicked in.
-- `search` (String) Optional. Free-text, case-insensitive substring matched against MCP server name, tool name, and arguments JSON.
+- `max_records` (Number) Optional. Hard cap on records pulled into Terraform state, regardless of how many the backend's filter matches. Defaults to 1000. `truncated` reports whether more matching records remain.
+- `mcp_server_name` (String) Filter by exact MCP server name.
 - `start_date` (String) Optional. RFC 3339 / ISO 8601 timestamp; only return calls created at or after this instant.
 
 ### Read-Only
 
-- `calls` (Attributes List) Matching tool-call records, oldest-first within each page (server's default sort: `createdAt desc` per page, but pages are aggregated in fetch order). (see [below for nested schema](#nestedatt--calls))
-- `total` (Number) Total number of calls matching the filter on the backend, ignoring `max_records`. Compare against `length(calls)` to detect that you've truncated.
+- `calls` (Attributes List) Matching tool-call records in the API cursor order (newest first). (see [below for nested schema](#nestedatt--calls))
+- `returned_count` (Number) Number of records returned in calls.
 - `truncated` (Boolean) True when `max_records` cut off pagination before the backend was exhausted. Re-run with a higher cap or narrower filter to see all matches.
 
 <a id="nestedatt--calls"></a>
@@ -81,14 +55,21 @@ output "blocked_tool_calls" {
 Read-Only:
 
 - `agent_id` (String) UUID of the agent that initiated the call. Null for calls outside an agent context.
-- `arguments` (String) Tool-call arguments encoded as a JSON string. Use `jsondecode(call.arguments)` to introspect. Null if absent.
+- `app_id` (String) App UUID when invoked by an app.
+- `app_name` (String) App display name.
+- `arguments` (String, Sensitive) Tool-call arguments encoded as a JSON string. Use `jsondecode(call.arguments)` to introspect. Null if absent.
 - `auth_method` (String) How the agent authenticated the call (`oauth`, `user_token`, `org_token`, `team_token`, `external_idp`, `session`). Null if absent.
 - `created_at` (String) RFC 3339 timestamp of when the call was recorded.
 - `id` (String) Call UUID.
 - `mcp_server_name` (String) Display name of the MCP server that served the call.
 - `method` (String) MCP method name (e.g. `tools/call`).
-- `result` (String) Tool result encoded as a JSON string (the wire shape is polymorphic — use `jsondecode`). Null if absent.
+- `oauth_client_id` (String) OAuth client ID.
+- `owner_type` (String) Owning principal type.
+- `result` (String, Sensitive) Tool result encoded as a JSON string (the wire shape is polymorphic — use `jsondecode`). Null if absent.
+- `run_id` (String) Agent run ID.
+- `source` (String) Invocation source.
 - `tool_call_id` (String) Provider-generated correlation ID inside `toolCall`. Null if absent.
+- `tool_call_json` (String, Sensitive) Complete tool-call payload as JSON, including extension fields.
 - `tool_name` (String) Name of the tool invoked. Null if the call wasn't a tool/call.
 - `user_id` (String) UUID of the user the call ran on behalf of. Null for org-wide calls.
 - `user_name` (String) Display name of the user. Null when `user_id` is null.

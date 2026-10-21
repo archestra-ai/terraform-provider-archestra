@@ -57,3 +57,12 @@ jobs:
 
       - name: Build & test
         run: cd crossplane && go build ./... && go test ./...
+
+      - name: Compile release runtime architectures
+        working-directory: crossplane
+        run: |
+          set -euo pipefail
+          for target_arch in amd64 arm64; do
+            CGO_ENABLED=0 GOOS=linux GOARCH="$target_arch" go build -trimpath \
+              -o "$RUNNER_TEMP/provider-archestra-linux-$target_arch" ./cmd/provider
+          done

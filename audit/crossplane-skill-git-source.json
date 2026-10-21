@@ -1,0 +1,112 @@
+{
+  "run_id": "9a3e2de8",
+  "terraform_sha256": "bbb73fb8f7596f581a239a64d2e11b6cdb61bece2703b0521c9feb7a2073d854",
+  "controller_sha256": "762ec2bf172673937b1e77e2a90fce70caf111c95db0e106e379fef691545b3c",
+  "results": [
+    {
+      "resource": "SkillSharing",
+      "scope": "cluster",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "sharing_clear_in_place": "passed",
+      "empty_sharing_drift_repair": "passed",
+      "identity_preserved": true,
+      "delete": "passed"
+    },
+    {
+      "resource": "SkillGitSource",
+      "scope": "cluster",
+      "create": "passed",
+      "settings_and_sharing": "passed",
+      "settings_preserve_content_version": true,
+      "environment_and_labels_clear": "passed",
+      "source_change_in_place": "passed",
+      "interval_drift_repair": "passed",
+      "disconnected_source_reconnect": "passed",
+      "authored_mode_replacement_refused": "passed",
+      "orphan": "passed",
+      "uuid_adoption": "passed",
+      "identity_preserved": true,
+      "delete": "soft-delete passed"
+    },
+    {
+      "resource": "SkillGitSourceInit",
+      "scope": "cluster",
+      "parameter_source": "initProvider",
+      "create": "passed",
+      "settings_update": "passed",
+      "identity_preserved": true,
+      "delete": "soft-delete passed"
+    },
+    {
+      "resource": "Skill",
+      "scope": "cluster",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "terraform_import": "separate CLI test",
+      "empty_files_clear": "passed",
+      "immutable_first_version_preserved": true,
+      "stale_version_refused": 409,
+      "delete": "soft-delete passed",
+      "backend_after_delete": 404
+    },
+    {
+      "resource": "SkillSharing",
+      "scope": "namespaced",
+      "create_with_policy": "passed",
+      "metadata_update_preserves_grants": "passed",
+      "sharing_clear_in_place": "passed",
+      "empty_sharing_drift_repair": "passed",
+      "identity_preserved": true,
+      "delete": "passed"
+    },
+    {
+      "resource": "SkillGitSource",
+      "scope": "namespaced",
+      "create": "passed",
+      "settings_and_sharing": "passed",
+      "settings_preserve_content_version": true,
+      "environment_and_labels_clear": "passed",
+      "source_change_in_place": "passed",
+      "interval_drift_repair": "passed",
+      "disconnected_source_reconnect": "passed",
+      "authored_mode_replacement_refused": "passed",
+      "orphan": "passed",
+      "uuid_adoption": "passed",
+      "identity_preserved": true,
+      "delete": "soft-delete passed"
+    },
+    {
+      "resource": "SkillGitSourceInit",
+      "scope": "namespaced",
+      "parameter_source": "initProvider",
+      "create": "passed",
+      "settings_update": "passed",
+      "identity_preserved": true,
+      "delete": "soft-delete passed"
+    },
+    {
+      "resource": "Skill",
+      "scope": "namespaced",
+      "create": "passed",
+      "update": "passed",
+      "drift_repair": "passed",
+      "terraform_import": "separate CLI test",
+      "empty_files_clear": "passed",
+      "immutable_first_version_preserved": true,
+      "stale_version_refused": 409,
+      "delete": "soft-delete passed",
+      "backend_after_delete": 404
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "api_url": "http://127.0.0.1:19000",
+  "api_spec_sha256": "07cdcb4f84a8371029a0a5f65be43af7b515cfb052a16e38520340d8b690d0c9",
+  "api_version": "1.4.0-rc.49",
+  "outcome": "passed",
+  "runtime_source_sha256": "54d0d127e66a49b2320a6e7ef7f862375ee34dde4d0c151d40a7c4af4894ad9a",
+  "reviewed_milestone": "411935fb1648ca812dff1f3503c0be77db65bcf3",
+  "scope": "One Skill family, four variants in each scope: authored, sharing, Git forProvider and Git initProvider. Normal cleanup verifies owned API deletion. No global settings were changed, so no global API restore was required. Other families retain their reviewed checkpoint evidence; the final expanded-candidate sweep remains a release gate."
+}

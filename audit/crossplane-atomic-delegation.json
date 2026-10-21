@@ -1,0 +1,26 @@
+{
+  "run_id": "6213b348",
+  "terraform_sha256": "f7c2ed6def5cf320ca33085017179b43071973f2a38a4192c9f0bc8c15e745a0",
+  "controller_sha256": "0b2eec9de426a74c35d7e4ad793f02fc86ce928ced3464165309bc46de3f4ffe",
+  "results": [
+    {
+      "resource": "Delegation",
+      "scope": "cluster",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_edge_recreated": "passed",
+      "delete": "passed"
+    },
+    {
+      "resource": "Delegation",
+      "scope": "namespaced",
+      "create": "passed",
+      "immutable_update_refused": "passed",
+      "deleted_edge_recreated": "passed",
+      "delete": "passed"
+    }
+  ],
+  "cleanup": "passed",
+  "kubernetes_context": "kind-archestra-provider-modernization",
+  "outcome": "passed"
+}
