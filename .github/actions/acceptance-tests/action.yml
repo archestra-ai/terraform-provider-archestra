@@ -156,3 +156,6 @@ runs:
         kubectl get pods --all-namespaces -o wide || true
         kubectl describe nodes | sed -n '/Allocated resources/,/Events/p' || true
         kubectl get events --all-namespaces --field-selector type=Warning --sort-by=.lastTimestamp || true
+        # Events and platform log lines for MCP servers that the tests created.
+        kubectl get events --namespace default --sort-by=.lastTimestamp | grep -E 'mcp-tf-' | tail -n 150 || true
+        kubectl logs --namespace default deployment/archestra-platform --tail=5000 | grep -E 'mcp-tf-' | tail -n 150 || true
