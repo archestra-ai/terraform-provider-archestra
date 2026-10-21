@@ -108,7 +108,7 @@ func (d *TeamDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	}
 
 	// Get team data
-	teamResp, err := d.client.GetTeamWithResponse(ctx, data.ID.ValueString())
+	teamResp, err := d.client.GetTeamWithResponse(ctx, data.ID.ValueString(), nil)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read team, got error: %s", err))
 		return

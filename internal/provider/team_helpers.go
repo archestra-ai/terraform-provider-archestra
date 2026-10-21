@@ -38,7 +38,7 @@ func (r *TeamResource) KnownIntentionallySkipped() []string {
 }
 
 func (r *TeamResource) refreshCurrentTeam(ctx context.Context, data *TeamResourceModel, diags *diag.Diagnostics) {
-	result, err := r.client.GetTeamWithResponse(ctx, data.ID.ValueString())
+	result, err := r.client.GetTeamWithResponse(ctx, data.ID.ValueString(), nil)
 	if err != nil {
 		diags.AddError("Team Refresh Failed", err.Error())
 		return

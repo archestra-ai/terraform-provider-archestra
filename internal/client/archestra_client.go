@@ -2457,6 +2457,9 @@ type GetAllAgentToolsParams struct {
 	Limit                 *int  `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset                *int  `form:"offset,omitempty" json:"offset,omitempty"`
 	SkipPagination        *bool `form:"skipPagination,omitempty" json:"skipPagination,omitempty"`
+
+	// IncludeToolDetails Include each tool's description and parameter schema (default true). False returns null and {} for lightweight lists.
+	IncludeToolDetails *bool `form:"includeToolDetails,omitempty" json:"includeToolDetails,omitempty"`
 }
 
 // GetAllAgentToolsParamsSortBy defines parameters for GetAllAgentTools.
@@ -2536,8 +2539,11 @@ type GetAgentsParams struct {
 	// Pinned Filter by the current user's pins. Pinned results are ordered by newest pin first; unpinned results keep the requested sort.
 	Pinned *bool `form:"pinned,omitempty" json:"pinned,omitempty"`
 
-	// IncludeTools Attach each agent's assigned tools. Defaults to true. Pass false from callers that only need the agents themselves, such as name pickers: the tool refs carry every assigned tool's name and description, which on an organization of any size is most of this response's bytes. Agents come back with an empty `tools` array when it is off, meaning 'not requested' rather than 'none assigned'.
-	IncludeTools  *bool                         `form:"includeTools,omitempty" json:"includeTools,omitempty"`
+	// IncludeTools Attach each agent's assigned tools. Defaults to true. The tools carry every name and description, so they are most of the response. Pass false when you need only the agents, `toolsCount`, or `subagentsCount`, which are always present. With false, `tools` is an empty array that means 'not requested', not 'none assigned'.
+	IncludeTools *bool `form:"includeTools,omitempty" json:"includeTools,omitempty"`
+
+	// IncludeTotal Count every matching agent for `pagination.total`. Defaults to true. Pass false from lists that never show a total, such as pinned rows. With false, the count is skipped and `hasNext` stays exact. `total` is then a lower bound: the agents up to this page, plus one when more follow.
+	IncludeTotal  *bool                         `form:"includeTotal,omitempty" json:"includeTotal,omitempty"`
 	Limit         *int                          `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset        *int                          `form:"offset,omitempty" json:"offset,omitempty"`
 	SortBy        *GetAgentsParamsSortBy        `form:"sortBy,omitempty" json:"sortBy,omitempty"`
@@ -4049,6 +4055,12 @@ type CreateInternalMcpCatalogItemJSONBodyOauthConfigGrantType string
 // CreateInternalMcpCatalogItemJSONBodyServerType defines parameters for CreateInternalMcpCatalogItem.
 type CreateInternalMcpCatalogItemJSONBodyServerType string
 
+// GetInternalMcpCatalogItemParams defines parameters for GetInternalMcpCatalogItem.
+type GetInternalMcpCatalogItemParams struct {
+	// ListedOnly Answer 404 for hidden runtime variants (Playwright per-environment rows); app backings are still returned. Default false.
+	ListedOnly *bool `form:"listedOnly,omitempty" json:"listedOnly,omitempty"`
+}
+
 // UpdateInternalMcpCatalogItemJSONBody defines parameters for UpdateInternalMcpCatalogItem.
 type UpdateInternalMcpCatalogItemJSONBody struct {
 	AuthDescription *string `json:"authDescription"`
@@ -4496,6 +4508,15 @@ type GetModelsWithApiKeysParams struct {
 
 	// SharedWith Keep only objects whose own permissions grant read to one of these subjects (comma-separated): org (the whole organization), role:<roleId>, team:<teamId>, user:<userId>, serviceAccount:<serviceAccountId>. Grants inherited from organization-wide permissions do not count. Omit for no filtering.
 	SharedWith *[]string `form:"sharedWith,omitempty" json:"sharedWith,omitempty"`
+
+	// ApiKeyIds Only models linked to one of these provider keys.
+	ApiKeyIds *[]openapi_types.UUID `form:"apiKeyIds,omitempty" json:"apiKeyIds,omitempty"`
+
+	// Embedding Only embedding models (models with known dimensions).
+	Embedding *bool `form:"embedding,omitempty" json:"embedding,omitempty"`
+
+	// IncludeAssignments Include each model's teams, users and labels (default true). False returns them empty, for pickers that show only the models.
+	IncludeAssignments *bool `form:"includeAssignments,omitempty" json:"includeAssignments,omitempty"`
 }
 
 // GetModelsWithApiKeysParamsAccess defines parameters for GetModelsWithApiKeys.
@@ -4796,8 +4817,11 @@ type GetMcpToolCallsParams struct {
 
 	// UserId Filter by the user the call is attributed to. Ignored without `log:admin`, which already scopes the listing to the caller.
 	UserId *string `form:"userId,omitempty" json:"userId,omitempty"`
-	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
-	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// SessionId Filter by the LLM proxy session that issued the call: calls recorded with that session, and tool calls whose run resolves to it.
+	SessionId *string `form:"sessionId,omitempty" json:"sessionId,omitempty"`
+	Limit     *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Cursor    *string `form:"cursor,omitempty" json:"cursor,omitempty"`
 }
 
 // InstallMcpServerJSONBody defines parameters for InstallMcpServer.
@@ -4847,6 +4871,9 @@ type GetOauthClientsParams struct {
 	Capability       *GetOauthClientsParamsCapability `form:"capability,omitempty" json:"capability,omitempty"`
 	ProviderApiKeyId *openapi_types.UUID              `form:"providerApiKeyId,omitempty" json:"providerApiKeyId,omitempty"`
 	GrantType        *GetOauthClientsParamsGrantType  `form:"grantType,omitempty" json:"grantType,omitempty"`
+
+	// ApplicableTo Only clients that can reach this agent or MCP gateway: authorization-code clients, and client-credentials clients that list it, with the target's protocol (MCP for a gateway, A2A for an agent).
+	ApplicableTo *openapi_types.UUID `form:"applicableTo,omitempty" json:"applicableTo,omitempty"`
 
 	// Labels Filter by labels. Format: key1:val1|val2;key2:val3. AND across keys, OR within values.
 	Labels *string `form:"labels,omitempty" json:"labels,omitempty"`
@@ -5190,10 +5217,11 @@ type UpdateMcpSettingsJSONBody struct {
 
 // UpdateSecuritySettingsJSONBody defines parameters for UpdateSecuritySettings.
 type UpdateSecuritySettingsJSONBody struct {
-	AllowChatFileUploads     *bool `json:"allowChatFileUploads,omitempty"`
-	AllowToolAutoAssignment  *bool `json:"allowToolAutoAssignment,omitempty"`
-	NewAppsDisabledByDefault *bool `json:"newAppsDisabledByDefault,omitempty"`
-	NewAppsLockedByDefault   *bool `json:"newAppsLockedByDefault,omitempty"`
+	AllowChatFileUploads                 *bool `json:"allowChatFileUploads,omitempty"`
+	AllowToolAutoAssignment              *bool `json:"allowToolAutoAssignment,omitempty"`
+	AllowUnauthenticatedLlmProxyRequests *bool `json:"allowUnauthenticatedLlmProxyRequests,omitempty"`
+	NewAppsDisabledByDefault             *bool `json:"newAppsDisabledByDefault,omitempty"`
+	NewAppsLockedByDefault               *bool `json:"newAppsLockedByDefault,omitempty"`
 }
 
 // UpdateSkillsSettingsJSONBody defines parameters for UpdateSkillsSettings.
@@ -6041,6 +6069,12 @@ type CreateTeamJSONBody struct {
 	Roles    *[]string `json:"roles,omitempty"`
 }
 
+// GetTeamParams defines parameters for GetTeam.
+type GetTeamParams struct {
+	// IncludeMembers Include the team's members array (default true). Set to false for a large team when only its details are needed; page through members with GET /api/teams/{id}/members/page.
+	IncludeMembers *bool `form:"includeMembers,omitempty" json:"includeMembers,omitempty"`
+}
+
 // UpdateTeamJSONBody defines parameters for UpdateTeam.
 type UpdateTeamJSONBody struct {
 	Description *string `json:"description,omitempty"`
@@ -6783,7 +6817,7 @@ type ClientInterface interface {
 	DeleteInternalMcpCatalogItem(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetInternalMcpCatalogItem request
-	GetInternalMcpCatalogItem(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetInternalMcpCatalogItem(ctx context.Context, id openapi_types.UUID, params *GetInternalMcpCatalogItemParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateInternalMcpCatalogItemWithBody request with any body
 	UpdateInternalMcpCatalogItemWithBody(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -7178,7 +7212,7 @@ type ClientInterface interface {
 	DeleteTeam(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetTeam request
-	GetTeam(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetTeam(ctx context.Context, id string, params *GetTeamParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateTeamWithBody request with any body
 	UpdateTeamWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -8631,8 +8665,8 @@ func (c *Client) DeleteInternalMcpCatalogItem(ctx context.Context, id openapi_ty
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetInternalMcpCatalogItem(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetInternalMcpCatalogItemRequest(c.Server, id)
+func (c *Client) GetInternalMcpCatalogItem(ctx context.Context, id openapi_types.UUID, params *GetInternalMcpCatalogItemParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetInternalMcpCatalogItemRequest(c.Server, id, params)
 	if err != nil {
 		return nil, err
 	}
@@ -10419,8 +10453,8 @@ func (c *Client) DeleteTeam(ctx context.Context, id string, reqEditors ...Reques
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetTeam(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetTeamRequest(c.Server, id)
+func (c *Client) GetTeam(ctx context.Context, id string, params *GetTeamParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetTeamRequest(c.Server, id, params)
 	if err != nil {
 		return nil, err
 	}
@@ -10972,6 +11006,22 @@ func NewGetAllAgentToolsRequest(server string, params *GetAllAgentToolsParams) (
 
 		}
 
+		if params.IncludeToolDetails != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "includeToolDetails", runtime.ParamLocationQuery, *params.IncludeToolDetails); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		queryURL.RawQuery = queryValues.Encode()
 	}
 
@@ -11375,6 +11425,22 @@ func NewGetAgentsRequest(server string, params *GetAgentsParams) (*http.Request,
 		if params.IncludeTools != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "includeTools", runtime.ParamLocationQuery, *params.IncludeTools); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.IncludeTotal != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "includeTotal", runtime.ParamLocationQuery, *params.IncludeTotal); err != nil {
 				return nil, err
 			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 				return nil, err
@@ -14426,7 +14492,7 @@ func NewDeleteInternalMcpCatalogItemRequest(server string, id openapi_types.UUID
 }
 
 // NewGetInternalMcpCatalogItemRequest generates requests for GetInternalMcpCatalogItem
-func NewGetInternalMcpCatalogItemRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+func NewGetInternalMcpCatalogItemRequest(server string, id openapi_types.UUID, params *GetInternalMcpCatalogItemParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -14449,6 +14515,28 @@ func NewGetInternalMcpCatalogItemRequest(server string, id openapi_types.UUID) (
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.ListedOnly != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "listedOnly", runtime.ParamLocationQuery, *params.ListedOnly); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -15334,6 +15422,54 @@ func NewGetModelsWithApiKeysRequest(server string, params *GetModelsWithApiKeysP
 
 		}
 
+		if params.ApiKeyIds != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "apiKeyIds", runtime.ParamLocationQuery, *params.ApiKeyIds); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Embedding != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "embedding", runtime.ParamLocationQuery, *params.Embedding); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.IncludeAssignments != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "includeAssignments", runtime.ParamLocationQuery, *params.IncludeAssignments); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		queryURL.RawQuery = queryValues.Encode()
 	}
 
@@ -15804,6 +15940,22 @@ func NewGetMcpToolCallsRequest(server string, params *GetMcpToolCallsParams) (*h
 
 		}
 
+		if params.SessionId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sessionId", runtime.ParamLocationQuery, *params.SessionId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
 		if params.Limit != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
@@ -16175,6 +16327,22 @@ func NewGetOauthClientsRequest(server string, params *GetOauthClientsParams) (*h
 		if params.GrantType != nil {
 
 			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "grantType", runtime.ParamLocationQuery, *params.GrantType); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.ApplicableTo != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "applicableTo", runtime.ParamLocationQuery, *params.ApplicableTo); err != nil {
 				return nil, err
 			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
 				return nil, err
@@ -18654,7 +18822,7 @@ func NewDeleteTeamRequest(server string, id string) (*http.Request, error) {
 }
 
 // NewGetTeamRequest generates requests for GetTeam
-func NewGetTeamRequest(server string, id string) (*http.Request, error) {
+func NewGetTeamRequest(server string, id string, params *GetTeamParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -18677,6 +18845,28 @@ func NewGetTeamRequest(server string, id string) (*http.Request, error) {
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.IncludeMembers != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "includeMembers", runtime.ParamLocationQuery, *params.IncludeMembers); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
@@ -19699,7 +19889,7 @@ type ClientWithResponsesInterface interface {
 	DeleteInternalMcpCatalogItemWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*DeleteInternalMcpCatalogItemResponse, error)
 
 	// GetInternalMcpCatalogItemWithResponse request
-	GetInternalMcpCatalogItemWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogItemResponse, error)
+	GetInternalMcpCatalogItemWithResponse(ctx context.Context, id openapi_types.UUID, params *GetInternalMcpCatalogItemParams, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogItemResponse, error)
 
 	// UpdateInternalMcpCatalogItemWithBodyWithResponse request with any body
 	UpdateInternalMcpCatalogItemWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateInternalMcpCatalogItemResponse, error)
@@ -20094,7 +20284,7 @@ type ClientWithResponsesInterface interface {
 	DeleteTeamWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteTeamResponse, error)
 
 	// GetTeamWithResponse request
-	GetTeamWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetTeamResponse, error)
+	GetTeamWithResponse(ctx context.Context, id string, params *GetTeamParams, reqEditors ...RequestEditorFn) (*GetTeamResponse, error)
 
 	// UpdateTeamWithBodyWithResponse request with any body
 	UpdateTeamWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateTeamResponse, error)
@@ -20863,6 +21053,9 @@ type GetAgentsResponse struct {
 			SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
 			Scope            GetAgents200DataScope `json:"scope"`
 			Slug             *string               `json:"slug"`
+
+			// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
+			SubagentsCount   int `json:"subagentsCount"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -20883,8 +21076,11 @@ type GetAgentsResponse struct {
 				Name                      string              `json:"name"`
 				RawName                   *string             `json:"rawName"`
 			} `json:"tools"`
-			UpdatedAt time.Time `json:"updatedAt"`
-			Users     *[]struct {
+
+			// ToolsCount Assigned tools other than subagent delegations, as the Agents and MCP Gateways pages count them. Always present, even when `tools` is not requested.
+			ToolsCount int       `json:"toolsCount"`
+			UpdatedAt  time.Time `json:"updatedAt"`
+			Users      *[]struct {
 				Email string `json:"email"`
 				Id    string `json:"id"`
 				Name  string `json:"name"`
@@ -28561,13 +28757,14 @@ type GetInternalMcpCatalogItemResponse struct {
 			Name  *string                                    `json:"name"`
 			Type  *GetInternalMcpCatalogItem200CreatedByType `json:"type,omitempty"`
 		} `json:"createdBy"`
-		CreatedByServiceAccountId    *openapi_types.UUID `json:"createdByServiceAccountId"`
-		DeletedAt                    *time.Time          `json:"deletedAt"`
-		DeploymentName               *string             `json:"deploymentName"`
-		DeploymentSpecYaml           *string             `json:"deploymentSpecYaml"`
-		Description                  *string             `json:"description"`
-		DocsUrl                      *string             `json:"docsUrl"`
-		DynamicConnectionMcpServerId *openapi_types.UUID `json:"dynamicConnectionMcpServerId"`
+		CreatedByServiceAccountId    *openapi_types.UUID                             `json:"createdByServiceAccountId"`
+		DeletedAt                    *time.Time                                      `json:"deletedAt"`
+		DeploymentName               *string                                         `json:"deploymentName"`
+		DeploymentSpecYaml           *string                                         `json:"deploymentSpecYaml"`
+		Description                  *string                                         `json:"description"`
+		DocsUrl                      *string                                         `json:"docsUrl"`
+		DynamicConnectionMcpServerId *openapi_types.UUID                             `json:"dynamicConnectionMcpServerId"`
+		EffectiveActions             *[]GetInternalMcpCatalogItem200EffectiveActions `json:"effectiveActions,omitempty"`
 		EnterpriseManagedConfig      *struct {
 			AssertionMode           *GetInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 			Audience                *string                                                                     `json:"audience,omitempty"`
@@ -28587,12 +28784,13 @@ type GetInternalMcpCatalogItemResponse struct {
 			Scopes                  *[]string                                                                   `json:"scopes,omitempty"`
 			TokenInjectionMode      *GetInternalMcpCatalogItem200EnterpriseManagedConfigTokenInjectionMode      `json:"tokenInjectionMode,omitempty"`
 		} `json:"enterpriseManagedConfig"`
-		EnvironmentId       *openapi_types.UUID `json:"environmentId"`
-		Icon                *string             `json:"icon"`
-		Id                  openapi_types.UUID  `json:"id"`
-		InstallationCommand *string             `json:"installationCommand"`
-		Instructions        *string             `json:"instructions"`
-		Labels              []struct {
+		EnvironmentId         *openapi_types.UUID `json:"environmentId"`
+		Icon                  *string             `json:"icon"`
+		Id                    openapi_types.UUID  `json:"id"`
+		ImageApprovalRequired *bool               `json:"imageApprovalRequired,omitempty"`
+		InstallationCommand   *string             `json:"installationCommand"`
+		Instructions          *string             `json:"instructions"`
+		Labels                []struct {
 			Key   string `json:"key"`
 			Value string `json:"value"`
 		} `json:"labels"`
@@ -28656,16 +28854,20 @@ type GetInternalMcpCatalogItemResponse struct {
 			WellKnownUrl             *string                                           `json:"well_known_url,omitempty"`
 		} `json:"oauthConfig"`
 		OrganizationId *string                                `json:"organizationId"`
+		ProvidesSkills *bool                                  `json:"providesSkills,omitempty"`
+		ProvidesUi     *bool                                  `json:"providesUi,omitempty"`
 		Repository     *string                                `json:"repository"`
 		RequiresAuth   bool                                   `json:"requiresAuth"`
 		Scope          GetInternalMcpCatalogItem200Scope      `json:"scope"`
 		ServerType     GetInternalMcpCatalogItem200ServerType `json:"serverType"`
 		ServerUrl      *string                                `json:"serverUrl"`
+		SkillCount     *int                                   `json:"skillCount,omitempty"`
 		Teams          []struct {
 			Id    string                                 `json:"id"`
 			Level GetInternalMcpCatalogItem200TeamsLevel `json:"level"`
 			Name  string                                 `json:"name"`
 		} `json:"teams"`
+		ToolCount  *int                        `json:"toolCount,omitempty"`
 		UpdatedAt  time.Time                   `json:"updatedAt"`
 		UserConfig *map[string]UserConfigField `json:"userConfig"`
 		Version    *string                     `json:"version"`
@@ -28715,6 +28917,7 @@ type GetInternalMcpCatalogItemResponse struct {
 	}
 }
 type GetInternalMcpCatalogItem200CreatedByType string
+type GetInternalMcpCatalogItem200EffectiveActions string
 type GetInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode string
 type GetInternalMcpCatalogItem200EnterpriseManagedConfigFallbackMode string
 type GetInternalMcpCatalogItem200EnterpriseManagedConfigRequestedCredentialType string
@@ -31591,11 +31794,13 @@ type GetMcpToolCallsResponse struct {
 			CreatedAt     time.Time                         `json:"createdAt"`
 			DurationMs    *int                              `json:"durationMs"`
 			Id            openapi_types.UUID                `json:"id"`
+			LlmToolCallId *string                           `json:"llmToolCallId"`
 			McpServerName string                            `json:"mcpServerName"`
 			Method        string                            `json:"method"`
 			OauthClientId *string                           `json:"oauthClientId"`
 			OwnerType     string                            `json:"ownerType"`
 			RunId         *string                           `json:"runId"`
+			SessionId     *string                           `json:"sessionId"`
 			Source        *GetMcpToolCalls200DataSource     `json:"source"`
 			ToolCall      interface{}                       `json:"toolCall"`
 			ToolResult    interface{}                       `json:"toolResult"`
@@ -32863,13 +33068,14 @@ type GetOrganizationResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -33053,13 +33259,14 @@ type UpdateAgentSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -33243,13 +33450,14 @@ type UpdateAppearanceSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -33433,13 +33641,14 @@ type UpdateAuthSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -33623,13 +33832,14 @@ type CompleteOnboardingResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -33813,13 +34023,14 @@ type UpdateConnectionSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -34003,13 +34214,14 @@ type UpdateDefaultEnvironmentResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -34193,13 +34405,14 @@ type UpdateIntegrationSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -34383,13 +34596,14 @@ type UpdateKnowledgeSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -34573,13 +34787,14 @@ type UpdateMcpSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -34763,13 +34978,14 @@ type UpdateSecuritySettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -34953,13 +35169,14 @@ type UpdateSkillsSettingsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-		AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-		AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-		AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-		AppName                 *string            `json:"appName"`
-		ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-		ChatLinks               *[]struct {
+		AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+		AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+		AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+		AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+		AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+		AppName                              *string            `json:"appName"`
+		ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+		ChatLinks                            *[]struct {
 			Label string `json:"label"`
 			Url   string `json:"url"`
 		} `json:"chatLinks"`
@@ -41658,8 +41875,8 @@ func (c *ClientWithResponses) DeleteInternalMcpCatalogItemWithResponse(ctx conte
 }
 
 // GetInternalMcpCatalogItemWithResponse request returning *GetInternalMcpCatalogItemResponse
-func (c *ClientWithResponses) GetInternalMcpCatalogItemWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogItemResponse, error) {
-	rsp, err := c.GetInternalMcpCatalogItem(ctx, id, reqEditors...)
+func (c *ClientWithResponses) GetInternalMcpCatalogItemWithResponse(ctx context.Context, id openapi_types.UUID, params *GetInternalMcpCatalogItemParams, reqEditors ...RequestEditorFn) (*GetInternalMcpCatalogItemResponse, error) {
+	rsp, err := c.GetInternalMcpCatalogItem(ctx, id, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -42947,8 +43164,8 @@ func (c *ClientWithResponses) DeleteTeamWithResponse(ctx context.Context, id str
 }
 
 // GetTeamWithResponse request returning *GetTeamResponse
-func (c *ClientWithResponses) GetTeamWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetTeamResponse, error) {
-	rsp, err := c.GetTeam(ctx, id, reqEditors...)
+func (c *ClientWithResponses) GetTeamWithResponse(ctx context.Context, id string, params *GetTeamParams, reqEditors ...RequestEditorFn) (*GetTeamResponse, error) {
+	rsp, err := c.GetTeam(ctx, id, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -44025,6 +44242,9 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 				SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
 				Scope            GetAgents200DataScope `json:"scope"`
 				Slug             *string               `json:"slug"`
+
+				// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
+				SubagentsCount   int `json:"subagentsCount"`
 				SuggestedPrompts []struct {
 					Prompt       string `json:"prompt"`
 					SummaryTitle string `json:"summaryTitle"`
@@ -44045,8 +44265,11 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 					Name                      string              `json:"name"`
 					RawName                   *string             `json:"rawName"`
 				} `json:"tools"`
-				UpdatedAt time.Time `json:"updatedAt"`
-				Users     *[]struct {
+
+				// ToolsCount Assigned tools other than subagent delegations, as the Agents and MCP Gateways pages count them. Always present, even when `tools` is not requested.
+				ToolsCount int       `json:"toolsCount"`
+				UpdatedAt  time.Time `json:"updatedAt"`
+				Users      *[]struct {
 					Email string `json:"email"`
 					Id    string `json:"id"`
 					Name  string `json:"name"`
@@ -53786,13 +54009,14 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 				Name  *string                                    `json:"name"`
 				Type  *GetInternalMcpCatalogItem200CreatedByType `json:"type,omitempty"`
 			} `json:"createdBy"`
-			CreatedByServiceAccountId    *openapi_types.UUID `json:"createdByServiceAccountId"`
-			DeletedAt                    *time.Time          `json:"deletedAt"`
-			DeploymentName               *string             `json:"deploymentName"`
-			DeploymentSpecYaml           *string             `json:"deploymentSpecYaml"`
-			Description                  *string             `json:"description"`
-			DocsUrl                      *string             `json:"docsUrl"`
-			DynamicConnectionMcpServerId *openapi_types.UUID `json:"dynamicConnectionMcpServerId"`
+			CreatedByServiceAccountId    *openapi_types.UUID                             `json:"createdByServiceAccountId"`
+			DeletedAt                    *time.Time                                      `json:"deletedAt"`
+			DeploymentName               *string                                         `json:"deploymentName"`
+			DeploymentSpecYaml           *string                                         `json:"deploymentSpecYaml"`
+			Description                  *string                                         `json:"description"`
+			DocsUrl                      *string                                         `json:"docsUrl"`
+			DynamicConnectionMcpServerId *openapi_types.UUID                             `json:"dynamicConnectionMcpServerId"`
+			EffectiveActions             *[]GetInternalMcpCatalogItem200EffectiveActions `json:"effectiveActions,omitempty"`
 			EnterpriseManagedConfig      *struct {
 				AssertionMode           *GetInternalMcpCatalogItem200EnterpriseManagedConfigAssertionMode           `json:"assertionMode,omitempty"`
 				Audience                *string                                                                     `json:"audience,omitempty"`
@@ -53812,12 +54036,13 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 				Scopes                  *[]string                                                                   `json:"scopes,omitempty"`
 				TokenInjectionMode      *GetInternalMcpCatalogItem200EnterpriseManagedConfigTokenInjectionMode      `json:"tokenInjectionMode,omitempty"`
 			} `json:"enterpriseManagedConfig"`
-			EnvironmentId       *openapi_types.UUID `json:"environmentId"`
-			Icon                *string             `json:"icon"`
-			Id                  openapi_types.UUID  `json:"id"`
-			InstallationCommand *string             `json:"installationCommand"`
-			Instructions        *string             `json:"instructions"`
-			Labels              []struct {
+			EnvironmentId         *openapi_types.UUID `json:"environmentId"`
+			Icon                  *string             `json:"icon"`
+			Id                    openapi_types.UUID  `json:"id"`
+			ImageApprovalRequired *bool               `json:"imageApprovalRequired,omitempty"`
+			InstallationCommand   *string             `json:"installationCommand"`
+			Instructions          *string             `json:"instructions"`
+			Labels                []struct {
 				Key   string `json:"key"`
 				Value string `json:"value"`
 			} `json:"labels"`
@@ -53881,16 +54106,20 @@ func ParseGetInternalMcpCatalogItemResponse(rsp *http.Response) (*GetInternalMcp
 				WellKnownUrl             *string                                           `json:"well_known_url,omitempty"`
 			} `json:"oauthConfig"`
 			OrganizationId *string                                `json:"organizationId"`
+			ProvidesSkills *bool                                  `json:"providesSkills,omitempty"`
+			ProvidesUi     *bool                                  `json:"providesUi,omitempty"`
 			Repository     *string                                `json:"repository"`
 			RequiresAuth   bool                                   `json:"requiresAuth"`
 			Scope          GetInternalMcpCatalogItem200Scope      `json:"scope"`
 			ServerType     GetInternalMcpCatalogItem200ServerType `json:"serverType"`
 			ServerUrl      *string                                `json:"serverUrl"`
+			SkillCount     *int                                   `json:"skillCount,omitempty"`
 			Teams          []struct {
 				Id    string                                 `json:"id"`
 				Level GetInternalMcpCatalogItem200TeamsLevel `json:"level"`
 				Name  string                                 `json:"name"`
 			} `json:"teams"`
+			ToolCount  *int                        `json:"toolCount,omitempty"`
 			UpdatedAt  time.Time                   `json:"updatedAt"`
 			UserConfig *map[string]UserConfigField `json:"userConfig"`
 			Version    *string                     `json:"version"`
@@ -57640,11 +57869,13 @@ func ParseGetMcpToolCallsResponse(rsp *http.Response) (*GetMcpToolCallsResponse,
 				CreatedAt     time.Time                         `json:"createdAt"`
 				DurationMs    *int                              `json:"durationMs"`
 				Id            openapi_types.UUID                `json:"id"`
+				LlmToolCallId *string                           `json:"llmToolCallId"`
 				McpServerName string                            `json:"mcpServerName"`
 				Method        string                            `json:"method"`
 				OauthClientId *string                           `json:"oauthClientId"`
 				OwnerType     string                            `json:"ownerType"`
 				RunId         *string                           `json:"runId"`
+				SessionId     *string                           `json:"sessionId"`
 				Source        *GetMcpToolCalls200DataSource     `json:"source"`
 				ToolCall      interface{}                       `json:"toolCall"`
 				ToolResult    interface{}                       `json:"toolResult"`
@@ -59270,13 +59501,14 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -59487,13 +59719,14 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -59704,13 +59937,14 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -59921,13 +60155,14 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -60138,13 +60373,14 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -60355,13 +60591,14 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -60572,13 +60809,14 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -60789,13 +61027,14 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -61006,13 +61245,14 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -61223,13 +61463,14 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -61440,13 +61681,14 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`
@@ -61657,13 +61899,14 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			AllowChatFileUploads    bool               `json:"allowChatFileUploads"`
-			AllowToolAutoAssignment bool               `json:"allowToolAutoAssignment"`
-			AnalyticsInstanceId     openapi_types.UUID `json:"analyticsInstanceId"`
-			AnimateChatPlaceholders bool               `json:"animateChatPlaceholders"`
-			AppName                 *string            `json:"appName"`
-			ChatErrorSupportMessage *string            `json:"chatErrorSupportMessage"`
-			ChatLinks               *[]struct {
+			AllowChatFileUploads                 bool               `json:"allowChatFileUploads"`
+			AllowToolAutoAssignment              bool               `json:"allowToolAutoAssignment"`
+			AllowUnauthenticatedLlmProxyRequests bool               `json:"allowUnauthenticatedLlmProxyRequests"`
+			AnalyticsInstanceId                  openapi_types.UUID `json:"analyticsInstanceId"`
+			AnimateChatPlaceholders              bool               `json:"animateChatPlaceholders"`
+			AppName                              *string            `json:"appName"`
+			ChatErrorSupportMessage              *string            `json:"chatErrorSupportMessage"`
+			ChatLinks                            *[]struct {
 				Label string `json:"label"`
 				Url   string `json:"url"`
 			} `json:"chatLinks"`

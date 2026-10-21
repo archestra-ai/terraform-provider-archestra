@@ -254,7 +254,7 @@ func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	}
 
 	// Call API
-	apiResp, err := r.client.GetTeamWithResponse(ctx, data.ID.ValueString())
+	apiResp, err := r.client.GetTeamWithResponse(ctx, data.ID.ValueString(), nil)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read team, got error: %s", err))
 		return

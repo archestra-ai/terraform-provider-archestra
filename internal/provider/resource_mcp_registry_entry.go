@@ -833,6 +833,9 @@ func (r *MCPServerRegistryResource) APIShape() any {
 //   - organizationId: ownership metadata, never user-managed.
 //   - scope/teams: retired sharing projections; manage direct object grants with
 //     archestra_resource_permission_policy instead.
+//   - effectiveActions: the caller's permissions on the entry, not configuration.
+//   - imageApprovalRequired/providesSkills/providesUi/skillCount/toolCount:
+//     derived from the deployed image and discovered tools; read-only.
 func (r *MCPServerRegistryResource) KnownIntentionallySkipped() []string {
 	return []string{
 		"createdAt", "updatedAt", "publishedAt", "authorId", "authorName",
@@ -840,6 +843,7 @@ func (r *MCPServerRegistryResource) KnownIntentionallySkipped() []string {
 		"authDescription", "authFields", "approvalStatus", "approvedAt",
 		"approvedBy", "rejectionReason", "submittedAt", "submittedBy",
 		"oauthConfig", "serverType", "serverUrl", "organizationId", "scope", "teams",
+		"effectiveActions", "imageApprovalRequired", "providesSkills", "providesUi", "skillCount", "toolCount",
 	}
 }
 
@@ -898,7 +902,7 @@ func (r *MCPServerRegistryResource) Create(ctx context.Context, req resource.Cre
 
 	data.ID = types.StringValue(apiResp.JSON200.Id.String())
 
-	readResp, err := r.client.GetInternalMcpCatalogItemWithResponse(ctx, apiResp.JSON200.Id)
+	readResp, err := r.client.GetInternalMcpCatalogItemWithResponse(ctx, apiResp.JSON200.Id, nil)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read catalog item after creation: %s", err))
 		return
@@ -1307,7 +1311,7 @@ func (r *MCPServerRegistryResource) Read(ctx context.Context, req resource.ReadR
 	}
 
 	// Call API
-	apiResp, err := r.client.GetInternalMcpCatalogItemWithResponse(ctx, serverID)
+	apiResp, err := r.client.GetInternalMcpCatalogItemWithResponse(ctx, serverID, nil)
 	if err != nil {
 		resp.Diagnostics.AddError("API Error", fmt.Sprintf("Unable to read MCP server, got error: %s", err))
 		return
