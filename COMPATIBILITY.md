@@ -16,8 +16,14 @@ release candidates; record each tested release explicitly.
 
 The tested platform image digest is
 `sha256:ead9d30000531fe77f2bfe8db103dc19426701234a2f97d88b59fdd7a1952e3c`.
-Acceptance CI pins that digest. Both-scope Crossplane reconciliation has not yet
-run against it; earlier Crossplane evidence used 1.4.0-rc.49. Native acceptance, state migration, Crossplane
+Acceptance CI pins that digest. Both-scope Crossplane reconciliation against it
+covers App and AppInit ([evidence](audit/crossplane-apps-rc55.json)). The other
+30 families were not re-run on rc.55: APIKey, Agent, Credential, Directory,
+Environment, knowledge File, project File, Gateway, GitHubApp, GitHubPAT,
+KnowledgeBase, Limit, Model, ModelProvider, OAuthClient, Plugin, Project,
+identity Provider, RegistryEntry, RemoteAgent, Role, Schedule, Server,
+ServiceAccount, ServiceAccountAPIKey, Settings, ShareLink, Skill, Team and
+VirtualKey. Their Crossplane evidence used 1.4.0-rc.49. Native acceptance, state migration, Crossplane
 reconciliation and runtime package evidence are linked from [the audit](audit/README.md).
 An exact digest makes that result reproducible even if an image tag is republished.
 
