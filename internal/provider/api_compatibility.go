@@ -7,16 +7,32 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"regexp"
+	"strings"
 	"time"
 
 	version "github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 
-// Raise the floor only when required API capabilities change. Widen the tested
-// interval only after real acceptance and both-scope reconciliation pass.
+// Raise the floor only when required API capabilities change.
 const minimumAPIVersion = "1.4.0-rc.51"
-const testedAPIConstraint = "= 1.4.0-rc.55"
+
+// testedAPIVersion is the release in platform-version.txt. Acceptance CI runs
+// against it, and a pull request that changes the file changes both.
+var testedAPIVersion string
+
+var platformVersionPattern = regexp.MustCompile(`^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$`)
+
+// SetTestedAPIVersion records the tested release from platform-version.txt.
+func SetTestedAPIVersion(raw string) error {
+	value := strings.TrimSpace(raw)
+	if !platformVersionPattern.MatchString(value) {
+		return fmt.Errorf("platform-version.txt must hold one Archestra release version, got %q", value)
+	}
+	testedAPIVersion = value
+	return nil
+}
 
 func checkAPICompatibility(ctx context.Context, httpClient *http.Client, baseURL, providerVersion, requestedConstraint string) diag.Diagnostics {
 	var diagnostics diag.Diagnostics
@@ -58,8 +74,9 @@ func checkAPICompatibility(ctx context.Context, httpClient *http.Client, baseURL
 		diagnostics.AddError("Archestra API version constraint not satisfied", fmt.Sprintf("The server runs %s, which does not satisfy api_version_constraint %q. Select the intended API deployment or deliberately update the constraint after reviewing compatibility.", serverVersion, requestedConstraint))
 		return diagnostics
 	}
-	tested := version.MustConstraints(version.NewConstraint(testedAPIConstraint))
-	if !tested.Check(serverVersion) {
+	testedAPIConstraint := "= " + testedAPIVersion
+	tested, err := version.NewConstraint(testedAPIConstraint)
+	if err != nil || !tested.Check(serverVersion) {
 		diagnostics.AddWarning("Untested Archestra API version", fmt.Sprintf("Provider %s has verified API compatibility with %s; the server runs %s. Meeting the minimum version does not guarantee compatibility. Pin a tested API release or validate this combination before applying changes.", providerVersion, testedAPIConstraint, serverVersion))
 	}
 	return diagnostics

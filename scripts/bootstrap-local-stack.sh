@@ -52,20 +52,15 @@ LLM_BASE_URL="http://ollama-mock.${ARCHESTRA_NAMESPACE}.svc.cluster.local:11434/
 
 log() { printf '%s\n' "$*" >&2; }
 
-# resolve_version reads ARCHESTRA_VERSION from CI's source of truth so local
-# tracks CI without re-hardcoding a tag here. Only called on the `up` path —
-# --down and --print-env don't need it.
+# resolve_version reads ARCHESTRA_VERSION from platform-version.txt, the
+# release CI tests, so local tracks CI without re-hardcoding a tag here. Only
+# called on the `up` path — --down and --print-env don't need it.
 resolve_version() {
   if [ -n "${ARCHESTRA_VERSION:-}" ]; then
     return
   fi
-  ARCHESTRA_VERSION=$(grep -E '^\s*ARCHESTRA_VERSION:\s*"' \
-    "${REPO_ROOT}/.github/workflows/on-pull-request.yml" 2>/dev/null \
-    | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
-  if [ -z "$ARCHESTRA_VERSION" ]; then
-    log "Could not resolve ARCHESTRA_VERSION (set it explicitly or fix .github/workflows/on-pull-request.yml)"
-    exit 1
-  fi
+  ARCHESTRA_VERSION=$("${REPO_ROOT}/scripts/platform-version.sh")
+  ARCHESTRA_VERSION=${ARCHESTRA_VERSION#ARCHESTRA_VERSION=}
 }
 
 require_tool() {

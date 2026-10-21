@@ -25,6 +25,8 @@
 
 * **Validators tightened** — plan-time `OneOf`/`Between`/numeric-bounds added across enum and numeric attributes. Mainly catches typos earlier; configurations that previously round-tripped values the backend would 400 on now fail at plan time. **Type tightening**: `local_config.node_port` and `oauth_config.streamable_http_port` are now `Int64` (were `Float64`); fractional values are no longer accepted.
 
+* **`consider_context_untrusted` removed** from `archestra_agent` and `archestra_mcp_gateway`. API versions that v3 supports (1.4.0-rc.51 and later) no longer have this setting: the API ignored it on writes and never returned it. Delete the argument.
+
 ### Features
 
 * **JSON Merge Patch architecture.** Update emits only fields whose plan value differs from state; sensitive sub-fields are masked in debug logs. Closes the structural class of bugs where unchanged values were re-sent on every Update — sensitive fields no longer leak back onto the wire, and `labels` / `teams` no longer clobber backend defaults or external edits. Documented in the new `ARCHITECTURE.md`.
@@ -35,6 +37,7 @@
 * **5 Registry guides**: Getting Started, Authentication, Resource Bring-up Order, BYOS Vault, Common Issues. Plus a Support block on the Registry index page.
 * **Per-resource `import.sh`** — every importable resource auto-renders an `## Import` section in its docs page.
 * **`scripts/bootstrap-local-stack.sh`** — one-command full-suite local setup with EE license + BYOS Vault + Ollama mock.
+* **`platform-version.txt`** names the tested Archestra release. Acceptance CI and `scripts/bootstrap-local-stack.sh` run against it, and the provider embeds it for its untested-version warning. The Update Terraform Provider workflow in archestra-ai/archestra proposes new releases in pull requests on `automation/platform-api`.
 
 ### Bug Fixes
 
@@ -51,6 +54,7 @@
 * **`data.archestra_tool`** now retries when the tool isn't found yet, eliminating a race against `archestra_mcp_server_installation` tool registration in the same plan.
 * **Schema preservation defaults** added on `oauth_config.supports_resource_metadata` (false) and `image_pull_secrets[].source` ("existing") to stop perma-diffs when HCL omits them.
 * **`user_config.default` and `local_config.environment[].default`** are now type-gated against the sibling `type` before send (was blind JSON-decoding HCL strings).
+* **`archestra_mcp_registry_entry.cloned_from`** is sent only on create. The API accepts it only there; changing it already replaces the resource.
 
 ## [2.4.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v2.4.0...v2.4.1) (2026-10-16)
 

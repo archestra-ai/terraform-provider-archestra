@@ -91,15 +91,17 @@ jobs:
     permissions:
       contents: read
     env:
-      # Archestra platform version for acceptance tests
-      # Update this single value to bump the version used
-      ARCHESTRA_VERSION: "1.4.0-rc.55"
       ARCHESTRA_NAMESPACE: "default"
     steps:
       - name: Checkout project
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
+
+      # platform-version.txt holds the tested Archestra release. The provider
+      # embeds the same file, so this job tests the release it reports.
+      - name: Read platform version
+        run: ./scripts/platform-version.sh >> "$GITHUB_ENV"
 
       - name: Setup go
         uses: ./.github/actions/setup-go
@@ -118,7 +120,12 @@ jobs:
           helm-chart-ref: oci://europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/helm-charts/archestra-platform:${{ env.ARCHESTRA_VERSION }}
           deploy-e2e-dependencies: "false"
           build-platform-image: "false"
-          platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}@sha256:ead9d30000531fe77f2bfe8db103dc19426701234a2f97d88b59fdd7a1952e3c
+          platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}
+
+      - name: Record platform image
+        run: |
+          digest="$(docker image inspect --format '{{join .RepoDigests ", "}}' "archestra/platform:${ARCHESTRA_VERSION}")"
+          echo "Archestra ${ARCHESTRA_VERSION}: ${digest}" | tee -a "$GITHUB_STEP_SUMMARY"
 
       # Stub /v1/models so backend's testProviderApiKey passes without a real
       # Ollama. Manifest + apply logic shared with local development via
@@ -202,16 +209,19 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup-go
       - uses: ./.github/actions/setup-terraform
-      # Credential APIs are newer than the platform used by the legacy suite.
-      # Use an immutable, published multi-platform image for reproducible CI.
+      - name: Read platform version
+        run: ./scripts/platform-version.sh >> "$GITHUB_ENV"
       - name: Start platform with credential support
         run: |
+          docker pull "archestra/platform:${ARCHESTRA_VERSION}"
+          digest="$(docker image inspect --format '{{join .RepoDigests ", "}}' "archestra/platform:${ARCHESTRA_VERSION}")"
+          echo "Archestra ${ARCHESTRA_VERSION}: ${digest}" | tee -a "$GITHUB_STEP_SUMMARY"
           docker run -d --name credential-platform -p 9000:9000 -p 3000:3000 \
             -e ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true \
             -e ARCHESTRA_AGENT_RUNTIME_ENABLED=true \
             -e ARCHESTRA_AUTH_SECRET=acceptance-test-auth-secret-32chars \
             -e ARCHESTRA_ANALYTICS=disabled \
-            archestra/platform:1.4.0-rc.55@sha256:ead9d30000531fe77f2bfe8db103dc19426701234a2f97d88b59fdd7a1952e3c
+            "archestra/platform:${ARCHESTRA_VERSION}"
           for _attempt in $(seq 1 120); do
             status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/api/health || true)
             case "$status" in 200|401) exit 0 ;; esac

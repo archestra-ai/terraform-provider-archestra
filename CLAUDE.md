@@ -49,7 +49,7 @@ mock (hashicorp/http-echo) on a shared docker network, with
 `ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true` and
 `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT`. It also seeds the BYOS test
 secret and provisions the EMC IdP. The platform image tag tracks
-`ARCHESTRA_VERSION` (default matches `.github/workflows/on-pull-request.yml`;
+`ARCHESTRA_VERSION` (default from `platform-version.txt`;
 override the env var to test against a different release). Without the
 script, the BYOS / EMC / LLM-model subsets `t.Fatal` with actionable
 messages instead of running against an under-configured backend.
