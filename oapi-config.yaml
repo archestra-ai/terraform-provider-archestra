@@ -151,7 +151,6 @@ output-options:
     - syncAgentA2aDelegations
     - createVirtualApiKey
     - getVirtualApiKey
-    - getVirtualApiKeyValue
     - updateVirtualApiKey
     - deleteVirtualApiKey
     - createOauthClient

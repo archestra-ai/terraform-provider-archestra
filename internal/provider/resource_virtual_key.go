@@ -18,8 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"net/http"
 	"time"
 )
 
@@ -77,7 +75,7 @@ func (r *VirtualAPIKeyResource) Metadata(_ context.Context, req resource.Metadat
 	resp.TypeName = req.ProviderTypeName + "_virtual_key"
 }
 func (r *VirtualAPIKeyResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	resp.Schema = schema.Schema{MarkdownDescription: "Revocable virtual LLM key with explicit provider routing, billing and spend cap. The sensitive value is saved on creation and recovered on import or refresh when the caller authored the key. Change rotation_nonce to replace and revoke the key. Passthrough keys carry no provider credentials.", Attributes: map[string]schema.Attribute{
+	resp.Schema = schema.Schema{MarkdownDescription: "Revocable virtual LLM key with explicit provider routing, billing and spend cap. The sensitive value is saved only on creation; import adopts metadata without retrieving a bearer credential. Change rotation_nonce to replace and revoke the key. Passthrough keys carry no provider credentials.", Attributes: map[string]schema.Attribute{
 		"id":                schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Virtual key UUID."},
 		"name":              schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 256)}, MarkdownDescription: "Key display name."},
 		"key_type":          schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString("standard"), Validators: []validator.String{stringvalidator.OneOf("standard", "passthrough")}, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Immutable standard or passthrough key type."},
@@ -89,7 +87,7 @@ func (r *VirtualAPIKeyResource) Schema(_ context.Context, _ resource.SchemaReque
 		"owner_id":                      schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Creation-only owner selector, defaulting to the creator."},
 		"permissions":                   initialGrantsAttribute(),
 		"rotation_nonce":                schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Change this value to replace the key and revoke its old credential."},
-		"value":                         schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Bearer credential returned on creation or revealed to the key author, retained in sensitive state."},
+		"value":                         schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Bearer credential returned on creation and retained in sensitive state."},
 		"secret_id":                     schema.StringAttribute{Computed: true, MarkdownDescription: "Stored credential identifier."},
 		"token_start":                   schema.StringAttribute{Computed: true, MarkdownDescription: "Non-secret identifying prefix."},
 		"scope":                         schema.StringAttribute{Computed: true, MarkdownDescription: "Legacy visibility projection; permissions are managed separately."},
@@ -175,9 +173,6 @@ func (r *VirtualAPIKeyResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 	r.flatten(ctx, &data, result.Body, &resp.Diagnostics)
-	if data.Value.IsNull() || data.Value.IsUnknown() {
-		data.Value = r.revealValue(ctx, id, &resp.Diagnostics)
-	}
 	readParentPermissions(ctx, r.client, "llmVirtualKey", data.ID.ValueString(), &data.InitialGrants, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
@@ -313,25 +308,6 @@ func (r *VirtualAPIKeyResource) flatten(ctx context.Context, data *VirtualAPIKey
 	data.OrganizationID = types.StringValue(raw.OrganizationID)
 	data.Teams = credentialJSONValue(raw.Teams, diags)
 	flattenCredentialRouting(ctx, raw.credentialRoutingResponse, &data.ProviderAPIKeys, &data.Labels, &data.SpendCap, &data.BillingTeamID, &data.BillingTeamName, diags)
-}
-
-// revealValue recovers the bearer credential for its author. Other callers get
-// 403 and keep a null value; secret_id and token_start still identify the key.
-func (r *VirtualAPIKeyResource) revealValue(ctx context.Context, id uuid.UUID, diags *diag.Diagnostics) types.String {
-	result, err := r.client.GetVirtualApiKeyValueWithResponse(ctx, id)
-	if err != nil {
-		diags.AddError("API Error", err.Error())
-		return types.StringNull()
-	}
-	if result.StatusCode() == http.StatusForbidden {
-		tflog.Info(ctx, "virtual key value is revealable only by its author; leaving value null")
-		return types.StringNull()
-	}
-	if result.JSON200 == nil {
-		diags.AddError("Read Failed", fmt.Sprintf("Revealing the virtual key value returned status %d", result.StatusCode()))
-		return types.StringNull()
-	}
-	return types.StringValue(result.JSON200.Value)
 }
 func credentialConfiguredTimestamp(prior types.String, value *time.Time) types.String {
 	if value == nil {
