@@ -23,7 +23,10 @@ provider, using the Vault token configured for Terraform.
 
 The example:
 
-- references an upstream provider credential that already exists in Vault;
+- references an upstream provider credential that already exists in Vault,
+  as an organization-owned model provider (`shared = true`). Keep `shared`
+  when Terraform authenticates as a service account: a service account cannot
+  own a personal provider key;
 - creates a virtual key routed to that provider, billed to the team, with a
   monthly spend cap and an absolute expiry;
 - writes the key value to `secret/data/teams/<team>/archestra-virtual-key`.

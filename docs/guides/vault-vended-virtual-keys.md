@@ -56,6 +56,10 @@ resource "archestra_model_provider" "openai" {
   llm_provider      = "openai"
   vault_secret_path = "secret/data/llm/openai"
   vault_secret_key  = "api_key"
+
+  # Organization-owned. A service account cannot own a personal provider key,
+  # so this is required when Terraform authenticates as one.
+  shared = true
 }
 
 resource "archestra_virtual_key" "team" {
@@ -88,7 +92,10 @@ resource "vault_kv_secret_v2" "team_virtual_key" {
 
 The example:
 
-- references an upstream provider credential that already exists in Vault;
+- references an upstream provider credential that already exists in Vault,
+  as an organization-owned model provider (`shared = true`). Keep `shared`
+  when Terraform authenticates as a service account: a service account cannot
+  own a personal provider key;
 - creates a virtual key routed to that provider, billed to the team, with a
   monthly spend cap and an absolute expiry;
 - writes the key value to `secret/data/teams/<team>/archestra-virtual-key`.
