@@ -243,6 +243,7 @@ func (r *VirtualAPIKeyResource) Update(ctx context.Context, req resource.UpdateR
 	data.Value = prior.Value
 	r.flatten(ctx, &data, result.Body, &resp.Diagnostics)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	clearAdoptedInputs(ctx, resp)
 }
 func (r *VirtualAPIKeyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data VirtualAPIKeyResourceModel
@@ -266,6 +267,7 @@ func (r *VirtualAPIKeyResource) Delete(ctx context.Context, req resource.DeleteR
 }
 func (r *VirtualAPIKeyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	markAdoptedInputs(ctx, resp)
 }
 func (r *VirtualAPIKeyResource) flatten(ctx context.Context, data *VirtualAPIKeyResourceModel, body []byte, diags *diag.Diagnostics) {
 	var raw struct {

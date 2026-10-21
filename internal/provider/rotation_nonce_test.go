@@ -41,114 +41,152 @@ func nonceAdoptionSteps(address, fixtures string, config func(nonce string) stri
 	}
 }
 
+// nonceFirstSetSteps creates without a nonce and checks that a first nonce on
+// a resource that was never imported still replaces or rotates it.
+func nonceFirstSetSteps(address string, config func(nonce string) string, kept, rotated resource.TestCheckFunc, rotation plancheck.ResourceActionType) []resource.TestStep {
+	return []resource.TestStep{
+		{Config: config(""), Check: kept},
+		{Config: config("1"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction(address, rotation)}}, Check: rotated},
+		{Config: config("1"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
+	}
+}
+
+// nonceLine omits the attribute for an empty nonce.
+func nonceLine(nonce string) string {
+	if nonce == "" {
+		return ""
+	}
+	return fmt.Sprintf("rotation_nonce=%q\n", nonce)
+}
+
+// testAccNonceCases runs import adoption and first-set rotation, each with
+// fresh credential probes.
+func testAccNonceCases(t *testing.T, preCheck func(), address, fixtures string, config func(nonce string) string, probes func() (kept, rotated resource.TestCheckFunc), rotation plancheck.ResourceActionType) {
+	t.Run("import", func(t *testing.T) {
+		kept, rotated := probes()
+		resource.Test(t, resource.TestCase{PreCheck: preCheck, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: nonceAdoptionSteps(address, fixtures, config, kept, rotated, rotation)})
+	})
+	t.Run("first-set", func(t *testing.T) {
+		kept, rotated := probes()
+		resource.Test(t, resource.TestCase{PreCheck: preCheck, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: nonceFirstSetSteps(address, config, kept, rotated, rotation)})
+	})
+}
+
 func TestAccVirtualAPIKeyNonceAdoption(t *testing.T) {
 	name := acctest.RandomWithPrefix("tf-vk-adopt")
 	config := func(nonce string) string {
-		return fmt.Sprintf("resource \"archestra_virtual_key\" \"test\" {\nname=%q\nkey_type=\"passthrough\"\nrotation_nonce=%q\n}\n", name, nonce)
+		return fmt.Sprintf("resource \"archestra_virtual_key\" \"test\" {\nname=%q\nkey_type=\"passthrough\"\n%s}\n", name, nonceLine(nonce))
 	}
-	var original string
-	kept := func(s *terraform.State) error {
-		id := s.RootModule().Resources["archestra_virtual_key.test"].Primary.ID
-		if original == "" {
-			original = id
+	probes := func() (resource.TestCheckFunc, resource.TestCheckFunc) {
+		var original string
+		kept := func(s *terraform.State) error {
+			if original == "" {
+				original = s.RootModule().Resources["archestra_virtual_key.test"].Primary.ID
+			}
+			status, err := testCredentialMetadataStatus(t.Context(), "/api/llm-virtual-keys/"+original)
+			if err != nil || status != http.StatusOK {
+				return fmt.Errorf("original virtual key not readable: status %d %v", status, err)
+			}
+			return nil
 		}
-		status, err := testCredentialMetadataStatus(t.Context(), "/api/llm-virtual-keys/"+original)
-		if err != nil || status != http.StatusOK {
-			return fmt.Errorf("original virtual key not readable: status %d %v", status, err)
+		rotated := func(s *terraform.State) error {
+			if s.RootModule().Resources["archestra_virtual_key.test"].Primary.ID == original {
+				return fmt.Errorf("nonce change did not replace the virtual key")
+			}
+			status, err := testCredentialMetadataStatus(t.Context(), "/api/llm-virtual-keys/"+original)
+			if err != nil || status != http.StatusNotFound {
+				return fmt.Errorf("replaced virtual key was not revoked: status %d %v", status, err)
+			}
+			return nil
 		}
-		return nil
+		return kept, rotated
 	}
-	rotated := func(s *terraform.State) error {
-		if s.RootModule().Resources["archestra_virtual_key.test"].Primary.ID == original {
-			return fmt.Errorf("nonce change did not replace the virtual key")
-		}
-		status, err := testCredentialMetadataStatus(t.Context(), "/api/llm-virtual-keys/"+original)
-		if err != nil || status != http.StatusNotFound {
-			return fmt.Errorf("replaced virtual key was not revoked: status %d %v", status, err)
-		}
-		return nil
-	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: nonceAdoptionSteps("archestra_virtual_key.test", "", config, kept, rotated, plancheck.ResourceActionDestroyBeforeCreate)})
+	testAccNonceCases(t, func() { testAccPreCheck(t) }, "archestra_virtual_key.test", "", config, probes, plancheck.ResourceActionDestroyBeforeCreate)
 }
 
 func TestAccServiceAccountAPIKeyNonceAdoption(t *testing.T) {
 	name := acctest.RandomWithPrefix("tf-sa-adopt")
 	fixtures := fmt.Sprintf("resource \"archestra_service_account\" \"parent\" {\nname=%q\nrole=\"member\"\n}\n", name)
 	config := func(nonce string) string {
-		return fixtures + fmt.Sprintf("resource \"archestra_service_account_api_key\" \"test\" {\nservice_account_id=archestra_service_account.parent.id\nname=%q\nexpires_in=3600\nrotation_nonce=%q\n}\n", name, nonce)
+		return fixtures + fmt.Sprintf("resource \"archestra_service_account_api_key\" \"test\" {\nservice_account_id=archestra_service_account.parent.id\nname=%q\nexpires_in=3600\n%s}\n", name, nonceLine(nonce))
 	}
-	var token string
-	kept := func(s *terraform.State) error {
-		if current := s.RootModule().Resources["archestra_service_account_api_key.test"].Primary.Attributes["token"]; token == "" {
-			token = current
+	probes := func() (resource.TestCheckFunc, resource.TestCheckFunc) {
+		var token string
+		kept := func(s *terraform.State) error {
+			if token == "" {
+				token = s.RootModule().Resources["archestra_service_account_api_key.test"].Primary.Attributes["token"]
+			}
+			return testTokenAuthenticates(token, http.StatusOK)
 		}
-		return testTokenAuthenticates(token, http.StatusOK)
+		rotated := func(s *terraform.State) error {
+			next := s.RootModule().Resources["archestra_service_account_api_key.test"].Primary.Attributes["token"]
+			if next == "" || next == token {
+				return fmt.Errorf("nonce change did not issue a new token")
+			}
+			if err := testTokenAuthenticates(token, http.StatusUnauthorized); err != nil {
+				return err
+			}
+			return testTokenAuthenticates(next, http.StatusOK)
+		}
+		return kept, rotated
 	}
-	rotated := func(s *terraform.State) error {
-		next := s.RootModule().Resources["archestra_service_account_api_key.test"].Primary.Attributes["token"]
-		if next == "" || next == token {
-			return fmt.Errorf("nonce change did not issue a new token")
-		}
-		if err := testTokenAuthenticates(token, http.StatusUnauthorized); err != nil {
-			return err
-		}
-		return testTokenAuthenticates(next, http.StatusOK)
-	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: nonceAdoptionSteps("archestra_service_account_api_key.test", fixtures, config, kept, rotated, plancheck.ResourceActionDestroyBeforeCreate)})
+	testAccNonceCases(t, func() { testAccPreCheck(t) }, "archestra_service_account_api_key.test", fixtures, config, probes, plancheck.ResourceActionDestroyBeforeCreate)
 }
 
 func TestAccShareLinkNonceAdoption(t *testing.T) {
 	config := func(nonce string) string {
-		return shareSkillFixtures + fmt.Sprintf("\nresource \"archestra_share_link\" \"test\" {\nname=\"tf-share-adopt\"\nskill_ids=[archestra_skill.first.id]\nplugin_ids=[]\nrotation_nonce=%q\n}\n", nonce)
+		return shareSkillFixtures + fmt.Sprintf("\nresource \"archestra_share_link\" \"test\" {\nname=\"tf-share-adopt\"\nskill_ids=[archestra_skill.first.id]\nplugin_ids=[]\n%s}\n", nonceLine(nonce))
 	}
-	var clone string
-	kept := func(s *terraform.State) error {
-		if clone == "" {
-			clone = s.RootModule().Resources["archestra_share_link.test"].Primary.Attributes["clone_url"]
+	probes := func() (resource.TestCheckFunc, resource.TestCheckFunc) {
+		var clone string
+		kept := func(s *terraform.State) error {
+			if clone == "" {
+				clone = s.RootModule().Resources["archestra_share_link.test"].Primary.Attributes["clone_url"]
+			}
+			return shareLinkReadable(clone)
 		}
-		return shareLinkReadable(clone)
+		rotated := func(s *terraform.State) error {
+			code, err := shareLinkAnonymousStatus(clone)
+			if err != nil {
+				return err
+			}
+			if code != http.StatusNotFound {
+				return fmt.Errorf("replaced share link still serves its old token: status %d", code)
+			}
+			return shareLinkReadable(s.RootModule().Resources["archestra_share_link.test"].Primary.Attributes["clone_url"])
+		}
+		return kept, rotated
 	}
-	rotated := func(s *terraform.State) error {
-		code, err := shareLinkAnonymousStatus(clone)
-		if err != nil {
-			return err
-		}
-		if code != http.StatusNotFound {
-			return fmt.Errorf("replaced share link still serves its old token: status %d", code)
-		}
-		return shareLinkReadable(s.RootModule().Resources["archestra_share_link.test"].Primary.Attributes["clone_url"])
-	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: nonceAdoptionSteps("archestra_share_link.test", shareSkillFixtures, config, kept, rotated, plancheck.ResourceActionDestroyBeforeCreate)})
+	testAccNonceCases(t, func() { testAccPreCheck(t) }, "archestra_share_link.test", shareSkillFixtures, config, probes, plancheck.ResourceActionDestroyBeforeCreate)
 }
 
 func TestAccOauthClientNonceAdoption(t *testing.T) {
 	name := acctest.RandomWithPrefix("tf-oauth-adopt")
 	config := func(nonce string) string {
-		return fmt.Sprintf("resource \"archestra_oauth_client\" \"test\" {\nname=%q\nscopes=[\"llm:proxy\"]\ninclude_future_providers=true\nrotation_nonce=%q\n}\n", name, nonce)
+		return fmt.Sprintf("resource \"archestra_oauth_client\" \"test\" {\nname=%q\nscopes=[\"llm:proxy\"]\ninclude_future_providers=true\n%s}\n", name, nonceLine(nonce))
 	}
-	var clientID, secret string
-	kept := func(s *terraform.State) error {
-		v := s.RootModule().Resources["archestra_oauth_client.test"].Primary
-		if secret == "" {
-			clientID, secret = v.Attributes["client_id"], v.Attributes["client_secret"]
+	probes := func() (resource.TestCheckFunc, resource.TestCheckFunc) {
+		var clientID, secret string
+		kept := func(s *terraform.State) error {
+			v := s.RootModule().Resources["archestra_oauth_client.test"].Primary
+			if secret == "" {
+				clientID, secret = v.Attributes["client_id"], v.Attributes["client_secret"]
+			}
+			return testOauthCredential(t.Context(), clientID, secret, true)
 		}
-		return testOauthCredential(t.Context(), clientID, secret, true)
+		rotated := func(s *terraform.State) error {
+			v := s.RootModule().Resources["archestra_oauth_client.test"].Primary
+			if v.Attributes["client_id"] != clientID || v.Attributes["client_secret"] == "" || v.Attributes["client_secret"] == secret {
+				return fmt.Errorf("nonce change did not rotate the secret in place")
+			}
+			if err := testOauthCredential(t.Context(), clientID, secret, false); err != nil {
+				return err
+			}
+			return testOauthCredential(t.Context(), clientID, v.Attributes["client_secret"], true)
+		}
+		return kept, rotated
 	}
-	rotated := func(s *terraform.State) error {
-		v := s.RootModule().Resources["archestra_oauth_client.test"].Primary
-		if v.Attributes["client_id"] != clientID || v.Attributes["client_secret"] == "" || v.Attributes["client_secret"] == secret {
-			return fmt.Errorf("nonce change did not rotate the secret in place")
-		}
-		if err := testOauthCredential(t.Context(), clientID, secret, false); err != nil {
-			return err
-		}
-		return testOauthCredential(t.Context(), clientID, v.Attributes["client_secret"], true)
-	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireEnterprise(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: nonceAdoptionSteps("archestra_oauth_client.test", "", config, kept, rotated, plancheck.ResourceActionUpdate)})
+	testAccNonceCases(t, func() { testAccPreCheck(t); testAccRequireEnterprise(t) }, "archestra_oauth_client.test", "", config, probes, plancheck.ResourceActionUpdate)
 }
 
 func testTokenAuthenticates(token string, want int) error {

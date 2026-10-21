@@ -227,6 +227,7 @@ func (r *MarketplaceShareLinkResource) Delete(ctx context.Context, req resource.
 }
 func (r *MarketplaceShareLinkResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	markAdoptedInputs(ctx, resp)
 }
 func (r *MarketplaceShareLinkResource) flatten(ctx context.Context, data *MarketplaceShareLinkResourceModel, body []byte, diags *diag.Diagnostics) {
 	var value struct {

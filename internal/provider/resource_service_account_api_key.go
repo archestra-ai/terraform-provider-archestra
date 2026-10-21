@@ -194,6 +194,7 @@ func (r *ServiceAccountTokenResource) Update(ctx context.Context, req resource.U
 	}
 	if r.update(ctx, &data, patch, &resp.Diagnostics) {
 		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+		clearAdoptedInputs(ctx, resp)
 	}
 }
 func (r *ServiceAccountTokenResource) update(ctx context.Context, data *ServiceAccountTokenResourceModel, patch map[string]any, diags *diag.Diagnostics) bool {
@@ -245,6 +246,7 @@ func (r *ServiceAccountTokenResource) ImportState(ctx context.Context, req resou
 		return
 	}
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	markAdoptedInputs(ctx, resp)
 }
 func serviceAccountTokenIDs(id string) (uuid.UUID, uuid.UUID, error) {
 	account, token, found := strings.Cut(id, ":")
