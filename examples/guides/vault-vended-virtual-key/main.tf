@@ -34,6 +34,10 @@ resource "archestra_model_provider" "openai" {
   llm_provider      = "openai"
   vault_secret_path = "secret/data/llm/openai"
   vault_secret_key  = "api_key"
+
+  # Organization-owned. A service account cannot own a personal provider key,
+  # so this is required when Terraform authenticates as one.
+  shared = true
 }
 
 resource "archestra_virtual_key" "team" {
