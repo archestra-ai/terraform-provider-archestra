@@ -75,6 +75,11 @@ esac
             for port in ['19000', '13000', '19050']:
                 self.assertIn(f'hostPort: {port}', config)
 
+    def test_print_env_points_model_tests_at_the_stack_mock(self):
+        result = subprocess.run(['bash', str(Path(__file__).with_name('bootstrap-local-stack.sh')), '--print-env'],
+                                env={**os.environ, 'ARCHESTRA_NAMESPACE': 'isolated'}, capture_output=True, check=True)
+        self.assertIn(b'export ARCHESTRA_TEST_LLM_BASE_URL=http://ollama-mock.isolated.svc.cluster.local:11434/v1\n', result.stdout)
+
     def test_rejects_invalid_ports_before_tool_execution(self):
         for port in ['0', '65536', 'localhost:9000', '9000; echo bad']:
             result = subprocess.run(['bash', str(Path(__file__).with_name('bootstrap-local-stack.sh')), '--print-env'],
