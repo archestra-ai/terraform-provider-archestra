@@ -77,23 +77,34 @@ use_private_kubeconfig() {
   export KUBECONFIG="${WORK_DIR}/kubeconfig"
 }
 
+# Deletes a ProviderConfig while the controller can still release its in-use finalizer.
+delete_provider_config() {
+  local crd=$1; shift
+  kubectl get crd "$crd" >/dev/null 2>&1 || return 0
+  kubectl delete "$crd" "$@" --ignore-not-found --timeout=90s || {
+    log "${crd} is still in use. Delete remaining managed resources, re-run without --down to restart the controller, then retry."
+    exit 1
+  }
+}
+
 down() {
-  stop_controller
   if ! kind get clusters 2>/dev/null | grep -qx "$KIND_CLUSTER"; then
+    stop_controller
     log "Kind cluster ${KIND_CLUSTER} not found; nothing else to remove."
     return
   fi
   use_private_kubeconfig
+  delete_provider_config providerconfigs.archestra.crossplane.io "$PROVIDER_CONFIG"
+  delete_provider_config clusterproviderconfigs.archestra.m.crossplane.io "$PROVIDER_CONFIG"
+  delete_provider_config providerconfigs.archestra.m.crossplane.io "$PROVIDER_CONFIG" -n "$CROSSPLANE_NAMESPACE"
+  stop_controller
   kubectl delete -n default -f "${SCRIPT_DIR}/k8s/provider-mcp-mock.yaml" --ignore-not-found
   kubectl delete -n default configmap provider-mcp-mock-script --ignore-not-found
-  kubectl delete providerconfigs.archestra.crossplane.io "$PROVIDER_CONFIG" --ignore-not-found 2>/dev/null || true
-  kubectl delete clusterproviderconfigs.archestra.m.crossplane.io "$PROVIDER_CONFIG" --ignore-not-found 2>/dev/null || true
-  kubectl delete -n "$CROSSPLANE_NAMESPACE" providerconfigs.archestra.m.crossplane.io "$PROVIDER_CONFIG" --ignore-not-found 2>/dev/null || true
   if [ -d "${REPO_ROOT}/crossplane/package/crds" ]; then
-    kubectl delete -f "${REPO_ROOT}/crossplane/package/crds" --ignore-not-found >/dev/null
+    kubectl delete -f "${REPO_ROOT}/crossplane/package/crds" --ignore-not-found --timeout=120s >/dev/null
   fi
-  helm uninstall crossplane --namespace "$CROSSPLANE_NAMESPACE" --wait 2>/dev/null || true
-  kubectl delete namespace "$CROSSPLANE_NAMESPACE" --ignore-not-found
+  (cd "$WORK_DIR" && helm uninstall crossplane --namespace "$CROSSPLANE_NAMESPACE" --wait 2>/dev/null) || true
+  kubectl delete namespace "$CROSSPLANE_NAMESPACE" --ignore-not-found --timeout=120s
   log "Removed Crossplane, the provider CRDs and fixtures from ${KIND_CLUSTER}. Work directory kept: ${WORK_DIR}"
 }
 
