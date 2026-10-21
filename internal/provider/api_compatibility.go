@@ -16,7 +16,7 @@ import (
 // Raise the floor only when required API capabilities change. Widen the tested
 // interval only after real acceptance and both-scope reconciliation pass.
 const minimumAPIVersion = "1.4.0-rc.50"
-const testedAPIConstraint = "= 1.4.0-rc.49"
+const testedAPIConstraint = "= 1.4.0-rc.55"
 
 func checkAPICompatibility(ctx context.Context, httpClient *http.Client, baseURL, providerVersion, requestedConstraint string) diag.Diagnostics {
 	var diagnostics diag.Diagnostics
@@ -25,7 +25,7 @@ func checkAPICompatibility(ctx context.Context, httpClient *http.Client, baseURL
 		var err error
 		constraint, err = version.NewConstraint(requestedConstraint)
 		if err != nil {
-			diagnostics.AddError("Invalid Archestra API version constraint", "api_version_constraint must be a valid version constraint, for example = 1.4.0-rc.49 or >= 1.4.0, < 1.5.0.")
+			diagnostics.AddError("Invalid Archestra API version constraint", "api_version_constraint must be a valid version constraint, for example = 1.4.0-rc.55 or >= 1.4.0, < 1.5.0.")
 			return diagnostics
 		}
 	}

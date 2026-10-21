@@ -88,7 +88,7 @@ jobs:
     env:
       # Archestra platform version for acceptance tests
       # Update this single value to bump the version used
-      ARCHESTRA_VERSION: "1.4.0-rc.49"
+      ARCHESTRA_VERSION: "1.4.0-rc.55"
       ARCHESTRA_NAMESPACE: "default"
     steps:
       - name: Checkout project
@@ -113,7 +113,7 @@ jobs:
           helm-chart-ref: oci://europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/helm-charts/archestra-platform:${{ env.ARCHESTRA_VERSION }}
           deploy-e2e-dependencies: "false"
           build-platform-image: "false"
-          platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}@sha256:c9177010ed05666f76cb12bf165f5a4c5d7d8175f5ce8e90259fc16173eb7679
+          platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}@sha256:ead9d30000531fe77f2bfe8db103dc19426701234a2f97d88b59fdd7a1952e3c
 
       # Stub /v1/models so backend's testProviderApiKey passes without a real
       # Ollama. Manifest + apply logic shared with local development via
@@ -206,7 +206,7 @@ jobs:
             -e ARCHESTRA_AGENT_RUNTIME_ENABLED=true \
             -e ARCHESTRA_AUTH_SECRET=acceptance-test-auth-secret-32chars \
             -e ARCHESTRA_ANALYTICS=disabled \
-            archestra/platform:1.4.0-rc.49@sha256:c9177010ed05666f76cb12bf165f5a4c5d7d8175f5ce8e90259fc16173eb7679
+            archestra/platform:1.4.0-rc.55@sha256:ead9d30000531fe77f2bfe8db103dc19426701234a2f97d88b59fdd7a1952e3c
           for _attempt in $(seq 1 120); do
             status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/api/health || true)
             case "$status" in 200|401) exit 0 ;; esac

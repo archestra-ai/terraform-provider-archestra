@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "archestra" {
-  api_version_constraint = "= 1.4.0-rc.49"
+  api_version_constraint = "= 1.4.0-rc.55"
 
   # base_url and api_key are read from the environment by default —
   # don't commit secrets to source.

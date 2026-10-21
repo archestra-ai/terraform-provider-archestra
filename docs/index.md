@@ -40,7 +40,7 @@ terraform {
 }
 
 provider "archestra" {
-  api_version_constraint = "= 1.4.0-rc.49"
+  api_version_constraint = "= 1.4.0-rc.55"
 
   # base_url and api_key are read from the environment by default —
   # don't commit secrets to source.
@@ -55,5 +55,5 @@ provider "archestra" {
 ### Optional
 
 - `api_key` (String, Sensitive) **Required for any operation that talks to the Archestra API.** Marked Optional in the schema only so the value can be supplied via the `ARCHESTRA_API_KEY` environment variable instead of inline HCL — prefer the env var to keep secrets out of source control. Mint a key in the Archestra UI under Settings → API Keys (the value starts with `arch_`).
-- `api_version_constraint` (String) Optional constraint on the remote Archestra server version, for example `= 1.4.0-rc.49`. Checked using GET /health before resource operations. A constraint requires readable semantic version metadata. The provider always rejects versions below its required API floor and warns about versions outside its tested interval. This does not select the Terraform provider version. See the API compatibility guide.
+- `api_version_constraint` (String) Optional constraint on the remote Archestra server version, for example `= 1.4.0-rc.55`. Checked using GET /health before resource operations. A constraint requires readable semantic version metadata. The provider always rejects versions below its required API floor and warns about versions outside its tested interval. This does not select the Terraform provider version. See the API compatibility guide.
 - `base_url` (String) Base URL of the Archestra API (for example, `https://archestra.your-company.example`). Defaults to `http://localhost:9000` if neither this attribute nor `ARCHESTRA_BASE_URL` is set. Also reads from the `ARCHESTRA_BASE_URL` environment variable.
