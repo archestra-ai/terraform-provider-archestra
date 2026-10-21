@@ -119,6 +119,9 @@ protected state storage.
   token lifetime field. Map required settings to their current replacement and
   verify the resulting backend behavior; do not copy an obsolete value blindly.
 - Team TOON settings and MCP Kubernetes `service_account` overrides were retired.
+- `consider_context_untrusted` was removed from `archestra_agent` and
+  `archestra_mcp_gateway`. API versions that v3 supports (1.4.0-rc.51 and
+  later) no longer have this setting, so it had no effect. Delete the argument.
 - MCP tool-call queries use cursor pagination. Replace the unsupported `search`
   input with `mcp_server_name` where an exact server filter is intended. Replace
   `total` with `returned_count`; it is the number returned under `max_records`,

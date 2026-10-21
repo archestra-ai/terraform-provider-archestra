@@ -25,7 +25,6 @@ resource "archestra_agent" "intake" {
   llm_model      = "llama3"
   llm_api_key_id = archestra_model_provider.ollama_vault.id
 
-  consider_context_untrusted    = true
   incoming_email_enabled        = true
   incoming_email_security_mode  = "internal"
   incoming_email_allowed_domain = "demo.example.com"

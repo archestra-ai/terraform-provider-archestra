@@ -69,7 +69,6 @@ resource "archestra_mcp_gateway" "engineering" {
 - `access_all_subagents` (Boolean) Whether callers can delegate to any accessible internal agent, subject to subagent exclusions.
 - `access_all_tools` (Boolean) Whether all accessible tools are exposed automatically.
 - `connector_ids` (List of String) Knowledge connector IDs the gateway has access to
-- `consider_context_untrusted` (Boolean) Whether the gateway context is treated as untrusted
 - `description` (String) Human-readable description
 - `environment_id` (String) Deployment environment used to resolve MCP servers and credentials.
 - `excluded_connector_ids` (Set of String) Knowledge connectors excluded from automatic knowledge access; omit to preserve or set an empty set to clear.

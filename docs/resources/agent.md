@@ -96,8 +96,6 @@ resource "archestra_agent" "intake" {
   incoming_email_enabled        = true
   incoming_email_security_mode  = "internal"
   incoming_email_allowed_domain = "acme.com"
-
-  consider_context_untrusted = true # Treat email content as untrusted by default.
 }
 
 # Agent Runtime worker — delegated work runs in its own container via the
@@ -155,7 +153,6 @@ resource "archestra_agent" "worker" {
 - `access_all_subagents` (Boolean) Whether all accessible subagents can be delegated to.
 - `access_all_tools` (Boolean) Auto-tool mode: the agent sees every tool it can reach instead of only pinned assignments. Use excluded_tool_ids to exclude tools. Defaults to `false`.
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
-- `consider_context_untrusted` (Boolean) Whether the agent context is treated as untrusted
 - `description` (String) Human-readable description
 - `environment_id` (String) Environment UUID scoping which MCP servers and connections the agent resolves against; omit for the default environment
 - `excluded_connector_ids` (Set of String) Knowledge connectors excluded from automatic knowledge access; omit to preserve or set an empty set to clear.

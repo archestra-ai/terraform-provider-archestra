@@ -81,8 +81,6 @@ resource "archestra_agent" "intake" {
   incoming_email_enabled        = true
   incoming_email_security_mode  = "internal"
   incoming_email_allowed_domain = "acme.com"
-
-  consider_context_untrusted = true # Treat email content as untrusted by default.
 }
 
 # Agent Runtime worker — delegated work runs in its own container via the

@@ -54,18 +54,17 @@ type McpGatewayResourceModel struct {
 	MissingCredentialBehavior types.String `tfsdk:"missing_credential_behavior"`
 	EnvironmentId             types.String `tfsdk:"environment_id"`
 
-	ID                       types.String      `tfsdk:"id"`
-	Name                     types.String      `tfsdk:"name"`
-	Description              types.String      `tfsdk:"description"`
-	Icon                     types.String      `tfsdk:"icon"`
-	KnowledgeBaseIds         types.List        `tfsdk:"knowledge_base_ids"`
-	ConnectorIds             types.List        `tfsdk:"connector_ids"`
-	PassthroughHeaders       types.List        `tfsdk:"passthrough_headers"`
-	IdentityProviderId       types.String      `tfsdk:"identity_provider_id"`
-	ConsiderContextUntrusted types.Bool        `tfsdk:"consider_context_untrusted"`
-	ToolExposureMode         types.String      `tfsdk:"tool_exposure_mode"`
-	IsDefault                types.Bool        `tfsdk:"is_default"`
-	Labels                   []AgentLabelModel `tfsdk:"labels"`
+	ID                 types.String      `tfsdk:"id"`
+	Name               types.String      `tfsdk:"name"`
+	Description        types.String      `tfsdk:"description"`
+	Icon               types.String      `tfsdk:"icon"`
+	KnowledgeBaseIds   types.List        `tfsdk:"knowledge_base_ids"`
+	ConnectorIds       types.List        `tfsdk:"connector_ids"`
+	PassthroughHeaders types.List        `tfsdk:"passthrough_headers"`
+	IdentityProviderId types.String      `tfsdk:"identity_provider_id"`
+	ToolExposureMode   types.String      `tfsdk:"tool_exposure_mode"`
+	IsDefault          types.Bool        `tfsdk:"is_default"`
+	Labels             []AgentLabelModel `tfsdk:"labels"`
 }
 
 func (r *McpGatewayResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -113,11 +112,6 @@ func (r *McpGatewayResource) Schema(_ context.Context, _ resource.SchemaRequest,
 				MarkdownDescription: "How assigned tools are exposed to clients. `full` lists every assigned tool; " +
 					"`search_and_run_only` (progressive tool loading) lists only `search_tools` and `run_tool` and " +
 					"resolves the rest on demand, which keeps a large tool set out of the client's context window.",
-			},
-			"consider_context_untrusted": schema.BoolAttribute{
-				Optional:            true,
-				Computed:            true,
-				MarkdownDescription: "Whether the gateway context is treated as untrusted",
 			},
 			"is_default": schema.BoolAttribute{
 				Optional:            true,
@@ -405,7 +399,6 @@ func (r *McpGatewayResource) flatten(ctx context.Context, data *McpGatewayResour
 		data.PassthroughHeaders = types.ListNull(types.StringType)
 	}
 
-	data.ConsiderContextUntrusted = types.BoolValue(resp.ConsiderContextUntrusted)
 	optionalStringFromAPI(&data.ToolExposureMode, resp.ToolExposureMode)
 	data.IsDefault = types.BoolValue(resp.IsDefault)
 
@@ -422,8 +415,7 @@ func (r *McpGatewayResource) APIShape() any { return client.GetAgentResponse{} }
 // Same agent-table discriminator + audit-field situation as archestra_agent.
 // Fields excluded here belong to archestra_agent (system_prompt,
 // built_in_agent_config, llm config, incoming email, suggested prompts) or
-// aren't relevant to a gateway (isDefault, scope, teams,
-// considerContextUntrusted). slug + tools follow the same convention as
+// aren't relevant to a gateway (isDefault, scope, teams). slug + tools follow the same convention as
 // the other agent-table resources.
 func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 	// Legacy visibility/skill projections and secret-storage pointers are not managed.
@@ -433,7 +425,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "builtInAgentConfig", "suggestedPrompts",
 		"systemPrompt", "llmModel", "llmApiKeyId", "isDefault", "scope",
-		"teams", "considerContextUntrusted", "incomingEmailEnabled",
+		"teams", "incomingEmailEnabled",
 		"incomingEmailAllowedDomain", "incomingEmailSecurityMode", "icon",
 		"slug", "tools", "users",
 	}
@@ -458,7 +450,6 @@ var mcpGatewayAttrSpec = append(gatewayRelationshipAttrSpecs(), []AttrSpec{
 	{TFName: "connector_ids", JSONName: "connectorIds", Kind: List},
 	{TFName: "passthrough_headers", JSONName: "passthroughHeaders", Kind: List},
 	{TFName: "identity_provider_id", JSONName: "identityProviderId", Kind: Scalar},
-	{TFName: "consider_context_untrusted", JSONName: "considerContextUntrusted", Kind: Scalar},
 	{TFName: "tool_exposure_mode", JSONName: "toolExposureMode", Kind: Scalar},
 	{TFName: "is_default", JSONName: "isDefault", Kind: Scalar},
 	{
