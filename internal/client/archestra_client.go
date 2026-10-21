@@ -7070,6 +7070,15 @@ type ClientInterface interface {
 
 	UpdateProject(ctx context.Context, id openapi_types.UUID, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetProjectApps request
+	GetProjectApps(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UnlinkProjectApp request
+	UnlinkProjectApp(ctx context.Context, id openapi_types.UUID, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LinkProjectApp request
+	LinkProjectApp(ctx context.Context, id openapi_types.UUID, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetProjectFiles request
 	GetProjectFiles(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -9807,6 +9816,42 @@ func (c *Client) UpdateProjectWithBody(ctx context.Context, id openapi_types.UUI
 
 func (c *Client) UpdateProject(ctx context.Context, id openapi_types.UUID, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateProjectRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetProjectApps(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProjectAppsRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UnlinkProjectApp(ctx context.Context, id openapi_types.UUID, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUnlinkProjectAppRequest(c.Server, id, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) LinkProjectApp(ctx context.Context, id openapi_types.UUID, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLinkProjectAppRequest(c.Server, id, appId)
 	if err != nil {
 		return nil, err
 	}
@@ -17403,6 +17448,122 @@ func NewUpdateProjectRequestWithBody(server string, id openapi_types.UUID, conte
 	return req, nil
 }
 
+// NewGetProjectAppsRequest generates requests for GetProjectApps
+func NewGetProjectAppsRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/projects/%s/apps", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUnlinkProjectAppRequest generates requests for UnlinkProjectApp
+func NewUnlinkProjectAppRequest(server string, id openapi_types.UUID, appId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/projects/%s/apps/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewLinkProjectAppRequest generates requests for LinkProjectApp
+func NewLinkProjectAppRequest(server string, id openapi_types.UUID, appId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "appId", runtime.ParamLocationPath, appId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/projects/%s/apps/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetProjectFilesRequest generates requests for GetProjectFiles
 func NewGetProjectFilesRequest(server string, id openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -20141,6 +20302,15 @@ type ClientWithResponsesInterface interface {
 	UpdateProjectWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
 
 	UpdateProjectWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateProjectJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateProjectResponse, error)
+
+	// GetProjectAppsWithResponse request
+	GetProjectAppsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetProjectAppsResponse, error)
+
+	// UnlinkProjectAppWithResponse request
+	UnlinkProjectAppWithResponse(ctx context.Context, id openapi_types.UUID, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*UnlinkProjectAppResponse, error)
+
+	// LinkProjectAppWithResponse request
+	LinkProjectAppWithResponse(ctx context.Context, id openapi_types.UUID, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*LinkProjectAppResponse, error)
 
 	// GetProjectFilesWithResponse request
 	GetProjectFilesWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetProjectFilesResponse, error)
@@ -36391,6 +36561,231 @@ func (r UpdateProjectResponse) StatusCode() int {
 	return 0
 }
 
+type GetProjectAppsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		Description *string            `json:"description"`
+		Id          openapi_types.UUID `json:"id"`
+		LinkedAt    time.Time          `json:"linkedAt"`
+		Name        string             `json:"name"`
+		Slug        *string            `json:"slug"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetProjectApps400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetProjectApps401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}    `json:"details,omitempty"`
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetProjectApps403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetProjectApps404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetProjectApps409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         GetProjectApps500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetProjectApps400ErrorType string
+type GetProjectApps401ErrorType string
+type GetProjectApps403ErrorType string
+type GetProjectApps404ErrorType string
+type GetProjectApps409ErrorType string
+type GetProjectApps500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetProjectAppsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetProjectAppsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UnlinkProjectAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Ok UnlinkProjectApp200Ok `json:"ok"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         UnlinkProjectApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         UnlinkProjectApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}      `json:"details,omitempty"`
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         UnlinkProjectApp403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         UnlinkProjectApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         UnlinkProjectApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                      `json:"internal_code,omitempty"`
+			Message      string                       `json:"message"`
+			Type         UnlinkProjectApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type UnlinkProjectApp200Ok bool
+type UnlinkProjectApp400ErrorType string
+type UnlinkProjectApp401ErrorType string
+type UnlinkProjectApp403ErrorType string
+type UnlinkProjectApp404ErrorType string
+type UnlinkProjectApp409ErrorType string
+type UnlinkProjectApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r UnlinkProjectAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UnlinkProjectAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type LinkProjectAppResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Ok LinkProjectApp200Ok `json:"ok"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         LinkProjectApp400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         LinkProjectApp401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}    `json:"details,omitempty"`
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         LinkProjectApp403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         LinkProjectApp404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         LinkProjectApp409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                    `json:"internal_code,omitempty"`
+			Message      string                     `json:"message"`
+			Type         LinkProjectApp500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type LinkProjectApp200Ok bool
+type LinkProjectApp400ErrorType string
+type LinkProjectApp401ErrorType string
+type LinkProjectApp403ErrorType string
+type LinkProjectApp404ErrorType string
+type LinkProjectApp409ErrorType string
+type LinkProjectApp500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r LinkProjectAppResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LinkProjectAppResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetProjectFilesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -42702,6 +43097,33 @@ func (c *ClientWithResponses) UpdateProjectWithResponse(ctx context.Context, id 
 		return nil, err
 	}
 	return ParseUpdateProjectResponse(rsp)
+}
+
+// GetProjectAppsWithResponse request returning *GetProjectAppsResponse
+func (c *ClientWithResponses) GetProjectAppsWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetProjectAppsResponse, error) {
+	rsp, err := c.GetProjectApps(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetProjectAppsResponse(rsp)
+}
+
+// UnlinkProjectAppWithResponse request returning *UnlinkProjectAppResponse
+func (c *ClientWithResponses) UnlinkProjectAppWithResponse(ctx context.Context, id openapi_types.UUID, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*UnlinkProjectAppResponse, error) {
+	rsp, err := c.UnlinkProjectApp(ctx, id, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUnlinkProjectAppResponse(rsp)
+}
+
+// LinkProjectAppWithResponse request returning *LinkProjectAppResponse
+func (c *ClientWithResponses) LinkProjectAppWithResponse(ctx context.Context, id openapi_types.UUID, appId openapi_types.UUID, reqEditors ...RequestEditorFn) (*LinkProjectAppResponse, error) {
+	rsp, err := c.LinkProjectApp(ctx, id, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLinkProjectAppResponse(rsp)
 }
 
 // GetProjectFilesWithResponse request returning *GetProjectFilesResponse
@@ -63386,6 +63808,331 @@ func ParseUpdateProjectResponse(rsp *http.Response) (*UpdateProjectResponse, err
 				InternalCode *string                   `json:"internal_code,omitempty"`
 				Message      string                    `json:"message"`
 				Type         UpdateProject500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetProjectAppsResponse parses an HTTP response from a GetProjectAppsWithResponse call
+func ParseGetProjectAppsResponse(rsp *http.Response) (*GetProjectAppsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetProjectAppsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			Description *string            `json:"description"`
+			Id          openapi_types.UUID `json:"id"`
+			LinkedAt    time.Time          `json:"linkedAt"`
+			Name        string             `json:"name"`
+			Slug        *string            `json:"slug"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetProjectApps400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetProjectApps401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}    `json:"details,omitempty"`
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetProjectApps403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetProjectApps404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetProjectApps409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         GetProjectApps500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUnlinkProjectAppResponse parses an HTTP response from a UnlinkProjectAppWithResponse call
+func ParseUnlinkProjectAppResponse(rsp *http.Response) (*UnlinkProjectAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UnlinkProjectAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Ok UnlinkProjectApp200Ok `json:"ok"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         UnlinkProjectApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         UnlinkProjectApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}      `json:"details,omitempty"`
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         UnlinkProjectApp403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         UnlinkProjectApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         UnlinkProjectApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                      `json:"internal_code,omitempty"`
+				Message      string                       `json:"message"`
+				Type         UnlinkProjectApp500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLinkProjectAppResponse parses an HTTP response from a LinkProjectAppWithResponse call
+func ParseLinkProjectAppResponse(rsp *http.Response) (*LinkProjectAppResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LinkProjectAppResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Ok LinkProjectApp200Ok `json:"ok"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         LinkProjectApp400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         LinkProjectApp401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}    `json:"details,omitempty"`
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         LinkProjectApp403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         LinkProjectApp404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         LinkProjectApp409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                    `json:"internal_code,omitempty"`
+				Message      string                     `json:"message"`
+				Type         LinkProjectApp500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

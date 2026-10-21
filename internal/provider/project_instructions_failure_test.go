@@ -18,7 +18,7 @@ func projectInstructionsTestState(t *testing.T, r *ProjectResource) (tfsdk.State
 	t.Helper()
 	var schema resource.SchemaResponse
 	r.Schema(t.Context(), resource.SchemaRequest{}, &schema)
-	value := ProjectResourceModel{InitialGrants: types.SetNull(permissionGrantObjectType), ID: types.StringValue("11111111-1111-4111-8111-111111111111"), Name: types.StringValue("fixture"), Instructions: types.StringValue("original")}
+	value := ProjectResourceModel{InitialGrants: types.SetNull(permissionGrantObjectType), AppIDs: types.SetNull(types.StringType), ID: types.StringValue("11111111-1111-4111-8111-111111111111"), Name: types.StringValue("fixture"), Instructions: types.StringValue("original")}
 	state := tfsdk.State{Schema: schema.Schema}
 	if d := state.Set(t.Context(), &value); d.HasError() {
 		t.Fatal(d)
@@ -46,6 +46,13 @@ func TestProjectInstructionsUpdateOnlyTouchesChangedOwnerFields(t *testing.T) {
 						return
 					}
 					_ = json.NewEncoder(w).Encode(map[string]string{"content": content})
+					return
+				}
+				if strings.Contains(req.URL.Path, "/apps") {
+					if req.Method != "GET" {
+						t.Errorf("unchanged app links were written: %s %s", req.Method, req.URL.Path)
+					}
+					fmt.Fprint(w, `[]`)
 					return
 				}
 				if req.Method == "PATCH" {

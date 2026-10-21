@@ -39,7 +39,7 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 	"archestra_credential":        {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
 	"archestra_skill":             {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership."},
 
-	"archestra_project":        {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership.", "instructions": "The separate instructions file is unmanaged when omitted; only explicit empty content clears it."},
+	"archestra_project":        {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership.", "instructions": "The separate instructions file is unmanaged when omitted; only explicit empty content clears it.", "app_ids": "Project app links are unmanaged when omitted; an explicit empty set unlinks all, verified by project app acceptance."},
 	"archestra_model_provider": {"permissions": "Omission leaves direct sharing unmanaged; explicit empty clears additional grants while preserving ownership.", "shared": "Creation-only ownership selector; importing or omitting this field must preserve the existing owner without replacement."},
 	"archestra_model": {"permissions": "Omission preserves additional sharing; explicit empty clears it without changing ownership.",
 		"llm_provider": "immutable adoption selector; omitting it retains the already adopted model and its provider rather than selecting another provider with the same model name.",

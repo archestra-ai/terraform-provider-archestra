@@ -17,6 +17,8 @@ resource "archestra_project" "reports" {
   name        = "Reports"
   description = "Scheduled reporting work"
   labels      = [{ key = "purpose", value = "reporting" }]
+  # Authoritative app links; omit to leave links unmanaged, [] unlinks all.
+  app_ids = [archestra_app.runbook.id]
 }
 ```
 
@@ -29,6 +31,7 @@ resource "archestra_project" "reports" {
 
 ### Optional
 
+- `app_ids` (Set of String) Apps linked into the project; omit to preserve links, or set an empty set to unlink all. Only links to apps the caller can read are observed or changed.
 - `default_agent_id` (String)
 - `description` (String)
 - `icon` (String)

@@ -88,6 +88,9 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.ShortGroup = "project"
 		r.Kind = "Project"
 		r.References["default_agent_id"] = ujconfig.Reference{TerraformName: "archestra_agent"}
+		r.References["app_ids"] = ujconfig.Reference{TerraformName: "archestra_app"}
+		// Omitted app links stay unmanaged instead of being adopted into forProvider.
+		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "app_ids")
 	})
 	p.AddResourceConfigurator("archestra_knowledge_base", func(r *ujconfig.Resource) { r.ShortGroup = "knowledge"; r.Kind = "KnowledgeBase" })
 	p.AddResourceConfigurator("archestra_role", func(r *ujconfig.Resource) { r.ShortGroup = "identity"; r.Kind = "Role" })

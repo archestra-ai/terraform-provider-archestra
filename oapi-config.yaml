@@ -115,6 +115,9 @@ output-options:
     - setProjectInstructions
     - updateProject
     - deleteProject
+    - getProjectApps
+    - linkProjectApp
+    - unlinkProjectApp
     - updateAuthSettings
     - updateSkillsSettings
     - updateConnectionSettings
