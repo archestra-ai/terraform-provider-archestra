@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	_ "embed"
 	"flag"
 	"log"
 
@@ -16,6 +17,12 @@ var (
 
 	// goreleaser can pass other information to the main package, such as the specific commit
 	// https://goreleaser.com/cookbooks/using-main.version/
+
+	// The Archestra release that acceptance CI tests. The provider reports it
+	// as its tested API release.
+	//
+	//go:embed platform-version.txt
+	platformVersion string
 )
 
 func main() {
@@ -23,6 +30,10 @@ func main() {
 
 	flag.BoolVar(&debug, "debug", false, "set to true to run the provider with support for debuggers like delve")
 	flag.Parse()
+
+	if err := provider.SetTestedAPIVersion(platformVersion); err != nil {
+		log.Fatal(err.Error())
+	}
 
 	opts := providerserver.ServeOpts{
 		Address: "registry.terraform.io/archestra-ai/archestra",

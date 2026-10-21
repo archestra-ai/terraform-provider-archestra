@@ -76,7 +76,6 @@ type AgentResourceModel struct {
 	IncomingEmailEnabled       types.Bool             `tfsdk:"incoming_email_enabled"`
 	IncomingEmailAllowedDomain types.String           `tfsdk:"incoming_email_allowed_domain"`
 	IncomingEmailSecurityMode  types.String           `tfsdk:"incoming_email_security_mode"`
-	ConsiderContextUntrusted   types.Bool             `tfsdk:"consider_context_untrusted"`
 	IsDefault                  types.Bool             `tfsdk:"is_default"`
 	SuggestedPrompts           []SuggestedPromptModel `tfsdk:"suggested_prompts"`
 	Labels                     []AgentLabelModel      `tfsdk:"labels"`
@@ -154,11 +153,6 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				Validators: []validator.String{
 					stringvalidator.OneOf("private", "internal", "public"),
 				},
-			},
-			"consider_context_untrusted": schema.BoolAttribute{
-				Optional:            true,
-				Computed:            true,
-				MarkdownDescription: "Whether the agent context is treated as untrusted",
 			},
 			"is_default": schema.BoolAttribute{
 				Optional:            true,
@@ -544,7 +538,6 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 		data.IncomingEmailSecurityMode = types.StringNull()
 	}
 
-	data.ConsiderContextUntrusted = types.BoolValue(resp.ConsiderContextUntrusted)
 	data.IsDefault = types.BoolValue(resp.IsDefault)
 
 	data.SuggestedPrompts = suggestedPromptsFromAPI(resp.SuggestedPrompts)
@@ -630,7 +623,6 @@ var agentAttrSpec = append(append(agentRelationshipAttrSpecs(), AttrSpec{TFName:
 	{TFName: "incoming_email_enabled", JSONName: "incomingEmailEnabled", Kind: Scalar},
 	{TFName: "incoming_email_allowed_domain", JSONName: "incomingEmailAllowedDomain", Kind: Scalar},
 	{TFName: "incoming_email_security_mode", JSONName: "incomingEmailSecurityMode", Kind: Scalar},
-	{TFName: "consider_context_untrusted", JSONName: "considerContextUntrusted", Kind: Scalar},
 	{TFName: "is_default", JSONName: "isDefault", Kind: Scalar},
 	{
 		TFName: "suggested_prompts", JSONName: "suggestedPrompts", Kind: List,

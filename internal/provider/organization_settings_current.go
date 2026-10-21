@@ -57,6 +57,7 @@ func currentOrganizationAttributes() map[string]schema.Attribute {
 		"default_environment_validation_regex":         schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Validation expression for default-environment deployment names."},
 		"default_environment_trusted_image_registries": schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "JSON configuration for default environment trusted image registries."},
 		"mcp_idle_hibernation_enabled":                 schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether idle MCP deployments can hibernate."},
+		"default_personal_agent_access_all_tools":      schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether new personal agents start with access to all tools. Requires API 1.5.0-rc.1 or later."},
 		"apps_hackathon_recorder_enabled":              schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the app recorder is enabled."},
 		"new_apps_disabled_by_default":                 schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether new apps start disabled."},
 		"new_apps_locked_by_default":                   schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether new apps start locked."},
@@ -69,6 +70,7 @@ func currentOrganizationSpecs(domain string) []AttrSpec {
 		return []AttrSpec{
 			{TFName: "online_mcp_catalog_enabled", JSONName: "onlineMcpCatalogEnabled", Kind: Scalar},
 			{TFName: "mcp_idle_hibernation_enabled", JSONName: "mcpIdleHibernationEnabled", Kind: Scalar},
+			{TFName: "default_personal_agent_access_all_tools", JSONName: "defaultPersonalAgentAccessAllTools", Kind: Scalar},
 		}
 	case "skills-settings":
 		return []AttrSpec{
@@ -543,6 +545,16 @@ func flattenCurrentOrganizationSettings(data *OrganizationSettingsResourceModel,
 			}
 		}
 		data.McpIdleHibernationEnabled = types.BoolPointerValue(value)
+	}
+	{
+		var value *bool
+		if raw := values["defaultPersonalAgentAccessAllTools"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Organization Response", "Unexpected type for defaultPersonalAgentAccessAllTools.")
+				return
+			}
+		}
+		data.DefaultPersonalAgentAccessAllTools = types.BoolPointerValue(value)
 	}
 	{
 		var value *bool

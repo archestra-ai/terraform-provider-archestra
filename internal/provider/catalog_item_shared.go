@@ -36,7 +36,7 @@ var catalogItemAttrSpec = []AttrSpec{
 	initialGrantsAttrSpec,
 	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar},
 	{TFName: "multitenant", JSONName: "multitenant", Kind: Scalar, OmitOnNull: true},
-	{TFName: "cloned_from", JSONName: "clonedFrom", Kind: Scalar, OmitOnNull: true},
+	{TFName: "cloned_from", JSONName: "clonedFrom", Kind: Scalar, OmitOnNull: true, CreateOnly: true},
 	{TFName: "dynamic_connection_mcp_server_id", JSONName: "dynamicConnectionMcpServerId", Kind: Scalar},
 	{TFName: "name", JSONName: "name", Kind: Scalar},
 	{TFName: "description", JSONName: "description", Kind: Scalar},

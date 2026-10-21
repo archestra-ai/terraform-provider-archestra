@@ -128,8 +128,13 @@ to a specific platform version. To bump:
    make codegen-api-client
    ```
 
-3. Update `ARCHESTRA_VERSION` in `.github/workflows/on-pull-request.yml`
-   so CI runs against the same backend version.
+3. Write the same version to `platform-version.txt`. Acceptance CI,
+   `scripts/bootstrap-local-stack.sh` and the provider's untested-version
+   warning all read it.
+
+For new platform releases, the Update Terraform Provider workflow in
+archestra-ai/archestra does steps 2 and 3 and opens a pull request on the
+`automation/platform-api` branch.
 
 ## Code style
 
@@ -217,7 +222,7 @@ make testacc                                          # 75/75 PASS
 scripts/bootstrap-local-stack.sh --down               # tear down
 ```
 
-Brings up the platform image + dev Vault + Ollama mock + EE license + provisioned IdP. `ARCHESTRA_VERSION` is pulled from `.github/workflows/on-pull-request.yml` so local tracks CI without re-hardcoding.
+Brings up the platform image + dev Vault + Ollama mock + EE license + provisioned IdP. `ARCHESTRA_VERSION` comes from `platform-version.txt` so local tracks CI without re-hardcoding.
 
 When another stack is already running, isolate the test cluster and host ports:
 

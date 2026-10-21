@@ -82,6 +82,7 @@ type OrganizationSettingsResourceModel struct {
 	DefaultEnvironmentValidationRegex        types.String         `tfsdk:"default_environment_validation_regex"`
 	DefaultEnvironmentTrustedImageRegistries jsontypes.Normalized `tfsdk:"default_environment_trusted_image_registries"`
 	McpIdleHibernationEnabled                types.Bool           `tfsdk:"mcp_idle_hibernation_enabled"`
+	DefaultPersonalAgentAccessAllTools       types.Bool           `tfsdk:"default_personal_agent_access_all_tools"`
 	AppsHackathonRecorderEnabled             types.Bool           `tfsdk:"apps_hackathon_recorder_enabled"`
 	NewAppsDisabledByDefault                 types.Bool           `tfsdk:"new_apps_disabled_by_default"`
 	NewAppsLockedByDefault                   types.Bool           `tfsdk:"new_apps_locked_by_default"`

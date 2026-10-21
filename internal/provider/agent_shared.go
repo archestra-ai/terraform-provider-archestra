@@ -26,7 +26,6 @@ type agentAPIResponse struct {
 	IncomingEmailEnabled       bool                `json:"incomingEmailEnabled"`
 	IncomingEmailAllowedDomain *string             `json:"incomingEmailAllowedDomain"`
 	IncomingEmailSecurityMode  string              `json:"incomingEmailSecurityMode"`
-	ConsiderContextUntrusted   bool                `json:"considerContextUntrusted"`
 	ToolExposureMode           *string             `json:"toolExposureMode"`
 	AccessAllSubagents         bool                `json:"accessAllSubagents"`
 	AccessAllTools             bool                `json:"accessAllTools"`

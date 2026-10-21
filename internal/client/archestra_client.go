@@ -5211,8 +5211,9 @@ type UpdateKnowledgeSettingsJSONBody struct {
 
 // UpdateMcpSettingsJSONBody defines parameters for UpdateMcpSettings.
 type UpdateMcpSettingsJSONBody struct {
-	McpIdleHibernationEnabled *bool `json:"mcpIdleHibernationEnabled,omitempty"`
-	OnlineMcpCatalogEnabled   *bool `json:"onlineMcpCatalogEnabled,omitempty"`
+	DefaultPersonalAgentAccessAllTools *bool `json:"defaultPersonalAgentAccessAllTools,omitempty"`
+	McpIdleHibernationEnabled          *bool `json:"mcpIdleHibernationEnabled,omitempty"`
+	OnlineMcpCatalogEnabled            *bool `json:"onlineMcpCatalogEnabled,omitempty"`
 }
 
 // UpdateSecuritySettingsJSONBody defines parameters for UpdateSecuritySettings.
@@ -33416,21 +33417,22 @@ type GetOrganizationResponse struct {
 			DomainPreset   GetOrganization200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     GetOrganization200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *GetOrganization200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                          `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                               `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                               `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                            `json:"embeddingModel"`
-		Favicon                         *string                                            `json:"favicon"`
-		FooterText                      *string                                            `json:"footerText"`
-		IconLogo                        *string                                            `json:"iconLogo"`
-		IconLogoDark                    *string                                            `json:"iconLogoDark"`
-		Id                              string                                             `json:"id"`
-		KbBm25B                         *float32                                           `json:"kbBm25B"`
-		KbBm25K1                        *float32                                           `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                           `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                               `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *GetOrganization200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                          `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                               `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                               `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                            `json:"embeddingModel"`
+		Favicon                            *string                                            `json:"favicon"`
+		FooterText                         *string                                            `json:"footerText"`
+		IconLogo                           *string                                            `json:"iconLogo"`
+		IconLogoDark                       *string                                            `json:"iconLogoDark"`
+		Id                                 string                                             `json:"id"`
+		KbBm25B                            *float32                                           `json:"kbBm25B"`
+		KbBm25K1                           *float32                                           `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                           `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -33607,21 +33609,22 @@ type UpdateAgentSettingsResponse struct {
 			DomainPreset   UpdateAgentSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     UpdateAgentSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *UpdateAgentSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                              `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                                   `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                    `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                                   `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                                `json:"embeddingModel"`
-		Favicon                         *string                                                `json:"favicon"`
-		FooterText                      *string                                                `json:"footerText"`
-		IconLogo                        *string                                                `json:"iconLogo"`
-		IconLogoDark                    *string                                                `json:"iconLogoDark"`
-		Id                              string                                                 `json:"id"`
-		KbBm25B                         *float32                                               `json:"kbBm25B"`
-		KbBm25K1                        *float32                                               `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                               `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                                   `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *UpdateAgentSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                              `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                                   `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                    `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                                   `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                                `json:"embeddingModel"`
+		Favicon                            *string                                                `json:"favicon"`
+		FooterText                         *string                                                `json:"footerText"`
+		IconLogo                           *string                                                `json:"iconLogo"`
+		IconLogoDark                       *string                                                `json:"iconLogoDark"`
+		Id                                 string                                                 `json:"id"`
+		KbBm25B                            *float32                                               `json:"kbBm25B"`
+		KbBm25K1                           *float32                                               `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                               `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -33798,21 +33801,22 @@ type UpdateAppearanceSettingsResponse struct {
 			DomainPreset   UpdateAppearanceSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     UpdateAppearanceSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *UpdateAppearanceSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                                   `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                                        `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                                        `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                                     `json:"embeddingModel"`
-		Favicon                         *string                                                     `json:"favicon"`
-		FooterText                      *string                                                     `json:"footerText"`
-		IconLogo                        *string                                                     `json:"iconLogo"`
-		IconLogoDark                    *string                                                     `json:"iconLogoDark"`
-		Id                              string                                                      `json:"id"`
-		KbBm25B                         *float32                                                    `json:"kbBm25B"`
-		KbBm25K1                        *float32                                                    `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *UpdateAppearanceSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                                        `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                                     `json:"embeddingModel"`
+		Favicon                            *string                                                     `json:"favicon"`
+		FooterText                         *string                                                     `json:"footerText"`
+		IconLogo                           *string                                                     `json:"iconLogo"`
+		IconLogoDark                       *string                                                     `json:"iconLogoDark"`
+		Id                                 string                                                      `json:"id"`
+		KbBm25B                            *float32                                                    `json:"kbBm25B"`
+		KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -33989,21 +33993,22 @@ type UpdateAuthSettingsResponse struct {
 			DomainPreset   UpdateAuthSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     UpdateAuthSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *UpdateAuthSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                             `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                                  `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                   `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                                  `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                               `json:"embeddingModel"`
-		Favicon                         *string                                               `json:"favicon"`
-		FooterText                      *string                                               `json:"footerText"`
-		IconLogo                        *string                                               `json:"iconLogo"`
-		IconLogoDark                    *string                                               `json:"iconLogoDark"`
-		Id                              string                                                `json:"id"`
-		KbBm25B                         *float32                                              `json:"kbBm25B"`
-		KbBm25K1                        *float32                                              `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                                  `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *UpdateAuthSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                             `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                                  `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                   `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                                  `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                               `json:"embeddingModel"`
+		Favicon                            *string                                               `json:"favicon"`
+		FooterText                         *string                                               `json:"footerText"`
+		IconLogo                           *string                                               `json:"iconLogo"`
+		IconLogoDark                       *string                                               `json:"iconLogoDark"`
+		Id                                 string                                                `json:"id"`
+		KbBm25B                            *float32                                              `json:"kbBm25B"`
+		KbBm25K1                           *float32                                              `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -34180,21 +34185,22 @@ type CompleteOnboardingResponse struct {
 			DomainPreset   CompleteOnboarding200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     CompleteOnboarding200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *CompleteOnboarding200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                             `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                                  `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                   `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                                  `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                               `json:"embeddingModel"`
-		Favicon                         *string                                               `json:"favicon"`
-		FooterText                      *string                                               `json:"footerText"`
-		IconLogo                        *string                                               `json:"iconLogo"`
-		IconLogoDark                    *string                                               `json:"iconLogoDark"`
-		Id                              string                                                `json:"id"`
-		KbBm25B                         *float32                                              `json:"kbBm25B"`
-		KbBm25K1                        *float32                                              `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                                  `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *CompleteOnboarding200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                             `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                                  `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                   `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                                  `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                               `json:"embeddingModel"`
+		Favicon                            *string                                               `json:"favicon"`
+		FooterText                         *string                                               `json:"footerText"`
+		IconLogo                           *string                                               `json:"iconLogo"`
+		IconLogoDark                       *string                                               `json:"iconLogoDark"`
+		Id                                 string                                                `json:"id"`
+		KbBm25B                            *float32                                              `json:"kbBm25B"`
+		KbBm25K1                           *float32                                              `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -34371,21 +34377,22 @@ type UpdateConnectionSettingsResponse struct {
 			DomainPreset   UpdateConnectionSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     UpdateConnectionSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *UpdateConnectionSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                                   `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                                        `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                                        `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                                     `json:"embeddingModel"`
-		Favicon                         *string                                                     `json:"favicon"`
-		FooterText                      *string                                                     `json:"footerText"`
-		IconLogo                        *string                                                     `json:"iconLogo"`
-		IconLogoDark                    *string                                                     `json:"iconLogoDark"`
-		Id                              string                                                      `json:"id"`
-		KbBm25B                         *float32                                                    `json:"kbBm25B"`
-		KbBm25K1                        *float32                                                    `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *UpdateConnectionSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                                        `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                                     `json:"embeddingModel"`
+		Favicon                            *string                                                     `json:"favicon"`
+		FooterText                         *string                                                     `json:"footerText"`
+		IconLogo                           *string                                                     `json:"iconLogo"`
+		IconLogoDark                       *string                                                     `json:"iconLogoDark"`
+		Id                                 string                                                      `json:"id"`
+		KbBm25B                            *float32                                                    `json:"kbBm25B"`
+		KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -34562,21 +34569,22 @@ type UpdateDefaultEnvironmentResponse struct {
 			DomainPreset   UpdateDefaultEnvironment200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     UpdateDefaultEnvironment200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *UpdateDefaultEnvironment200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                                   `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                                        `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                                        `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                                     `json:"embeddingModel"`
-		Favicon                         *string                                                     `json:"favicon"`
-		FooterText                      *string                                                     `json:"footerText"`
-		IconLogo                        *string                                                     `json:"iconLogo"`
-		IconLogoDark                    *string                                                     `json:"iconLogoDark"`
-		Id                              string                                                      `json:"id"`
-		KbBm25B                         *float32                                                    `json:"kbBm25B"`
-		KbBm25K1                        *float32                                                    `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *UpdateDefaultEnvironment200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                                        `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                                     `json:"embeddingModel"`
+		Favicon                            *string                                                     `json:"favicon"`
+		FooterText                         *string                                                     `json:"footerText"`
+		IconLogo                           *string                                                     `json:"iconLogo"`
+		IconLogoDark                       *string                                                     `json:"iconLogoDark"`
+		Id                                 string                                                      `json:"id"`
+		KbBm25B                            *float32                                                    `json:"kbBm25B"`
+		KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -34753,21 +34761,22 @@ type UpdateIntegrationSettingsResponse struct {
 			DomainPreset   UpdateIntegrationSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     UpdateIntegrationSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *UpdateIntegrationSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                                    `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                                         `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                          `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                                         `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                                      `json:"embeddingModel"`
-		Favicon                         *string                                                      `json:"favicon"`
-		FooterText                      *string                                                      `json:"footerText"`
-		IconLogo                        *string                                                      `json:"iconLogo"`
-		IconLogoDark                    *string                                                      `json:"iconLogoDark"`
-		Id                              string                                                       `json:"id"`
-		KbBm25B                         *float32                                                     `json:"kbBm25B"`
-		KbBm25K1                        *float32                                                     `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                                     `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                                         `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *UpdateIntegrationSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                                    `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                                         `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                          `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                                         `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                                      `json:"embeddingModel"`
+		Favicon                            *string                                                      `json:"favicon"`
+		FooterText                         *string                                                      `json:"footerText"`
+		IconLogo                           *string                                                      `json:"iconLogo"`
+		IconLogoDark                       *string                                                      `json:"iconLogoDark"`
+		Id                                 string                                                       `json:"id"`
+		KbBm25B                            *float32                                                     `json:"kbBm25B"`
+		KbBm25K1                           *float32                                                     `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                                     `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -34944,21 +34953,22 @@ type UpdateKnowledgeSettingsResponse struct {
 			DomainPreset   UpdateKnowledgeSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     UpdateKnowledgeSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *UpdateKnowledgeSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                                  `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                                       `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                        `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                                       `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                                    `json:"embeddingModel"`
-		Favicon                         *string                                                    `json:"favicon"`
-		FooterText                      *string                                                    `json:"footerText"`
-		IconLogo                        *string                                                    `json:"iconLogo"`
-		IconLogoDark                    *string                                                    `json:"iconLogoDark"`
-		Id                              string                                                     `json:"id"`
-		KbBm25B                         *float32                                                   `json:"kbBm25B"`
-		KbBm25K1                        *float32                                                   `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                                   `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                                       `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *UpdateKnowledgeSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                                  `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                                       `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                        `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                                       `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                                    `json:"embeddingModel"`
+		Favicon                            *string                                                    `json:"favicon"`
+		FooterText                         *string                                                    `json:"footerText"`
+		IconLogo                           *string                                                    `json:"iconLogo"`
+		IconLogoDark                       *string                                                    `json:"iconLogoDark"`
+		Id                                 string                                                     `json:"id"`
+		KbBm25B                            *float32                                                   `json:"kbBm25B"`
+		KbBm25K1                           *float32                                                   `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                                   `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -35135,21 +35145,22 @@ type UpdateMcpSettingsResponse struct {
 			DomainPreset   UpdateMcpSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     UpdateMcpSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *UpdateMcpSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                            `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                                 `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                  `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                                 `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                              `json:"embeddingModel"`
-		Favicon                         *string                                              `json:"favicon"`
-		FooterText                      *string                                              `json:"footerText"`
-		IconLogo                        *string                                              `json:"iconLogo"`
-		IconLogoDark                    *string                                              `json:"iconLogoDark"`
-		Id                              string                                               `json:"id"`
-		KbBm25B                         *float32                                             `json:"kbBm25B"`
-		KbBm25K1                        *float32                                             `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                             `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                                 `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *UpdateMcpSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                            `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                                 `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                  `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                                 `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                              `json:"embeddingModel"`
+		Favicon                            *string                                              `json:"favicon"`
+		FooterText                         *string                                              `json:"footerText"`
+		IconLogo                           *string                                              `json:"iconLogo"`
+		IconLogoDark                       *string                                              `json:"iconLogoDark"`
+		Id                                 string                                               `json:"id"`
+		KbBm25B                            *float32                                             `json:"kbBm25B"`
+		KbBm25K1                           *float32                                             `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                             `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -35326,21 +35337,22 @@ type UpdateSecuritySettingsResponse struct {
 			DomainPreset   UpdateSecuritySettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     UpdateSecuritySettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *UpdateSecuritySettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                                 `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                                      `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                       `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                                      `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                                   `json:"embeddingModel"`
-		Favicon                         *string                                                   `json:"favicon"`
-		FooterText                      *string                                                   `json:"footerText"`
-		IconLogo                        *string                                                   `json:"iconLogo"`
-		IconLogoDark                    *string                                                   `json:"iconLogoDark"`
-		Id                              string                                                    `json:"id"`
-		KbBm25B                         *float32                                                  `json:"kbBm25B"`
-		KbBm25K1                        *float32                                                  `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                                  `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                                      `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *UpdateSecuritySettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                                 `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                                      `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                       `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                                      `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                                   `json:"embeddingModel"`
+		Favicon                            *string                                                   `json:"favicon"`
+		FooterText                         *string                                                   `json:"footerText"`
+		IconLogo                           *string                                                   `json:"iconLogo"`
+		IconLogoDark                       *string                                                   `json:"iconLogoDark"`
+		Id                                 string                                                    `json:"id"`
+		KbBm25B                            *float32                                                  `json:"kbBm25B"`
+		KbBm25K1                           *float32                                                  `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                                  `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -35517,21 +35529,22 @@ type UpdateSkillsSettingsResponse struct {
 			DomainPreset   UpdateSkillsSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 			EgressMode     UpdateSkillsSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
-		DefaultUserLimitCleanupInterval *UpdateSkillsSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-		DefaultUserLimitModel           *[]string                                               `json:"defaultUserLimitModel"`
-		DefaultUserLimitValue           *int                                                    `json:"defaultUserLimitValue"`
-		EmbeddingChatApiKeyId           *openapi_types.UUID                                     `json:"embeddingChatApiKeyId"`
-		EmbeddingDimensions             *EmbeddingDimensions                                    `json:"embeddingDimensions"`
-		EmbeddingModel                  *string                                                 `json:"embeddingModel"`
-		Favicon                         *string                                                 `json:"favicon"`
-		FooterText                      *string                                                 `json:"footerText"`
-		IconLogo                        *string                                                 `json:"iconLogo"`
-		IconLogoDark                    *string                                                 `json:"iconLogoDark"`
-		Id                              string                                                  `json:"id"`
-		KbBm25B                         *float32                                                `json:"kbBm25B"`
-		KbBm25K1                        *float32                                                `json:"kbBm25K1"`
-		KbContextualRetrievalMode       *ContextualRetrievalMode                                `json:"kbContextualRetrievalMode"`
-		KnowledgeConnectorOverrides     *map[string]struct {
+		DefaultPersonalAgentAccessAllTools bool                                                    `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultUserLimitCleanupInterval    *UpdateSkillsSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+		DefaultUserLimitModel              *[]string                                               `json:"defaultUserLimitModel"`
+		DefaultUserLimitValue              *int                                                    `json:"defaultUserLimitValue"`
+		EmbeddingChatApiKeyId              *openapi_types.UUID                                     `json:"embeddingChatApiKeyId"`
+		EmbeddingDimensions                *EmbeddingDimensions                                    `json:"embeddingDimensions"`
+		EmbeddingModel                     *string                                                 `json:"embeddingModel"`
+		Favicon                            *string                                                 `json:"favicon"`
+		FooterText                         *string                                                 `json:"footerText"`
+		IconLogo                           *string                                                 `json:"iconLogo"`
+		IconLogoDark                       *string                                                 `json:"iconLogoDark"`
+		Id                                 string                                                  `json:"id"`
+		KbBm25B                            *float32                                                `json:"kbBm25B"`
+		KbBm25K1                           *float32                                                `json:"kbBm25K1"`
+		KbContextualRetrievalMode          *ContextualRetrievalMode                                `json:"kbContextualRetrievalMode"`
+		KnowledgeConnectorOverrides        *map[string]struct {
 			Hidden *bool `json:"hidden,omitempty"`
 		} `json:"knowledgeConnectorOverrides"`
 		Logo                      *string `json:"logo"`
@@ -60217,21 +60230,22 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 				DomainPreset   GetOrganization200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     GetOrganization200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *GetOrganization200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                          `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                               `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                               `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                            `json:"embeddingModel"`
-			Favicon                         *string                                            `json:"favicon"`
-			FooterText                      *string                                            `json:"footerText"`
-			IconLogo                        *string                                            `json:"iconLogo"`
-			IconLogoDark                    *string                                            `json:"iconLogoDark"`
-			Id                              string                                             `json:"id"`
-			KbBm25B                         *float32                                           `json:"kbBm25B"`
-			KbBm25K1                        *float32                                           `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                           `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                               `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *GetOrganization200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                          `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                               `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                               `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                            `json:"embeddingModel"`
+			Favicon                            *string                                            `json:"favicon"`
+			FooterText                         *string                                            `json:"footerText"`
+			IconLogo                           *string                                            `json:"iconLogo"`
+			IconLogoDark                       *string                                            `json:"iconLogoDark"`
+			Id                                 string                                             `json:"id"`
+			KbBm25B                            *float32                                           `json:"kbBm25B"`
+			KbBm25K1                           *float32                                           `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                           `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`
@@ -60435,21 +60449,22 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 				DomainPreset   UpdateAgentSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     UpdateAgentSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *UpdateAgentSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                              `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                                   `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                    `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                                   `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                                `json:"embeddingModel"`
-			Favicon                         *string                                                `json:"favicon"`
-			FooterText                      *string                                                `json:"footerText"`
-			IconLogo                        *string                                                `json:"iconLogo"`
-			IconLogoDark                    *string                                                `json:"iconLogoDark"`
-			Id                              string                                                 `json:"id"`
-			KbBm25B                         *float32                                               `json:"kbBm25B"`
-			KbBm25K1                        *float32                                               `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                               `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                                   `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *UpdateAgentSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                              `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                                   `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                    `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                                   `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                                `json:"embeddingModel"`
+			Favicon                            *string                                                `json:"favicon"`
+			FooterText                         *string                                                `json:"footerText"`
+			IconLogo                           *string                                                `json:"iconLogo"`
+			IconLogoDark                       *string                                                `json:"iconLogoDark"`
+			Id                                 string                                                 `json:"id"`
+			KbBm25B                            *float32                                               `json:"kbBm25B"`
+			KbBm25K1                           *float32                                               `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                               `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`
@@ -60653,21 +60668,22 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 				DomainPreset   UpdateAppearanceSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     UpdateAppearanceSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *UpdateAppearanceSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                                   `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                                        `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                                        `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                                     `json:"embeddingModel"`
-			Favicon                         *string                                                     `json:"favicon"`
-			FooterText                      *string                                                     `json:"footerText"`
-			IconLogo                        *string                                                     `json:"iconLogo"`
-			IconLogoDark                    *string                                                     `json:"iconLogoDark"`
-			Id                              string                                                      `json:"id"`
-			KbBm25B                         *float32                                                    `json:"kbBm25B"`
-			KbBm25K1                        *float32                                                    `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *UpdateAppearanceSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                                        `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                                     `json:"embeddingModel"`
+			Favicon                            *string                                                     `json:"favicon"`
+			FooterText                         *string                                                     `json:"footerText"`
+			IconLogo                           *string                                                     `json:"iconLogo"`
+			IconLogoDark                       *string                                                     `json:"iconLogoDark"`
+			Id                                 string                                                      `json:"id"`
+			KbBm25B                            *float32                                                    `json:"kbBm25B"`
+			KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`
@@ -60871,21 +60887,22 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 				DomainPreset   UpdateAuthSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     UpdateAuthSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *UpdateAuthSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                             `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                                  `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                   `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                                  `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                               `json:"embeddingModel"`
-			Favicon                         *string                                               `json:"favicon"`
-			FooterText                      *string                                               `json:"footerText"`
-			IconLogo                        *string                                               `json:"iconLogo"`
-			IconLogoDark                    *string                                               `json:"iconLogoDark"`
-			Id                              string                                                `json:"id"`
-			KbBm25B                         *float32                                              `json:"kbBm25B"`
-			KbBm25K1                        *float32                                              `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                                  `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *UpdateAuthSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                             `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                                  `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                   `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                                  `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                               `json:"embeddingModel"`
+			Favicon                            *string                                               `json:"favicon"`
+			FooterText                         *string                                               `json:"footerText"`
+			IconLogo                           *string                                               `json:"iconLogo"`
+			IconLogoDark                       *string                                               `json:"iconLogoDark"`
+			Id                                 string                                                `json:"id"`
+			KbBm25B                            *float32                                              `json:"kbBm25B"`
+			KbBm25K1                           *float32                                              `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`
@@ -61089,21 +61106,22 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 				DomainPreset   CompleteOnboarding200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     CompleteOnboarding200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *CompleteOnboarding200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                             `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                                  `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                   `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                                  `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                               `json:"embeddingModel"`
-			Favicon                         *string                                               `json:"favicon"`
-			FooterText                      *string                                               `json:"footerText"`
-			IconLogo                        *string                                               `json:"iconLogo"`
-			IconLogoDark                    *string                                               `json:"iconLogoDark"`
-			Id                              string                                                `json:"id"`
-			KbBm25B                         *float32                                              `json:"kbBm25B"`
-			KbBm25K1                        *float32                                              `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                                  `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *CompleteOnboarding200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                             `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                                  `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                   `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                                  `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                               `json:"embeddingModel"`
+			Favicon                            *string                                               `json:"favicon"`
+			FooterText                         *string                                               `json:"footerText"`
+			IconLogo                           *string                                               `json:"iconLogo"`
+			IconLogoDark                       *string                                               `json:"iconLogoDark"`
+			Id                                 string                                                `json:"id"`
+			KbBm25B                            *float32                                              `json:"kbBm25B"`
+			KbBm25K1                           *float32                                              `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                              `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`
@@ -61307,21 +61325,22 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 				DomainPreset   UpdateConnectionSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     UpdateConnectionSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *UpdateConnectionSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                                   `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                                        `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                                        `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                                     `json:"embeddingModel"`
-			Favicon                         *string                                                     `json:"favicon"`
-			FooterText                      *string                                                     `json:"footerText"`
-			IconLogo                        *string                                                     `json:"iconLogo"`
-			IconLogoDark                    *string                                                     `json:"iconLogoDark"`
-			Id                              string                                                      `json:"id"`
-			KbBm25B                         *float32                                                    `json:"kbBm25B"`
-			KbBm25K1                        *float32                                                    `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *UpdateConnectionSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                                        `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                                     `json:"embeddingModel"`
+			Favicon                            *string                                                     `json:"favicon"`
+			FooterText                         *string                                                     `json:"footerText"`
+			IconLogo                           *string                                                     `json:"iconLogo"`
+			IconLogoDark                       *string                                                     `json:"iconLogoDark"`
+			Id                                 string                                                      `json:"id"`
+			KbBm25B                            *float32                                                    `json:"kbBm25B"`
+			KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`
@@ -61525,21 +61544,22 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 				DomainPreset   UpdateDefaultEnvironment200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     UpdateDefaultEnvironment200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *UpdateDefaultEnvironment200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                                   `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                                        `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                                        `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                                     `json:"embeddingModel"`
-			Favicon                         *string                                                     `json:"favicon"`
-			FooterText                      *string                                                     `json:"footerText"`
-			IconLogo                        *string                                                     `json:"iconLogo"`
-			IconLogoDark                    *string                                                     `json:"iconLogoDark"`
-			Id                              string                                                      `json:"id"`
-			KbBm25B                         *float32                                                    `json:"kbBm25B"`
-			KbBm25K1                        *float32                                                    `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *UpdateDefaultEnvironment200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                         `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                                        `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                                     `json:"embeddingModel"`
+			Favicon                            *string                                                     `json:"favicon"`
+			FooterText                         *string                                                     `json:"footerText"`
+			IconLogo                           *string                                                     `json:"iconLogo"`
+			IconLogoDark                       *string                                                     `json:"iconLogoDark"`
+			Id                                 string                                                      `json:"id"`
+			KbBm25B                            *float32                                                    `json:"kbBm25B"`
+			KbBm25K1                           *float32                                                    `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                                    `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`
@@ -61743,21 +61763,22 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 				DomainPreset   UpdateIntegrationSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     UpdateIntegrationSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *UpdateIntegrationSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                                    `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                                         `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                          `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                                         `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                                      `json:"embeddingModel"`
-			Favicon                         *string                                                      `json:"favicon"`
-			FooterText                      *string                                                      `json:"footerText"`
-			IconLogo                        *string                                                      `json:"iconLogo"`
-			IconLogoDark                    *string                                                      `json:"iconLogoDark"`
-			Id                              string                                                       `json:"id"`
-			KbBm25B                         *float32                                                     `json:"kbBm25B"`
-			KbBm25K1                        *float32                                                     `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                                     `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                                         `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *UpdateIntegrationSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                                    `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                                         `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                          `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                                         `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                                      `json:"embeddingModel"`
+			Favicon                            *string                                                      `json:"favicon"`
+			FooterText                         *string                                                      `json:"footerText"`
+			IconLogo                           *string                                                      `json:"iconLogo"`
+			IconLogoDark                       *string                                                      `json:"iconLogoDark"`
+			Id                                 string                                                       `json:"id"`
+			KbBm25B                            *float32                                                     `json:"kbBm25B"`
+			KbBm25K1                           *float32                                                     `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                                     `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`
@@ -61961,21 +61982,22 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 				DomainPreset   UpdateKnowledgeSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     UpdateKnowledgeSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *UpdateKnowledgeSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                                  `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                                       `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                        `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                                       `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                                    `json:"embeddingModel"`
-			Favicon                         *string                                                    `json:"favicon"`
-			FooterText                      *string                                                    `json:"footerText"`
-			IconLogo                        *string                                                    `json:"iconLogo"`
-			IconLogoDark                    *string                                                    `json:"iconLogoDark"`
-			Id                              string                                                     `json:"id"`
-			KbBm25B                         *float32                                                   `json:"kbBm25B"`
-			KbBm25K1                        *float32                                                   `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                                   `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                                       `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *UpdateKnowledgeSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                                  `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                                       `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                        `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                                       `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                                    `json:"embeddingModel"`
+			Favicon                            *string                                                    `json:"favicon"`
+			FooterText                         *string                                                    `json:"footerText"`
+			IconLogo                           *string                                                    `json:"iconLogo"`
+			IconLogoDark                       *string                                                    `json:"iconLogoDark"`
+			Id                                 string                                                     `json:"id"`
+			KbBm25B                            *float32                                                   `json:"kbBm25B"`
+			KbBm25K1                           *float32                                                   `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                                   `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`
@@ -62179,21 +62201,22 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 				DomainPreset   UpdateMcpSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     UpdateMcpSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *UpdateMcpSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                            `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                                 `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                  `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                                 `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                              `json:"embeddingModel"`
-			Favicon                         *string                                              `json:"favicon"`
-			FooterText                      *string                                              `json:"footerText"`
-			IconLogo                        *string                                              `json:"iconLogo"`
-			IconLogoDark                    *string                                              `json:"iconLogoDark"`
-			Id                              string                                               `json:"id"`
-			KbBm25B                         *float32                                             `json:"kbBm25B"`
-			KbBm25K1                        *float32                                             `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                             `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                                 `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *UpdateMcpSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                            `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                                 `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                  `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                                 `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                              `json:"embeddingModel"`
+			Favicon                            *string                                              `json:"favicon"`
+			FooterText                         *string                                              `json:"footerText"`
+			IconLogo                           *string                                              `json:"iconLogo"`
+			IconLogoDark                       *string                                              `json:"iconLogoDark"`
+			Id                                 string                                               `json:"id"`
+			KbBm25B                            *float32                                             `json:"kbBm25B"`
+			KbBm25K1                           *float32                                             `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                             `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`
@@ -62397,21 +62420,22 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 				DomainPreset   UpdateSecuritySettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     UpdateSecuritySettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *UpdateSecuritySettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                                 `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                                      `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                       `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                                      `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                                   `json:"embeddingModel"`
-			Favicon                         *string                                                   `json:"favicon"`
-			FooterText                      *string                                                   `json:"footerText"`
-			IconLogo                        *string                                                   `json:"iconLogo"`
-			IconLogoDark                    *string                                                   `json:"iconLogoDark"`
-			Id                              string                                                    `json:"id"`
-			KbBm25B                         *float32                                                  `json:"kbBm25B"`
-			KbBm25K1                        *float32                                                  `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                                  `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                                      `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *UpdateSecuritySettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                                 `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                                      `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                       `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                                      `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                                   `json:"embeddingModel"`
+			Favicon                            *string                                                   `json:"favicon"`
+			FooterText                         *string                                                   `json:"footerText"`
+			IconLogo                           *string                                                   `json:"iconLogo"`
+			IconLogoDark                       *string                                                   `json:"iconLogoDark"`
+			Id                                 string                                                    `json:"id"`
+			KbBm25B                            *float32                                                  `json:"kbBm25B"`
+			KbBm25K1                           *float32                                                  `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                                  `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`
@@ -62615,21 +62639,22 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 				DomainPreset   UpdateSkillsSettings200DefaultNetworkPolicyDomainPreset `json:"domainPreset"`
 				EgressMode     UpdateSkillsSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
-			DefaultUserLimitCleanupInterval *UpdateSkillsSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
-			DefaultUserLimitModel           *[]string                                               `json:"defaultUserLimitModel"`
-			DefaultUserLimitValue           *int                                                    `json:"defaultUserLimitValue"`
-			EmbeddingChatApiKeyId           *openapi_types.UUID                                     `json:"embeddingChatApiKeyId"`
-			EmbeddingDimensions             *EmbeddingDimensions                                    `json:"embeddingDimensions"`
-			EmbeddingModel                  *string                                                 `json:"embeddingModel"`
-			Favicon                         *string                                                 `json:"favicon"`
-			FooterText                      *string                                                 `json:"footerText"`
-			IconLogo                        *string                                                 `json:"iconLogo"`
-			IconLogoDark                    *string                                                 `json:"iconLogoDark"`
-			Id                              string                                                  `json:"id"`
-			KbBm25B                         *float32                                                `json:"kbBm25B"`
-			KbBm25K1                        *float32                                                `json:"kbBm25K1"`
-			KbContextualRetrievalMode       *ContextualRetrievalMode                                `json:"kbContextualRetrievalMode"`
-			KnowledgeConnectorOverrides     *map[string]struct {
+			DefaultPersonalAgentAccessAllTools bool                                                    `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultUserLimitCleanupInterval    *UpdateSkillsSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
+			DefaultUserLimitModel              *[]string                                               `json:"defaultUserLimitModel"`
+			DefaultUserLimitValue              *int                                                    `json:"defaultUserLimitValue"`
+			EmbeddingChatApiKeyId              *openapi_types.UUID                                     `json:"embeddingChatApiKeyId"`
+			EmbeddingDimensions                *EmbeddingDimensions                                    `json:"embeddingDimensions"`
+			EmbeddingModel                     *string                                                 `json:"embeddingModel"`
+			Favicon                            *string                                                 `json:"favicon"`
+			FooterText                         *string                                                 `json:"footerText"`
+			IconLogo                           *string                                                 `json:"iconLogo"`
+			IconLogoDark                       *string                                                 `json:"iconLogoDark"`
+			Id                                 string                                                  `json:"id"`
+			KbBm25B                            *float32                                                `json:"kbBm25B"`
+			KbBm25K1                           *float32                                                `json:"kbBm25K1"`
+			KbContextualRetrievalMode          *ContextualRetrievalMode                                `json:"kbContextualRetrievalMode"`
+			KnowledgeConnectorOverrides        *map[string]struct {
 				Hidden *bool `json:"hidden,omitempty"`
 			} `json:"knowledgeConnectorOverrides"`
 			Logo                      *string `json:"logo"`

@@ -48,7 +48,6 @@ output "support_tools" {
 - `author_email` (String) Server-reported author email.
 - `built_in_agent_config` (String) Server-owned built-in agent metadata as JSON.
 - `connector_ids` (List of String) Knowledge connector IDs the agent has access to
-- `consider_context_untrusted` (Boolean) Whether the agent context is treated as untrusted
 - `created_by` (String) Creator identity metadata as JSON.
 - `created_by_service_account_id` (String) Server-reported created by service account id.
 - `deleted_at` (String) Server-reported deleted at.

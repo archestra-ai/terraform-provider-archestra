@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"os/exec"
 	"regexp"
 	"strings"
 	"testing"
@@ -13,6 +14,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+// Tests use the tested release from the repository, as the binary does.
+func init() {
+	raw, err := os.ReadFile("../../platform-version.txt")
+	if err != nil {
+		panic(err)
+	}
+	if err := SetTestedAPIVersion(string(raw)); err != nil {
+		panic(err)
+	}
+}
 
 func TestAPICompatibility(t *testing.T) {
 	for _, tc := range []struct {
@@ -24,6 +36,7 @@ func TestAPICompatibility(t *testing.T) {
 		{"below-floor", `{"version":"1.4.0-rc.48"}`, "", 200, true, false},
 		{"lacks-unauthenticated-proxy-setting", `{"version":"1.4.0-rc.50"}`, "", 200, true, false},
 		{"old-stable", `{"version":"1.3.0"}`, "", 200, true, false},
+		{"tested-release", fmt.Sprintf(`{"version":%q}`, testedAPIVersion), "", 200, false, false},
 		{"floor", `{"version":"1.4.0-rc.51"}`, "", 200, false, true},
 		{"stable-not-yet-tested", `{"version":"1.4.0"}`, "", 200, false, true},
 		{"major-not-tested", `{"version":"2.0.0"}`, "", 200, false, true},
@@ -42,6 +55,9 @@ func TestAPICompatibility(t *testing.T) {
 		{"invalid-constraint", `{"version":"1.4.0-rc.49"}`, "not-a-constraint", 200, true, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
+			if tc.name != "tested-release" && strings.Contains(tc.body, fmt.Sprintf("%q", testedAPIVersion)) {
+				t.Skipf("%s is the tested release, so this case has no untested-version warning", testedAPIVersion)
+			}
 			calls := 0
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				calls++
@@ -101,20 +117,38 @@ func TestAPICompatibilityStopsProviderConfiguration(t *testing.T) {
 	}
 }
 
-// The current supported interval has one certified member. CI must keep testing
-// that release; a future interval expansion must add oldest/latest API jobs.
-func TestAPICompatibilityCIPinsTestedRelease(t *testing.T) {
+// The supported interval has one tested member: the release in
+// platform-version.txt. Every acceptance job must run against that file, so a
+// pull request that changes it tests the release the provider will report.
+func TestAPICompatibilityCITestsPlatformVersion(t *testing.T) {
+	raw, err := os.ReadFile("../../platform-version.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !regexp.MustCompile(`\A\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?\n\z`).Match(raw) {
+		t.Fatalf("platform-version.txt must hold one release version and a newline, got %q", raw)
+	}
 	workflow, err := os.ReadFile("../../.github/workflows/on-pull-request.yml")
 	if err != nil {
 		t.Fatal(err)
 	}
-	pins := regexp.MustCompile(`ARCHESTRA_VERSION: "([^"]+)"`).FindAllStringSubmatch(string(workflow), -1)
-	if len(pins) == 0 {
-		t.Fatal("acceptance CI has no pinned Archestra release")
+	if pin := regexp.MustCompile(`ARCHESTRA_VERSION: "|archestra/platform:\d`).Find(workflow); pin != nil {
+		t.Fatalf("acceptance CI hard-codes a platform release (%s); read platform-version.txt instead", pin)
 	}
-	for _, pin := range pins {
-		if testedAPIConstraint != "= "+pin[1] {
-			t.Fatalf("API test pin %s and tested interval %s differ; run compatibility evidence before updating both", pin[1], testedAPIConstraint)
+	jobs := regexp.MustCompile(`(?m)^  [a-z-]*acceptance-tests:\n((?:    .*\n|\n)*)`).FindAllSubmatch(workflow, -1)
+	if len(jobs) == 0 {
+		t.Fatal("no acceptance job found")
+	}
+	for _, job := range jobs {
+		if !strings.Contains(string(job[1]), "./scripts/platform-version.sh") {
+			t.Fatalf("acceptance job does not read platform-version.txt through scripts/platform-version.sh:\n%s", job[0])
 		}
+	}
+	out, err := exec.CommandContext(t.Context(), "../../scripts/platform-version.sh").Output()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := "ARCHESTRA_VERSION=" + testedAPIVersion + "\n"; string(out) != want {
+		t.Fatalf("scripts/platform-version.sh printed %q, want %q", out, want)
 	}
 }
