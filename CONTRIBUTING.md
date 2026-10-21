@@ -136,6 +136,11 @@ For new platform releases, the Update Terraform Provider workflow in
 archestra-ai/archestra does steps 2 and 3 and opens a pull request on the
 `automation/platform-api` branch.
 
+The Nightly Acceptance Tests workflow runs both acceptance suites every night
+against the oldest supported release (`minimumAPIVersion`), the newest stable
+release and the tested release. `scripts/nightly-platform-versions.sh` selects
+them. To run it now, open **Actions → Nightly Acceptance Tests → Run workflow**.
+
 ## Code style
 
 - `gofmt -s -w` + `terraform fmt` (run via `make fmt`).

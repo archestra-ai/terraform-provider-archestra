@@ -90,8 +90,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      ARCHESTRA_NAMESPACE: "default"
     steps:
       - name: Checkout project
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -103,102 +101,11 @@ jobs:
       - name: Read platform version
         run: ./scripts/platform-version.sh >> "$GITHUB_ENV"
 
-      - name: Setup go
-        uses: ./.github/actions/setup-go
-
-      - name: Setup Terraform
-        uses: ./.github/actions/setup-terraform
-
-      # Deploy Archestra Platform locally using Kind
-      # This uses the pre-built archestra/platform image from Docker Hub and the published Helm chart from GAR
-      - name: Setup Archestra Platform
-        uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@ab0c93762d005ccb9475d883c4a47970f480bf5b # v1.0.8
+      # The nightly workflow runs the same steps against other releases.
+      - name: Run acceptance tests
+        uses: ./.github/actions/acceptance-tests
         with:
-          kind-config-path: ./.github/kind.yaml
-          kind-cluster-name: archestra-ci-cluster
-          helm-values-path: ./.github/values-ci.yaml
-          helm-chart-ref: oci://europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/helm-charts/archestra-platform:${{ env.ARCHESTRA_VERSION }}
-          deploy-e2e-dependencies: "false"
-          build-platform-image: "false"
-          platform-image-tag: archestra/platform:${{ env.ARCHESTRA_VERSION }}
-
-      - name: Record platform image
-        run: |
-          digest="$(docker image inspect --format '{{join .RepoDigests ", "}}' "archestra/platform:${ARCHESTRA_VERSION}")"
-          echo "Archestra ${ARCHESTRA_VERSION}: ${digest}" | tee -a "$GITHUB_STEP_SUMMARY"
-
-      # Stub /v1/models so backend's testProviderApiKey passes without a real
-      # Ollama. Manifest + apply logic shared with local development via
-      # scripts/bootstrap-ollama-mock.sh and scripts/k8s/ollama-mock.yaml.
-      - name: Deploy Ollama mock
-        run: ./scripts/bootstrap-ollama-mock.sh
-
-      # Dev-mode Vault + secret seed for BYOS tests. Ephemeral; do not mirror
-      # outside CI. Shared with local via scripts/bootstrap-vault.sh and
-      # scripts/k8s/vault-dev.yaml.
-      - name: Install test Agent Runtime operator
-        run: |
-          curl --fail --silent --show-error --location \
-            https://github.com/kubernetes-sigs/agent-sandbox/releases/download/v1.0.1/sandbox-with-extensions.yaml \
-            --output /tmp/agent-sandbox.yaml
-          echo "460c1e0272c793c98de82482aed57db1bddb0afcb979c19325dc6cc52289c44c  /tmp/agent-sandbox.yaml" | sha256sum --check
-          kubectl apply --server-side -f /tmp/agent-sandbox.yaml
-          kubectl rollout status deployment/agent-sandbox-controller -n agent-sandbox-system --timeout=120s
-
-      - name: Deploy Vault (dev mode)
-        run: ./scripts/bootstrap-vault.sh
-
-      - name: Check for codegen'd API client changes
-        run: |
-          make codegen-api-client
-
-          if ! git diff --exit-code; then
-            echo "::error::Generated API client code is not up to date. Please run 'make codegen-api-client' locally and commit the changes."
-            exit 1
-          fi
-
-      # Sign in with default seeded credentials (admin@example.com / password)
-      # and create a fresh API key. Logic is shared with local development via
-      # scripts/bootstrap-api-key.sh — keep the script and this step in sync.
-      - name: Obtain API Key
-        id: api-key
-        env:
-          ARCHESTRA_BASE_URL: http://localhost:9000
-        run: |
-          API_KEY=$(./scripts/bootstrap-api-key.sh)
-          echo "::add-mask::${API_KEY}"
-          echo "api-key=${API_KEY}" >> "$GITHUB_OUTPUT"
-
-      # Provision a throwaway OIDC identity provider so the enterprise_managed_config
-      # acceptance test can exercise the full EMC round-trip. The test skips gracefully
-      # if ARCHESTRA_TEST_IDP_ID is unset; in CI we always set it.
-      - name: Provision test Identity Provider
-        id: test-idp
-        env:
-          ARCHESTRA_BASE_URL: http://localhost:9000
-          ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
-        run: |
-          IDP_ID=$(./scripts/bootstrap-test-idp.sh)
-          echo "idp-id=${IDP_ID}" >> "$GITHUB_OUTPUT"
-
-      - name: Seed model fixture
-        env:
-          ARCHESTRA_BASE_URL: http://localhost:9000
-          ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
-          ARCHESTRA_READONLY_VAULT_ENABLED: "true"
-          ARCHESTRA_TEST_LLM_BASE_URL: http://ollama-mock.default.svc.cluster.local:11434/v1
-        run: python3 scripts/bootstrap-test-llm-key.py
-
-      - name: Run Acceptance Tests
-        run: make testacc
-        env:
-          ARCHESTRA_BASE_URL: "http://localhost:9000"
-          ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
-          ARCHESTRA_TEST_IDP_ID: ${{ steps.test-idp.outputs.idp-id }}
-          ARCHESTRA_READONLY_VAULT_ENABLED: "true"
-          ARCHESTRA_AGENT_RUNTIME_ENABLED: "true"
-          ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
-          ARCHESTRA_TEST_LLM_BASE_URL: http://ollama-mock.default.svc.cluster.local:11434/v1
+          archestra-version: ${{ env.ARCHESTRA_VERSION }}
 
   credential-acceptance-tests:
     name: Credential Acceptance Tests
@@ -207,45 +114,9 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
-      - uses: ./.github/actions/setup-go
-      - uses: ./.github/actions/setup-terraform
       - name: Read platform version
         run: ./scripts/platform-version.sh >> "$GITHUB_ENV"
-      - name: Start platform with credential support
-        run: |
-          docker pull "archestra/platform:${ARCHESTRA_VERSION}"
-          digest="$(docker image inspect --format '{{join .RepoDigests ", "}}' "archestra/platform:${ARCHESTRA_VERSION}")"
-          echo "Archestra ${ARCHESTRA_VERSION}: ${digest}" | tee -a "$GITHUB_STEP_SUMMARY"
-          docker run -d --name credential-platform -p 9000:9000 -p 3000:3000 \
-            -e ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true \
-            -e ARCHESTRA_AGENT_RUNTIME_ENABLED=true \
-            -e ARCHESTRA_AUTH_SECRET=acceptance-test-auth-secret-32chars \
-            -e ARCHESTRA_ANALYTICS=disabled \
-            "archestra/platform:${ARCHESTRA_VERSION}"
-          for _attempt in $(seq 1 120); do
-            status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/api/health || true)
-            case "$status" in 200|401) exit 0 ;; esac
-            sleep 5
-          done
-          docker logs credential-platform
-          exit 1
-      - name: Obtain API key
-        id: api-key
-        run: |
-          API_KEY=$(./scripts/bootstrap-api-key.sh)
-          echo "::add-mask::${API_KEY}"
-          echo "api-key=${API_KEY}" >> "$GITHUB_OUTPUT"
-      - name: Verify generated provider client
-        run: |
-          make codegen-api-client
-          git diff --exit-code -- internal/client/archestra_client.go
-      - name: Test credential lifecycle and GitHub App linkage
-        env:
-          TF_ACC: "1"
-          ARCHESTRA_BASE_URL: http://localhost:9000
-          ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
-          ARCHESTRA_AGENT_RUNTIME_ENABLED: "true"
-        run: go test -v -timeout=10m ./internal/provider -run '^TestAccRuntimeCredentialResource'
-      - name: Platform logs on failure
-        if: failure()
-        run: docker logs --tail 200 credential-platform
+      - name: Run credential acceptance tests
+        uses: ./.github/actions/credential-acceptance-tests
+        with:
+          archestra-version: ${{ env.ARCHESTRA_VERSION }}
