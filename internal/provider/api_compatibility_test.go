@@ -144,7 +144,7 @@ func TestAPICompatibilityCITestsPlatformVersion(t *testing.T) {
 			t.Fatalf("acceptance job does not read platform-version.txt through scripts/platform-version.sh:\n%s", job[0])
 		}
 	}
-	out, err := exec.Command("../../scripts/platform-version.sh").Output()
+	out, err := exec.CommandContext(t.Context(), "../../scripts/platform-version.sh").Output()
 	if err != nil {
 		t.Fatal(err)
 	}
