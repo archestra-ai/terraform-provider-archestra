@@ -55,6 +55,9 @@ func TestAPICompatibility(t *testing.T) {
 		{"invalid-constraint", `{"version":"1.4.0-rc.49"}`, "not-a-constraint", 200, true, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
+			if tc.name != "tested-release" && strings.Contains(tc.body, fmt.Sprintf("%q", testedAPIVersion)) {
+				t.Skipf("%s is the tested release, so this case has no untested-version warning", testedAPIVersion)
+			}
 			calls := 0
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				calls++
