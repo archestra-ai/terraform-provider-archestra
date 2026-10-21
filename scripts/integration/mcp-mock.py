@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Loopback-only, stateless MCP fixture with two tools and no external calls."""
+"""Stateless MCP fixture with two tools and no external calls; binds loopback by default."""
 import argparse
 import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -8,6 +8,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port', type=int, default=19006)
+    # The in-cluster fixture (scripts/k8s/provider-mcp-mock.yaml) listens on the pod network.
+    parser.add_argument('--host', default='127.0.0.1')
     args = parser.parse_args()
 
     class Handler(BaseHTTPRequestHandler):
@@ -41,8 +43,8 @@ def main():
             self.end_headers()
             self.wfile.write(body)
 
-    print('MCP fixture listening on loopback port', args.port, flush=True)
-    ThreadingHTTPServer(('127.0.0.1', args.port), Handler).serve_forever()
+    print('MCP fixture listening on', args.host, 'port', args.port, flush=True)
+    ThreadingHTTPServer((args.host, args.port), Handler).serve_forever()
 
 
 if __name__ == '__main__':

@@ -1,0 +1,53 @@
+# Remote MCP fixture for Crossplane lifecycle probes.
+#
+# Runs scripts/integration/mcp-mock.py (two synthetic tools, no external calls)
+# so the Archestra backend pod can install it as a remote MCP server at
+# http://provider-mcp-mock.default.svc.cluster.local:19006/mcp.
+#
+# The script is mounted from the provider-mcp-mock-script ConfigMap, which
+# scripts/bootstrap-crossplane.sh creates from the checked-in file before
+# applying this manifest.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: provider-mcp-mock
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: provider-mcp-mock
+  template:
+    metadata:
+      labels:
+        app: provider-mcp-mock
+    spec:
+      containers:
+        - name: mcp-mock
+          image: python:3.13-alpine
+          command: ["python3", "/fixture/mcp-mock.py", "--host", "0.0.0.0", "--port", "19006"]
+          ports:
+            - containerPort: 19006
+          readinessProbe:
+            tcpSocket:
+              port: 19006
+          volumeMounts:
+            - name: script
+              mountPath: /fixture
+              readOnly: true
+      volumes:
+        - name: script
+          configMap:
+            name: provider-mcp-mock-script
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: provider-mcp-mock
+  namespace: default
+spec:
+  selector:
+    app: provider-mcp-mock
+  ports:
+    - port: 19006
+      targetPort: 19006
