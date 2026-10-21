@@ -33,6 +33,9 @@ func creationInt64RequiresReplace() planmodifier.Int64 {
 }
 
 func markAdoptedInputs(ctx context.Context, resp *resource.ImportStateResponse) {
+	if resp.Private == nil {
+		return
+	}
 	resp.Diagnostics.Append(resp.Private.SetKey(ctx, adoptedInputsKey, []byte(`true`))...)
 }
 

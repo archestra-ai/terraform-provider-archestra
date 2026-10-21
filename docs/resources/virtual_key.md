@@ -65,7 +65,7 @@ resource "archestra_virtual_key" "example" {
 - `secret_id` (String) Stored credential identifier.
 - `teams` (String) Legacy team visibility metadata as JSON.
 - `token_start` (String) Non-secret identifying prefix.
-- `value` (String, Sensitive) Bearer credential returned on creation or revealed to the key author, retained in sensitive state.
+- `value` (String, Sensitive) Bearer credential returned on creation or revealed to its creator on import and refresh, retained in sensitive state; service-account creators need the next 1.4 rc.
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

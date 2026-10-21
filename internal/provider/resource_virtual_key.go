@@ -89,7 +89,7 @@ func (r *VirtualAPIKeyResource) Schema(_ context.Context, _ resource.SchemaReque
 		"owner_id":                      schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Creation-only owner selector, defaulting to the creator."},
 		"permissions":                   initialGrantsAttribute(),
 		"rotation_nonce":                schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{rotationNonceRequiresReplace()}, MarkdownDescription: "Change this value to replace the key and revoke its old credential; a first value set after import is recorded without rotation."},
-		"value":                         schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Bearer credential returned on creation or revealed to the key author, retained in sensitive state."},
+		"value":                         schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Bearer credential returned on creation or revealed to its creator on import and refresh, retained in sensitive state; service-account creators need the next 1.4 rc."},
 		"secret_id":                     schema.StringAttribute{Computed: true, MarkdownDescription: "Stored credential identifier."},
 		"token_start":                   schema.StringAttribute{Computed: true, MarkdownDescription: "Non-secret identifying prefix."},
 		"scope":                         schema.StringAttribute{Computed: true, MarkdownDescription: "Legacy visibility projection; permissions are managed separately."},
@@ -317,16 +317,17 @@ func (r *VirtualAPIKeyResource) flatten(ctx context.Context, data *VirtualAPIKey
 	flattenCredentialRouting(ctx, raw.credentialRoutingResponse, &data.ProviderAPIKeys, &data.Labels, &data.SpendCap, &data.BillingTeamID, &data.BillingTeamName, diags)
 }
 
-// revealValue recovers the bearer credential for its author. Other callers get
-// 403 and keep a null value; secret_id and token_start still identify the key.
+// revealValue recovers the bearer credential for its creator. A non-creator or
+// an older platform gets 403, and 409 means the value cannot be revealed; both
+// keep a null value, and secret_id and token_start still identify the key.
 func (r *VirtualAPIKeyResource) revealValue(ctx context.Context, id uuid.UUID, diags *diag.Diagnostics) types.String {
 	result, err := r.client.GetVirtualApiKeyValueWithResponse(ctx, id)
 	if err != nil {
 		diags.AddError("API Error", err.Error())
 		return types.StringNull()
 	}
-	if result.StatusCode() == http.StatusForbidden {
-		tflog.Info(ctx, "virtual key value is revealable only by its author; leaving value null")
+	if result.StatusCode() == http.StatusForbidden || result.StatusCode() == http.StatusConflict {
+		tflog.Info(ctx, "virtual key value is not revealable by this caller; leaving value null", map[string]any{"status": result.StatusCode()})
 		return types.StringNull()
 	}
 	if result.JSON200 == nil {

@@ -15,7 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
-func TestVirtualAPIKeyReadRevealsValueOnlyForItsAuthor(t *testing.T) {
+func TestVirtualAPIKeyImportRevealsValueOnlyForItsCreator(t *testing.T) {
 	const id = "11111111-1111-4111-8111-111111111111"
 	for _, tc := range []struct {
 		name        string
@@ -25,7 +25,8 @@ func TestVirtualAPIKeyReadRevealsValueOnlyForItsAuthor(t *testing.T) {
 		wantReveals int
 	}{
 		{"author", "", http.StatusOK, types.StringValue("arch_vk_revealed"), 1},
-		{"not-author", "", http.StatusForbidden, types.StringNull(), 1},
+		{"not-creator-or-older-platform", "", http.StatusForbidden, types.StringNull(), 1},
+		{"not-revealable", "", http.StatusConflict, types.StringNull(), 1},
 		{"value-already-in-state", "arch_vk_created", http.StatusOK, types.StringValue("arch_vk_created"), 0},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
@@ -59,10 +60,13 @@ func TestVirtualAPIKeyReadRevealsValueOnlyForItsAuthor(t *testing.T) {
 			r := VirtualAPIKeyResource{client: c}
 			var schema resource.SchemaResponse
 			r.Schema(t.Context(), resource.SchemaRequest{}, &schema)
-			state := tfsdk.State{Schema: schema.Schema, Raw: tftypes.NewValue(schema.Schema.Type().TerraformType(t.Context()), nil)}
-			if d := state.SetAttribute(t.Context(), path.Root("id"), id); d.HasError() {
-				t.Fatal(d)
+			// Import passes only the ID; Read then recovers what it can.
+			imported := resource.ImportStateResponse{State: tfsdk.State{Schema: schema.Schema, Raw: tftypes.NewValue(schema.Schema.Type().TerraformType(t.Context()), nil)}}
+			r.ImportState(t.Context(), resource.ImportStateRequest{ID: id}, &imported)
+			if imported.Diagnostics.HasError() {
+				t.Fatal(imported.Diagnostics)
 			}
+			state := imported.State
 			if tc.prior != "" {
 				if d := state.SetAttribute(t.Context(), path.Root("value"), tc.prior); d.HasError() {
 					t.Fatal(d)
