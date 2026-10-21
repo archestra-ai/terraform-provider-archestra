@@ -76,7 +76,7 @@ func (r *OauthClientResource) Metadata(_ context.Context, req resource.MetadataR
 	resp.TypeName = req.ProviderTypeName + "_oauth_client"
 }
 func (r *OauthClientResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
-	resp.Schema = schema.Schema{MarkdownDescription: "Unified managed OAuth client for MCP, A2A and LLM proxy capabilities. Client credentials and authorization-code modes share one resource; grant type changes replace the client. A nonempty rotation_nonce change rotates the secret in place and preserves client identity. Import does not recover the secret. User authorization, consent and token redemption are separate interactive operations.", Attributes: map[string]schema.Attribute{
+	resp.Schema = schema.Schema{MarkdownDescription: "Unified managed OAuth client for MCP, A2A and LLM proxy capabilities. Client credentials and authorization-code modes share one resource; grant type changes replace the client. Changing an existing nonempty rotation_nonce rotates the secret in place and preserves client identity. Import does not recover the secret. User authorization, consent and token redemption are separate interactive operations.", Attributes: map[string]schema.Attribute{
 		"id":                  schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Managed client identifier."},
 		"name":                schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 256)}, MarkdownDescription: "Client display name."},
 		"client_id":           schema.StringAttribute{Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Public OAuth client identifier."},
@@ -91,7 +91,7 @@ func (r *OauthClientResource) Schema(_ context.Context, _ resource.SchemaRequest
 		"billing_team_id":          schema.StringAttribute{Optional: true, MarkdownDescription: "Team billed for client-credentials usage; removing the value clears billing."},
 		"billing_team_name":        schema.StringAttribute{Computed: true, MarkdownDescription: "Billing team display name."},
 		"permissions":              initialGrantsAttribute(),
-		"rotation_nonce":           schema.StringAttribute{Optional: true, MarkdownDescription: "Set or change a nonempty value to rotate the secret while preserving client identity."},
+		"rotation_nonce":           schema.StringAttribute{Optional: true, MarkdownDescription: "Change a nonempty value to rotate the secret while preserving client identity; a first value set after import or creation without one is recorded without rotation."},
 		"disabled":                 schema.BoolAttribute{Computed: true, MarkdownDescription: "Server-reported disabled state."},
 		"author_id":                schema.StringAttribute{Computed: true, MarkdownDescription: "Author identity."},
 		"author_name":              schema.StringAttribute{Computed: true, MarkdownDescription: "Author display name."},
@@ -250,7 +250,8 @@ func (r *OauthClientResource) Update(ctx context.Context, req resource.UpdateReq
 		data.RotationNonce = nonce
 	}
 	desiredNonce := data.RotationNonce
-	rotate := !desiredNonce.IsNull() && desiredNonce.ValueString() != "" && !desiredNonce.Equal(prior.RotationNonce)
+	// A first nonce (import or later adoption) is recorded without rotating.
+	rotate := !desiredNonce.IsNull() && desiredNonce.ValueString() != "" && !prior.RotationNonce.IsNull() && !desiredNonce.Equal(prior.RotationNonce)
 	if rotate {
 		// Keep the old nonce until the secret is saved so failures remain retryable.
 		data.RotationNonce = prior.RotationNonce

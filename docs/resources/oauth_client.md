@@ -3,12 +3,12 @@
 page_title: "archestra_oauth_client Resource - archestra"
 subcategory: ""
 description: |-
-  Unified managed OAuth client for MCP, A2A and LLM proxy capabilities. Client credentials and authorization-code modes share one resource; grant type changes replace the client. A nonempty rotation_nonce change rotates the secret in place and preserves client identity. Import does not recover the secret. User authorization, consent and token redemption are separate interactive operations.
+  Unified managed OAuth client for MCP, A2A and LLM proxy capabilities. Client credentials and authorization-code modes share one resource; grant type changes replace the client. Changing an existing nonempty rotation_nonce rotates the secret in place and preserves client identity. Import does not recover the secret. User authorization, consent and token redemption are separate interactive operations.
 ---
 
 # archestra_oauth_client (Resource)
 
-Unified managed OAuth client for MCP, A2A and LLM proxy capabilities. Client credentials and authorization-code modes share one resource; grant type changes replace the client. A nonempty rotation_nonce change rotates the secret in place and preserves client identity. Import does not recover the secret. User authorization, consent and token redemption are separate interactive operations.
+Unified managed OAuth client for MCP, A2A and LLM proxy capabilities. Client credentials and authorization-code modes share one resource; grant type changes replace the client. Changing an existing nonempty rotation_nonce rotates the secret in place and preserves client identity. Import does not recover the secret. User authorization, consent and token redemption are separate interactive operations.
 
 ## Example Usage
 
@@ -44,7 +44,7 @@ resource "archestra_oauth_client" "example" {
 - `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `provider_api_keys` (Attributes Set) Explicit provider-to-key mappings; an empty set clears explicit mappings. (see [below for nested schema](#nestedatt--provider_api_keys))
 - `redirect_uris` (Set of String) Authorization-code redirect URIs; an empty set clears them when the selected mode permits it.
-- `rotation_nonce` (String) Set or change a nonempty value to rotate the secret while preserving client identity.
+- `rotation_nonce` (String) Change a nonempty value to rotate the secret while preserving client identity; a first value set after import or creation without one is recorded without rotation.
 - `service_account_id` (String) Service account this client acts as; removing the value clears the binding.
 - `spend_cap` (Attributes) Credential-wide spend cap; removing it clears the cap. (see [below for nested schema](#nestedatt--spend_cap))
 

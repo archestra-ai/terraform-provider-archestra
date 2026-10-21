@@ -32,8 +32,8 @@ resource "archestra_service_account_api_key" "example" {
 
 - `disabled` (Boolean) Whether this credential is disabled.
 - `expires_at` (String) Explicit absolute expiry timestamp; removing a previously configured value clears the expiry.
-- `expires_in` (Number) Creation-time lifetime in seconds; changing it issues a replacement token.
-- `rotation_nonce` (String) Change this declaration to revoke and replace the credential.
+- `expires_in` (Number) Creation-time lifetime in seconds; changing it issues a replacement token, while a first value set after import is recorded without one.
+- `rotation_nonce` (String) Change this declaration to revoke and replace the credential; a first value set after import is recorded without rotation.
 
 ### Read-Only
 

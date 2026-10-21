@@ -48,7 +48,7 @@ resource "archestra_share_link" "example" {
 - `expires_at` (String) Canonical UTC expiry with millisecond precision; required for plugin links.
 - `name` (String) Optional link label.
 - `plugin_platform` (String) Required target operating-system family when sharing plugins.
-- `rotation_nonce` (String) Change this value to revoke the old link and create a replacement secret.
+- `rotation_nonce` (String) Change this value to revoke the old link and create a replacement secret; a first value set after import is recorded without rotation.
 
 ### Read-Only
 

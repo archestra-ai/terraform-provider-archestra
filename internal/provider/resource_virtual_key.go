@@ -86,7 +86,7 @@ func (r *VirtualAPIKeyResource) Schema(_ context.Context, _ resource.SchemaReque
 		"expires_at":                    schema.StringAttribute{Optional: true, MarkdownDescription: "Absolute RFC 3339 expiry; omission removes expiry."},
 		"owner_id":                      schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Creation-only owner selector, defaulting to the creator."},
 		"permissions":                   initialGrantsAttribute(),
-		"rotation_nonce":                schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Change this value to replace the key and revoke its old credential."},
+		"rotation_nonce":                schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{rotationNonceRequiresReplace()}, MarkdownDescription: "Change this value to replace the key and revoke its old credential; a first value set after import is recorded without rotation."},
 		"value":                         schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Bearer credential returned on creation and retained in sensitive state."},
 		"secret_id":                     schema.StringAttribute{Computed: true, MarkdownDescription: "Stored credential identifier."},
 		"token_start":                   schema.StringAttribute{Computed: true, MarkdownDescription: "Non-secret identifying prefix."},
@@ -197,7 +197,7 @@ func (r *VirtualAPIKeyResource) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 	if len(patch) == 0 {
-		resp.State = req.State
+		recordAdoptedInputs(ctx, req, resp, "rotation_nonce")
 		return
 	}
 	delete(patch, "initialGrants")

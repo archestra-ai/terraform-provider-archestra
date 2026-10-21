@@ -47,7 +47,7 @@ resource "archestra_virtual_key" "example" {
 - `owner_id` (String) Creation-only owner selector, defaulting to the creator.
 - `permissions` (Attributes Set) Additional direct sharing grants on this object. Applied atomically on creation and reconciled in place thereafter. Omit to preserve current grants; set [] to clear additional grants. The owner's existing grant is preserved automatically; inherited access and ownership remain managed by Archestra. (see [below for nested schema](#nestedatt--permissions))
 - `provider_api_keys` (Attributes Set) Explicit provider-to-key mappings; an empty set clears explicit mappings. (see [below for nested schema](#nestedatt--provider_api_keys))
-- `rotation_nonce` (String) Change this value to replace the key and revoke its old credential.
+- `rotation_nonce` (String) Change this value to replace the key and revoke its old credential; a first value set after import is recorded without rotation.
 - `spend_cap` (Attributes) Credential-wide spend cap; removing it clears the cap. (see [below for nested schema](#nestedatt--spend_cap))
 
 ### Read-Only

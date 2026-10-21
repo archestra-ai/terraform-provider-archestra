@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -66,13 +65,13 @@ func (r *ServiceAccountTokenResource) Schema(_ context.Context, _ resource.Schem
 		"name":                 schema.StringAttribute{Required: true, MarkdownDescription: "Token display name."},
 		"token":                schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Secret returned only on creation."},
 		"token_start":          schema.StringAttribute{Computed: true, MarkdownDescription: "Non-secret prefix identifying the token."},
-		"expires_in":           schema.Int64Attribute{Optional: true, PlanModifiers: []planmodifier.Int64{int64planmodifier.RequiresReplace()}, MarkdownDescription: "Creation-time lifetime in seconds; changing it issues a replacement token."},
+		"expires_in":           schema.Int64Attribute{Optional: true, PlanModifiers: []planmodifier.Int64{creationInt64RequiresReplace()}, MarkdownDescription: "Creation-time lifetime in seconds; changing it issues a replacement token, while a first value set after import is recorded without one."},
 		"expires_at":           schema.StringAttribute{Optional: true, MarkdownDescription: "Explicit absolute expiry timestamp; removing a previously configured value clears the expiry."},
 		"effective_expires_at": schema.StringAttribute{Computed: true, MarkdownDescription: "Expiry timestamp currently stored by the API."},
 		"disabled":             schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Whether this credential is disabled."},
 		"last_used_at":         schema.StringAttribute{Computed: true, MarkdownDescription: "Most recent authentication time."},
 		"created_at":           schema.StringAttribute{Computed: true, MarkdownDescription: "Token creation timestamp."},
-		"rotation_nonce":       schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Change this declaration to revoke and replace the credential."},
+		"rotation_nonce":       schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{rotationNonceRequiresReplace()}, MarkdownDescription: "Change this declaration to revoke and replace the credential; a first value set after import is recorded without rotation."},
 	}}
 }
 func (r *ServiceAccountTokenResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -190,7 +189,7 @@ func (r *ServiceAccountTokenResource) Update(ctx context.Context, req resource.U
 		return
 	}
 	if len(patch) == 0 {
-		resp.State = req.State
+		recordAdoptedInputs(ctx, req, resp, "rotation_nonce", "expires_in")
 		return
 	}
 	if r.update(ctx, &data, patch, &resp.Diagnostics) {

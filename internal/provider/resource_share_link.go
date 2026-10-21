@@ -78,7 +78,7 @@ func (r *MarketplaceShareLinkResource) Schema(_ context.Context, _ resource.Sche
 		"plugin_ids":         schema.SetAttribute{Required: true, ElementType: types.StringType, PlanModifiers: []planmodifier.Set{setplanmodifier.RequiresReplace()}, Validators: []validator.Set{setvalidator.SizeAtMost(555), setvalidator.ValueStringsAre(stringvalidator.RegexMatches(canonicalUUIDRegexp, "Use a lowercase canonical plugin UUID."))}, MarkdownDescription: "Explicit approved-plugin membership, including an empty set for skill-only links."},
 		"plugin_platform":    schema.StringAttribute{Optional: true, PlanModifiers: replace, Validators: []validator.String{stringvalidator.OneOf("posix", "windows")}, MarkdownDescription: "Required target operating-system family when sharing plugins."},
 		"expires_at":         schema.StringAttribute{Optional: true, PlanModifiers: replace, Validators: []validator.String{shareLinkTimestampValidator{}}, MarkdownDescription: "Canonical UTC expiry with millisecond precision; required for plugin links."},
-		"rotation_nonce":     schema.StringAttribute{Optional: true, PlanModifiers: replace, MarkdownDescription: "Change this value to revoke the old link and create a replacement secret."},
+		"rotation_nonce":     schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{rotationNonceRequiresReplace()}, MarkdownDescription: "Change this value to revoke the old link and create a replacement secret; a first value set after import is recorded without rotation."},
 		"raw_token":          schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Secret returned once on creation and preserved through reads."},
 		"clone_url":          schema.StringAttribute{Computed: true, Sensitive: true, MarkdownDescription: "Secret-once Git clone URL containing the raw token."},
 		"organization_id":    schema.StringAttribute{Computed: true, MarkdownDescription: "Owning organization UUID."},
@@ -201,8 +201,9 @@ func (r *MarketplaceShareLinkResource) Read(ctx context.Context, req resource.Re
 	}
 	resp.State.RemoveResource(ctx)
 }
-func (r *MarketplaceShareLinkResource) Update(_ context.Context, _ resource.UpdateRequest, resp *resource.UpdateResponse) {
-	resp.Diagnostics.AddError("Immutable share link", "Changing link inputs requires replacement and revocation of its predecessor.")
+func (r *MarketplaceShareLinkResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	// Every other input requires replacement, so only an adopted nonce reaches Update.
+	recordAdoptedInputs(ctx, req, resp, "rotation_nonce")
 }
 func (r *MarketplaceShareLinkResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var data MarketplaceShareLinkResourceModel
