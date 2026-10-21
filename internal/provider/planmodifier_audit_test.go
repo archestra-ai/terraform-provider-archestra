@@ -111,6 +111,7 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 		"default_environment_validation_regex",
 		"default_environment_trusted_image_registries",
 		"mcp_idle_hibernation_enabled",
+		"default_personal_agent_access_all_tools",
 		"apps_hackathon_recorder_enabled",
 		"new_apps_disabled_by_default",
 		"new_apps_locked_by_default",

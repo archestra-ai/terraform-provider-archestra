@@ -38,6 +38,7 @@
 * **Per-resource `import.sh`** — every importable resource auto-renders an `## Import` section in its docs page.
 * **`scripts/bootstrap-local-stack.sh`** — one-command full-suite local setup with EE license + BYOS Vault + Ollama mock.
 * **`platform-version.txt`** names the tested Archestra release. Acceptance CI and `scripts/bootstrap-local-stack.sh` run against it, and the provider embeds it for its untested-version warning. The Update Terraform Provider workflow in archestra-ai/archestra proposes new releases in pull requests on `automation/platform-api`.
+* **Tested against Archestra 1.5.0-rc.1.** The API client is regenerated from that release, and `archestra_organization_settings.default_personal_agent_access_all_tools` sets whether new personal agents start with access to all tools (API 1.5.0-rc.1 or later).
 
 ### Bug Fixes
 

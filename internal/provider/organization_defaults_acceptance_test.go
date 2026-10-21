@@ -144,9 +144,11 @@ default_permissions={agents=%s}`, permissions))
 	updated := config(fmt.Sprintf(`environment_defaults={agents=archestra_environment.second.id,mcp_gateways=""}
 default_user_limits={default={limit_value=20,models=[],cleanup_interval="calendar_month"},(archestra_environment.second.id)={limit_value=7,models=[],cleanup_interval="24h"}}
 default_permissions={agents=%s}`, permissions))
+	// Restore the platform default so later tests create personal agents as usual.
 	cleared := config(fmt.Sprintf(`environment_defaults={agents="",mcp_gateways=""}
 default_user_limits={}
-default_permissions={agents=%s}`, encode(original.Grants)))
+default_permissions={agents=%s}
+default_personal_agent_access_all_tools=true`, encode(original.Grants)))
 	check := func(s *terraform.State) error {
 		value := s.RootModule().Resources["archestra_organization_settings.test"].Primary
 		if orgID != "" && orgID != value.ID {
@@ -187,8 +189,8 @@ default_permissions={agents=%s}`, encode(original.Grants)))
 		{ResourceName: "archestra_organization_settings.test", ImportState: true, ImportStateVerify: true},
 		{Config: updated, Check: check, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_organization_settings.test", plancheck.ResourceActionUpdate)}}},
 		{PreConfig: drift, Config: updated, Check: check},
-		{Config: config(`mcp_idle_hibernation_enabled=true`), Check: resource.ComposeTestCheckFunc(check, resource.TestCheckResourceAttr("archestra_organization_settings.test", "default_user_limits.%", "2"))},
-		{Config: cleared, Check: resource.ComposeTestCheckFunc(check, resource.TestCheckResourceAttr("archestra_organization_settings.test", "default_user_limits.%", "0"), resource.TestCheckResourceAttr("archestra_organization_settings.test", "environment_defaults.agents", ""))},
+		{Config: config("mcp_idle_hibernation_enabled=true\ndefault_personal_agent_access_all_tools=false"), Check: resource.ComposeTestCheckFunc(check, resource.TestCheckResourceAttr("archestra_organization_settings.test", "default_user_limits.%", "2"), resource.TestCheckResourceAttr("archestra_organization_settings.test", "default_personal_agent_access_all_tools", "false"))},
+		{Config: cleared, Check: resource.ComposeTestCheckFunc(check, resource.TestCheckResourceAttr("archestra_organization_settings.test", "default_user_limits.%", "0"), resource.TestCheckResourceAttr("archestra_organization_settings.test", "environment_defaults.agents", ""), resource.TestCheckResourceAttr("archestra_organization_settings.test", "default_personal_agent_access_all_tools", "true"))},
 		{Config: cleared, ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
 	}})
 }
