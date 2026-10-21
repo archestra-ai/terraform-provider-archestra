@@ -119,10 +119,10 @@ func TestAccVirtualAPIKeyResource(t *testing.T) {
 	}
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config("tf-virtual-router", "1", false), Check: resource.ComposeTestCheckFunc(capture, resource.TestCheckResourceAttr("archestra_virtual_key.test", "spend_cap.limit_value", "100"))},
-		// Values are write-once: import adopts metadata and never retrieves the bearer credential.
-		{ResourceName: "archestra_virtual_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"value", "rotation_nonce"}, ImportStateCheck: func(states []*terraform.InstanceState) error {
-			if len(states) != 1 || states[0].Attributes["value"] != "" {
-				return fmt.Errorf("import recovered a virtual key value")
+		// The importing identity authored the key, so the reveal endpoint recovers its value.
+		{ResourceName: "archestra_virtual_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"rotation_nonce"}, ImportStateCheck: func(states []*terraform.InstanceState) error {
+			if len(states) != 1 || states[0].Attributes["value"] == "" || states[0].Attributes["value"] != secret {
+				return fmt.Errorf("import did not recover the author's virtual key value")
 			}
 			return nil
 		}},
@@ -141,7 +141,7 @@ name=%q
 	}
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config("tf-passthrough"), Check: resource.TestCheckResourceAttr("archestra_virtual_key.test", "provider_api_keys.#", "0")},
-		{ResourceName: "archestra_virtual_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"value"}},
+		{ResourceName: "archestra_virtual_key.test", ImportState: true, ImportStateVerify: true},
 		{Config: config("tf-passthrough-renamed"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectResourceAction("archestra_virtual_key.test", plancheck.ResourceActionUpdate)}}},
 		{Config: config("tf-passthrough-renamed"), ConfigPlanChecks: resource.ConfigPlanChecks{PreApply: []plancheck.PlanCheck{plancheck.ExpectEmptyPlan()}}},
 	}})

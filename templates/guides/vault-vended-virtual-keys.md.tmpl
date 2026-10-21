@@ -1,0 +1,54 @@
+---
+page_title: "Vault-Vended Virtual Keys - archestra Provider"
+subcategory: ""
+description: |-
+  Create virtual keys with Terraform and store their values in team Vault paths.
+---
+
+# Vault-vended virtual keys
+
+An `archestra_virtual_key` is a revocable bearer credential that routes model
+requests through Archestra to one or more model providers. Terraform can create
+one key per team and write each value to that team's Vault path, so workloads
+read their key from Vault instead of from Terraform outputs.
+
+Archestra never writes to your Vault. With Vault-backed secrets (BYOS), the
+platform only reads the provider credential named by `vault_secret_path` and
+`vault_secret_key`. The write in this guide is done by the HashiCorp Vault
+provider, using the Vault token configured for Terraform.
+
+## Example
+
+{{ tffile "examples/guides/vault-vended-virtual-key/main.tf" }}
+
+The example:
+
+- references an upstream provider credential that already exists in Vault;
+- creates a virtual key routed to that provider, billed to the team, with a
+  monthly spend cap and an absolute expiry;
+- writes the key value to `secret/data/teams/<team>/archestra-virtual-key`.
+
+## Rotation
+
+Change `rotation_nonce` to replace the key. With
+`create_before_destroy = true`, Terraform creates the new key, updates the
+Vault secret and then revokes the old key, so a valid key exists throughout.
+
+## Terraform state
+
+The key value is stored in Terraform state as a sensitive attribute. Sensitive
+values are hidden from plan output but are readable by anyone who can read the
+state. Use an encrypted remote backend with restricted access.
+
+## Import and recovery
+
+Archestra returns a key value on creation. On import, or when a refresh finds
+no value in state, the provider requests the value from the API. Only the
+identity that created the key can reveal it. For any other identity the API
+returns 403; the provider then leaves `value` null and keeps `secret_id` and
+`token_start`, which still identify the key.
+
+Service-account identities currently receive 403 for keys they created. A
+platform change that lets a service account reveal its own keys is in progress.
+Until it ships, a service account that loses its state must rotate the key
+rather than recover its value.
