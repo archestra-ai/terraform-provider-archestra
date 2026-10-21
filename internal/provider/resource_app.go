@@ -11,6 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -30,29 +31,29 @@ func NewAppResource() resource.Resource { return &AppResource{} }
 
 type AppResource struct{ client *client.ClientWithResponses }
 type AppResourceModel struct {
-	ID                        types.String      `tfsdk:"id"`
-	Name                      types.String      `tfsdk:"name"`
-	Slug                      types.String      `tfsdk:"slug"`
-	Description               types.String      `tfsdk:"description"`
-	HTML                      types.String      `tfsdk:"html"`
-	BrowserPermissions        types.Set         `tfsdk:"browser_permissions"`
-	EnvironmentID             types.String      `tfsdk:"environment_id"`
-	Icon                      types.String      `tfsdk:"icon"`
-	Labels                    []AgentLabelModel `tfsdk:"labels"`
-	Enabled                   types.Bool        `tfsdk:"enabled"`
-	Locked                    types.Bool        `tfsdk:"locked"`
-	OpenInFullscreen          types.Bool        `tfsdk:"open_in_fullscreen"`
-	Tools                     types.Set         `tfsdk:"tools"`
-	Permissions               types.Set         `tfsdk:"permissions"`
-	ContentVersion            types.Int64       `tfsdk:"content_version"`
-	OrganizationID            types.String      `tfsdk:"organization_id"`
-	AuthorID                  types.String      `tfsdk:"author_id"`
-	AuthorName                types.String      `tfsdk:"author_name"`
-	ViewerRole                types.String      `tfsdk:"viewer_role"`
-	CreatedByServiceAccountID types.String      `tfsdk:"created_by_service_account_id"`
-	BackingServerID           types.String      `tfsdk:"backing_server_id"`
-	CreatedAt                 types.String      `tfsdk:"created_at"`
-	UpdatedAt                 types.String      `tfsdk:"updated_at"`
+	ID                        types.String `tfsdk:"id"`
+	Name                      types.String `tfsdk:"name"`
+	Slug                      types.String `tfsdk:"slug"`
+	Description               types.String `tfsdk:"description"`
+	HTML                      types.String `tfsdk:"html"`
+	BrowserPermissions        types.Set    `tfsdk:"browser_permissions"`
+	EnvironmentID             types.String `tfsdk:"environment_id"`
+	Icon                      types.String `tfsdk:"icon"`
+	Labels                    types.Set    `tfsdk:"labels"`
+	Enabled                   types.Bool   `tfsdk:"enabled"`
+	Locked                    types.Bool   `tfsdk:"locked"`
+	OpenInFullscreen          types.Bool   `tfsdk:"open_in_fullscreen"`
+	Tools                     types.Set    `tfsdk:"tools"`
+	Permissions               types.Set    `tfsdk:"permissions"`
+	ContentVersion            types.Int64  `tfsdk:"content_version"`
+	OrganizationID            types.String `tfsdk:"organization_id"`
+	AuthorID                  types.String `tfsdk:"author_id"`
+	AuthorName                types.String `tfsdk:"author_name"`
+	ViewerRole                types.String `tfsdk:"viewer_role"`
+	CreatedByServiceAccountID types.String `tfsdk:"created_by_service_account_id"`
+	BackingServerID           types.String `tfsdk:"backing_server_id"`
+	CreatedAt                 types.String `tfsdk:"created_at"`
+	UpdatedAt                 types.String `tfsdk:"updated_at"`
 }
 
 var appAttrSpec = []AttrSpec{
@@ -353,10 +354,11 @@ func applyAppMetadata(data *AppResourceModel, row appMetadata) {
 	data.Description = types.StringPointerValue(row.Description)
 	data.EnvironmentID = types.StringPointerValue(row.EnvironmentID)
 	data.Icon = types.StringPointerValue(row.Icon)
-	data.Labels = make([]AgentLabelModel, 0, len(row.Labels))
+	labels := make([]attr.Value, 0, len(row.Labels))
 	for _, label := range row.Labels {
-		data.Labels = append(data.Labels, AgentLabelModel{Key: types.StringValue(label.Key), Value: types.StringValue(label.Value)})
+		labels = append(labels, types.ObjectValueMust(knowledgeFileLabelType.AttrTypes, map[string]attr.Value{"key": types.StringValue(label.Key), "value": types.StringValue(label.Value)}))
 	}
+	data.Labels = types.SetValueMust(knowledgeFileLabelType, labels)
 	data.Enabled = types.BoolValue(row.Enabled)
 	data.Locked = types.BoolValue(row.Locked)
 	data.OpenInFullscreen = types.BoolValue(row.Fullscreen)

@@ -24,7 +24,7 @@ const appTestOtherToolID = "33333333-3333-4333-8333-333333333333"
 
 func appTestModel(t *testing.T) AppResourceModel {
 	t.Helper()
-	return AppResourceModel{ID: types.StringValue(appTestID), Name: types.StringValue("App"), Slug: types.StringValue("app"), HTML: types.StringValue("<!doctype html><html><body>Original</body></html>"), BrowserPermissions: types.SetValueMust(types.StringType, []attr.Value{}), Tools: types.SetValueMust(agentInlineToolType, []attr.Value{}), Permissions: types.SetNull(permissionGrantObjectType), ContentVersion: types.Int64Value(1), Enabled: types.BoolValue(true), Locked: types.BoolValue(false), OpenInFullscreen: types.BoolValue(false), Labels: []AgentLabelModel{}}
+	return AppResourceModel{ID: types.StringValue(appTestID), Name: types.StringValue("App"), Slug: types.StringValue("app"), HTML: types.StringValue("<!doctype html><html><body>Original</body></html>"), BrowserPermissions: types.SetValueMust(types.StringType, []attr.Value{}), Tools: types.SetValueMust(agentInlineToolType, []attr.Value{}), Permissions: types.SetNull(permissionGrantObjectType), ContentVersion: types.Int64Value(1), Enabled: types.BoolValue(true), Locked: types.BoolValue(false), OpenInFullscreen: types.BoolValue(false), Labels: types.SetValueMust(knowledgeFileLabelType, nil)}
 }
 func appTestTools(t *testing.T, ids ...string) types.Set {
 	t.Helper()
