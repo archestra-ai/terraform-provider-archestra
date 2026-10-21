@@ -58,6 +58,9 @@ func PreserveRequiredCollections(root string, providers ...*ujconfig.Provider) e
 			if err := preserveRequiredSecretSources(root, scope, r, resources[name]); err != nil {
 				return err
 			}
+			if err := ignoreInitOnlySecretSources(root, scope, r, resources[name]); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
