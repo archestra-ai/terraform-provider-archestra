@@ -14,6 +14,7 @@ class FixtureTests(unittest.TestCase):
     def setUp(self):
         self.existing = []
         self.created = []
+        self.updated = []
         self.redirect = False
         owner = self
 
@@ -31,6 +32,12 @@ class FixtureTests(unittest.TestCase):
                 self.end_headers()
                 self.wfile.write(json.dumps(owner.existing).encode())
 
+            def do_PATCH(self):
+                owner.updated.append((self.path, json.loads(self.rfile.read(int(self.headers['Content-Length'])))))
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'{}')
+
             def do_POST(self):
                 owner.created.append(json.loads(self.rfile.read(int(self.headers['Content-Length']))))
                 self.send_response(200)
@@ -41,7 +48,7 @@ class FixtureTests(unittest.TestCase):
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
         self.url = 'http://127.0.0.1:' + str(self.server.server_port)
-        self.model_url = 'http://ollama-mock.default.svc.cluster.local:11434'
+        self.model_url = 'http://ollama-mock.default.svc.cluster.local:11434/v1'
 
     def tearDown(self):
         self.server.shutdown()
@@ -59,12 +66,27 @@ class FixtureTests(unittest.TestCase):
         self.existing = [{'id': 'existing-id', 'name': 'terraform-acceptance-model-fixture', 'provider': 'ollama', 'baseUrl': self.model_url}]
         self.assertEqual(seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url, False), 'existing-id')
         self.assertEqual(self.created, [])
+        self.assertEqual(self.updated, [])
 
-    def test_mismatch_does_not_overwrite_an_existing_object(self):
+    def test_rerun_updates_fixture_to_the_requested_endpoint(self):
+        self.existing = [{'id': 'existing-id', 'name': 'terraform-acceptance-model-fixture', 'provider': 'ollama',
+                          'baseUrl': 'http://ollama-mock.default.svc.cluster.local:11434'}]
+        self.assertEqual(seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url, True), 'existing-id')
+        self.assertEqual(self.updated, [('/api/llm-provider-api-keys/existing-id', {'baseUrl': self.model_url})])
+        self.assertEqual(self.created, [])
+
+    def test_default_endpoint_matches_ci(self):
+        workflow = (Path(__file__).parent.parent / '.github/workflows/on-pull-request.yml').read_text()
+        self.assertIn('ARCHESTRA_TEST_LLM_BASE_URL: ' + self.model_url, workflow)
+        source = Path(__file__).with_name('bootstrap-test-llm-key.py').read_text()
+        self.assertIn(repr(self.model_url), source)
+
+    def test_provider_mismatch_does_not_overwrite_an_existing_object(self):
         self.existing = [{'id': 'existing-id', 'name': 'terraform-acceptance-model-fixture', 'provider': 'other', 'baseUrl': self.model_url}]
         with self.assertRaises(ValueError):
             seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url, False)
         self.assertEqual(self.created, [])
+        self.assertEqual(self.updated, [])
 
     def test_authentication_is_not_forwarded_to_redirects(self):
         self.redirect = True

@@ -25,9 +25,17 @@ def ensure_fixture(base_url, token, model_url, byos):
     name = 'terraform-acceptance-model-fixture'
     matches = [key for key in keys if key['name'] == name]
     if matches:
-        if len(matches) != 1 or matches[0]['provider'] != 'ollama' or matches[0]['baseUrl'] != model_url:
-            raise ValueError('Existing test fixture does not match the requested model endpoint')
-        return matches[0]['id']
+        if len(matches) != 1 or matches[0]['provider'] != 'ollama':
+            raise ValueError('Existing test fixture is not a single Ollama model provider')
+        fixture_id = matches[0]['id']
+        if matches[0]['baseUrl'] != model_url:
+            # Re-runs converge an older fixture on the requested endpoint.
+            update = urllib.request.Request(endpoint + '/' + urllib.parse.quote(fixture_id, safe=''),
+                                            data=json.dumps({'baseUrl': model_url}).encode(),
+                                            headers=headers, method='PATCH')
+            with opener.open(update, timeout=45):
+                pass
+        return fixture_id
     payload = {'name': name, 'provider': 'ollama', 'baseUrl': model_url, 'isPrimary': False}
     if byos:
         payload.update(vaultSecretPath='secret/data/test/ollama', vaultSecretKey='api_key')
@@ -41,7 +49,7 @@ def ensure_fixture(base_url, token, model_url, byos):
 def main():
     print(ensure_fixture(os.getenv('ARCHESTRA_BASE_URL', 'http://localhost:9000'),
           os.getenv('ARCHESTRA_API_KEY', ''),
-          os.getenv('ARCHESTRA_TEST_LLM_BASE_URL', 'http://ollama-mock.default.svc.cluster.local:11434'),
+          os.getenv('ARCHESTRA_TEST_LLM_BASE_URL', 'http://ollama-mock.default.svc.cluster.local:11434/v1'),
           os.getenv('ARCHESTRA_READONLY_VAULT_ENABLED') == 'true'))
 
 

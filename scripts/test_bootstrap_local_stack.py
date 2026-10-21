@@ -50,6 +50,7 @@ esac
             (scripts / 'bootstrap-test-llm-key.py').write_text(
                 'import os\nfrom pathlib import Path\n'
                 'assert os.environ.get("ARCHESTRA_READONLY_VAULT_ENABLED") == "true", "Readonly Vault stack must seed a Vault-backed model fixture"\n'
+                'with (Path(os.environ["CAPTURE"])/"seed-url").open("w") as f: f.write(os.environ["ARCHESTRA_TEST_LLM_BASE_URL"])\n'
                 'with (Path(os.environ["CAPTURE"])/"commands").open("a") as f: '
                 'f.write("child " + os.environ["KUBECONFIG"] + " " + os.environ["ARCHESTRA_BASE_URL"] + "\\n")\n'
                 'print("model-fixture-id")\n')
@@ -74,6 +75,10 @@ esac
             config = (root / 'rendered-kind').read_text()
             for port in ['19000', '13000', '19050']:
                 self.assertIn(f'hostPort: {port}', config)
+            printed = subprocess.run(['bash', str(scripts / 'bootstrap-local-stack.sh'), '--print-env'],
+                                     env=env, check=True, capture_output=True, text=True).stdout
+            seeded = (root / 'seed-url').read_text()
+            self.assertIn(f'export ARCHESTRA_TEST_LLM_BASE_URL={seeded}\n', printed)
 
     def test_print_env_points_model_tests_at_the_stack_mock(self):
         result = subprocess.run(['bash', str(Path(__file__).with_name('bootstrap-local-stack.sh')), '--print-env'],
