@@ -3,12 +3,12 @@
 page_title: "archestra_virtual_key Resource - archestra"
 subcategory: ""
 description: |-
-  Revocable virtual LLM key with explicit provider routing, billing and spend cap. The sensitive value is saved only on creation; import adopts metadata without retrieving a bearer credential. Change rotation_nonce to replace and revoke the key. Passthrough keys carry no provider credentials.
+  Revocable virtual LLM key with explicit provider routing, billing and spend cap. The sensitive value is saved on creation and recovered on import or refresh when the caller authored the key. Change rotation_nonce to replace and revoke the key. Passthrough keys carry no provider credentials.
 ---
 
 # archestra_virtual_key (Resource)
 
-Revocable virtual LLM key with explicit provider routing, billing and spend cap. The sensitive value is saved only on creation; import adopts metadata without retrieving a bearer credential. Change rotation_nonce to replace and revoke the key. Passthrough keys carry no provider credentials.
+Revocable virtual LLM key with explicit provider routing, billing and spend cap. The sensitive value is saved on creation and recovered on import or refresh when the caller authored the key. Change rotation_nonce to replace and revoke the key. Passthrough keys carry no provider credentials.
 
 ## Example Usage
 
@@ -22,6 +22,11 @@ resource "archestra_virtual_key" "example" {
   spend_cap = { limit_value = 100, cleanup_interval = "calendar_month" }
   # Changing this value replaces the key and revokes its previous credential.
   rotation_nonce = "1"
+
+  lifecycle {
+    # Keeps a valid key available during rotation_nonce rotation.
+    create_before_destroy = true
+  }
 }
 ```
 
@@ -60,7 +65,7 @@ resource "archestra_virtual_key" "example" {
 - `secret_id` (String) Stored credential identifier.
 - `teams` (String) Legacy team visibility metadata as JSON.
 - `token_start` (String) Non-secret identifying prefix.
-- `value` (String, Sensitive) Bearer credential returned on creation and retained in sensitive state.
+- `value` (String, Sensitive) Bearer credential returned on creation or revealed to the key author, retained in sensitive state.
 
 <a id="nestedatt--labels"></a>
 ### Nested Schema for `labels`

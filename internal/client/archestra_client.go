@@ -6931,6 +6931,9 @@ type ClientInterface interface {
 
 	UpdateVirtualApiKey(ctx context.Context, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetVirtualApiKeyValue request
+	GetVirtualApiKeyValue(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetMcpToolCalls request
 	GetMcpToolCalls(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -9171,6 +9174,18 @@ func (c *Client) UpdateVirtualApiKeyWithBody(ctx context.Context, id openapi_typ
 
 func (c *Client) UpdateVirtualApiKey(ctx context.Context, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateVirtualApiKeyRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetVirtualApiKeyValue(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetVirtualApiKeyValueRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -15838,6 +15853,40 @@ func NewUpdateVirtualApiKeyRequestWithBody(server string, id openapi_types.UUID,
 	return req, nil
 }
 
+// NewGetVirtualApiKeyValueRequest generates requests for GetVirtualApiKeyValue
+func NewGetVirtualApiKeyValueRequest(server string, id openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/llm-virtual-keys/%s/value", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetMcpToolCallsRequest generates requests for GetMcpToolCalls
 func NewGetMcpToolCallsRequest(server string, params *GetMcpToolCallsParams) (*http.Request, error) {
 	var err error
@@ -20002,6 +20051,9 @@ type ClientWithResponsesInterface interface {
 	UpdateVirtualApiKeyWithBodyWithResponse(ctx context.Context, id openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error)
 
 	UpdateVirtualApiKeyWithResponse(ctx context.Context, id openapi_types.UUID, body UpdateVirtualApiKeyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateVirtualApiKeyResponse, error)
+
+	// GetVirtualApiKeyValueWithResponse request
+	GetVirtualApiKeyValueWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetVirtualApiKeyValueResponse, error)
 
 	// GetMcpToolCallsWithResponse request
 	GetMcpToolCallsWithResponse(ctx context.Context, params *GetMcpToolCallsParams, reqEditors ...RequestEditorFn) (*GetMcpToolCallsResponse, error)
@@ -31782,6 +31834,79 @@ func (r UpdateVirtualApiKeyResponse) StatusCode() int {
 	return 0
 }
 
+type GetVirtualApiKeyValueResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Value string `json:"value"`
+	}
+	JSON400 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         GetVirtualApiKeyValue400ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON401 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         GetVirtualApiKeyValue401ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON403 *struct {
+		Error struct {
+			Details      *map[string]interface{}           `json:"details,omitempty"`
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         GetVirtualApiKeyValue403ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON404 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         GetVirtualApiKeyValue404ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON409 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         GetVirtualApiKeyValue409ErrorType `json:"type"`
+		} `json:"error"`
+	}
+	JSON500 *struct {
+		Error struct {
+			InternalCode *string                           `json:"internal_code,omitempty"`
+			Message      string                            `json:"message"`
+			Type         GetVirtualApiKeyValue500ErrorType `json:"type"`
+		} `json:"error"`
+	}
+}
+type GetVirtualApiKeyValue400ErrorType string
+type GetVirtualApiKeyValue401ErrorType string
+type GetVirtualApiKeyValue403ErrorType string
+type GetVirtualApiKeyValue404ErrorType string
+type GetVirtualApiKeyValue409ErrorType string
+type GetVirtualApiKeyValue500ErrorType string
+
+// Status returns HTTPResponse.Status
+func (r GetVirtualApiKeyValueResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetVirtualApiKeyValueResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetMcpToolCallsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -42245,6 +42370,15 @@ func (c *ClientWithResponses) UpdateVirtualApiKeyWithResponse(ctx context.Contex
 		return nil, err
 	}
 	return ParseUpdateVirtualApiKeyResponse(rsp)
+}
+
+// GetVirtualApiKeyValueWithResponse request returning *GetVirtualApiKeyValueResponse
+func (c *ClientWithResponses) GetVirtualApiKeyValueWithResponse(ctx context.Context, id openapi_types.UUID, reqEditors ...RequestEditorFn) (*GetVirtualApiKeyValueResponse, error) {
+	rsp, err := c.GetVirtualApiKeyValue(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetVirtualApiKeyValueResponse(rsp)
 }
 
 // GetMcpToolCallsWithResponse request returning *GetMcpToolCallsResponse
@@ -57833,6 +57967,113 @@ func ParseUpdateVirtualApiKeyResponse(rsp *http.Response) (*UpdateVirtualApiKeyR
 				InternalCode *string                         `json:"internal_code,omitempty"`
 				Message      string                          `json:"message"`
 				Type         UpdateVirtualApiKey500ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetVirtualApiKeyValueResponse parses an HTTP response from a GetVirtualApiKeyValueWithResponse call
+func ParseGetVirtualApiKeyValueResponse(rsp *http.Response) (*GetVirtualApiKeyValueResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetVirtualApiKeyValueResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Value string `json:"value"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         GetVirtualApiKeyValue400ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         GetVirtualApiKeyValue401ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			Error struct {
+				Details      *map[string]interface{}           `json:"details,omitempty"`
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         GetVirtualApiKeyValue403ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         GetVirtualApiKeyValue404ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         GetVirtualApiKeyValue409ErrorType `json:"type"`
+			} `json:"error"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Error struct {
+				InternalCode *string                           `json:"internal_code,omitempty"`
+				Message      string                            `json:"message"`
+				Type         GetVirtualApiKeyValue500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
