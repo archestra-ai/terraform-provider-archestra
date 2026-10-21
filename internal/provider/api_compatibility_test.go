@@ -163,7 +163,7 @@ func TestNightlyAcceptanceTestsSupportedReleases(t *testing.T) {
 	// A stub gh returns the stable release versions; the newest one wins.
 	bin := t.TempDir()
 	stub := "#!/bin/sh\nprintf '1.4.2\\n1.4.10\\n1.3.99\\n'\n"
-	if err := os.WriteFile(filepath.Join(bin, "gh"), []byte(stub), 0o755); err != nil {
+	if err := os.WriteFile(filepath.Join(bin, "gh"), []byte(stub), 0o700); err != nil { //nolint:gosec // G306: the stub gh must be executable.
 		t.Fatal(err)
 	}
 	cmd := exec.CommandContext(t.Context(), "../../scripts/nightly-platform-versions.sh")
