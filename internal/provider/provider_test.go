@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	version "github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 )
@@ -29,6 +30,21 @@ func testAccPreCheck(t *testing.T) {
 	if v := os.Getenv("ARCHESTRA_BASE_URL"); v == "" {
 		t.Fatal("ARCHESTRA_BASE_URL must be set for acceptance tests")
 	}
+}
+
+// testAccAPIVersionAtLeast reports whether the test server runs minimum or a
+// later release. Nightly CI also runs the suite against older supported releases.
+func testAccAPIVersionAtLeast(t *testing.T, minimum string) bool {
+	t.Helper()
+	raw, err := readAPIVersion(t.Context(), http.DefaultClient, os.Getenv("ARCHESTRA_BASE_URL"))
+	if err != nil {
+		t.Fatalf("read the Archestra version: %v", err)
+	}
+	server, err := version.NewSemver(raw)
+	if err != nil {
+		t.Fatalf("Archestra version %q: %v", raw, err)
+	}
+	return !server.LessThan(version.Must(version.NewSemver(minimum)))
 }
 
 //nolint:unused // Used by vault-ref-dependent tests

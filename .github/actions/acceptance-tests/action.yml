@@ -133,3 +133,10 @@ runs:
         ARCHESTRA_AGENT_RUNTIME_ENABLED: "true"
         ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
         ARCHESTRA_TEST_LLM_BASE_URL: http://ollama-mock.default.svc.cluster.local:11434/v1
+
+    - name: Cluster state on failure
+      if: failure()
+      shell: bash
+      run: |
+        kubectl get pods --all-namespaces -o wide || true
+        kubectl get events --all-namespaces --sort-by=.lastTimestamp | tail -n 100 || true
