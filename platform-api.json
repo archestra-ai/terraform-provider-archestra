@@ -1,0 +1,10 @@
+{
+  "platform_commit": "6d46cadec5ff116f5bbb07f0345bba920c3b664d",
+  "version": "1.5.0-rc.2",
+  "spec_sha256": "1c3faaea1ac281cf8efc8eac8aebad2cc24ecac07f103838b9ddefe96d4b0075",
+  "generator_commit": "11e785b2d5384f78a08fff43854b6e6559828020",
+  "files": {
+    "internal/client/archestra_client.go": "e4746f06506c39f720118da1bed6419c400ec0a9af9cfe15650b923dd1df51d8",
+    "platform-version.txt": "19cc8d558dc371c346f2e442d001ebafd65302818919193eac5bf1c1e861bf23"
+  }
+}
