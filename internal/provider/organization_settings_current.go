@@ -60,6 +60,7 @@ func currentOrganizationAttributes() map[string]schema.Attribute {
 		"apps_hackathon_recorder_enabled":              schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the app recorder is enabled."},
 		"new_apps_disabled_by_default":                 schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether new apps start disabled."},
 		"new_apps_locked_by_default":                   schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether new apps start locked."},
+		"allow_unauthenticated_llm_proxy_requests":     schema.BoolAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Bool{boolplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Whether the LLM proxy accepts requests without an Archestra credential."},
 	}
 }
 func currentOrganizationSpecs(domain string) []AttrSpec {
@@ -80,6 +81,7 @@ func currentOrganizationSpecs(domain string) []AttrSpec {
 			{TFName: "apps_hackathon_recorder_enabled", JSONName: "appsHackathonRecorderEnabled", Kind: Scalar},
 			{TFName: "new_apps_disabled_by_default", JSONName: "newAppsDisabledByDefault", Kind: Scalar},
 			{TFName: "new_apps_locked_by_default", JSONName: "newAppsLockedByDefault", Kind: Scalar},
+			{TFName: "allow_unauthenticated_llm_proxy_requests", JSONName: "allowUnauthenticatedLlmProxyRequests", Kind: Scalar},
 		}
 	case "knowledge-settings":
 		return []AttrSpec{
@@ -571,6 +573,16 @@ func flattenCurrentOrganizationSettings(data *OrganizationSettingsResourceModel,
 			}
 		}
 		data.NewAppsLockedByDefault = types.BoolPointerValue(value)
+	}
+	{
+		var value *bool
+		if raw := values["allowUnauthenticatedLlmProxyRequests"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Organization Response", "Unexpected type for allowUnauthenticatedLlmProxyRequests.")
+				return
+			}
+		}
+		data.AllowUnauthenticatedLlmProxyRequests = types.BoolPointerValue(value)
 	}
 }
 

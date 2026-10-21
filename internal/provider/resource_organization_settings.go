@@ -85,6 +85,7 @@ type OrganizationSettingsResourceModel struct {
 	AppsHackathonRecorderEnabled             types.Bool           `tfsdk:"apps_hackathon_recorder_enabled"`
 	NewAppsDisabledByDefault                 types.Bool           `tfsdk:"new_apps_disabled_by_default"`
 	NewAppsLockedByDefault                   types.Bool           `tfsdk:"new_apps_locked_by_default"`
+	AllowUnauthenticatedLlmProxyRequests     types.Bool           `tfsdk:"allow_unauthenticated_llm_proxy_requests"`
 	ID                                       types.String         `tfsdk:"id"`
 	Font                                     types.String         `tfsdk:"font"`
 	ColorTheme                               types.String         `tfsdk:"color_theme"`

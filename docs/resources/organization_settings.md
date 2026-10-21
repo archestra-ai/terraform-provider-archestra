@@ -107,6 +107,7 @@ resource "archestra_organization_settings" "main" {
 
 - `allow_chat_file_uploads` (Boolean) Whether to allow file uploads in chat
 - `allow_tool_auto_assignment` (Boolean) Whether new tools can be assigned automatically.
+- `allow_unauthenticated_llm_proxy_requests` (Boolean) Whether the LLM proxy accepts requests without an Archestra credential.
 - `animate_chat_placeholders` (Boolean) Whether to animate chat placeholders in the UI
 - `app_name` (String) Custom application name displayed in the UI
 - `apps_hackathon_recorder_enabled` (Boolean) Whether the app recorder is enabled.

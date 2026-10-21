@@ -90,8 +90,6 @@ func (r *OrganizationSettingsResource) APIShape() any {
 // These legacy projections and telemetry fields are deliberately not managed.
 func (r *OrganizationSettingsResource) KnownIntentionallySkipped() []string {
 	return []string{
-		// Security toggle added after the 1.4.0-rc.50 API floor; owning it requires raising the floor.
-		"allowUnauthenticatedLlmProxyRequests",
 		// Telemetry instance identity is not declarative organization configuration.
 		"analyticsInstanceId",
 		// Retired proxy singleton projection has no corresponding writable setting.

@@ -260,3 +260,28 @@ resource "archestra_organization_settings" "test" {
 		},
 	})
 }
+
+func TestAccOrganizationSettingsUnauthenticatedLLMProxyRequests(t *testing.T) {
+	config := func(setting string) string {
+		return `
+resource "archestra_organization_settings" "test" {
+ font = "lato"
+ color_theme = "cosmic-night"
+` + setting + `
+}
+`
+	}
+	const attr = "allow_unauthenticated_llm_proxy_requests"
+	resource.Test(t, resource.TestCase{
+		PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			{Config: config(attr + " = true"), Check: resource.TestCheckResourceAttr("archestra_organization_settings.test", attr, "true")},
+			{ResourceName: "archestra_organization_settings.test", ImportState: true, ImportStateVerify: true},
+			// Omission preserves the server value instead of resetting it.
+			{Config: config(""), Check: resource.TestCheckResourceAttr("archestra_organization_settings.test", attr, "true")},
+			{Config: config(""), PlanOnly: true},
+			{Config: config(attr + " = false"), Check: resource.TestCheckResourceAttr("archestra_organization_settings.test", attr, "false")},
+			{Config: config(""), PlanOnly: true},
+		},
+	})
+}

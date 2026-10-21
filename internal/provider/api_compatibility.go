@@ -15,7 +15,7 @@ import (
 
 // Raise the floor only when required API capabilities change. Widen the tested
 // interval only after real acceptance and both-scope reconciliation pass.
-const minimumAPIVersion = "1.4.0-rc.50"
+const minimumAPIVersion = "1.4.0-rc.51"
 const testedAPIConstraint = "= 1.4.0-rc.55"
 
 func checkAPICompatibility(ctx context.Context, httpClient *http.Client, baseURL, providerVersion, requestedConstraint string) diag.Diagnostics {

@@ -114,6 +114,7 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 		"apps_hackathon_recorder_enabled",
 		"new_apps_disabled_by_default",
 		"new_apps_locked_by_default",
+		"allow_unauthenticated_llm_proxy_requests",
 
 		"connection_base_urls",
 		// Documented contract: omitting one of these fields is sticky —

@@ -10,9 +10,9 @@ Terraform provider release and inherit the same API requirements.
 
 | Provider | API capability floor | Exact API versions tested | Status |
 |---|---|---|---|
-| Proposed 3.0.0 | 1.4.0-rc.50 | 1.4.0-rc.55 (native acceptance), pinned image digest below | Development candidate; unreleased |
+| Proposed 3.0.0 | 1.4.0-rc.51 | 1.4.0-rc.55 (native acceptance), pinned image digest below | Development candidate; unreleased |
 
-The floor includes atomic delegation, the current service-account team ownership API and the App tool-assignment read contract used by v3. It is a minimum required
+The floor includes atomic delegation, the current service-account team ownership API, the App tool-assignment read contract and the organization setting for unauthenticated LLM proxy requests (introduced in 1.4.0-rc.51) used by v3. It is a minimum required
 capability level, not evidence that every later release is compatible. This
 candidate has not established compatibility with all future 1.4.x versions or
 with the eventual 1.4.0 stable release. Prereleases can change contracts between
@@ -43,7 +43,7 @@ must not silently widen support or merge updates.
 ## Runtime compatibility check
 
 Before configuring resource and data-source clients, the provider reads the
-public `GET /health` endpoint. It rejects semantic versions below `1.4.0-rc.50`,
+public `GET /health` endpoint. It rejects semantic versions below `1.4.0-rc.51`,
 which lack required v3 API capabilities. Versions outside the tested interval
 `= 1.4.0-rc.55` produce a warning. Newer does not automatically mean compatible.
 Custom versions or unreadable version metadata produce a warning by default.
