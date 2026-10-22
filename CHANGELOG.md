@@ -1,5 +1,31 @@
 # Changelog
 
+## [3.0.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v2.4.1...v3.0.0) (2026-10-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* add platform-version.txt and stop sending retired request fields ([#184](https://github.com/archestra-ai/terraform-provider-archestra/issues/184))
+* consolidate provider resources and modernize both Crossplane scopes ([#180](https://github.com/archestra-ai/terraform-provider-archestra/issues/180))
+
+### Features
+
+* add platform-version.txt and stop sending retired request fields ([#184](https://github.com/archestra-ai/terraform-provider-archestra/issues/184)) ([11e785b](https://github.com/archestra-ai/terraform-provider-archestra/commit/11e785b2d5384f78a08fff43854b6e6559828020))
+* consolidate provider resources and modernize both Crossplane scopes ([#180](https://github.com/archestra-ai/terraform-provider-archestra/issues/180)) ([bf083ca](https://github.com/archestra-ai/terraform-provider-archestra/commit/bf083ca596587ccf8565c78017b7e56ab928f233))
+
+
+### Bug Fixes
+
+* **ci:** validate Crossplane coverage badges without pushing to main ([#189](https://github.com/archestra-ai/terraform-provider-archestra/issues/189)) ([bf68e86](https://github.com/archestra-ai/terraform-provider-archestra/commit/bf68e86b3718cffbf33168368c1e855a5cb4f3e6))
+* disable Archestra telemetry in CI ([#182](https://github.com/archestra-ai/terraform-provider-archestra/issues/182)) ([8c76a03](https://github.com/archestra-ai/terraform-provider-archestra/commit/8c76a03602e260a4b512e2269313ee5ef57cc4ba))
+* keep only API inputs and the credential in the virtual key schema ([#191](https://github.com/archestra-ai/terraform-provider-archestra/issues/191)) ([c937a0c](https://github.com/archestra-ai/terraform-provider-archestra/commit/c937a0c9882704760ee006a53e79b330bc893b56))
+
+
+### Documentation
+
+* correct the 3.0.0 release and compatibility notes ([#190](https://github.com/archestra-ai/terraform-provider-archestra/issues/190)) ([83479ba](https://github.com/archestra-ai/terraform-provider-archestra/commit/83479ba3404d208c2512dd2013ede8496694b6f6))
+* make the Vault-vended key example work for service accounts ([#185](https://github.com/archestra-ai/terraform-provider-archestra/issues/185)) ([aff1cee](https://github.com/archestra-ai/terraform-provider-archestra/commit/aff1ceeb895ae5e66f95f7750bee6cce625fe203))
+
 ## [2.4.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v2.4.0...v2.4.1) (2026-10-16)
 
 
