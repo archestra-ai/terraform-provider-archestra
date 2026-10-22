@@ -92,6 +92,7 @@ class FixtureTests(unittest.TestCase):
         self.redirect = True
         with self.assertRaisesRegex(RuntimeError, 'redirects are refused'):
             seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url, False)
+        self.assertEqual(self.created, [])
 
 
 if __name__ == '__main__':
