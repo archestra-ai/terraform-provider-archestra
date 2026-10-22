@@ -6,13 +6,21 @@ Terraform provider release and inherit the same API requirements.
 
 | Provider | API capability floor | Exact API versions tested | Status |
 |---|---|---|---|
-| Proposed 3.0.0 | 1.4.0-rc.51 | The release in `platform-version.txt` (native acceptance) | Development candidate; unreleased |
+| 3.0.0 | 1.4.0-rc.51 | The release in `platform-version.txt` at the release tag | Current |
 
 The floor includes atomic delegation, the current service-account team ownership API, the App tool-assignment read contract and the organization setting for unauthenticated LLM proxy requests (introduced in 1.4.0-rc.51) used by v3. It is a minimum required
-capability level, not evidence that every later release is compatible. This
-candidate has not established compatibility with all future 1.4.x versions or
-with the eventual 1.4.0 stable release. Prereleases can change contracts between
-release candidates; record each tested release explicitly.
+capability level, not evidence that every later release is compatible. Pull
+request CI tests the floor and the newest stable release, not each release
+between them. Prereleases can change contracts between release candidates;
+record each tested release explicitly.
+
+Two features need 1.5.0-rc.1 or later:
+
+- `default_personal_agent_access_all_tools` on `archestra_organization_settings`.
+  Leave it unset on older releases; they do not store it.
+- Recovering the `value` of an `archestra_virtual_key` that a service account
+  created, on import or refresh. Older releases return 403, so `value` stays
+  null. Users can recover keys they created on every supported release.
 
 `platform-version.txt` at the provider release tag names the tested release.
 Acceptance CI runs the native suite against that release and records the image
@@ -22,7 +30,8 @@ runtime check below.
 Pull request CI also runs the native and credential acceptance suites against
 the oldest supported release (`1.4.0-rc.51`) and the newest stable Archestra
 release. These checks are required, so a change that breaks a supported older
-release cannot merge.
+release cannot merge. The runtime check below still warns on those releases,
+because it treats only the release in `platform-version.txt` as tested.
 
 Crossplane reconciliation is not part of CI. The recorded evidence for
 1.4.0-rc.55 (image
@@ -76,9 +85,10 @@ provider "archestra" {
 
 After a stable interval has been validated, a deployment can use a constraint
 such as `>= 1.4.0, < 1.5.0`. That is constraint syntax, not a claim that this
-candidate has validated that interval. With an explicit constraint, missing,
-unreadable or non-semantic server versions are errors because the constraint
-cannot be verified. A user constraint cannot lower the provider's minimum floor.
+provider release has validated that interval. With an explicit constraint,
+missing, unreadable or non-semantic server versions are errors because the
+constraint cannot be verified. A user constraint cannot lower the provider's
+minimum floor.
 
 The probe sends no API key, follows no redirects, reads at most 4 KiB and has a
 five-second deadline (a shorter configured HTTP timeout still applies). Its
