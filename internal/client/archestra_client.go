@@ -4588,7 +4588,7 @@ type CreateLlmProviderApiKeyJSONBody struct {
 	Name     string                                  `json:"name"`
 	Provider CreateLlmProviderApiKeyJSONBodyProvider `json:"provider"`
 
-	// Shared Omitted or false: the key is yours alone (you own it and only you use it). True: a shared key with no owner, used by whoever its initialGrants reach.
+	// Shared Omitted or false: the key is yours alone (you own it and only you use it). True: a shared key with no owner, used by whoever its initialGrants reach. A service account cannot own a key, so it must send true.
 	Shared          *bool   `json:"shared,omitempty"`
 	VaultSecretKey  *string `json:"vaultSecretKey,omitempty"`
 	VaultSecretPath *string `json:"vaultSecretPath,omitempty"`
