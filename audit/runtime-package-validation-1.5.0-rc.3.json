@@ -1,0 +1,140 @@
+{
+ "result": "passed",
+ "resource_families": 31,
+ "data_sources": 4,
+ "api_version": "1.5.0-rc.3",
+ "api_image_digest": "sha256:ef2cc471d08b2af05e40cd211bc8b8292752723dff13b8d6c08530079e7167d6",
+ "source_git_commit": "c937a0c9882704760ee006a53e79b330bc893b56",
+ "runtime_source_sha256": "5110fbd88b1c9a1b7dffee819b4b577edc31cc49f37b1ce49a114d0267202804",
+ "publish_job_rehearsal": {
+  "workflow": ".github/workflows/release-please.yml job publish-crossplane, without docker login and without the publish target",
+  "clean_copy": "git clone of the local repository checked out at source_git_commit, submodules initialized, umask 022 as on GitHub runners",
+  "commands": [
+   "go build -o terraform-provider-archestra .",
+   "make -C crossplane generate TERRAFORM_PROVIDER_VERSION=3.0.0",
+   "make -C crossplane build.all PLATFORMS=\"linux_amd64 linux_arm64\" XPKG_REG_ORGS=\"xpkg.upbound.io/archestra\" TERRAFORM_PROVIDER_VERSION=3.0.0 VERSION=v3.0.0"
+  ],
+  "results": [
+   "1-build-tf rc=0",
+   "2-generate rc=0",
+   "3-build-all rc=0"
+  ],
+  "works_unchanged": true,
+  "qemu": "arm64 image build needs emulation, which the real job provides with docker/setup-qemu-action. Here it was enabled with docker run --privileged --rm tonistiigi/binfmt --install arm64; docker run --platform linux/arm64 alpine uname -m then printed aarch64. Without it the arm64 RUN step fails with exec format error.",
+  "release_fixture": "The 3.0.0 release zips do not exist yet. Release-style zips (goreleaser naming and flags, built at source_git_commit) were served from a temporary loopback fixture through TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX=http://127.0.0.1:18765, which the Makefile accepts as an override. No published release assets were used or claimed.",
+  "release_fixture_sha256": {
+   "terraform-provider-archestra_3.0.0_linux_amd64.zip": "90f5a3feb4364fec013e5ff1e0686739702780b9622c918cb2329bc4ac438fd8",
+   "terraform-provider-archestra_3.0.0_linux_arm64.zip": "3c1dd43d700d7bc06bea10d56df8052a9f4b03d1771d44bfe6be73b863352ee4"
+  }
+ },
+ "build": "Shipping runtime Dockerfile, Alpine 3.23.4, non-root uid 65532, Terraform 1.5.7, provider 3.0.0, VERSION=v3.0.0.",
+ "compilation": [
+  {
+   "kind": "terraform",
+   "architecture": "linux/amd64",
+   "sha256": "5260fbd4210458170fe2638b27a0b1f0601d19bf15cbc17ac26467db2642f3ef",
+   "flags": "CGO_ENABLED=0 -trimpath -ldflags \"-s -w -X main.version=3.0.0 -X main.commit=<source_git_commit>\" (goreleaser build flags)"
+  },
+  {
+   "kind": "terraform",
+   "architecture": "linux/arm64",
+   "sha256": "6437ae18e4ec70e40e27b52f6c9119f4c9cac0a56190f082cd3b6ee2745023b7",
+   "flags": "CGO_ENABLED=0 -trimpath -ldflags \"-s -w -X main.version=3.0.0 -X main.commit=<source_git_commit>\" (goreleaser build flags)"
+  },
+  {
+   "kind": "crossplane",
+   "architecture": "linux/amd64",
+   "size": 60166328,
+   "sha256": "132ce36c99f7774281a7339f421491f0a82dffc6c6a17a99843e4571e099d99d"
+  },
+  {
+   "kind": "crossplane",
+   "architecture": "linux/arm64",
+   "size": 56361144,
+   "sha256": "950b1a4607bcd09ddd19ed9649bf96f133cbe27bfce79767a92b1616286fad7a"
+  }
+ ],
+ "packages": [
+  {
+   "architecture": "linux/amd64",
+   "image_id": "sha256:edc6395ceeefa23c3d7096ca8c82598d20ba62faf7e17c33914bd2c334eebedd",
+   "runtime_user": "65532",
+   "image_architecture": "amd64",
+   "terraform_version": "1.5.7",
+   "provider_version": "3.0.0",
+   "controller_help": "passed",
+   "native_resource_families": 31,
+   "native_data_sources": 4,
+   "in_image_terraform_init_and_schema": "passed",
+   "embedded_native_provider_sha256": "5260fbd4210458170fe2638b27a0b1f0601d19bf15cbc17ac26467db2642f3ef",
+   "package_sha256": "feffded4749ca2f98b39e2fbb92c8c114785d81238ec120100be6a07e52a155d",
+   "package_size": 89476608,
+   "package_layers": 10,
+   "crds": 67,
+   "runtime_image_embedded": true,
+   "package_architecture": "amd64"
+  },
+  {
+   "architecture": "linux/arm64",
+   "image_id": "sha256:106ce6e4f5d1688b07d0172a770289a28988e4d0c70911f9dc36ffd0d4973c64",
+   "runtime_user": "65532",
+   "image_architecture": "arm64",
+   "terraform_version": "1.5.7",
+   "provider_version": "3.0.0",
+   "controller_help": "passed",
+   "native_resource_families": 31,
+   "native_data_sources": 4,
+   "in_image_terraform_init_and_schema": "passed",
+   "embedded_native_provider_sha256": "6437ae18e4ec70e40e27b52f6c9119f4c9cac0a56190f082cd3b6ee2745023b7",
+   "package_sha256": "01b74401bf93975b2914682e56fa41cde3c97dc45e0379ec8807f815c86952f7",
+   "package_size": 81059840,
+   "package_layers": 10,
+   "crds": 67,
+   "runtime_image_embedded": true,
+   "package_architecture": "arm64"
+  }
+ ],
+ "runtime_image_reconciliation": [
+  {
+   "architecture": "linux/amd64",
+   "scope": "cluster",
+   "pod_image_id": "sha256:edc6395ceeefa23c3d7096ca8c82598d20ba62faf7e17c33914bd2c334eebedd",
+   "create": "passed",
+   "update": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "architecture": "linux/amd64",
+   "scope": "namespaced",
+   "pod_image_id": "sha256:edc6395ceeefa23c3d7096ca8c82598d20ba62faf7e17c33914bd2c334eebedd",
+   "create": "passed",
+   "update": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "architecture": "linux/arm64",
+   "scope": "cluster",
+   "pod_image_id": "sha256:106ce6e4f5d1688b07d0172a770289a28988e4d0c70911f9dc36ffd0d4973c64",
+   "create": "passed",
+   "update": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "architecture": "linux/arm64",
+   "scope": "namespaced",
+   "pod_image_id": "sha256:106ce6e4f5d1688b07d0172a770289a28988e4d0c70911f9dc36ffd0d4973c64",
+   "create": "passed",
+   "update": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  }
+ ],
+ "reconciliation_scope": "Environment create/update/delete in both scopes using each actual Linux runtime image as an in-cluster Deployment (arm64 under QEMU) with its bundled Terraform and native provider; backend 404 after delete. This checks runtime packaging; it is not a full-family test for each architecture. The host-run controller was stopped during these checks.",
+ "crd_count_note": "67 CRDs = 31 resources in two scopes plus five provider configuration CRDs (the rc.48 record had 75 for 35 families).",
+ "environment_note": "A first rehearsal in this pod ran with umask 0077, which made the binaries copied into the image mode 0700 and the controller not executable for uid 65532 under Docker (controller --help: permission denied). That is a property of the build host, not of the repository; GitHub runners use umask 022. The repeated run recorded here used umask 022.",
+ "cleanup": "passed",
+ "publication": "Not published. No registry push, docker login, release or tag operation was performed."
+}

@@ -77,6 +77,20 @@ class CoverageTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_report_lists_data_sources_after_resources(self):
+        result = self.run_script()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = result.stdout
+        self.assertIn('1 / 2 Terraform resources', report)
+        section = report.index('## Terraform data sources')
+        self.assertGreater(section, report.index('## Configured'))
+        rows = dict(re.findall(r'^\| `(archestra_[a-z_]+)` \| (.+) \|$', report[section:], re.MULTILINE))
+        self.assertEqual(sorted(rows), ['archestra_agent', 'archestra_mcp_tool_calls', 'archestra_team', 'archestra_tool'])
+        self.assertIn('Observe', rows['archestra_agent'])
+        self.assertIn('Observe', rows['archestra_team'])
+        self.assertTrue(rows['archestra_tool'].startswith('None'))
+        self.assertTrue(rows['archestra_mcp_tool_calls'].startswith('None'))
+
     def test_export_failure_is_not_reported_as_current(self):
         self.env['FAIL_GO'] = '1'
         self.assertNotEqual(self.run_script('--check-badge', str(self.badge)).returncode, 0)

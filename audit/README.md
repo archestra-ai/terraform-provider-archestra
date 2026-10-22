@@ -1,16 +1,42 @@
-# Provider modernization audit
+# Provider audit
 
+## 3.0.0 release evidence (API 1.5.0-rc.3)
 
-The reviewed milestone 411935f had **29 Terraform resources and four Terraform data sources**. That milestone generated all 29 resources in both Crossplane scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](../MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The [full native acceptance proof](consolidated-native-acceptance.json) records 147 passing cases with zero failures or skips against API 1.4.0-rc.49.
+Provider 3.0.0 has 31 resources and four data sources. All release evidence below
+comes from one source commit (`c937a0c`) and one Terraform provider and controller
+binary pair, against published API 1.5.0-rc.3 (image
+`sha256:ef2cc471d08b2af05e40cd211bc8b8292752723dff13b8d6c08530079e7167d6`).
+
+- [Native acceptance](native-acceptance-1.5.0-rc.3.json): all 170 acceptance
+  tests pass in one run, with zero failures or skips.
+- [Both-scope Crossplane reconciliation](crossplane-release-1.5.0-rc.3.json):
+  every harness case group, in the cluster and namespaced scopes, passes 138
+  lifecycle records with normal cleanup. Each of the 31 resource families has
+  passing records in both scopes; the record lists which records cover each family.
+  Its batch b9 adds four observe-only records (Agent and Team in both scopes),
+  the Crossplane equivalent of the `archestra_agent` and `archestra_team` data sources.
+- [Runtime packages](runtime-package-validation-1.5.0-rc.3.json): the release
+  publish job's build commands, run without the push, build linux/amd64 and
+  linux/arm64 runtime images and xpkgs. Each actual image reconciles an
+  Environment (create, update, delete, then a backend 404) in both scopes. The
+  3.0.0 release zips did not exist yet, so a local fixture served release-style zips.
+
+These records supersede the earlier milestone records for release purposes. The
+sections below are the milestone history, kept for traceability; their remaining
+gates are settled by the records above.
+
+## Milestone history
+
+The reviewed milestone 411935f had **29 Terraform resources and four Terraform data sources**. That milestone generated all 29 resources in both Crossplane scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource. The [migration guide](../MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. The [full native acceptance proof](consolidated-native-acceptance.json) records 147 passing cases with zero failures or skips against API 1.4.0-rc.49.
 
 Current request-field review classifies **172 raw occurrences across 29 owners**,
 with zero unclassified rows. These include manually encoded parent fields and
 server-owned values; they are not a count of missing APIs. Native and Crossplane
 results below retain their original binary boundaries.
 
-The [current organization-defaults runtime proof](crossplane-organization-defaults.json) and [manifest/sharing regression proof](crossplane-skill-manifest-sharing.json) pass in both scopes with normal cleanup.
+The [milestone organization-defaults runtime proof](crossplane-organization-defaults.json) and [manifest/sharing regression proof](crossplane-skill-manifest-sharing.json) pass in both scopes with normal cleanup.
 
-The [current consolidated runtime proof](consolidated-crossplane-runtime.json)
+The [milestone consolidated runtime proof](consolidated-crossplane-runtime.json)
 verifies 29 families in both scopes: 58 family/scope pairs and 124 runtime
 records. Global test settings are restored and all owned fixtures clean up normally.
 This evidence uses the same native provider bytes as the 147-case native proof.
@@ -27,17 +53,17 @@ persistent API area. [Request-field review](request-field-review.md) classifies 
 90 baseline raw occurrences; `current-request-field-review.json` classifies all
 172 current occurrences. These raw counts include manual encoding, other agent
 subtypes and server-owned state. They are not counts of missing capabilities.
-The completed 39-family full native suite passes 131 acceptance tests with zero failures or skips (`a2a-environment-native-acceptance.json`). The historical expansion has its own 126-test record (`persistent-extensions-native-acceptance.json`). New profile/service-account creation grants pass in both scopes (`crossplane-persistent-extension-grants.json`). The 41-family full native suite passed all 137 tests (`credential-routing-full-native-acceptance.json`); the 43-family suite passed all 140 with zero failures or skips (`github-registrations-full-native-acceptance.json`). Its six targeted cases are also recorded separately (`credential-routing-native-acceptance.json`). Final full-candidate repetition, remaining justified API implementations, normal
-protected review and publication remain open. The sections below retain the
-original audit baseline for traceability.
+The completed 39-family full native suite passes 131 acceptance tests with zero failures or skips (`a2a-environment-native-acceptance.json`). The historical expansion has its own 126-test record (`persistent-extensions-native-acceptance.json`). New profile/service-account creation grants pass in both scopes (`crossplane-persistent-extension-grants.json`). The 41-family full native suite passed all 137 tests (`credential-routing-full-native-acceptance.json`); the 43-family suite passed all 140 with zero failures or skips (`github-registrations-full-native-acceptance.json`). Its six targeted cases are also recorded separately (`credential-routing-native-acceptance.json`). The sections below retain the original audit baseline for traceability.
 
 
 Audit inputs: Terraform `2e34cde000894e9c96793da0ec1f2c90b9193636` (v2.4.0),
 Archestra `35e36afd3f8a29cd568bc486a9e448bb29028414` (main, platform 1.4.0-rc.43).
 
-The current candidate exposes **31 resources and four data sources**, adding App. Against published API 1.4.0-rc.55, with the client regenerated from that release, [the full native suite](rc55-native-acceptance.json) passes all 163 cases in one run, including seven App cases, with zero failures or skips. Acceptance CI now pins that image digest. With the floor at rc.51, [the full native suite](rc55-floor-rc51-native-acceptance.json) passes all 164 cases against the same digest, adding the unauthenticated LLM proxy setting. That recorded run predates the restored virtual key value recovery on import. The provider's API floor is 1.4.0-rc.51, the release that introduced the organization setting for unauthenticated LLM proxy requests; rc.55 is the tested release. [Both-scope Crossplane reconciliation for App and AppInit](crossplane-apps-rc55.json) passes all four records against the same rc.55 digest with normal cleanup, using the reproducible `scripts/bootstrap-crossplane.sh` harness. It includes the fix that keeps initProvider-only Secret inputs creation-only; AppInit failed in both scopes before it. The other 30 families were not re-run on rc.55; their Crossplane evidence remains on rc.49 and earlier binaries.
+The rc.55 checkpoint exposed **31 resources and four data sources**, adding App. Against published API 1.4.0-rc.55, with the client regenerated from that release, [the full native suite](rc55-native-acceptance.json) passes all 163 cases in one run, including seven App cases, with zero failures or skips. Acceptance CI now pins that image digest. With the floor at rc.51, [the full native suite](rc55-floor-rc51-native-acceptance.json) passes all 164 cases against the same digest, adding the unauthenticated LLM proxy setting. That recorded run predates the restored virtual key value recovery on import. The provider's API floor is 1.4.0-rc.51, the release that introduced the organization setting for unauthenticated LLM proxy requests; rc.55 is the tested release. [Both-scope Crossplane reconciliation for App and AppInit](crossplane-apps-rc55.json) passes all four records against the same rc.55 digest with normal cleanup, using the reproducible `scripts/bootstrap-crossplane.sh` harness. It includes the fix that keeps initProvider-only Secret inputs creation-only; AppInit failed in both scopes before it. The other 30 families were not re-run on rc.55; their Crossplane evidence remains on rc.49 and earlier binaries.
 
-The Knowledge File checkpoint exposed **30 resources and four data sources**. Its [full native suite](knowledge-files-native-acceptance.json) passes 156 cases with zero failures or skips. [Six current file records](crossplane-knowledge-files.json) pass both scopes and normal cleanup, including initProvider Secret inputs. The 29-family evidence below remains a historical reviewed milestone; the final expanded runtime/package sweep remains open.
+The Git Skill checkpoint adds eight both-scope records for authored content, sharing, Git sources and initProvider ([runtime proof](crossplane-skill-git-source.json)). They cover settings without content rewrites, source updates, reconnect, drift repair, orphan/adoption and normal deletion. Switching between authored and Git ownership replaces the Skill; a Git source change retains its UUID. Its [native suite](skill-git-native-acceptance.json) passes all 151 cases with zero failures or skips against API 1.4.0-rc.49.
+
+The Knowledge File checkpoint exposed **30 resources and four data sources**. Its [full native suite](knowledge-files-native-acceptance.json) passes 156 cases with zero failures or skips. [Six current file records](crossplane-knowledge-files.json) pass both scopes and normal cleanup, including initProvider Secret inputs. The 29-family evidence below is a historical reviewed milestone.
 
 ## What is verified
 
@@ -156,10 +182,10 @@ an old managed resource. Adopt through an observe-only phase, compare desired an
 observed configuration, then enable writes. Test this with the actual prior CRDs;
 recreating a CR with a new Kubernetes name is not a migration test.
 
-Manual plugin packages add one family in both scopes, including creation grants, authoritative file replacement and executable-mode preservation ([runtime proof](crossplane-manual-plugins.json)). The full 44-family native suite passes all 142 acceptance cases with zero failures or skips ([native proof](manual-plugins-full-native-acceptance.json)). Both records retain their exact frozen candidate hashes; current Linux packaging and the final combined sweep remain release gates.
+Manual plugin packages add one family in both scopes, including creation grants, authoritative file replacement and executable-mode preservation ([runtime proof](crossplane-manual-plugins.json)). The full 44-family native suite passes all 142 acceptance cases with zero failures or skips ([native proof](manual-plugins-full-native-acceptance.json)). Both records retain their exact frozen candidate hashes.
 
-Pinned repository packages add one family in both scopes, including creation grants, scheduled candidate configuration, credential-reference clearing and approved-byte preservation ([runtime proof](crossplane-repository-plugins.json)). The full 45-family native suite passes all 145 acceptance cases ([native proof](repository-plugins-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
+Pinned repository packages add one family in both scopes, including creation grants, scheduled candidate configuration, credential-reference clearing and approved-byte preservation ([runtime proof](crossplane-repository-plugins.json)). The full 45-family native suite passes all 145 acceptance cases ([native proof](repository-plugins-full-native-acceptance.json)).
 
-Revocable marketplace share links add one family and six both-scope records for skill/plugin membership, secret publication, anonymous read-only access, revocation drift and expiry ([runtime proof](crossplane-marketplace-share-links.json)). The full 46-family native suite passes all 148 acceptance cases ([native proof](marketplace-share-links-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
+Revocable marketplace share links add one family and six both-scope records for skill/plugin membership, secret publication, anonymous read-only access, revocation drift and expiry ([runtime proof](crossplane-marketplace-share-links.json)). The full 46-family native suite passes all 148 acceptance cases ([native proof](marketplace-share-links-full-native-acceptance.json)).
 
-Project-file content adds one family and four both-scope records for exact text/binary bytes, secret input and project references, drift repair, empty text updates, replacement refusal and normal deletion ([runtime proof](crossplane-project-files.json)). All152 native acceptance cases pass ([native proof](project-files-full-native-acceptance.json)). This is a pre-consolidation checkpoint; the major-version surface is being reviewed against product navigation.
+Project-file content adds one family and four both-scope records for exact text/binary bytes, secret input and project references, drift repair, empty text updates, replacement refusal and normal deletion ([runtime proof](crossplane-project-files.json)). All152 native acceptance cases pass ([native proof](project-files-full-native-acceptance.json)). This was a pre-consolidation checkpoint.
