@@ -39,6 +39,7 @@ CASE_RESOURCES = {
     'schedule': {'Schedule'}, 'api-key': {'APIKey'}, 'skill': {'Skill'},
     'git-skills': {'SkillGitSource', 'SkillGitSourceInit'},
     'project-instructions': {'ProjectInstructions'},
+    'observe': {'AgentObserve', 'TeamObserve'},
     'parent-sharing': {kind + 'Sharing' for kind in ('Environment', 'Agent', 'Gateway', 'ServiceAccount', 'RemoteAgent', 'VirtualKey', 'OAuthClient', 'Plugin', 'Project', 'KnowledgeBase', 'RegistryEntry', 'Skill', 'Credential', 'ModelProvider')},
 }
 
@@ -164,11 +165,7 @@ def main():
 
     resource_names = {}
 
-    def create(scope, group, kind, plural, fields, suffix_name="", init_fields=None, external_name=None):
-        if kind == 'Gateway':
-            group = 'gateway'
-        suffix = '.m' if scope == 'namespaced' else ''
-        api_group = group + '.archestra' + suffix + '.crossplane.io'
+    def resource_name(api_group, kind):
         key = (api_group, kind)
         if key not in resource_names:
             discovery = json.loads(kube('get', '--raw', '/apis/' + api_group + '/v1alpha1'))
@@ -176,7 +173,14 @@ def main():
             if len(matches) != 1:
                 raise RuntimeError('Expected one API resource for ' + api_group + '/' + kind)
             resource_names[key] = matches[0]
-        plural = resource_names[key]
+        return resource_names[key]
+
+    def create(scope, group, kind, plural, fields, suffix_name="", init_fields=None, external_name=None):
+        if kind == 'Gateway':
+            group = 'gateway'
+        suffix = '.m' if scope == 'namespaced' else ''
+        api_group = group + '.archestra' + suffix + '.crossplane.io'
+        plural = resource_name(api_group, kind)
         name = 'cp-proof-' + kind.lower() + suffix_name + '-' + scope + '-' + run
         namespace = ['-n', args.namespace] if scope == 'namespaced' else []
         metadata = {'name': name, 'labels': {'provider-test-run': run}}
@@ -491,6 +495,59 @@ def main():
                 results.append(result)
                 save()
                 print(json.dumps(result), flush=True)
+
+            if 'observe' in scope_cases:
+                # Crossplane's equivalent of the archestra_agent and archestra_team data sources.
+                for kind, group, endpoint, body, method in [
+                        ('Agent', 'agent', '/api/agents', {'agentType': 'agent'}, 'PUT'),
+                        ('Team', 'team', '/api/teams', {}, 'PUT')]:
+                    api_name = 'cp-observe-' + kind.lower() + '-' + run + '-' + scope
+                    code, created = api(endpoint, dict(name=api_name, **body), 'POST')
+                    if code not in (200, 201) or not created.get('id'):
+                        raise RuntimeError('Unable to create the observed ' + kind + ' through the API: HTTP ' + str(code))
+                    path = endpoint + '/' + created['id']
+                    fixture = ([], 'api-fixture', path)
+                    leases.append(fixture)
+                    suffix = '.m' if scope == 'namespaced' else ''
+                    api_group = group + '.archestra' + suffix + '.crossplane.io'
+                    name = 'cp-proof-' + kind.lower() + '-observe-' + scope + '-' + run
+                    namespace = ['-n', args.namespace] if scope == 'namespaced' else []
+                    metadata = {'name': name, 'labels': {'provider-test-run': run},
+                                'annotations': {'crossplane.io/external-name': created['id']}}
+                    config = {'name': args.provider_config}
+                    if scope == 'namespaced':
+                        metadata['namespace'] = args.namespace
+                        config['kind'] = 'ClusterProviderConfig'
+                    kube('apply', '-f', '-', payload={'apiVersion': api_group + '/v1alpha1', 'kind': kind, 'metadata': metadata,
+                         'spec': {'managementPolicies': ['Observe'], 'forProvider': {}, 'providerConfigRef': config}})
+                    lease = (namespace, resource_name(api_group, kind) + '.' + api_group, name)
+                    leases.append(lease)
+                    def observed(field='name'):
+                        obj = observation(lease)
+                        conditions = {item.get('type'): item.get('status') for item in obj.get('status', {}).get('conditions', [])}
+                        if conditions.get('Ready') != 'True' or conditions.get('Synced') != 'True':
+                            return None
+                        return obj.get('status', {}).get('atProvider', {}).get(field)
+                    wait(kind + ' observe-only Ready and Synced', lambda: observed() == api_name)
+                    if observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != created['id']:
+                        raise RuntimeError('Observe-only ' + kind + ' changed its external name')
+                    renamed = 'cp-observe-renamed-' + kind.lower() + '-' + run + '-' + scope
+                    if api(path, {'name': renamed}, method)[0] != 200:
+                        raise RuntimeError('Unable to rename the observed ' + kind + ' through the API')
+                    wait(kind + ' observation follows the API', lambda: observed() == renamed)
+                    if api(path)[1].get('name') != renamed:
+                        raise RuntimeError('Observe-only ' + kind + ' wrote to the API')
+                    delete(lease)
+                    status, _ = api(path)
+                    if status != 200:
+                        raise RuntimeError('Deleting the observe-only ' + kind + ' removed the API object: HTTP ' + str(status))
+                    delete(fixture)
+                    if api(path)[0] != 404:
+                        raise RuntimeError('Observed ' + kind + ' fixture was not removed')
+                    record(kind + 'Observe', scope, api_create='passed', observe_only_ready_synced='passed',
+                           at_provider_matches_api='passed', external_rename_observed='passed', no_api_writes=True,
+                           managed_resource_delete='passed', backend_after_managed_delete=200,
+                           api_delete='passed', backend_after_api_delete=404)
 
             if 'apps' in scope_cases:
                 environment, environment_id, _ = create(scope, 'environment', 'Environment', 'environments',

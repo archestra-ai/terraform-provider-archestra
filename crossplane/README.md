@@ -107,6 +107,36 @@ spec:
 `status.atProvider.toolIdByName` once the installation reconciles —
 use those IDs in `Agent.spec.forProvider.tools` or `Gateway.spec.forProvider.tools`.
 
+## Data sources
+
+Crossplane has no data sources. To read an existing agent or team, the
+equivalent of the `archestra_agent` and `archestra_team` Terraform data
+sources, apply an observe-only managed resource. Set the external-name
+annotation to the object's API ID; the controller never writes to it, the
+current state appears in `status.atProvider`, and deleting the managed
+resource leaves the object in place:
+
+```yaml
+apiVersion: team.archestra.m.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  name: platform-team
+  namespace: default
+  annotations:
+    crossplane.io/external-name: 00000000-0000-4000-8000-000000000000   # the team's API ID
+spec:
+  managementPolicies: ["Observe"]
+  forProvider: {}
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+```
+
+Use `kind: Agent` with `apiVersion: agent.archestra.m.crossplane.io/v1alpha1`
+for an agent. `archestra_tool` and `archestra_mcp_tool_calls` are read-only
+lookups with no managed object behind them, so they have no Crossplane
+equivalent; read them from the API.
+
 ## Development
 
 `apis/**/zz_*.go`, `internal/controller/**/zz_*.go`, and
