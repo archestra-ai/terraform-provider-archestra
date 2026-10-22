@@ -62,7 +62,6 @@ resource "vault_kv_secret_v2" "team_virtual_key" {
   mount = "secret"
   name  = "teams/${var.team_name}/archestra-virtual-key"
   data_json = jsonencode({
-    value       = archestra_virtual_key.team.value
-    token_start = archestra_virtual_key.team.token_start
+    value = archestra_virtual_key.team.value
   })
 }

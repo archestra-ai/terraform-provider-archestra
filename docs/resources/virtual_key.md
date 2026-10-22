@@ -52,19 +52,7 @@ resource "archestra_virtual_key" "example" {
 
 ### Read-Only
 
-- `author_id` (String) Owning identity.
-- `author_name` (String) Author display name.
-- `billing_team_name` (String) Billing team display name.
-- `created_at` (String) Creation timestamp.
-- `created_by` (String) Creator metadata as JSON.
-- `created_by_service_account_id` (String) Creating service account UUID.
 - `id` (String) Virtual key UUID.
-- `last_used_at` (String) Most recent use timestamp.
-- `organization_id` (String) Organization identifier.
-- `scope` (String) Legacy visibility projection; permissions are managed separately.
-- `secret_id` (String) Stored credential identifier.
-- `teams` (String) Legacy team visibility metadata as JSON.
-- `token_start` (String) Non-secret identifying prefix.
 - `value` (String, Sensitive) Bearer credential returned on creation or revealed to its creator on import and refresh, retained in sensitive state; service-account creators need API 1.5.0-rc.1 or later.
 
 <a id="nestedatt--labels"></a>
@@ -94,10 +82,6 @@ Required:
 - `provider` (String) LLM provider identifier.
 - `provider_api_key_id` (String) Existing provider API key UUID.
 
-Read-Only:
-
-- `provider_api_key_name` (String) Provider key display name.
-
 
 <a id="nestedatt--spend_cap"></a>
 ### Nested Schema for `spend_cap`
@@ -106,11 +90,6 @@ Required:
 
 - `cleanup_interval` (String) Limit cleanup interval.
 - `limit_value` (Number) Positive dollar limit per window.
-
-Read-Only:
-
-- `current_usage` (Number) Current dollar usage.
-- `limit_id` (String) Backing limit identifier.
 
 ## Import
 

@@ -29,31 +29,19 @@ func NewVirtualAPIKeyResource() resource.Resource { return &VirtualAPIKeyResourc
 
 type VirtualAPIKeyResource struct{ client *client.ClientWithResponses }
 type VirtualAPIKeyResourceModel struct {
-	ID                        types.String `tfsdk:"id"`
-	Name                      types.String `tfsdk:"name"`
-	KeyType                   types.String `tfsdk:"key_type"`
-	ProviderAPIKeys           types.Set    `tfsdk:"provider_api_keys"`
-	IncludeFutureProviders    types.Bool   `tfsdk:"include_future_providers"`
-	Labels                    types.Set    `tfsdk:"labels"`
-	SpendCap                  types.Object `tfsdk:"spend_cap"`
-	BillingTeamID             types.String `tfsdk:"billing_team_id"`
-	BillingTeamName           types.String `tfsdk:"billing_team_name"`
-	ExpiresAt                 types.String `tfsdk:"expires_at"`
-	OwnerID                   types.String `tfsdk:"owner_id"`
-	InitialGrants             types.Set    `tfsdk:"permissions"`
-	RotationNonce             types.String `tfsdk:"rotation_nonce"`
-	Value                     types.String `tfsdk:"value"`
-	SecretID                  types.String `tfsdk:"secret_id"`
-	TokenStart                types.String `tfsdk:"token_start"`
-	Scope                     types.String `tfsdk:"scope"`
-	AuthorID                  types.String `tfsdk:"author_id"`
-	AuthorName                types.String `tfsdk:"author_name"`
-	CreatedBy                 types.String `tfsdk:"created_by"`
-	CreatedByServiceAccountID types.String `tfsdk:"created_by_service_account_id"`
-	OrganizationID            types.String `tfsdk:"organization_id"`
-	Teams                     types.String `tfsdk:"teams"`
-	CreatedAt                 types.String `tfsdk:"created_at"`
-	LastUsedAt                types.String `tfsdk:"last_used_at"`
+	ID                     types.String `tfsdk:"id"`
+	Name                   types.String `tfsdk:"name"`
+	KeyType                types.String `tfsdk:"key_type"`
+	ProviderAPIKeys        types.Set    `tfsdk:"provider_api_keys"`
+	IncludeFutureProviders types.Bool   `tfsdk:"include_future_providers"`
+	Labels                 types.Set    `tfsdk:"labels"`
+	SpendCap               types.Object `tfsdk:"spend_cap"`
+	BillingTeamID          types.String `tfsdk:"billing_team_id"`
+	ExpiresAt              types.String `tfsdk:"expires_at"`
+	OwnerID                types.String `tfsdk:"owner_id"`
+	InitialGrants          types.Set    `tfsdk:"permissions"`
+	RotationNonce          types.String `tfsdk:"rotation_nonce"`
+	Value                  types.String `tfsdk:"value"`
 }
 
 var virtualAPIKeyAttrSpec = []AttrSpec{
@@ -71,8 +59,12 @@ var virtualAPIKeyAttrSpec = []AttrSpec{
 func (r *VirtualAPIKeyResource) AttrSpecs() []AttrSpec { return virtualAPIKeyAttrSpec }
 func (r *VirtualAPIKeyResource) APIShape() any         { return client.GetVirtualApiKeyResponse{} }
 
-// Billing team details are split into billing_team_id and billing_team_name.
-func (r *VirtualAPIKeyResource) KnownIntentionallySkipped() []string { return []string{"billingTeam"} }
+// The schema holds what create and update accept plus the credential. The
+// billing team is read back as billing_team_id; the other fields are read-only
+// metadata that managing the key does not need.
+func (r *VirtualAPIKeyResource) KnownIntentionallySkipped() []string {
+	return []string{"billingTeam", "secretId", "tokenStart", "scope", "authorId", "authorName", "createdBy", "createdByServiceAccountId", "organizationId", "teams", "createdAt", "lastUsedAt"}
+}
 func (r *VirtualAPIKeyResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_virtual_key"
 }
@@ -82,25 +74,13 @@ func (r *VirtualAPIKeyResource) Schema(_ context.Context, _ resource.SchemaReque
 		"name":              schema.StringAttribute{Required: true, Validators: []validator.String{stringvalidator.LengthBetween(1, 256)}, MarkdownDescription: "Key display name."},
 		"key_type":          schema.StringAttribute{Optional: true, Computed: true, Default: stringdefault.StaticString("standard"), Validators: []validator.String{stringvalidator.OneOf("standard", "passthrough")}, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Immutable standard or passthrough key type."},
 		"provider_api_keys": credentialProviderKeysAttribute(), "labels": credentialLabelsAttribute(), "spend_cap": credentialSpendCapAttribute(),
-		"include_future_providers":      schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Use current and future shared primary provider keys, with explicit mappings as overrides."},
-		"billing_team_id":               schema.StringAttribute{Optional: true, MarkdownDescription: "Team billed for this key; removing the value clears team billing."},
-		"billing_team_name":             schema.StringAttribute{Computed: true, MarkdownDescription: "Billing team display name."},
-		"expires_at":                    schema.StringAttribute{Optional: true, MarkdownDescription: "Absolute RFC 3339 expiry; omission removes expiry."},
-		"owner_id":                      schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Creation-only owner selector, defaulting to the creator."},
-		"permissions":                   initialGrantsAttribute(),
-		"rotation_nonce":                schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{rotationNonceRequiresReplace()}, MarkdownDescription: "Change this value to replace the key and revoke its old credential; a first value set after import is recorded without rotation."},
-		"value":                         schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Bearer credential returned on creation or revealed to its creator on import and refresh, retained in sensitive state; service-account creators need API 1.5.0-rc.1 or later."},
-		"secret_id":                     schema.StringAttribute{Computed: true, MarkdownDescription: "Stored credential identifier."},
-		"token_start":                   schema.StringAttribute{Computed: true, MarkdownDescription: "Non-secret identifying prefix."},
-		"scope":                         schema.StringAttribute{Computed: true, MarkdownDescription: "Legacy visibility projection; permissions are managed separately."},
-		"author_id":                     schema.StringAttribute{Computed: true, MarkdownDescription: "Owning identity."},
-		"author_name":                   schema.StringAttribute{Computed: true, MarkdownDescription: "Author display name."},
-		"created_by":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Creator metadata as JSON."},
-		"created_by_service_account_id": schema.StringAttribute{Computed: true, MarkdownDescription: "Creating service account UUID."},
-		"organization_id":               schema.StringAttribute{Computed: true, MarkdownDescription: "Organization identifier."},
-		"teams":                         schema.StringAttribute{Computed: true, MarkdownDescription: "Legacy team visibility metadata as JSON."},
-		"created_at":                    schema.StringAttribute{Computed: true, MarkdownDescription: "Creation timestamp."},
-		"last_used_at":                  schema.StringAttribute{Computed: true, MarkdownDescription: "Most recent use timestamp."},
+		"include_future_providers": schema.BoolAttribute{Optional: true, Computed: true, MarkdownDescription: "Use current and future shared primary provider keys, with explicit mappings as overrides."},
+		"billing_team_id":          schema.StringAttribute{Optional: true, MarkdownDescription: "Team billed for this key; removing the value clears team billing."},
+		"expires_at":               schema.StringAttribute{Optional: true, MarkdownDescription: "Absolute RFC 3339 expiry; omission removes expiry."},
+		"owner_id":                 schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{stringplanmodifier.RequiresReplace()}, MarkdownDescription: "Creation-only owner selector, defaulting to the creator."},
+		"permissions":              initialGrantsAttribute(),
+		"rotation_nonce":           schema.StringAttribute{Optional: true, PlanModifiers: []planmodifier.String{rotationNonceRequiresReplace()}, MarkdownDescription: "Change this value to replace the key and revoke its old credential; a first value set after import is recorded without rotation."},
+		"value":                    schema.StringAttribute{Computed: true, Sensitive: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Bearer credential returned on creation or revealed to its creator on import and refresh, retained in sensitive state; service-account creators need API 1.5.0-rc.1 or later."},
 	}}
 }
 func (r *VirtualAPIKeyResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -277,22 +257,11 @@ func (r *VirtualAPIKeyResource) ImportState(ctx context.Context, req resource.Im
 func (r *VirtualAPIKeyResource) flatten(ctx context.Context, data *VirtualAPIKeyResourceModel, body []byte, diags *diag.Diagnostics) {
 	var raw struct {
 		credentialRoutingResponse
-		ID                        string          `json:"id"`
-		Name                      string          `json:"name"`
-		KeyType                   string          `json:"keyType"`
-		IncludeFutureProviders    bool            `json:"includeFutureProviders"`
-		ExpiresAt                 *time.Time      `json:"expiresAt"`
-		CreatedAt                 *time.Time      `json:"createdAt"`
-		LastUsedAt                *time.Time      `json:"lastUsedAt"`
-		SecretID                  string          `json:"secretId"`
-		TokenStart                string          `json:"tokenStart"`
-		Scope                     string          `json:"scope"`
-		AuthorID                  *string         `json:"authorId"`
-		AuthorName                *string         `json:"authorName"`
-		CreatedBy                 json.RawMessage `json:"createdBy"`
-		CreatedByServiceAccountID *string         `json:"createdByServiceAccountId"`
-		OrganizationID            string          `json:"organizationId"`
-		Teams                     json.RawMessage `json:"teams"`
+		ID                     string     `json:"id"`
+		Name                   string     `json:"name"`
+		KeyType                string     `json:"keyType"`
+		IncludeFutureProviders bool       `json:"includeFutureProviders"`
+		ExpiresAt              *time.Time `json:"expiresAt"`
 	}
 	if err := json.Unmarshal(body, &raw); err != nil {
 		diags.AddError("Invalid API Response", err.Error())
@@ -303,23 +272,14 @@ func (r *VirtualAPIKeyResource) flatten(ctx context.Context, data *VirtualAPIKey
 	data.KeyType = types.StringValue(raw.KeyType)
 	data.IncludeFutureProviders = types.BoolValue(raw.IncludeFutureProviders)
 	data.ExpiresAt = credentialConfiguredTimestamp(data.ExpiresAt, raw.ExpiresAt)
-	data.CreatedAt = canonicalAPITimestamp(raw.CreatedAt)
-	data.LastUsedAt = canonicalAPITimestamp(raw.LastUsedAt)
-	data.SecretID = types.StringValue(raw.SecretID)
-	data.TokenStart = types.StringValue(raw.TokenStart)
-	data.Scope = types.StringValue(raw.Scope)
-	data.AuthorID = types.StringPointerValue(raw.AuthorID)
-	data.AuthorName = types.StringPointerValue(raw.AuthorName)
-	data.CreatedBy = credentialJSONValue(raw.CreatedBy, diags)
-	data.CreatedByServiceAccountID = types.StringPointerValue(raw.CreatedByServiceAccountID)
-	data.OrganizationID = types.StringValue(raw.OrganizationID)
-	data.Teams = credentialJSONValue(raw.Teams, diags)
-	flattenCredentialRouting(ctx, raw.credentialRoutingResponse, &data.ProviderAPIKeys, &data.Labels, &data.SpendCap, &data.BillingTeamID, &data.BillingTeamName, diags)
+	var billingTeamName types.String // read back as billing_team_id only
+	flattenCredentialRouting(ctx, raw.credentialRoutingResponse, &data.ProviderAPIKeys, &data.Labels, &data.SpendCap, &data.BillingTeamID, &billingTeamName, diags)
 }
 
-// revealValue recovers the bearer credential for its creator. A non-creator or
-// an older platform gets 403, and 409 means the value cannot be revealed; both
-// keep a null value, and secret_id and token_start still identify the key.
+// revealValue recovers the bearer credential for its creator. A non-creator,
+// or a service account before API 1.5.0-rc.1, gets 403 and keeps a null value;
+// the key is still identified by its ID. No release returns 409; it is treated
+// like 403 so a future "not revealable" answer cannot break import.
 func (r *VirtualAPIKeyResource) revealValue(ctx context.Context, id uuid.UUID, diags *diag.Diagnostics) types.String {
 	result, err := r.client.GetVirtualApiKeyValueWithResponse(ctx, id)
 	if err != nil {
