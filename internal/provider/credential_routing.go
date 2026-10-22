@@ -11,12 +11,10 @@ import (
 
 var credentialProviderKeyType = types.ObjectType{AttrTypes: map[string]attr.Type{
 	"provider": types.StringType, "provider_api_key_id": types.StringType,
-	"provider_api_key_name": types.StringType,
 }}
 var credentialLabelType = types.ObjectType{AttrTypes: map[string]attr.Type{"key": types.StringType, "value": types.StringType}}
 var credentialSpendCapTypes = map[string]attr.Type{
 	"limit_value": types.Int64Type, "cleanup_interval": types.StringType,
-	"limit_id": types.StringType, "current_usage": types.Float64Type,
 }
 var credentialProviderKeySpec = AttrSpec{TFName: "provider_api_keys", JSONName: "providerApiKeys", Kind: Set, OmitOnNull: true, Children: []AttrSpec{
 	{TFName: "provider", JSONName: "provider", Kind: Scalar},
@@ -32,9 +30,8 @@ var credentialSpendCapSpec = AttrSpec{TFName: "spend_cap", JSONName: "spendCap",
 
 func credentialProviderKeysAttribute() schema.SetNestedAttribute {
 	return schema.SetNestedAttribute{Optional: true, Computed: true, MarkdownDescription: "Explicit provider-to-key mappings; an empty set clears explicit mappings.", NestedObject: schema.NestedAttributeObject{Attributes: map[string]schema.Attribute{
-		"provider":              schema.StringAttribute{Required: true, MarkdownDescription: "LLM provider identifier."},
-		"provider_api_key_id":   schema.StringAttribute{Required: true, MarkdownDescription: "Existing provider API key UUID."},
-		"provider_api_key_name": schema.StringAttribute{Computed: true, MarkdownDescription: "Provider key display name."},
+		"provider":            schema.StringAttribute{Required: true, MarkdownDescription: "LLM provider identifier."},
+		"provider_api_key_id": schema.StringAttribute{Required: true, MarkdownDescription: "Existing provider API key UUID."},
 	}}}
 }
 func credentialLabelsAttribute() schema.SetNestedAttribute {
@@ -46,21 +43,17 @@ func credentialSpendCapAttribute() schema.SingleNestedAttribute {
 	return schema.SingleNestedAttribute{Optional: true, MarkdownDescription: "Credential-wide spend cap; removing it clears the cap.", Attributes: map[string]schema.Attribute{
 		"limit_value":      schema.Int64Attribute{Required: true, MarkdownDescription: "Positive dollar limit per window."},
 		"cleanup_interval": schema.StringAttribute{Required: true, MarkdownDescription: "Limit cleanup interval."},
-		"limit_id":         schema.StringAttribute{Computed: true, MarkdownDescription: "Backing limit identifier."},
-		"current_usage":    schema.Float64Attribute{Computed: true, MarkdownDescription: "Current dollar usage."},
 	}}
 }
 
 type credentialProviderKeyModel struct {
-	Provider           types.String `tfsdk:"provider"`
-	ProviderAPIKeyID   types.String `tfsdk:"provider_api_key_id"`
-	ProviderAPIKeyName types.String `tfsdk:"provider_api_key_name"`
+	Provider         types.String `tfsdk:"provider"`
+	ProviderAPIKeyID types.String `tfsdk:"provider_api_key_id"`
 }
 type credentialRoutingResponse struct {
 	ProviderAPIKeys []struct {
 		Provider string `json:"provider"`
 		ID       string `json:"providerApiKeyId"`
-		Name     string `json:"providerApiKeyName"`
 	} `json:"providerApiKeys"`
 	Labels []struct {
 		Key   string `json:"key"`
@@ -71,17 +64,15 @@ type credentialRoutingResponse struct {
 		Name string `json:"name"`
 	} `json:"billingTeam"`
 	SpendCap *struct {
-		LimitValue      int64   `json:"limitValue"`
-		CleanupInterval string  `json:"cleanupInterval"`
-		LimitID         string  `json:"limitId"`
-		CurrentUsage    float64 `json:"currentUsage"`
+		LimitValue      int64  `json:"limitValue"`
+		CleanupInterval string `json:"cleanupInterval"`
 	} `json:"spendCap"`
 }
 
 func flattenCredentialRouting(ctx context.Context, raw credentialRoutingResponse, providers, labels *types.Set, spend *types.Object, billingID, billingName *types.String, diags *diag.Diagnostics) {
 	keys := make([]credentialProviderKeyModel, len(raw.ProviderAPIKeys))
 	for i, key := range raw.ProviderAPIKeys {
-		keys[i] = credentialProviderKeyModel{Provider: types.StringValue(key.Provider), ProviderAPIKeyID: types.StringValue(key.ID), ProviderAPIKeyName: types.StringValue(key.Name)}
+		keys[i] = credentialProviderKeyModel{Provider: types.StringValue(key.Provider), ProviderAPIKeyID: types.StringValue(key.ID)}
 	}
 	var d diag.Diagnostics
 	*providers, d = types.SetValueFrom(ctx, credentialProviderKeyType, keys)
@@ -96,7 +87,6 @@ func flattenCredentialRouting(ctx context.Context, raw credentialRoutingResponse
 	if budget := raw.SpendCap; budget != nil {
 		*spend, d = types.ObjectValue(credentialSpendCapTypes, map[string]attr.Value{
 			"limit_value": types.Int64Value(budget.LimitValue), "cleanup_interval": types.StringValue(budget.CleanupInterval),
-			"limit_id": types.StringValue(budget.LimitID), "current_usage": types.Float64Value(budget.CurrentUsage),
 		})
 		diags.Append(d...)
 	}

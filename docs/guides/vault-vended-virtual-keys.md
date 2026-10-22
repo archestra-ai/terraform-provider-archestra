@@ -84,8 +84,7 @@ resource "vault_kv_secret_v2" "team_virtual_key" {
   mount = "secret"
   name  = "teams/${var.team_name}/archestra-virtual-key"
   data_json = jsonencode({
-    value       = archestra_virtual_key.team.value
-    token_start = archestra_virtual_key.team.token_start
+    value = archestra_virtual_key.team.value
   })
 }
 ```
@@ -117,8 +116,8 @@ state. Use an encrypted remote backend with restricted access.
 Archestra returns a key value on creation. On import, or when a refresh finds
 no value in state, the provider requests the value from the API. Only the
 identity that created the key can reveal it. For any other identity the API
-returns 403; the provider then leaves `value` null without an error and keeps `secret_id` and `token_start`,
-which still identify the key. Import still succeeds.
+returns 403; the provider then leaves `value` null without an error, and the key's ID and settings are read
+as usual. Import still succeeds; identify such a key by its `id`.
 
 A user can recover keys they created on every supported release. A service
 account can recover keys it created starting with Archestra 1.5.0-rc.1. Earlier
