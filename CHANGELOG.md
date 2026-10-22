@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.0.0...v3.0.1) (2026-10-22)
+
+
+### Bug Fixes
+
+* **examples:** make the published examples apply on 3.0.0 and validate them in CI ([#196](https://github.com/archestra-ai/terraform-provider-archestra/issues/196)) ([1a00a30](https://github.com/archestra-ai/terraform-provider-archestra/commit/1a00a30a931eb1cdce9d8ab574280e64c453ccad))
+
 ## [3.0.0](https://github.com/archestra-ai/terraform-provider-archestra/compare/v2.4.1...v3.0.0) (2026-10-22)
 
 
