@@ -38,11 +38,11 @@ Crossplane reconciliation is not part of CI. The recorded evidence for
 `sha256:ef2cc471d08b2af05e40cd211bc8b8292752723dff13b8d6c08530079e7167d6`)
 covers all 31 resource families in both scopes on one Terraform provider and
 controller binary pair: 138 lifecycle records with normal cleanup
-([evidence](audit/crossplane-release-1.5.0-rc.3.json)). The same run's native
-acceptance ([evidence](audit/native-acceptance-1.5.0-rc.3.json)) and runtime
+([evidence](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/crossplane-release-1.5.0-rc.3.json)). The same run's native
+acceptance ([evidence](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/native-acceptance-1.5.0-rc.3.json)) and runtime
 package checks for linux/amd64 and linux/arm64
-([evidence](audit/runtime-package-validation-1.5.0-rc.3.json)) are linked, with
-the earlier milestone records, from [the audit](audit/README.md).
+([evidence](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/runtime-package-validation-1.5.0-rc.3.json)) are linked, with
+the earlier milestone records, from [the audit](https://github.com/archestra-ai/terraform-provider-archestra/blob/main/audit/README.md).
 
 For Terraform, select an approved provider release with `required_providers` and
 commit `.terraform.lock.hcl`. That constraint selects a provider version; Terraform
