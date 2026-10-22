@@ -117,11 +117,10 @@ state. Use an encrypted remote backend with restricted access.
 Archestra returns a key value on creation. On import, or when a refresh finds
 no value in state, the provider requests the value from the API. Only the
 identity that created the key can reveal it. For any other identity the API
-returns 403 (or 409 when the value cannot be revealed); the provider then
-leaves `value` null without an error and keeps `secret_id` and `token_start`,
+returns 403; the provider then leaves `value` null without an error and keeps `secret_id` and `token_start`,
 which still identify the key. Import still succeeds.
 
-A user can recover keys they created on the tested release. A service account
-can recover keys it created starting with the next 1.4 rc; earlier platforms
-return 403, so a service account that loses its state there must rotate the
-key rather than recover its value.
+A user can recover keys they created on every supported release. A service
+account can recover keys it created starting with Archestra 1.5.0-rc.1. Earlier
+releases, including the 1.4 releases, return 403, so a service account that
+loses its state there must rotate the key rather than recover its value.

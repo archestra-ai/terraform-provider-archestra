@@ -1,4 +1,4 @@
-# Provider v3 migration (release candidate work in progress)
+# Provider v3 migration
 
 ## Public names in the clean v3 surface
 

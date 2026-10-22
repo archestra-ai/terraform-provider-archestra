@@ -213,7 +213,7 @@ After:
 
 - Update [provider.go](internal/provider/provider.go) registration.
 - Update cross-references in other resources' MarkdownDescriptions.
-- Add a `## Unreleased` section to [CHANGELOG.md](CHANGELOG.md) with a `### ⚠ BREAKING CHANGES` block. For a type rename, implement and test the Plugin Framework state-move contract or provide a verified import/adoption procedure. Plain `terraform state mv` rejects a move between different resource types; do not publish that as a migration step. Test prior-version state, no-op plans, and destroy behavior before releasing.
+- Mark the change as breaking in its pull request title (`feat!:` or `fix!:`). Release Please writes [CHANGELOG.md](CHANGELOG.md) from merged titles and lists it under `⚠ BREAKING CHANGES`; do not edit the changelog by hand. For a type rename, implement and test the Plugin Framework state-move contract or provide a verified import/adoption procedure. Plain `terraform state mv` rejects a move between different resource types; do not publish that as a migration step. Test prior-version state, no-op plans, and destroy behavior before releasing.
 - Run `make generate` to regenerate docs at the new name.
 - `go test ./...`, `make testacc` to verify.
 

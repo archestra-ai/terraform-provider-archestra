@@ -2,15 +2,15 @@ terraform {
   required_providers {
     archestra = {
       source = "archestra-ai/archestra"
-      # Proposed v3 release; review MIGRATION-v3.md before upgrading.
-      # v3 is not published yet. Use a local development override to preview it.
-      version = "~> 3.0.0"
+      # Read MIGRATION-v3.md before upgrading from 2.x.
+      version = "~> 3.0"
     }
   }
 }
 
 provider "archestra" {
-  api_version_constraint = "= 1.4.0-rc.55"
+  # The Archestra release you approved. See the API compatibility guide.
+  api_version_constraint = "= 1.4.1"
 
   # base_url and api_key are read from the environment by default —
   # don't commit secrets to source.
