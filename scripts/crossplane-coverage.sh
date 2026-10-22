@@ -83,4 +83,15 @@ orphans="$(comm -13 <(echo "$tf") <(echo "$cp"))"
       [ -n "$r" ] && echo "- \`$r\`"
     done <<< "$orphans"
   fi
+  echo
+  echo "## Terraform data sources"
+  echo
+  echo "Crossplane has no data sources. These are not counted in the coverage above."
+  echo
+  echo "| Data source | Crossplane equivalent |"
+  echo "|---|---|"
+  echo "| \`archestra_agent\` | \`Agent\` with \`managementPolicies: [\"Observe\"]\` |"
+  echo "| \`archestra_team\` | \`Team\` with \`managementPolicies: [\"Observe\"]\` |"
+  echo "| \`archestra_tool\` | None; read-only lookup, use the API |"
+  echo "| \`archestra_mcp_tool_calls\` | None; read-only lookup, use the API |"
 } > "$out"
