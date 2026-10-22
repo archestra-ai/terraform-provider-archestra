@@ -79,9 +79,10 @@ backend with whatever values were last applied.
 - **DB-mode backend (no Vault)?** Replace
   `archestra_model_provider.ollama_vault`'s `vault_secret_*`
   fields with an inline `api_key`.
-- **Want a different LLM provider?** Swap `llm_provider`, `llm_model`,
-  and the agent's `llm_model` consistently. The `vault_secret_*` path
-  must point at a secret you've seeded.
+- **Want a different LLM provider?** Swap `llm_provider` on the model
+  provider, the `model_id` of `archestra_model.llama3`, and keep the agents'
+  `model_id` references. The `vault_secret_*` path must point at a secret
+  you've seeded.
 - **Want SAML instead of OIDC?** Replace the `oidc_config` block on
   `archestra_identity_provider.oidc` with a `saml_config` block — see
   [examples/resources/archestra_identity_provider/](../resources/archestra_identity_provider/)

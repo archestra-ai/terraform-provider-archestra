@@ -40,12 +40,18 @@ resource "archestra_mcp_server" "memory" {
   catalog_id = archestra_mcp_registry_entry.memory.id
 }
 
+# The platform pairs an agent's model with its provider key, so the agent
+# references a model row and the key that serves it.
+resource "archestra_model" "llama3" {
+  model_id = "llama3"
+}
+
 resource "archestra_agent" "main" {
   tools          = [{ tool_id = archestra_mcp_server.memory.tool_id_by_name["${archestra_mcp_registry_entry.memory.name}__create_entities"], mcp_server_id = archestra_mcp_server.memory.id }]
   name           = "basic-demo-agent"
   description    = "Hello-world agent for the getting-started demo."
   system_prompt  = "You are a friendly assistant. Be concise."
-  llm_model      = "llama3"
+  model_id       = archestra_model.llama3.id
   llm_api_key_id = archestra_model_provider.ollama.id
 }
 

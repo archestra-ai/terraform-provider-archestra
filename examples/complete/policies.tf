@@ -75,7 +75,6 @@ data "archestra_agent" "support_lookup" {
 data "archestra_mcp_tool_calls" "support_recent" {
   agent_id   = archestra_agent.support.id
   start_date = timeadd(timestamp(), "-24h")
-  search     = "filesystem"
 }
 
 output "engineering_team_id" {
@@ -104,5 +103,5 @@ output "support_agent_tool_count" {
 
 
 output "support_tool_call_count_24h" {
-  value = data.archestra_mcp_tool_calls.support_recent.total
+  value = data.archestra_mcp_tool_calls.support_recent.returned_count
 }

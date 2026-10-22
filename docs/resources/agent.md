@@ -13,14 +13,14 @@ Internal chat agent — system prompt + LLM, optionally augmented with knowledge
 ## Example Usage
 
 ```terraform
-# Externals (declare elsewhere): archestra_team.engineering, archestra_model_provider.vault_backed, archestra_credential.github.
+# Externals (declare elsewhere): archestra_team.engineering, archestra_model_provider.vault_backed, archestra_model.claude_sonnet, archestra_credential.github.
 
-# NOTE: `llm_model` is the model_id you'd pass to the upstream LLM API
+# NOTE: `llm_model` is the model name you'd pass to the upstream LLM API
 # (e.g. "gpt-4o" for OpenAI, "claude-sonnet-4-5" for Anthropic). The
 # platform auto-discovers models from your `archestra_model_provider`,
 # so the corresponding key resource must exist for the chosen provider.
-# Use `archestra_model` only when you need to override pricing or
-# per-model settings on a discovered model.
+# When an agent pins a provider key with `llm_api_key_id`, pair it with
+# `model_id`, the id of an `archestra_model` row, as `engineering_qa` does.
 
 # Customer-support agent — the most common shape: a system prompt, an LLM,
 # a couple of suggested prompts, and a few labels for filtering in the UI.
@@ -78,10 +78,10 @@ resource "archestra_agent" "engineering_qa" {
   name          = "eng-qa"
   description   = "Engineering QA assistant"
   system_prompt = "You triage bug reports against the eng playbook."
-  llm_model     = "claude-sonnet-4-5"
-
   # Wire a specific provider key (e.g. an Anthropic key from BYOS Vault) instead
-  # of relying on the org-wide default.
+  # of relying on the org-wide default. The platform pairs the key with a model
+  # row, so reference the `archestra_model` for "claude-sonnet-4-5".
+  model_id       = archestra_model.claude_sonnet.id
   llm_api_key_id = archestra_model_provider.vault_backed.id
 }
 
