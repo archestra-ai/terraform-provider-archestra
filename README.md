@@ -187,12 +187,14 @@ commit on main
 release-please opens "chore(main): release vX.Y.Z"
         │  merge
         ▼
-tag vX.Y.Z   ──┬──▶  goreleaser    ──▶  Terraform Registry
-               │
-               └──▶  crank xpkg push ──▶  xpkg.upbound.io
+tag vX.Y.Z  ──▶  goreleaser       ──▶  GitHub release zips ──▶  Terraform Registry
+                     │  then
+                     ▼
+                 crank xpkg push  ──▶  xpkg.upbound.io
 ```
 
-The two publish jobs run in parallel; one failing won't roll back
-the other.
+The two publish jobs run one after the other: `publish-crossplane` needs
+`publish-terraform-provider`, because the runtime image downloads the
+release zips. A Crossplane failure does not roll back the Terraform release.
 
 See [the audit](audit/README.md) for the release evidence.
