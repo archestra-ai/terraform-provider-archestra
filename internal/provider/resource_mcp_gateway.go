@@ -421,7 +421,7 @@ func (r *McpGatewayResource) KnownIntentionallySkipped() []string {
 	// Legacy visibility/skill projections and secret-storage pointers are not managed.
 	// Gateway records share an agent response, but do not run agent runtimes or inference.
 	return []string{
-		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId", "activationSkillMode", "activationSkillPolicyRevision", "activationSkillsCount", "llmProviderRequiresPerUserCredential", "modelId", "resolvedLlmModelName", "resolvedLlmProvider", "resolvedLlmProviderKeyName", "runtime", "sandboxAvailable",
+		"accessAllSkills", "isPersonalGateway", "isPersonalProxy", "runtimeSecretId", "activationSkillMode", "activationSkillPolicyRevision", "activationSkillsCount", "llmProviderRequiresPerUserCredential", "modelId", "fastModelId", "smartModelId", "resolvedLlmModelName", "resolvedLlmProvider", "resolvedLlmProviderKeyName", "runtime", "sandboxAvailable",
 		"agentType", "authorId", "authorName", "builtIn", "organizationId",
 		"createdAt", "updatedAt", "builtInAgentConfig", "suggestedPrompts",
 		"systemPrompt", "llmModel", "llmApiKeyId", "isDefault", "scope",

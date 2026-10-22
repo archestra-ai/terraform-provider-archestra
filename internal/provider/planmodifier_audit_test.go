@@ -83,6 +83,8 @@ var useStateForUnknownAllowlist = map[string]map[string]string{
 		"ocr_model",
 		"kb_contextual_retrieval_mode",
 		"default_model_id",
+		"default_fast_model_id",
+		"default_smart_model_id",
 		"default_member_role",
 		"onboarding_wizard",
 		"icon_logo_dark",

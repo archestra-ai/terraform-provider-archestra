@@ -31,6 +31,8 @@ type agentAPIResponse struct {
 	AccessAllTools             bool                `json:"accessAllTools"`
 	MissingCredentialBehavior  string              `json:"missingCredentialBehavior"`
 	ModelId                    *openapi_types.UUID `json:"modelId"`
+	FastModelId                *openapi_types.UUID `json:"fastModelId"`
+	SmartModelId               *openapi_types.UUID `json:"smartModelId"`
 	EnvironmentId              *string             `json:"environmentId"`
 	IsDefault                  bool                `json:"isDefault"`
 	Scope                      string              `json:"scope"`

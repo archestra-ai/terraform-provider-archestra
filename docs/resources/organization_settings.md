@@ -146,12 +146,14 @@ resource "archestra_organization_settings" "main" {
 - `default_environment_namespace` (String) Kubernetes namespace of the default deployment environment.
 - `default_environment_trusted_image_registries` (String) JSON configuration for default environment trusted image registries.
 - `default_environment_validation_regex` (String) Validation expression for default-environment deployment names.
+- `default_fast_model_id` (String) Database ID of the faster model on `default_llm_api_key_id` used when an agent without its own `fast_model_id` forks a subagent on the `fast` tier.
 - `default_llm_api_key_id` (String) Default LLM API key ID for the organization
 - `default_member_role` (String) Role assigned to new organization members.
 - `default_model_id` (String) Database ID of the default discovered LLM model.
 - `default_network_policy` (String) JSON configuration for default network policy.
 - `default_permissions` (Attributes) Default access policies from organization Settings. Manage each object type independently: omit a field to leave its policy unmanaged, or set [] to clear that type's direct organization-wide grants. Changing these policies affects existing and future objects. Organization-settings deletion leaves them intact. The API rejects any change, including [], that leaves a policy without a grant that includes manage-permissions. (see [below for nested schema](#nestedatt--default_permissions))
 - `default_personal_agent_access_all_tools` (Boolean) Whether new personal agents start with access to all tools. Requires API 1.5.0-rc.1 or later.
+- `default_smart_model_id` (String) Database ID of the stronger model on `default_llm_api_key_id` used when an agent without its own `smart_model_id` forks a subagent on the `smart` tier.
 - `default_user_limits` (Attributes Map) Default member spending limits from LLM Settings, keyed by `default` for the organization or an environment UUID for an override. Omit this map to preserve all defaults; an explicit map owns the complete set, and {} removes them all. Organization-settings deletion leaves these settings intact. (see [below for nested schema](#nestedatt--default_user_limits))
 - `embedding_chat_api_key_id` (String) API key ID for the embedding model. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.
 - `embedding_model` (String) Embedding model for knowledge base. **Warning: locked after first configuration.** Changing requires dropping embedding config via the API first.

@@ -56,6 +56,7 @@ output "support_tools" {
 - `excluded_connector_ids` (Set of String) Knowledge connectors excluded from automatic access.
 - `excluded_subagent_ids` (Set of String) Local agents excluded from automatic access.
 - `excluded_tool_ids` (Set of String) Tools excluded from automatic access.
+- `fast_model_id` (String) Database UUID of a faster tool-capable chat model on the agent's `llm_api_key_id`, used when the agent forks a subagent on the `fast` tier; null falls back to the organization's `default_fast_model_id`, then the provider default
 - `hooks` (Attributes Set) Current event hooks and their file configuration. (see [below for nested schema](#nestedatt--hooks))
 - `icon` (String) Emoji or base64 image data URL
 - `incoming_email_allowed_domain` (String) Allowed sender domain when `incoming_email_security_mode = "internal"`
@@ -81,6 +82,7 @@ output "support_tools" {
 - `skill_policy_hidden_allowed_count` (Number) Allowed skill references hidden or unavailable to the current caller.
 - `skill_policy_hidden_excluded_count` (Number) Excluded skill references hidden or unavailable to the current caller.
 - `skills` (Attributes) Current skill activation mode and allowed/excluded references. (see [below for nested schema](#nestedatt--skills))
+- `smart_model_id` (String) Database UUID of a stronger tool-capable chat model on the agent's `llm_api_key_id`, used when the agent forks a subagent on the `smart` tier; null falls back to the organization's `default_smart_model_id`, then the provider default
 - `subagent_ids` (Set of String) UUIDs of assigned local subagents.
 - `suggested_prompts` (Attributes List) Suggested prompts surfaced to users in the chat UI (see [below for nested schema](#nestedatt--suggested_prompts))
 - `system_prompt` (String) System prompt that frames the agent's behavior
