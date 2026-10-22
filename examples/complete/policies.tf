@@ -72,10 +72,10 @@ data "archestra_agent" "support_lookup" {
 }
 
 
+# No start_date: a window built from timestamp() would defer this read to
+# apply time and leave every plan non-empty. Pass a fixed timestamp instead.
 data "archestra_mcp_tool_calls" "support_recent" {
-  agent_id   = archestra_agent.support.id
-  start_date = timeadd(timestamp(), "-24h")
-  search     = "filesystem"
+  agent_id = archestra_agent.support.id
 }
 
 output "engineering_team_id" {
@@ -103,6 +103,6 @@ output "support_agent_tool_count" {
 }
 
 
-output "support_tool_call_count_24h" {
-  value = data.archestra_mcp_tool_calls.support_recent.total
+output "support_tool_call_count" {
+  value = data.archestra_mcp_tool_calls.support_recent.returned_count
 }

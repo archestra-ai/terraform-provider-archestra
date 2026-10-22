@@ -38,6 +38,13 @@ resource "archestra_mcp_registry_entry" "memory" {
 resource "archestra_mcp_server" "memory" {
   name       = "basic-demo-memory"
   catalog_id = archestra_mcp_registry_entry.memory.id
+  scope      = "org" # agents can only be given tools from org- or team-scoped servers
+}
+
+# The platform pairs an agent's model with its provider key, so the agent
+# references a model row and the key that serves it.
+resource "archestra_model" "llama3" {
+  model_id = "llama3"
 }
 
 resource "archestra_agent" "main" {
@@ -45,7 +52,7 @@ resource "archestra_agent" "main" {
   name           = "basic-demo-agent"
   description    = "Hello-world agent for the getting-started demo."
   system_prompt  = "You are a friendly assistant. Be concise."
-  llm_model      = "llama3"
+  model_id       = archestra_model.llama3.id
   llm_api_key_id = archestra_model_provider.ollama.id
 }
 

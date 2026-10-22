@@ -294,6 +294,14 @@ cluster, so the backend pod can install it as a remote MCP server at
 creates its script ConfigMap and applies it; App lifecycle cases use it for
 upstream tools.
 
+## Validating the examples
+
+`make validate-examples` builds the provider from the working tree and runs
+`terraform init` and `terraform validate` on every example directory with a
+development override, so a schema change that breaks an example fails the
+"Linting and Tests" job. It needs network access for the other providers the
+examples use.
+
 ## Manual smoke testing with `examples/complete/`
 
 For PR reviewers and contributors who want to *see* a change in action

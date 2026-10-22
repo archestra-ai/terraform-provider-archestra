@@ -13,22 +13,24 @@ Queries the MCP tool-call audit log using cursor pagination, bounded by `max_rec
 ## Example Usage
 
 ```terraform
-# All tool calls made by the support agent in the last 24 hours that
-# mention "error" anywhere in server name, tool name, or arguments.
-data "archestra_mcp_tool_calls" "support_failures_24h" {
+# Tool calls made by the support agent since a fixed instant. Filter the
+# `calls` list in Terraform; `returned_count` is the number of calls returned
+# and `truncated` says whether the window held more. Use a fixed timestamp (a
+# variable here): a window built from timestamp() defers the read to apply time
+# and leaves every plan non-empty.
+data "archestra_mcp_tool_calls" "support_failures" {
   agent_id   = archestra_agent.support.id
-  start_date = timeadd(timestamp(), "-24h")
-  search     = "error"
+  start_date = var.audit_window_start
 }
 
-output "support_failure_count_24h" {
-  value = data.archestra_mcp_tool_calls.support_failures_24h.total
+output "support_tool_call_count" {
+  value = data.archestra_mcp_tool_calls.support_failures.returned_count
 }
 
 # Drive a downstream resource off the audit trail — e.g. raise an
 # alert if any blocked-tool calls happened recently.
 output "blocked_tool_calls" {
-  value = [for c in data.archestra_mcp_tool_calls.support_failures_24h.calls : c if c.method == "tools/call"]
+  value = [for c in data.archestra_mcp_tool_calls.support_failures.calls : c if c.method == "tools/call"]
 }
 ```
 

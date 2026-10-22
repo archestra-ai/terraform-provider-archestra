@@ -44,6 +44,7 @@ resource "archestra_organization_settings" "main" {
 
 
   default_llm_api_key_id = archestra_model_provider.ollama_vault.id
+  default_model_id       = archestra_model.llama3.id # the platform pairs the default key with a model row
   default_agent_id       = archestra_agent.support.id
 
   # NOTE: embedding_* and reranker_* are deliberately omitted from this demo.

@@ -33,6 +33,10 @@ fmt:
 test:
 	go test -v -cover -timeout=120s -parallel=10 ./...
 
+# Checks every example configuration against the provider built from this tree.
+validate-examples:
+	scripts/validate-examples.sh
+
 testacc:
 	@echo "Running acceptance tests against remote Archestra environment..."
 	@echo "Using ARCHESTRA_BASE_URL: $(ARCHESTRA_BASE_URL)"
