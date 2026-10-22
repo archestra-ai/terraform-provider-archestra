@@ -1,11 +1,11 @@
 name: Crossplane Coverage
 
 # Reports which Terraform resources don't yet have a Crossplane managed-resource
-# equivalent. Non-blocking — informational only.
+# equivalent. Coverage is informational; the tracked badge must be current.
 #
 # - On PRs that touch either side: writes the report to the job summary.
-# - On main pushes: also refreshes .github/badges/crossplane-coverage.json so the
-#   README badge stays in sync. Auto-commits when the JSON changes.
+# - Verify the badge on every run. Update it in the source PR, since main
+#   requires pull requests and passing checks.
 
 on:
   pull_request:
@@ -14,6 +14,8 @@ on:
       - 'cmd/provider-contracts/**'
       - 'crossplane/config/external_name.go'
       - 'scripts/crossplane-coverage.sh'
+      - 'scripts/test_crossplane_coverage.py'
+      - '.github/badges/crossplane-coverage.json'
       - '.github/workflows/crossplane-coverage.yml'
   push:
     branches: [main]
@@ -22,14 +24,14 @@ on:
       - 'cmd/provider-contracts/**'
       - 'crossplane/config/external_name.go'
       - 'scripts/crossplane-coverage.sh'
+      - 'scripts/test_crossplane_coverage.py'
+      - '.github/badges/crossplane-coverage.json'
       - '.github/workflows/crossplane-coverage.yml'
   workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  # Cancel stale PR runs when new commits land; let main runs finish so the
-  # auto-commit step doesn't race itself.
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -38,15 +40,14 @@ jobs:
   coverage:
     name: Report TF↔Crossplane coverage
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write # to commit the refreshed badge JSON on main
     steps:
       - name: Checkout
-        # zizmor: ignore[artipacked] credentials are intentionally persisted on
-        # main pushes so the auto-commit step can refresh the badge JSON.
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          persist-credentials: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+          persist-credentials: false
+
+      - name: Test coverage automation
+        run: python3 -m unittest discover -s scripts -p 'test_crossplane_coverage.py'
 
       - name: Setup Go
         uses: ./.github/actions/setup-go
@@ -54,14 +55,5 @@ jobs:
       - name: Generate coverage report
         run: scripts/crossplane-coverage.sh "$GITHUB_STEP_SUMMARY"
 
-      - name: Refresh badge JSON
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          scripts/crossplane-coverage.sh --badge .github/badges/crossplane-coverage.json
-          if ! git diff --quiet .github/badges/crossplane-coverage.json; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add .github/badges/crossplane-coverage.json
-            git commit -m 'chore(ci): refresh Crossplane coverage badge'
-            git push
-          fi
+      - name: Verify badge JSON
+        run: scripts/crossplane-coverage.sh --check-badge .github/badges/crossplane-coverage.json

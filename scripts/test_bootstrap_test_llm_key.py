@@ -76,8 +76,8 @@ class FixtureTests(unittest.TestCase):
         self.assertEqual(self.created, [])
 
     def test_default_endpoint_matches_ci(self):
-        workflow = (Path(__file__).parent.parent / '.github/workflows/on-pull-request.yml').read_text()
-        self.assertIn('ARCHESTRA_TEST_LLM_BASE_URL: ' + self.model_url, workflow)
+        action = (Path(__file__).parent.parent / '.github/actions/acceptance-tests/action.yml').read_text()
+        self.assertIn('ARCHESTRA_TEST_LLM_BASE_URL: ' + self.model_url, action)
         source = Path(__file__).with_name('bootstrap-test-llm-key.py').read_text()
         self.assertIn(repr(self.model_url), source)
 

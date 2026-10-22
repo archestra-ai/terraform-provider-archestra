@@ -11,6 +11,7 @@
 #   scripts/crossplane-coverage.sh                 # markdown report to stdout
 #   scripts/crossplane-coverage.sh path/to/out.md  # markdown report to file
 #   scripts/crossplane-coverage.sh --badge out.json  # shields.io endpoint JSON
+#   scripts/crossplane-coverage.sh --check-badge out.json  # verify tracked JSON
 
 set -euo pipefail
 
@@ -27,16 +28,22 @@ covered="$(comm -12 <(echo "$tf") <(echo "$cp"))"
 cp_total=$(printf '%s\n' "$covered" | grep -c . || true)
 pct=$(( cp_total * 100 / tf_total ))
 
-if [ "${1:-}" = "--badge" ]; then
-  out="${2:?--badge requires an output path}"
+if [ "${1:-}" = "--badge" ] || [ "${1:-}" = "--check-badge" ]; then
+  out="${2:?badge mode requires an output path}"
   color="red"
   [ "$pct" -ge 25 ] && color="orange"
   [ "$pct" -ge 50 ] && color="yellow"
   [ "$pct" -ge 75 ] && color="green"
   [ "$pct" -ge 95 ] && color="brightgreen"
-  cat > "$out" <<EOF
-{"schemaVersion":1,"label":"crossplane coverage","message":"${cp_total}/${tf_total} (${pct}%)","color":"${color}"}
-EOF
+  badge_json="{\"schemaVersion\":1,\"label\":\"crossplane coverage\",\"message\":\"${cp_total}/${tf_total} (${pct}%)\",\"color\":\"${color}\"}"
+  if [ "$1" = "--check-badge" ]; then
+    if ! diff -u "$out" <(printf '%s\n' "$badge_json"); then
+      printf 'Coverage badge is missing or stale. From the repository root, run:\n  scripts/crossplane-coverage.sh --badge %q\nInclude the result in your pull request.\n' "$out" >&2
+      exit 1
+    fi
+  else
+    printf '%s\n' "$badge_json" > "$out"
+  fi
   exit 0
 fi
 

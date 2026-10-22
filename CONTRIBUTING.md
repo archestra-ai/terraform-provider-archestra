@@ -249,6 +249,15 @@ platform's namespace inside this test cluster (default `default`).
 
 ## Crossplane lifecycle probes
 
+The Crossplane coverage workflow reports resource mappings and checks that the
+README badge matches them. When provider registrations or Crossplane mappings
+change, regenerate the badge and include it in the same pull request:
+
+```bash
+scripts/crossplane-coverage.sh --badge .github/badges/crossplane-coverage.json
+scripts/crossplane-coverage.sh --check-badge .github/badges/crossplane-coverage.json
+```
+
 `scripts/bootstrap-crossplane.sh` adds Crossplane to the stack above for
 both-scope reconciliation tests. Run it with the same `KIND_CLUSTER` and
 `ARCHESTRA_TEST_*_PORT` values as the stack:
