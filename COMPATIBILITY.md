@@ -19,6 +19,11 @@ Acceptance CI runs the native suite against that release and records the image
 digest it used in the job summary. The provider embeds the same file for the
 runtime check below.
 
+Pull request CI also runs the native and credential acceptance suites against
+the oldest supported release (`1.4.0-rc.51`) and the newest stable Archestra
+release. These checks are required, so a change that breaks a supported older
+release cannot merge.
+
 Crossplane reconciliation is not part of CI. The recorded evidence for
 1.4.0-rc.55 (image
 `sha256:ead9d30000531fe77f2bfe8db103dc19426701234a2f97d88b59fdd7a1952e3c`)

@@ -30,6 +30,11 @@ archestra:
     ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
     # Leave CPU headroom for Kind system pods and the Helm probe hooks.
     ARCHESTRA_DAGGER_RUNTIME_ENGINE_CPU_REQUEST: "250m"
+    # Each Dagger engine reserves 6Gi by default. Two of them and the MCP server
+    # pods do not fit on one kind node on a GitHub runner, and MCP servers then
+    # never become ready. The sandbox ceiling must stay below the request.
+    ARCHESTRA_DAGGER_RUNTIME_ENGINE_MEMORY_REQUEST: "2Gi"
+    ARCHESTRA_DAGGER_RUNTIME_ENGINE_SANDBOX_MEMORY_MAX: "1536Mi"
 
     # Keep CI instances out of product telemetry.
     ARCHESTRA_ANALYTICS: "disabled"

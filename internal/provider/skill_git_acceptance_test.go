@@ -56,7 +56,8 @@ func TestAccGitSkillResource(t *testing.T) {
 	first := skillGitFixtureConfig(skillGitFixtureSHA, "1d", `icon="book"`)
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: first, Check: resource.ComposeTestCheckFunc(capture, resource.TestCheckResourceAttr("archestra_skill.test", "name", "provider-synthetic-import"), resource.TestCheckResourceAttr("archestra_skill.test", "source_type", "github"), resource.TestCheckResourceAttr("archestra_skill.test", "source_commit", skillGitFixtureSHA), resource.TestCheckResourceAttr("archestra_skill.test", "latest_version", "1"))},
-		{ResourceName: "archestra_skill.test", ImportState: true, ImportStateVerify: true},
+		// A background sync can finish between apply and import and set last_synced_at.
+		{ResourceName: "archestra_skill.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"last_synced_at"}},
 		{PreConfig: func() { phase.Store(true) }, Config: skillGitFixtureConfig(skillGitFixtureSHA, "1d", `icon="books"`), Check: resource.ComposeTestCheckFunc(preserved, resource.TestCheckResourceAttr("archestra_skill.test", "latest_version", "1"))},
 		{Config: skillGitFixtureConfig(skillGitFixtureSHA, "1h", `icon="books"`), Check: resource.ComposeTestCheckFunc(preserved, resource.TestCheckResourceAttr("archestra_skill.test", "git_source.sync_interval", "1h"), resource.TestCheckResourceAttr("archestra_skill.test", "latest_version", "1"))},
 		{Config: skillGitFixtureConfig(skillGitAlternateSHA, "1h", `icon="books"`), Check: resource.ComposeTestCheckFunc(preserved, resource.TestCheckResourceAttr("archestra_skill.test", "source_commit", skillGitAlternateSHA))},

@@ -1,11 +1,14 @@
 package provider
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"reflect"
 	"regexp"
 	"strings"
 	"testing"
@@ -150,5 +153,48 @@ func TestAPICompatibilityCITestsPlatformVersion(t *testing.T) {
 	}
 	if want := "ARCHESTRA_VERSION=" + testedAPIVersion + "\n"; string(out) != want {
 		t.Fatalf("scripts/platform-version.sh printed %q, want %q", out, want)
+	}
+}
+
+func TestPullRequestCITestsOlderReleases(t *testing.T) {
+	if _, err := exec.LookPath("jq"); err != nil {
+		t.Skip("jq is not installed")
+	}
+	// A stub gh returns the stable release versions; the newest one wins.
+	bin := t.TempDir()
+	stub := "#!/bin/sh\nprintf '1.4.2\\n1.4.10\\n1.3.99\\n'\n"
+	if err := os.WriteFile(filepath.Join(bin, "gh"), []byte(stub), 0o700); err != nil { //nolint:gosec // G306: the stub gh must be executable.
+		t.Fatal(err)
+	}
+	cmd := exec.CommandContext(t.Context(), "../../scripts/supported-platform-versions.sh")
+	cmd.Env = append(os.Environ(), "PATH="+bin+string(os.PathListSeparator)+os.Getenv("PATH"))
+	out, err := cmd.Output()
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, ok := strings.CutPrefix(strings.TrimSpace(string(out)), "matrix=")
+	if !ok {
+		t.Fatalf("script printed %q, want a matrix= output", out)
+	}
+	var matrix struct {
+		Include []struct{ Role, Version string }
+	}
+	if err := json.Unmarshal([]byte(raw), &matrix); err != nil {
+		t.Fatal(err)
+	}
+	// Both roles always run, even when they name the same release, so the
+	// required checks always report.
+	want := []struct{ Role, Version string }{{"oldest supported", minimumAPIVersion}, {"newest stable", "1.4.10"}}
+	if !reflect.DeepEqual(matrix.Include, want) {
+		t.Fatalf("older releases = %v, want %v", matrix.Include, want)
+	}
+	workflow, err := os.ReadFile("../../.github/workflows/on-pull-request.yml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, name := range []string{"name: Acceptance Tests (${{ matrix.role }})", "name: Credential Acceptance Tests (${{ matrix.role }})"} {
+		if !strings.Contains(string(workflow), name) {
+			t.Errorf("pull request CI has no job %q", name)
+		}
 	}
 }

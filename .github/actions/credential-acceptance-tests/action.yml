@@ -1,0 +1,72 @@
+name: Credential acceptance tests
+description: Start an Archestra release in Docker and run the runtime credential acceptance tests against it.
+
+inputs:
+  archestra-version:
+    description: Archestra platform release to start, for example 1.5.0-rc.2.
+    required: true
+  check-generated-client:
+    description: Fail when the generated API client differs from this release's spec. Only the tested release must match.
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Select platform release
+      shell: bash
+      env:
+        VERSION: ${{ inputs.archestra-version }}
+      run: |
+        if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+          echo "::error::archestra-version is not a release version: $VERSION"
+          exit 1
+        fi
+    - uses: ./.github/actions/setup-go
+    - uses: ./.github/actions/setup-terraform
+    - name: Start platform with credential support
+      shell: bash
+      env:
+        ARCHESTRA_VERSION: ${{ inputs.archestra-version }}
+      run: |
+        docker pull "archestra/platform:${ARCHESTRA_VERSION}"
+        digest="$(docker image inspect --format '{{join .RepoDigests ", "}}' "archestra/platform:${ARCHESTRA_VERSION}")"
+        echo "Archestra ${ARCHESTRA_VERSION}: ${digest}" | tee -a "$GITHUB_STEP_SUMMARY"
+        docker run -d --name credential-platform -p 9000:9000 -p 3000:3000 \
+          -e ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true \
+          -e ARCHESTRA_AGENT_RUNTIME_ENABLED=true \
+          -e ARCHESTRA_AUTH_SECRET=acceptance-test-auth-secret-32chars \
+          -e ARCHESTRA_ANALYTICS=disabled \
+          "archestra/platform:${ARCHESTRA_VERSION}"
+        for _attempt in $(seq 1 120); do
+          status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/api/health || true)
+          case "$status" in 200|401) exit 0 ;; esac
+          sleep 5
+        done
+        docker logs credential-platform
+        exit 1
+    - name: Obtain API key
+      id: api-key
+      shell: bash
+      run: |
+        API_KEY=$(./scripts/bootstrap-api-key.sh)
+        echo "::add-mask::${API_KEY}"
+        echo "api-key=${API_KEY}" >> "$GITHUB_OUTPUT"
+    - name: Verify generated provider client
+      if: ${{ inputs.check-generated-client == 'true' }}
+      shell: bash
+      run: |
+        make codegen-api-client
+        git diff --exit-code -- internal/client/archestra_client.go
+    - name: Test credential lifecycle and GitHub App linkage
+      shell: bash
+      env:
+        TF_ACC: "1"
+        ARCHESTRA_BASE_URL: http://localhost:9000
+        ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
+        ARCHESTRA_AGENT_RUNTIME_ENABLED: "true"
+      run: go test -v -timeout=10m ./internal/provider -run '^TestAccRuntimeCredentialResource'
+    - name: Platform logs on failure
+      if: failure()
+      shell: bash
+      run: docker logs --tail 200 credential-platform

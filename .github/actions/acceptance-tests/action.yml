@@ -1,0 +1,174 @@
+name: Acceptance tests
+description: Deploy an Archestra release in kind and run the native acceptance suite against it.
+
+inputs:
+  archestra-version:
+    description: Archestra platform release to deploy, for example 1.5.0-rc.2.
+    required: true
+  check-generated-client:
+    description: Fail when the generated API client differs from this release's spec. Only the tested release must match.
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Select platform release
+      shell: bash
+      env:
+        VERSION: ${{ inputs.archestra-version }}
+      run: |
+        if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+          echo "::error::archestra-version is not a release version: $VERSION"
+          exit 1
+        fi
+
+    - name: Setup go
+      uses: ./.github/actions/setup-go
+
+    - name: Setup Terraform
+      uses: ./.github/actions/setup-terraform
+
+    # Deploy Archestra Platform locally using Kind
+    # This uses the pre-built archestra/platform image from Docker Hub and the published Helm chart from GAR
+    - name: Setup Archestra Platform
+      uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@ab0c93762d005ccb9475d883c4a47970f480bf5b # v1.0.8
+      with:
+        kind-config-path: ./.github/kind.yaml
+        kind-cluster-name: archestra-ci-cluster
+        helm-values-path: ./.github/values-ci.yaml
+        helm-chart-ref: oci://europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/helm-charts/archestra-platform:${{ inputs.archestra-version }}
+        deploy-e2e-dependencies: "false"
+        build-platform-image: "false"
+        platform-image-tag: archestra/platform:${{ inputs.archestra-version }}
+
+    - name: Record platform image
+      shell: bash
+      env:
+        ARCHESTRA_VERSION: ${{ inputs.archestra-version }}
+      run: |
+        digest="$(docker image inspect --format '{{join .RepoDigests ", "}}' "archestra/platform:${ARCHESTRA_VERSION}")"
+        echo "Archestra ${ARCHESTRA_VERSION}: ${digest}" | tee -a "$GITHUB_STEP_SUMMARY"
+
+    # The kubelet pulls one image at a time, and at startup the platform queues
+    # its agent images. A local MCP server must become ready within two minutes,
+    # so pull the platform's default MCP server base image before the tests.
+    - name: Pull the MCP server base image
+      shell: bash
+      env:
+        ARCHESTRA_VERSION: ${{ inputs.archestra-version }}
+      run: |
+        image="europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/mcp-server-base:${ARCHESTRA_VERSION}"
+        for node in $(kind get nodes --name archestra-ci-cluster); do
+          docker exec "$node" crictl pull "$image"
+        done
+
+    # Stub /v1/models so backend's testProviderApiKey passes without a real
+    # Ollama. Manifest + apply logic shared with local development via
+    # scripts/bootstrap-ollama-mock.sh and scripts/k8s/ollama-mock.yaml.
+    - name: Deploy Ollama mock
+      shell: bash
+      run: ./scripts/bootstrap-ollama-mock.sh
+
+    # Dev-mode Vault + secret seed for BYOS tests. Ephemeral; do not mirror
+    # outside CI. Shared with local via scripts/bootstrap-vault.sh and
+    # scripts/k8s/vault-dev.yaml.
+    - name: Install test Agent Runtime operator
+      shell: bash
+      run: |
+        curl --fail --silent --show-error --location \
+          https://github.com/kubernetes-sigs/agent-sandbox/releases/download/v1.0.1/sandbox-with-extensions.yaml \
+          --output /tmp/agent-sandbox.yaml
+        echo "460c1e0272c793c98de82482aed57db1bddb0afcb979c19325dc6cc52289c44c  /tmp/agent-sandbox.yaml" | sha256sum --check
+        kubectl apply --server-side -f /tmp/agent-sandbox.yaml
+        kubectl rollout status deployment/agent-sandbox-controller -n agent-sandbox-system --timeout=120s
+
+    - name: Deploy Vault (dev mode)
+      shell: bash
+      env:
+        ARCHESTRA_NAMESPACE: default
+      run: ./scripts/bootstrap-vault.sh
+
+    # The Vault step restarts the backend. Wait until the old pods are gone and
+    # the public /health answers, so later requests do not reach a stopping pod.
+    - name: Wait for the restarted platform
+      shell: bash
+      run: |
+        for _attempt in $(seq 1 90); do
+          if ! kubectl get pods --namespace default --selector=app.kubernetes.io/name=archestra-platform --no-headers | grep -q Terminating \
+            && curl -fsS -o /dev/null http://localhost:9000/health; then
+            exit 0
+          fi
+          sleep 2
+        done
+        kubectl get pods --namespace default -o wide
+        exit 1
+
+    - name: Check for codegen'd API client changes
+      if: ${{ inputs.check-generated-client == 'true' }}
+      shell: bash
+      run: |
+        make codegen-api-client
+
+        if ! git diff --exit-code; then
+          echo "::error::Generated API client code is not up to date. Please run 'make codegen-api-client' locally and commit the changes."
+          exit 1
+        fi
+
+    # Sign in with default seeded credentials (admin@example.com / password)
+    # and create a fresh API key. Logic is shared with local development via
+    # scripts/bootstrap-api-key.sh — keep the script and this step in sync.
+    - name: Obtain API Key
+      id: api-key
+      shell: bash
+      env:
+        ARCHESTRA_BASE_URL: http://localhost:9000
+      run: |
+        API_KEY=$(./scripts/bootstrap-api-key.sh)
+        echo "::add-mask::${API_KEY}"
+        echo "api-key=${API_KEY}" >> "$GITHUB_OUTPUT"
+
+    # Provision a throwaway OIDC identity provider so the enterprise_managed_config
+    # acceptance test can exercise the full EMC round-trip. The test skips gracefully
+    # if ARCHESTRA_TEST_IDP_ID is unset; in CI we always set it.
+    - name: Provision test Identity Provider
+      id: test-idp
+      shell: bash
+      env:
+        ARCHESTRA_BASE_URL: http://localhost:9000
+        ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
+      run: |
+        IDP_ID=$(./scripts/bootstrap-test-idp.sh)
+        echo "idp-id=${IDP_ID}" >> "$GITHUB_OUTPUT"
+
+    - name: Seed model fixture
+      shell: bash
+      env:
+        ARCHESTRA_BASE_URL: http://localhost:9000
+        ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
+        ARCHESTRA_READONLY_VAULT_ENABLED: "true"
+        ARCHESTRA_TEST_LLM_BASE_URL: http://ollama-mock.default.svc.cluster.local:11434/v1
+      run: python3 scripts/bootstrap-test-llm-key.py
+
+    - name: Run Acceptance Tests
+      shell: bash
+      run: make testacc
+      env:
+        ARCHESTRA_BASE_URL: "http://localhost:9000"
+        ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
+        ARCHESTRA_TEST_IDP_ID: ${{ steps.test-idp.outputs.idp-id }}
+        ARCHESTRA_READONLY_VAULT_ENABLED: "true"
+        ARCHESTRA_AGENT_RUNTIME_ENABLED: "true"
+        ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
+        ARCHESTRA_TEST_LLM_BASE_URL: http://ollama-mock.default.svc.cluster.local:11434/v1
+
+    - name: Cluster state on failure
+      if: failure()
+      shell: bash
+      run: |
+        kubectl get pods --all-namespaces -o wide || true
+        kubectl describe nodes | sed -n '/Allocated resources/,/Events/p' || true
+        kubectl get events --all-namespaces --field-selector type=Warning --sort-by=.lastTimestamp || true
+        # Events and platform log lines for MCP servers that the tests created.
+        kubectl get events --namespace default --sort-by=.lastTimestamp | grep -E 'mcp-tf-' | tail -n 150 || true
+        kubectl logs --namespace default deployment/archestra-platform --tail=5000 | grep -E 'mcp-tf-' | tail -n 150 || true

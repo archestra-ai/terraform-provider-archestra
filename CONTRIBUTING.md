@@ -136,6 +136,12 @@ For new platform releases, the Update Terraform Provider workflow in
 archestra-ai/archestra does steps 2 and 3 and opens a pull request on the
 `automation/platform-api` branch.
 
+Pull request CI also runs both acceptance suites against the oldest supported
+release (`minimumAPIVersion`) and the newest stable release, which
+`scripts/supported-platform-versions.sh` selects. When a test uses an API
+feature that those releases do not have, check `testAccAPIVersionAtLeast` and
+leave that part out on older releases.
+
 ## Code style
 
 - `gofmt -s -w` + `terraform fmt` (run via `make fmt`).
