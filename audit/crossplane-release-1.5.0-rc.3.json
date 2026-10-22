@@ -9,7 +9,8 @@
   "517986d2",
   "fda943c9",
   "29103c09",
-  "bd52abcb"
+  "bd52abcb",
+  "f5056ecb"
  ],
  "api_version": "1.5.0-rc.3",
  "api_image_digest": "sha256:ef2cc471d08b2af05e40cd211bc8b8292752723dff13b8d6c08530079e7167d6",
@@ -89,22 +90,33 @@
    "outcome": "passed",
    "cleanup": "passed",
    "records": 28
+  },
+  {
+   "batch": "b9",
+   "cases": "observe",
+   "run_id": "f5056ecb",
+   "outcome": "passed",
+   "cleanup": "passed",
+   "records": 4,
+   "harness": "crossplane-lifecycle.py from the commit that adds the observe group (on top of source_git_commit); same binary pair and API"
   }
  ],
  "registered_resources": 31,
  "both_scope_families_verified": 31,
- "runtime_records": 138,
+ "runtime_records": 142,
  "family_coverage_gaps": [],
  "family_coverage": {
   "archestra_agent": {
    "cluster": [
     "Agent",
     "AgentInlineOwnership",
+    "AgentObserve",
     "AgentSharing"
    ],
    "namespaced": [
     "Agent",
     "AgentInlineOwnership",
+    "AgentObserve",
     "AgentSharing"
    ]
   },
@@ -397,11 +409,13 @@
   "archestra_team": {
    "cluster": [
     "Team",
-    "TeamInlineBindings"
+    "TeamInlineBindings",
+    "TeamObserve"
    ],
    "namespaced": [
     "Team",
-    "TeamInlineBindings"
+    "TeamInlineBindings",
+    "TeamObserve"
    ]
   },
   "archestra_virtual_key": {
@@ -1911,9 +1925,63 @@
    "empty_sharing_drift_repair": "passed",
    "identity_preserved": true,
    "delete": "passed"
+  },
+  {
+   "resource": "AgentObserve",
+   "scope": "cluster",
+   "api_create": "passed",
+   "observe_only_ready_synced": "passed",
+   "at_provider_matches_api": "passed",
+   "external_rename_observed": "passed",
+   "no_api_writes": true,
+   "managed_resource_delete": "passed",
+   "backend_after_managed_delete": 200,
+   "api_delete": "passed",
+   "backend_after_api_delete": 404
+  },
+  {
+   "resource": "TeamObserve",
+   "scope": "cluster",
+   "api_create": "passed",
+   "observe_only_ready_synced": "passed",
+   "at_provider_matches_api": "passed",
+   "external_rename_observed": "passed",
+   "no_api_writes": true,
+   "managed_resource_delete": "passed",
+   "backend_after_managed_delete": 200,
+   "api_delete": "passed",
+   "backend_after_api_delete": 404
+  },
+  {
+   "resource": "AgentObserve",
+   "scope": "namespaced",
+   "api_create": "passed",
+   "observe_only_ready_synced": "passed",
+   "at_provider_matches_api": "passed",
+   "external_rename_observed": "passed",
+   "no_api_writes": true,
+   "managed_resource_delete": "passed",
+   "backend_after_managed_delete": 200,
+   "api_delete": "passed",
+   "backend_after_api_delete": 404
+  },
+  {
+   "resource": "TeamObserve",
+   "scope": "namespaced",
+   "api_create": "passed",
+   "observe_only_ready_synced": "passed",
+   "at_provider_matches_api": "passed",
+   "external_rename_observed": "passed",
+   "no_api_writes": true,
+   "managed_resource_delete": "passed",
+   "backend_after_managed_delete": 200,
+   "api_delete": "passed",
+   "backend_after_api_delete": 404
   }
  ],
  "cleanup": "passed",
  "dry_run": "An identical sweep on bf68e86 (before the virtual key schema change) passed all eight batches with 138 records; it is not this record.",
- "scope": "All 31 registered resource families in both scopes against published API 1.5.0-rc.3, on one Terraform provider and controller binary pair. Records are the lifecycle probes in crossplane-lifecycle.py; variants and sharing records are extra checks, not extra families. No inference, hook execution, OAuth consent or external setup is requested."
+ "scope": "All 31 registered resource families in both scopes against published API 1.5.0-rc.3, on one Terraform provider and controller binary pair. Records are the lifecycle probes in crossplane-lifecycle.py; variants and sharing records are extra checks, not extra families. No inference, hook execution, OAuth consent or external setup is requested.",
+ "family_sweep_records": 138,
+ "observe_scope": "Batch b9 checks the Crossplane equivalent of the archestra_agent and archestra_team data sources: an API-created object observed by a managed resource with managementPolicies [Observe], the API rename followed in status.atProvider, managed-resource deletion leaving the API object in place (200), then API deletion (404)."
 }

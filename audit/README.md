@@ -13,6 +13,8 @@ binary pair, against published API 1.5.0-rc.3 (image
   every harness case group, in the cluster and namespaced scopes, passes 138
   lifecycle records with normal cleanup. Each of the 31 resource families has
   passing records in both scopes; the record lists which records cover each family.
+  Its batch b9 adds four observe-only records (Agent and Team in both scopes),
+  the Crossplane equivalent of the `archestra_agent` and `archestra_team` data sources.
 - [Runtime packages](runtime-package-validation-1.5.0-rc.3.json): the release
   publish job's build commands, run without the push, build linux/amd64 and
   linux/arm64 runtime images and xpkgs. Each actual image reconciles an
