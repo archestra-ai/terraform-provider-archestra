@@ -92,15 +92,17 @@ resource "archestra_mcp_registry_entry" "with_user_config" {
   }
 }
 
-# Team-scoped install + per-install user_config_values for catalog items
-# that expose `user_config`. Maps go through jsonencode so types round-trip.
+# Team-scoped install (scope = "team" with the team) + per-install
+# user_config_values for catalog items that expose `user_config`. Values reach
+# the server as text: strings go in as they are, other types through jsonencode.
 resource "archestra_mcp_server" "filesystem_team" {
   name       = "filesystem-eng"
   catalog_id = archestra_mcp_registry_entry.with_user_config.id
+  scope      = "team"
   team_id    = archestra_team.engineering.id
 
   user_config_values = {
-    workspace    = jsonencode("/home/eng")
+    workspace    = "/home/eng"
     max_results  = jsonencode(100)
     enable_cache = jsonencode(false)
   }

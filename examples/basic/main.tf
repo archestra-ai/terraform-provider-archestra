@@ -38,6 +38,7 @@ resource "archestra_mcp_registry_entry" "memory" {
 resource "archestra_mcp_server" "memory" {
   name       = "basic-demo-memory"
   catalog_id = archestra_mcp_registry_entry.memory.id
+  scope      = "org" # agents can only be given tools from org- or team-scoped servers
 }
 
 # The platform pairs an agent's model with its provider key, so the agent

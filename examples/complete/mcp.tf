@@ -109,8 +109,10 @@ resource "archestra_mcp_server" "configurable_fs_engineering" {
   scope      = "team"
   team_id    = archestra_team.engineering.id
 
+  # Values reach the server as text: strings go in as they are, other types
+  # through jsonencode. The directory must exist in the server container.
   user_config_values = {
-    workspace   = jsonencode("/tmp/eng-workspace")
+    workspace   = "/tmp"
     max_results = jsonencode(100)
   }
 }
