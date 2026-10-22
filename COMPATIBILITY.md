@@ -34,16 +34,15 @@ release cannot merge. The runtime check below still warns on those releases,
 because it treats only the release in `platform-version.txt` as tested.
 
 Crossplane reconciliation is not part of CI. The recorded evidence for
-1.4.0-rc.55 (image
-`sha256:ead9d30000531fe77f2bfe8db103dc19426701234a2f97d88b59fdd7a1952e3c`)
-covers App and AppInit in both scopes ([evidence](audit/crossplane-apps-rc55.json)). The other
-30 families were not re-run on rc.55: APIKey, Agent, Credential, Directory,
-Environment, knowledge File, project File, Gateway, GitHubApp, GitHubPAT,
-KnowledgeBase, Limit, Model, ModelProvider, OAuthClient, Plugin, Project,
-identity Provider, RegistryEntry, RemoteAgent, Role, Schedule, Server,
-ServiceAccount, ServiceAccountAPIKey, Settings, ShareLink, Skill, Team and
-VirtualKey. Their Crossplane evidence used 1.4.0-rc.49. Native acceptance, state migration, Crossplane
-reconciliation and runtime package evidence are linked from [the audit](audit/README.md).
+1.5.0-rc.3 (image
+`sha256:ef2cc471d08b2af05e40cd211bc8b8292752723dff13b8d6c08530079e7167d6`)
+covers all 31 resource families in both scopes on one Terraform provider and
+controller binary pair: 138 lifecycle records with normal cleanup
+([evidence](audit/crossplane-release-1.5.0-rc.3.json)). The same run's native
+acceptance ([evidence](audit/native-acceptance-1.5.0-rc.3.json)) and runtime
+package checks for linux/amd64 and linux/arm64
+([evidence](audit/runtime-package-validation-1.5.0-rc.3.json)) are linked, with
+the earlier milestone records, from [the audit](audit/README.md).
 
 For Terraform, select an approved provider release with `required_providers` and
 commit `.terraform.lock.hcl`. That constraint selects a provider version; Terraform
