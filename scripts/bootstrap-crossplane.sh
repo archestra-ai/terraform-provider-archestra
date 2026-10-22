@@ -141,7 +141,15 @@ done
 # 3. CRDs for both scopes.
 log "Applying generated CRDs..."
 kubectl apply --server-side --force-conflicts -f "${REPO_ROOT}/crossplane/package/crds" >/dev/null
-kubectl wait --for=condition=Established crd --all --timeout=120s >/dev/null
+# Wait only for the CRDs applied here: other components' CRDs are not ours to
+# gate on, and a busy CI node needs more than two minutes for all of them.
+if ! kubectl wait --for=condition=Established -f "${REPO_ROOT}/crossplane/package/crds" --timeout=300s >/dev/null; then
+  log "Generated CRDs that are not Established:"
+  kubectl get -f "${REPO_ROOT}/crossplane/package/crds" \
+    -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.status.conditions[?(@.type=="Established")].status}{"\n"}{end}' |
+    grep -v ' True$' >&2 || true
+  exit 1
+fi
 
 # 4. Credentials and ProviderConfigs.
 log "Creating credentials and ProviderConfigs..."
