@@ -50,6 +50,19 @@ runs:
         digest="$(docker image inspect --format '{{join .RepoDigests ", "}}' "archestra/platform:${ARCHESTRA_VERSION}")"
         echo "Archestra ${ARCHESTRA_VERSION}: ${digest}" | tee -a "$GITHUB_STEP_SUMMARY"
 
+    # The kubelet pulls one image at a time, and at startup the platform queues
+    # its agent images. A local MCP server must become ready within two minutes,
+    # so pull the platform's default MCP server base image before the tests.
+    - name: Pull the MCP server base image
+      shell: bash
+      env:
+        ARCHESTRA_VERSION: ${{ inputs.archestra-version }}
+      run: |
+        image="europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/mcp-server-base:${ARCHESTRA_VERSION}"
+        for node in $(kind get nodes --name archestra-ci-cluster); do
+          docker exec "$node" crictl pull "$image"
+        done
+
     # Stub /v1/models so backend's testProviderApiKey passes without a real
     # Ollama. Manifest + apply logic shared with local development via
     # scripts/bootstrap-ollama-mock.sh and scripts/k8s/ollama-mock.yaml.
