@@ -1,0 +1,1987 @@
+{
+ "format_version": 1,
+ "outcome": "passed",
+ "run_ids": [
+  "eba03d57",
+  "9b75978e",
+  "e152618e",
+  "4257c2dc",
+  "517986d2",
+  "fda943c9",
+  "29103c09",
+  "bd52abcb",
+  "f5056ecb"
+ ],
+ "api_version": "1.5.0-rc.3",
+ "api_image_digest": "sha256:ef2cc471d08b2af05e40cd211bc8b8292752723dff13b8d6c08530079e7167d6",
+ "api_spec_sha256": "7aa611c6401f742ed6f5137c77c8e55e182b6755639396249de273876c933afe",
+ "api_url": "http://localhost:19000",
+ "kubernetes_context": "kind-archestra-ci-cluster",
+ "crossplane_version": "2.2.1",
+ "terraform_version": "1.5.7",
+ "go_version": "1.25.8",
+ "terraform_sha256": "26f7b897809341d88dca3185d1f977486264c892b257967434c04d5cf6bcbb28",
+ "controller_sha256": "22327db4e9a593d971e0b401c4a47b274dd8ebbfc739b890ba5417789dad0fd0",
+ "runtime_source_sha256": "5110fbd88b1c9a1b7dffee819b4b577edc31cc49f37b1ce49a114d0267202804",
+ "source_git_commit": "c937a0c9882704760ee006a53e79b330bc893b56",
+ "hash_definitions": "terraform_sha256: go build . at source_git_commit (served to the controller from a filesystem mirror); controller_sha256: crossplane make generate go.build at source_git_commit (scripts/bootstrap-crossplane.sh); runtime_source_sha256: sha256 of git archive --format=tar source_git_commit. Built with go1.25.8 linux/amd64.",
+ "harness": "scripts/bootstrap-local-stack.sh with ARCHESTRA_VERSION=1.5.0-rc.3 and ARCHESTRA_TEST_BACKEND_PORT=19000, then scripts/bootstrap-crossplane.sh, then scripts/integration/crossplane-lifecycle.py --readonly-vault --mcp-url http://provider-mcp-mock.default.svc.cluster.local:19006/mcp with every --cases choice in eight batches and both scopes. Harness files at source_git_commit: scripts/integration/crossplane-lifecycle.py a5b9e958175bca9c, scripts/bootstrap-crossplane.sh 5e27e6c7befa0659, scripts/bootstrap-local-stack.sh bd0cdf3a816348bc, scripts/integration/mcp-mock.py 5ad99beb11f8710d",
+ "batches": [
+  {
+   "batch": "b1",
+   "cases": "core",
+   "run_id": "eba03d57",
+   "outcome": "passed",
+   "cleanup": "passed",
+   "records": 14
+  },
+  {
+   "batch": "b2",
+   "cases": "extensions service-account-team team-bindings inline-owners",
+   "run_id": "9b75978e",
+   "outcome": "passed",
+   "cleanup": "passed",
+   "records": 18
+  },
+  {
+   "batch": "b3",
+   "cases": "catalog tools limit llm credential sharing-defaults",
+   "run_id": "e152618e",
+   "outcome": "passed",
+   "cleanup": "passed",
+   "records": 20
+  },
+  {
+   "batch": "b4",
+   "cases": "organization organization-defaults identity schedule api-key api-compatibility",
+   "run_id": "4257c2dc",
+   "outcome": "passed",
+   "cleanup": "passed",
+   "records": 12
+  },
+  {
+   "batch": "b5",
+   "cases": "skill git-skills repository-plugins manual-plugins marketplace-share-links",
+   "run_id": "517986d2",
+   "outcome": "passed",
+   "cleanup": "passed",
+   "records": 16
+  },
+  {
+   "batch": "b6",
+   "cases": "apps project-files project-file-init project-instructions knowledge-files",
+   "run_id": "fda943c9",
+   "outcome": "passed",
+   "cleanup": "passed",
+   "records": 16
+  },
+  {
+   "batch": "b7",
+   "cases": "routing-credentials remote-agents github-registrations",
+   "run_id": "29103c09",
+   "outcome": "passed",
+   "cleanup": "passed",
+   "records": 14
+  },
+  {
+   "batch": "b8",
+   "cases": "parent-sharing",
+   "run_id": "bd52abcb",
+   "outcome": "passed",
+   "cleanup": "passed",
+   "records": 28
+  },
+  {
+   "batch": "b9",
+   "cases": "observe",
+   "run_id": "f5056ecb",
+   "outcome": "passed",
+   "cleanup": "passed",
+   "records": 4,
+   "harness": "crossplane-lifecycle.py from the commit that adds the observe group (on top of source_git_commit); same binary pair and API"
+  }
+ ],
+ "registered_resources": 31,
+ "both_scope_families_verified": 31,
+ "runtime_records": 142,
+ "family_coverage_gaps": [],
+ "family_coverage": {
+  "archestra_agent": {
+   "cluster": [
+    "Agent",
+    "AgentInlineOwnership",
+    "AgentObserve",
+    "AgentSharing"
+   ],
+   "namespaced": [
+    "Agent",
+    "AgentInlineOwnership",
+    "AgentObserve",
+    "AgentSharing"
+   ]
+  },
+  "archestra_api_key": {
+   "cluster": [
+    "APIKey"
+   ],
+   "namespaced": [
+    "APIKey"
+   ]
+  },
+  "archestra_app": {
+   "cluster": [
+    "App",
+    "AppInit"
+   ],
+   "namespaced": [
+    "App",
+    "AppInit"
+   ]
+  },
+  "archestra_credential": {
+   "cluster": [
+    "Credential",
+    "CredentialSharing",
+    "CredentialSharingDefaults"
+   ],
+   "namespaced": [
+    "Credential",
+    "CredentialSharing",
+    "CredentialSharingDefaults"
+   ]
+  },
+  "archestra_environment": {
+   "cluster": [
+    "APICompatibilityConstraint",
+    "Environment",
+    "EnvironmentSharing"
+   ],
+   "namespaced": [
+    "APICompatibilityConstraint",
+    "Environment",
+    "EnvironmentSharing"
+   ]
+  },
+  "archestra_github_app": {
+   "cluster": [
+    "GitHubApp"
+   ],
+   "namespaced": [
+    "GitHubApp"
+   ]
+  },
+  "archestra_github_pat": {
+   "cluster": [
+    "GitHubPAT"
+   ],
+   "namespaced": [
+    "GitHubPAT"
+   ]
+  },
+  "archestra_identity_provider": {
+   "cluster": [
+    "Provider"
+   ],
+   "namespaced": [
+    "Provider"
+   ]
+  },
+  "archestra_knowledge_base": {
+   "cluster": [
+    "KnowledgeBase",
+    "KnowledgeBaseSharing"
+   ],
+   "namespaced": [
+    "KnowledgeBase",
+    "KnowledgeBaseSharing"
+   ]
+  },
+  "archestra_knowledge_directory": {
+   "cluster": [
+    "Directory"
+   ],
+   "namespaced": [
+    "Directory"
+   ]
+  },
+  "archestra_knowledge_file": {
+   "cluster": [
+    "KnowledgeFile",
+    "KnowledgeFileInit"
+   ],
+   "namespaced": [
+    "KnowledgeFile",
+    "KnowledgeFileInit"
+   ]
+  },
+  "archestra_limit": {
+   "cluster": [
+    "Limit"
+   ],
+   "namespaced": [
+    "Limit"
+   ]
+  },
+  "archestra_mcp_gateway": {
+   "cluster": [
+    "Gateway",
+    "GatewayInlineOwnership",
+    "GatewaySharing",
+    "GatewaySubagentControl"
+   ],
+   "namespaced": [
+    "Gateway",
+    "GatewayInlineOwnership",
+    "GatewaySharing",
+    "GatewaySubagentControl"
+   ]
+  },
+  "archestra_mcp_registry_entry": {
+   "cluster": [
+    "RegistryEntry",
+    "RegistryEntrySharing"
+   ],
+   "namespaced": [
+    "RegistryEntry",
+    "RegistryEntrySharing"
+   ]
+  },
+  "archestra_mcp_server": {
+   "cluster": [
+    "InstallationControls",
+    "Server"
+   ],
+   "namespaced": [
+    "InstallationControls",
+    "Server"
+   ]
+  },
+  "archestra_model": {
+   "cluster": [
+    "Model",
+    "ModelSharing"
+   ],
+   "namespaced": [
+    "Model",
+    "ModelSharing"
+   ]
+  },
+  "archestra_model_provider": {
+   "cluster": [
+    "ModelProvider",
+    "ModelProviderSharing"
+   ],
+   "namespaced": [
+    "ModelProvider",
+    "ModelProviderSharing"
+   ]
+  },
+  "archestra_oauth_client": {
+   "cluster": [
+    "OAuthClient",
+    "OAuthClientAuthorizationCode",
+    "OAuthClientSharing"
+   ],
+   "namespaced": [
+    "OAuthClient",
+    "OAuthClientAuthorizationCode",
+    "OAuthClientSharing"
+   ]
+  },
+  "archestra_organization_settings": {
+   "cluster": [
+    "OrganizationInlineDefaults",
+    "Settings"
+   ],
+   "namespaced": [
+    "OrganizationInlineDefaults",
+    "Settings"
+   ]
+  },
+  "archestra_plugin": {
+   "cluster": [
+    "PluginFiles",
+    "PluginGitSource",
+    "PluginSharing"
+   ],
+   "namespaced": [
+    "PluginFiles",
+    "PluginGitSource",
+    "PluginSharing"
+   ]
+  },
+  "archestra_project": {
+   "cluster": [
+    "Project",
+    "ProjectInstructions",
+    "ProjectSharing"
+   ],
+   "namespaced": [
+    "Project",
+    "ProjectInstructions",
+    "ProjectSharing"
+   ]
+  },
+  "archestra_project_file": {
+   "cluster": [
+    "ProjectFileBinary",
+    "ProjectFileInit",
+    "ProjectFileText"
+   ],
+   "namespaced": [
+    "ProjectFileBinary",
+    "ProjectFileInit",
+    "ProjectFileText"
+   ]
+  },
+  "archestra_remote_agent": {
+   "cluster": [
+    "RemoteAgent",
+    "RemoteAgentSharing"
+   ],
+   "namespaced": [
+    "RemoteAgent",
+    "RemoteAgentSharing"
+   ]
+  },
+  "archestra_role": {
+   "cluster": [
+    "Role"
+   ],
+   "namespaced": [
+    "Role"
+   ]
+  },
+  "archestra_schedule": {
+   "cluster": [
+    "Schedule"
+   ],
+   "namespaced": [
+    "Schedule"
+   ]
+  },
+  "archestra_service_account": {
+   "cluster": [
+    "ServiceAccount",
+    "ServiceAccountSharing",
+    "ServiceAccountTeamOwnership"
+   ],
+   "namespaced": [
+    "ServiceAccount",
+    "ServiceAccountSharing",
+    "ServiceAccountTeamOwnership"
+   ]
+  },
+  "archestra_service_account_api_key": {
+   "cluster": [
+    "ServiceAccountAPIKey"
+   ],
+   "namespaced": [
+    "ServiceAccountAPIKey"
+   ]
+  },
+  "archestra_share_link": {
+   "cluster": [
+    "ShareLinkExpiry",
+    "ShareLinkPlugins",
+    "ShareLinkSkills"
+   ],
+   "namespaced": [
+    "ShareLinkExpiry",
+    "ShareLinkPlugins",
+    "ShareLinkSkills"
+   ]
+  },
+  "archestra_skill": {
+   "cluster": [
+    "Skill",
+    "SkillGitSource",
+    "SkillGitSourceInit",
+    "SkillSharing"
+   ],
+   "namespaced": [
+    "Skill",
+    "SkillGitSource",
+    "SkillGitSourceInit",
+    "SkillSharing"
+   ]
+  },
+  "archestra_team": {
+   "cluster": [
+    "Team",
+    "TeamInlineBindings",
+    "TeamObserve"
+   ],
+   "namespaced": [
+    "Team",
+    "TeamInlineBindings",
+    "TeamObserve"
+   ]
+  },
+  "archestra_virtual_key": {
+   "cluster": [
+    "VirtualKey",
+    "VirtualKeyPassthrough",
+    "VirtualKeySharing"
+   ],
+   "namespaced": [
+    "VirtualKey",
+    "VirtualKeyPassthrough",
+    "VirtualKeySharing"
+   ]
+  }
+ },
+ "results": [
+  {
+   "resource": "Agent",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Environment",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Team",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Gateway",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Project",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "KnowledgeBase",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Role",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Agent",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Environment",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Team",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Gateway",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Project",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "KnowledgeBase",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Role",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "AgentInlineOwnership",
+   "scope": "cluster",
+   "create": "passed",
+   "native_references": "passed",
+   "update": "passed",
+   "tool_unpin": "passed",
+   "ordinary_tool_clear_preserves_subagents": "passed",
+   "recovery_tools_preserved": "passed",
+   "drift_repair": "passed",
+   "omission_preserves_unmanaged": "passed",
+   "empty_collections_clear": "passed",
+   "orphan_adoption": "passed",
+   "identity_preserved": true,
+   "delete": "passed",
+   "execution": "not_invoked"
+  },
+  {
+   "resource": "GatewayInlineOwnership",
+   "scope": "cluster",
+   "create": "passed",
+   "native_references": "passed",
+   "update": "passed",
+   "tool_unpin": "passed",
+   "ordinary_tool_clear_preserves_subagents": "passed",
+   "recovery_tools_preserved": "passed",
+   "drift_repair": "passed",
+   "omission_preserves_unmanaged": "passed",
+   "empty_collections_clear": "passed",
+   "orphan_adoption": "passed",
+   "identity_preserved": true,
+   "delete": "passed",
+   "execution": "not_invoked"
+  },
+  {
+   "resource": "TeamInlineBindings",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "omission_preserves_unmanaged": "passed",
+   "empty_set_and_string_clear": "passed",
+   "identity_preserved": true,
+   "delete": "passed",
+   "external_secrets_created": false
+  },
+  {
+   "resource": "ServiceAccountTeamOwnership",
+   "scope": "cluster",
+   "create": "passed",
+   "reference": "passed",
+   "drift_repair": "passed",
+   "update": "passed",
+   "clear": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "Directory",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "ServiceAccountAPIKey",
+   "scope": "cluster",
+   "create": "passed",
+   "authentication": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "secret_preserved": "passed",
+   "secret_absent_from_status": true,
+   "disable": "passed",
+   "delete": "passed",
+   "revoked_authentication": 401
+  },
+  {
+   "resource": "ServiceAccount",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "GatewaySubagentControl",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "InstallationControls",
+   "scope": "cluster",
+   "create": "passed",
+   "personal_user": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "AgentInlineOwnership",
+   "scope": "namespaced",
+   "create": "passed",
+   "native_references": "passed",
+   "update": "passed",
+   "tool_unpin": "passed",
+   "ordinary_tool_clear_preserves_subagents": "passed",
+   "recovery_tools_preserved": "passed",
+   "drift_repair": "passed",
+   "omission_preserves_unmanaged": "passed",
+   "empty_collections_clear": "passed",
+   "orphan_adoption": "passed",
+   "identity_preserved": true,
+   "delete": "passed",
+   "execution": "not_invoked"
+  },
+  {
+   "resource": "GatewayInlineOwnership",
+   "scope": "namespaced",
+   "create": "passed",
+   "native_references": "passed",
+   "update": "passed",
+   "tool_unpin": "passed",
+   "ordinary_tool_clear_preserves_subagents": "passed",
+   "recovery_tools_preserved": "passed",
+   "drift_repair": "passed",
+   "omission_preserves_unmanaged": "passed",
+   "empty_collections_clear": "passed",
+   "orphan_adoption": "passed",
+   "identity_preserved": true,
+   "delete": "passed",
+   "execution": "not_invoked"
+  },
+  {
+   "resource": "TeamInlineBindings",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "omission_preserves_unmanaged": "passed",
+   "empty_set_and_string_clear": "passed",
+   "identity_preserved": true,
+   "delete": "passed",
+   "external_secrets_created": false
+  },
+  {
+   "resource": "ServiceAccountTeamOwnership",
+   "scope": "namespaced",
+   "create": "passed",
+   "reference": "passed",
+   "drift_repair": "passed",
+   "update": "passed",
+   "clear": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "Directory",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "ServiceAccountAPIKey",
+   "scope": "namespaced",
+   "create": "passed",
+   "authentication": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "secret_preserved": "passed",
+   "secret_absent_from_status": true,
+   "disable": "passed",
+   "delete": "passed",
+   "revoked_authentication": 401
+  },
+  {
+   "resource": "ServiceAccount",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "GatewaySubagentControl",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "InstallationControls",
+   "scope": "namespaced",
+   "create": "passed",
+   "personal_user": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "RegistryEntry",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Limit",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Model",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete_reset": "passed",
+   "adopted_model_preserved": true
+  },
+  {
+   "resource": "ModelSharing",
+   "scope": "cluster",
+   "adoption": "passed",
+   "explicit_empty_clear": "passed",
+   "sharing_only_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete_retains_discovered_model": true
+  },
+  {
+   "resource": "ModelProvider",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "sensitive_header_secret_rotation": "passed",
+   "sensitive_header_absent_from_status": true
+  },
+  {
+   "resource": "CredentialSharingDefaults",
+   "scope": "cluster",
+   "parameter_source": "default",
+   "explicit_empty": false,
+   "metadata_update_preserves_grants": "passed",
+   "init_provider_update_ignored": "not_applicable",
+   "persisted_grants": 2,
+   "owner_grant_preserved": true,
+   "create": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "CredentialSharingDefaults",
+   "scope": "cluster",
+   "parameter_source": "empty",
+   "explicit_empty": true,
+   "metadata_update_preserves_grants": "passed",
+   "init_provider_update_ignored": "not_applicable",
+   "persisted_grants": 1,
+   "owner_grant_preserved": true,
+   "create": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "CredentialSharingDefaults",
+   "scope": "cluster",
+   "parameter_source": "init-empty",
+   "explicit_empty": true,
+   "metadata_update_preserves_grants": "passed",
+   "init_provider_update_ignored": "passed",
+   "persisted_grants": 1,
+   "owner_grant_preserved": true,
+   "create": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "Credential",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "external_authorization": "not_requested; synthetic secret slot only"
+  },
+  {
+   "resource": "Server",
+   "scope": "cluster",
+   "create": "passed",
+   "immutable_update_refused": "passed",
+   "tools_discovered": 2,
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "RegistryEntry",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Limit",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "Model",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete_reset": "passed",
+   "adopted_model_preserved": true
+  },
+  {
+   "resource": "ModelSharing",
+   "scope": "namespaced",
+   "adoption": "passed",
+   "explicit_empty_clear": "passed",
+   "sharing_only_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete_retains_discovered_model": true
+  },
+  {
+   "resource": "ModelProvider",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "sensitive_header_secret_rotation": "passed",
+   "sensitive_header_absent_from_status": true
+  },
+  {
+   "resource": "CredentialSharingDefaults",
+   "scope": "namespaced",
+   "parameter_source": "default",
+   "explicit_empty": false,
+   "metadata_update_preserves_grants": "passed",
+   "init_provider_update_ignored": "not_applicable",
+   "persisted_grants": 2,
+   "owner_grant_preserved": true,
+   "create": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "CredentialSharingDefaults",
+   "scope": "namespaced",
+   "parameter_source": "empty",
+   "explicit_empty": true,
+   "metadata_update_preserves_grants": "passed",
+   "init_provider_update_ignored": "not_applicable",
+   "persisted_grants": 1,
+   "owner_grant_preserved": true,
+   "create": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "CredentialSharingDefaults",
+   "scope": "namespaced",
+   "parameter_source": "init-empty",
+   "explicit_empty": true,
+   "metadata_update_preserves_grants": "passed",
+   "init_provider_update_ignored": "passed",
+   "persisted_grants": 1,
+   "owner_grant_preserved": true,
+   "create": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "Credential",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "external_authorization": "not_requested; synthetic secret slot only"
+  },
+  {
+   "resource": "Server",
+   "scope": "namespaced",
+   "create": "passed",
+   "immutable_update_refused": "passed",
+   "tools_discovered": 2,
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "APICompatibilityConstraint",
+   "scope": "cluster",
+   "mismatch_rejected": "passed",
+   "mutation_before_match": false,
+   "repair_and_reconciliation": "passed",
+   "delete": "passed",
+   "provider_config_kind": "ProviderConfig"
+  },
+  {
+   "resource": "OrganizationInlineDefaults",
+   "scope": "cluster",
+   "create": "passed",
+   "environment_references": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "omission_preserves": "passed",
+   "empty_collections_clear": "passed",
+   "spending_row_identity_preserved": true,
+   "delete_preserves_singleton": true
+  },
+  {
+   "resource": "Settings",
+   "scope": "cluster",
+   "adopt": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete_preserves_singleton": "passed"
+  },
+  {
+   "resource": "Schedule",
+   "scope": "cluster",
+   "create_disabled": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "scheduled_runs": "not_executed"
+  },
+  {
+   "resource": "APIKey",
+   "scope": "cluster",
+   "create": "passed",
+   "immutable_update_refused": "passed",
+   "deleted_key_recreated": "passed",
+   "delete": "passed",
+   "key_absent_from_status": true
+  },
+  {
+   "resource": "Provider",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "secret_absent_from_status": true,
+   "live_oauth_consent": "not_exercised; synthetic configuration only"
+  },
+  {
+   "resource": "APICompatibilityConstraint",
+   "scope": "namespaced",
+   "mismatch_rejected": "passed",
+   "mutation_before_match": false,
+   "repair_and_reconciliation": "passed",
+   "delete": "passed",
+   "provider_config_kind": "ProviderConfig"
+  },
+  {
+   "resource": "OrganizationInlineDefaults",
+   "scope": "namespaced",
+   "create": "passed",
+   "environment_references": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "omission_preserves": "passed",
+   "empty_collections_clear": "passed",
+   "spending_row_identity_preserved": true,
+   "delete_preserves_singleton": true
+  },
+  {
+   "resource": "Settings",
+   "scope": "namespaced",
+   "adopt": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete_preserves_singleton": "passed"
+  },
+  {
+   "resource": "Schedule",
+   "scope": "namespaced",
+   "create_disabled": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "scheduled_runs": "not_executed"
+  },
+  {
+   "resource": "APIKey",
+   "scope": "namespaced",
+   "create": "passed",
+   "immutable_update_refused": "passed",
+   "deleted_key_recreated": "passed",
+   "delete": "passed",
+   "key_absent_from_status": true
+  },
+  {
+   "resource": "Provider",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "delete": "passed",
+   "secret_absent_from_status": true,
+   "live_oauth_consent": "not_exercised; synthetic configuration only"
+  },
+  {
+   "resource": "ShareLinkSkills",
+   "scope": "cluster",
+   "create": "passed",
+   "membership_references": "passed",
+   "secret_once_publication": "passed",
+   "refresh_preserves_secret": "passed",
+   "anonymous_read_only_access": "passed",
+   "explicit_rotation_replacement_refused": "passed",
+   "revoked_identity_drift_repair": "passed",
+   "old_token_rejected": "passed",
+   "delete": "passed",
+   "backend_after_delete": "revoked"
+  },
+  {
+   "resource": "ShareLinkPlugins",
+   "scope": "cluster",
+   "create": "passed",
+   "membership_references": "passed",
+   "secret_once_publication": "passed",
+   "refresh_preserves_secret": "passed",
+   "anonymous_read_only_access": "passed",
+   "explicit_rotation_replacement_refused": "passed",
+   "revoked_identity_drift_repair": "passed",
+   "old_token_rejected": "passed",
+   "delete": "passed",
+   "backend_after_delete": "revoked"
+  },
+  {
+   "resource": "ShareLinkExpiry",
+   "scope": "cluster",
+   "create": "passed",
+   "expired_observation": "passed",
+   "anonymous_access_rejected": "passed",
+   "identity_retained_across_reconciliation": "passed",
+   "delete": "passed",
+   "backend_after_delete": "revoked"
+  },
+  {
+   "resource": "PluginGitSource",
+   "scope": "cluster",
+   "create": "passed",
+   "approved_commit": "9e6a43f5347f6f3730ffeb75946f6e162791851d",
+   "derived_files": "passed",
+   "initially_disabled": "passed",
+   "metadata_update_preserves_hash": true,
+   "update": "passed",
+   "drift_repair": "passed",
+   "scheduled_candidate_configuration": "passed",
+   "stored_credential_reference_and_clear": "passed",
+   "empty_labels_clear": "passed",
+   "source_selection_replacement_refused": "passed",
+   "delete": "passed",
+   "hooks_executed": false
+  },
+  {
+   "resource": "PluginFiles",
+   "scope": "cluster",
+   "create": "passed",
+   "initially_disabled": "passed",
+   "utf8_base64_and_executable_mode": "passed",
+   "metadata_update_preserves_hash": true,
+   "update": "passed",
+   "drift_repair": "passed",
+   "authoritative_file_removal": "passed",
+   "empty_labels_clear": "passed",
+   "client_format_replacement_refused": "passed",
+   "delete": "passed",
+   "hooks_executed": false
+  },
+  {
+   "resource": "SkillGitSource",
+   "scope": "cluster",
+   "create": "passed",
+   "settings_and_sharing": "passed",
+   "settings_preserve_content_version": true,
+   "environment_and_labels_clear": "passed",
+   "source_change_in_place": "passed",
+   "interval_drift_repair": "passed",
+   "disconnected_source_reconnect": "passed",
+   "authored_mode_replacement_refused": "passed",
+   "orphan": "passed",
+   "uuid_adoption": "passed",
+   "identity_preserved": true,
+   "delete": "soft-delete passed"
+  },
+  {
+   "resource": "SkillGitSourceInit",
+   "scope": "cluster",
+   "parameter_source": "initProvider",
+   "create": "passed",
+   "settings_update": "passed",
+   "identity_preserved": true,
+   "delete": "soft-delete passed"
+  },
+  {
+   "resource": "Skill",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "terraform_import": "separate CLI test",
+   "empty_files_clear": "passed",
+   "immutable_first_version_preserved": true,
+   "stale_version_refused": 409,
+   "delete": "soft-delete passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "ShareLinkSkills",
+   "scope": "namespaced",
+   "create": "passed",
+   "membership_references": "passed",
+   "secret_once_publication": "passed",
+   "refresh_preserves_secret": "passed",
+   "anonymous_read_only_access": "passed",
+   "explicit_rotation_replacement_refused": "passed",
+   "revoked_identity_drift_repair": "passed",
+   "old_token_rejected": "passed",
+   "delete": "passed",
+   "backend_after_delete": "revoked"
+  },
+  {
+   "resource": "ShareLinkPlugins",
+   "scope": "namespaced",
+   "create": "passed",
+   "membership_references": "passed",
+   "secret_once_publication": "passed",
+   "refresh_preserves_secret": "passed",
+   "anonymous_read_only_access": "passed",
+   "explicit_rotation_replacement_refused": "passed",
+   "revoked_identity_drift_repair": "passed",
+   "old_token_rejected": "passed",
+   "delete": "passed",
+   "backend_after_delete": "revoked"
+  },
+  {
+   "resource": "ShareLinkExpiry",
+   "scope": "namespaced",
+   "create": "passed",
+   "expired_observation": "passed",
+   "anonymous_access_rejected": "passed",
+   "identity_retained_across_reconciliation": "passed",
+   "delete": "passed",
+   "backend_after_delete": "revoked"
+  },
+  {
+   "resource": "PluginGitSource",
+   "scope": "namespaced",
+   "create": "passed",
+   "approved_commit": "9e6a43f5347f6f3730ffeb75946f6e162791851d",
+   "derived_files": "passed",
+   "initially_disabled": "passed",
+   "metadata_update_preserves_hash": true,
+   "update": "passed",
+   "drift_repair": "passed",
+   "scheduled_candidate_configuration": "passed",
+   "stored_credential_reference_and_clear": "passed",
+   "empty_labels_clear": "passed",
+   "source_selection_replacement_refused": "passed",
+   "delete": "passed",
+   "hooks_executed": false
+  },
+  {
+   "resource": "PluginFiles",
+   "scope": "namespaced",
+   "create": "passed",
+   "initially_disabled": "passed",
+   "utf8_base64_and_executable_mode": "passed",
+   "metadata_update_preserves_hash": true,
+   "update": "passed",
+   "drift_repair": "passed",
+   "authoritative_file_removal": "passed",
+   "empty_labels_clear": "passed",
+   "client_format_replacement_refused": "passed",
+   "delete": "passed",
+   "hooks_executed": false
+  },
+  {
+   "resource": "SkillGitSource",
+   "scope": "namespaced",
+   "create": "passed",
+   "settings_and_sharing": "passed",
+   "settings_preserve_content_version": true,
+   "environment_and_labels_clear": "passed",
+   "source_change_in_place": "passed",
+   "interval_drift_repair": "passed",
+   "disconnected_source_reconnect": "passed",
+   "authored_mode_replacement_refused": "passed",
+   "orphan": "passed",
+   "uuid_adoption": "passed",
+   "identity_preserved": true,
+   "delete": "soft-delete passed"
+  },
+  {
+   "resource": "SkillGitSourceInit",
+   "scope": "namespaced",
+   "parameter_source": "initProvider",
+   "create": "passed",
+   "settings_update": "passed",
+   "identity_preserved": true,
+   "delete": "soft-delete passed"
+  },
+  {
+   "resource": "Skill",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "terraform_import": "separate CLI test",
+   "empty_files_clear": "passed",
+   "immutable_first_version_preserved": true,
+   "stale_version_refused": 409,
+   "delete": "soft-delete passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "App",
+   "scope": "cluster",
+   "create": "passed",
+   "secret_html": "passed",
+   "environment_reference": "passed",
+   "tool_server_references": "passed",
+   "browser_permissions_clear": "passed",
+   "environment_clear": "passed",
+   "sharing_clear": "passed",
+   "content_update": "passed",
+   "content_and_tool_drift_repair": "passed",
+   "credential_mode_and_pin_clear": "passed",
+   "explicit_lifecycle": "passed",
+   "orphan": "passed",
+   "uuid_adoption": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "AppInit",
+   "scope": "cluster",
+   "create": "passed",
+   "init_provider_secret": "passed",
+   "creation_only_content": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "ProjectFileInit",
+   "scope": "cluster",
+   "create": "passed",
+   "init_provider_secret": "passed",
+   "project_reference": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "KnowledgeFile",
+   "scope": "cluster",
+   "create": "passed",
+   "directory_reference": "passed",
+   "secret_input": "passed",
+   "metadata_update": "passed",
+   "metadata_drift_repair": "passed",
+   "sharing_clear": "passed",
+   "directory_clear": "passed",
+   "immutable_content_refusal": "passed",
+   "orphan": "passed",
+   "uuid_adoption": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "KnowledgeFileInit",
+   "scope": "cluster",
+   "create": "passed",
+   "init_provider": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "ProjectFileText",
+   "scope": "cluster",
+   "create": "passed",
+   "project_reference": "passed",
+   "sensitive_input_reference": "passed",
+   "update_same_identity": "passed",
+   "drift_repair": "passed",
+   "byte_hash_observed": "passed",
+   "empty_content_clear": "passed",
+   "filename_replacement_refused": "passed",
+   "sensitive_content_absent_from_status": true,
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "ProjectFileBinary",
+   "scope": "cluster",
+   "create": "passed",
+   "exact_bytes": "passed",
+   "replacement_refused": "passed",
+   "identity_and_bytes_preserved": true,
+   "recovery": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "ProjectInstructions",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "empty_content_clear": "passed",
+   "parent_delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "App",
+   "scope": "namespaced",
+   "create": "passed",
+   "secret_html": "passed",
+   "environment_reference": "passed",
+   "tool_server_references": "passed",
+   "browser_permissions_clear": "passed",
+   "environment_clear": "passed",
+   "sharing_clear": "passed",
+   "content_update": "passed",
+   "content_and_tool_drift_repair": "passed",
+   "credential_mode_and_pin_clear": "passed",
+   "explicit_lifecycle": "passed",
+   "orphan": "passed",
+   "uuid_adoption": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "AppInit",
+   "scope": "namespaced",
+   "create": "passed",
+   "init_provider_secret": "passed",
+   "creation_only_content": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "ProjectFileInit",
+   "scope": "namespaced",
+   "create": "passed",
+   "init_provider_secret": "passed",
+   "project_reference": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "KnowledgeFile",
+   "scope": "namespaced",
+   "create": "passed",
+   "directory_reference": "passed",
+   "secret_input": "passed",
+   "metadata_update": "passed",
+   "metadata_drift_repair": "passed",
+   "sharing_clear": "passed",
+   "directory_clear": "passed",
+   "immutable_content_refusal": "passed",
+   "orphan": "passed",
+   "uuid_adoption": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "KnowledgeFileInit",
+   "scope": "namespaced",
+   "create": "passed",
+   "init_provider": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "ProjectFileText",
+   "scope": "namespaced",
+   "create": "passed",
+   "project_reference": "passed",
+   "sensitive_input_reference": "passed",
+   "update_same_identity": "passed",
+   "drift_repair": "passed",
+   "byte_hash_observed": "passed",
+   "empty_content_clear": "passed",
+   "filename_replacement_refused": "passed",
+   "sensitive_content_absent_from_status": true,
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "ProjectFileBinary",
+   "scope": "namespaced",
+   "create": "passed",
+   "exact_bytes": "passed",
+   "replacement_refused": "passed",
+   "identity_and_bytes_preserved": true,
+   "recovery": "passed",
+   "delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "ProjectInstructions",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "empty_content_clear": "passed",
+   "parent_delete": "passed",
+   "backend_after_delete": 404
+  },
+  {
+   "resource": "GitHubPAT",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "sensitive_input_update": "passed",
+   "identity_preserved": true,
+   "credential_absent_from_api_and_status": true,
+   "delete": "passed",
+   "external_github_requests": "not_invoked"
+  },
+  {
+   "resource": "GitHubApp",
+   "scope": "cluster",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "sensitive_input_update": "passed",
+   "identity_preserved": true,
+   "credential_absent_from_api_and_status": true,
+   "delete": "passed",
+   "external_github_requests": "not_invoked"
+  },
+  {
+   "resource": "VirtualKey",
+   "scope": "cluster",
+   "create": "passed",
+   "nested_provider_reference": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "metadata_preserves_routing_expiry_billing_secret": true,
+   "nullable_and_empty_clears": "passed",
+   "credential_absent_from_status": true,
+   "replacement_refused": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "VirtualKeyPassthrough",
+   "scope": "cluster",
+   "create": "passed",
+   "metadata_preserves_type": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "OAuthClient",
+   "scope": "cluster",
+   "create": "passed",
+   "nested_provider_and_identity_references": "passed",
+   "authentication": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "metadata_preserves_bindings_and_secret": true,
+   "in_place_rotation": "passed",
+   "old_secret_rejected": true,
+   "nullable_and_empty_clears": "passed",
+   "credential_absent_from_status": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "OAuthClientAuthorizationCode",
+   "scope": "cluster",
+   "create": "passed",
+   "metadata_preserves_grant_type": "passed",
+   "redirect_update": "passed",
+   "delete": "passed",
+   "interactive_consent": "not_invoked"
+  },
+  {
+   "resource": "RemoteAgent",
+   "scope": "cluster",
+   "create": "passed",
+   "initially_disabled": "passed",
+   "update": "passed",
+   "source_update": "passed",
+   "drift_repair": "passed",
+   "source_drift_repair": "passed",
+   "identity_preserved": true,
+   "authentication_clear": "passed",
+   "credential_absent_from_status": true,
+   "delete": "passed",
+   "outbound_agent_runs": "not_invoked"
+  },
+  {
+   "resource": "GitHubPAT",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "sensitive_input_update": "passed",
+   "identity_preserved": true,
+   "credential_absent_from_api_and_status": true,
+   "delete": "passed",
+   "external_github_requests": "not_invoked"
+  },
+  {
+   "resource": "GitHubApp",
+   "scope": "namespaced",
+   "create": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "sensitive_input_update": "passed",
+   "identity_preserved": true,
+   "credential_absent_from_api_and_status": true,
+   "delete": "passed",
+   "external_github_requests": "not_invoked"
+  },
+  {
+   "resource": "VirtualKey",
+   "scope": "namespaced",
+   "create": "passed",
+   "nested_provider_reference": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "metadata_preserves_routing_expiry_billing_secret": true,
+   "nullable_and_empty_clears": "passed",
+   "credential_absent_from_status": true,
+   "replacement_refused": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "VirtualKeyPassthrough",
+   "scope": "namespaced",
+   "create": "passed",
+   "metadata_preserves_type": "passed",
+   "delete": "passed"
+  },
+  {
+   "resource": "OAuthClient",
+   "scope": "namespaced",
+   "create": "passed",
+   "nested_provider_and_identity_references": "passed",
+   "authentication": "passed",
+   "update": "passed",
+   "drift_repair": "passed",
+   "metadata_preserves_bindings_and_secret": true,
+   "in_place_rotation": "passed",
+   "old_secret_rejected": true,
+   "nullable_and_empty_clears": "passed",
+   "credential_absent_from_status": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "OAuthClientAuthorizationCode",
+   "scope": "namespaced",
+   "create": "passed",
+   "metadata_preserves_grant_type": "passed",
+   "redirect_update": "passed",
+   "delete": "passed",
+   "interactive_consent": "not_invoked"
+  },
+  {
+   "resource": "RemoteAgent",
+   "scope": "namespaced",
+   "create": "passed",
+   "initially_disabled": "passed",
+   "update": "passed",
+   "source_update": "passed",
+   "drift_repair": "passed",
+   "source_drift_repair": "passed",
+   "identity_preserved": true,
+   "authentication_clear": "passed",
+   "credential_absent_from_status": true,
+   "delete": "passed",
+   "outbound_agent_runs": "not_invoked"
+  },
+  {
+   "resource": "EnvironmentSharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "AgentSharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "GatewaySharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "ServiceAccountSharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "RemoteAgentSharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "VirtualKeySharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "OAuthClientSharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "PluginSharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "ProjectSharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "KnowledgeBaseSharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "RegistryEntrySharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "SkillSharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "CredentialSharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "ModelProviderSharing",
+   "scope": "cluster",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "EnvironmentSharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "AgentSharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "GatewaySharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "ServiceAccountSharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "RemoteAgentSharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "VirtualKeySharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "OAuthClientSharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "PluginSharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "ProjectSharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "KnowledgeBaseSharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "RegistryEntrySharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "SkillSharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "CredentialSharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "ModelProviderSharing",
+   "scope": "namespaced",
+   "create_with_policy": "passed",
+   "metadata_update_preserves_grants": "passed",
+   "sharing_clear_in_place": "passed",
+   "empty_sharing_drift_repair": "passed",
+   "identity_preserved": true,
+   "delete": "passed"
+  },
+  {
+   "resource": "AgentObserve",
+   "scope": "cluster",
+   "api_create": "passed",
+   "observe_only_ready_synced": "passed",
+   "at_provider_matches_api": "passed",
+   "external_rename_observed": "passed",
+   "no_api_writes": true,
+   "managed_resource_delete": "passed",
+   "backend_after_managed_delete": 200,
+   "api_delete": "passed",
+   "backend_after_api_delete": 404
+  },
+  {
+   "resource": "TeamObserve",
+   "scope": "cluster",
+   "api_create": "passed",
+   "observe_only_ready_synced": "passed",
+   "at_provider_matches_api": "passed",
+   "external_rename_observed": "passed",
+   "no_api_writes": true,
+   "managed_resource_delete": "passed",
+   "backend_after_managed_delete": 200,
+   "api_delete": "passed",
+   "backend_after_api_delete": 404
+  },
+  {
+   "resource": "AgentObserve",
+   "scope": "namespaced",
+   "api_create": "passed",
+   "observe_only_ready_synced": "passed",
+   "at_provider_matches_api": "passed",
+   "external_rename_observed": "passed",
+   "no_api_writes": true,
+   "managed_resource_delete": "passed",
+   "backend_after_managed_delete": 200,
+   "api_delete": "passed",
+   "backend_after_api_delete": 404
+  },
+  {
+   "resource": "TeamObserve",
+   "scope": "namespaced",
+   "api_create": "passed",
+   "observe_only_ready_synced": "passed",
+   "at_provider_matches_api": "passed",
+   "external_rename_observed": "passed",
+   "no_api_writes": true,
+   "managed_resource_delete": "passed",
+   "backend_after_managed_delete": 200,
+   "api_delete": "passed",
+   "backend_after_api_delete": 404
+  }
+ ],
+ "cleanup": "passed",
+ "dry_run": "An identical sweep on bf68e86 (before the virtual key schema change) passed all eight batches with 138 records; it is not this record.",
+ "scope": "All 31 registered resource families in both scopes against published API 1.5.0-rc.3, on one Terraform provider and controller binary pair. Records are the lifecycle probes in crossplane-lifecycle.py; variants and sharing records are extra checks, not extra families. No inference, hook execution, OAuth consent or external setup is requested.",
+ "family_sweep_records": 138,
+ "observe_scope": "Batch b9 checks the Crossplane equivalent of the archestra_agent and archestra_team data sources: an API-created object observed by a managed resource with managementPolicies [Observe], the API rename followed in status.atProvider, managed-resource deletion leaving the API object in place (200), then API deletion (404)."
+}

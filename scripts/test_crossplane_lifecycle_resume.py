@@ -38,6 +38,13 @@ class ResumeEvidenceTests(unittest.TestCase):
         self.assertIn('llm', lifecycle.completed_cases(records, 'cluster'))
         self.assertNotIn('llm', lifecycle.completed_cases(records, 'namespaced'))
 
+    def test_observe_group_needs_both_agent_and_team(self):
+        records = [{'resource': 'AgentObserve', 'scope': 'cluster'}]
+        self.assertNotIn('observe', lifecycle.completed_cases(records, 'cluster'))
+        records.append({'resource': 'TeamObserve', 'scope': 'cluster'})
+        self.assertIn('observe', lifecycle.completed_cases(records, 'cluster'))
+        self.assertNotIn('observe', lifecycle.completed_cases(records, 'namespaced'))
+
     def test_default_policy_variants_must_all_be_proven(self):
         records = [{'resource': 'CredentialSharingDefaults', 'scope': 'cluster',
                     'parameter_source': source} for source in ('default', 'empty')]

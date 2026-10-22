@@ -141,7 +141,15 @@ done
 # 3. CRDs for both scopes.
 log "Applying generated CRDs..."
 kubectl apply --server-side --force-conflicts -f "${REPO_ROOT}/crossplane/package/crds" >/dev/null
-kubectl wait --for=condition=Established crd --all --timeout=120s >/dev/null
+# Wait only for the CRDs applied here: other components' CRDs are not ours to
+# gate on, and a busy CI node needs more than two minutes for all of them.
+if ! kubectl wait --for=condition=Established -f "${REPO_ROOT}/crossplane/package/crds" --timeout=300s >/dev/null; then
+  log "Generated CRDs that are not Established:"
+  kubectl get -f "${REPO_ROOT}/crossplane/package/crds" \
+    -o jsonpath='{range .items[*]}{.metadata.name}{" "}{.status.conditions[?(@.type=="Established")].status}{"\n"}{end}' |
+    grep -v ' True$' >&2 || true
+  exit 1
+fi
 
 # 4. Credentials and ProviderConfigs.
 log "Creating credentials and ProviderConfigs..."
@@ -191,7 +199,12 @@ kubectl create configmap provider-mcp-mock-script -n default \
   --from-file=mcp-mock.py="${SCRIPT_DIR}/integration/mcp-mock.py" --dry-run=client -o yaml | kubectl apply -f - >/dev/null
 kubectl apply -f "${SCRIPT_DIR}/k8s/provider-mcp-mock.yaml" >/dev/null
 kubectl rollout restart deployment/provider-mcp-mock -n default >/dev/null
-kubectl rollout status deployment/provider-mcp-mock -n default --timeout=120s >/dev/null
+if ! kubectl rollout status deployment/provider-mcp-mock -n default --timeout=300s >/dev/null; then
+  log "The MCP fixture did not become ready:"
+  kubectl get pods -n default -l app=provider-mcp-mock -o wide >&2 || true
+  kubectl get events -n default --sort-by=.lastTimestamp 2>/dev/null | grep -i 'provider-mcp-mock' | tail -n 20 >&2 || true
+  exit 1
+fi
 
 # 6. Terraform 1.5.7, the provider mirror and the controller.
 if [ ! -x "${TERRAFORM_DIR}/terraform" ]; then

@@ -24,7 +24,8 @@ spec:
     spec:
       containers:
         - name: mcp-mock
-          image: python:3.13-alpine
+          # Google's Docker Hub mirror: CI runners share Docker Hub's anonymous pull limits.
+          image: mirror.gcr.io/library/python:3.13-alpine
           command: ["python3", "/fixture/mcp-mock.py", "--host", "0.0.0.0", "--port", "19006"]
           ports:
             - containerPort: 19006
