@@ -89,10 +89,6 @@ Required:
 - `provider` (String) LLM provider identifier.
 - `provider_api_key_id` (String) Existing provider API key UUID.
 
-Read-Only:
-
-- `provider_api_key_name` (String) Provider key display name.
-
 
 <a id="nestedatt--spend_cap"></a>
 ### Nested Schema for `spend_cap`
@@ -101,11 +97,6 @@ Required:
 
 - `cleanup_interval` (String) Limit cleanup interval.
 - `limit_value` (Number) Positive dollar limit per window.
-
-Read-Only:
-
-- `current_usage` (Number) Current dollar usage.
-- `limit_id` (String) Backing limit identifier.
 
 ## Import
 

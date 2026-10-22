@@ -8,15 +8,8 @@ name: Crossplane Coverage
 #   requires pull requests and passing checks.
 
 on:
+  # Every pull request runs this job, so the coverage check can be required.
   pull_request:
-    paths:
-      - 'internal/provider/*.go'
-      - 'cmd/provider-contracts/**'
-      - 'crossplane/config/external_name.go'
-      - 'scripts/crossplane-coverage.sh'
-      - 'scripts/test_crossplane_coverage.py'
-      - '.github/badges/crossplane-coverage.json'
-      - '.github/workflows/crossplane-coverage.yml'
   push:
     branches: [main]
     paths:

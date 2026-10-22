@@ -1,7 +1,7 @@
 # Archestra Provider
 
 
-The v3 review candidate has **30 Terraform resources and four Terraform data sources**. All 30 resources have generated Crossplane types in both scopes. Agent/gateway relationships, team bindings, object sharing and organization defaults belong to their parents. Manual and Git-backed plugins share one resource; authored and Git-backed Skills also share one resource. The [migration guide](MIGRATION-v3.md) describes the clean-major names; there are no aliases for retired types. Additional durable API areas, final runtime/package validation, protected review and publication remain in progress. The reviewed milestone 411935f retains its [147-case native proof](audit/consolidated-native-acceptance.json). The [Git Skill native proof](audit/skill-git-native-acceptance.json) records all 151 cases passing with zero failures or skips against API 1.4.0-rc.49.
+Provider 3.0.0 has **31 Terraform resources and four Terraform data sources**. Every resource is generated as a Crossplane managed resource in both the cluster and namespaced scopes. Relationships, team bindings, sharing and organization defaults are configured on their parent resource. Retired resource names have no aliases; the [migration guide](MIGRATION-v3.md) maps each one to its replacement.
 
 [![Crossplane mappings](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/archestra-ai/terraform-provider-archestra/main/.github/badges/crossplane-coverage.json)](.github/workflows/crossplane-coverage.yml)
 
@@ -16,17 +16,7 @@ through extending the provider.
 
 API versions are independent of provider versions. See the [compatibility matrix](COMPATIBILITY.md) for the required API capability floor and exact tested releases.
 
-The [organization-defaults runtime proof](audit/crossplane-organization-defaults.json) verifies reference resolution, updates, drift, omission and explicit clears in both scopes on the reviewed milestone.
-
-The [reviewed milestone runtime proof](audit/consolidated-crossplane-runtime.json)
-verifies all **29 resource families in both scopes** (58 family/scope pairs,
-124 runtime records), with normal cleanup and restored global test settings.
-Variants are additional checks, not extra resource families. Remaining product
-APIs, final package validation, protected review and publication are still open.
-
-The [Git Skill runtime proof](audit/crossplane-skill-git-source.json) adds eight both-scope records for authored content, sharing, Git sources and initProvider. It covers settings without content rewrites, source updates, reconnect, drift repair, orphan/adoption and normal deletion. Switching between authored and Git ownership replaces the Skill; a Git source change retains its UUID. Final expanded-candidate and package validation remain release gates.
-
-Knowledge File adds uploaded document bytes, directory placement, labels and parent-owned sharing. Content/MIME changes replace the file; indexing associations are observed. The [current full native suite](audit/knowledge-files-native-acceptance.json) passes all 156 cases with zero failures or skips. [Six current both-scope records](audit/crossplane-knowledge-files.json) cover Knowledge File and required initProvider Secret inputs for both file families, with normal cleanup. The earlier 29-family runtime checkpoint retains its own frozen candidate; final combined runtime and package validation remain release gates.
+Release evidence (native acceptance, both-scope Crossplane reconciliation and package checks) is recorded in [the audit](audit/README.md).
 
 ## Resource coverage
 
@@ -197,18 +187,14 @@ commit on main
 release-please opens "chore(main): release vX.Y.Z"
         │  merge
         ▼
-tag vX.Y.Z   ──┬──▶  goreleaser    ──▶  Terraform Registry
-               │
-               └──▶  crank xpkg push ──▶  xpkg.upbound.io
+tag vX.Y.Z  ──▶  goreleaser       ──▶  GitHub release zips ──▶  Terraform Registry
+                     │  then
+                     ▼
+                 crank xpkg push  ──▶  xpkg.upbound.io
 ```
 
-The two publish jobs run in parallel; one failing won't roll back
-the other.
+The two publish jobs run one after the other: `publish-crossplane` needs
+`publish-terraform-provider`, because the runtime image downloads the
+release zips. A Crossplane failure does not roll back the Terraform release.
 
-Manual plugin packages add one family in both scopes, including creation grants, authoritative file replacement and executable-mode preservation (`audit/crossplane-manual-plugins.json` from the repository root). The full 44-family native suite passes all 142 acceptance cases with zero failures or skips (`audit/manual-plugins-full-native-acceptance.json`). Both records retain their exact frozen candidate hashes; current Linux packaging and the final combined sweep remain release gates.
-
-Pinned repository packages add one family in both scopes, including creation grants, scheduled candidate configuration, credential-reference clearing and approved-byte preservation ([runtime proof](audit/crossplane-repository-plugins.json)). The full 45-family native suite passes all 145 acceptance cases ([native proof](audit/repository-plugins-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
-
-Revocable marketplace share links add one family and six both-scope records for skill/plugin membership, secret publication, anonymous read-only access, revocation drift and expiry ([runtime proof](audit/crossplane-marketplace-share-links.json)). The full 46-family native suite passes all 148 acceptance cases ([native proof](audit/marketplace-share-links-full-native-acceptance.json)). Final combined-candidate and Linux package repetition remain release gates.
-
-Project-file content adds one family and four both-scope records for exact text/binary bytes, secret input and project references, drift repair, empty text updates, replacement refusal and normal deletion ([runtime proof](audit/crossplane-project-files.json)). All152 native acceptance cases pass ([native proof](audit/project-files-full-native-acceptance.json)). This is a pre-consolidation checkpoint; the major-version surface is being reviewed against product navigation.
+See [the audit](audit/README.md) for the release evidence.

@@ -142,5 +142,6 @@ When `TestApiCoverage` flags a wire field, you have two choices:
 - Synthetic-wrapper decomposition (e.g. catalog_item's `oauthConfig` is wire top-level but HCL-nested under `remote_config`).
 - m2m-relationship duplicates (e.g. `agent.tools` is managed by `archestra_agent.tools`; surfacing it on the agent would create phantom diffs).
 - TFName↔JSONName renames where the AttrSpec doesn't include it (because the field is Computed-only with no merge-patch involvement).
+- Read-only metadata on `archestra_virtual_key`. Its schema holds only what create and update accept, the ID and the credential, so fields such as `tokenStart`, `secretId`, `authorId` and `lastUsedAt` stay out of state.
 
 The skip-list comment matters. A future maintainer reading it should be able to decide whether the original reasoning still holds.

@@ -1,7 +1,7 @@
 name: Crossplane Provider
 
 # CI for the Crossplane provider (crossplane/ — its own Go module).
-# Path-filtered so Terraform-provider-only changes don't trigger it.
+# Pushes to main are path-filtered; pull requests always run it.
 on:
   push:
     branches: [main]
@@ -11,13 +11,10 @@ on:
       - 'go.mod'
       - 'go.sum'
       - '.github/workflows/crossplane.yml'
+  # Every pull request runs this job, so "Generate & Build" can be a required
+  # check. It includes the test that every Terraform resource has a Crossplane
+  # mapping in both scopes.
   pull_request:
-    paths:
-      - 'crossplane/**'
-      - 'internal/**'
-      - 'go.mod'
-      - 'go.sum'
-      - '.github/workflows/crossplane.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
