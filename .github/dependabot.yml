@@ -19,11 +19,13 @@ updates:
       default-days: 7
 
   - package-ecosystem: github-actions
-    directory: .github
+    directories:
+      - /
+      - /.github/actions/*
     groups:
       github-actions-dependencies:
         patterns:
-          - "*.yml"
+          - "*"
     schedule:
       interval: weekly
     labels:
