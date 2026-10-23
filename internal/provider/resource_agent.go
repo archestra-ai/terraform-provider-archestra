@@ -84,6 +84,8 @@ type AgentResourceModel struct {
 	AccessAllTools            types.Bool         `tfsdk:"access_all_tools"`
 	MissingCredentialBehavior types.String       `tfsdk:"missing_credential_behavior"`
 	ModelId                   types.String       `tfsdk:"model_id"`
+	FastModelId               types.String       `tfsdk:"fast_model_id"`
+	SmartModelId              types.String       `tfsdk:"smart_model_id"`
 	EnvironmentId             types.String       `tfsdk:"environment_id"`
 	Runtime                   *AgentRuntimeModel `tfsdk:"runtime"`
 }
@@ -195,6 +197,14 @@ func (r *AgentResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"model_id": schema.StringAttribute{
 				Optional:            true,
 				MarkdownDescription: "Database UUID of the pinned LLM model row (`dbId` from `/api/llm-models/available`) — not the provider-facing model name, which is `llm_model`",
+			},
+			"fast_model_id": schema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "Database UUID of a faster tool-capable chat model on the agent's `llm_api_key_id`, used when the agent forks a subagent on the `fast` tier; null falls back to the organization's `default_fast_model_id`, then the provider default",
+			},
+			"smart_model_id": schema.StringAttribute{
+				Optional:            true,
+				MarkdownDescription: "Database UUID of a stronger tool-capable chat model on the agent's `llm_api_key_id`, used when the agent forks a subagent on the `smart` tier; null falls back to the organization's `default_smart_model_id`, then the provider default",
 			},
 			"environment_id": schema.StringAttribute{
 				Optional:            true,
@@ -558,6 +568,8 @@ func (r *AgentResource) flattenAgentResponse(ctx context.Context, data *AgentRes
 		data.MissingCredentialBehavior = types.StringNull()
 	}
 	optionalUUIDFromAPI(&data.ModelId, resp.ModelId)
+	optionalUUIDFromAPI(&data.FastModelId, resp.FastModelId)
+	optionalUUIDFromAPI(&data.SmartModelId, resp.SmartModelId)
 	optionalStringFromAPI(&data.EnvironmentId, resp.EnvironmentId)
 	data.Runtime = runtimeFromResponse(ctx, body, diags)
 }
@@ -640,11 +652,13 @@ var agentAttrSpec = append(append(agentRelationshipAttrSpecs(), AttrSpec{TFName:
 	},
 	// accessAllTools / missingCredentialBehavior are non-nullable optionals on
 	// the backend zod (columns with defaults) — null would 400, so removal
-	// means "stop managing". modelId / environmentId are nullable columns and
-	// accept an explicit null to clear.
+	// means "stop managing". modelId / fastModelId / smartModelId /
+	// environmentId are nullable columns and accept an explicit null to clear.
 	{TFName: "access_all_tools", JSONName: "accessAllTools", Kind: Scalar, OmitOnNull: true},
 	{TFName: "missing_credential_behavior", JSONName: "missingCredentialBehavior", Kind: Scalar, OmitOnNull: true},
 	{TFName: "model_id", JSONName: "modelId", Kind: Scalar},
+	{TFName: "fast_model_id", JSONName: "fastModelId", Kind: Scalar},
+	{TFName: "smart_model_id", JSONName: "smartModelId", Kind: Scalar},
 	{TFName: "environment_id", JSONName: "environmentId", Kind: Scalar},
 	{
 		TFName: "runtime", JSONName: "runtime", Kind: AtomicObject,
