@@ -43,8 +43,9 @@ resource "archestra_mcp_registry_entry" "configurable_fs" {
   description = "Filesystem MCP with installer-supplied workspace + tuning"
 
   local_config = {
-    command   = "npx"
-    arguments = ["-y", "@modelcontextprotocol/server-filesystem"]
+    command = "npx"
+    # The platform fills ${user_config.<key>} from the installer's values.
+    arguments = ["-y", "@modelcontextprotocol/server-filesystem", "$${user_config.workspace}"]
   }
 
   user_config = {
@@ -80,6 +81,7 @@ resource "archestra_mcp_registry_entry" "gitmcp_servers" {
 resource "archestra_mcp_server" "filesystem" {
   name       = "filesystem"
   catalog_id = archestra_mcp_registry_entry.filesystem.id
+  scope      = "org" # agents can only be given tools from org- or team-scoped servers
 }
 
 resource "archestra_mcp_server" "memory" {
@@ -87,11 +89,13 @@ resource "archestra_mcp_server" "memory" {
   catalog_id = archestra_mcp_registry_entry.memory.id
 }
 
+# Tool assignments live on the agents (see agents.tf), so this server does
+# not also list agent_ids; both would manage the same assignments.
 resource "archestra_mcp_server" "memory_support" {
   name       = "memory-support"
   catalog_id = archestra_mcp_registry_entry.memory.id
+  scope      = "team"
   team_id    = archestra_team.support.id
-  agent_ids  = [archestra_agent.support.id]
 }
 
 resource "archestra_mcp_server" "everything" {
@@ -102,10 +106,13 @@ resource "archestra_mcp_server" "everything" {
 resource "archestra_mcp_server" "configurable_fs_engineering" {
   name       = "configurable-fs-engineering"
   catalog_id = archestra_mcp_registry_entry.configurable_fs.id
+  scope      = "team"
   team_id    = archestra_team.engineering.id
 
+  # Values reach the server as text: strings go in as they are, other types
+  # through jsonencode. The directory must exist in the server container.
   user_config_values = {
-    workspace   = jsonencode("/tmp/eng-workspace")
+    workspace   = "/tmp"
     max_results = jsonencode(100)
   }
 }
