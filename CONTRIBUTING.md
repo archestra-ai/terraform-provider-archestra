@@ -68,9 +68,9 @@ model adoption, organization settings and fixed GitHub installation identities
 run serially before the pool. New case groups default to serial execution.
 Both Git Skill scopes stay in one worker because their immutable repository
 fixture is deduplicated by the backend. Long probes start before short checks.
-The eleven lifecycle stacks isolate the longest owner, organization and
-sharing groups. Sharing uses one stack per scope, with resource kinds divided
-across its workers. Merged evidence must prove every assigned case and scope,
+The thirteen lifecycle stacks isolate the longest owner, project, organization and
+sharing groups. Owner, project and sharing checks use one stack per scope; sharing also
+divides resource kinds across its workers. Merged evidence must prove every assigned case and scope,
 matching API, controller and Terraform hashes and successful cleanup. A
 regression test verifies that the full workflow assigns every case exactly
 once in each scope. Any worker failure fails the required check.

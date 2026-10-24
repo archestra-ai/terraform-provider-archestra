@@ -64,9 +64,14 @@ jobs:
           - shard: extensions
             mcp: true
             cases: extensions service-account-team team-bindings
-          - shard: owners
+          - shard: owners-cluster
             mcp: true
             cases: inline-owners
+            scopes: cluster
+          - shard: owners-namespaced
+            mcp: true
+            cases: inline-owners
+            scopes: namespaced
           - shard: catalog
             mcp: true
             cases: catalog tools limit llm credential sharing-defaults
@@ -79,9 +84,14 @@ jobs:
           - shard: skills
             mcp: false
             cases: skill git-skills repository-plugins manual-plugins marketplace-share-links
-          - shard: projects
+          - shard: projects-cluster
             mcp: true
             cases: apps project-files project-file-init project-instructions knowledge-files
+            scopes: cluster
+          - shard: projects-namespaced
+            mcp: true
+            cases: apps project-files project-file-init project-instructions knowledge-files
+            scopes: namespaced
           - shard: routing
             mcp: false
             cases: routing-credentials remote-agents github-registrations

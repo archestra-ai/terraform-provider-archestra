@@ -165,3 +165,7 @@ runs:
         # Events and platform log lines for MCP servers that the tests created.
         kubectl get events --namespace default --sort-by=.lastTimestamp | grep -E 'mcp-tf-' | tail -n 150 || true
         kubectl logs --namespace default deployment/archestra-platform --tail=5000 | grep -E 'mcp-tf-' | tail -n 150 || true
+        # Report only warning/error summaries, never request payloads or headers.
+        # Git fixture failures can otherwise be hidden behind the MCP-only filter.
+        kubectl logs --namespace default deployment/archestra-platform --tail=5000 | \
+          jq -Rc 'fromjson? | select(.level >= 40) | {timeIso, msg, error: .err.message}' | tail -n 80 || true
