@@ -255,16 +255,15 @@ xpkg is published to `xpkg.upbound.io/archestra/provider-archestra` alongside
 each Terraform provider release. The release workflow then adds the
 [Marketplace assets](marketplace/README.md) to that same package.
 
-The [Marketplace publication workflow](../.github/workflows/publish-marketplace.yml)
+The existing [Crossplane release job](../.github/workflows/release-please.yml)
 uses the existing `UPBOUND_ACCESS_ID` and `UPBOUND_TOKEN` GitHub Actions secrets
 for the `archestra/provider-archestra` repository. No second namespace or
 publisher credentials are needed.
 
-Release Please calls this workflow after the Crossplane package push succeeds.
-To publish an existing release or retry a failed Marketplace publication,
-run **Publish Upbound Marketplace** from GitHub Actions with its existing
-`vX.Y.Z` tag. The workflow verifies that the destination retains the exact
-Linux amd64 and arm64 runtime manifests from that release.
+After the Crossplane package push succeeds, that same job appends the logo and
+verifies that the Linux amd64 and arm64 runtime manifests are unchanged.
+Retry a failed publication by re-running **Publish Crossplane Provider** for
+that release in GitHub Actions.
 
 Registry publication and Marketplace listing are separate. After adding the
 assets, the workflow uses `up repository update --private=false --publish=true`
