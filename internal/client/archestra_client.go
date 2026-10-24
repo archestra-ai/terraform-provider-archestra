@@ -1096,6 +1096,7 @@ const (
 	CreateLimitJSONBodyCleanupIntervalCalendarMonth      CreateLimitJSONBodyCleanupInterval = "calendar_month"
 	CreateLimitJSONBodyCleanupIntervalCalendarWeekMonday CreateLimitJSONBodyCleanupInterval = "calendar_week_monday"
 	CreateLimitJSONBodyCleanupIntervalCalendarWeekSunday CreateLimitJSONBodyCleanupInterval = "calendar_week_sunday"
+	CreateLimitJSONBodyCleanupIntervalMinute             CreateLimitJSONBodyCleanupInterval = "minute"
 	CreateLimitJSONBodyCleanupIntervalN12h               CreateLimitJSONBodyCleanupInterval = "12h"
 	CreateLimitJSONBodyCleanupIntervalN1h                CreateLimitJSONBodyCleanupInterval = "1h"
 	CreateLimitJSONBodyCleanupIntervalN1m                CreateLimitJSONBodyCleanupInterval = "1m"
@@ -1116,9 +1117,13 @@ const (
 
 // Defines values for CreateLimitJSONBodyLimitType.
 const (
-	CreateLimitJSONBodyLimitTypeMcpServerCalls CreateLimitJSONBodyLimitType = "mcp_server_calls"
-	CreateLimitJSONBodyLimitTypeTokenCost      CreateLimitJSONBodyLimitType = "token_cost"
-	CreateLimitJSONBodyLimitTypeToolCalls      CreateLimitJSONBodyLimitType = "tool_calls"
+	CreateLimitJSONBodyLimitTypeMcpServerCalls    CreateLimitJSONBodyLimitType = "mcp_server_calls"
+	CreateLimitJSONBodyLimitTypeRequests          CreateLimitJSONBodyLimitType = "requests"
+	CreateLimitJSONBodyLimitTypeRequestsPerMinute CreateLimitJSONBodyLimitType = "requests_per_minute"
+	CreateLimitJSONBodyLimitTypeTokenCost         CreateLimitJSONBodyLimitType = "token_cost"
+	CreateLimitJSONBodyLimitTypeTokens            CreateLimitJSONBodyLimitType = "tokens"
+	CreateLimitJSONBodyLimitTypeTokensPerMinute   CreateLimitJSONBodyLimitType = "tokens_per_minute"
+	CreateLimitJSONBodyLimitTypeToolCalls         CreateLimitJSONBodyLimitType = "tool_calls"
 )
 
 // Defines values for UpdateLimitJSONBodyCleanupInterval.
@@ -1127,6 +1132,7 @@ const (
 	UpdateLimitJSONBodyCleanupIntervalCalendarMonth      UpdateLimitJSONBodyCleanupInterval = "calendar_month"
 	UpdateLimitJSONBodyCleanupIntervalCalendarWeekMonday UpdateLimitJSONBodyCleanupInterval = "calendar_week_monday"
 	UpdateLimitJSONBodyCleanupIntervalCalendarWeekSunday UpdateLimitJSONBodyCleanupInterval = "calendar_week_sunday"
+	UpdateLimitJSONBodyCleanupIntervalMinute             UpdateLimitJSONBodyCleanupInterval = "minute"
 	UpdateLimitJSONBodyCleanupIntervalN12h               UpdateLimitJSONBodyCleanupInterval = "12h"
 	UpdateLimitJSONBodyCleanupIntervalN1h                UpdateLimitJSONBodyCleanupInterval = "1h"
 	UpdateLimitJSONBodyCleanupIntervalN1m                UpdateLimitJSONBodyCleanupInterval = "1m"
@@ -1136,9 +1142,13 @@ const (
 
 // Defines values for UpdateLimitJSONBodyLimitType.
 const (
-	UpdateLimitJSONBodyLimitTypeMcpServerCalls UpdateLimitJSONBodyLimitType = "mcp_server_calls"
-	UpdateLimitJSONBodyLimitTypeTokenCost      UpdateLimitJSONBodyLimitType = "token_cost"
-	UpdateLimitJSONBodyLimitTypeToolCalls      UpdateLimitJSONBodyLimitType = "tool_calls"
+	UpdateLimitJSONBodyLimitTypeMcpServerCalls    UpdateLimitJSONBodyLimitType = "mcp_server_calls"
+	UpdateLimitJSONBodyLimitTypeRequests          UpdateLimitJSONBodyLimitType = "requests"
+	UpdateLimitJSONBodyLimitTypeRequestsPerMinute UpdateLimitJSONBodyLimitType = "requests_per_minute"
+	UpdateLimitJSONBodyLimitTypeTokenCost         UpdateLimitJSONBodyLimitType = "token_cost"
+	UpdateLimitJSONBodyLimitTypeTokens            UpdateLimitJSONBodyLimitType = "tokens"
+	UpdateLimitJSONBodyLimitTypeTokensPerMinute   UpdateLimitJSONBodyLimitType = "tokens_per_minute"
+	UpdateLimitJSONBodyLimitTypeToolCalls         UpdateLimitJSONBodyLimitType = "tool_calls"
 )
 
 // Defines values for GetModelsWithApiKeysParamsAccess.
@@ -2170,6 +2180,7 @@ const (
 	GetToolsWithAssignmentsParamsObservedByClientCursor        GetToolsWithAssignmentsParamsObservedByClient = "cursor"
 	GetToolsWithAssignmentsParamsObservedByClientKilo          GetToolsWithAssignmentsParamsObservedByClient = "kilo"
 	GetToolsWithAssignmentsParamsObservedByClientOpencode      GetToolsWithAssignmentsParamsObservedByClient = "opencode"
+	GetToolsWithAssignmentsParamsObservedByClientPi            GetToolsWithAssignmentsParamsObservedByClient = "pi"
 )
 
 // ContextualRetrievalMode defines model for ContextualRetrievalMode.
@@ -5187,6 +5198,10 @@ type UpdateIntegrationSettingsJSONBody struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
 		} `json:"codex,omitempty"`
+		Grok *struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"grok,omitempty"`
 		Hermes *struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -30734,6 +30749,13 @@ type GetLimitResponse struct {
 			TokensIn  float32 `json:"tokensIn"`
 			TokensOut float32 `json:"tokensOut"`
 		} `json:"modelUsage,omitempty"`
+		ThroughputUsage *struct {
+			// CurrentUsage Recorded usage. Token limits count only provider-reported tokens; requests already in flight can exceed the cap.
+			CurrentUsage float32 `json:"currentUsage"`
+
+			// ResetsAt Minute: projected full allowance recovery without new traffic. Other intervals: next reset.
+			ResetsAt string `json:"resetsAt"`
+		} `json:"throughputUsage,omitempty"`
 		ToolName  *string   `json:"toolName"`
 		UpdatedAt time.Time `json:"updatedAt"`
 	}
@@ -56825,6 +56847,13 @@ func ParseGetLimitResponse(rsp *http.Response) (*GetLimitResponse, error) {
 				TokensIn  float32 `json:"tokensIn"`
 				TokensOut float32 `json:"tokensOut"`
 			} `json:"modelUsage,omitempty"`
+			ThroughputUsage *struct {
+				// CurrentUsage Recorded usage. Token limits count only provider-reported tokens; requests already in flight can exceed the cap.
+				CurrentUsage float32 `json:"currentUsage"`
+
+				// ResetsAt Minute: projected full allowance recovery without new traffic. Other intervals: next reset.
+				ResetsAt string `json:"resetsAt"`
+			} `json:"throughputUsage,omitempty"`
 			ToolName  *string   `json:"toolName"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		}
