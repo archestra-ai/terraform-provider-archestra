@@ -77,7 +77,7 @@ jobs:
           persist-credentials: true
 
       - name: Setup go
-        uses: ./.github/actions/setup-go
+        uses: $/.github/actions/setup-go
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0

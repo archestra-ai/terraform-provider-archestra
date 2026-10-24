@@ -43,7 +43,7 @@ jobs:
         run: python3 -m unittest discover -s scripts -p 'test_crossplane_coverage.py'
 
       - name: Setup Go
-        uses: ./.github/actions/setup-go
+        uses: $/.github/actions/setup-go
 
       - name: Generate coverage report
         run: scripts/crossplane-coverage.sh "$GITHUB_STEP_SUMMARY"

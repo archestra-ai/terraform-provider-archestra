@@ -24,15 +24,15 @@ runs:
         fi
 
     - name: Setup go
-      uses: ./.github/actions/setup-go
+      uses: $/.github/actions/setup-go
 
     - name: Setup Terraform
-      uses: ./.github/actions/setup-terraform
+      uses: $/.github/actions/setup-terraform
 
     # Deploy Archestra Platform locally using Kind
     # This uses the pre-built archestra/platform image from Docker Hub and the published Helm chart from GAR
     - name: Setup Archestra Platform
-      uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@ab0c93762d005ccb9475d883c4a47970f480bf5b # v1.0.8
+      uses: archestra-ai/archestra/.github/actions/setup-archestra-platform@ab0c93762d005ccb9475d883c4a47970f480bf5b # platform-v1.0.8
       with:
         kind-config-path: ./.github/kind.yaml
         kind-cluster-name: archestra-ci-cluster
