@@ -41,6 +41,7 @@ TERRAFORM_VERSION=1.5.7
 TF_PROVIDER_VERSION="${CROSSPLANE_TF_PROVIDER_VERSION:-3.0.0}"
 # Lifecycle probes repair out-of-band drift within 75 seconds.
 POLL_INTERVAL="${CROSSPLANE_POLL_INTERVAL:-10s}"
+MAX_RECONCILE_RATE="${CROSSPLANE_MAX_RECONCILE_RATE:-10}"
 METRICS_ADDRESS="${CROSSPLANE_METRICS_ADDRESS:-127.0.0.1:18080}"
 WORK_DIR="${CROSSPLANE_WORK_DIR:-${HOME}/.cache/archestra-provider-crossplane/${KIND_CLUSTER}}"
 
@@ -247,6 +248,7 @@ log "Starting the controller..."
       --terraform-provider-source=archestra-ai/archestra \
       --terraform-provider-version="$TF_PROVIDER_VERSION" \
       --poll="$POLL_INTERVAL" \
+      --max-reconcile-rate="$MAX_RECONCILE_RATE" \
       --metrics-bind-address="$METRICS_ADDRESS" \
       --certs-dir= \
       > "${WORK_DIR}/controller.log" 2>&1 &

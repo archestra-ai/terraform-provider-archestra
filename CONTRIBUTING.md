@@ -56,7 +56,7 @@ Native jobs cache the root and tools Go modules together. Crossplane jobs use
 a separate root/Crossplane dependency key, keeping cache contents and
 invalidation aligned with the modules each job builds. Fresh lifecycle stacks
 pull the platform directly into Kind instead of pulling and transferring a
-second copy from Docker. Lifecycle controllers poll at two seconds in CI to
+second copy from Docker. Lifecycle controllers poll at one second in CI to
 exercise the same drift assertions with less idle waiting.
 Both native and lifecycle jobs use the shared bootstrap, which seeds Vault
 before the backend's first start. Existing local stacks still restart the
@@ -71,6 +71,10 @@ fixture is deduplicated by the backend. Long probes start before short checks.
 The sharing probes partition resource kinds across workers; merged evidence
 must prove every requested case in both scopes, matching API, controller and
 Terraform hashes and successful cleanup. Any worker failure fails the check.
+The CI controller allows 50 reconciles per second so the parallel fixtures do
+not saturate its default rate of ten. Shared model and GitHub registration
+scopes may overlap only their audited independent case groups; organization
+settings and unknown combinations remain serial.
 
 Compilation jobs publish binaries and generated CRDs to a cache keyed by the
 exact merge commit and runner platform. Each consumer verifies the source,

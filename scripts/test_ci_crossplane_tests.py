@@ -67,6 +67,16 @@ class LifecyclePlannerTests(unittest.TestCase):
         counts = [len(task["grant_kinds"]) for task in sharing]
         self.assertEqual(counts, sorted(counts, reverse=True))
 
+    def test_shared_model_and_registration_scopes_only_overlap_audited_companions(self):
+        for case, companions in ci.SCOPED_COMPANIONS.items():
+            serial, tasks = ci.plan(sorted(companions), 4)
+            self.assertFalse(serial)
+            selected = [task for task in tasks if case in task["cases"]]
+            self.assertEqual(len(selected), 1)
+            self.assertEqual(selected[0]["scopes"], list(ci.SCOPES))
+            serial, tasks = ci.plan([case, "future-case"], 4)
+            self.assertEqual(set(serial[0]["cases"]), {case, "future-case"})
+
     def test_missing_evidence_cleanup_failures_or_mixed_binaries_fail(self):
         serial, tasks = ci.plan(["core"], 2)
         outcomes = {task["name"]: (0, proof(task)) for task in tasks}

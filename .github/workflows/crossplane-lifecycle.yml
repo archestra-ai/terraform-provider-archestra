@@ -49,7 +49,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     env:
-      CROSSPLANE_POLL_INTERVAL: 2s
+      CROSSPLANE_POLL_INTERVAL: 1s
+      CROSSPLANE_MAX_RECONCILE_RATE: 50
       CROSSPLANE_SKIP_MCP_FIXTURE: ${{ matrix.mcp && '0' || '1' }}
     strategy:
       fail-fast: false

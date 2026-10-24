@@ -26,13 +26,18 @@ PARALLEL_CASES = {
     "credential", "schedule", "api-key", "skill", "git-skills", "project-instructions",
     "observe", "parent-sharing", "sharing-defaults",
 }
+SCOPED_COMPANIONS = {
+    "llm": {"llm", "catalog", "tools", "limit", "credential", "sharing-defaults"},
+    "github-registrations": {"github-registrations", "routing-credentials", "remote-agents"},
+}
 IDENTITY = ("terraform_sha256", "controller_sha256", "kubernetes_context", "api_url",
             "api_spec_sha256", "api_version")
 # Long probes start first so short fixture checks do not hold up the last worker.
 CASE_SECONDS = {"inline-owners": 335, "extensions": 275, "marketplace-share-links": 210,
                 "git-skills": 400, "core": 250, "apps": 185, "project-files": 180,
                 "repository-plugins": 125, "sharing-defaults": 120,
-                "routing-credentials": 170, "service-account-team": 90}
+                "routing-credentials": 170, "service-account-team": 90,
+                "llm": 200, "github-registrations": 180}
 
 
 def plan(cases, jobs):
@@ -41,16 +46,18 @@ def plan(cases, jobs):
     cases = list(dict.fromkeys(cases))
     if not cases:
         raise ValueError("At least one lifecycle case is required")
+    independent = PARALLEL_CASES | {case for case, companions in SCOPED_COMPANIONS.items()
+                                    if set(cases).issubset(companions)}
     serial, parallel = [], []
-    global_cases = [case for case in cases if case not in PARALLEL_CASES]
+    global_cases = [case for case in cases if case not in independent]
     if global_cases:
         serial.append({"name": "serial", "cases": global_cases, "scopes": list(SCOPES)})
     for case in cases:
-        if case not in PARALLEL_CASES:
+        if case not in independent:
             continue
         # Both imports use the same immutable Git repository fixture.
-        if case == "git-skills":
-            parallel.append({"name": "git-skills-both", "cases": [case], "scopes": list(SCOPES)})
+        if case in {"git-skills", *SCOPED_COMPANIONS}:
+            parallel.append({"name": case + "-both", "cases": [case], "scopes": list(SCOPES)})
             continue
         kinds = sorted(kind.removesuffix("Sharing") for kind in lifecycle.CASE_RESOURCES["parent-sharing"])
         partitions = [kinds[i::jobs] for i in range(jobs)] if case == "parent-sharing" else [None]
