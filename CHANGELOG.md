@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.3](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.0.2...v3.0.3) (2026-10-24)
+
+
+### Bug Fixes
+
+* **ci:** include Marketplace logo and listing in Crossplane releases ([#203](https://github.com/archestra-ai/terraform-provider-archestra/issues/203)) ([2252725](https://github.com/archestra-ai/terraform-provider-archestra/commit/225272532d79fa7366a4ebf9bb7f1122a327f705))
+
 ## [3.0.2](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.0.1...v3.0.2) (2026-10-24)
 
 
