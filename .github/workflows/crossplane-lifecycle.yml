@@ -39,19 +39,8 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          set -euo pipefail
-          if [ "$EVENT" != pull_request ] || [[ "$HEAD_REF" == release-please--* ]]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          # Everything that can change what the controller or the harness does.
-          pattern='^(internal/|crossplane/|cmd/|scripts/integration/|scripts/k8s/|scripts/bootstrap-[^/]*$|main\.go$|go\.(mod|sum)$|platform-version\.txt$|\.github/(kind\.yaml|values-ci\.yaml)$|\.github/workflows/crossplane-lifecycle\.yml$)'
-          changed=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
-          if printf '%s\n' "$changed" | grep -Eq "$pattern"; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          fi
+          python3 scripts/ci_integration_scope.py --suite crossplane \
+            --event "$EVENT" --head-ref "$HEAD_REF" --base "$BASE_SHA" --head "$HEAD_SHA" >> "$GITHUB_OUTPUT"
 
   lifecycle:
     name: Crossplane Lifecycle (${{ matrix.shard }})
@@ -59,6 +48,8 @@ jobs:
     if: needs.scope.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 75
+    env:
+      CROSSPLANE_POLL_INTERVAL: 2s
     strategy:
       fail-fast: false
       # Shards are balanced by recorded run time. Groups that change global
@@ -91,6 +82,9 @@ jobs:
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
+          cache-dependency-path: |
+            go.sum
+            crossplane/go.sum
 
       - name: Read platform version
         run: ./scripts/platform-version.sh >> "$GITHUB_ENV"
@@ -103,8 +97,16 @@ jobs:
       - name: Pull the MCP server base image
         run: |
           image="europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/mcp-server-base:${ARCHESTRA_VERSION}"
+          fixture_images=$(kubectl create --dry-run=client -f scripts/k8s/provider-mcp-mock.yaml -o jsonpath='{..image}')
+          read -ra images <<< "$image $fixture_images"
           for node in $(kind get nodes --name archestra-ci-cluster); do
-            docker exec "$node" crictl pull "$image"
+            for image in "${images[@]}"; do
+              for attempt in 1 2 3; do
+                if docker exec "$node" crictl pull "$image"; then break; fi
+                if [ "$attempt" = 3 ]; then exit 1; fi
+                sleep 3
+              done
+            done
           done
 
       - name: Install goimports

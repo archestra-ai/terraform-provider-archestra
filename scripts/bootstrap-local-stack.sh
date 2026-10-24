@@ -131,17 +131,13 @@ fi
 
 kind get kubeconfig --name "$KIND_CLUSTER" > "$KUBECONFIG"
 
-# 2. Pull platform image into the local Docker daemon and load into kind.
+# 2. Reuse a local image when available; fresh CI nodes pull once into containerd.
 PLATFORM_IMAGE="archestra/platform:${ARCHESTRA_VERSION}"
-if ! docker image inspect "$PLATFORM_IMAGE" >/dev/null 2>&1; then
-  log "Pulling ${PLATFORM_IMAGE}..."
-  docker pull "$PLATFORM_IMAGE" >/dev/null
-fi
-log "Loading ${PLATFORM_IMAGE} into kind..."
-if ! kind load docker-image "$PLATFORM_IMAGE" --name "$KIND_CLUSTER" >/dev/null; then
-  # Docker's containerd image store can export an incomplete multi-platform
-  # index. Pull inside each disposable node instead of importing that archive.
-  log "Image archive import failed; pulling directly inside the test nodes..."
+if docker image inspect "$PLATFORM_IMAGE" >/dev/null 2>&1 && \
+  kind load docker-image "$PLATFORM_IMAGE" --name "$KIND_CLUSTER" >/dev/null; then
+  log "Loaded the cached ${PLATFORM_IMAGE} into kind."
+else
+  log "Pulling ${PLATFORM_IMAGE} directly inside the test nodes..."
   for node in $(kind get nodes --name "$KIND_CLUSTER"); do
     docker exec "$node" ctr --namespace=k8s.io images pull "docker.io/${PLATFORM_IMAGE}" >/dev/null
   done

@@ -19,6 +19,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  integration-scope:
+    name: Select integration scope
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.scope.outputs.run }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Test integration routing
+        run: python3 -m unittest discover -s scripts -p test_ci_integration_scope.py
+      - name: Select native integration scope
+        id: scope
+        env:
+          EVENT: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python3 scripts/ci_integration_scope.py --suite native \
+            --event "$EVENT" --head-ref "$HEAD_REF" --base "$BASE_SHA" --head "$HEAD_SHA" >> "$GITHUB_OUTPUT"
+
   lint-pr-title:
     name: PR Title Linter
     runs-on: ubuntu-latest
@@ -91,10 +114,15 @@ jobs:
 
   acceptance-tests:
     name: Acceptance Tests
+    needs: integration-scope
+    if: always() && (needs.integration-scope.result != 'success' || needs.integration-scope.outputs.run == 'true')
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
+      - name: Require successful integration scope
+        if: needs.integration-scope.result != 'success'
+        run: exit 1
       - name: Checkout project
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -113,8 +141,13 @@ jobs:
 
   credential-acceptance-tests:
     name: Credential Acceptance Tests
+    needs: integration-scope
+    if: always() && (needs.integration-scope.result != 'success' || needs.integration-scope.outputs.run == 'true')
     runs-on: ubuntu-latest
     steps:
+      - name: Require successful integration scope
+        if: needs.integration-scope.result != 'success'
+        run: exit 1
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -125,8 +158,8 @@ jobs:
         with:
           archestra-version: ${{ env.ARCHESTRA_VERSION }}
 
-  # Besides the tested release, every pull request runs both acceptance suites
-  # against the oldest supported release and the newest stable release. The job
+  # Runtime changes and releases run both acceptance suites against the oldest
+  # supported release and the newest stable release. The job
   # names carry the role, not the version, so the checks can be required.
   older-releases:
     name: Select older Archestra releases
@@ -147,7 +180,9 @@ jobs:
 
   acceptance-tests-older-releases:
     name: Acceptance Tests (${{ matrix.role }})
-    needs: older-releases
+    needs: [older-releases, integration-scope]
+    # Expand both roles even for docs so each existing required check reports.
+    if: always()
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -155,11 +190,16 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.older-releases.outputs.matrix) }}
     steps:
+      - name: Require successful integration scope
+        if: needs.integration-scope.result != 'success'
+        run: exit 1
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: needs.integration-scope.outputs.run == 'true'
         with:
           persist-credentials: false
       # The generated client matches only the tested release's spec.
       - name: Run acceptance tests
+        if: needs.integration-scope.outputs.run == 'true'
         uses: $/.github/actions/acceptance-tests
         with:
           archestra-version: ${{ matrix.version }}
@@ -167,7 +207,8 @@ jobs:
 
   credential-acceptance-tests-older-releases:
     name: Credential Acceptance Tests (${{ matrix.role }})
-    needs: older-releases
+    needs: [older-releases, integration-scope]
+    if: always()
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -175,10 +216,15 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.older-releases.outputs.matrix) }}
     steps:
+      - name: Require successful integration scope
+        if: needs.integration-scope.result != 'success'
+        run: exit 1
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: needs.integration-scope.outputs.run == 'true'
         with:
           persist-credentials: false
       - name: Run credential acceptance tests
+        if: needs.integration-scope.outputs.run == 'true'
         uses: $/.github/actions/credential-acceptance-tests
         with:
           archestra-version: ${{ matrix.version }}

@@ -38,6 +38,9 @@ jobs:
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
+          cache-dependency-path: |
+            go.sum
+            crossplane/go.sum
 
       # The Crossplane provider's CRDs are generated from the Terraform
       # provider's schema. In this monorepo that is a local build step:

@@ -23,6 +23,7 @@ set -euo pipefail
 printf '%s %s %s\\n' "$(basename "$0")" "${KUBECONFIG:-unset}" "$*" >> "$CAPTURE/commands"
 case "$(basename "$0") $*" in
   'kind get clusters') exit 0 ;;
+  'docker image inspect'*) [ "${NO_HOST_IMAGE:-0}" != 1 ] || exit 1 ;;
   'kind get nodes'*) echo isolated-node ;;
   'kind load docker-image'*) [ "${FAIL_IMAGE_IMPORT:-0}" != 1 ] || exit 1 ;;
   'kind create cluster'*)
@@ -72,6 +73,13 @@ esac
             env['FAIL_IMAGE_IMPORT'] = '1'
             subprocess.run(['bash', str(scripts / 'bootstrap-local-stack.sh')], env=env, check=True, capture_output=True)
             self.assertIn('docker.io/archestra/platform:test', (root / 'commands').read_text())
+            (root / 'commands').write_text('')
+            env['NO_HOST_IMAGE'] = '1'
+            subprocess.run(['bash', str(scripts / 'bootstrap-local-stack.sh')], env=env, check=True, capture_output=True)
+            uncached = (root / 'commands').read_text()
+            self.assertIn('images pull docker.io/archestra/platform:test', uncached)
+            self.assertNotIn('load docker-image', uncached)
+            self.assertNotIn('docker pull ', uncached)
             config = (root / 'rendered-kind').read_text()
             for port in ['19000', '13000', '19050']:
                 self.assertIn(f'hostPort: {port}', config)

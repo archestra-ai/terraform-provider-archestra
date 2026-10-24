@@ -41,6 +41,20 @@ make install    # build and install into $GOPATH/bin for dev_overrides
 
 ## Testing
 
+Pull requests always run lint, unit tests, generation, both-architecture builds
+and Terraform/Crossplane coverage checks. Documentation and Marketplace asset
+changes skip integration stacks; provider, dependency and harness changes run
+the native acceptance matrix and Crossplane lifecycle suites. Release Please
+PRs always run the full matrix. `scripts/ci_integration_scope.py` owns that
+routing, with regression tests for runtime changes, renames and release PRs.
+
+Native jobs cache the root and tools Go modules together. Crossplane jobs use
+a separate root/Crossplane dependency key, keeping cache contents and
+invalidation aligned with the modules each job builds. Fresh lifecycle stacks
+pull the platform directly into Kind instead of pulling and transferring a
+second copy from Docker. Lifecycle controllers poll at two seconds in CI to
+exercise the same drift assertions with less idle waiting.
+
 ### Unit tests
 
 ```bash
