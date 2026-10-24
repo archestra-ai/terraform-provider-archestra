@@ -205,13 +205,23 @@ jobs:
       - name: Enable Marketplace listing for the existing repository
         env:
           UPBOUND_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
+          VERSION: ${{ needs.release-please.outputs.tag_name }}
         run: |
           set -euo pipefail
           printf '%s' "$UPBOUND_TOKEN" | up login --token=- \
             --profile=marketplace --organization=archestra
-          up repository update provider-archestra \
-            --profile=marketplace --organization=archestra \
-            --private=false --publish=true --force
+          repository_status="$RUNNER_TEMP/marketplace-repository.json"
           up repository get provider-archestra \
-            --profile=marketplace --organization=archestra --format=json
+            --profile=marketplace --organization=archestra --format=json > "$repository_status"
+          if ! jq -e '.public == true and .publishPolicy == "publish"' "$repository_status" > /dev/null; then
+            up repository update provider-archestra \
+              --profile=marketplace --organization=archestra \
+              --private=false --publish=true --force
+            up repository get provider-archestra \
+              --profile=marketplace --organization=archestra --format=json > "$repository_status"
+          fi
+          jq -e '.public == true and .publishPolicy == "publish"' "$repository_status"
+          jq --arg version "$VERSION" \
+            '{name, public, publishPolicy, version: [.versions[]? | select(.version == $version) | {version, status, reason}]}' \
+            "$repository_status"
           echo 'Enabled the public Marketplace listing for archestra/provider-archestra.' >> "$GITHUB_STEP_SUMMARY"
