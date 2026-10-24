@@ -98,3 +98,17 @@ jobs:
           PY
           printf 'Added Marketplace assets to [%s](https://marketplace.upbound.io/providers/archestra/provider-archestra/%s).\n' \
             "$package" "$VERSION" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Enable Marketplace listing for the existing repository
+        env:
+          UPBOUND_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$UPBOUND_TOKEN" | up login --token=- \
+            --profile=marketplace --organization=archestra
+          up repository update provider-archestra \
+            --profile=marketplace --organization=archestra \
+            --private=false --publish=true --force
+          up repository get provider-archestra \
+            --profile=marketplace --organization=archestra --format=json
+          echo 'Enabled the public Marketplace listing for archestra/provider-archestra.' >> "$GITHUB_STEP_SUMMARY"

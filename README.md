@@ -199,8 +199,8 @@ tag vX.Y.Z  ──▶  goreleaser       ──▶  GitHub release zips ──▶
 The publish jobs run one after the other: `publish-crossplane` needs
 `publish-terraform-provider`, because the runtime image downloads the
 release zips. `publish-marketplace` then adds the logo to that same package
-and verifies that both runtime manifests are unchanged. A publication failure
-does not roll back earlier publication steps. The repository must also have
-Marketplace publishing enabled in Upbound for its listing to appear in search.
+and verifies that both runtime manifests are unchanged, then enables the public
+Marketplace listing for the existing repository through the Upbound CLI.
+A publication failure does not roll back earlier publication steps.
 
 See [the audit](audit/README.md) for the release evidence.

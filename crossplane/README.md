@@ -266,10 +266,13 @@ run **Publish Upbound Marketplace** from GitHub Actions with its existing
 `vX.Y.Z` tag. The workflow verifies that the destination retains the exact
 Linux amd64 and arm64 runtime manifests from that release.
 
-Registry publication and Marketplace listing are separate. An administrator of
-the existing `archestra` Upbound namespace must enable **Publish to Marketplace**
-for `provider-archestra` once. Then valid release versions and their assets are
-listed at [Upbound Marketplace](https://marketplace.upbound.io/providers/archestra/provider-archestra).
+Registry publication and Marketplace listing are separate. After adding the
+assets, the workflow uses `up repository update --private=false --publish=true`
+to enable the public listing for the existing `archestra/provider-archestra`
+repository. If its current robot credential cannot update repository settings,
+an administrator must enable **Publish to Marketplace** once. Valid release
+versions and their assets are then listed at
+[Upbound Marketplace](https://marketplace.upbound.io/providers/archestra/provider-archestra).
 
 ## License
 
