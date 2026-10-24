@@ -47,7 +47,7 @@ changes skip integration stacks; provider, dependency and harness changes run
 the native acceptance matrix and Crossplane lifecycle suites. Release Please
 PRs always run the full matrix. `scripts/ci_integration_scope.py` owns that
 routing, with regression tests for runtime changes, renames and release PRs.
-Each API version's native suite runs on two isolated stacks. Go enumerates the
+Each API version's native suite runs on four isolated stacks. Go enumerates the
 tests, and `scripts/ci_acceptance_tests.py` assigns each top-level test and all
 its subtests to exactly one shard. The existing acceptance checks require every
 shard to succeed, including all supported API versions.
@@ -58,6 +58,17 @@ invalidation aligned with the modules each job builds. Fresh lifecycle stacks
 pull the platform directly into Kind instead of pulling and transferring a
 second copy from Docker. Lifecycle controllers poll at two seconds in CI to
 exercise the same drift assertions with less idle waiting.
+Both native and lifecycle jobs use the shared bootstrap, which seeds Vault
+before the backend's first start. Existing local stacks still restart the
+backend when repairing Vault.
+
+`scripts/ci_crossplane_tests.py` runs up to four independent lifecycle probes
+on each stack, with UUID-labelled fixtures and separate evidence files. Common
+model adoption, organization settings and fixed GitHub installation identities
+run serially before the pool. New case groups default to serial execution.
+The sharing probes partition resource kinds across workers; merged evidence
+must prove every requested case in both scopes, matching API, controller and
+Terraform hashes and successful cleanup. Any worker failure fails the check.
 
 ### Unit tests
 

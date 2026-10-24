@@ -33,6 +33,7 @@ case "$(basename "$0") $*" in
     done
     ;;
   'kind get kubeconfig'*) echo private-test-config ;;
+  'kubectl get deployment'*) if [ "${EXISTING_BACKEND:-0}" = 1 ]; then echo deployment/archestra-platform; fi ;;
   'curl '*) echo 200 ;;
   'jq '*) echo existing-key ;;
 esac
@@ -43,7 +44,7 @@ esac
                 file.chmod(0o755)
             for name in ['bootstrap-ollama-mock.sh', 'bootstrap-vault.sh', 'bootstrap-test-idp.sh', 'bootstrap-agent-sandbox.sh']:
                 file = scripts / name
-                file.write_text('#!/bin/bash\nprintf "child %s %s\\n" "$KUBECONFIG" "$ARCHESTRA_BASE_URL" >> "$CAPTURE/commands"\n')
+                file.write_text(f'#!/bin/bash\nprintf "child {name} %s %s\\n" "$KUBECONFIG" "$ARCHESTRA_BASE_URL" >> "$CAPTURE/commands"\n')
                 file.chmod(0o755)
             file = scripts / 'bootstrap-api-key.sh'
             file.write_text('#!/bin/bash\necho test-key\n')
@@ -69,6 +70,7 @@ esac
             self.assertNotIn(str(original), commands)
             self.assertIn('http://localhost:19000', commands)
             self.assertIn('child ', commands)
+            self.assertLess(commands.index('child bootstrap-vault.sh'), commands.index('helm '))
             self.assertEqual(original.read_text(), 'preserve-current-context')
             env['FAIL_IMAGE_IMPORT'] = '1'
             subprocess.run(['bash', str(scripts / 'bootstrap-local-stack.sh')], env=env, check=True, capture_output=True)
@@ -80,6 +82,11 @@ esac
             self.assertIn('images pull docker.io/archestra/platform:test', uncached)
             self.assertNotIn('load docker-image', uncached)
             self.assertNotIn('docker pull ', uncached)
+            (root / 'commands').write_text('')
+            env['EXISTING_BACKEND'] = '1'
+            subprocess.run(['bash', str(scripts / 'bootstrap-local-stack.sh')], env=env, check=True, capture_output=True)
+            reused = (root / 'commands').read_text()
+            self.assertGreater(reused.index('child bootstrap-vault.sh'), reused.index('helm '))
             config = (root / 'rendered-kind').read_text()
             for port in ['19000', '13000', '19050']:
                 self.assertIn(f'hostPort: {port}', config)

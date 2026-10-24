@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+"""Run audited independent lifecycle probes concurrently on one isolated stack."""
+
+import argparse
+from concurrent.futures import ThreadPoolExecutor
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+
+HARNESS = Path(__file__).parent / "integration/crossplane-lifecycle.py"
+spec = importlib.util.spec_from_file_location("lifecycle", HARNESS)
+lifecycle = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(lifecycle)
+SCOPES = ("cluster", "namespaced")
+# Each probe owns UUID-labelled fixtures. Common model adoption, organization
+# settings and GitHub installation identities stay serial; new cases do too.
+PARALLEL_CASES = {
+    "apps", "project-file-init", "knowledge-files", "team-bindings",
+    "service-account-team", "inline-owners", "project-files", "marketplace-share-links",
+    "repository-plugins", "manual-plugins", "api-compatibility", "routing-credentials",
+    "remote-agents", "extensions", "core", "catalog", "limit", "identity", "tools",
+    "credential", "schedule", "api-key", "skill", "git-skills", "project-instructions",
+    "observe", "parent-sharing", "sharing-defaults",
+}
+IDENTITY = ("terraform_sha256", "controller_sha256", "kubernetes_context", "api_url",
+            "api_spec_sha256", "api_version")
+
+
+def plan(cases, jobs):
+    if not 1 <= jobs <= 4:
+        raise ValueError("Use between one and four concurrent probes")
+    cases = list(dict.fromkeys(cases))
+    if not cases:
+        raise ValueError("At least one lifecycle case is required")
+    serial, parallel = [], []
+    global_cases = [case for case in cases if case not in PARALLEL_CASES]
+    if global_cases:
+        serial.append({"name": "serial", "cases": global_cases, "scopes": list(SCOPES)})
+    for case in cases:
+        if case not in PARALLEL_CASES:
+            continue
+        kinds = sorted(kind.removesuffix("Sharing") for kind in lifecycle.CASE_RESOURCES["parent-sharing"])
+        partitions = [kinds[i::jobs] for i in range(jobs)] if case == "parent-sharing" else [None]
+        for scope in SCOPES:
+            for part, selected in enumerate(partitions):
+                task = {"name": f"{case}-{scope}-{part + 1}", "cases": [case], "scopes": [scope]}
+                if selected is not None:
+                    task["grant_kinds"] = selected
+                parallel.append(task)
+    return serial, parallel
+
+
+def command(task, forwarded, evidence):
+    owned = {"--cases", "--scopes", "--grant-kinds", "--evidence", "--resume-from"}
+    if any(argument.split("=", 1)[0] in owned for argument in forwarded):
+        raise ValueError("The CI planner owns case, scope, grant and evidence selection")
+    args = [sys.executable, str(HARNESS), *forwarded, "--evidence", str(evidence),
+            "--cases", *task["cases"], "--scopes", *task["scopes"]]
+    if "grant_kinds" in task:
+        args += ["--grant-kinds", *task["grant_kinds"]]
+    return args
+
+
+def merge_evidence(cases, tasks, outcomes):
+    merged = {"results": [], "tasks": [], "outcome": "passed", "cleanup": "passed"}
+    errors = []
+    for task in tasks:
+        code, data = outcomes.get(task["name"], (1, {}))
+        merged["tasks"].append({"name": task["name"], "returncode": code, "run_id": data.get("run_id")})
+        for field in IDENTITY:
+            if field not in data or (field in merged and merged[field] != data[field]):
+                errors.append(task["name"] + ": missing or mismatched " + field)
+            elif field not in merged:
+                merged[field] = data[field]
+        merged["results"].extend(data.get("results", []))
+        if code or data.get("outcome") != "passed" or data.get("cleanup") != "passed" or data.get("api_cleanup") not in (None, "passed"):
+            errors.append(task["name"] + ": " + data.get("error", "probe or cleanup failed"))
+    for scope in SCOPES:
+        missing = set(cases) - lifecycle.completed_cases(merged["results"], scope)
+        if missing:
+            errors.append(scope + ": missing complete evidence for " + ", ".join(sorted(missing)))
+    if errors:
+        merged.update(outcome="failed", cleanup="unconfirmed", error="; ".join(errors))
+    return merged
+
+
+def run(cases, jobs, evidence, forwarded):
+    serial, parallel = plan(cases, jobs)
+    directory = evidence.with_suffix(".d")
+    directory.mkdir(parents=True, exist_ok=False)
+
+    def probe(task):
+        path = directory / (task["name"] + ".json")
+        started = time.monotonic()
+        print("Starting " + task["name"], flush=True)
+        result = subprocess.run(command(task, forwarded, path), capture_output=True, text=True)
+        (directory / (task["name"] + ".log")).write_text(result.stdout + result.stderr)
+        print(f"Finished {task['name']}: exit {result.returncode}, {time.monotonic() - started:.1f}s", flush=True)
+        print(result.stdout + (result.stderr if result.returncode else ""), end="", flush=True)
+        try:
+            data = json.loads(path.read_text())
+        except (OSError, ValueError):
+            data = {}
+        return result.returncode, data
+
+    outcomes = {}
+    for task in serial:
+        outcomes[task["name"]] = probe(task)
+        code, data = outcomes[task["name"]]
+        if code or data.get("outcome") != "passed" or data.get("cleanup") != "passed" or data.get("api_cleanup") not in (None, "passed"):
+            break
+    else:
+        # Wait for every started probe to finish its own normal cleanup, even after a failure.
+        with ThreadPoolExecutor(max_workers=jobs) as pool:
+            futures = {task["name"]: pool.submit(probe, task) for task in parallel}
+            for name, future in futures.items():
+                outcomes[name] = future.result()
+    merged = merge_evidence(cases, serial + parallel, outcomes)
+    evidence.write_text(json.dumps(merged, indent=2) + "\n")
+    print(f"Lifecycle: {merged['outcome']}; {len(merged['results'])} evidence records", flush=True)
+    return 0 if merged["outcome"] == "passed" else 1
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--cases", nargs="+", required=True, choices=tuple(lifecycle.CASE_RESOURCES) + ("sharing-defaults",))
+    parser.add_argument("--jobs", type=int, default=4)
+    parser.add_argument("--evidence", type=Path, required=True)
+    parser.add_argument("harness_args", nargs=argparse.REMAINDER)
+    args = parser.parse_args()
+    forwarded = args.harness_args[1:] if args.harness_args[:1] == ["--"] else args.harness_args
+    return run(args.cases, args.jobs, args.evidence, forwarded)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

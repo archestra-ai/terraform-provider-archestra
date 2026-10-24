@@ -143,6 +143,13 @@ else
   done
 fi
 
+# Seed dependencies before the backend starts so its first Vault connection succeeds.
+"${SCRIPT_DIR}/bootstrap-ollama-mock.sh"
+existing_backend=$(kubectl get deployment --namespace "$ARCHESTRA_NAMESPACE" --selector=app.kubernetes.io/name=archestra-platform --ignore-not-found -o name)
+if [ -z "$existing_backend" ]; then
+  ARCHESTRA_SKIP_BACKEND_RESTART=true "${SCRIPT_DIR}/bootstrap-vault.sh"
+fi
+
 # 3. Helm install/upgrade the platform chart with the same values CI uses.
 log "Helm installing ${HELM_RELEASE} (chart ${ARCHESTRA_VERSION})..."
 helm upgrade --install "$HELM_RELEASE" "$HELM_CHART_OCI" \
@@ -157,10 +164,9 @@ helm upgrade --install "$HELM_RELEASE" "$HELM_CHART_OCI" \
 #    that the platform's healthcheck doesn't gate on.
 log "Waiting for platform pods..."
 kubectl wait --namespace "$ARCHESTRA_NAMESPACE" --for=condition=Ready pods -l app.kubernetes.io/name=archestra-platform --timeout=120s >/dev/null
-
-# 5. Ollama mock + dev Vault — same manifests CI applies post-platform.
-"${SCRIPT_DIR}/bootstrap-ollama-mock.sh"
-"${SCRIPT_DIR}/bootstrap-vault.sh"
+if [ -n "$existing_backend" ]; then
+  "${SCRIPT_DIR}/bootstrap-vault.sh"
+fi
 
 # 6. Backend health gate on the selected host port.
 log "Waiting for backend at ${ARCHESTRA_BASE_URL}..."

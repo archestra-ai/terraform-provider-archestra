@@ -21,7 +21,7 @@ def select_tests(output, shard, total):
 
 def run(shard, total):
     env = {**os.environ, "TF_ACC": "1"}
-    listed = subprocess.run(["go", "test", "-list", ".", "./..."],
+    listed = subprocess.run(["go", "test", "-cover", "-list", ".", "./..."],
                             env=env, capture_output=True, text=True)
     if listed.returncode:
         print(listed.stdout, end="")

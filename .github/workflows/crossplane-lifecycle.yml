@@ -127,14 +127,14 @@ jobs:
           eval "$(scripts/bootstrap-local-stack.sh --print-env)"
           work="$HOME/.cache/archestra-provider-crossplane/archestra-ci-cluster"
           read -ra groups <<< "$CASES"
-          python3 scripts/integration/crossplane-lifecycle.py --cases "${groups[@]}" \
+          python3 scripts/ci_crossplane_tests.py --cases "${groups[@]}" --jobs 4 \
+            --evidence "$RUNNER_TEMP/crossplane-lifecycle-$SHARD.json" -- \
             --api-url "$ARCHESTRA_BASE_URL" --key-file "$work/api-key" --readonly-vault \
             --llm-base-url "$ARCHESTRA_TEST_LLM_BASE_URL" \
             --mcp-url http://provider-mcp-mock.default.svc.cluster.local:19006/mcp \
             --kubeconfig "$work/kubeconfig" --provider-config default \
             --terraform-binary terraform-provider-archestra \
-            --controller-binary crossplane/_output/bin/linux_amd64/provider \
-            --evidence "$RUNNER_TEMP/crossplane-lifecycle-$SHARD.json"
+            --controller-binary crossplane/_output/bin/linux_amd64/provider
 
       - name: Summarize the evidence
         if: always()
