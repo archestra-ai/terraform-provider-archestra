@@ -31,7 +31,7 @@ jobs:
           persist-credentials: false
 
       - name: Lint PR title
-        uses: grafana/shared-workflows/actions/lint-pr-title@19d8fb5687bb386849f7f53673c5f429e6387cf5 # v1.2.0
+        uses: grafana/shared-workflows/actions/lint-pr-title@19d8fb5687bb386849f7f53673c5f429e6387cf5 # lint-pr-title/v1.2.0
         with:
           config-path: "${{ github.workspace }}/.github/commitlint.config.js"
         env:
@@ -49,10 +49,10 @@ jobs:
           persist-credentials: false
 
       - name: Setup go
-        uses: ./.github/actions/setup-go
+        uses: $/.github/actions/setup-go
 
       - name: Setup Terraform
-        uses: ./.github/actions/setup-terraform
+        uses: $/.github/actions/setup-terraform
 
       - name: Ensure go mod is "tidy"
         run: |
@@ -107,7 +107,7 @@ jobs:
 
       # The older-release jobs below run the same steps against other releases.
       - name: Run acceptance tests
-        uses: ./.github/actions/acceptance-tests
+        uses: $/.github/actions/acceptance-tests
         with:
           archestra-version: ${{ env.ARCHESTRA_VERSION }}
 
@@ -121,7 +121,7 @@ jobs:
       - name: Read platform version
         run: ./scripts/platform-version.sh >> "$GITHUB_ENV"
       - name: Run credential acceptance tests
-        uses: ./.github/actions/credential-acceptance-tests
+        uses: $/.github/actions/credential-acceptance-tests
         with:
           archestra-version: ${{ env.ARCHESTRA_VERSION }}
 
@@ -160,7 +160,7 @@ jobs:
           persist-credentials: false
       # The generated client matches only the tested release's spec.
       - name: Run acceptance tests
-        uses: ./.github/actions/acceptance-tests
+        uses: $/.github/actions/acceptance-tests
         with:
           archestra-version: ${{ matrix.version }}
           check-generated-client: "false"
@@ -179,7 +179,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Run credential acceptance tests
-        uses: ./.github/actions/credential-acceptance-tests
+        uses: $/.github/actions/credential-acceptance-tests
         with:
           archestra-version: ${{ matrix.version }}
           check-generated-client: "false"

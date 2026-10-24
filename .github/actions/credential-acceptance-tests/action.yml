@@ -22,8 +22,8 @@ runs:
           echo "::error::archestra-version is not a release version: $VERSION"
           exit 1
         fi
-    - uses: ./.github/actions/setup-go
-    - uses: ./.github/actions/setup-terraform
+    - uses: $/.github/actions/setup-go
+    - uses: $/.github/actions/setup-terraform
     - name: Start platform with credential support
       shell: bash
       env:
