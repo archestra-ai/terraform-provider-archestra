@@ -28,6 +28,8 @@ func currentOrganizationAttributes() map[string]schema.Attribute {
 		"kb_bm25_b":                                    schema.Float64Attribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.Float64{float64planmodifier.UseStateForUnknown()}, MarkdownDescription: "BM25 document-length normalization coefficient."},
 		"kb_contextual_retrieval_mode":                 schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Contextual retrieval mode for knowledge chunks."},
 		"default_model_id":                             schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Database ID of the default discovered LLM model."},
+		"default_fast_model_id":                        schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Database ID of the faster model on `default_llm_api_key_id` used when an agent without its own `fast_model_id` forks a subagent on the `fast` tier."},
+		"default_smart_model_id":                       schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Database ID of the stronger model on `default_llm_api_key_id` used when an agent without its own `smart_model_id` forks a subagent on the `smart` tier."},
 		"default_member_role":                          schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Role assigned to new organization members."},
 		"onboarding_wizard":                            schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, CustomType: jsontypes.NormalizedType{}, MarkdownDescription: "JSON configuration for onboarding wizard."},
 		"icon_logo_dark":                               schema.StringAttribute{Optional: true, Computed: true, PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}, MarkdownDescription: "Icon logo displayed in dark mode."},
@@ -96,6 +98,8 @@ func currentOrganizationSpecs(domain string) []AttrSpec {
 	case "agent-settings":
 		return []AttrSpec{
 			{TFName: "default_model_id", JSONName: "defaultModelId", Kind: Scalar},
+			{TFName: "default_fast_model_id", JSONName: "defaultFastModelId", Kind: Scalar},
+			{TFName: "default_smart_model_id", JSONName: "defaultSmartModelId", Kind: Scalar},
 		}
 	case "auth-settings":
 		return []AttrSpec{
@@ -261,6 +265,26 @@ func flattenCurrentOrganizationSettings(data *OrganizationSettingsResourceModel,
 			}
 		}
 		data.DefaultModelId = types.StringPointerValue(value)
+	}
+	{
+		var value *string
+		if raw := values["defaultFastModelId"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Organization Response", "Unexpected type for defaultFastModelId.")
+				return
+			}
+		}
+		data.DefaultFastModelId = types.StringPointerValue(value)
+	}
+	{
+		var value *string
+		if raw := values["defaultSmartModelId"]; len(raw) > 0 {
+			if err := json.Unmarshal(raw, &value); err != nil {
+				diags.AddError("Invalid Organization Response", "Unexpected type for defaultSmartModelId.")
+				return
+			}
+		}
+		data.DefaultSmartModelId = types.StringPointerValue(value)
 	}
 	{
 		var value *string

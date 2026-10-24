@@ -2589,6 +2589,7 @@ type CreateAgentJSONBody struct {
 	DeletedAt                  interface{}                                   `json:"deletedAt"`
 	Description                *string                                       `json:"description"`
 	EnvironmentId              *openapi_types.UUID                           `json:"environmentId"`
+	FastModelId                *openapi_types.UUID                           `json:"fastModelId"`
 	Icon                       *string                                       `json:"icon"`
 	IdentityProviderId         *string                                       `json:"identityProviderId"`
 	IncomingEmailAllowedDomain *string                                       `json:"incomingEmailAllowedDomain"`
@@ -2649,7 +2650,8 @@ type CreateAgentJSONBody struct {
 		SteerMode CreateAgentJSONBodyRuntimeSteerMode `json:"steerMode"`
 		TtlHours  *int                                `json:"ttlHours"`
 	} `json:"runtime"`
-	Scope            interface{} `json:"scope,omitempty"`
+	Scope            interface{}         `json:"scope,omitempty"`
+	SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 	SuggestedPrompts *[]struct {
 		Prompt       string `json:"prompt"`
 		SummaryTitle string `json:"summaryTitle"`
@@ -2921,6 +2923,7 @@ type UpdateAgentJSONBody struct {
 	DeletedAt                  interface{}                                   `json:"deletedAt"`
 	Description                *string                                       `json:"description"`
 	EnvironmentId              *openapi_types.UUID                           `json:"environmentId"`
+	FastModelId                *openapi_types.UUID                           `json:"fastModelId"`
 	Icon                       *string                                       `json:"icon"`
 	IdentityProviderId         *string                                       `json:"identityProviderId"`
 	IncomingEmailAllowedDomain *string                                       `json:"incomingEmailAllowedDomain"`
@@ -2977,7 +2980,8 @@ type UpdateAgentJSONBody struct {
 		SteerMode UpdateAgentJSONBodyRuntimeSteerMode `json:"steerMode"`
 		TtlHours  *int                                `json:"ttlHours"`
 	} `json:"runtime"`
-	Scope            interface{} `json:"scope,omitempty"`
+	Scope            interface{}         `json:"scope,omitempty"`
+	SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 	SuggestedPrompts *[]struct {
 		Prompt       string `json:"prompt"`
 		SummaryTitle string `json:"summaryTitle"`
@@ -4588,7 +4592,7 @@ type CreateLlmProviderApiKeyJSONBody struct {
 	Name     string                                  `json:"name"`
 	Provider CreateLlmProviderApiKeyJSONBodyProvider `json:"provider"`
 
-	// Shared Omitted or false: the key is yours alone (you own it and only you use it). True: a shared key with no owner, used by whoever its initialGrants reach.
+	// Shared Omitted or false: the key is yours alone (you own it and only you use it). True: a shared key with no owner, used by whoever its initialGrants reach. A service account cannot own a key, so it must send true.
 	Shared          *bool   `json:"shared,omitempty"`
 	VaultSecretKey  *string `json:"vaultSecretKey,omitempty"`
 	VaultSecretPath *string `json:"vaultSecretPath,omitempty"`
@@ -5053,9 +5057,11 @@ type UpdateOauthClientJSONBodySpendCapCleanupInterval string
 
 // UpdateAgentSettingsJSONBody defines parameters for UpdateAgentSettings.
 type UpdateAgentSettingsJSONBody struct {
-	DefaultAgentId     *openapi_types.UUID `json:"defaultAgentId"`
-	DefaultLlmApiKeyId *openapi_types.UUID `json:"defaultLlmApiKeyId"`
-	DefaultModelId     *openapi_types.UUID `json:"defaultModelId"`
+	DefaultAgentId      *openapi_types.UUID `json:"defaultAgentId"`
+	DefaultFastModelId  *openapi_types.UUID `json:"defaultFastModelId"`
+	DefaultLlmApiKeyId  *openapi_types.UUID `json:"defaultLlmApiKeyId"`
+	DefaultModelId      *openapi_types.UUID `json:"defaultModelId"`
+	DefaultSmartModelId *openapi_types.UUID `json:"defaultSmartModelId"`
 }
 
 // UpdateAppearanceSettingsJSONBody defines parameters for UpdateAppearanceSettings.
@@ -21207,6 +21213,7 @@ type GetAgentsResponse struct {
 			DeletedAt                  *time.Time                                `json:"deletedAt"`
 			Description                *string                                   `json:"description"`
 			EnvironmentId              *openapi_types.UUID                       `json:"environmentId"`
+			FastModelId                *openapi_types.UUID                       `json:"fastModelId"`
 			Icon                       *string                                   `json:"icon"`
 			Id                         openapi_types.UUID                        `json:"id"`
 			IdentityProviderId         *string                                   `json:"identityProviderId"`
@@ -21276,6 +21283,7 @@ type GetAgentsResponse struct {
 			SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
 			Scope            GetAgents200DataScope `json:"scope"`
 			Slug             *string               `json:"slug"`
+			SmartModelId     *openapi_types.UUID   `json:"smartModelId"`
 
 			// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
 			SubagentsCount   int `json:"subagentsCount"`
@@ -21445,6 +21453,7 @@ type CreateAgentResponse struct {
 		DeletedAt                  *time.Time                              `json:"deletedAt"`
 		Description                *string                                 `json:"description"`
 		EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
+		FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
 		Icon                       *string                                 `json:"icon"`
 		Id                         openapi_types.UUID                      `json:"id"`
 		IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -21513,6 +21522,7 @@ type CreateAgentResponse struct {
 		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 		Scope            CreateAgent200Scope `json:"scope"`
 		Slug             *string             `json:"slug"`
+		SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -22419,6 +22429,7 @@ type GetAgentResponse struct {
 		DeletedAt                  *time.Time                           `json:"deletedAt"`
 		Description                *string                              `json:"description"`
 		EnvironmentId              *openapi_types.UUID                  `json:"environmentId"`
+		FastModelId                *openapi_types.UUID                  `json:"fastModelId"`
 		Icon                       *string                              `json:"icon"`
 		Id                         openapi_types.UUID                   `json:"id"`
 		IdentityProviderId         *string                              `json:"identityProviderId"`
@@ -22487,6 +22498,7 @@ type GetAgentResponse struct {
 		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 		Scope            GetAgent200Scope    `json:"scope"`
 		Slug             *string             `json:"slug"`
+		SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -22641,6 +22653,7 @@ type UpdateAgentResponse struct {
 		DeletedAt                  *time.Time                              `json:"deletedAt"`
 		Description                *string                                 `json:"description"`
 		EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
+		FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
 		Icon                       *string                                 `json:"icon"`
 		Id                         openapi_types.UUID                      `json:"id"`
 		IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -22709,6 +22722,7 @@ type UpdateAgentResponse struct {
 		SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 		Scope            UpdateAgent200Scope `json:"scope"`
 		Slug             *string             `json:"slug"`
+		SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 		SuggestedPrompts []struct {
 			Prompt       string `json:"prompt"`
 			SummaryTitle string `json:"summaryTitle"`
@@ -33406,6 +33420,7 @@ type GetOrganizationResponse struct {
 		DefaultEnvironmentNamespace              *string                               `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                             `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                               `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                   `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                   `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                               `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *GetOrganization200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -33418,6 +33433,7 @@ type GetOrganizationResponse struct {
 			EgressMode     GetOrganization200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                               `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *GetOrganization200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                          `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                               `json:"defaultUserLimitValue"`
@@ -33598,6 +33614,7 @@ type UpdateAgentSettingsResponse struct {
 		DefaultEnvironmentNamespace              *string                                   `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                                 `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                                   `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                       `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                       `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                                   `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *UpdateAgentSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -33610,6 +33627,7 @@ type UpdateAgentSettingsResponse struct {
 			EgressMode     UpdateAgentSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                                   `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                    `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *UpdateAgentSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                              `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                   `json:"defaultUserLimitValue"`
@@ -33790,6 +33808,7 @@ type UpdateAppearanceSettingsResponse struct {
 		DefaultEnvironmentNamespace              *string                                        `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                                      `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                                        `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                            `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                            `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                                        `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *UpdateAppearanceSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -33802,6 +33821,7 @@ type UpdateAppearanceSettingsResponse struct {
 			EgressMode     UpdateAppearanceSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                         `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *UpdateAppearanceSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
@@ -33982,6 +34002,7 @@ type UpdateAuthSettingsResponse struct {
 		DefaultEnvironmentNamespace              *string                                  `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                                `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                                  `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                      `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                      `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                                  `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *UpdateAuthSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -33994,6 +34015,7 @@ type UpdateAuthSettingsResponse struct {
 			EgressMode     UpdateAuthSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                                  `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                   `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *UpdateAuthSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                             `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                  `json:"defaultUserLimitValue"`
@@ -34174,6 +34196,7 @@ type CompleteOnboardingResponse struct {
 		DefaultEnvironmentNamespace              *string                                  `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                                `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                                  `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                      `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                      `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                                  `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *CompleteOnboarding200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -34186,6 +34209,7 @@ type CompleteOnboardingResponse struct {
 			EgressMode     CompleteOnboarding200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                                  `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                   `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *CompleteOnboarding200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                             `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                  `json:"defaultUserLimitValue"`
@@ -34366,6 +34390,7 @@ type UpdateConnectionSettingsResponse struct {
 		DefaultEnvironmentNamespace              *string                                        `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                                      `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                                        `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                            `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                            `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                                        `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *UpdateConnectionSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -34378,6 +34403,7 @@ type UpdateConnectionSettingsResponse struct {
 			EgressMode     UpdateConnectionSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                         `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *UpdateConnectionSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
@@ -34558,6 +34584,7 @@ type UpdateDefaultEnvironmentResponse struct {
 		DefaultEnvironmentNamespace              *string                                        `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                                      `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                                        `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                            `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                            `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                                        `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *UpdateDefaultEnvironment200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -34570,6 +34597,7 @@ type UpdateDefaultEnvironmentResponse struct {
 			EgressMode     UpdateDefaultEnvironment200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                         `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *UpdateDefaultEnvironment200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
@@ -34750,6 +34778,7 @@ type UpdateIntegrationSettingsResponse struct {
 		DefaultEnvironmentNamespace              *string                                         `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                                       `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                                         `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                             `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                             `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                                         `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *UpdateIntegrationSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -34762,6 +34791,7 @@ type UpdateIntegrationSettingsResponse struct {
 			EgressMode     UpdateIntegrationSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                                         `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                          `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *UpdateIntegrationSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                    `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                         `json:"defaultUserLimitValue"`
@@ -34942,6 +34972,7 @@ type UpdateKnowledgeSettingsResponse struct {
 		DefaultEnvironmentNamespace              *string                                       `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                                     `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                                       `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                           `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                           `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                                       `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *UpdateKnowledgeSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -34954,6 +34985,7 @@ type UpdateKnowledgeSettingsResponse struct {
 			EgressMode     UpdateKnowledgeSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                                       `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                        `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *UpdateKnowledgeSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                  `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                       `json:"defaultUserLimitValue"`
@@ -35134,6 +35166,7 @@ type UpdateMcpSettingsResponse struct {
 		DefaultEnvironmentNamespace              *string                                 `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                               `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                                 `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                     `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                     `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                                 `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *UpdateMcpSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -35146,6 +35179,7 @@ type UpdateMcpSettingsResponse struct {
 			EgressMode     UpdateMcpSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                                 `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                  `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *UpdateMcpSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                            `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                 `json:"defaultUserLimitValue"`
@@ -35326,6 +35360,7 @@ type UpdateSecuritySettingsResponse struct {
 		DefaultEnvironmentNamespace              *string                                      `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                                    `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                                      `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                          `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                          `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                                      `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *UpdateSecuritySettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -35338,6 +35373,7 @@ type UpdateSecuritySettingsResponse struct {
 			EgressMode     UpdateSecuritySettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                                      `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                       `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *UpdateSecuritySettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                                 `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                      `json:"defaultUserLimitValue"`
@@ -35518,6 +35554,7 @@ type UpdateSkillsSettingsResponse struct {
 		DefaultEnvironmentNamespace              *string                                    `json:"defaultEnvironmentNamespace"`
 		DefaultEnvironmentTrustedImageRegistries *[]string                                  `json:"defaultEnvironmentTrustedImageRegistries"`
 		DefaultEnvironmentValidationRegex        *string                                    `json:"defaultEnvironmentValidationRegex"`
+		DefaultFastModelId                       *openapi_types.UUID                        `json:"defaultFastModelId"`
 		DefaultLlmApiKeyId                       *openapi_types.UUID                        `json:"defaultLlmApiKeyId"`
 		DefaultLlmModel                          *string                                    `json:"defaultLlmModel"`
 		DefaultLlmProvider                       *UpdateSkillsSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -35530,6 +35567,7 @@ type UpdateSkillsSettingsResponse struct {
 			EgressMode     UpdateSkillsSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 		} `json:"defaultNetworkPolicy"`
 		DefaultPersonalAgentAccessAllTools bool                                                    `json:"defaultPersonalAgentAccessAllTools"`
+		DefaultSmartModelId                *openapi_types.UUID                                     `json:"defaultSmartModelId"`
 		DefaultUserLimitCleanupInterval    *UpdateSkillsSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 		DefaultUserLimitModel              *[]string                                               `json:"defaultUserLimitModel"`
 		DefaultUserLimitValue              *int                                                    `json:"defaultUserLimitValue"`
@@ -44742,6 +44780,7 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 				DeletedAt                  *time.Time                                `json:"deletedAt"`
 				Description                *string                                   `json:"description"`
 				EnvironmentId              *openapi_types.UUID                       `json:"environmentId"`
+				FastModelId                *openapi_types.UUID                       `json:"fastModelId"`
 				Icon                       *string                                   `json:"icon"`
 				Id                         openapi_types.UUID                        `json:"id"`
 				IdentityProviderId         *string                                   `json:"identityProviderId"`
@@ -44811,6 +44850,7 @@ func ParseGetAgentsResponse(rsp *http.Response) (*GetAgentsResponse, error) {
 				SandboxAvailable *bool                 `json:"sandboxAvailable,omitempty"`
 				Scope            GetAgents200DataScope `json:"scope"`
 				Slug             *string               `json:"slug"`
+				SmartModelId     *openapi_types.UUID   `json:"smartModelId"`
 
 				// SubagentsCount Agents this agent delegates to. Always present, even when `tools` is not requested.
 				SubagentsCount   int `json:"subagentsCount"`
@@ -44982,6 +45022,7 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 			DeletedAt                  *time.Time                              `json:"deletedAt"`
 			Description                *string                                 `json:"description"`
 			EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
+			FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
 			Icon                       *string                                 `json:"icon"`
 			Id                         openapi_types.UUID                      `json:"id"`
 			IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -45050,6 +45091,7 @@ func ParseCreateAgentResponse(rsp *http.Response) (*CreateAgentResponse, error) 
 			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 			Scope            CreateAgent200Scope `json:"scope"`
 			Slug             *string             `json:"slug"`
+			SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -46298,6 +46340,7 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 			DeletedAt                  *time.Time                           `json:"deletedAt"`
 			Description                *string                              `json:"description"`
 			EnvironmentId              *openapi_types.UUID                  `json:"environmentId"`
+			FastModelId                *openapi_types.UUID                  `json:"fastModelId"`
 			Icon                       *string                              `json:"icon"`
 			Id                         openapi_types.UUID                   `json:"id"`
 			IdentityProviderId         *string                              `json:"identityProviderId"`
@@ -46366,6 +46409,7 @@ func ParseGetAgentResponse(rsp *http.Response) (*GetAgentResponse, error) {
 			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 			Scope            GetAgent200Scope    `json:"scope"`
 			Slug             *string             `json:"slug"`
+			SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -46522,6 +46566,7 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 			DeletedAt                  *time.Time                              `json:"deletedAt"`
 			Description                *string                                 `json:"description"`
 			EnvironmentId              *openapi_types.UUID                     `json:"environmentId"`
+			FastModelId                *openapi_types.UUID                     `json:"fastModelId"`
 			Icon                       *string                                 `json:"icon"`
 			Id                         openapi_types.UUID                      `json:"id"`
 			IdentityProviderId         *string                                 `json:"identityProviderId"`
@@ -46590,6 +46635,7 @@ func ParseUpdateAgentResponse(rsp *http.Response) (*UpdateAgentResponse, error) 
 			SandboxAvailable *bool               `json:"sandboxAvailable,omitempty"`
 			Scope            UpdateAgent200Scope `json:"scope"`
 			Slug             *string             `json:"slug"`
+			SmartModelId     *openapi_types.UUID `json:"smartModelId"`
 			SuggestedPrompts []struct {
 				Prompt       string `json:"prompt"`
 				SummaryTitle string `json:"summaryTitle"`
@@ -60219,6 +60265,7 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 			DefaultEnvironmentNamespace              *string                               `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                             `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                               `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                   `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                   `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                               `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *GetOrganization200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -60231,6 +60278,7 @@ func ParseGetOrganizationResponse(rsp *http.Response) (*GetOrganizationResponse,
 				EgressMode     GetOrganization200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                               `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *GetOrganization200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                          `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                               `json:"defaultUserLimitValue"`
@@ -60438,6 +60486,7 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 			DefaultEnvironmentNamespace              *string                                   `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                                 `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                                   `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                       `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                       `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                                   `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *UpdateAgentSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -60450,6 +60499,7 @@ func ParseUpdateAgentSettingsResponse(rsp *http.Response) (*UpdateAgentSettingsR
 				EgressMode     UpdateAgentSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                                   `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                    `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *UpdateAgentSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                              `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                   `json:"defaultUserLimitValue"`
@@ -60657,6 +60707,7 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 			DefaultEnvironmentNamespace              *string                                        `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                                      `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                                        `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                            `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                            `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                                        `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *UpdateAppearanceSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -60669,6 +60720,7 @@ func ParseUpdateAppearanceSettingsResponse(rsp *http.Response) (*UpdateAppearanc
 				EgressMode     UpdateAppearanceSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                         `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *UpdateAppearanceSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
@@ -60876,6 +60928,7 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 			DefaultEnvironmentNamespace              *string                                  `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                                `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                                  `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                      `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                      `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                                  `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *UpdateAuthSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -60888,6 +60941,7 @@ func ParseUpdateAuthSettingsResponse(rsp *http.Response) (*UpdateAuthSettingsRes
 				EgressMode     UpdateAuthSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                                  `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                   `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *UpdateAuthSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                             `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                  `json:"defaultUserLimitValue"`
@@ -61095,6 +61149,7 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 			DefaultEnvironmentNamespace              *string                                  `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                                `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                                  `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                      `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                      `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                                  `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *CompleteOnboarding200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -61107,6 +61162,7 @@ func ParseCompleteOnboardingResponse(rsp *http.Response) (*CompleteOnboardingRes
 				EgressMode     CompleteOnboarding200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                                  `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                   `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *CompleteOnboarding200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                             `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                  `json:"defaultUserLimitValue"`
@@ -61314,6 +61370,7 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 			DefaultEnvironmentNamespace              *string                                        `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                                      `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                                        `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                            `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                            `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                                        `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *UpdateConnectionSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -61326,6 +61383,7 @@ func ParseUpdateConnectionSettingsResponse(rsp *http.Response) (*UpdateConnectio
 				EgressMode     UpdateConnectionSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                         `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *UpdateConnectionSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
@@ -61533,6 +61591,7 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 			DefaultEnvironmentNamespace              *string                                        `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                                      `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                                        `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                            `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                            `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                                        `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *UpdateDefaultEnvironment200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -61545,6 +61604,7 @@ func ParseUpdateDefaultEnvironmentResponse(rsp *http.Response) (*UpdateDefaultEn
 				EgressMode     UpdateDefaultEnvironment200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                                        `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                         `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *UpdateDefaultEnvironment200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                   `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                        `json:"defaultUserLimitValue"`
@@ -61752,6 +61812,7 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 			DefaultEnvironmentNamespace              *string                                         `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                                       `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                                         `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                             `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                             `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                                         `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *UpdateIntegrationSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -61764,6 +61825,7 @@ func ParseUpdateIntegrationSettingsResponse(rsp *http.Response) (*UpdateIntegrat
 				EgressMode     UpdateIntegrationSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                                         `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                          `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *UpdateIntegrationSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                    `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                         `json:"defaultUserLimitValue"`
@@ -61971,6 +62033,7 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 			DefaultEnvironmentNamespace              *string                                       `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                                     `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                                       `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                           `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                           `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                                       `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *UpdateKnowledgeSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -61983,6 +62046,7 @@ func ParseUpdateKnowledgeSettingsResponse(rsp *http.Response) (*UpdateKnowledgeS
 				EgressMode     UpdateKnowledgeSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                                       `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                        `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *UpdateKnowledgeSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                  `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                       `json:"defaultUserLimitValue"`
@@ -62190,6 +62254,7 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 			DefaultEnvironmentNamespace              *string                                 `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                               `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                                 `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                     `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                     `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                                 `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *UpdateMcpSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -62202,6 +62267,7 @@ func ParseUpdateMcpSettingsResponse(rsp *http.Response) (*UpdateMcpSettingsRespo
 				EgressMode     UpdateMcpSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                                 `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                  `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *UpdateMcpSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                            `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                 `json:"defaultUserLimitValue"`
@@ -62409,6 +62475,7 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 			DefaultEnvironmentNamespace              *string                                      `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                                    `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                                      `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                          `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                          `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                                      `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *UpdateSecuritySettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -62421,6 +62488,7 @@ func ParseUpdateSecuritySettingsResponse(rsp *http.Response) (*UpdateSecuritySet
 				EgressMode     UpdateSecuritySettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                                      `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                       `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *UpdateSecuritySettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                                 `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                      `json:"defaultUserLimitValue"`
@@ -62628,6 +62696,7 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 			DefaultEnvironmentNamespace              *string                                    `json:"defaultEnvironmentNamespace"`
 			DefaultEnvironmentTrustedImageRegistries *[]string                                  `json:"defaultEnvironmentTrustedImageRegistries"`
 			DefaultEnvironmentValidationRegex        *string                                    `json:"defaultEnvironmentValidationRegex"`
+			DefaultFastModelId                       *openapi_types.UUID                        `json:"defaultFastModelId"`
 			DefaultLlmApiKeyId                       *openapi_types.UUID                        `json:"defaultLlmApiKeyId"`
 			DefaultLlmModel                          *string                                    `json:"defaultLlmModel"`
 			DefaultLlmProvider                       *UpdateSkillsSettings200DefaultLlmProvider `json:"defaultLlmProvider"`
@@ -62640,6 +62709,7 @@ func ParseUpdateSkillsSettingsResponse(rsp *http.Response) (*UpdateSkillsSetting
 				EgressMode     UpdateSkillsSettings200DefaultNetworkPolicyEgressMode   `json:"egressMode"`
 			} `json:"defaultNetworkPolicy"`
 			DefaultPersonalAgentAccessAllTools bool                                                    `json:"defaultPersonalAgentAccessAllTools"`
+			DefaultSmartModelId                *openapi_types.UUID                                     `json:"defaultSmartModelId"`
 			DefaultUserLimitCleanupInterval    *UpdateSkillsSettings200DefaultUserLimitCleanupInterval `json:"defaultUserLimitCleanupInterval"`
 			DefaultUserLimitModel              *[]string                                               `json:"defaultUserLimitModel"`
 			DefaultUserLimitValue              *int                                                    `json:"defaultUserLimitValue"`

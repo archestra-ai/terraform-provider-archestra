@@ -53,6 +53,8 @@ type OrganizationSettingsResourceModel struct {
 	KbBm25B                                  types.Float64        `tfsdk:"kb_bm25_b"`
 	KbContextualRetrievalMode                types.String         `tfsdk:"kb_contextual_retrieval_mode"`
 	DefaultModelId                           types.String         `tfsdk:"default_model_id"`
+	DefaultFastModelId                       types.String         `tfsdk:"default_fast_model_id"`
+	DefaultSmartModelId                      types.String         `tfsdk:"default_smart_model_id"`
 	DefaultMemberRole                        types.String         `tfsdk:"default_member_role"`
 	OnboardingWizard                         jsontypes.Normalized `tfsdk:"onboarding_wizard"`
 	IconLogoDark                             types.String         `tfsdk:"icon_logo_dark"`

@@ -3,6 +3,8 @@ package provider
 import (
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
@@ -48,4 +50,31 @@ func TestAccOrganizationSettingsCurrentDomains(t *testing.T) {
 		{Config: updated, Check: resource.ComposeTestCheckFunc(resource.TestCheckResourceAttr("archestra_organization_settings.test", "connection_plugins_enabled", "true"), resource.TestCheckResourceAttr("archestra_organization_settings.test", "default_environment_description", "Updated local environment"))},
 		{Config: updated, PlanOnly: true},
 	}})
+}
+
+func TestFlattenCurrentOrganizationSettingsModelTiers(t *testing.T) {
+	t.Parallel()
+	const fast, smart = "11111111-1111-4111-8111-111111111111", "22222222-2222-4222-8222-222222222222"
+	tests := []struct {
+		name                string
+		body                string
+		wantFast, wantSmart types.String
+	}{
+		{"set", `{"defaultFastModelId":"` + fast + `","defaultSmartModelId":"` + smart + `"}`, types.StringValue(fast), types.StringValue(smart)},
+		{"cleared", `{"defaultFastModelId":null}`, types.StringNull(), types.StringNull()},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			data := OrganizationSettingsResourceModel{DefaultFastModelId: types.StringValue(fast), DefaultSmartModelId: types.StringValue(smart)}
+			var diags diag.Diagnostics
+			flattenCurrentOrganizationSettings(&data, []byte(tt.body), &diags)
+			if diags.HasError() {
+				t.Fatalf("flatten: %v", diags)
+			}
+			if !data.DefaultFastModelId.Equal(tt.wantFast) || !data.DefaultSmartModelId.Equal(tt.wantSmart) {
+				t.Errorf("got fast=%s smart=%s, want fast=%s smart=%s", data.DefaultFastModelId, data.DefaultSmartModelId, tt.wantFast, tt.wantSmart)
+			}
+		})
+	}
 }

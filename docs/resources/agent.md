@@ -158,6 +158,7 @@ resource "archestra_agent" "worker" {
 - `excluded_connector_ids` (Set of String) Knowledge connectors excluded from automatic knowledge access; omit to preserve or set an empty set to clear.
 - `excluded_subagent_ids` (Set of String) Local agents excluded from automatic subagent access; omit to preserve or set an empty set to clear.
 - `excluded_tool_ids` (Set of String) Tools excluded from automatic tool access; omit to preserve or set an empty set to clear.
+- `fast_model_id` (String) Database UUID of a faster tool-capable chat model on the agent's `llm_api_key_id`, used when the agent forks a subagent on the `fast` tier; null falls back to the organization's `default_fast_model_id`, then the provider default
 - `hooks` (Attributes Set) Complete event hook configuration; omit to preserve hooks or set an empty set to remove them. (see [below for nested schema](#nestedatt--hooks))
 - `icon` (String) Emoji or base64 image data URL
 - `incoming_email_allowed_domain` (String) Allowed sender domain when `incoming_email_security_mode = "internal"`
@@ -174,6 +175,7 @@ resource "archestra_agent" "worker" {
 - `remote_agent_ids` (Set of String) Registered remote-agent UUIDs assigned to this agent; omit to preserve or set an empty set to clear.
 - `runtime` (Attributes) Dedicated runtime used for interactive, delegated, and long-running work. Requires an Agent Runtime backend on the platform (e.g. the Kubernetes orchestrator). (see [below for nested schema](#nestedatt--runtime))
 - `skills` (Attributes) Skill activation mode and complete allowed/excluded references; omit to preserve the current policy. (see [below for nested schema](#nestedatt--skills))
+- `smart_model_id` (String) Database UUID of a stronger tool-capable chat model on the agent's `llm_api_key_id`, used when the agent forks a subagent on the `smart` tier; null falls back to the organization's `default_smart_model_id`, then the provider default
 - `subagent_ids` (Set of String) Local agents available as subagents; omit to preserve assignments or set an empty set to clear them.
 - `suggested_prompts` (Attributes List) Suggested prompts surfaced to users in the chat UI (see [below for nested schema](#nestedatt--suggested_prompts))
 - `system_prompt` (String) System prompt that frames the agent's behavior

@@ -3,6 +3,7 @@ package provider
 import (
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
@@ -77,6 +78,33 @@ func TestFlattenAgentLabels(t *testing.T) {
 							tc.api[i].Key, tc.api[i].Value)
 					}
 				}
+			}
+		})
+	}
+}
+
+func TestFlattenAgentResponseModelTiers(t *testing.T) {
+	t.Parallel()
+	const fast, smart = "11111111-1111-4111-8111-111111111111", "22222222-2222-4222-8222-222222222222"
+	tests := []struct {
+		name                string
+		body                string
+		wantFast, wantSmart types.String
+	}{
+		{"set", `{"id":"33333333-3333-4333-8333-333333333333","name":"a","fastModelId":"` + fast + `","smartModelId":"` + smart + `"}`, types.StringValue(fast), types.StringValue(smart)},
+		{"cleared", `{"id":"33333333-3333-4333-8333-333333333333","name":"a","fastModelId":null}`, types.StringNull(), types.StringNull()},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			data := AgentResourceModel{FastModelId: types.StringValue(fast), SmartModelId: types.StringValue(smart)}
+			var diags diag.Diagnostics
+			(&AgentResource{}).flattenAgentResponse(t.Context(), &data, []byte(tt.body), &diags)
+			if diags.HasError() {
+				t.Fatalf("flatten: %v", diags)
+			}
+			if !data.FastModelId.Equal(tt.wantFast) || !data.SmartModelId.Equal(tt.wantSmart) {
+				t.Errorf("got fast=%s smart=%s, want fast=%s smart=%s", data.FastModelId, data.SmartModelId, tt.wantFast, tt.wantSmart)
 			}
 		})
 	}
