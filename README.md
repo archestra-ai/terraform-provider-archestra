@@ -9,7 +9,7 @@ Source for two artifacts, both regenerated from a single Terraform
 schema and shipped together on every `vX.Y.Z` tag:
 
 - `archestra-ai/archestra` on the [Terraform Registry](https://registry.terraform.io/providers/archestra-ai/archestra/latest)
-- `xpkg.upbound.io/archestra/provider-archestra` on [Upbound](https://marketplace.upbound.io)
+- `xpkg.upbound.io/archestra-ai/provider-archestra` on [Upbound Marketplace](https://marketplace.upbound.io/providers/archestra-ai/provider-archestra)
 
 End users install from those. This README walks a new contributor
 through extending the provider.
@@ -190,11 +190,17 @@ release-please opens "chore(main): release vX.Y.Z"
 tag vX.Y.Z  ──▶  goreleaser       ──▶  GitHub release zips ──▶  Terraform Registry
                      │  then
                      ▼
-                 crank xpkg push  ──▶  xpkg.upbound.io
+                 crank xpkg push  ──▶  xpkg.upbound.io/archestra
+                     │  then
+                     ▼
+                 up xpkg append   ──▶  xpkg.upbound.io/archestra-ai + Marketplace assets
 ```
 
-The two publish jobs run one after the other: `publish-crossplane` needs
+The publish jobs run one after the other: `publish-crossplane` needs
 `publish-terraform-provider`, because the runtime image downloads the
-release zips. A Crossplane failure does not roll back the Terraform release.
+release zips. `publish-marketplace` then copies the same multi-architecture
+package to the Marketplace namespace and adds the logo. The existing `archestra`
+registry address remains available. A publication failure does not roll back
+earlier publication steps.
 
 See [the audit](audit/README.md) for the release evidence.

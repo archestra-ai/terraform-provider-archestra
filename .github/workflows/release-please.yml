@@ -159,3 +159,14 @@ jobs:
             XPKG_REG_ORGS="xpkg.upbound.io/archestra" \
             TERRAFORM_PROVIDER_VERSION="$provider_version" \
             VERSION="$VERSION"
+
+  publish-marketplace:
+    name: Publish Upbound Marketplace
+    needs: [release-please, publish-crossplane]
+    if: needs.release-please.outputs.release_created == 'true'
+    uses: ./.github/workflows/publish-marketplace.yml
+    with:
+      version: ${{ needs.release-please.outputs.tag_name }}
+    secrets:
+      UPBOUND_MARKETPLACE_ACCESS_ID: ${{ secrets.UPBOUND_MARKETPLACE_ACCESS_ID }}
+      UPBOUND_MARKETPLACE_TOKEN: ${{ secrets.UPBOUND_MARKETPLACE_TOKEN }}
