@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.0.2](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.0.1...v3.0.2) (2026-10-24)
+
+
+### Dependencies
+
+* bump the github-actions-dependencies group across 3 directories with 12 updates ([#201](https://github.com/archestra-ai/terraform-provider-archestra/issues/201)) ([671a76e](https://github.com/archestra-ai/terraform-provider-archestra/commit/671a76e021d48e75fe4af60d8ad9be9e70c0dab6))
+* **terraform:** bump golang.org/x/tools from 0.43.0 to 0.52.0 in the terraform-go-dependencies group ([#200](https://github.com/archestra-ai/terraform-provider-archestra/issues/200)) ([2eab2c6](https://github.com/archestra-ai/terraform-provider-archestra/commit/2eab2c683769632e550867c522d91be142dac438))
+
+
+### Code Refactoring
+
+* **ci:** use shared organization authentication actions ([#198](https://github.com/archestra-ai/terraform-provider-archestra/issues/198)) ([2a6a603](https://github.com/archestra-ai/terraform-provider-archestra/commit/2a6a6039edd7f8816c025290b29d1b2121ace4a5))
+
 ## [3.0.1](https://github.com/archestra-ai/terraform-provider-archestra/compare/v3.0.0...v3.0.1) (2026-10-22)
 
 
