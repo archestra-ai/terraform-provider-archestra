@@ -28,6 +28,11 @@ PARALLEL_CASES = {
 }
 IDENTITY = ("terraform_sha256", "controller_sha256", "kubernetes_context", "api_url",
             "api_spec_sha256", "api_version")
+# Long probes start first so short fixture checks do not hold up the last worker.
+CASE_SECONDS = {"inline-owners": 335, "extensions": 275, "marketplace-share-links": 210,
+                "git-skills": 400, "core": 250, "apps": 185, "project-files": 180,
+                "repository-plugins": 125, "sharing-defaults": 120,
+                "routing-credentials": 170, "service-account-team": 90}
 
 
 def plan(cases, jobs):
@@ -43,6 +48,10 @@ def plan(cases, jobs):
     for case in cases:
         if case not in PARALLEL_CASES:
             continue
+        # Both imports use the same immutable Git repository fixture.
+        if case == "git-skills":
+            parallel.append({"name": "git-skills-both", "cases": [case], "scopes": list(SCOPES)})
+            continue
         kinds = sorted(kind.removesuffix("Sharing") for kind in lifecycle.CASE_RESOURCES["parent-sharing"])
         partitions = [kinds[i::jobs] for i in range(jobs)] if case == "parent-sharing" else [None]
         for scope in SCOPES:
@@ -51,6 +60,8 @@ def plan(cases, jobs):
                 if selected is not None:
                     task["grant_kinds"] = selected
                 parallel.append(task)
+    parallel.sort(key=lambda task: (len(task["grant_kinds"]) * 45 if "grant_kinds" in task
+                                   else CASE_SECONDS.get(task["cases"][0], 60)), reverse=True)
     return serial, parallel
 
 

@@ -23,7 +23,7 @@ permissions:
 jobs:
   scope:
     name: Select Crossplane lifecycle scope
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       run: ${{ steps.scope.outputs.run }}
     steps:
@@ -46,10 +46,11 @@ jobs:
     name: Crossplane Lifecycle (${{ matrix.shard }})
     needs: scope
     if: needs.scope.outputs.run == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 75
     env:
       CROSSPLANE_POLL_INTERVAL: 2s
+      CROSSPLANE_SKIP_MCP_FIXTURE: ${{ matrix.mcp && '0' || '1' }}
     strategy:
       fail-fast: false
       # Shards are balanced by recorded run time. Groups that change global
@@ -57,20 +58,28 @@ jobs:
       matrix:
         include:
           - shard: core
+            mcp: false
             cases: core observe
           - shard: extensions
+            mcp: true
             cases: extensions service-account-team team-bindings inline-owners
           - shard: catalog
+            mcp: true
             cases: catalog tools limit llm credential sharing-defaults
           - shard: organization
+            mcp: false
             cases: organization organization-defaults identity schedule api-key api-compatibility
           - shard: skills
+            mcp: false
             cases: skill git-skills repository-plugins manual-plugins marketplace-share-links
           - shard: projects
+            mcp: true
             cases: apps project-files project-file-init project-instructions knowledge-files
           - shard: routing
+            mcp: false
             cases: routing-credentials remote-agents github-registrations
           - shard: sharing
+            mcp: false
             cases: parent-sharing
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -78,7 +87,33 @@ jobs:
           submodules: true # crossplane/build makelib
           persist-credentials: false
 
-      - name: Setup Go
+      - name: Read platform version
+        run: ./scripts/platform-version.sh >> "$GITHUB_ENV"
+
+      - name: Start the local stack
+        run: scripts/bootstrap-local-stack.sh
+
+      - name: Restore the exact lifecycle runtime
+        id: runtime
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            terraform-provider-archestra
+            crossplane/_output/bin/linux_amd64/provider
+            crossplane/package/crds
+            ${{ runner.temp }}/crossplane-runtime.json
+          key: crossplane-runtime-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+
+      - name: Verify cached lifecycle runtime
+        if: steps.runtime.outputs.cache-hit == 'true'
+        run: |
+          python3 scripts/ci_runtime_manifest.py check "$RUNNER_TEMP/crossplane-runtime.json" \
+            terraform-provider-archestra crossplane/_output/bin/linux_amd64/provider crossplane/package/crds
+          echo 'CROSSPLANE_SKIP_BUILD=1' >> "$GITHUB_ENV"
+          echo 'CROSSPLANE_RUNTIME_PLATFORM=linux_amd64' >> "$GITHUB_ENV"
+
+      - name: Setup Go on a cache miss
+        if: steps.runtime.outputs.cache-hit != 'true'
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
@@ -86,15 +121,10 @@ jobs:
             go.sum
             crossplane/go.sum
 
-      - name: Read platform version
-        run: ./scripts/platform-version.sh >> "$GITHUB_ENV"
-
-      - name: Start the local stack
-        run: scripts/bootstrap-local-stack.sh
-
       # Agent cases install MCP servers; pulling the base image first keeps
       # them inside the platform's readiness window, as acceptance CI does.
       - name: Pull the MCP server base image
+        if: matrix.mcp
         run: |
           kubeconfig=$(mktemp)
           trap 'rm -f "$kubeconfig"' EXIT
@@ -113,6 +143,7 @@ jobs:
           done
 
       - name: Install goimports
+        if: steps.runtime.outputs.cache-hit != 'true'
         run: go -C crossplane install golang.org/x/tools/cmd/goimports
 
       - name: Start Crossplane and the controller
@@ -150,7 +181,7 @@ jobs:
     name: Crossplane Lifecycle
     needs: [scope, lifecycle]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Report the lifecycle result
         env:

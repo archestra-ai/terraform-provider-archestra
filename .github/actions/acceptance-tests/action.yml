@@ -31,9 +31,6 @@ runs:
           exit 1
         fi
 
-    - name: Setup go
-      uses: $/.github/actions/setup-go
-
     - name: Setup Terraform
       uses: $/.github/actions/setup-terraform
 
@@ -42,6 +39,24 @@ runs:
       env:
         ARCHESTRA_VERSION: ${{ inputs.archestra-version }}
       run: scripts/bootstrap-local-stack.sh
+
+    - name: Restore the exact acceptance test runtime
+      id: native-tests
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ runner.temp }}/native-runtime
+        key: native-runtime-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+
+    - name: Verify cached acceptance runtime
+      if: steps.native-tests.outputs.cache-hit == 'true'
+      shell: bash
+      run: |
+        python3 scripts/ci_runtime_manifest.py check "$RUNNER_TEMP/native-runtime/manifest.json" \
+          "$RUNNER_TEMP/native-runtime/native-acceptance.test"
+
+    - name: Setup go for generation or a cache miss
+      if: steps.native-tests.outputs.cache-hit != 'true' || inputs.check-generated-client == 'true'
+      uses: $/.github/actions/setup-go
 
     - name: Record platform image
       shell: bash
@@ -117,8 +132,15 @@ runs:
 
     - name: Run Acceptance Tests
       shell: bash
-      run: python3 scripts/ci_acceptance_tests.py --shard "$SHARD" --total "$SHARD_COUNT"
+      run: |
+        if [ "$CACHED_RUNTIME" = true ]; then
+          python3 scripts/ci_acceptance_tests.py --shard "$SHARD" --total "$SHARD_COUNT" \
+            --binary "$RUNNER_TEMP/native-runtime/native-acceptance.test"
+        else
+          python3 scripts/ci_acceptance_tests.py --shard "$SHARD" --total "$SHARD_COUNT"
+        fi
       env:
+        CACHED_RUNTIME: ${{ steps.native-tests.outputs.cache-hit }}
         SHARD: ${{ inputs.shard }}
         SHARD_COUNT: ${{ inputs.shard-count }}
         ARCHESTRA_BASE_URL: "http://localhost:9000"

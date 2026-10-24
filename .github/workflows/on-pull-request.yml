@@ -21,7 +21,7 @@ concurrency:
 jobs:
   integration-scope:
     name: Select integration scope
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       run: ${{ steps.scope.outputs.run }}
     steps:
@@ -44,7 +44,7 @@ jobs:
 
   lint-pr-title:
     name: PR Title Linter
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
@@ -62,7 +62,7 @@ jobs:
 
   linting-and-tests:
     name: Linting and Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
@@ -112,11 +112,29 @@ jobs:
       - name: Validate examples
         run: make validate-examples
 
+      - name: Compile the live acceptance test runtime
+        id: native-runtime
+        run: |
+          if python3 scripts/ci_acceptance_tests.py --cache-supported; then
+            mkdir -p "$RUNNER_TEMP/native-runtime"
+            go test -c -cover -o "$RUNNER_TEMP/native-runtime/native-acceptance.test" ./internal/provider
+            python3 scripts/ci_runtime_manifest.py write "$RUNNER_TEMP/native-runtime/manifest.json" \
+              "$RUNNER_TEMP/native-runtime/native-acceptance.test"
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Cache the acceptance test runtime
+        if: steps.native-runtime.outputs.ready == 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/native-runtime
+          key: native-runtime-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+
   acceptance-tests:
     name: Acceptance Tests
     needs: [integration-scope, acceptance-shards]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Require every acceptance shard
         env:
@@ -131,7 +149,7 @@ jobs:
     name: Credential Acceptance Tests
     needs: integration-scope
     if: ${{ !cancelled() && (needs.integration-scope.result != 'success' || needs.integration-scope.outputs.run == 'true') }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Require successful integration scope
         if: needs.integration-scope.result != 'success'
@@ -151,7 +169,7 @@ jobs:
   # names carry the role, not the version, so the checks can be required.
   older-releases:
     name: Select older Archestra releases
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     outputs:
@@ -182,7 +200,7 @@ jobs:
     name: Native acceptance (${{ matrix.role }}, shard ${{ matrix.shard }})
     needs: [older-releases, integration-scope]
     if: ${{ !cancelled() && needs.integration-scope.outputs.run == 'true' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.older-releases.outputs.acceptance-matrix) }}
@@ -203,7 +221,7 @@ jobs:
     needs: [older-releases, integration-scope, acceptance-shards]
     # Both role checks require the complete native matrix, including failures and cancellation.
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.older-releases.outputs.matrix) }}
@@ -221,7 +239,7 @@ jobs:
     name: Credential Acceptance Tests (${{ matrix.role }})
     needs: [older-releases, integration-scope]
     if: ${{ !cancelled() }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     strategy:

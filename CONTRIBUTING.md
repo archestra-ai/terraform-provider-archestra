@@ -66,9 +66,20 @@ backend when repairing Vault.
 on each stack, with UUID-labelled fixtures and separate evidence files. Common
 model adoption, organization settings and fixed GitHub installation identities
 run serially before the pool. New case groups default to serial execution.
+Both Git Skill scopes stay in one worker because their immutable repository
+fixture is deduplicated by the backend. Long probes start before short checks.
 The sharing probes partition resource kinds across workers; merged evidence
 must prove every requested case in both scopes, matching API, controller and
 Terraform hashes and successful cleanup. Any worker failure fails the check.
+
+Compilation jobs publish binaries and generated CRDs to a cache keyed by the
+exact merge commit and runner platform. Each consumer verifies the source,
+platform, checksums and complete file set before use. A cache miss performs the
+normal source build. Native suites still execute with `TF_ACC=1`, live coverage
+and the original timeout; only compilation is reused. Shards that do not
+exercise MCP installations skip the MCP fixture and its image downloads.
+If tests are added outside `internal/provider`, native jobs automatically use
+the full source runner until the compiled cache supports those packages too.
 
 ### Unit tests
 

@@ -4,6 +4,7 @@ import io
 from pathlib import Path
 import re
 import subprocess
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -16,6 +17,13 @@ class AcceptanceShardTests(unittest.TestCase):
     listing = "\n".join(["TestAccAgent", "TestAccAgent_Update", "TestAccRole", "TestAccTeam",
                          "TestSchema", "ExampleProvider", "FuzzParser", "BenchmarkSchema",
                          "TestSchema", "ok example.invalid/provider 0.1s", "? other [no test files]"])
+
+    def test_new_test_packages_disable_the_single_package_cache(self):
+        provider = str(acceptance.PACKAGE_DIR)
+        for output, status, expected in ((provider, 0, True), (provider + "\n/another/test/package", 0, False),
+                                         ("", 0, False), (provider, 1, False)):
+            with patch.object(acceptance.subprocess, "run", return_value=subprocess.CompletedProcess([], status, output, "")):
+                self.assertEqual(acceptance.cache_supported(), expected)
 
     def test_shards_cover_every_test_once_and_preserve_whole_subtests(self):
         first = acceptance.select_tests(self.listing, 1, 2)
@@ -61,6 +69,27 @@ class AcceptanceShardTests(unittest.TestCase):
                 redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
             self.assertEqual(acceptance.run(1, 2), 2)
             self.assertEqual(command.call_count, 1)
+
+    def test_compiled_go_suite_preserves_package_working_directory_and_live_coverage(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "go.mod").write_text("module example.invalid/native-smoke\n\ngo 1.20\n")
+            (root / "fixture.txt").write_text("relative package fixture")
+            (root / "main.go").write_text("package smoke\nfunc value() int { return 1 }\n")
+            (root / "main_test.go").write_text('''package smoke
+import ("os"; "testing")
+func TestAccLive(t *testing.T) { if os.Getenv("TF_ACC") != "1" { t.Fatal("not live") }; if value() != 1 { t.Fatal("value") } }
+func TestRelativeFixture(t *testing.T) { if _, err := os.ReadFile("fixture.txt"); err != nil { t.Fatal(err) } }
+''')
+            binary = root / "native-acceptance.test"
+            subprocess.run(["go", "test", "-c", "-cover", "-o", str(binary)], cwd=root, check=True, capture_output=True)
+            original_run = subprocess.run
+            def quiet(*args, **kwargs):
+                kwargs.setdefault("capture_output", True)
+                return original_run(*args, **kwargs)
+            with patch.object(acceptance, "PACKAGE_DIR", root), patch.object(acceptance.subprocess, "run", side_effect=quiet), redirect_stdout(io.StringIO()):
+                self.assertEqual(acceptance.run(1, 1, binary), 0)
+            self.assertRegex((root / "coverage-1.out").read_text(), r"main\.go:.* 1 1\n")
 
 
 if __name__ == "__main__":

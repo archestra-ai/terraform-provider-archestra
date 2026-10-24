@@ -15,7 +15,7 @@
 #   6. Starts the controller on the host with Terraform 1.5.7 and the locally
 #      built provider served from a filesystem mirror.
 #
-# Required tools: kind, kubectl, helm, curl, go, goimports, make, python3.
+# Required tools: kind, kubectl, helm, curl, python3; go, goimports and make when building.
 #
 # Re-run is idempotent and restarts the controller with freshly built binaries.
 # Use the same KIND_CLUSTER / ARCHESTRA_TEST_*_PORT values as the stack.
@@ -44,7 +44,8 @@ POLL_INTERVAL="${CROSSPLANE_POLL_INTERVAL:-10s}"
 METRICS_ADDRESS="${CROSSPLANE_METRICS_ADDRESS:-127.0.0.1:18080}"
 WORK_DIR="${CROSSPLANE_WORK_DIR:-${HOME}/.cache/archestra-provider-crossplane/${KIND_CLUSTER}}"
 
-GOOS_ARCH="$(go env GOOS)_$(go env GOARCH)"
+GOOS_ARCH="${CROSSPLANE_RUNTIME_PLATFORM:-}"
+if [ -z "$GOOS_ARCH" ]; then GOOS_ARCH="$(go env GOOS)_$(go env GOARCH)"; fi
 PROVIDER_BIN="${REPO_ROOT}/terraform-provider-archestra"
 CONTROLLER_BIN="${REPO_ROOT}/crossplane/_output/bin/${GOOS_ARCH}/provider"
 MIRROR_DIR="${WORK_DIR}/provider-mirror"
@@ -114,7 +115,10 @@ case "${1:-}" in
   *) log "Usage: $0 [--down]"; exit 2 ;;
 esac
 
-for tool in kind kubectl helm curl go goimports make python3; do require_tool "$tool"; done
+for tool in kind kubectl helm curl python3; do require_tool "$tool"; done
+if [ "${CROSSPLANE_SKIP_BUILD:-0}" != 1 ]; then
+  for tool in go goimports make; do require_tool "$tool"; done
+fi
 kind get clusters 2>/dev/null | grep -qx "$KIND_CLUSTER" || {
   log "Kind cluster ${KIND_CLUSTER} not found. Run scripts/bootstrap-local-stack.sh first."
   exit 1
@@ -194,16 +198,18 @@ spec:
 EOF
 
 # 5. Remote MCP fixture reachable from the backend pod.
-log "Deploying the MCP fixture..."
-kubectl create configmap provider-mcp-mock-script -n default \
-  --from-file=mcp-mock.py="${SCRIPT_DIR}/integration/mcp-mock.py" --dry-run=client -o yaml | kubectl apply -f - >/dev/null
-kubectl apply -f "${SCRIPT_DIR}/k8s/provider-mcp-mock.yaml" >/dev/null
-kubectl rollout restart deployment/provider-mcp-mock -n default >/dev/null
-if ! kubectl rollout status deployment/provider-mcp-mock -n default --timeout=300s >/dev/null; then
-  log "The MCP fixture did not become ready:"
-  kubectl get pods -n default -l app=provider-mcp-mock -o wide >&2 || true
-  kubectl get events -n default --sort-by=.lastTimestamp 2>/dev/null | grep -i 'provider-mcp-mock' | tail -n 20 >&2 || true
-  exit 1
+if [ "${CROSSPLANE_SKIP_MCP_FIXTURE:-0}" != 1 ]; then
+  log "Deploying the MCP fixture..."
+  kubectl create configmap provider-mcp-mock-script -n default \
+    --from-file=mcp-mock.py="${SCRIPT_DIR}/integration/mcp-mock.py" --dry-run=client -o yaml | kubectl apply -f - >/dev/null
+  kubectl apply -f "${SCRIPT_DIR}/k8s/provider-mcp-mock.yaml" >/dev/null
+  kubectl rollout restart deployment/provider-mcp-mock -n default >/dev/null
+  if ! kubectl rollout status deployment/provider-mcp-mock -n default --timeout=300s >/dev/null; then
+    log "The MCP fixture did not become ready:"
+    kubectl get pods -n default -l app=provider-mcp-mock -o wide >&2 || true
+    kubectl get events -n default --sort-by=.lastTimestamp 2>/dev/null | grep -i 'provider-mcp-mock' | tail -n 20 >&2 || true
+    exit 1
+  fi
 fi
 
 # 6. Terraform 1.5.7, the provider mirror and the controller.

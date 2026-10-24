@@ -57,6 +57,16 @@ class LifecyclePlannerTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 ci.plan(cases, jobs)
 
+    def test_shared_git_fixture_keeps_both_scopes_in_one_worker_and_long_probes_start_first(self):
+        serial, tasks = ci.plan(["skill", "git-skills", "inline-owners", "team-bindings"], 4)
+        git = [task for task in tasks if "git-skills" in task["cases"]]
+        self.assertEqual(len(git), 1)
+        self.assertEqual(git[0]["scopes"], list(ci.SCOPES))
+        self.assertEqual(tasks[0], git[0])
+        sharing = ci.plan(["parent-sharing"], 4)[1]
+        counts = [len(task["grant_kinds"]) for task in sharing]
+        self.assertEqual(counts, sorted(counts, reverse=True))
+
     def test_missing_evidence_cleanup_failures_or_mixed_binaries_fail(self):
         serial, tasks = ci.plan(["core"], 2)
         outcomes = {task["name"]: (0, proof(task)) for task in tasks}
