@@ -47,6 +47,10 @@ changes skip integration stacks; provider, dependency and harness changes run
 the native acceptance matrix and Crossplane lifecycle suites. Release Please
 PRs always run the full matrix. `scripts/ci_integration_scope.py` owns that
 routing, with regression tests for runtime changes, renames and release PRs.
+Each API version's native suite runs on two isolated stacks. Go enumerates the
+tests, and `scripts/ci_acceptance_tests.py` assigns each top-level test and all
+its subtests to exactly one shard. The existing acceptance checks require every
+shard to succeed, including all supported API versions.
 
 Native jobs cache the root and tools Go modules together. Crossplane jobs use
 a separate root/Crossplane dependency key, keeping cache contents and

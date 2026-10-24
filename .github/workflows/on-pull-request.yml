@@ -114,30 +114,18 @@ jobs:
 
   acceptance-tests:
     name: Acceptance Tests
-    needs: integration-scope
-    if: ${{ !cancelled() && (needs.integration-scope.result != 'success' || needs.integration-scope.outputs.run == 'true') }}
+    needs: [integration-scope, acceptance-shards]
+    if: always()
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
-      - name: Require successful integration scope
-        if: needs.integration-scope.result != 'success'
-        run: exit 1
-      - name: Checkout project
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      # platform-version.txt holds the tested Archestra release. The provider
-      # embeds the same file, so this job tests the release it reports.
-      - name: Read platform version
-        run: ./scripts/platform-version.sh >> "$GITHUB_ENV"
-
-      # The older-release jobs below run the same steps against other releases.
-      - name: Run acceptance tests
-        uses: $/.github/actions/acceptance-tests
-        with:
-          archestra-version: ${{ env.ARCHESTRA_VERSION }}
+      - name: Require every acceptance shard
+        env:
+          SCOPE: ${{ needs.integration-scope.result }}
+          RUN: ${{ needs.integration-scope.outputs.run }}
+          SHARDS: ${{ needs.acceptance-shards.result }}
+        run: |
+          test "$SCOPE" = success
+          if [ "$RUN" = true ]; then test "$SHARDS" = success; fi
 
   credential-acceptance-tests:
     name: Credential Acceptance Tests
@@ -168,6 +156,7 @@ jobs:
       contents: read
     outputs:
       matrix: ${{ steps.select.outputs.matrix }}
+      acceptance-matrix: ${{ steps.acceptance.outputs.matrix }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -178,32 +167,55 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: ./scripts/supported-platform-versions.sh | tee -a "$GITHUB_OUTPUT"
 
+      - name: Select isolated acceptance shards
+        id: acceptance
+        env:
+          OLDER_MATRIX: ${{ steps.select.outputs.matrix }}
+        run: |
+          tested=$(./scripts/platform-version.sh)
+          matrix=$(jq -cn --argjson older "$OLDER_MATRIX" --arg tested "${tested#ARCHESTRA_VERSION=}" '
+            {include: ([{role: "tested", version: $tested}] + $older.include |
+              map(. as $release | range(1; 3) as $shard | $release + {shard: $shard, shards: 2}))}')
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  acceptance-shards:
+    name: Native acceptance (${{ matrix.role }}, shard ${{ matrix.shard }})
+    needs: [older-releases, integration-scope]
+    if: ${{ !cancelled() && needs.integration-scope.outputs.run == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.older-releases.outputs.acceptance-matrix) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run acceptance shard
+        uses: $/.github/actions/acceptance-tests
+        with:
+          archestra-version: ${{ matrix.version }}
+          check-generated-client: ${{ matrix.role == 'tested' && matrix.shard == 1 && 'true' || 'false' }}
+          shard: ${{ matrix.shard }}
+          shard-count: ${{ matrix.shards }}
+
   acceptance-tests-older-releases:
     name: Acceptance Tests (${{ matrix.role }})
-    needs: [older-releases, integration-scope]
-    # Expand both roles even for docs so each existing required check reports.
-    if: ${{ !cancelled() }}
+    needs: [older-releases, integration-scope, acceptance-shards]
+    # Both role checks require the complete native matrix, including failures and cancellation.
+    if: always()
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.older-releases.outputs.matrix) }}
     steps:
-      - name: Require successful integration scope
-        if: needs.integration-scope.result != 'success'
-        run: exit 1
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        if: needs.integration-scope.outputs.run == 'true'
-        with:
-          persist-credentials: false
-      # The generated client matches only the tested release's spec.
-      - name: Run acceptance tests
-        if: needs.integration-scope.outputs.run == 'true'
-        uses: $/.github/actions/acceptance-tests
-        with:
-          archestra-version: ${{ matrix.version }}
-          check-generated-client: "false"
+      - name: Require every acceptance shard
+        env:
+          SCOPE: ${{ needs.integration-scope.result }}
+          RUN: ${{ needs.integration-scope.outputs.run }}
+          SHARDS: ${{ needs.acceptance-shards.result }}
+        run: |
+          test "$SCOPE" = success
+          if [ "$RUN" = true ]; then test "$SHARDS" = success; fi
 
   credential-acceptance-tests-older-releases:
     name: Credential Acceptance Tests (${{ matrix.role }})

@@ -9,6 +9,14 @@ inputs:
     description: Fail when the generated API client differs from this release's spec. Only the tested release must match.
     required: false
     default: "true"
+  shard:
+    description: One-based shard number; each shard uses an isolated CI runner and stack.
+    required: false
+    default: "1"
+  shard-count:
+    description: Number of disjoint shares of the complete Go test suite.
+    required: false
+    default: "1"
 
 runs:
   using: composite
@@ -152,8 +160,10 @@ runs:
 
     - name: Run Acceptance Tests
       shell: bash
-      run: make testacc
+      run: python3 scripts/ci_acceptance_tests.py --shard "$SHARD" --total "$SHARD_COUNT"
       env:
+        SHARD: ${{ inputs.shard }}
+        SHARD_COUNT: ${{ inputs.shard-count }}
         ARCHESTRA_BASE_URL: "http://localhost:9000"
         ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
         ARCHESTRA_TEST_IDP_ID: ${{ steps.test-idp.outputs.idp-id }}
