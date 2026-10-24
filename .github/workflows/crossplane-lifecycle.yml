@@ -96,8 +96,11 @@ jobs:
       # them inside the platform's readiness window, as acceptance CI does.
       - name: Pull the MCP server base image
         run: |
+          kubeconfig=$(mktemp)
+          trap 'rm -f "$kubeconfig"' EXIT
+          kind get kubeconfig --name archestra-ci-cluster > "$kubeconfig"
           image="europe-west1-docker.pkg.dev/friendly-path-465518-r6/archestra-public/mcp-server-base:${ARCHESTRA_VERSION}"
-          fixture_images=$(kubectl create --dry-run=client -f scripts/k8s/provider-mcp-mock.yaml -o jsonpath='{..image}')
+          fixture_images=$(kubectl --kubeconfig="$kubeconfig" create --dry-run=client -f scripts/k8s/provider-mcp-mock.yaml -o jsonpath='{..image}')
           read -ra images <<< "$image $fixture_images"
           for node in $(kind get nodes --name archestra-ci-cluster); do
             for image in "${images[@]}"; do
