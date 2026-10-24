@@ -41,12 +41,13 @@ class AcceptanceShardTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             acceptance.select_tests("TestUnit\nok example.invalid", 1, 1)
 
-    def test_four_shards_have_complete_disjoint_coverage(self):
+    def test_four_and_five_shards_have_complete_disjoint_coverage(self):
         listing = "\n".join(f"TestAccResource{i}" for i in range(32)) + "\nTestUnit\nExampleProvider\nFuzzParser"
-        shards = [acceptance.select_tests(listing, shard, 4) for shard in range(1, 5)]
-        combined = [name for shard in shards for name in shard]
-        self.assertEqual(len(combined), len(set(combined)))
-        self.assertEqual(set(combined), set(acceptance.select_tests(listing, 1, 1)))
+        for count in (4, 5):
+            shards = [acceptance.select_tests(listing, shard, count) for shard in range(1, count + 1)]
+            combined = [name for shard in shards for name in shard]
+            self.assertEqual(len(combined), len(set(combined)))
+            self.assertEqual(set(combined), set(acceptance.select_tests(listing, 1, 1)))
 
     def test_runner_preserves_acceptance_environment_timeout_and_failures(self):
         with patch.object(acceptance.subprocess, "run", side_effect=[

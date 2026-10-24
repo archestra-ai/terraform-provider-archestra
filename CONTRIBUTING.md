@@ -47,7 +47,7 @@ changes skip integration stacks; provider, dependency and harness changes run
 the native acceptance matrix and Crossplane lifecycle suites. Release Please
 PRs always run the full matrix. `scripts/ci_integration_scope.py` owns that
 routing, with regression tests for runtime changes, renames and release PRs.
-Each API version's native suite runs on four isolated stacks. Go enumerates the
+Each API version's native suite runs on five isolated stacks. Go enumerates the
 tests, and `scripts/ci_acceptance_tests.py` assigns each top-level test and all
 its subtests to exactly one shard. The existing acceptance checks require every
 shard to succeed, including all supported API versions.
@@ -68,9 +68,12 @@ model adoption, organization settings and fixed GitHub installation identities
 run serially before the pool. New case groups default to serial execution.
 Both Git Skill scopes stay in one worker because their immutable repository
 fixture is deduplicated by the backend. Long probes start before short checks.
-The sharing probes partition resource kinds across workers; merged evidence
-must prove every requested case in both scopes, matching API, controller and
-Terraform hashes and successful cleanup. Any worker failure fails the check.
+The eleven lifecycle stacks isolate the longest owner, organization and
+sharing groups. Sharing uses one stack per scope, with resource kinds divided
+across its workers. Merged evidence must prove every assigned case and scope,
+matching API, controller and Terraform hashes and successful cleanup. A
+regression test verifies that the full workflow assigns every case exactly
+once in each scope. Any worker failure fails the required check.
 The CI controller allows 50 reconciles per second so the parallel fixtures do
 not saturate its default rate of ten. Shared model and GitHub registration
 scopes may overlap only their audited independent case groups; organization
