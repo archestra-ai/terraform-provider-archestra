@@ -168,5 +168,5 @@ jobs:
     with:
       version: ${{ needs.release-please.outputs.tag_name }}
     secrets:
-      UPBOUND_MARKETPLACE_ACCESS_ID: ${{ secrets.UPBOUND_MARKETPLACE_ACCESS_ID }}
-      UPBOUND_MARKETPLACE_TOKEN: ${{ secrets.UPBOUND_MARKETPLACE_TOKEN }}
+      UPBOUND_ACCESS_ID: ${{ secrets.UPBOUND_ACCESS_ID }}
+      UPBOUND_TOKEN: ${{ secrets.UPBOUND_TOKEN }}

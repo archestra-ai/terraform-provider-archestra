@@ -251,24 +251,25 @@ non-trivial schema change.
 
 Released on the same `vX.Y.Z` track as the Terraform provider — see
 the [root README's Releases section](../README.md#releases). The
-xpkg is published to `xpkg.upbound.io/archestra/provider-archestra` and then
-copied with its [Marketplace assets](marketplace/README.md) to
-`xpkg.upbound.io/archestra-ai/provider-archestra` alongside each Terraform
-provider release. The public listing is on
-[Upbound Marketplace](https://marketplace.upbound.io/providers/archestra-ai/provider-archestra).
+xpkg is published to `xpkg.upbound.io/archestra/provider-archestra` alongside
+each Terraform provider release. The release workflow then adds the
+[Marketplace assets](marketplace/README.md) to that same package.
 
 The [Marketplace publication workflow](../.github/workflows/publish-marketplace.yml)
-uses a robot with write permission only to the `archestra-ai/provider-archestra`
-repository. Store its access ID and token in the GitHub repository's Actions
-secrets `UPBOUND_MARKETPLACE_ACCESS_ID` and `UPBOUND_MARKETPLACE_TOKEN`. These are
-separate from the existing `UPBOUND_ACCESS_ID` and `UPBOUND_TOKEN` credentials
-for the original namespace.
+uses the existing `UPBOUND_ACCESS_ID` and `UPBOUND_TOKEN` GitHub Actions secrets
+for the `archestra/provider-archestra` repository. No second namespace or
+publisher credentials are needed.
 
 Release Please calls this workflow after the Crossplane package push succeeds.
 To publish an existing release or retry a failed Marketplace publication,
 run **Publish Upbound Marketplace** from GitHub Actions with its existing
 `vX.Y.Z` tag. The workflow verifies that the destination retains the exact
 Linux amd64 and arm64 runtime manifests from that release.
+
+Registry publication and Marketplace listing are separate. An administrator of
+the existing `archestra` Upbound namespace must enable **Publish to Marketplace**
+for `provider-archestra` once. Then valid release versions and their assets are
+listed at [Upbound Marketplace](https://marketplace.upbound.io/providers/archestra/provider-archestra).
 
 ## License
 

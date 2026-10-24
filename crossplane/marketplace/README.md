@@ -4,6 +4,6 @@
 https://avatars.githubusercontent.com/u/216022683?v=4.
 
 The Marketplace publication workflow appends this directory to each released
-Crossplane package using `up xpkg append`. It writes to
-`xpkg.upbound.io/archestra-ai/provider-archestra` and preserves the original
-`xpkg.upbound.io/archestra/provider-archestra` release and its runtime manifests.
+Crossplane package using `up xpkg append`. It adds assets to the existing
+`xpkg.upbound.io/archestra/provider-archestra` release and preserves its runtime
+manifests.

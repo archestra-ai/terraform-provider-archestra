@@ -8,9 +8,9 @@ on:
         required: true
         type: string
     secrets:
-      UPBOUND_MARKETPLACE_ACCESS_ID:
+      UPBOUND_ACCESS_ID:
         required: true
-      UPBOUND_MARKETPLACE_TOKEN:
+      UPBOUND_TOKEN:
         required: true
   workflow_dispatch:
     inputs:
@@ -59,8 +59,8 @@ jobs:
 
       - name: Log in to Marketplace registry
         env:
-          UPBOUND_ACCESS_ID: ${{ secrets.UPBOUND_MARKETPLACE_ACCESS_ID }}
-          UPBOUND_TOKEN: ${{ secrets.UPBOUND_MARKETPLACE_TOKEN }}
+          UPBOUND_ACCESS_ID: ${{ secrets.UPBOUND_ACCESS_ID }}
+          UPBOUND_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
         run: |
           set -euo pipefail
           printf '%s' "$UPBOUND_TOKEN" | docker login xpkg.upbound.io \
@@ -71,12 +71,11 @@ jobs:
           VERSION: ${{ inputs.version }}
         run: |
           set -euo pipefail
-          source="xpkg.upbound.io/archestra/provider-archestra:$VERSION"
-          destination="xpkg.upbound.io/archestra-ai/provider-archestra:$VERSION"
-          docker buildx imagetools inspect --raw "$source" > "$RUNNER_TEMP/marketplace-source.json"
+          package="xpkg.upbound.io/archestra/provider-archestra:$VERSION"
+          docker buildx imagetools inspect --raw "$package" > "$RUNNER_TEMP/marketplace-source.json"
           up xpkg append --extensions-root=crossplane/marketplace \
-            --destination="$destination" "$source"
-          docker buildx imagetools inspect --raw "$destination" > "$RUNNER_TEMP/marketplace-destination.json"
+            --destination="$package" "$package"
+          docker buildx imagetools inspect --raw "$package" > "$RUNNER_TEMP/marketplace-destination.json"
           python3 - <<'PY'
           import json
           import os
@@ -97,5 +96,5 @@ jobs:
                   raise SystemExit(f"Published runtime differs from release for {platform}")
           print("Verified unchanged linux/amd64 and linux/arm64 release runtimes")
           PY
-          printf 'Published [%s](https://marketplace.upbound.io/providers/archestra-ai/provider-archestra/%s).\n' \
-            "$destination" "$VERSION" >> "$GITHUB_STEP_SUMMARY"
+          printf 'Added Marketplace assets to [%s](https://marketplace.upbound.io/providers/archestra/provider-archestra/%s).\n' \
+            "$package" "$VERSION" >> "$GITHUB_STEP_SUMMARY"

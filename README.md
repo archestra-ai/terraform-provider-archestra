@@ -9,7 +9,7 @@ Source for two artifacts, both regenerated from a single Terraform
 schema and shipped together on every `vX.Y.Z` tag:
 
 - `archestra-ai/archestra` on the [Terraform Registry](https://registry.terraform.io/providers/archestra-ai/archestra/latest)
-- `xpkg.upbound.io/archestra-ai/provider-archestra` on [Upbound Marketplace](https://marketplace.upbound.io/providers/archestra-ai/provider-archestra)
+- `xpkg.upbound.io/archestra/provider-archestra` on [Upbound Marketplace](https://marketplace.upbound.io/providers/archestra/provider-archestra)
 
 End users install from those. This README walks a new contributor
 through extending the provider.
@@ -193,14 +193,14 @@ tag vX.Y.Z  ──▶  goreleaser       ──▶  GitHub release zips ──▶
                  crank xpkg push  ──▶  xpkg.upbound.io/archestra
                      │  then
                      ▼
-                 up xpkg append   ──▶  xpkg.upbound.io/archestra-ai + Marketplace assets
+                 up xpkg append   ──▶  Marketplace assets on the same package
 ```
 
 The publish jobs run one after the other: `publish-crossplane` needs
 `publish-terraform-provider`, because the runtime image downloads the
-release zips. `publish-marketplace` then copies the same multi-architecture
-package to the Marketplace namespace and adds the logo. The existing `archestra`
-registry address remains available. A publication failure does not roll back
-earlier publication steps.
+release zips. `publish-marketplace` then adds the logo to that same package
+and verifies that both runtime manifests are unchanged. A publication failure
+does not roll back earlier publication steps. The repository must also have
+Marketplace publishing enabled in Upbound for its listing to appear in search.
 
 See [the audit](audit/README.md) for the release evidence.
