@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      marketplace_version:
+        description: 'Repair Marketplace assets for an existing release (e.g. v3.0.3); leave empty for release-please'
+        required: false
+        type: string
 
 # Default to read-only; jobs request extra scopes as needed.
 permissions:
@@ -19,6 +24,7 @@ concurrency:
 
 jobs:
   release-please:
+    if: inputs.marketplace_version == ''
     name: Release Please
     runs-on: ubuntu-latest
     permissions:
@@ -99,7 +105,12 @@ jobs:
     name: Publish Crossplane Provider
     runs-on: ubuntu-latest
     needs: [release-please, publish-terraform-provider]
-    if: needs.release-please.outputs.release_created == 'true'
+    if: >-
+      always() && !cancelled() &&
+      ((needs.release-please.outputs.release_created == 'true' && needs.publish-terraform-provider.result == 'success') ||
+       (github.event_name == 'workflow_dispatch' && inputs.marketplace_version != ''))
+    env:
+      VERSION: ${{ inputs.marketplace_version || needs.release-please.outputs.tag_name }}
     permissions:
       contents: read
     steps:
@@ -110,7 +121,15 @@ jobs:
           fetch-depth: 0                # makelib derives VERSION from git
           persist-credentials: false
 
+      - name: Validate existing release for asset repair
+        if: inputs.marketplace_version != ''
+        run: |
+          set -euo pipefail
+          python3 -c 'import os, re; assert re.fullmatch(r"v[0-9]+\.[0-9]+\.[0-9]+", os.environ["VERSION"]), "Expected a stable release tag"'
+          git rev-parse --verify "refs/tags/$VERSION^{commit}" > /dev/null
+
       - name: Setup QEMU
+        if: inputs.marketplace_version == ''
         uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
         with:
           platforms: all
@@ -121,14 +140,17 @@ jobs:
           cache-binary: false
 
       - name: Setup Go
+        if: inputs.marketplace_version == ''
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
 
       - name: Build Terraform provider
+        if: inputs.marketplace_version == ''
         run: go build -o terraform-provider-archestra .
 
       - name: Install goimports
+        if: inputs.marketplace_version == ''
         run: go -C crossplane install golang.org/x/tools/cmd/goimports
 
       - name: Log in to Upbound registry
@@ -144,8 +166,7 @@ jobs:
             --username "$UPBOUND_ACCESS_ID" --password-stdin
 
       - name: Build and publish provider package
-        env:
-          VERSION: ${{ needs.release-please.outputs.tag_name }}
+        if: inputs.marketplace_version == ''
         run: |
           set -euo pipefail
           # `make build` only builds for the host arch via BUILD_PLATFORMS;
@@ -170,8 +191,6 @@ jobs:
           echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
 
       - name: Add Marketplace assets to provider package
-        env:
-          VERSION: ${{ needs.release-please.outputs.tag_name }}
         run: |
           set -euo pipefail
           package="xpkg.upbound.io/archestra/provider-archestra:$VERSION"
@@ -202,26 +221,10 @@ jobs:
           printf 'Added Marketplace assets to [%s](https://marketplace.upbound.io/providers/archestra/provider-archestra/%s).\n' \
             "$package" "$VERSION" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Enable Marketplace listing for the existing repository
-        env:
-          UPBOUND_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
-          VERSION: ${{ needs.release-please.outputs.tag_name }}
+      - name: Verify public Marketplace listing and logo
         run: |
           set -euo pipefail
-          printf '%s' "$UPBOUND_TOKEN" | up login --token=- \
-            --profile=marketplace --organization=archestra
-          repository_status="$RUNNER_TEMP/marketplace-repository.json"
-          up repository get provider-archestra \
-            --profile=marketplace --organization=archestra --format=json > "$repository_status"
-          if ! jq -e '.public == true and .publishPolicy == "publish"' "$repository_status" > /dev/null; then
-            up repository update provider-archestra \
-              --profile=marketplace --organization=archestra \
-              --private=false --publish=true --force
-            up repository get provider-archestra \
-              --profile=marketplace --organization=archestra --format=json > "$repository_status"
-          fi
-          jq -e '.public == true and .publishPolicy == "publish"' "$repository_status"
-          jq --arg version "$VERSION" \
-            '{name, public, publishPolicy, version: [.versions[]? | select(.version == $version) | {version, status, reason}]}' \
-            "$repository_status"
-          echo 'Enabled the public Marketplace listing for archestra/provider-archestra.' >> "$GITHUB_STEP_SUMMARY"
+          digest="sha256:$(sha256sum "$RUNNER_TEMP/marketplace-destination.json" | cut -d ' ' -f 1)"
+          python3 scripts/verify-marketplace.py "$VERSION" --digest="$digest"
+          printf 'Verified public [%s](https://marketplace.upbound.io/providers/archestra/provider-archestra/%s), release digest, and Archestra SVG logo.\n' \
+            "$VERSION" "$VERSION" >> "$GITHUB_STEP_SUMMARY"
