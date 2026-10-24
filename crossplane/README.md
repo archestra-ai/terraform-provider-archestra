@@ -251,8 +251,27 @@ non-trivial schema change.
 
 Released on the same `vX.Y.Z` track as the Terraform provider — see
 the [root README's Releases section](../README.md#releases). The
-xpkg is published to `xpkg.upbound.io/archestra/provider-archestra`
-alongside each Terraform provider release.
+xpkg is published to `xpkg.upbound.io/archestra/provider-archestra` alongside
+each Terraform provider release. The release workflow then adds the
+[Marketplace assets](marketplace/README.md) to that same package.
+
+The existing [Crossplane release job](../.github/workflows/release-please.yml)
+uses the existing `UPBOUND_ACCESS_ID` and `UPBOUND_TOKEN` GitHub Actions secrets
+for the `archestra/provider-archestra` repository. No second namespace or
+publisher credentials are needed.
+
+After the Crossplane package push succeeds, that same job appends the logo and
+verifies that the Linux amd64 and arm64 runtime manifests are unchanged.
+Retry a failed publication by re-running **Publish Crossplane Provider** for
+that release in GitHub Actions.
+
+Registry publication and Marketplace listing are separate. After adding the
+assets, the workflow uses `up repository update --private=false --publish=true`
+to enable the public listing for the existing `archestra/provider-archestra`
+repository. If its current robot credential cannot update repository settings,
+an administrator must enable **Publish to Marketplace** once. Valid release
+versions and their assets are then listed at
+[Upbound Marketplace](https://marketplace.upbound.io/providers/archestra/provider-archestra).
 
 ## License
 

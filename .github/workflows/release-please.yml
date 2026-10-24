@@ -134,8 +134,7 @@ jobs:
       - name: Log in to Upbound registry
         # `make publish` shells out to `crank xpkg push`, which is a Docker
         # registry push — it reads creds from ~/.docker/config.json, not from
-        # the Upbound CLI's session. Robot tokens are also not valid for
-        # `up login --token` (that flag expects a user PAT).
+        # the Upbound CLI's session.
         env:
           UPBOUND_ACCESS_ID: ${{ secrets.UPBOUND_ACCESS_ID }}
           UPBOUND_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
@@ -159,3 +158,70 @@ jobs:
             XPKG_REG_ORGS="xpkg.upbound.io/archestra" \
             TERRAFORM_PROVIDER_VERSION="$provider_version" \
             VERSION="$VERSION"
+
+      - name: Install Upbound CLI
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --retry 3 \
+            https://cli.upbound.io/stable/v0.55.0/bin/linux_amd64/up \
+            --output "$RUNNER_TEMP/up"
+          echo "92faee16e91d39204ec7e45d2b1f63c2d741045ffb8cf9cfbac8ba2972ac69e6  $RUNNER_TEMP/up" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/up"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+
+      - name: Add Marketplace assets to provider package
+        env:
+          VERSION: ${{ needs.release-please.outputs.tag_name }}
+        run: |
+          set -euo pipefail
+          package="xpkg.upbound.io/archestra/provider-archestra:$VERSION"
+          docker buildx imagetools inspect --raw "$package" > "$RUNNER_TEMP/marketplace-source.json"
+          up xpkg append --extensions-root=crossplane/marketplace \
+            --destination="$package" "$package"
+          docker buildx imagetools inspect --raw "$package" > "$RUNNER_TEMP/marketplace-destination.json"
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          def runtimes(filename):
+              index = json.loads((Path(os.environ["RUNNER_TEMP"]) / filename).read_text())
+              return {
+                  (item.get("platform", {}).get("os"), item.get("platform", {}).get("architecture")): item["digest"]
+                  for item in index["manifests"]
+                  if item.get("platform", {}).get("os") == "linux"
+              }
+
+          source = runtimes("marketplace-source.json")
+          destination = runtimes("marketplace-destination.json")
+          for platform in (("linux", "amd64"), ("linux", "arm64")):
+              if platform not in source or source[platform] != destination.get(platform):
+                  raise SystemExit(f"Published runtime differs from release for {platform}")
+          print("Verified unchanged linux/amd64 and linux/arm64 release runtimes")
+          PY
+          printf 'Added Marketplace assets to [%s](https://marketplace.upbound.io/providers/archestra/provider-archestra/%s).\n' \
+            "$package" "$VERSION" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Enable Marketplace listing for the existing repository
+        env:
+          UPBOUND_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
+          VERSION: ${{ needs.release-please.outputs.tag_name }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$UPBOUND_TOKEN" | up login --token=- \
+            --profile=marketplace --organization=archestra
+          repository_status="$RUNNER_TEMP/marketplace-repository.json"
+          up repository get provider-archestra \
+            --profile=marketplace --organization=archestra --format=json > "$repository_status"
+          if ! jq -e '.public == true and .publishPolicy == "publish"' "$repository_status" > /dev/null; then
+            up repository update provider-archestra \
+              --profile=marketplace --organization=archestra \
+              --private=false --publish=true --force
+            up repository get provider-archestra \
+              --profile=marketplace --organization=archestra --format=json > "$repository_status"
+          fi
+          jq -e '.public == true and .publishPolicy == "publish"' "$repository_status"
+          jq --arg version "$VERSION" \
+            '{name, public, publishPolicy, version: [.versions[]? | select(.version == $version) | {version, status, reason}]}' \
+            "$repository_status"
+          echo 'Enabled the public Marketplace listing for archestra/provider-archestra.' >> "$GITHUB_STEP_SUMMARY"
