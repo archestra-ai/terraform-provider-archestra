@@ -21,6 +21,10 @@ MANIFEST="${SCRIPT_DIR}/k8s/vault-dev.yaml"
 
 ARCHESTRA_NAMESPACE="${ARCHESTRA_NAMESPACE:-archestra}"
 ARCHESTRA_SELECTOR="${ARCHESTRA_SELECTOR:-app.kubernetes.io/name=archestra-platform}"
+case "${ARCHESTRA_SKIP_BACKEND_RESTART:-false}" in
+  true|false) ;;
+  *) echo "ARCHESTRA_SKIP_BACKEND_RESTART must be true or false" >&2; exit 1 ;;
+esac
 
 echo "Applying Vault dev manifest from ${MANIFEST}..." >&2
 kubectl apply -f "$MANIFEST"
@@ -39,8 +43,10 @@ kubectl run vault-seed --rm -i --restart=Never --image=curlimages/curl:8.10.1 --
 
 # The Archestra backend reads Vault config at startup; if it came up before
 # Vault was reachable, restart so it can connect now.
-echo "Restarting Archestra backend (namespace=${ARCHESTRA_NAMESPACE}, selector=${ARCHESTRA_SELECTOR})..." >&2
-kubectl rollout restart deployment --namespace "$ARCHESTRA_NAMESPACE" --selector="$ARCHESTRA_SELECTOR"
-kubectl rollout status deployment --namespace "$ARCHESTRA_NAMESPACE" --selector="$ARCHESTRA_SELECTOR" --timeout=180s
+if [ "${ARCHESTRA_SKIP_BACKEND_RESTART:-false}" != true ]; then
+  echo "Restarting Archestra backend (namespace=${ARCHESTRA_NAMESPACE}, selector=${ARCHESTRA_SELECTOR})..." >&2
+  kubectl rollout restart deployment --namespace "$ARCHESTRA_NAMESPACE" --selector="$ARCHESTRA_SELECTOR"
+  kubectl rollout status deployment --namespace "$ARCHESTRA_NAMESPACE" --selector="$ARCHESTRA_SELECTOR" --timeout=180s
+fi
 
 echo "Vault ready at http://vault.default.svc.cluster.local:8200 (token=root)" >&2

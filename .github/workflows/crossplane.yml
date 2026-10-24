@@ -38,6 +38,9 @@ jobs:
         uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
+          cache-dependency-path: |
+            go.sum
+            crossplane/go.sum
 
       # The Crossplane provider's CRDs are generated from the Terraform
       # provider's schema. In this monorepo that is a local build step:
@@ -63,3 +66,20 @@ jobs:
             CGO_ENABLED=0 GOOS=linux GOARCH="$target_arch" go build -trimpath \
               -o "$RUNNER_TEMP/provider-archestra-linux-$target_arch" ./cmd/provider
           done
+
+      - name: Prepare the verified lifecycle runtime
+        run: |
+          mkdir -p crossplane/_output/bin/linux_amd64
+          cp "$RUNNER_TEMP/provider-archestra-linux-amd64" crossplane/_output/bin/linux_amd64/provider
+          python3 scripts/ci_runtime_manifest.py write "$RUNNER_TEMP/crossplane-runtime.json" \
+            terraform-provider-archestra crossplane/_output/bin/linux_amd64/provider crossplane/package/crds
+
+      - name: Cache the lifecycle runtime
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            terraform-provider-archestra
+            crossplane/_output/bin/linux_amd64/provider
+            crossplane/package/crds
+            ${{ runner.temp }}/crossplane-runtime.json
+          key: crossplane-runtime-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}

@@ -762,7 +762,7 @@ def main():
                 code, policy = api(policy_path)
                 if code != 200 or any(g['subject'] == {'type': 'organization', 'id': '*'} for g in policy['grants']):
                     raise RuntimeError('Knowledge file sharing was not cleared')
-                if api('/api/knowledge-files/' + identifier, {'filename': 'out-of-band.md', 'labels': [{'key': 'stage', 'value': 'drift'}]})[0] != 200:
+                if api('/api/knowledge-files/' + identifier, {'filename': 'out-of-band-' + filename, 'labels': [{'key': 'stage', 'value': 'drift'}]})[0] != 200:
                     raise RuntimeError('Unable to inject owned Knowledge metadata drift')
                 wait('Knowledge file metadata drift repair', lambda: knowledge_row(identifier)['filename'] == renamed and not knowledge_row(identifier)['labels'])
                 immutable_update(document, {'contentBase64SecretRef': dict(ref, key='replacement')}, {'contentBase64SecretRef': ref})
