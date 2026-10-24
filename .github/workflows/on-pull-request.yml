@@ -115,7 +115,7 @@ jobs:
   acceptance-tests:
     name: Acceptance Tests
     needs: integration-scope
-    if: always() && (needs.integration-scope.result != 'success' || needs.integration-scope.outputs.run == 'true')
+    if: ${{ !cancelled() && (needs.integration-scope.result != 'success' || needs.integration-scope.outputs.run == 'true') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -142,7 +142,7 @@ jobs:
   credential-acceptance-tests:
     name: Credential Acceptance Tests
     needs: integration-scope
-    if: always() && (needs.integration-scope.result != 'success' || needs.integration-scope.outputs.run == 'true')
+    if: ${{ !cancelled() && (needs.integration-scope.result != 'success' || needs.integration-scope.outputs.run == 'true') }}
     runs-on: ubuntu-latest
     steps:
       - name: Require successful integration scope
@@ -182,7 +182,7 @@ jobs:
     name: Acceptance Tests (${{ matrix.role }})
     needs: [older-releases, integration-scope]
     # Expand both roles even for docs so each existing required check reports.
-    if: always()
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -208,7 +208,7 @@ jobs:
   credential-acceptance-tests-older-releases:
     name: Credential Acceptance Tests (${{ matrix.role }})
     needs: [older-releases, integration-scope]
-    if: always()
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
