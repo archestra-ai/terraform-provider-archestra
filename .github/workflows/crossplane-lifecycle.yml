@@ -63,13 +63,19 @@ jobs:
             cases: core observe
           - shard: extensions
             mcp: true
-            cases: extensions service-account-team team-bindings inline-owners
+            cases: extensions service-account-team team-bindings
+          - shard: owners
+            mcp: true
+            cases: inline-owners
           - shard: catalog
             mcp: true
             cases: catalog tools limit llm credential sharing-defaults
           - shard: organization
             mcp: false
-            cases: organization organization-defaults identity schedule api-key api-compatibility
+            cases: organization organization-defaults
+          - shard: identity
+            mcp: false
+            cases: identity schedule api-key api-compatibility
           - shard: skills
             mcp: false
             cases: skill git-skills repository-plugins manual-plugins marketplace-share-links
@@ -79,9 +85,14 @@ jobs:
           - shard: routing
             mcp: false
             cases: routing-credentials remote-agents github-registrations
-          - shard: sharing
+          - shard: sharing-cluster
             mcp: false
             cases: parent-sharing
+            scopes: cluster
+          - shard: sharing-namespaced
+            mcp: false
+            cases: parent-sharing
+            scopes: namespaced
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -154,12 +165,14 @@ jobs:
         env:
           CASES: ${{ matrix.cases }}
           SHARD: ${{ matrix.shard }}
+          SCOPES: ${{ matrix.scopes || 'cluster namespaced' }}
         run: |
           set -euo pipefail
           eval "$(scripts/bootstrap-local-stack.sh --print-env)"
           work="$HOME/.cache/archestra-provider-crossplane/archestra-ci-cluster"
           read -ra groups <<< "$CASES"
-          python3 scripts/ci_crossplane_tests.py --cases "${groups[@]}" --jobs 4 \
+          read -ra scopes <<< "$SCOPES"
+          python3 scripts/ci_crossplane_tests.py --cases "${groups[@]}" --scopes "${scopes[@]}" --jobs 4 \
             --evidence "$RUNNER_TEMP/crossplane-lifecycle-$SHARD.json" -- \
             --api-url "$ARCHESTRA_BASE_URL" --key-file "$work/api-key" --readonly-vault \
             --llm-base-url "$ARCHESTRA_TEST_LLM_BASE_URL" \

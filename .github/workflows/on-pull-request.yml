@@ -193,7 +193,7 @@ jobs:
           tested=$(./scripts/platform-version.sh)
           matrix=$(jq -cn --argjson older "$OLDER_MATRIX" --arg tested "${tested#ARCHESTRA_VERSION=}" '
             {include: ([{role: "tested", version: $tested}] + $older.include |
-              map(. as $release | range(1; 5) as $shard | $release + {shard: $shard, shards: 4}))}')
+              map(. as $release | range(1; 6) as $shard | $release + {shard: $shard, shards: 5}))}')
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   acceptance-shards:

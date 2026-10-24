@@ -40,9 +40,11 @@ CASE_SECONDS = {"inline-owners": 335, "extensions": 275, "marketplace-share-link
                 "llm": 200, "github-registrations": 180}
 
 
-def plan(cases, jobs):
+def plan(cases, jobs, scopes=SCOPES):
     if not 1 <= jobs <= 4:
         raise ValueError("Use between one and four concurrent probes")
+    if not scopes or len(set(scopes)) != len(scopes) or set(scopes) - set(SCOPES):
+        raise ValueError("Use distinct cluster and/or namespaced scopes")
     cases = list(dict.fromkeys(cases))
     if not cases:
         raise ValueError("At least one lifecycle case is required")
@@ -51,17 +53,17 @@ def plan(cases, jobs):
     serial, parallel = [], []
     global_cases = [case for case in cases if case not in independent]
     if global_cases:
-        serial.append({"name": "serial", "cases": global_cases, "scopes": list(SCOPES)})
+        serial.append({"name": "serial", "cases": global_cases, "scopes": list(scopes)})
     for case in cases:
         if case not in independent:
             continue
         # Both imports use the same immutable Git repository fixture.
         if case in {"git-skills", *SCOPED_COMPANIONS}:
-            parallel.append({"name": case + "-both", "cases": [case], "scopes": list(SCOPES)})
+            parallel.append({"name": case + "-both", "cases": [case], "scopes": list(scopes)})
             continue
         kinds = sorted(kind.removesuffix("Sharing") for kind in lifecycle.CASE_RESOURCES["parent-sharing"])
         partitions = [kinds[i::jobs] for i in range(jobs)] if case == "parent-sharing" else [None]
-        for scope in SCOPES:
+        for scope in scopes:
             for part, selected in enumerate(partitions):
                 task = {"name": f"{case}-{scope}-{part + 1}", "cases": [case], "scopes": [scope]}
                 if selected is not None:
@@ -83,7 +85,7 @@ def command(task, forwarded, evidence):
     return args
 
 
-def merge_evidence(cases, tasks, outcomes):
+def merge_evidence(cases, tasks, outcomes, scopes=SCOPES):
     merged = {"results": [], "tasks": [], "outcome": "passed", "cleanup": "passed"}
     errors = []
     for task in tasks:
@@ -97,7 +99,7 @@ def merge_evidence(cases, tasks, outcomes):
         merged["results"].extend(data.get("results", []))
         if code or data.get("outcome") != "passed" or data.get("cleanup") != "passed" or data.get("api_cleanup") not in (None, "passed"):
             errors.append(task["name"] + ": " + data.get("error", "probe or cleanup failed"))
-    for scope in SCOPES:
+    for scope in scopes:
         missing = set(cases) - lifecycle.completed_cases(merged["results"], scope)
         if missing:
             errors.append(scope + ": missing complete evidence for " + ", ".join(sorted(missing)))
@@ -106,8 +108,8 @@ def merge_evidence(cases, tasks, outcomes):
     return merged
 
 
-def run(cases, jobs, evidence, forwarded):
-    serial, parallel = plan(cases, jobs)
+def run(cases, jobs, evidence, forwarded, scopes=SCOPES):
+    serial, parallel = plan(cases, jobs, scopes)
     directory = evidence.with_suffix(".d")
     directory.mkdir(parents=True, exist_ok=False)
 
@@ -137,7 +139,7 @@ def run(cases, jobs, evidence, forwarded):
             futures = {task["name"]: pool.submit(probe, task) for task in parallel}
             for name, future in futures.items():
                 outcomes[name] = future.result()
-    merged = merge_evidence(cases, serial + parallel, outcomes)
+    merged = merge_evidence(cases, serial + parallel, outcomes, scopes)
     evidence.write_text(json.dumps(merged, indent=2) + "\n")
     print(f"Lifecycle: {merged['outcome']}; {len(merged['results'])} evidence records", flush=True)
     return 0 if merged["outcome"] == "passed" else 1
@@ -146,12 +148,13 @@ def run(cases, jobs, evidence, forwarded):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cases", nargs="+", required=True, choices=tuple(lifecycle.CASE_RESOURCES) + ("sharing-defaults",))
+    parser.add_argument("--scopes", nargs="+", choices=SCOPES, default=SCOPES)
     parser.add_argument("--jobs", type=int, default=4)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("harness_args", nargs=argparse.REMAINDER)
     args = parser.parse_args()
     forwarded = args.harness_args[1:] if args.harness_args[:1] == ["--"] else args.harness_args
-    return run(args.cases, args.jobs, args.evidence, forwarded)
+    return run(args.cases, args.jobs, args.evidence, forwarded, args.scopes)
 
 
 if __name__ == "__main__":

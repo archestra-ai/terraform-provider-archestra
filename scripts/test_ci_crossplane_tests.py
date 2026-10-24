@@ -4,6 +4,7 @@ import importlib.util
 import io
 import json
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 import threading
@@ -32,6 +33,37 @@ def proof(task):
 
 
 class LifecyclePlannerTests(unittest.TestCase):
+    def test_workflow_covers_every_case_in_both_scopes_once(self):
+        workflow = (Path(__file__).resolve().parents[1] / '.github/workflows/crossplane-lifecycle.yml').read_text()
+        include = workflow.split('        include:\n', 1)[1].split('    steps:', 1)[0]
+        assigned = []
+        for block in re.split(r'          - shard: ', include)[1:]:
+            cases = re.search(r'            cases: (.+)', block).group(1).split()
+            selected = re.search(r'            scopes: (.+)', block)
+            scopes = selected.group(1).split() if selected else ci.SCOPES
+            assigned.extend((case, scope) for case in cases for scope in scopes)
+        expected = {(case, scope) for case in (*ci.lifecycle.CASE_RESOURCES, 'sharing-defaults') for scope in ci.SCOPES}
+        self.assertEqual(set(assigned), expected)
+        self.assertEqual(len(assigned), len(expected))
+
+    def test_isolated_sharing_stacks_preserve_complete_disjoint_scope_coverage(self):
+        combined = []
+        for scope in ci.SCOPES:
+            serial, tasks = ci.plan(['parent-sharing'], 4, [scope])
+            self.assertFalse(serial)
+            outcomes = {task['name']: (0, proof(task)) for task in tasks}
+            merged = ci.merge_evidence(['parent-sharing'], tasks, outcomes, [scope])
+            self.assertEqual(merged['outcome'], 'passed')
+            combined.extend((item['resource'], item['scope']) for item in merged['results'])
+            outcomes.pop(tasks[0]['name'])
+            self.assertEqual(ci.merge_evidence(['parent-sharing'], tasks, outcomes, [scope])['outcome'], 'failed')
+        expected = {(kind, scope) for kind in ci.lifecycle.CASE_RESOURCES['parent-sharing'] for scope in ci.SCOPES}
+        self.assertEqual(set(combined), expected)
+        self.assertEqual(len(combined), len(expected))
+        for scopes in ([], ['future'], ['cluster', 'cluster']):
+            with self.assertRaises(ValueError):
+                ci.plan(['parent-sharing'], 4, scopes)
+
     def test_every_case_scope_and_sharing_kind_is_assigned_once(self):
         cases = list(ci.lifecycle.CASE_RESOURCES) + ["sharing-defaults"]
         serial, parallel = ci.plan(cases, 4)
