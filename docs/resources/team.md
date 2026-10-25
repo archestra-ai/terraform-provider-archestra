@@ -16,7 +16,6 @@ Archestra team with member assignments.
 resource "archestra_team" "engineering" {
   # Enterprise SSO settings belong to the team.
   external_group_ids = ["engineering"]
-  # With Readonly Vault: vault_folder="secret/data/team/engineering"
 
   name        = "Engineering"
   description = "Engineering team"
@@ -45,7 +44,6 @@ resource "archestra_team" "support" {
 - `members` (Attributes List) List of team members (see [below for nested schema](#nestedatt--members))
 - `parent_id` (String) Parent team identifier in the team hierarchy.
 - `roles` (Set of String) Role identifiers assigned to the team; omit to preserve existing assignments, or set an empty set to revoke them.
-- `vault_folder` (String) Team Vault folder path; omit to preserve or set an empty string to remove the binding, requiring Readonly Vault.
 
 ### Read-Only
 

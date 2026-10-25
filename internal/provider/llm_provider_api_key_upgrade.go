@@ -13,7 +13,7 @@ var _ resource.ResourceWithUpgradeState = &LLMProviderApiKeyResource{}
 // UpgradeState preserves the remote key and its sensitive state while renaming
 // the misleading v2 attribute. This performs no API writes or key rotation.
 func (r *LLMProviderApiKeyResource) UpgradeState(ctx context.Context) map[int64]resource.StateUpgrader {
-	return map[int64]resource.StateUpgrader{0: {StateUpgrader: func(ctx context.Context, req resource.UpgradeStateRequest, resp *resource.UpgradeStateResponse) {
+	upgrades := map[int64]resource.StateUpgrader{0: {StateUpgrader: func(ctx context.Context, req resource.UpgradeStateRequest, resp *resource.UpgradeStateResponse) {
 		if req.RawState == nil || req.RawState.JSON == nil {
 			resp.Diagnostics.AddError("Unsupported Key State", "Expected JSON state from provider v2.")
 			return
@@ -55,4 +55,6 @@ func (r *LLMProviderApiKeyResource) UpgradeState(ctx context.Context) map[int64]
 		resp.State.Schema = current.Schema
 		resp.State.Raw = upgraded
 	}}}
+	upgrades[1] = schemaStateUpgrade(r)
+	return upgrades
 }

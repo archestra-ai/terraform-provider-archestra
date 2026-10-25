@@ -4,7 +4,7 @@
 # CI (Kind cluster) and any local cluster running the Archestra platform via
 # the same Helm chart. The backend's testProviderApiKey hits Ollama's
 # /v1/models when validating LLM keys — this stub returns a static model list
-# so BYOS Ollama-key tests pass without a real Ollama install.
+# so Ollama-key tests pass without a real Ollama install.
 #
 # Required tools: kubectl with a context pointing at the target cluster.
 #

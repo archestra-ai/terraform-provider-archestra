@@ -143,9 +143,6 @@ output-options:
     - updateServiceAccountToken
     - deleteServiceAccountToken
     - updateEnvironmentResourceDefaults
-    - getTeamVaultFolder
-    - setTeamVaultFolder
-    - deleteTeamVaultFolder
     - createA2aRemoteAgent
     - getA2aRemoteAgent
     - updateA2aRemoteAgent

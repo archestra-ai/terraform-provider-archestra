@@ -15,7 +15,7 @@ import (
 // personal install lending tools or an unpaired model and key.
 func TestAccExampleBasic(t *testing.T) {
 	config := exampleConfig(t, filepath.Join("..", "..", "examples", "basic"))
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config, Check: resource.ComposeTestCheckFunc(
 			resource.TestCheckResourceAttrSet("archestra_agent.main", "id"),
 			resource.TestCheckResourceAttr("archestra_agent.main", "tools.#", "1"),

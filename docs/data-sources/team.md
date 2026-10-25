@@ -52,7 +52,6 @@ output "team_admins" {
 - `members` (Attributes List) List of team members (see [below for nested schema](#nestedatt--members))
 - `name` (String) The name of the team
 - `organization_id` (String) The organization ID this team belongs to
-- `vault_folder` (String) Vault folder path, when visible and Readonly Vault is available.
 
 <a id="nestedatt--members"></a>
 ### Nested Schema for `members`

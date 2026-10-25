@@ -3,19 +3,16 @@ package provider
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/archestra-ai/archestra/terraform-provider-archestra/internal/client"
 	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -24,7 +21,6 @@ import (
 func teamBindingAttributes() map[string]schema.Attribute {
 	return map[string]schema.Attribute{
 		"external_group_ids": schema.SetAttribute{Optional: true, Computed: true, ElementType: types.StringType, MarkdownDescription: "Complete SSO group selection for enterprise Team Sync; omit to preserve or set an empty set to clear.", PlanModifiers: []planmodifier.Set{setplanmodifier.UseStateForUnknown()}, Validators: []validator.Set{setvalidator.ValueStringsAre(stringvalidator.LengthAtLeast(1))}},
-		"vault_folder":       schema.StringAttribute{Optional: true, Computed: true, MarkdownDescription: "Team Vault folder path; omit to preserve or set an empty string to remove the binding, requiring Readonly Vault.", PlanModifiers: []planmodifier.String{stringplanmodifier.UseStateForUnknown()}},
 	}
 }
 
@@ -71,53 +67,11 @@ func (r *TeamResource) readBindings(ctx context.Context, data *TeamResourceModel
 	} else {
 		data.ExternalGroupIDs = types.SetNull(types.StringType)
 	}
-	folder, err := r.client.GetTeamVaultFolderWithResponse(ctx, data.ID.ValueString())
-	if err != nil {
-		diags.AddError("Team Vault folder read failed", err.Error())
-		return
-	}
-	if folder.StatusCode() == 403 && (data.VaultFolder.IsNull() || data.VaultFolder.IsUnknown()) {
-		data.VaultFolder = types.StringNull()
-		return
-	}
-	if folder.StatusCode() == 200 && strings.TrimSpace(string(folder.Body)) == "null" {
-		data.VaultFolder = types.StringValue("")
-		return
-	}
-	if folder.JSON200 == nil {
-		diags.AddError("Team Vault folder read failed", fmt.Sprintf("API returned status %d; existing folder state was retained.", folder.StatusCode()))
-		return
-	}
-	if folder.JSON200.TeamId != data.ID.ValueString() {
-		diags.AddError("Unexpected Vault folder scope", "The API returned another team's folder.")
-		return
-	}
-	data.VaultFolder = types.StringValue(folder.JSON200.VaultPath)
 }
 
 func (r *TeamResource) writeBindings(ctx context.Context, plan, prior *TeamResourceModel, config tfsdk.Config, diags *diag.Diagnostics) {
 	if agentConfigured(ctx, config, "external_group_ids", diags) && !plan.ExternalGroupIDs.Equal(prior.ExternalGroupIDs) {
 		r.replaceExternalGroups(ctx, plan, diags)
-	}
-	var configured types.String
-	diags.Append(config.GetAttribute(ctx, path.Root("vault_folder"), &configured)...)
-	if diags.HasError() || configured.IsNull() || configured.IsUnknown() || plan.VaultFolder.Equal(prior.VaultFolder) {
-		return
-	}
-	if configured.ValueString() == "" {
-		result, err := r.client.DeleteTeamVaultFolderWithResponse(ctx, plan.ID.ValueString())
-		if err != nil {
-			diags.AddError("Team Vault folder removal failed", err.Error())
-		} else if result.StatusCode() != 200 && result.StatusCode() != 204 && !IsNotFound(result) {
-			diags.AddError("Team Vault folder removal failed", fmt.Sprintf("API returned status %d.", result.StatusCode()))
-		}
-		return
-	}
-	result, err := r.client.SetTeamVaultFolderWithResponse(ctx, plan.ID.ValueString(), client.SetTeamVaultFolderJSONRequestBody{VaultPath: configured.ValueString()})
-	if err != nil {
-		diags.AddError("Team Vault folder update failed", err.Error())
-	} else if result.JSON200 == nil {
-		diags.AddError("Team Vault folder update failed", fmt.Sprintf("API returned status %d.", result.StatusCode()))
 	}
 }
 
@@ -181,21 +135,9 @@ func (r *TeamResource) ModifyPlan(_ context.Context, req resource.ModifyPlanRequ
 	preserveManagedNoopPlan(req, resp)
 }
 
-func (r *TeamResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
-	var folder types.String
-	resp.Diagnostics.Append(req.Config.GetAttribute(ctx, path.Root("vault_folder"), &folder)...)
-	value := folder.ValueString()
-	if strings.Contains(value, "..") || strings.HasPrefix(value, "/") || strings.HasSuffix(value, "/") {
-		resp.Diagnostics.AddAttributeError(path.Root("vault_folder"), "Invalid Vault folder path", "Use a relative Vault path without '..' or leading/trailing slashes, or an empty string to remove the binding.")
-	}
-}
-
 func knownTeamState(data TeamResourceModel) TeamResourceModel {
 	if data.ExternalGroupIDs.IsUnknown() {
 		data.ExternalGroupIDs = types.SetNull(types.StringType)
-	}
-	if data.VaultFolder.IsUnknown() {
-		data.VaultFolder = types.StringNull()
 	}
 	if data.Roles.IsUnknown() {
 		data.Roles = types.SetNull(types.StringType)

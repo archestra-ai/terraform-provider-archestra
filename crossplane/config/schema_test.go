@@ -41,3 +41,41 @@ func TestSingleBlocksUseFrameworkObjectRepresentation(t *testing.T) {
 		})
 	}
 }
+
+func TestSecretInputsMatchSupportedStorageInBothScopes(t *testing.T) {
+	for name, constructor := range map[string]func() *ujconfig.Provider{"cluster": GetProvider, "namespaced": GetProviderNamespaced} {
+		t.Run(name, func(t *testing.T) {
+			p := constructor()
+			removed := map[string][]string{
+				"archestra_team":               {"vault_folder"},
+				"archestra_model_provider":     {"vault_secret_path", "vault_secret_key"},
+				"archestra_mcp_registry_entry": {"local_config_vault_path", "local_config_vault_key", "oauth_client_secret_vault_path", "oauth_client_secret_vault_key"},
+				"archestra_mcp_server":         {"is_byos_vault"},
+			}
+			for owner, attributes := range removed {
+				for _, attribute := range attributes {
+					if _, exists := p.Resources[owner].TerraformResource.Schema[attribute]; exists {
+						t.Errorf("%s still exposes %s", owner, attribute)
+					}
+				}
+			}
+			for owner, attributes := range map[string][]string{
+				"archestra_team":               {"external_group_ids", "roles"},
+				"archestra_model_provider":     {"api_key", "aws_secret_access_key"},
+				"archestra_mcp_registry_entry": {"client_secret_id", "local_config_secret_id"},
+				"archestra_mcp_server":         {"access_token", "environment_values", "secret_id"},
+			} {
+				for _, attribute := range attributes {
+					field := p.Resources[owner].TerraformResource.Schema[attribute]
+					if field == nil {
+						t.Errorf("%s lost %s", owner, attribute)
+						continue
+					}
+					if (attribute == "api_key" || attribute == "aws_secret_access_key" || attribute == "access_token") && !field.Sensitive {
+						t.Errorf("%s.%s lost secret marking", owner, attribute)
+					}
+				}
+			}
+		})
+	}
+}

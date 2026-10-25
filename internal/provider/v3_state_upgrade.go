@@ -134,10 +134,14 @@ func (r *McpGatewayResource) UpgradeState(context.Context) map[int64]resource.St
 	return v3StateUpgrade(r, false)
 }
 func (r *MCPServerRegistryResource) UpgradeState(context.Context) map[int64]resource.StateUpgrader {
-	return v3StateUpgrade(r, false)
+	upgrades := v3StateUpgrade(r, false)
+	upgrades[1] = schemaStateUpgrade(r)
+	return upgrades
 }
 func (r *TeamResource) UpgradeState(context.Context) map[int64]resource.StateUpgrader {
-	return v3StateUpgrade(r, false)
+	upgrades := v3StateUpgrade(r, false)
+	upgrades[1] = schemaStateUpgrade(r)
+	return upgrades
 }
 func (r *OrganizationSettingsResource) UpgradeState(context.Context) map[int64]resource.StateUpgrader {
 	return v3StateUpgrade(r, false)

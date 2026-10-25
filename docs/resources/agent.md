@@ -78,7 +78,7 @@ resource "archestra_agent" "engineering_qa" {
   name          = "eng-qa"
   description   = "Engineering QA assistant"
   system_prompt = "You triage bug reports against the eng playbook."
-  # Wire a specific provider key (e.g. an Anthropic key from BYOS Vault) instead
+  # Wire a specific provider key (e.g. an Anthropic key) instead
   # of relying on the org-wide default. The platform pairs the key with a model
   # row, so reference the `archestra_model` for "claude-sonnet-4-5".
   model_id       = archestra_model.claude_sonnet.id

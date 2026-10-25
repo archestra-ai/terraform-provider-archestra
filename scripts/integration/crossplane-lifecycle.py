@@ -86,7 +86,6 @@ def main():
     parser.add_argument('--api-url', required=True)
     parser.add_argument('--key-file', type=Path, required=True)
     parser.add_argument('--llm-base-url', required=True)
-    parser.add_argument('--readonly-vault', action='store_true', help='Use the existing isolated Vault model fixture')
     parser.add_argument('--mcp-url', default='http://127.0.0.1:19006/mcp')
     parser.add_argument('--cases', nargs='+', choices=tuple(CASE_RESOURCES) + ('sharing-defaults',), default=['catalog', 'limit', 'llm'])
     parser.add_argument('--resume-from', type=Path, help='Resume normally cleaned evidence only when both binary hashes and the private context match')
@@ -109,7 +108,7 @@ def main():
             parser.error('Fixture endpoints must use loopback or a fixed private Kind fixture')
     env = dict(os.environ, KUBECONFIG=str(args.kubeconfig.resolve()))
     token = args.key_file.read_text().strip()
-    vault_fixture = {'vaultSecretPath': 'secret/data/test/ollama', 'vaultSecretKey': 'api_key'} if args.readonly_vault else {}
+    model_fixture = {'apiKey': 'synthetic-local-only'}
     run = uuid.uuid4().hex[:8]
     leases = []
     results = []
@@ -389,37 +388,30 @@ def main():
 
             if 'team-bindings' in scope_cases:
                 team_name = 'cp-team-bindings-' + run + '-' + scope
-                team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': team_name, 'externalGroupIds': ['engineering', 'support'], 'vaultFolder': 'secret/data/test/engineering'})
+                team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': team_name, 'externalGroupIds': ['engineering', 'support']})
                 path = '/api/teams/' + team_id
                 def mappings():
                     code, value = api(path + '/external-groups')
                     if code != 200:
                         raise RuntimeError('Team group state read failed: HTTP ' + str(code))
                     return {row['groupIdentifier']: row['id'] for row in value}
-                def folder():
-                    code, value = api(path + '/vault-folder')
-                    if code != 200:
-                        raise RuntimeError('Team Vault state read failed: HTTP ' + str(code))
-                    return value['vaultPath'] if value else ''
-                if set(mappings()) != {'engineering', 'support'} or folder() != 'secret/data/test/engineering':
+                if set(mappings()) != {'engineering', 'support'}:
                     raise RuntimeError('Inline team bindings did not persist')
-                patch(team, {'externalGroupIds': ['operations'], 'vaultFolder': 'secret/data/test/operations'})
-                wait('Team binding update', lambda: set(mappings()) == {'operations'} and folder() == 'secret/data/test/operations')
+                patch(team, {'externalGroupIds': ['operations']})
+                wait('Team binding update', lambda: set(mappings()) == {'operations'})
                 mapping_id = mappings()['operations']
                 if api(path + '/external-groups/' + mapping_id, method='DELETE')[0] != 200:
                     raise RuntimeError('Unable to modify owned team group drift')
-                if api(path + '/vault-folder', {'vaultPath': 'secret/data/test/drift'}, 'POST')[0] != 200:
-                    raise RuntimeError('Unable to modify owned Vault folder drift')
-                wait('Team binding drift repair', lambda: set(mappings()) == {'operations'} and mappings()['operations'] != mapping_id and folder() == 'secret/data/test/operations')
-                patch(team, {'externalGroupIds': None, 'vaultFolder': None, 'name': team_name + '-omitted'})
+                wait('Team binding drift repair', lambda: set(mappings()) == {'operations'} and mappings()['operations'] != mapping_id)
+                patch(team, {'externalGroupIds': None, 'name': team_name + '-omitted'})
                 wait('Team omitted-field update', lambda: api(path)[1]['name'] == team_name + '-omitted' and condition(team, 'True'))
                 time.sleep(7)
-                if set(mappings()) != {'operations'} or folder() != 'secret/data/test/operations':
+                if set(mappings()) != {'operations'}:
                     raise RuntimeError('Omitted team fields changed existing bindings')
-                if any(key in observation(team)['spec']['forProvider'] for key in ('externalGroupIds', 'vaultFolder')):
+                if any(key in observation(team)['spec']['forProvider'] for key in ('externalGroupIds',)):
                     raise RuntimeError('Team bindings were late initialized into managed configuration')
-                patch(team, {'externalGroupIds': [], 'vaultFolder': ''})
-                wait('Team explicit clear', lambda: not mappings() and folder() == '' and condition(team, 'True'))
+                patch(team, {'externalGroupIds': []})
+                wait('Team explicit clear', lambda: not mappings() and condition(team, 'True'))
                 if observation(team)['metadata']['annotations']['crossplane.io/external-name'] != team_id:
                     raise RuntimeError('Binding changes replaced the team')
                 delete(team)
@@ -966,7 +958,7 @@ def main():
                 secret_name = 'cp-source-pat-' + run + '-' + scope
                 kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
                     'metadata': {'name': secret_name, 'namespace': args.namespace, 'labels': {'provider-test-run': run}},
-                    'stringData': {'input': 'secret/data/test/ollama#api_key' if args.readonly_vault else 'synthetic-local-only'}})
+                    'stringData': {'input': 'synthetic-local-only'}})
                 leases.append((['-n', args.namespace], 'secrets', secret_name))
                 ref = {'name': secret_name, 'key': 'input'}
                 if scope == 'cluster':
@@ -1051,7 +1043,7 @@ def main():
                         kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
                             'metadata': {'name': secret_name, 'namespace': args.namespace, 'labels': {'provider-test-run': run}},
                             'stringData': {'input': value}})
-                    input_value = 'secret/data/test/ollama#api_key' if args.readonly_vault else 'synthetic-local-only'
+                    input_value = 'synthetic-local-only'
                     write_github_input(input_value)
                     secret_lease = (['-n', args.namespace], 'secrets', secret_name)
                     leases.append(secret_lease)
@@ -1077,7 +1069,7 @@ def main():
                     if api(endpoint + '/' + identifier, {'name': 'Out of band GitHub registration'}, 'PUT')[0] != 200:
                         raise RuntimeError('Unable to inject owned GitHub registration drift')
                     wait('GitHub registration drift repair', lambda: github_value()['name'] == updated_name)
-                    write_github_input('secret/data/test/openai#api_key' if args.readonly_vault else 'synthetic-local-replacement')
+                    write_github_input('synthetic-local-replacement')
                     patch(lease, {'name': updated_name + ' credential changed'})
                     wait('GitHub credential input update', lambda: condition(lease, 'True') and github_value()['name'] == updated_name + ' credential changed')
                     if observation(lease)['metadata']['annotations']['crossplane.io/external-name'] != identifier:
@@ -1153,7 +1145,7 @@ def main():
                 import base64
                 team, team_id, _ = create(scope, 'team', 'Team', 'teams', {'name': 'cp-routing-billing-' + run + '-' + scope}, '-routing')
                 provider, provider_id, _ = create(scope, 'llm', 'ModelProvider', 'providerkeys',
-                    {'name': 'cp-routing-provider-' + run + '-' + scope, 'llmProvider': 'ollama', 'baseUrl': args.llm_base_url, **vault_fixture}, '-routing')
+                    {'name': 'cp-routing-provider-' + run + '-' + scope, 'llmProvider': 'ollama', 'baseUrl': args.llm_base_url, **model_fixture}, '-routing')
                 provider_fields = [{'provider': 'ollama', 'providerApiKeyIdRef': {'name': provider[2]}}]
                 cap = {'limitValue': 100, 'cleanupInterval': 'calendar_month'}
                 def connection_value(lease, key):
@@ -1260,7 +1252,7 @@ def main():
 
             if 'remote-agents' in scope_cases:
                 secret_name = 'cp-remote-auth-' + run + '-' + scope
-                credential = 'secret/data/test/ollama#api_key' if args.readonly_vault else 'synthetic-local-only'
+                credential = 'synthetic-local-only'
                 auth = {'type': 'api_key', 'headerName': 'X-API-Key', 'credential': credential}
                 def write_auth(value):
                     kube('apply', '-f', '-', payload={'apiVersion': 'v1', 'kind': 'Secret',
@@ -1420,7 +1412,7 @@ def main():
                 key_lease, key_id, key_obj = create(scope, 'llm', 'ModelProvider', 'providerkeys',
                         {'name': key_name, 'llmProvider': 'ollama-native',
                          'baseUrl': args.llm_base_url, 'extraHeadersSecretRef': secret_ref,
-                         'labels': [{'key': 'provider-test', 'value': run}], **vault_fixture})
+                         'labels': [{'key': 'provider-test', 'value': run}], **model_fixture})
                 key_path = '/api/llm-provider-api-keys/' + key_id
                 status, key_wire = api(key_path)
                 if status != 200 or key_wire.get('extraHeaders', {}).get('X-Provider-Test') != header_value:
@@ -1738,7 +1730,7 @@ def main():
                     ('skill', 'Skill', 'skills', 'skill', {'description': 'Synthetic initial grants', 'content': 'Synthetic body.', 'files': {}, 'environmentIds': [], 'labels': []}),
                     ('credential', 'Credential', 'runtimecredentials', 'credential', {'key': 'cp-grant-' + run + '-' + scope}),
                     ('llm', 'ModelProvider', 'providerkeys', 'llmProviderApiKey', {'llmProvider': 'ollama', 'shared': True,
-                        **(vault_fixture if args.readonly_vault else {'apiKeySecretRef': secret_ref}), 'baseUrl': args.llm_base_url}),
+                        'apiKeySecretRef': secret_ref, 'baseUrl': args.llm_base_url}),
                 ]
                 for group, kind, plural, resource_type, extra in cases:
                     if any(item['scope'] == scope and item['resource'] == kind + 'Sharing' for item in results):

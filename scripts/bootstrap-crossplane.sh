@@ -263,7 +263,7 @@ kill -0 "$(cat "$PID_FILE")" 2>/dev/null || {
 log "Crossplane ready. Controller log: ${WORK_DIR}/controller.log"
 log
 log "  scripts/integration/crossplane-lifecycle.py --cases apps \\"
-log "    --api-url \"\$ARCHESTRA_BASE_URL\" --key-file ${WORK_DIR}/api-key --readonly-vault \\"
+log "    --api-url \"\$ARCHESTRA_BASE_URL\" --key-file ${WORK_DIR}/api-key \\"
 log "    --llm-base-url \"\$ARCHESTRA_TEST_LLM_BASE_URL\" \\"
 log "    --mcp-url http://provider-mcp-mock.default.svc.cluster.local:19006/mcp \\"
 log "    --kubeconfig ${WORK_DIR}/kubeconfig --provider-config ${PROVIDER_CONFIG} \\"

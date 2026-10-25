@@ -38,7 +38,7 @@ resource "archestra_github_app" "example" {
 ### Optional
 
 - `github_url` (String) API base URL of the existing GitHub server.
-- `private_key` (String, Sensitive) Existing write-only credential or read-only Vault reference; changing it rotates the stored value.
+- `private_key` (String, Sensitive) Write-only credential; changing it rotates the stored value.
 
 ### Read-Only
 

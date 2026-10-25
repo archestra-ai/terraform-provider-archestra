@@ -10,7 +10,7 @@ import (
 
 func TestAccLLMProviderApiKeyResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t); testAccRequireByosEnabled(t) },
+		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
@@ -19,8 +19,6 @@ func TestAccLLMProviderApiKeyResource(t *testing.T) {
 					resource.TestCheckResourceAttr("archestra_model_provider.test", "name", "Test Ollama Key"),
 					resource.TestCheckResourceAttr("archestra_model_provider.test", "llm_provider", "ollama"),
 					resource.TestCheckResourceAttr("archestra_model_provider.test", "is_primary", "false"),
-					resource.TestCheckResourceAttr("archestra_model_provider.test", "vault_secret_path", "secret/data/test/ollama"),
-					resource.TestCheckResourceAttr("archestra_model_provider.test", "vault_secret_key", "api_key"),
 					resource.TestCheckResourceAttrSet("archestra_model_provider.test", "id"),
 				),
 			},
@@ -28,7 +26,7 @@ func TestAccLLMProviderApiKeyResource(t *testing.T) {
 				ResourceName:            "archestra_model_provider.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"vault_secret_path", "vault_secret_key"},
+				ImportStateVerifyIgnore: []string{"api_key"},
 			},
 			{
 				Config: testAccLLMProviderApiKeyResourceConfig("Updated Ollama Key", "ollama", false),
@@ -42,7 +40,7 @@ func TestAccLLMProviderApiKeyResource(t *testing.T) {
 
 func TestAccLLMProviderApiKeyResourceWithDefault(t *testing.T) {
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t); testAccRequireByosEnabled(t) },
+		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
@@ -65,7 +63,7 @@ func TestAccLLMProviderApiKeyResourceWithDefault(t *testing.T) {
 
 func TestAccLLMProviderApiKeyResourceGemini(t *testing.T) {
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t); testAccRequireByosEnabled(t) },
+		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
@@ -80,7 +78,7 @@ func TestAccLLMProviderApiKeyResourceGemini(t *testing.T) {
 }
 
 func TestAccLLMProviderApiKeyResourceInvalidProvider(t *testing.T) {
-	// Pure plan-time schema validation; does not hit the backend so no BYOS gate.
+	// Pure plan-time schema validation.
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -95,7 +93,7 @@ func TestAccLLMProviderApiKeyResourceInvalidProvider(t *testing.T) {
 
 func TestAccLLMProviderApiKeyResourceOwnershipMetadata(t *testing.T) {
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { testAccPreCheck(t); testAccRequireByosEnabled(t) },
+		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
@@ -111,21 +109,20 @@ func TestAccLLMProviderApiKeyResourceOwnershipMetadata(t *testing.T) {
 				ResourceName:            "archestra_model_provider.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"vault_secret_path", "vault_secret_key"},
+				ImportStateVerifyIgnore: []string{"api_key"},
 			},
 		},
 	})
 }
 
-//nolint:unparam // llmProvider is always "ollama" today (BYOS tests seed a single vault secret); kept parameterised for future coverage.
+//nolint:unparam // llmProvider is always "ollama" today (the fixture uses Ollama); kept parameterised for future coverage.
 func testAccLLMProviderApiKeyResourceConfig(name string, llmProvider string, isDefault bool) string {
 	return fmt.Sprintf(`
 resource "archestra_model_provider" "test" {
   name                    = %[1]q
   llm_provider            = %[2]q
   is_primary = %[3]t
-  vault_secret_path       = "secret/data/test/ollama"
-  vault_secret_key        = "api_key"
+  api_key                 = "synthetic-local-test-key"
 }
 `, name, llmProvider, isDefault)
 }

@@ -58,7 +58,7 @@ invalidation aligned with the modules each job builds. Fresh lifecycle stacks
 pull the platform directly into Kind instead of pulling and transferring a
 second copy from Docker. Lifecycle controllers poll at one second in CI to
 exercise the same drift assertions with less idle waiting.
-Both native and lifecycle jobs use the shared bootstrap, which seeds Vault
+Both native and lifecycle jobs use the shared bootstrap, which starts Vault
 before the backend's first start. Existing local stacks still restart the
 backend when repairing Vault.
 
@@ -116,13 +116,12 @@ export ARCHESTRA_API_KEY=$(./scripts/bootstrap-api-key.sh)  # uses seeded admin@
 make testacc
 ```
 
-**Full suite (BYOS / Vault / EMC subsets):**
+**Full suite (Vault / EMC subsets):**
 
 ```bash
 export ARCHESTRA_TEST_IDP_ID=$(./scripts/bootstrap-test-idp.sh)  # OIDC IdP for the EMC test
 ./scripts/bootstrap-ollama-mock.sh                                # kind-cluster only
 ./scripts/bootstrap-vault.sh                                      # kind-cluster only
-export ARCHESTRA_READONLY_VAULT_ENABLED=true
 make testacc
 ```
 
@@ -130,11 +129,10 @@ The Vault and Ollama-mock scripts apply manifests under
 [`scripts/k8s/`](scripts/k8s/) against your current `kubectl` context;
 they assume the Helm chart is deployed in a Kind cluster (the same
 shape CI uses). For local-only Docker setups, skip them and run the
-non-BYOS subset.
+subset that does not need Vault.
 
 Test gates worth knowing:
 
-- `ARCHESTRA_READONLY_VAULT_ENABLED=true` — gates the vault-ref test suite (`TestAccMcpRegistryCatalogItemResourceWithVaultRefs` and all `TestAccLLMProviderApiKeyResource*`). Backend must run with `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` + an enterprise license.
 - `ARCHESTRA_TEST_IDP_ID=<uuid>` — gates `TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig`. `bootstrap-test-idp.sh` provisions one and prints its UUID.
 
 CI invokes the same `scripts/bootstrap-*.sh` helpers — see
@@ -241,7 +239,7 @@ For each new mutable resource:
 - [ ] **Create/Read/Update/Delete** — Use `MergePatch` for Create + Update (Create's prior is a typed-null; Update's prior is `req.State.Raw`). Read populates state from the API response (drift-honest). Delete calls the typed client method.
 - [ ] **`ImportState`** — Pass through the resource ID; the framework will populate the rest via Read.
 - [ ] **Register** — Add `New<Name>Resource` to the slice in [provider.go](internal/provider/provider.go) `Resources()`.
-- [ ] **Acceptance tests** — In `<resource>_test.go`. Cover Create, Update, ImportState, and the resource's edge cases. For BYOS / EE / EMC paths, use `testAccRequireByosEnabled(t)` so missing setup fails loudly under `make testacc` rather than silently skipping.
+- [ ] **Acceptance tests** — In `<resource>_test.go`. Cover Create, Update, ImportState, and the resource's edge cases. For EE / EMC paths, require their setup explicitly so missing configuration fails loudly under `make testacc`.
 - [ ] **Examples** — Drop a minimal HCL example in `examples/resources/archestra_<name>/resource.tf`. Reference it from your `Schema()` MarkdownDescription if helpful.
 - [ ] **`make generate`** — Regenerates docs from schema + examples.
 - [ ] **Verify all 4 test gates green** — `make test` (unit + drift checks), `make testacc` (against the local stack), `go vet ./...`, `make lint`.
@@ -315,7 +313,7 @@ scripts/bootstrap-crossplane.sh                       # also needs go, goimports
 eval "$(scripts/bootstrap-local-stack.sh --print-env)"
 W=~/.cache/archestra-provider-crossplane/archestra-ci-cluster
 python3 scripts/integration/crossplane-lifecycle.py --cases apps \
-  --api-url "$ARCHESTRA_BASE_URL" --key-file "$W/api-key" --readonly-vault \
+  --api-url "$ARCHESTRA_BASE_URL" --key-file "$W/api-key" \
   --llm-base-url "$ARCHESTRA_TEST_LLM_BASE_URL" \
   --mcp-url http://provider-mcp-mock.default.svc.cluster.local:19006/mcp \
   --kubeconfig "$W/kubeconfig" --provider-config default \

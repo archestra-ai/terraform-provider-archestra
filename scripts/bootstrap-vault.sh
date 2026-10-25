@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 #
-# Deploys a dev-mode Vault, seeds the test secret, and restarts the
+# Deploys a dev-mode Vault and restarts the
 # Archestra backend so it picks up the now-reachable Vault. Required for
-# BYOS-mode acceptance tests (ARCHESTRA_READONLY_VAULT_ENABLED=true).
+# managed Vault acceptance tests.
 #
 # WARNING: Dev mode disables auth and persists nothing — only use against
 # ephemeral test clusters. Logic is shared between CI and any Kind-based
 # local cluster; .github/values-ci.yaml configures the backend with
 # ARCHESTRA_HASHICORP_VAULT_ADDR + ARCHESTRA_HASHICORP_VAULT_TOKEN that
-# match the values seeded here.
+# match the dev server.
 #
 # Required tools: kubectl with a context pointing at the target cluster.
 #
-# Idempotent: kubectl apply / Vault dev re-seed are both safe to re-run.
+# Reapplying the dev manifest preserves the running test Vault.
 
 set -euo pipefail
 
@@ -31,15 +31,6 @@ kubectl apply -f "$MANIFEST"
 
 echo "Waiting for vault rollout..." >&2
 kubectl rollout status deployment/vault --namespace default --timeout=120s
-
-# Seed the secret referenced by LLM provider API key tests.
-echo "Seeding secret/data/test/ollama..." >&2
-kubectl run vault-seed --rm -i --restart=Never --image=curlimages/curl:8.10.1 -- \
-  curl -sS --connect-timeout 5 --max-time 15 \
-    -X POST "http://vault.default.svc.cluster.local:8200/v1/secret/data/test/ollama" \
-    -H "X-Vault-Token: root" \
-    -H "Content-Type: application/json" \
-    -d '{"data":{"api_key":"test-api-key-value","api_key_rotated":"test-api-key-value-rotated"}}'
 
 # The Archestra backend reads Vault config at startup; if it came up before
 # Vault was reachable, restart so it can connect now.

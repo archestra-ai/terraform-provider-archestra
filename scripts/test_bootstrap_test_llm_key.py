@@ -55,23 +55,22 @@ class FixtureTests(unittest.TestCase):
         self.server.server_close()
         self.thread.join()
 
-    def test_current_byos_payload_has_no_retired_scope_or_inline_secret(self):
-        self.assertEqual(seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url, True), 'fixture-id')
+    def test_current_payload_sends_inline_credential_without_scope(self):
+        self.assertEqual(seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url), 'fixture-id')
         payload = self.created[0]
-        self.assertEqual(payload['vaultSecretPath'], 'secret/data/test/ollama')
+        self.assertEqual(payload['apiKey'], 'synthetic-acceptance-model-key')
         self.assertNotIn('scope', payload)
-        self.assertNotIn('apiKey', payload)
 
     def test_reuses_exact_existing_fixture_without_writing(self):
         self.existing = [{'id': 'existing-id', 'name': 'terraform-acceptance-model-fixture', 'provider': 'ollama', 'baseUrl': self.model_url}]
-        self.assertEqual(seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url, False), 'existing-id')
+        self.assertEqual(seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url), 'existing-id')
         self.assertEqual(self.created, [])
         self.assertEqual(self.updated, [])
 
     def test_rerun_updates_fixture_to_the_requested_endpoint(self):
         self.existing = [{'id': 'existing-id', 'name': 'terraform-acceptance-model-fixture', 'provider': 'ollama',
                           'baseUrl': 'http://ollama-mock.default.svc.cluster.local:11434'}]
-        self.assertEqual(seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url, True), 'existing-id')
+        self.assertEqual(seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url), 'existing-id')
         self.assertEqual(self.updated, [('/api/llm-provider-api-keys/existing-id', {'baseUrl': self.model_url})])
         self.assertEqual(self.created, [])
 
@@ -84,14 +83,14 @@ class FixtureTests(unittest.TestCase):
     def test_provider_mismatch_does_not_overwrite_an_existing_object(self):
         self.existing = [{'id': 'existing-id', 'name': 'terraform-acceptance-model-fixture', 'provider': 'other', 'baseUrl': self.model_url}]
         with self.assertRaises(ValueError):
-            seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url, False)
+            seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url)
         self.assertEqual(self.created, [])
         self.assertEqual(self.updated, [])
 
     def test_authentication_is_not_forwarded_to_redirects(self):
         self.redirect = True
         with self.assertRaisesRegex(RuntimeError, 'redirects are refused'):
-            seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url, False)
+            seed.ensure_fixture(self.url, 'synthetic-auth', self.model_url)
         self.assertEqual(self.created, [])
 
 

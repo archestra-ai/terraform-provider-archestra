@@ -72,12 +72,8 @@ type MCPServerRegistryResourceModel struct {
 	DeploymentSpecYaml  types.String `tfsdk:"deployment_spec_yaml"`
 	Labels              types.List   `tfsdk:"labels"`
 
-	ClientSecretId             types.String `tfsdk:"client_secret_id"`
-	LocalConfigSecretId        types.String `tfsdk:"local_config_secret_id"`
-	LocalConfigVaultKey        types.String `tfsdk:"local_config_vault_key"`
-	LocalConfigVaultPath       types.String `tfsdk:"local_config_vault_path"`
-	OauthClientSecretVaultKey  types.String `tfsdk:"oauth_client_secret_vault_key"`
-	OauthClientSecretVaultPath types.String `tfsdk:"oauth_client_secret_vault_path"`
+	ClientSecretId      types.String `tfsdk:"client_secret_id"`
+	LocalConfigSecretId types.String `tfsdk:"local_config_secret_id"`
 
 	EnterpriseManagedConfig *EnterpriseManagedConfigModel `tfsdk:"enterprise_managed_config"`
 
@@ -306,7 +302,7 @@ func (r *MCPServerRegistryResource) Metadata(ctx context.Context, req resource.M
 
 func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Version:             1,
+		Version:             2,
 		MarkdownDescription: "Catalog entry / template for an MCP server in the Private MCP Registry. The catalog item alone doesn't run anything; pair it with `archestra_mcp_server` to run an instance.",
 
 		Attributes: map[string]schema.Attribute{
@@ -670,32 +666,16 @@ func (r *MCPServerRegistryResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"client_secret_id": schema.StringAttribute{
-				MarkdownDescription: "UUID of a stored secret holding the OAuth client secret. Mutually exclusive with inline `oauth_config.client_secret`. Computed when the backend auto-creates a BYOS vault reference.",
+				MarkdownDescription: "UUID of a stored secret holding the OAuth client secret. Mutually exclusive with inline `oauth_config.client_secret`. Computed when the backend stores inline credentials.",
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"local_config_secret_id": schema.StringAttribute{
-				MarkdownDescription: "UUID of a stored secret holding local_config environment values. Computed when the backend auto-creates a BYOS vault reference.",
+				MarkdownDescription: "UUID of a stored secret holding local_config environment values. Computed when the backend stores inline credentials.",
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
-			},
-			"local_config_vault_key": schema.StringAttribute{
-				MarkdownDescription: "BYOS vault key for local_config secrets.",
-				Optional:            true,
-			},
-			"local_config_vault_path": schema.StringAttribute{
-				MarkdownDescription: "BYOS vault path for local_config secrets.",
-				Optional:            true,
-			},
-			"oauth_client_secret_vault_key": schema.StringAttribute{
-				MarkdownDescription: "BYOS vault key for the OAuth client secret.",
-				Optional:            true,
-			},
-			"oauth_client_secret_vault_path": schema.StringAttribute{
-				MarkdownDescription: "BYOS vault path for the OAuth client secret.",
-				Optional:            true,
 			},
 			"enterprise_managed_config": schema.SingleNestedAttribute{
 				MarkdownDescription: "Enterprise-managed credential configuration. Binds this catalog item to an identity provider that issues credentials at runtime rather than using static secrets.",
@@ -946,7 +926,6 @@ func (r *MCPServerRegistryResource) mapGetResponseToState(ctx context.Context, d
 	} else {
 		data.LocalConfigSecretId = types.StringNull()
 	}
-	// Vault key/path are write-only on the backend; preserve whatever is already in state.
 
 	data.EnterpriseManagedConfig = mapCatalogEnterpriseManagedConfig(apiResp)
 

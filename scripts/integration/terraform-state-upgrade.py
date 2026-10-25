@@ -25,8 +25,6 @@ def main():
     p.add_argument('--old-provider-directory', type=Path, required=True)
     p.add_argument('--new-provider-directory', type=Path, required=True)
     p.add_argument('--evidence', type=Path, required=True)
-    p.add_argument('--vault-secret-path', help='Existing isolated Vault fixture path for read-only Vault backends')
-    p.add_argument('--vault-secret-key', default='api_key')
     p.add_argument('--case', choices=('base', 'identity', 'model', 'retained'), default='base')
     args = p.parse_args()
     for endpoint in (args.api_url, args.model_url):
@@ -66,6 +64,7 @@ resource "archestra_mcp_registry_entry" "test" {
 resource "archestra_model_provider" "test" {
  name = "NAME-key"
  llm_provider = "ollama"
+ api_key = "synthetic-local-only"
  base_url = MODEL
 }
 resource "archestra_organization_settings" "test" {
@@ -73,9 +72,6 @@ resource "archestra_organization_settings" "test" {
  color_theme = "cosmic-night"
 }
 '''.replace('NAME', name).replace('MODEL', json.dumps(args.model_url)))
-    if args.vault_secret_path:
-        config = (work / 'main.tf').read_text().replace(' llm_provider = "ollama"', ' llm_provider = "ollama"\n vault_secret_path = ' + json.dumps(args.vault_secret_path) + '\n vault_secret_key = ' + json.dumps(args.vault_secret_key))
-        (work / 'main.tf').write_text(config)
     if args.case == 'identity':
         (work / 'main.tf').write_text('''terraform {
  required_providers {
@@ -204,18 +200,6 @@ resource "archestra_team_external_group" "test" {
             os.chmod(work / 'saved-secret.tfstate', 0o600)
             run('restore-synthetic-saved-secret', 'state', 'push', 'saved-secret.tfstate')
             evidence['identity_fixture_source'] = 'Actual v2 import; synthetic saved secret restored because v2 cannot read current redacted secrets. This models saved pre-redaction state, not a successful v2 create against the current API.'
-        if args.vault_secret_path and args.case != 'identity':
-            for resource in old['resources']:
-                if resource['type'] == 'archestra_model_provider':
-                    attributes = resource['instances'][0]['attributes']
-                    attributes['vault_secret_path'] = args.vault_secret_path
-                    attributes['vault_secret_key'] = args.vault_secret_key
-            old['serial'] += 1
-            saved = work / 'saved-vault-reference.tfstate'
-            saved.write_text(json.dumps(old))
-            os.chmod(saved, 0o600)
-            run('restore-synthetic-saved-vault-reference', 'state', 'push', str(saved))
-            evidence['vault_fixture_source'] = 'Actual v2 import with the configured synthetic Vault reference restored to saved state; the current API redacts write-only Vault reference inputs.'
         if args.case == 'retained':
             for resource in old['resources']:
                 if resource['type'] == 'archestra_mcp_server':

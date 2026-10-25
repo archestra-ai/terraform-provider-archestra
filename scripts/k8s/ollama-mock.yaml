@@ -2,7 +2,7 @@
 #
 # The Archestra backend's `testProviderApiKey` flow probes the Ollama
 # provider's `/v1/models` endpoint when validating LLM provider keys. Without
-# a reachable Ollama, BYOS-vault tests for Ollama keys fail. This stub returns
+# a reachable Ollama, model provider tests for Ollama keys fail. This stub returns
 # a static, OpenAI-compatible model list so validation passes.
 #
 # Applied by scripts/bootstrap-ollama-mock.sh. Same manifest is used by CI and

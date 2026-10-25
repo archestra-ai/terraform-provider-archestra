@@ -35,7 +35,7 @@ export ARCHESTRA_API_KEY="your-api-key"
 make testacc                  # Run acceptance tests against hosted environment
 ```
 
-**One-shot local setup for the *full* suite (EE + BYOS + EMC):**
+**One-shot local setup for the *full* suite (EE + Vault + EMC):**
 
 ```bash
 scripts/bootstrap-local-stack.sh                          # ~90 s, idempotent
@@ -47,11 +47,11 @@ scripts/bootstrap-local-stack.sh --down                   # tear down
 The script runs the platform image + `hashicorp/vault:1.18` + an Ollama
 mock (hashicorp/http-echo) on a shared docker network, with
 `ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED=true` and
-`ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT`. It also seeds the BYOS test
-secret and provisions the EMC IdP. The platform image tag tracks
+`ARCHESTRA_SECRETS_MANAGER=VAULT`. It also provisions the EMC IdP.
+The platform image tag tracks
 `ARCHESTRA_VERSION` (default from `platform-version.txt`;
 override the env var to test against a different release). Without the
-script, the BYOS / EMC / LLM-model subsets `t.Fatal` with actionable
+script, the EMC / LLM-model subsets `t.Fatal` with actionable
 messages instead of running against an under-configured backend.
 
 ### Code Quality
@@ -97,7 +97,6 @@ One file per resource (`internal/provider/resource_*.go`) and data source (`data
 
 Acceptance-test setup is covered in [Development Commands → Acceptance Tests](#acceptance-tests). Some tests opt in via extra environment variables:
 
-- `ARCHESTRA_READONLY_VAULT_ENABLED=true` — required by BYOS-vault-dependent tests (`TestAccMcpRegistryCatalogItemResourceWithVaultRefs` and all `TestAccLLMProviderApiKeyResource*`). The helper `testAccRequireByosEnabled` calls `t.Fatal` loudly instead of silently skipping, so a DB-mode backend fails fast with an actionable message. The backend must also run with `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` plus an enterprise license.
 - `ARCHESTRA_TEST_IDP_ID=<uuid>` — run `TestAccMcpRegistryCatalogItemResourceWithEnterpriseManagedConfig` against an existing identity provider; skipped otherwise because the EE IdP API is license-gated.
 
 ## Important Notes
@@ -110,6 +109,6 @@ Acceptance-test setup is covered in [Development Commands → Acceptance Tests](
 - Conditional vs bulk-default policy resources hit different backend endpoints — `archestra_tool_invocation_policy` (with non-empty `conditions`) maps to the UI's "Add Policy" button; `archestra_tool_invocation_policy_default` (with `tool_ids` + `action`) maps to the UI's `DEFAULT` row. Same split for `archestra_trusted_data_policy` ↔ `_default` and for `archestra_agent.tools` ↔ `archestra_agent.tools`. Don't fake a default with a wildcard regex — use the `_default` resource.
 - `MarkdownDescription` on every schema attribute is one short sentence stating what the field is (matches AWS/GCP/Datadog convention) — multi-paragraph rules, tutorials, or how-to guidance belong in the example file's comments, not the schema reference table.
 - Every bug fix needs an acceptance test that would have caught it — coverage gap = fix gap, the regression test is part of the fix, not a follow-up.
-- Tests gated on optional env vars must `t.Fatal` with an actionable message (helper `testAccRequireByosEnabled` is the reference pattern), never `t.Skip` — a silently-skipped test makes a misconfigured backend look like a green run.
+- Tests gated on optional env vars must `t.Fatal` with an actionable message, never `t.Skip` — a silently-skipped test makes a misconfigured backend look like a green run.
 - When a bug's root cause might be in the backend, read it. Many provider behaviors are constrained by platform semantics not visible in the OpenAPI spec (TOON scope must be `team` for the team flag to be honored; bulk-upsert never deletes orphans; slugified tool-name prefix is `catalog_item.name` for local installs and `install.name` for remote) — these are only discoverable in the platform repo source.
 - Keep code comments tight. Explain WHY when non-obvious (hidden constraint, upstream-bug workaround), not WHAT — the code already shows that. Multi-paragraph rationale belongs in ARCHITECTURE.md or the PR description, not inline.

@@ -184,7 +184,7 @@ jobs:
           read -ra scopes <<< "$SCOPES"
           python3 scripts/ci_crossplane_tests.py --cases "${groups[@]}" --scopes "${scopes[@]}" --jobs 4 \
             --evidence "$RUNNER_TEMP/crossplane-lifecycle-$SHARD.json" -- \
-            --api-url "$ARCHESTRA_BASE_URL" --key-file "$work/api-key" --readonly-vault \
+            --api-url "$ARCHESTRA_BASE_URL" --key-file "$work/api-key" \
             --llm-base-url "$ARCHESTRA_TEST_LLM_BASE_URL" \
             --mcp-url http://provider-mcp-mock.default.svc.cluster.local:19006/mcp \
             --kubeconfig "$work/kubeconfig" --provider-config default \

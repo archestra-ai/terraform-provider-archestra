@@ -179,7 +179,7 @@ func ConfigureResources(p *ujconfig.Provider) {
 		r.Kind = "Credential"
 	})
 	p.AddResourceConfigurator("archestra_team", func(r *ujconfig.Resource) {
-		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "external_group_ids", "vault_folder", "roles")
+		r.LateInitializer.IgnoredFields = append(r.LateInitializer.IgnoredFields, "external_group_ids", "roles")
 		r.ShortGroup = "team"
 		r.Kind = "Team"
 	})

@@ -1096,6 +1096,7 @@ const (
 	CreateLimitJSONBodyCleanupIntervalCalendarMonth      CreateLimitJSONBodyCleanupInterval = "calendar_month"
 	CreateLimitJSONBodyCleanupIntervalCalendarWeekMonday CreateLimitJSONBodyCleanupInterval = "calendar_week_monday"
 	CreateLimitJSONBodyCleanupIntervalCalendarWeekSunday CreateLimitJSONBodyCleanupInterval = "calendar_week_sunday"
+	CreateLimitJSONBodyCleanupIntervalMinute             CreateLimitJSONBodyCleanupInterval = "minute"
 	CreateLimitJSONBodyCleanupIntervalN12h               CreateLimitJSONBodyCleanupInterval = "12h"
 	CreateLimitJSONBodyCleanupIntervalN1h                CreateLimitJSONBodyCleanupInterval = "1h"
 	CreateLimitJSONBodyCleanupIntervalN1m                CreateLimitJSONBodyCleanupInterval = "1m"
@@ -1116,9 +1117,13 @@ const (
 
 // Defines values for CreateLimitJSONBodyLimitType.
 const (
-	CreateLimitJSONBodyLimitTypeMcpServerCalls CreateLimitJSONBodyLimitType = "mcp_server_calls"
-	CreateLimitJSONBodyLimitTypeTokenCost      CreateLimitJSONBodyLimitType = "token_cost"
-	CreateLimitJSONBodyLimitTypeToolCalls      CreateLimitJSONBodyLimitType = "tool_calls"
+	CreateLimitJSONBodyLimitTypeMcpServerCalls    CreateLimitJSONBodyLimitType = "mcp_server_calls"
+	CreateLimitJSONBodyLimitTypeRequests          CreateLimitJSONBodyLimitType = "requests"
+	CreateLimitJSONBodyLimitTypeRequestsPerMinute CreateLimitJSONBodyLimitType = "requests_per_minute"
+	CreateLimitJSONBodyLimitTypeTokenCost         CreateLimitJSONBodyLimitType = "token_cost"
+	CreateLimitJSONBodyLimitTypeTokens            CreateLimitJSONBodyLimitType = "tokens"
+	CreateLimitJSONBodyLimitTypeTokensPerMinute   CreateLimitJSONBodyLimitType = "tokens_per_minute"
+	CreateLimitJSONBodyLimitTypeToolCalls         CreateLimitJSONBodyLimitType = "tool_calls"
 )
 
 // Defines values for UpdateLimitJSONBodyCleanupInterval.
@@ -1127,6 +1132,7 @@ const (
 	UpdateLimitJSONBodyCleanupIntervalCalendarMonth      UpdateLimitJSONBodyCleanupInterval = "calendar_month"
 	UpdateLimitJSONBodyCleanupIntervalCalendarWeekMonday UpdateLimitJSONBodyCleanupInterval = "calendar_week_monday"
 	UpdateLimitJSONBodyCleanupIntervalCalendarWeekSunday UpdateLimitJSONBodyCleanupInterval = "calendar_week_sunday"
+	UpdateLimitJSONBodyCleanupIntervalMinute             UpdateLimitJSONBodyCleanupInterval = "minute"
 	UpdateLimitJSONBodyCleanupIntervalN12h               UpdateLimitJSONBodyCleanupInterval = "12h"
 	UpdateLimitJSONBodyCleanupIntervalN1h                UpdateLimitJSONBodyCleanupInterval = "1h"
 	UpdateLimitJSONBodyCleanupIntervalN1m                UpdateLimitJSONBodyCleanupInterval = "1m"
@@ -1136,9 +1142,13 @@ const (
 
 // Defines values for UpdateLimitJSONBodyLimitType.
 const (
-	UpdateLimitJSONBodyLimitTypeMcpServerCalls UpdateLimitJSONBodyLimitType = "mcp_server_calls"
-	UpdateLimitJSONBodyLimitTypeTokenCost      UpdateLimitJSONBodyLimitType = "token_cost"
-	UpdateLimitJSONBodyLimitTypeToolCalls      UpdateLimitJSONBodyLimitType = "tool_calls"
+	UpdateLimitJSONBodyLimitTypeMcpServerCalls    UpdateLimitJSONBodyLimitType = "mcp_server_calls"
+	UpdateLimitJSONBodyLimitTypeRequests          UpdateLimitJSONBodyLimitType = "requests"
+	UpdateLimitJSONBodyLimitTypeRequestsPerMinute UpdateLimitJSONBodyLimitType = "requests_per_minute"
+	UpdateLimitJSONBodyLimitTypeTokenCost         UpdateLimitJSONBodyLimitType = "token_cost"
+	UpdateLimitJSONBodyLimitTypeTokens            UpdateLimitJSONBodyLimitType = "tokens"
+	UpdateLimitJSONBodyLimitTypeTokensPerMinute   UpdateLimitJSONBodyLimitType = "tokens_per_minute"
+	UpdateLimitJSONBodyLimitTypeToolCalls         UpdateLimitJSONBodyLimitType = "tool_calls"
 )
 
 // Defines values for GetModelsWithApiKeysParamsAccess.
@@ -2170,6 +2180,7 @@ const (
 	GetToolsWithAssignmentsParamsObservedByClientCursor        GetToolsWithAssignmentsParamsObservedByClient = "cursor"
 	GetToolsWithAssignmentsParamsObservedByClientKilo          GetToolsWithAssignmentsParamsObservedByClient = "kilo"
 	GetToolsWithAssignmentsParamsObservedByClientOpencode      GetToolsWithAssignmentsParamsObservedByClient = "opencode"
+	GetToolsWithAssignmentsParamsObservedByClientPi            GetToolsWithAssignmentsParamsObservedByClient = "pi"
 )
 
 // ContextualRetrievalMode defines model for ContextualRetrievalMode.
@@ -3897,14 +3908,10 @@ type CreateInternalMcpCatalogItemJSONBody struct {
 		ServiceAccount   *string                                                                   `json:"serviceAccount,omitempty"`
 		TransportType    *CreateInternalMcpCatalogItemJSONBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 	} `json:"localConfig"`
-	LocalConfigSecretId        *openapi_types.UUID `json:"localConfigSecretId"`
-	LocalConfigVaultKey        *string             `json:"localConfigVaultKey,omitempty"`
-	LocalConfigVaultPath       *string             `json:"localConfigVaultPath,omitempty"`
-	Multitenant                *bool               `json:"multitenant,omitempty"`
-	Name                       string              `json:"name"`
-	OauthClientSecretVaultKey  *string             `json:"oauthClientSecretVaultKey,omitempty"`
-	OauthClientSecretVaultPath *string             `json:"oauthClientSecretVaultPath,omitempty"`
-	OauthConfig                *struct {
+	LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
+	Multitenant         *bool               `json:"multitenant,omitempty"`
+	Name                string              `json:"name"`
+	OauthConfig         *struct {
 		AccessTokenEnvVar        *string                                                   `json:"access_token_env_var,omitempty"`
 		AdditionalScopes         *[]string                                                 `json:"additional_scopes,omitempty"`
 		Audience                 *string                                                   `json:"audience,omitempty"`
@@ -4138,14 +4145,10 @@ type UpdateInternalMcpCatalogItemJSONBody struct {
 		ServiceAccount   *string                                                                   `json:"serviceAccount,omitempty"`
 		TransportType    *UpdateInternalMcpCatalogItemJSONBodyLocalConfigTransportType             `json:"transportType,omitempty"`
 	} `json:"localConfig"`
-	LocalConfigSecretId        *openapi_types.UUID `json:"localConfigSecretId"`
-	LocalConfigVaultKey        *string             `json:"localConfigVaultKey,omitempty"`
-	LocalConfigVaultPath       *string             `json:"localConfigVaultPath,omitempty"`
-	Multitenant                *bool               `json:"multitenant,omitempty"`
-	Name                       *string             `json:"name,omitempty"`
-	OauthClientSecretVaultKey  *string             `json:"oauthClientSecretVaultKey,omitempty"`
-	OauthClientSecretVaultPath *string             `json:"oauthClientSecretVaultPath,omitempty"`
-	OauthConfig                *struct {
+	LocalConfigSecretId *openapi_types.UUID `json:"localConfigSecretId"`
+	Multitenant         *bool               `json:"multitenant,omitempty"`
+	Name                *string             `json:"name,omitempty"`
+	OauthConfig         *struct {
 		AccessTokenEnvVar        *string                                                   `json:"access_token_env_var,omitempty"`
 		AdditionalScopes         *[]string                                                 `json:"additional_scopes,omitempty"`
 		Audience                 *string                                                   `json:"audience,omitempty"`
@@ -4593,9 +4596,7 @@ type CreateLlmProviderApiKeyJSONBody struct {
 	Provider CreateLlmProviderApiKeyJSONBodyProvider `json:"provider"`
 
 	// Shared Omitted or false: the key is yours alone (you own it and only you use it). True: a shared key with no owner, used by whoever its initialGrants reach. A service account cannot own a key, so it must send true.
-	Shared          *bool   `json:"shared,omitempty"`
-	VaultSecretKey  *string `json:"vaultSecretKey,omitempty"`
-	VaultSecretPath *string `json:"vaultSecretPath,omitempty"`
+	Shared *bool `json:"shared,omitempty"`
 }
 
 // CreateLlmProviderApiKeyJSONBodyInitialGrantsActions defines parameters for CreateLlmProviderApiKey.
@@ -4675,9 +4676,7 @@ type UpdateLlmProviderApiKeyJSONBody struct {
 		Value   string              `json:"value"`
 		ValueId *openapi_types.UUID `json:"valueId,omitempty"`
 	} `json:"labels,omitempty"`
-	Name            *string `json:"name,omitempty"`
-	VaultSecretKey  *string `json:"vaultSecretKey,omitempty"`
-	VaultSecretPath *string `json:"vaultSecretPath,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 // CreateVirtualApiKeyJSONBody defines parameters for CreateVirtualApiKey.
@@ -4835,7 +4834,6 @@ type InstallMcpServerJSONBody struct {
 	CatalogId                 openapi_types.UUID                               `json:"catalogId"`
 	CreatedByServiceAccountId *openapi_types.UUID                              `json:"createdByServiceAccountId"`
 	EnvironmentValues         *map[string]string                               `json:"environmentValues,omitempty"`
-	IsByosVault               *bool                                            `json:"isByosVault,omitempty"`
 	LocalInstallationError    *string                                          `json:"localInstallationError"`
 	LocalInstallationStatus   *InstallMcpServerJSONBodyLocalInstallationStatus `json:"localInstallationStatus,omitempty"`
 	Name                      string                                           `json:"name"`
@@ -4858,7 +4856,6 @@ type InstallMcpServerJSONBodyScope string
 type ReinstallMcpServerJSONBody struct {
 	EnvironmentValues *map[string]string                         `json:"environmentValues,omitempty"`
 	HibernationMode   *ReinstallMcpServerJSONBodyHibernationMode `json:"hibernationMode,omitempty"`
-	IsByosVault       *bool                                      `json:"isByosVault,omitempty"`
 	UserConfigValues  *map[string]string                         `json:"userConfigValues,omitempty"`
 }
 
@@ -5187,6 +5184,10 @@ type UpdateIntegrationSettingsJSONBody struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
 		} `json:"codex,omitempty"`
+		Grok *struct {
+			Hidden   *bool `json:"hidden,omitempty"`
+			Position *int  `json:"position,omitempty"`
+		} `json:"grok,omitempty"`
 		Hermes *struct {
 			Hidden   *bool `json:"hidden,omitempty"`
 			Position *int  `json:"position,omitempty"`
@@ -6118,11 +6119,6 @@ type UpdateTeamMemberJSONBody struct {
 // UpdateTeamMemberJSONBodyRole defines parameters for UpdateTeamMember.
 type UpdateTeamMemberJSONBodyRole string
 
-// SetTeamVaultFolderJSONBody defines parameters for SetTeamVaultFolder.
-type SetTeamVaultFolderJSONBody struct {
-	VaultPath string `json:"vaultPath"`
-}
-
 // GetToolsWithAssignmentsParams defines parameters for GetToolsWithAssignments.
 type GetToolsWithAssignmentsParams struct {
 	SortBy        *GetToolsWithAssignmentsParamsSortBy        `form:"sortBy,omitempty" json:"sortBy,omitempty"`
@@ -6431,9 +6427,6 @@ type AddTeamMemberJSONRequestBody AddTeamMemberJSONBody
 
 // UpdateTeamMemberJSONRequestBody defines body for UpdateTeamMember for application/json ContentType.
 type UpdateTeamMemberJSONRequestBody UpdateTeamMemberJSONBody
-
-// SetTeamVaultFolderJSONRequestBody defines body for SetTeamVaultFolder for application/json ContentType.
-type SetTeamVaultFolderJSONRequestBody SetTeamVaultFolderJSONBody
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -7264,17 +7257,6 @@ type ClientInterface interface {
 	UpdateTeamMemberWithBody(ctx context.Context, id string, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateTeamMember(ctx context.Context, id string, userId string, body UpdateTeamMemberJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// DeleteTeamVaultFolder request
-	DeleteTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetTeamVaultFolder request
-	GetTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// SetTeamVaultFolderWithBody request with any body
-	SetTeamVaultFolderWithBody(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	SetTeamVaultFolder(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetToolsWithAssignments request
 	GetToolsWithAssignments(ctx context.Context, params *GetToolsWithAssignmentsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -10666,54 +10648,6 @@ func (c *Client) UpdateTeamMemberWithBody(ctx context.Context, id string, userId
 
 func (c *Client) UpdateTeamMember(ctx context.Context, id string, userId string, body UpdateTeamMemberJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateTeamMemberRequest(c.Server, id, userId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) DeleteTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteTeamVaultFolderRequest(c.Server, teamId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetTeamVaultFolder(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetTeamVaultFolderRequest(c.Server, teamId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) SetTeamVaultFolderWithBody(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSetTeamVaultFolderRequestWithBody(c.Server, teamId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) SetTeamVaultFolder(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSetTeamVaultFolderRequest(c.Server, teamId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -19439,121 +19373,6 @@ func NewUpdateTeamMemberRequestWithBody(server string, id string, userId string,
 	return req, nil
 }
 
-// NewDeleteTeamVaultFolderRequest generates requests for DeleteTeamVaultFolder
-func NewDeleteTeamVaultFolderRequest(server string, teamId string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetTeamVaultFolderRequest generates requests for GetTeamVaultFolder
-func NewGetTeamVaultFolderRequest(server string, teamId string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewSetTeamVaultFolderRequest calls the generic SetTeamVaultFolder builder with application/json body
-func NewSetTeamVaultFolderRequest(server string, teamId string, body SetTeamVaultFolderJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewSetTeamVaultFolderRequestWithBody(server, teamId, "application/json", bodyReader)
-}
-
-// NewSetTeamVaultFolderRequestWithBody generates requests for SetTeamVaultFolder with any type of body
-func NewSetTeamVaultFolderRequestWithBody(server string, teamId string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "teamId", runtime.ParamLocationPath, teamId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/api/teams/%s/vault-folder", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
 // NewGetToolsWithAssignmentsRequest generates requests for GetToolsWithAssignments
 func NewGetToolsWithAssignmentsRequest(server string, params *GetToolsWithAssignmentsParams) (*http.Request, error) {
 	var err error
@@ -20546,17 +20365,6 @@ type ClientWithResponsesInterface interface {
 	UpdateTeamMemberWithBodyWithResponse(ctx context.Context, id string, userId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateTeamMemberResponse, error)
 
 	UpdateTeamMemberWithResponse(ctx context.Context, id string, userId string, body UpdateTeamMemberJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateTeamMemberResponse, error)
-
-	// DeleteTeamVaultFolderWithResponse request
-	DeleteTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*DeleteTeamVaultFolderResponse, error)
-
-	// GetTeamVaultFolderWithResponse request
-	GetTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*GetTeamVaultFolderResponse, error)
-
-	// SetTeamVaultFolderWithBodyWithResponse request with any body
-	SetTeamVaultFolderWithBodyWithResponse(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error)
-
-	SetTeamVaultFolderWithResponse(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error)
 
 	// GetToolsWithAssignmentsWithResponse request
 	GetToolsWithAssignmentsWithResponse(ctx context.Context, params *GetToolsWithAssignmentsParams, reqEditors ...RequestEditorFn) (*GetToolsWithAssignmentsResponse, error)
@@ -30734,6 +30542,13 @@ type GetLimitResponse struct {
 			TokensIn  float32 `json:"tokensIn"`
 			TokensOut float32 `json:"tokensOut"`
 		} `json:"modelUsage,omitempty"`
+		ThroughputUsage *struct {
+			// CurrentUsage Recorded usage. Token limits count only provider-reported tokens; requests already in flight can exceed the cap.
+			CurrentUsage float32 `json:"currentUsage"`
+
+			// ResetsAt Minute: projected full allowance recovery without new traffic. Other intervals: next reset.
+			ResetsAt string `json:"resetsAt"`
+		} `json:"throughputUsage,omitempty"`
 		ToolName  *string   `json:"toolName"`
 		UpdatedAt time.Time `json:"updatedAt"`
 	}
@@ -31200,8 +31015,6 @@ type CreateLlmProviderApiKeyResponse struct {
 		UpdatedAt                time.Time                                    `json:"updatedAt"`
 		UserId                   *string                                      `json:"userId"`
 		UserName                 *string                                      `json:"userName"`
-		VaultSecretKey           *string                                      `json:"vaultSecretKey"`
-		VaultSecretPath          *string                                      `json:"vaultSecretPath"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -31387,8 +31200,6 @@ type GetLlmProviderApiKeyResponse struct {
 		UpdatedAt                time.Time                                 `json:"updatedAt"`
 		UserId                   *string                                   `json:"userId"`
 		UserName                 *string                                   `json:"userName"`
-		VaultSecretKey           *string                                   `json:"vaultSecretKey"`
-		VaultSecretPath          *string                                   `json:"vaultSecretPath"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -31501,8 +31312,6 @@ type UpdateLlmProviderApiKeyResponse struct {
 		UpdatedAt                time.Time                                    `json:"updatedAt"`
 		UserId                   *string                                      `json:"userId"`
 		UserName                 *string                                      `json:"userName"`
-		VaultSecretKey           *string                                      `json:"vaultSecretKey"`
-		VaultSecretPath          *string                                      `json:"vaultSecretPath"`
 	}
 	JSON400 *struct {
 		Error struct {
@@ -41080,233 +40889,6 @@ func (r UpdateTeamMemberResponse) StatusCode() int {
 	return 0
 }
 
-type DeleteTeamVaultFolderResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		Success bool `json:"success"`
-	}
-	JSON400 *struct {
-		Error struct {
-			InternalCode *string                           `json:"internal_code,omitempty"`
-			Message      string                            `json:"message"`
-			Type         DeleteTeamVaultFolder400ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON401 *struct {
-		Error struct {
-			InternalCode *string                           `json:"internal_code,omitempty"`
-			Message      string                            `json:"message"`
-			Type         DeleteTeamVaultFolder401ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON403 *struct {
-		Error struct {
-			Details      *map[string]interface{}           `json:"details,omitempty"`
-			InternalCode *string                           `json:"internal_code,omitempty"`
-			Message      string                            `json:"message"`
-			Type         DeleteTeamVaultFolder403ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON404 *struct {
-		Error struct {
-			InternalCode *string                           `json:"internal_code,omitempty"`
-			Message      string                            `json:"message"`
-			Type         DeleteTeamVaultFolder404ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON409 *struct {
-		Error struct {
-			InternalCode *string                           `json:"internal_code,omitempty"`
-			Message      string                            `json:"message"`
-			Type         DeleteTeamVaultFolder409ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON500 *struct {
-		Error struct {
-			InternalCode *string                           `json:"internal_code,omitempty"`
-			Message      string                            `json:"message"`
-			Type         DeleteTeamVaultFolder500ErrorType `json:"type"`
-		} `json:"error"`
-	}
-}
-type DeleteTeamVaultFolder400ErrorType string
-type DeleteTeamVaultFolder401ErrorType string
-type DeleteTeamVaultFolder403ErrorType string
-type DeleteTeamVaultFolder404ErrorType string
-type DeleteTeamVaultFolder409ErrorType string
-type DeleteTeamVaultFolder500ErrorType string
-
-// Status returns HTTPResponse.Status
-func (r DeleteTeamVaultFolderResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DeleteTeamVaultFolderResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetTeamVaultFolderResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		CreatedAt time.Time `json:"createdAt"`
-		Id        string    `json:"id"`
-		TeamId    string    `json:"teamId"`
-		UpdatedAt time.Time `json:"updatedAt"`
-		VaultPath string    `json:"vaultPath"`
-	}
-	JSON400 *struct {
-		Error struct {
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         GetTeamVaultFolder400ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON401 *struct {
-		Error struct {
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         GetTeamVaultFolder401ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON403 *struct {
-		Error struct {
-			Details      *map[string]interface{}        `json:"details,omitempty"`
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         GetTeamVaultFolder403ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON404 *struct {
-		Error struct {
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         GetTeamVaultFolder404ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON409 *struct {
-		Error struct {
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         GetTeamVaultFolder409ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON500 *struct {
-		Error struct {
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         GetTeamVaultFolder500ErrorType `json:"type"`
-		} `json:"error"`
-	}
-}
-type GetTeamVaultFolder400ErrorType string
-type GetTeamVaultFolder401ErrorType string
-type GetTeamVaultFolder403ErrorType string
-type GetTeamVaultFolder404ErrorType string
-type GetTeamVaultFolder409ErrorType string
-type GetTeamVaultFolder500ErrorType string
-
-// Status returns HTTPResponse.Status
-func (r GetTeamVaultFolderResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetTeamVaultFolderResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type SetTeamVaultFolderResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *struct {
-		CreatedAt time.Time `json:"createdAt"`
-		Id        string    `json:"id"`
-		TeamId    string    `json:"teamId"`
-		UpdatedAt time.Time `json:"updatedAt"`
-		VaultPath string    `json:"vaultPath"`
-	}
-	JSON400 *struct {
-		Error struct {
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         SetTeamVaultFolder400ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON401 *struct {
-		Error struct {
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         SetTeamVaultFolder401ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON403 *struct {
-		Error struct {
-			Details      *map[string]interface{}        `json:"details,omitempty"`
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         SetTeamVaultFolder403ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON404 *struct {
-		Error struct {
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         SetTeamVaultFolder404ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON409 *struct {
-		Error struct {
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         SetTeamVaultFolder409ErrorType `json:"type"`
-		} `json:"error"`
-	}
-	JSON500 *struct {
-		Error struct {
-			InternalCode *string                        `json:"internal_code,omitempty"`
-			Message      string                         `json:"message"`
-			Type         SetTeamVaultFolder500ErrorType `json:"type"`
-		} `json:"error"`
-	}
-}
-type SetTeamVaultFolder400ErrorType string
-type SetTeamVaultFolder401ErrorType string
-type SetTeamVaultFolder403ErrorType string
-type SetTeamVaultFolder404ErrorType string
-type SetTeamVaultFolder409ErrorType string
-type SetTeamVaultFolder500ErrorType string
-
-// Status returns HTTPResponse.Status
-func (r SetTeamVaultFolderResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r SetTeamVaultFolderResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
 type GetToolsWithAssignmentsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -43881,41 +43463,6 @@ func (c *ClientWithResponses) UpdateTeamMemberWithResponse(ctx context.Context, 
 		return nil, err
 	}
 	return ParseUpdateTeamMemberResponse(rsp)
-}
-
-// DeleteTeamVaultFolderWithResponse request returning *DeleteTeamVaultFolderResponse
-func (c *ClientWithResponses) DeleteTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*DeleteTeamVaultFolderResponse, error) {
-	rsp, err := c.DeleteTeamVaultFolder(ctx, teamId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDeleteTeamVaultFolderResponse(rsp)
-}
-
-// GetTeamVaultFolderWithResponse request returning *GetTeamVaultFolderResponse
-func (c *ClientWithResponses) GetTeamVaultFolderWithResponse(ctx context.Context, teamId string, reqEditors ...RequestEditorFn) (*GetTeamVaultFolderResponse, error) {
-	rsp, err := c.GetTeamVaultFolder(ctx, teamId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetTeamVaultFolderResponse(rsp)
-}
-
-// SetTeamVaultFolderWithBodyWithResponse request with arbitrary body returning *SetTeamVaultFolderResponse
-func (c *ClientWithResponses) SetTeamVaultFolderWithBodyWithResponse(ctx context.Context, teamId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error) {
-	rsp, err := c.SetTeamVaultFolderWithBody(ctx, teamId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseSetTeamVaultFolderResponse(rsp)
-}
-
-func (c *ClientWithResponses) SetTeamVaultFolderWithResponse(ctx context.Context, teamId string, body SetTeamVaultFolderJSONRequestBody, reqEditors ...RequestEditorFn) (*SetTeamVaultFolderResponse, error) {
-	rsp, err := c.SetTeamVaultFolder(ctx, teamId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseSetTeamVaultFolderResponse(rsp)
 }
 
 // GetToolsWithAssignmentsWithResponse request returning *GetToolsWithAssignmentsResponse
@@ -56825,6 +56372,13 @@ func ParseGetLimitResponse(rsp *http.Response) (*GetLimitResponse, error) {
 				TokensIn  float32 `json:"tokensIn"`
 				TokensOut float32 `json:"tokensOut"`
 			} `json:"modelUsage,omitempty"`
+			ThroughputUsage *struct {
+				// CurrentUsage Recorded usage. Token limits count only provider-reported tokens; requests already in flight can exceed the cap.
+				CurrentUsage float32 `json:"currentUsage"`
+
+				// ResetsAt Minute: projected full allowance recovery without new traffic. Other intervals: next reset.
+				ResetsAt string `json:"resetsAt"`
+			} `json:"throughputUsage,omitempty"`
 			ToolName  *string   `json:"toolName"`
 			UpdatedAt time.Time `json:"updatedAt"`
 		}
@@ -57411,8 +56965,6 @@ func ParseCreateLlmProviderApiKeyResponse(rsp *http.Response) (*CreateLlmProvide
 			UpdatedAt                time.Time                                    `json:"updatedAt"`
 			UserId                   *string                                      `json:"userId"`
 			UserName                 *string                                      `json:"userName"`
-			VaultSecretKey           *string                                      `json:"vaultSecretKey"`
-			VaultSecretPath          *string                                      `json:"vaultSecretPath"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -57661,8 +57213,6 @@ func ParseGetLlmProviderApiKeyResponse(rsp *http.Response) (*GetLlmProviderApiKe
 			UpdatedAt                time.Time                                 `json:"updatedAt"`
 			UserId                   *string                                   `json:"userId"`
 			UserName                 *string                                   `json:"userName"`
-			VaultSecretKey           *string                                   `json:"vaultSecretKey"`
-			VaultSecretPath          *string                                   `json:"vaultSecretPath"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -57804,8 +57354,6 @@ func ParseUpdateLlmProviderApiKeyResponse(rsp *http.Response) (*UpdateLlmProvide
 			UpdatedAt                time.Time                                    `json:"updatedAt"`
 			UserId                   *string                                      `json:"userId"`
 			UserName                 *string                                      `json:"userName"`
-			VaultSecretKey           *string                                      `json:"vaultSecretKey"`
-			VaultSecretPath          *string                                      `json:"vaultSecretPath"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -69816,335 +69364,6 @@ func ParseUpdateTeamMemberResponse(rsp *http.Response) (*UpdateTeamMemberRespons
 				InternalCode *string                      `json:"internal_code,omitempty"`
 				Message      string                       `json:"message"`
 				Type         UpdateTeamMember500ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseDeleteTeamVaultFolderResponse parses an HTTP response from a DeleteTeamVaultFolderWithResponse call
-func ParseDeleteTeamVaultFolderResponse(rsp *http.Response) (*DeleteTeamVaultFolderResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &DeleteTeamVaultFolderResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			Success bool `json:"success"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest struct {
-			Error struct {
-				InternalCode *string                           `json:"internal_code,omitempty"`
-				Message      string                            `json:"message"`
-				Type         DeleteTeamVaultFolder400ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest struct {
-			Error struct {
-				InternalCode *string                           `json:"internal_code,omitempty"`
-				Message      string                            `json:"message"`
-				Type         DeleteTeamVaultFolder401ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest struct {
-			Error struct {
-				Details      *map[string]interface{}           `json:"details,omitempty"`
-				InternalCode *string                           `json:"internal_code,omitempty"`
-				Message      string                            `json:"message"`
-				Type         DeleteTeamVaultFolder403ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest struct {
-			Error struct {
-				InternalCode *string                           `json:"internal_code,omitempty"`
-				Message      string                            `json:"message"`
-				Type         DeleteTeamVaultFolder404ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest struct {
-			Error struct {
-				InternalCode *string                           `json:"internal_code,omitempty"`
-				Message      string                            `json:"message"`
-				Type         DeleteTeamVaultFolder409ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest struct {
-			Error struct {
-				InternalCode *string                           `json:"internal_code,omitempty"`
-				Message      string                            `json:"message"`
-				Type         DeleteTeamVaultFolder500ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetTeamVaultFolderResponse parses an HTTP response from a GetTeamVaultFolderWithResponse call
-func ParseGetTeamVaultFolderResponse(rsp *http.Response) (*GetTeamVaultFolderResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetTeamVaultFolderResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			CreatedAt time.Time `json:"createdAt"`
-			Id        string    `json:"id"`
-			TeamId    string    `json:"teamId"`
-			UpdatedAt time.Time `json:"updatedAt"`
-			VaultPath string    `json:"vaultPath"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest struct {
-			Error struct {
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         GetTeamVaultFolder400ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest struct {
-			Error struct {
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         GetTeamVaultFolder401ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest struct {
-			Error struct {
-				Details      *map[string]interface{}        `json:"details,omitempty"`
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         GetTeamVaultFolder403ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest struct {
-			Error struct {
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         GetTeamVaultFolder404ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest struct {
-			Error struct {
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         GetTeamVaultFolder409ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest struct {
-			Error struct {
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         GetTeamVaultFolder500ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON500 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseSetTeamVaultFolderResponse parses an HTTP response from a SetTeamVaultFolderWithResponse call
-func ParseSetTeamVaultFolderResponse(rsp *http.Response) (*SetTeamVaultFolderResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &SetTeamVaultFolderResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			CreatedAt time.Time `json:"createdAt"`
-			Id        string    `json:"id"`
-			TeamId    string    `json:"teamId"`
-			UpdatedAt time.Time `json:"updatedAt"`
-			VaultPath string    `json:"vaultPath"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest struct {
-			Error struct {
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         SetTeamVaultFolder400ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest struct {
-			Error struct {
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         SetTeamVaultFolder401ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
-		var dest struct {
-			Error struct {
-				Details      *map[string]interface{}        `json:"details,omitempty"`
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         SetTeamVaultFolder403ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON403 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest struct {
-			Error struct {
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         SetTeamVaultFolder404ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest struct {
-			Error struct {
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         SetTeamVaultFolder409ErrorType `json:"type"`
-			} `json:"error"`
-		}
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
-		var dest struct {
-			Error struct {
-				InternalCode *string                        `json:"internal_code,omitempty"`
-				Message      string                         `json:"message"`
-				Type         SetTeamVaultFolder500ErrorType `json:"type"`
 			} `json:"error"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {

@@ -85,7 +85,7 @@ runtime validation; generation of types would not close them.
 | Guardrails and OpenAPPA | `/api/guardrails-deployment`, `/api/guardrails-policy`, `/api/openappa/battery-packages/{name}`, `/api/openappa/battery-installs`, `/api/openappa/credential-bindings/{variable}`, `/api/openappa/policy-tests` | Versioned policy artifacts, deployment, binding and execution boundaries |
 | ChatOps configuration and bindings | `/api/chatops/bindings`, `/api/chatops/config/slack`, `/api/chatops/config/ms-teams`, `/api/chatops/config/telegram` | Configuration vs external app provisioning, existing grants and test isolation |
 | Hooks and site notifications | `/api/hooks`, `/api/site-notification` | Persistent configuration vs sending a notification or executing a hook |
-| Default limits, environment defaults and Vault bindings | `/api/default-user-limits`, `/api/environments/defaults`, `/api/teams/{teamId}/vault-folder` | Singleton/full-set authority, enterprise prerequisites and secret-manager ownership |
+| Default limits and environment defaults | `/api/default-user-limits`, `/api/environments/defaults` | Singleton/full-set authority, enterprise prerequisites |
 | Alert mutes and skill share links | `/api/internal_mcp_catalog/{id}/alert-mutes/{kind}`, `/api/mcp_server/{id}/alert-mutes/{kind}`, `/api/skill-share-links` | Expiration, public-access secrets and revocation |
 
 This table is a lifecycle review queue, not a numerical denominator inferred from

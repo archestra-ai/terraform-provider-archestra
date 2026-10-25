@@ -127,7 +127,7 @@ complete supported-resource denominator; it is not a claim of completed coverage
 | GitHub App configs and PAT registrations | Missing | Secret preservation, organization/personal access, externally approved installations |
 | Guardrails deployment/policy and OpenAPPA configuration | Missing | Distinguish declarative packages/bindings/tests/sync from transient execution |
 | Hooks and site notifications | Missing | Persistence and privileged scope; notification delivery is separate authorization |
-| Per-environment default user limits and vault bindings | Missing | Enterprise/read-only-vault gating, no implicit credential creation |
+| Per-environment default user limits | Missing | Enterprise prerequisites |
 | Inference, chat messages, telemetry, runtime executions, OAuth handshakes, bulk RPCs | Exclude as standalone managed resources | Transient operations or alternate operations on an existing lifecycle; retain justified data sources as appropriate |
 
 Do not drop a supported lifecycle from the denominator because generation fails.

@@ -7,7 +7,7 @@ description: |-
 
 # Common issues
 
-Match inline API keys or Vault references to the backend's secrets manager.
+Supply credential values through sensitive inputs.
 Imported resources cannot recover one-shot or redacted plaintext secrets.
 
 Use each resource's documented UUID, credential key or composite import ID.

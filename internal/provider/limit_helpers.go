@@ -27,9 +27,9 @@ func (r *LimitResource) APIShape() any { return client.GetLimitResponse{} }
 
 // KnownIntentionallySkipped: createdAt/updatedAt are audit timestamps;
 // lastCleanup is a backend bookkeeping field tracking the limit cleanup
-// scheduler — debug-only, not user-facing.
+// scheduler. throughputUsage is transient server accounting, not limit configuration.
 func (r *LimitResource) KnownIntentionallySkipped() []string {
-	return []string{"createdAt", "updatedAt", "lastCleanup"}
+	return []string{"createdAt", "updatedAt", "lastCleanup", "throughputUsage"}
 }
 
 func (r *LimitResource) refreshCurrentLimit(ctx context.Context, data *LimitResourceModel, diags *diag.Diagnostics) {

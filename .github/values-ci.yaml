@@ -39,10 +39,8 @@ archestra:
     # Keep CI instances out of product telemetry.
     ARCHESTRA_ANALYTICS: "disabled"
 
-    # BYOS vault (READONLY_VAULT) so tests that exercise vault-backed catalog
-    # fields can run. The Vault server is deployed as a sidecar in the CI
-    # workflow (dev mode, root token).
-    ARCHESTRA_SECRETS_MANAGER: "READONLY_VAULT"
+    # Exercise managed read/write Vault storage.
+    ARCHESTRA_SECRETS_MANAGER: "VAULT"
     ARCHESTRA_HASHICORP_VAULT_ADDR: "http://vault.default.svc.cluster.local:8200"
     ARCHESTRA_HASHICORP_VAULT_TOKEN: "root"
 

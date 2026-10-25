@@ -31,8 +31,7 @@ preserve it; an explicit empty collection clears it. Declare each relationship
 in one parent only. `archestra_remote_agent` still owns the external registration
 and authentication, separately from the agents that reference it.
 
-Team `external_group_ids` and `vault_folder` replace the standalone SSO-group and
-Vault-folder binding types. Team lookup exposes the same bindings.
+Team `external_group_ids` owns SSO group mappings. Team lookup exposes the same mappings.
 
 Every shareable object exposes `permissions` for its additional direct grants.
 Omit it to preserve the current grants; `[]` clears additional grants. Updates
@@ -178,8 +177,8 @@ resource migrations still require their own runtime evidence before release.
 
 LLM provider keys now manage sensitive `extra_headers`, `inference_base_url` and
 labels. Headers remain sensitive in Terraform output but are stored in state.
-Imports recover server-visible headers; inline API keys and unreturned vault
-references cannot be reconstructed. The API must include the label-read fixes
+Imports recover server-visible headers; inline API keys cannot be reconstructed.
+The API must include the label-read fixes
 from archestra-ai/archestra#9032 before using key or knowledge-base labels.
 
 Teams support `parent_id` and labels; removing `parent_id` detaches the team from
@@ -234,7 +233,7 @@ current ownership, including keys created before this attribute existed.
 
 Bedrock keys accept sensitive `aws_access_key_id`, `aws_secret_access_key` and
 optional `aws_session_token` inputs. They cannot be combined with an inline API
-key or Vault reference. Token rotation resends the pair because Archestra
+key. Token rotation resends the pair because Archestra
 replaces the complete SigV4 secret; ordinary metadata updates do not resend it.
 Removing all three attributes stops managing these write-only inputs and clears
 them from Terraform state. It does not revoke the credentials stored remotely;

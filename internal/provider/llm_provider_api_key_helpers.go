@@ -27,8 +27,6 @@ var llmProviderApiKeyAttrSpec = []AttrSpec{
 	{TFName: "api_key", JSONName: "apiKey", Kind: Scalar, Sensitive: true},
 	{TFName: "is_primary", JSONName: "isPrimary", Kind: Scalar},
 	{TFName: "base_url", JSONName: "baseUrl", Kind: Scalar},
-	{TFName: "vault_secret_path", JSONName: "vaultSecretPath", Kind: Scalar},
-	{TFName: "vault_secret_key", JSONName: "vaultSecretKey", Kind: Scalar},
 }
 
 func (r *LLMProviderApiKeyResource) AttrSpecs() []AttrSpec {
@@ -44,9 +42,7 @@ func (r *LLMProviderApiKeyResource) APIShape() any {
 //   - organizationId/userId/userName/teamName: ownership metadata. The
 //     team_id (already in the schema) covers team scoping; the rest is
 //     backend display sugar.
-//   - secretId/secretStorageType: BYOS/READONLY_VAULT internal bookkeeping
-//     fields (which secret-manager backend stored the key); the user-facing
-//     vault_secret_path/vault_secret_key already cover the BYOS path.
+//   - secretId/secretStorageType: secret-store bookkeeping.
 //   - bestModelId: cached "best model" pointer maintained by the backend's
 //     model-discovery scheduler; not part of the user's create/update flow.
 //   - isAgentKey/isSystem: server-side flags that mark special keys
@@ -118,12 +114,5 @@ func (r *LLMProviderApiKeyResource) flattenKey(ctx context.Context, data *LLMPro
 	data.SubscriptionKind = types.StringNull()
 	if wire.SubscriptionKind != nil {
 		data.SubscriptionKind = types.StringValue(string(*wire.SubscriptionKind))
-	}
-	// The API does not return inline secrets or always return vault references.
-	if wire.VaultSecretPath != nil {
-		data.VaultSecretPath = types.StringValue(*wire.VaultSecretPath)
-	}
-	if wire.VaultSecretKey != nil {
-		data.VaultSecretKey = types.StringValue(*wire.VaultSecretKey)
 	}
 }

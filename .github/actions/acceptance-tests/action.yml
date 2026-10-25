@@ -126,7 +126,6 @@ runs:
       env:
         ARCHESTRA_BASE_URL: http://localhost:9000
         ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
-        ARCHESTRA_READONLY_VAULT_ENABLED: "true"
         ARCHESTRA_TEST_LLM_BASE_URL: http://ollama-mock.default.svc.cluster.local:11434/v1
       run: python3 scripts/bootstrap-test-llm-key.py
 
@@ -146,7 +145,6 @@ runs:
         ARCHESTRA_BASE_URL: "http://localhost:9000"
         ARCHESTRA_API_KEY: ${{ steps.api-key.outputs.api-key }}
         ARCHESTRA_TEST_IDP_ID: ${{ steps.test-idp.outputs.idp-id }}
-        ARCHESTRA_READONLY_VAULT_ENABLED: "true"
         ARCHESTRA_AGENT_RUNTIME_ENABLED: "true"
         ARCHESTRA_ENTERPRISE_LICENSE_ACTIVATED: "true"
         ARCHESTRA_TEST_LLM_BASE_URL: http://ollama-mock.default.svc.cluster.local:11434/v1

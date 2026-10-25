@@ -20,8 +20,7 @@ func testCredentialProviderFixture() string {
  resource "archestra_model_provider" "routing" {
   name="tf-routing-fixture"
   llm_provider="ollama"
-  vault_secret_path="secret/data/test/ollama"
-  vault_secret_key="api_key"
+  api_key="synthetic-local-test-key"
  }
  resource "archestra_team" "routing" {name="tf-credential-billing"}
  `
@@ -117,7 +116,7 @@ func TestAccVirtualAPIKeyResource(t *testing.T) {
 		}
 		return nil
 	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config("tf-virtual-router", "1", false), Check: resource.ComposeTestCheckFunc(capture, resource.TestCheckResourceAttr("archestra_virtual_key.test", "spend_cap.limit_value", "100"))},
 		// The importing identity authored the key, so the reveal endpoint recovers its value.
 		{ResourceName: "archestra_virtual_key.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"rotation_nonce"}, ImportStateCheck: func(states []*terraform.InstanceState) error {
@@ -216,7 +215,7 @@ name="tf-oauth-identity"
 		}
 		return testOauthCredential(t.Context(), clientID, v.Primary.Attributes["client_secret"], true)
 	}
-	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t); testAccRequireByosEnabled(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
+	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: config("tf-unified-oauth", "1", false), Check: capture},
 		{ResourceName: "archestra_oauth_client.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"client_secret", "rotation_nonce"}},
 		{Config: config("tf-unified-oauth-renamed", "1", false), Check: resource.ComposeTestCheckFunc(preserve, resource.TestCheckResourceAttrPair("archestra_oauth_client.test", "service_account_id", "archestra_service_account.routing", "id"), resource.TestCheckResourceAttrPair("archestra_oauth_client.test", "billing_team_id", "archestra_team.routing", "id"), resource.TestCheckResourceAttr("archestra_oauth_client.test", "spend_cap.limit_value", "100"))},

@@ -2,9 +2,7 @@
 # Externals (declare elsewhere): archestra_team.engineering, archestra_agent.support.
 #
 # Bare-apply caveats: the GitHub install spawns `npx @modelcontextprotocol/server-github`
-# which calls GitHub's API — needs a real PAT or tool-discovery fails. The BYOS install
-# (`github_vault`) needs `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT` plus a seeded Vault
-# entry. See [BYOS Vault guide](../../../docs/guides/byos-vault.md).
+# which calls GitHub's API and needs a real PAT for tool discovery.
 
 # Step 1: register the MCP server in the private catalog. The catalog item
 # captures *how* to run the server; the install captures *that* it runs.
@@ -109,17 +107,4 @@ resource "archestra_mcp_server" "filesystem_team" {
 
   # Pre-bind the install to a list of agents so they can see its tools.
   agent_ids = [archestra_agent.support.id]
-}
-
-# BYOS install — `is_byos_vault = true` tells the backend to treat
-# `environment_values` (and `user_config_values`) as Vault references
-# instead of raw secrets. Requires `ARCHESTRA_SECRETS_MANAGER=READONLY_VAULT`
-# on the backend AND a Vault entry seeded at the path below.
-resource "archestra_mcp_server" "github_vault" {
-  name          = "github-vault"
-  catalog_id    = archestra_mcp_registry_entry.github.id
-  is_byos_vault = true
-  environment_values = {
-    GITHUB_TOKEN = "secret/data/archestra/mcp/github"
-  }
 }

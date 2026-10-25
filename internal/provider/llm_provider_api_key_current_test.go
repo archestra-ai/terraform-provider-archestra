@@ -32,7 +32,7 @@ func TestAccLLMProviderKeyCurrentFields(t *testing.T) {
  labels=[]`)
 	resource.Test(t, resource.TestCase{PreCheck: func() { testAccPreCheck(t) }, ProtoV6ProviderFactories: testAccProtoV6ProviderFactories, Steps: []resource.TestStep{
 		{Config: initial, Check: resource.ComposeAggregateTestCheckFunc(resource.TestCheckResourceAttr("archestra_model_provider.test", "extra_headers.X-Synthetic-Test", "first"), resource.TestCheckResourceAttr("archestra_model_provider.test", "labels.0.value", "initial"), resource.TestCheckResourceAttr("archestra_model_provider.test", "requires_reauthentication", "false"))},
-		{ResourceName: "archestra_model_provider.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"api_key", "vault_secret_path", "vault_secret_key"}},
+		{ResourceName: "archestra_model_provider.test", ImportState: true, ImportStateVerify: true, ImportStateVerifyIgnore: []string{"api_key"}},
 		{Config: initial, PlanOnly: true},
 		{Config: updated, Check: resource.TestCheckResourceAttr("archestra_model_provider.test", "extra_headers.X-Synthetic-Test", "second")},
 		{Config: updated, PlanOnly: true},
@@ -43,9 +43,5 @@ func TestAccLLMProviderKeyCurrentFields(t *testing.T) {
 
 // The same resource contract is exercised against both supported secret stores.
 func testAccLLMKeyMaterial() string {
-	if os.Getenv("ARCHESTRA_READONLY_VAULT_ENABLED") == "true" {
-		return `vault_secret_path="secret/data/test/ollama"
- vault_secret_key="api_key"`
-	}
 	return `api_key="synthetic-local-test-key"`
 }

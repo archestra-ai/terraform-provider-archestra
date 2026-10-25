@@ -12,10 +12,9 @@ requests through Archestra to one or more model providers. Terraform can create
 one key per team and write each value to that team's Vault path, so workloads
 read their key from Vault instead of from Terraform outputs.
 
-Archestra never writes to your Vault. With Vault-backed secrets (BYOS), the
-platform only reads the provider credential named by `vault_secret_path` and
-`vault_secret_key`. The write in this guide is done by the HashiCorp Vault
-provider, using the Vault token configured for Terraform.
+The HashiCorp Vault provider writes the virtual key value using the Vault token
+configured for Terraform. Archestra stores the upstream model-provider credential
+in its configured PostgreSQL or managed read/write Vault secret store.
 
 ## Example
 
@@ -23,7 +22,7 @@ provider, using the Vault token configured for Terraform.
 
 The example:
 
-- references an upstream provider credential that already exists in Vault,
+- supplies an upstream provider credential through a sensitive variable,
   as an organization-owned model provider (`shared = true`). Keep `shared`
   when Terraform authenticates as a service account: a service account cannot
   own a personal provider key;

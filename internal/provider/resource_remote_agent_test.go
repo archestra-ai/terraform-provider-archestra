@@ -70,9 +70,6 @@ func TestAccRemoteAgentResource(t *testing.T) {
 	}
 
 	credential := "synthetic-local-only"
-	if os.Getenv("ARCHESTRA_READONLY_VAULT_ENABLED") == "true" {
-		credential = "secret/data/test/ollama#api_key"
-	}
 	auth := func(kind string) string {
 		v := map[string]any{"type": kind}
 		if kind != "none" {
