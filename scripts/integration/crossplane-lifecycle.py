@@ -81,6 +81,18 @@ def git_plugin_source_fields():
             'subdir': 'scripts/integration/fixtures/plugins/synthetic', 'exclude': ['excluded.txt']}}
 
 
+def model_provider_fixture(namespace, scope, run):
+    name = 'cp-model-key-' + scope + '-' + run
+    secret = {'apiVersion': 'v1', 'kind': 'Secret',
+              'metadata': {'name': name, 'namespace': namespace,
+                           'labels': {'provider-test-run': run}},
+              'stringData': {'api-key': 'synthetic-local-only'}}
+    reference = {'name': name, 'key': 'api-key'}
+    if scope == 'cluster':
+        reference['namespace'] = namespace
+    return secret, {'apiKeySecretRef': reference}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--api-url', required=True)
@@ -108,7 +120,6 @@ def main():
             parser.error('Fixture endpoints must use loopback or a fixed private Kind fixture')
     env = dict(os.environ, KUBECONFIG=str(args.kubeconfig.resolve()))
     token = args.key_file.read_text().strip()
-    model_fixture = {'apiKey': 'synthetic-local-only'}
     run = uuid.uuid4().hex[:8]
     leases = []
     results = []
@@ -268,6 +279,10 @@ def main():
             raise RuntimeError('Unable to read the isolated test organization')
         for scope in args.scopes:
             scope_cases = set(args.cases) - completed_cases(results, scope)
+            if scope_cases & {'llm', 'routing-credentials'}:
+                secret, model_fixture = model_provider_fixture(args.namespace, scope, run)
+                kube('apply', '-f', '-', payload=secret)
+                leases.append((['-n', args.namespace], 'secrets', secret['metadata']['name']))
             if 'inline-owners' in scope_cases:
                 child, child_id, _ = create(scope, 'agent', 'Agent', 'agents', {'name': 'cp-inline-child-' + run + '-' + scope}, '-child')
                 remote, remote_id, _ = create(scope, 'a2a', 'RemoteAgent', 'remoteagents', {'source': json.dumps(a2a_source('cp-inline-remote-' + run + '-' + scope))})
